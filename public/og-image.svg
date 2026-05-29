@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#060e1c"/>
+
+  <!-- Gold top bar -->
+  <rect width="1200" height="5" fill="url(#goldGrad)"/>
+
+  <!-- Decorative bar chart -->
+  <rect x="900" y="200" width="60" height="300" rx="6" fill="#b8934a" opacity="0.25"/>
+  <rect x="980" y="140" width="60" height="360" rx="6" fill="#c9a55a" opacity="0.35"/>
+  <rect x="1060" y="80"  width="60" height="420" rx="6" fill="#ddb860" opacity="0.45"/>
+  <polyline points="930,190 1010,130 1090,70"
+    stroke="#e8c06a" stroke-width="3" fill="none"
+    stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+
+  <!-- Left accent line -->
+  <rect x="80" y="180" width="4" height="140" rx="2" fill="url(#goldGrad)"/>
+
+  <!-- Badge -->
+  <rect x="80" y="130" width="220" height="32" rx="6" fill="rgba(184,147,74,0.15)"/>
+  <text x="190" y="151" font-family="DM Sans, sans-serif" font-size="13" fill="#b8934a" text-anchor="middle" letter-spacing="2">SIMULATION GRATUITE</text>
+
+  <!-- Title -->
+  <text x="108" y="230" font-family="Georgia, serif" font-size="52" font-weight="700" fill="#f1e4c3" letter-spacing="-0.5">Simulateur Retraite</text>
+  <text x="108" y="295" font-family="Georgia, serif" font-size="52" font-weight="700" fill="#e8c06a" letter-spacing="-0.5">Agirc-Arrco 2026</text>
+
+  <!-- Subtitle -->
+  <text x="108" y="355" font-family="DM Sans, sans-serif" font-size="22" fill="#94a3b8">Estimez votre pension complémentaire en 30 secondes</text>
+
+  <!-- Separator line -->
+  <line x1="80" y1="400" x2="600" y2="400" stroke="rgba(184,147,74,0.3)" stroke-width="1"/>
+
+  <!-- Pills -->
+  <rect x="80"  y="420" width="185" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
+  <text x="172" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ Données officielles</text>
+
+  <rect x="278" y="420" width="175" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
+  <text x="365" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ 100 % gratuit</text>
+
+  <rect x="466" y="420" width="200" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
+  <text x="566" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ Calcul local</text>
+
+  <!-- Domain -->
+  <text x="108" y="560" font-family="DM Sans, sans-serif" font-size="18" fill="#475569" letter-spacing="1">mesimulateurs.fr</text>
+
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#b8934a"/>
+      <stop offset="100%" stop-color="#e8c06a"/>
+    </linearGradient>
+  </defs>
+</svg>

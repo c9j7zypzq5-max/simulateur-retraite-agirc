@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 
@@ -11,6 +12,20 @@ function Section({ title, children }) {
 }
 
 export default function PolitiqueConfidentialite() {
+  useEffect(() => {
+    const prevTitle = document.title;
+    const prevDesc  = document.querySelector('meta[name="description"]')?.getAttribute("content");
+    const robotsMeta = document.querySelector('meta[name="robots"]');
+    document.title = "Politique de confidentialité — mesimulateurs.fr";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Politique de confidentialité de mesimulateurs.fr — données collectées, cookies, RGPD, droits des utilisateurs.");
+    if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
+    return () => {
+      document.title = prevTitle;
+      if (prevDesc) document.querySelector('meta[name="description"]')?.setAttribute("content", prevDesc);
+      if (robotsMeta) robotsMeta.setAttribute("content", "index, follow");
+    };
+  }, []);
+
   return (
     <div style={{ minHeight: "100vh", background: "#060e1c", fontFamily: "'DM Sans', sans-serif", color: "#e2e8f0", padding: "0 16px" }}>
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 0 60px" }}>
