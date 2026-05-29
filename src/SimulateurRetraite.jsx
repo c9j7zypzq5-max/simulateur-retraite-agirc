@@ -7,11 +7,11 @@ const VALEUR_ACHAT  = 7.46;
 const VALEUR_SERVICE = 1.4098;
 const TAUX_T1       = 0.0787;
 const TAUX_T2       = 0.2159;
-const TAUX_T1_SAL   = 0.0315;   // part salariale T1 (~40 %)
-const TAUX_T1_PAT   = 0.0472;   // part patronale  T1 (~60 %)
+const TAUX_T1_SAL   = 0.0315;
+const TAUX_T1_PAT   = 0.0472;
 const TAUX_T2_SAL   = 0.0864;
 const TAUX_T2_PAT   = 0.1295;
-const GMP_MIN_PTS   = 120;       // GMP cadres : minimum 120 pts/an
+const GMP_MIN_PTS   = 120;
 
 const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
 const getCoef      = age => COEF_TABLE[age] ?? 1.00;
@@ -35,7 +35,6 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
   const af  = Math.max(0, anneesFaites);
   const ar  = Math.max(0, anneesRestantes);
 
-  // Points passés (salaire actuel)
   const salAnnActuel = sal * 12;
   const t1p = Math.min(salAnnActuel, PASS);
   const t2p = Math.max(0, Math.min(salAnnActuel, 8 * PASS) - PASS);
@@ -45,7 +44,6 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
   const cotSalPassé  = (t1p * TAUX_T1_SAL + t2p * TAUX_T2_SAL) * af;
   const cotPatPassé  = (t1p * TAUX_T1_PAT + t2p * TAUX_T2_PAT) * af;
 
-  // Points futurs (salaire évolutif)
   let pointsFuturs = 0, cotSalFutur = 0, cotPatFutur = 0;
   let salCourant = sal;
   for (let i = 0; i < ar; i++) {
@@ -62,17 +60,14 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
   const salaireDépart = sal * Math.pow(1 + evolutionSalaire / 100, ar);
   const totalPoints   = pointsAcquis + pointsFuturs;
 
-  // Coefficients
   const coefAge     = getCoef(ageDépart);
   const coefEnfants = bonus3Enfants ? 1.10 : 1.00;
   const coefTotal   = coefAge * coefEnfants;
 
-  // Pension avec revalorisation projetée
   const valServProj = VALEUR_SERVICE * Math.pow(1 + tauxReval / 100, ar);
   const pensionBrute = (totalPoints * valServProj / 12) * coefTotal;
   const pensionNette = pensionBrute * 0.83;
 
-  // Pension sans revalorisation (base 2026)
   const pensionBruteSansReval = (totalPoints * VALEUR_SERVICE / 12) * coefTotal;
   const pensionNetteSansReval = pensionBruteSansReval * 0.83;
 
@@ -87,7 +82,7 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
   };
 }
 
-// ─── Export PDF (chargement lazy de jsPDF) ────────────────────────────────────
+// ─── Export PDF ───────────────────────────────────────────────────────────────
 async function generatePDF(inputs, res, setExp) {
   setExp(true);
   try {
@@ -129,7 +124,6 @@ async function generatePDF(inputs, res, setExp) {
     row("Coefficient appliqué",             `x ${res.coefTotal.toFixed(2)} (${getCoefLabel(inputs.ageDépart)}${inputs.bonus3Enfants ? " + 10 % enfants" : ""})`);
     y += 3;
 
-    // Big result box
     doc.setFillColor(15, 23, 42); doc.roundedRect(20, y, 170, 26, 3, 3, "F");
     doc.setDrawColor(...G); doc.setLineWidth(0.3); doc.roundedRect(20, y, 170, 26, 3, 3, "S");
     doc.setTextColor(...S); doc.setFont("helvetica", "normal"); doc.setFontSize(9);
@@ -203,17 +197,17 @@ function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999 })
   };
   return (
     <div style={{ marginBottom: 24 }}>
-      <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "#64748b", marginBottom: 10 }}>{label}</label>
-      <div style={{ display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "rgba(255,255,255,0.03)", border: `1.5px solid ${focused ? "rgba(184,147,74,0.6)" : "rgba(255,255,255,0.1)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s, background 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "none" }}>
+      <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{label}</label>
+      <div style={{ display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "var(--input-bg)", border: `1.5px solid ${focused ? "rgba(184,147,74,0.6)" : "var(--border)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s, background 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "var(--input-shadow)" }}>
         <input type="text" inputMode="numeric"
           value={focused ? raw : Number(value).toLocaleString("fr-FR")}
           onChange={handleChange}
           onFocus={() => { setFoc(true); setRaw(String(value)); }}
           onBlur={handleBlur}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "#f1e4c3", padding: "14px 0 14px 20px", width: 0 }} />
-        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "#b8934a", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
+        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
       </div>
-      {hint && <div style={{ marginTop: 8, fontSize: 11, color: "#475569", letterSpacing: "0.04em" }}>{hint}</div>}
+      {hint && <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
     </div>
   );
 }
@@ -223,29 +217,29 @@ function SliderInput({ label, value, onChange, min, max, step = 1, unit = "", hi
   return (
     <div style={{ marginBottom: 22 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-        <label style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "#64748b" }}>{label}</label>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: "#e8c06a" }}>{display}{unit}</span>
+        <label style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>{label}</label>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: "var(--gold)" }}>{display}{unit}</span>
       </div>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={e => onChange(Number(e.target.value))}
-        style={{ width: "100%", accentColor: "#b8934a", cursor: "pointer", height: 4 }} />
-      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5, fontSize: 10, color: "#334155" }}>
+        style={{ width: "100%", accentColor: "var(--gold-mid)", cursor: "pointer", height: 4 }} />
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5, fontSize: 10, color: "var(--text-secondary)" }}>
         <span>{showSign && min > 0 ? "+" : ""}{min}{unit}</span>
         <span>{showSign && max > 0 ? "+" : ""}{max}{unit}</span>
       </div>
-      {hint && <div style={{ marginTop: 6, fontSize: 11, color: "#475569" }}>{hint}</div>}
+      {hint && <div style={{ marginTop: 6, fontSize: 11, color: "var(--text-secondary)" }}>{hint}</div>}
     </div>
   );
 }
 
 function Toggle({ checked, onChange }) {
   return (
-    <div style={{ display: "flex", background: "rgba(255,255,255,0.04)", borderRadius: 10, padding: 3, gap: 2 }}>
+    <div style={{ display: "flex", background: "var(--input-bg)", borderRadius: 10, padding: 3, gap: 2 }}>
       {["Non-cadre", "Cadre"].map((opt, i) => (
         <button key={opt} onClick={() => onChange(i === 1)}
           style={{ padding: "7px 16px", borderRadius: 8, border: "none",
             background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
-            color: (i === 1) === checked ? "#e8c06a" : "#64748b",
+            color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
             fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif" }}>
           {opt}
         </button>
@@ -256,9 +250,9 @@ function Toggle({ checked, onChange }) {
 
 function Chip({ label, value, accent, small }) {
   return (
-    <div style={{ background: accent ? "rgba(184,147,74,0.12)" : "rgba(255,255,255,0.04)", border: `1px solid ${accent ? "rgba(184,147,74,0.4)" : "rgba(255,255,255,0.08)"}`, borderRadius: 10, padding: small ? "10px 12px" : "14px 16px" }}>
-      <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#64748b", marginBottom: 5 }}>{label}</div>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "#e8c06a" : "#cbd5e1" }}>{value}</div>
+    <div style={{ background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)", border: `1px solid ${accent ? "rgba(184,147,74,0.4)" : "var(--border)"}`, borderRadius: 10, padding: small ? "10px 12px" : "14px 16px", boxShadow: "var(--card-shadow)" }}>
+      <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 5 }}>{label}</div>
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
     </div>
   );
 }
@@ -267,11 +261,11 @@ function ProgressBar({ label, value, total, color }) {
   const pct = total > 0 ? Math.min((value / total) * 100, 100) : 0;
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 12, color: "#94a3b8" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 12, color: "var(--text-secondary)" }}>
         <span>{label}</span>
-        <span style={{ color: "#e2e8f0" }}>{fmt(value)} pts ({pct.toFixed(0)} %)</span>
+        <span style={{ color: "var(--text)" }}>{fmt(value)} pts ({pct.toFixed(0)} %)</span>
       </div>
-      <div style={{ height: 5, background: "#1e293b", borderRadius: 3, overflow: "hidden" }}>
+      <div style={{ height: 5, background: "var(--progress-track)", borderRadius: 3, overflow: "hidden" }}>
         <div style={{ height: "100%", width: `${pct}%`, background: color, borderRadius: 3, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
       </div>
     </div>
@@ -281,14 +275,14 @@ function ProgressBar({ label, value, total, color }) {
 function AccordionSection({ title, subtitle, children, gold = false, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   return (
-    <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "rgba(255,255,255,0.03)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "rgba(255,255,255,0.07)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20 }}>
+    <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
       <button onClick={() => setOpen(o => !o)}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "#e8c06a" : "#e2e8f0" }}>{title}</div>
-          {subtitle && <div style={{ fontSize: 12, color: "#64748b", marginTop: 3 }}>{subtitle}</div>}
+          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
+          {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
         </div>
-        <span style={{ color: open ? "#e8c06a" : "#475569", fontSize: 22, marginLeft: 16, flexShrink: 0 }}>{open ? "−" : "+"}</span>
+        <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0 }}>{open ? "−" : "+"}</span>
       </button>
       {open && <div style={{ padding: "0 28px 28px" }}>{children}</div>}
     </div>
@@ -317,21 +311,32 @@ const FAQ_ITEMS = [
 function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "20px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "#e2e8f0", lineHeight: 1.4 }}>{q}</span>
-        <span style={{ flexShrink: 0, width: 26, height: 26, borderRadius: "50%", background: open ? "rgba(184,147,74,0.2)" : "rgba(255,255,255,0.05)", border: `1px solid ${open ? "rgba(184,147,74,0.5)" : "rgba(255,255,255,0.1)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: open ? "#e8c06a" : "#64748b", marginTop: 2 }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ flexShrink: 0, width: 26, height: 26, borderRadius: "50%", background: open ? "rgba(184,147,74,0.2)" : "var(--card-bg)", border: `1px solid ${open ? "rgba(184,147,74,0.5)" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)", marginTop: 2 }}>
           {open ? "−" : "+"}
         </span>
       </button>
-      {open && <p style={{ paddingBottom: 20, paddingRight: 42, fontSize: 14, color: "#94a3b8", lineHeight: 1.8 }}>{a}</p>}
+      {open && <p style={{ paddingBottom: 20, paddingRight: 42, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>
   );
 }
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function SimulateurRetraite() {
+  // Theme
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem("theme");
+    if (saved) return saved;
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  });
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "");
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   // Base inputs
   const [salaire, setSalaire]                 = useState(2800);
   const [anneesFaites, setAnneesFaites]       = useState(10);
@@ -348,7 +353,6 @@ export default function SimulateurRetraite() {
   // UI
   const [exporting, setExporting] = useState(false);
 
-  // Calculations
   const inputs = { salaire, anneesFaites, anneesRestantes, evolutionSalaire, tauxReval, ageDépart, bonus3Enfants, estCadre };
   const res = calcResult(inputs);
   const anneesRestantesB = Math.max(0, anneesRestantes + (ageDépartB - ageDépart));
@@ -357,35 +361,63 @@ export default function SimulateurRetraite() {
   const pensionAnimée = useAnimatedNumber(res.pensionNette);
   const totalAnnees   = anneesFaites + anneesRestantes;
 
-  // Coefficient display helpers
   const coefGt1 = res.coefTotal > 1.001;
   const coefLt1 = res.coefTotal < 0.999;
-  const coefBg  = coefGt1 ? "rgba(34,197,94,0.08)"  : coefLt1 ? "rgba(239,68,68,0.08)"  : "rgba(255,255,255,0.03)";
-  const coefBd  = coefGt1 ? "rgba(34,197,94,0.25)"  : coefLt1 ? "rgba(239,68,68,0.25)"  : "rgba(255,255,255,0.08)";
-  const coefClr = coefGt1 ? "#4ade80" : coefLt1 ? "#f87171" : "#94a3b8";
+  const coefBg  = coefGt1 ? "rgba(34,197,94,0.08)"  : coefLt1 ? "rgba(239,68,68,0.08)"  : "var(--card-bg)";
+  const coefBd  = coefGt1 ? "rgba(34,197,94,0.25)"  : coefLt1 ? "rgba(239,68,68,0.25)"  : "var(--border)";
+  const coefClr = coefGt1 ? "#4ade80" : coefLt1 ? "#f87171" : "var(--text-secondary)";
 
   const diffB = resB.pensionNette - res.pensionNette;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#060e1c", fontFamily: "'DM Sans', sans-serif", color: "#e2e8f0", padding: "0 16px 60px" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
 
       {/* ── Header ── */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 0 36px", animation: "fadeUp .5s ease both" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
-          <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,#b8934a,#e8c06a)" }} />
-          <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "#b8934a" }}>Simulation gratuite · Données 2026</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} />
+            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Simulation gratuite · Données 2026</span>
+          </div>
+          {/* ── Theme toggle ── */}
+          <button
+            onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+            style={{
+              display: "flex", alignItems: "center", gap: 10,
+              background: "var(--card-bg)", border: "1px solid var(--border)",
+              borderRadius: 50, padding: "8px 16px", cursor: "pointer",
+              color: "var(--text-secondary)", fontSize: 13,
+              boxShadow: "var(--card-shadow)",
+            }}
+          >
+            <span>{theme === "dark" ? "🌙" : "☀️"}</span>
+            <div style={{
+              width: 36, height: 20, borderRadius: 10, position: "relative",
+              background: theme === "dark" ? "rgba(184,147,74,0.3)" : "rgba(154,111,42,0.3)",
+              transition: "background 0.25s",
+              flexShrink: 0,
+            }}>
+              <div style={{
+                position: "absolute", top: 2,
+                left: theme === "dark" ? 2 : 18,
+                width: 16, height: 16, borderRadius: "50%",
+                background: "var(--gold)", transition: "left 0.25s ease",
+              }} />
+            </div>
+            <span>{theme === "dark" ? "Mode sombre" : "Mode clair"}</span>
+          </button>
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(30px,6vw,50px)", fontWeight: 600, lineHeight: 1.1, color: "#f1e4c3", marginBottom: 14 }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(30px,6vw,50px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)", marginBottom: 14 }}>
           Votre retraite<br />complémentaire Agirc‑Arrco
         </h1>
-        <p style={{ color: "#64748b", fontSize: 15, lineHeight: 1.7, maxWidth: 500 }}>Saisissez votre salaire et votre parcours — obtenez une estimation détaillée de votre future pension complémentaire.</p>
+        <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 500 }}>Saisissez votre salaire et votre parcours — obtenez une estimation détaillée de votre future pension complémentaire.</p>
       </div>
 
       <div style={{ maxWidth: 760, margin: "0 auto", display: "grid", gap: 0, animation: "fadeUp .5s .12s ease both", opacity: 0, animationFillMode: "forwards" }}>
 
         {/* ── Carte saisie principale ── */}
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "32px 28px" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#94a3b8", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
           <NumInput label="Salaire brut mensuel" value={salaire} onChange={setSalaire} unit="€" min={500} max={40000}
             hint={`PASS 2026 : 3 925 €/mois · ${salaire * 12 > PASS ? "Tranche 2 activée" : "Tranche 1 uniquement"}`} />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -401,9 +433,9 @@ export default function SimulateurRetraite() {
               { l: "Points / an",     v: fmt(res.ptsParAn) },
               { l: "Tranche",         v: salaire * 12 > PASS ? "T1 + T2" : "T1 seule" },
             ].map((item, i) => (
-              <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
-                <div style={{ fontSize: 10, color: "#64748b", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "#e8c06a" : "#f1e4c3" }}>{item.v}</div>
+              <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
+                <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
               </div>
             ))}
           </div>
@@ -412,68 +444,63 @@ export default function SimulateurRetraite() {
         {/* ── Paramètres avancés (accordéon) ── */}
         <AccordionSection title="Paramètres avancés" subtitle="Âge de départ, revalorisation, salaire évolutif, statut, bonus enfants">
 
-          {/* Âge de départ */}
           <SliderInput label="Âge de départ prévu" value={ageDépart} onChange={setAgeDépart} min={62} max={70} unit=" ans"
             hint={`Départ prévu en ${2026 + anneesRestantes} — ajustez selon votre stratégie`} />
           <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 10, padding: "12px 16px", marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-            <span style={{ fontSize: 13, color: "#94a3b8" }}>Coefficient : {getCoefLabel(ageDépart)}</span>
+            <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Coefficient : {getCoefLabel(ageDépart)}</span>
             <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: coefClr }}>× {res.coefAge.toFixed(2)}</span>
           </div>
 
-          {/* Évolution salaire */}
           <SliderInput label="Évolution annuelle du salaire" value={evolutionSalaire} onChange={setEvolutionSalaire}
             min={-2} max={10} step={0.5} unit=" %" showSign
             hint={evolutionSalaire !== 0 ? `Salaire estimé au départ : ${fmtEur(res.salaireDépart)}/mois` : "Salaire constant sur toute la carrière"} />
 
-          {/* Taux de revalorisation */}
           <SliderInput label="Taux de revalorisation annuel estimé" value={tauxReval} onChange={setTauxReval}
             min={0} max={3} step={0.5} unit=" %"
             hint={tauxReval > 0 ? `Valeur de service projetée : ${res.valServProj.toFixed(4)} €/pt (au lieu de ${VALEUR_SERVICE} €/pt)` : "Aucune revalorisation — valeur de service 2026 fixe"} />
 
-          {/* Statut cadre */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 10 }}>
             <div>
-              <div style={{ fontSize: 13, color: "#94a3b8", marginBottom: 4 }}>Statut professionnel</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 4 }}>Statut professionnel</div>
               {estCadre && salaire * 12 < PASS && (
-                <div style={{ fontSize: 11, color: "#b8934a" }}>GMP : minimum {GMP_MIN_PTS} points/an garantis (Garantie Minimale de Points cadres)</div>
+                <div style={{ fontSize: 11, color: "var(--gold-mid)" }}>GMP : minimum {GMP_MIN_PTS} points/an garantis (Garantie Minimale de Points cadres)</div>
               )}
             </div>
             <Toggle checked={estCadre} onChange={setEstCadre} />
           </div>
 
-          {/* Bonus 3 enfants */}
           <div onClick={() => setBonus3Enfants(b => !b)}
-            style={{ display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", padding: "12px 16px", borderRadius: 12, background: bonus3Enfants ? "rgba(184,147,74,0.08)" : "rgba(255,255,255,0.02)", border: `1px solid ${bonus3Enfants ? "rgba(184,147,74,0.3)" : "rgba(255,255,255,0.07)"}`, transition: "all 0.2s" }}>
-            <div style={{ width: 20, height: 20, borderRadius: 6, border: `1.5px solid ${bonus3Enfants ? "rgba(184,147,74,0.8)" : "rgba(255,255,255,0.2)"}`, background: bonus3Enfants ? "rgba(184,147,74,0.3)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.2s" }}>
-              {bonus3Enfants && <span style={{ color: "#e8c06a", fontSize: 13, lineHeight: 1 }}>✓</span>}
+            style={{ display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", padding: "12px 16px", borderRadius: 12, background: bonus3Enfants ? "rgba(184,147,74,0.08)" : "var(--card-bg)", border: `1px solid ${bonus3Enfants ? "rgba(184,147,74,0.3)" : "var(--border)"}`, transition: "all 0.2s" }}>
+            <div style={{ width: 20, height: 20, borderRadius: 6, border: `1.5px solid ${bonus3Enfants ? "rgba(184,147,74,0.8)" : "var(--border)"}`, background: bonus3Enfants ? "rgba(184,147,74,0.3)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1, transition: "all 0.2s" }}>
+              {bonus3Enfants && <span style={{ color: "var(--gold)", fontSize: 13, lineHeight: 1 }}>✓</span>}
             </div>
             <div>
-              <div style={{ fontSize: 13, color: "#94a3b8" }}>3 enfants ou plus élevés</div>
-              <div style={{ fontSize: 12, color: bonus3Enfants ? "#e8c06a" : "#475569", marginTop: 2 }}>Majoration de <strong>+10 %</strong> sur la pension complémentaire</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>3 enfants ou plus élevés</div>
+              <div style={{ fontSize: 12, color: bonus3Enfants ? "var(--gold)" : "var(--text-secondary)", marginTop: 2 }}>Majoration de <strong>+10 %</strong> sur la pension complémentaire</div>
             </div>
           </div>
         </AccordionSection>
 
         {/* ── Carte résultats ── */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid rgba(184,147,74,0.25)", borderRadius: 20, padding: "32px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "#94a3b8", marginBottom: 24, fontWeight: 400 }}>Vos résultats estimés</h2>
+        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Vos résultats estimés</h2>
 
           {/* Pension principale */}
-          <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid rgba(255,255,255,0.06)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "#64748b", marginBottom: 10 }}>Pension nette mensuelle estimée</div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,#e8c06a,#b8934a)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Pension nette mensuelle estimée</div>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               {pensionAnimée.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
             </div>
-            <div style={{ marginTop: 10, fontSize: 13, color: "#475569" }}>
-              soit <span style={{ color: "#94a3b8" }}>{fmtEur(res.pensionBrute)}/mois brut</span> avant prélèvements sociaux (~17 %)
+            <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
+              soit <span style={{ color: "var(--text-secondary)" }}>{fmtEur(res.pensionBrute)}/mois brut</span> avant prélèvements sociaux (~17 %)
             </div>
           </div>
 
           {/* Coefficient banner */}
           <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 12, padding: "13px 18px", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
             <div>
-              <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "#475569", marginBottom: 4 }}>Coefficient appliqué</div>
-              <div style={{ fontSize: 13, color: "#94a3b8" }}>
+              <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Coefficient appliqué</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                 {getCoefLabel(ageDépart)}
                 {bonus3Enfants && <span style={{ marginLeft: 10, color: "#4ade80" }}>+ 10 % (3 enfants)</span>}
               </div>
@@ -489,21 +516,21 @@ export default function SimulateurRetraite() {
           </div>
 
           {/* Progress bars */}
-          <ProgressBar label="Points déjà acquis" value={res.pointsAcquis} total={res.totalPoints} color="linear-gradient(90deg,#334155,#64748b)" />
-          <ProgressBar label="Points à venir"      value={res.pointsFuturs} total={res.totalPoints} color="linear-gradient(90deg,#b8934a,#e8c06a)" />
+          <ProgressBar label="Points déjà acquis" value={res.pointsAcquis} total={res.totalPoints} color="var(--progress-acquired)" />
+          <ProgressBar label="Points à venir"      value={res.pointsFuturs} total={res.totalPoints} color="linear-gradient(90deg,var(--gold-mid),var(--gold))" />
 
           {/* Revalorisation comparison */}
           {tauxReval > 0 && (
-            <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, padding: "14px 16px", marginTop: 4, marginBottom: 4 }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#475569", marginBottom: 12 }}>Impact de la revalorisation ({tauxReval > 0 ? "+" : ""}{tauxReval} %/an)</div>
+            <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "14px 16px", marginTop: 4, marginBottom: 4 }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Impact de la revalorisation ({tauxReval > 0 ? "+" : ""}{tauxReval} %/an)</div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 10 }}>
                 <div>
-                  <div style={{ fontSize: 10, color: "#475569", marginBottom: 4 }}>Sans revalorisation (base 2026)</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "#64748b" }}>{fmtEur(res.pensionNetteSansReval)}/mois</div>
+                  <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 4 }}>Sans revalorisation (base 2026)</div>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "var(--text-secondary)" }}>{fmtEur(res.pensionNetteSansReval)}/mois</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: 10, color: "#475569", marginBottom: 4 }}>Avec {tauxReval} %/an ({anneesRestantes} ans)</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "#e8c06a" }}>{fmtEur(res.pensionNette)}/mois</div>
+                  <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 4 }}>Avec {tauxReval} %/an ({anneesRestantes} ans)</div>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "var(--gold)" }}>{fmtEur(res.pensionNette)}/mois</div>
                 </div>
               </div>
               <div style={{ fontSize: 12, color: "#4ade80" }}>
@@ -514,8 +541,8 @@ export default function SimulateurRetraite() {
 
           {/* Salaire au départ */}
           {evolutionSalaire !== 0 && (
-            <div style={{ marginTop: 12, fontSize: 13, color: "#475569" }}>
-              Salaire estimé au départ : <span style={{ color: "#94a3b8" }}>{fmtEur(res.salaireDépart)}/mois brut</span>
+            <div style={{ marginTop: 12, fontSize: 13, color: "var(--text-secondary)" }}>
+              Salaire estimé au départ : <span style={{ color: "var(--text-secondary)" }}>{fmtEur(res.salaireDépart)}/mois brut</span>
               {" "}(évolution de {evolutionSalaire > 0 ? "+" : ""}{evolutionSalaire} %/an sur {anneesRestantes} ans)
             </div>
           )}
@@ -527,18 +554,18 @@ export default function SimulateurRetraite() {
               <Chip label="Part patronale" value={fmtEur(res.cotPatTotal)} small />
               <Chip label="Total cotisé"   value={fmtEur(res.cotSalTotal + res.cotPatTotal)} accent small />
             </div>
-            <div style={{ fontSize: 12, color: "#475569", lineHeight: 1.9 }}>
+            <div style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.9 }}>
               <div>Taux T1 — salarié : {(TAUX_T1_SAL * 100).toFixed(2)} % · employeur : {(TAUX_T1_PAT * 100).toFixed(2)} % · total : {(TAUX_T1 * 100).toFixed(2)} %</div>
               <div>Taux T2 — salarié : {(TAUX_T2_SAL * 100).toFixed(2)} % · employeur : {(TAUX_T2_PAT * 100).toFixed(2)} % · total : {(TAUX_T2 * 100).toFixed(2)} %</div>
               {estCadre && salaire * 12 < PASS && (
-                <div style={{ marginTop: 8, color: "#b8934a" }}>Cadre sous PASS : GMP appliquée — cotisation forfaitaire pour garantir au minimum {GMP_MIN_PTS} points/an.</div>
+                <div style={{ marginTop: 8, color: "var(--gold-mid)" }}>Cadre sous PASS : GMP appliquée — cotisation forfaitaire pour garantir au minimum {GMP_MIN_PTS} points/an.</div>
               )}
             </div>
           </AccordionSection>
 
           {/* Disclaimer */}
-          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "#475569", lineHeight: 1.6, marginTop: 16 }}>
-            ⚠️ <strong style={{ color: "#64748b" }}>Simulation indicative.</strong> Paramètres Agirc-Arrco 2026 (valeur d'achat : {VALEUR_ACHAT} €, valeur de service : {VALEUR_SERVICE} €/pt). Résultats réels soumis à votre historique exact, aux revalorisations futures et aux coefficients définitifs. Pour un calcul officiel : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener" style={{ color: "#b8934a" }}>info-retraite.fr</a>.
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
+            ⚠️ <strong style={{ color: "var(--text-secondary)" }}>Simulation indicative.</strong> Paramètres Agirc-Arrco 2026 (valeur d'achat : {VALEUR_ACHAT} €, valeur de service : {VALEUR_SERVICE} €/pt). Résultats réels soumis à votre historique exact, aux revalorisations futures et aux coefficients définitifs. Pour un calcul officiel : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener" style={{ color: "var(--gold-mid)" }}>info-retraite.fr</a>.
           </div>
         </div>
 
@@ -547,7 +574,7 @@ export default function SimulateurRetraite() {
           <button
             onClick={() => generatePDF(inputs, res, setExporting)}
             disabled={exporting}
-            style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 12, border: "1px solid rgba(184,147,74,0.4)", background: exporting ? "rgba(184,147,74,0.05)" : "rgba(184,147,74,0.1)", color: exporting ? "#64748b" : "#e8c06a", fontSize: 14, cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.03em" }}>
+            style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 12, border: "1px solid rgba(184,147,74,0.4)", background: exporting ? "rgba(184,147,74,0.05)" : "rgba(184,147,74,0.1)", color: exporting ? "var(--text-secondary)" : "var(--gold)", fontSize: 14, cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.03em" }}>
             <span style={{ fontSize: 18 }}>{exporting ? "⏳" : "⬇"}</span>
             {exporting ? "Génération du PDF en cours…" : "Télécharger ma simulation (PDF)"}
           </button>
@@ -556,42 +583,40 @@ export default function SimulateurRetraite() {
         {/* ── Comparateur (accordéon) ── */}
         <AccordionSection title="Comparer deux scénarios" subtitle="Simulez un départ ou un salaire différent et comparez les pensions côte à côte" gold>
           <div style={{ marginBottom: 24 }}>
-            <div style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "#b8934a", marginBottom: 20 }}>Scénario B — vos paramètres alternatifs</div>
+            <div style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 20 }}>Scénario B — vos paramètres alternatifs</div>
             <NumInput label="Salaire brut mensuel (B)" value={salaireB} onChange={setSalaireB} unit="€" min={500} max={40000} />
             <SliderInput label="Âge de départ (B)" value={ageDépartB} onChange={setAgeDépartB} min={62} max={70} unit=" ans"
               hint={`Années restantes : ${anneesRestantesB} ans (départ estimé en ${2026 + anneesRestantesB})`} />
           </div>
 
-          {/* Comparaison côte à côte */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
             {[
               { label: "Scénario A", age: ageDépart, sal: salaire, r: res, isRef: true },
               { label: "Scénario B", age: ageDépartB, sal: salaireB, r: resB, isRef: false },
             ].map(({ label, age, sal, r, isRef }) => (
-              <div key={label} style={{ background: isRef ? "rgba(255,255,255,0.04)" : "rgba(184,147,74,0.08)", border: `1px solid ${isRef ? "rgba(255,255,255,0.1)" : "rgba(184,147,74,0.3)"}`, borderRadius: 14, padding: "18px 16px" }}>
-                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: isRef ? "#64748b" : "#b8934a", marginBottom: 12 }}>{label}</div>
-                <div style={{ fontSize: 12, color: "#475569", marginBottom: 4 }}>{age} ans · {fmtEur(sal)}/mois</div>
-                <div style={{ fontSize: 12, color: "#475569", marginBottom: 12 }}>{fmt(r.totalPoints)} pts · coef × {r.coefTotal.toFixed(2)}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,5vw,32px)", fontWeight: 700, color: isRef ? "#cbd5e1" : "#e8c06a" }}>
+              <div key={label} style={{ background: isRef ? "var(--card-bg)" : "rgba(184,147,74,0.08)", border: `1px solid ${isRef ? "var(--border)" : "rgba(184,147,74,0.3)"}`, borderRadius: 14, padding: "18px 16px" }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: isRef ? "var(--text-secondary)" : "var(--gold-mid)", marginBottom: 12 }}>{label}</div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>{age} ans · {fmtEur(sal)}/mois</div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>{fmt(r.totalPoints)} pts · coef × {r.coefTotal.toFixed(2)}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,5vw,32px)", fontWeight: 700, color: isRef ? "var(--text)" : "var(--gold)" }}>
                   {fmtEur(r.pensionNette)}
                 </div>
-                <div style={{ fontSize: 11, color: "#475569", marginTop: 4 }}>/mois net estimé</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>/mois net estimé</div>
               </div>
             ))}
           </div>
 
-          {/* Différence */}
-          <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 12, padding: "16px 18px" }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "#475569", marginBottom: 12 }}>Écart B vs A</div>
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px 18px" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Écart B vs A</div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               <div>
-                <div style={{ fontSize: 11, color: "#475569", marginBottom: 4 }}>Différence mensuelle</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Différence mensuelle</div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
                   {signFmt(diffB)}/mois
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: 11, color: "#475569", marginBottom: 4 }}>Impact sur 20 ans</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Impact sur 20 ans</div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
                   {signFmt(diffB * 12 * 20)}
                 </div>
@@ -600,27 +625,26 @@ export default function SimulateurRetraite() {
           </div>
         </AccordionSection>
 
-        {/* Disclaimer footer */}
-        <div style={{ textAlign: "center", paddingTop: 24, fontSize: 11, color: "#334155", letterSpacing: "0.06em" }}>
+        <div style={{ textAlign: "center", paddingTop: 24, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.06em" }}>
           Données officielles Agirc-Arrco · Mise à jour janvier 2026 · Simulation non contractuelle
         </div>
       </div>
 
       {/* ── Section éditoriale ── */}
       <div style={{ maxWidth: 760, margin: "20px auto 0" }}>
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "40px 32px" }}>
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "40px 32px", boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-            <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,#b8934a,#e8c06a)" }} />
-            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b8934a" }}>Guide</span>
+            <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} />
+            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Guide</span>
           </div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "#f1e4c3", marginBottom: 36, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 36, lineHeight: 1.2 }}>
             Comment fonctionne l'Agirc-Arrco ?
           </h2>
           <div style={{ display: "grid", gap: 28 }}>
             {EDITORIAL.map((s, i) => (
-              <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid rgba(184,147,74,0.25)" }}>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "#e8c06a", marginBottom: 10 }}>{s.title}</h3>
-                <p style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.85 }}>{s.text}</p>
+              <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
+                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{s.title}</h3>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>{s.text}</p>
               </div>
             ))}
           </div>
@@ -629,21 +653,21 @@ export default function SimulateurRetraite() {
 
       {/* ── FAQ ── */}
       <div style={{ maxWidth: 760, margin: "20px auto 0" }}>
-        <div style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 20, padding: "40px 32px" }}>
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "40px 32px", boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-            <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,#b8934a,#e8c06a)" }} />
-            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b8934a" }}>FAQ</span>
+            <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} />
+            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>FAQ</span>
           </div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "#f1e4c3", marginBottom: 8, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 8, lineHeight: 1.2 }}>
             Questions fréquentes
           </h2>
-          <p style={{ fontSize: 13, color: "#475569", marginBottom: 32 }}>Tout ce qu'il faut savoir sur votre retraite complémentaire Agirc-Arrco.</p>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 32 }}>Tout ce qu'il faut savoir sur votre retraite complémentaire Agirc-Arrco.</p>
           {FAQ_ITEMS.map(item => <FaqItem key={item.q} q={item.q} a={item.a} />)}
-          <p style={{ paddingTop: 24, fontSize: 12, color: "#475569" }}>
+          <p style={{ paddingTop: 24, fontSize: 12, color: "var(--text-secondary)" }}>
             Pour des informations officielles et personnalisées, consultez{" "}
-            <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "#b8934a", textDecoration: "none" }}>info-retraite.fr</a>
+            <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
             {" "}ou{" "}
-            <a href="https://www.agirc-arrco.fr" target="_blank" rel="noopener noreferrer" style={{ color: "#b8934a", textDecoration: "none" }}>agirc-arrco.fr</a>.
+            <a href="https://www.agirc-arrco.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>agirc-arrco.fr</a>.
           </p>
         </div>
       </div>
