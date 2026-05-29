@@ -23,6 +23,9 @@ const getCoefLabel = age =>
 const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fmtEur = n => fmt(n) + " €";
 const signFmt = n => (n > 0 ? "+" : "") + fmtEur(n);
+// jsPDF-safe formatter: uses plain spaces instead of U+00A0/U+202F
+const fmtPDF    = (n, d = 0) => Number(n).toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const fmtEurPDF = n => fmtPDF(Math.round(n)) + " EUR";
 
 // ─── Calcul principal ─────────────────────────────────────────────────────────
 function calcResult({ salaire, anneesFaites, anneesRestantes,
@@ -108,7 +111,7 @@ async function generatePDF(inputs, res, setExp) {
     const div = () => { doc.setDrawColor(30, 41, 59); doc.line(20, y, 190, y); y += 8; };
 
     sec("Paramètres saisis");
-    row("Salaire brut mensuel",          fmtEur(inputs.salaire));
+    row("Salaire brut mensuel",          fmtEurPDF(inputs.salaire));
     row("Années déjà cotisées",          `${inputs.anneesFaites} ans`);
     row("Années restantes à cotiser",    `${inputs.anneesRestantes} ans`);
     row("Âge de départ prévu",           `${inputs.ageDépart} ans`);
@@ -119,11 +122,11 @@ async function generatePDF(inputs, res, setExp) {
     div();
 
     sec("Points & coefficients");
-    row("Points acquis (carrière passée)",   `${fmt(res.pointsAcquis)} pts`);
-    row("Points futurs estimés",             `${fmt(res.pointsFuturs)} pts`);
-    row("Total de points",                   `${fmt(res.totalPoints)} pts`);
-    row("Valeur de service projetée",        `${res.valServProj.toFixed(4)} €/point`);
-    row("Coefficient appliqué",             `× ${res.coefTotal.toFixed(2)} (${getCoefLabel(inputs.ageDépart)}${inputs.bonus3Enfants ? " + 10 % enfants" : ""})`);
+    row("Points acquis (carrière passée)",   `${fmtPDF(res.pointsAcquis)} pts`);
+    row("Points futurs estimés",             `${fmtPDF(res.pointsFuturs)} pts`);
+    row("Total de points",                   `${fmtPDF(res.totalPoints)} pts`);
+    row("Valeur de service projetée",        `${res.valServProj.toFixed(4)} EUR/point`);
+    row("Coefficient appliqué",             `x ${res.coefTotal.toFixed(2)} (${getCoefLabel(inputs.ageDépart)}${inputs.bonus3Enfants ? " + 10 % enfants" : ""})`);
     y += 3;
 
     // Big result box
@@ -132,21 +135,21 @@ async function generatePDF(inputs, res, setExp) {
     doc.setTextColor(...S); doc.setFont("helvetica", "normal"); doc.setFontSize(9);
     doc.text("Pension nette mensuelle estimée", 30, y + 9);
     doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(...G);
-    doc.text(fmtEur(res.pensionNette), 30, y + 20);
+    doc.text(fmtEurPDF(res.pensionNette), 30, y + 20);
     doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...S);
-    doc.text(`(${fmtEur(res.pensionBrute)} brut/mois)`, 120, y + 20);
+    doc.text(`(${fmtEurPDF(res.pensionBrute)} brut/mois)`, 120, y + 20);
     y += 34;
 
-    row("Avec revalorisation estimée",      `${fmtEur(res.pensionNette)}/mois`);
-    row("Sans revalorisation (base 2026)", `${fmtEur(res.pensionNetteSansReval)}/mois`);
-    row("Gain lié à la revalorisation",    `+${fmtEur(res.pensionNette - res.pensionNetteSansReval)}/mois`);
-    row("Salaire estimé au départ",         fmtEur(res.salaireDépart));
+    row("Avec revalorisation estimée",      `${fmtEurPDF(res.pensionNette)}/mois`);
+    row("Sans revalorisation (base 2026)", `${fmtEurPDF(res.pensionNetteSansReval)}/mois`);
+    row("Gain lié à la revalorisation",    `+${fmtEurPDF(res.pensionNette - res.pensionNetteSansReval)}/mois`);
+    row("Salaire estimé au départ",         fmtEurPDF(res.salaireDépart));
     div();
 
     sec("Cotisations totales (carrière complète)");
-    row("Part salariale",                  fmtEur(res.cotSalTotal));
-    row("Part patronale",                  fmtEur(res.cotPatTotal));
-    row("Total cotisé (salarié + employeur)", fmtEur(res.cotSalTotal + res.cotPatTotal));
+    row("Part salariale",                  fmtEurPDF(res.cotSalTotal));
+    row("Part patronale",                  fmtEurPDF(res.cotPatTotal));
+    row("Total cotisé (salarié + employeur)", fmtEurPDF(res.cotSalTotal + res.cotPatTotal));
     y += 8;
 
     doc.setTextColor(...S); doc.setFont("helvetica", "italic"); doc.setFontSize(8);
