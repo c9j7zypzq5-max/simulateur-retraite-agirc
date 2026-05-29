@@ -101,8 +101,8 @@ export default function PolitiqueConfidentialite() {
             <p>Pour toute question relative à cette politique ou à l'exercice de vos droits :</p>
             <p style={{ marginTop: 14 }}>
               <strong style={{ color: "#e2e8f0" }}>Adrian Farago</strong><br />
-              <a href="mailto:contact@simulateur-retraite-agirc.fr" style={{ color: "#b8934a", textDecoration: "none" }}>
-                contact@simulateur-retraite-agirc.fr
+              <a href="mailto:contact@mesimulateurs.fr" style={{ color: "#b8934a", textDecoration: "none" }}>
+                contact@mesimulateurs.fr
               </a>
             </p>
             <p style={{ marginTop: 14 }}>

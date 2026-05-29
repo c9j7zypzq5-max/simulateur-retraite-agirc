@@ -150,7 +150,7 @@ async function generatePDF(inputs, res, setExp) {
     const disc = "Simulation indicative basée sur les paramètres Agirc-Arrco 2026 (PASS 47 100 €, valeur d'achat 7,46 €, valeur de service 1,4098 €/point). Les résultats réels dépendent de votre carrière exacte, des revalorisations futures et de la législation en vigueur. Pour un calcul officiel et personnalisé, consultez info-retraite.fr.";
     doc.text(doc.splitTextToSize(disc, 170), 20, y);
     doc.setTextColor(30, 41, 59); doc.setFont("helvetica", "normal"); doc.setFontSize(8);
-    doc.text("simulateur-retraite-three.vercel.app · Données officielles Agirc-Arrco 2026", 20, 287);
+    doc.text("www.mesimulateurs.fr · Données officielles Agirc-Arrco 2026", 20, 287);
 
     doc.save("simulation-retraite-agirc-arrco.pdf");
   } catch (e) { console.error("PDF error:", e); }

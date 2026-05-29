@@ -33,8 +33,8 @@ export default function MentionsLegales() {
               <strong style={{ color: "#e2e8f0" }}>Adrian Farago</strong><br />
               Particulier — site non commercial<br />
               Contact :{" "}
-              <a href="mailto:contact@simulateur-retraite-agirc.fr" style={{ color: "#b8934a", textDecoration: "none" }}>
-                contact@simulateur-retraite-agirc.fr
+              <a href="mailto:contact@mesimulateurs.fr" style={{ color: "#b8934a", textDecoration: "none" }}>
+                contact@mesimulateurs.fr
               </a>
             </p>
             <p style={{ marginTop: 14 }}>
