@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Footer from "./components/Footer.jsx";
+import AdUnit from "./components/AdUnit.jsx";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 47_100;
@@ -795,6 +796,11 @@ export default function SimulateurRetraite() {
         </div>
       </div>
 
+      {/* ── Pub bloc 1 — après PDF, avant éditorial ── */}
+      <div style={{ maxWidth: 760, margin: "8px auto" }}>
+        <AdUnit slot="auto" format="auto" />
+      </div>
+
       {/* ── Section éditoriale ── */}
       <div style={{ maxWidth: 760, margin: "20px auto 0" }}>
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "40px 32px", boxShadow: "var(--card-shadow)" }}>
@@ -835,6 +841,11 @@ export default function SimulateurRetraite() {
             <a href="https://www.agirc-arrco.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>agirc-arrco.fr</a>.
           </p>
         </div>
+      </div>
+
+      {/* ── Pub bloc 2 — après FAQ, avant footer ── */}
+      <div style={{ maxWidth: 760, margin: "8px auto" }}>
+        <AdUnit slot="auto" format="auto" />
       </div>
 
       <Footer />
