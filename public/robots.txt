@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://simulateur-retraite-three.vercel.app/sitemap.xml
