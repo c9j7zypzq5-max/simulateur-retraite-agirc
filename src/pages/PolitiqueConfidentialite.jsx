@@ -1,23 +1,26 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme.js";
+import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
 function Section({ title, children }) {
   return (
-    <div style={{ paddingLeft: 20, borderLeft: "2px solid rgba(184,147,74,0.25)" }}>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "#e8c06a", marginBottom: 16 }}>{title}</h2>
-      <div style={{ fontSize: 14, color: "#94a3b8", lineHeight: 1.85 }}>{children}</div>
+    <div style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--gold)", marginBottom: 16 }}>{title}</h2>
+      <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>{children}</div>
     </div>
   );
 }
 
 export default function PolitiqueConfidentialite() {
+  const [theme, setTheme] = useTheme();
+
   useEffect(() => {
     const prevTitle = document.title;
     const prevDesc  = document.querySelector('meta[name="description"]')?.getAttribute("content");
     const robotsMeta = document.querySelector('meta[name="robots"]');
     document.title = "Politique de confidentialité — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Politique de confidentialité de mesimulateurs.fr — données collectées, cookies, RGPD, droits des utilisateurs.");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Politique de confidentialité de mesimulateurs.fr — données collectées, cookies Google AdSense, RGPD, droits des utilisateurs.");
     if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
     return () => {
       document.title = prevTitle;
@@ -27,109 +30,97 @@ export default function PolitiqueConfidentialite() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "#060e1c", fontFamily: "'DM Sans', sans-serif", color: "#e2e8f0", padding: "0 16px" }}>
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 0 60px" }}>
-        <Link to="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, color: "#64748b", textDecoration: "none", marginBottom: 40, letterSpacing: "0.04em" }}>
-          ← Retour au simulateur
-        </Link>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+      <Navbar theme={theme} setTheme={setTheme} />
 
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 16px 60px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-          <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,#b8934a,#e8c06a)" }} />
-          <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "#b8934a" }}>Légal</span>
+          <div style={{ width: 28, height: 2, background: "linear-gradient(90deg, var(--gold-mid), var(--gold))" }} />
+          <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Légal</span>
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, color: "#f1e4c3", marginBottom: 16, lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, color: "var(--text)", marginBottom: 16, lineHeight: 1.1 }}>
           Politique de confidentialité
         </h1>
-        <p style={{ fontSize: 13, color: "#475569", marginBottom: 48, letterSpacing: "0.03em" }}>
-          Dernière mise à jour : mai 2026
+        <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 48, letterSpacing: "0.03em" }}>
+          Dernière mise à jour : 30 mai 2026
         </p>
 
         <div style={{ display: "grid", gap: 36 }}>
           <Section title="Données collectées">
             <p>
-              <strong style={{ color: "#e2e8f0" }}>Aucune donnée personnelle n'est collectée</strong>{" "}
-              lors de l'utilisation du simulateur.
+              <strong style={{ color: "var(--text)" }}>Aucune donnée personnelle n'est collectée</strong>{" "}
+              lors de l'utilisation de ce site.
             </p>
             <p style={{ marginTop: 14 }}>
-              Les informations que vous saisissez (salaire, années de cotisation) sont traitées exclusivement dans votre navigateur, en temps réel. Elles ne sont jamais transmises à un serveur, enregistrées dans une base de données ou communiquées à des tiers.
+              Les informations que vous saisissez dans les simulateurs sont traitées exclusivement dans votre navigateur, en temps réel. Elles ne sont jamais transmises à un serveur, enregistrées dans une base de données ou communiquées à des tiers.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              La seule donnée conservée localement est votre <strong style={{ color: "var(--text)" }}>préférence de thème</strong> (clair / sombre), stockée dans le <code style={{ fontSize: 12, background: "rgba(255,255,255,0.06)", padding: "1px 5px", borderRadius: 4 }}>localStorage</code> de votre navigateur. Vous pouvez la supprimer à tout moment en vidant les données du site.
             </p>
             <p style={{ marginTop: 14 }}>
               Ce site ne requiert ni inscription, ni création de compte, ni fourniture d'adresse e-mail ou d'identifiant personnel.
             </p>
           </Section>
 
-          <Section title="Cookies et traceurs">
-            <p>Ce site utilise un nombre minimal de cookies :</p>
-            <ul style={{ marginTop: 14, paddingLeft: 20, display: "grid", gap: 14 }}>
-              <li>
-                <strong style={{ color: "#e2e8f0" }}>Cookies techniques (Vercel)</strong> — indispensables au fonctionnement de l'hébergement (sécurité, routage). Ces cookies ne permettent pas de vous identifier personnellement.
-              </li>
-              <li>
-                <strong style={{ color: "#e2e8f0" }}>Cookies publicitaires Google AdSense</strong> (le cas échéant) — si des annonces sont affichées, Google AdSense peut déposer des cookies pour personnaliser les publicités en fonction de votre historique de navigation. Vous pouvez gérer vos préférences sur{" "}
-                <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: "#b8934a", textDecoration: "none" }}>
-                  adssettings.google.com
-                </a>.
-              </li>
-            </ul>
+          <Section title="Cookies et Google AdSense">
+            <p>
+              Ce site utilise <strong style={{ color: "var(--text)" }}>Google AdSense</strong> (identifiant éditeur : <code style={{ fontSize: 12, background: "rgba(255,255,255,0.06)", padding: "1px 5px", borderRadius: 4 }}>ca-pub-1297423880558120</code>) pour afficher des publicités.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              Google AdSense peut déposer des <strong style={{ color: "var(--text)" }}>cookies publicitaires tiers</strong> afin de personnaliser les annonces en fonction de votre historique de navigation. Ces cookies ne sont pas indispensables au fonctionnement des simulateurs.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              Vous pouvez refuser ou gérer ces cookies via les paramètres de votre navigateur ou à l'adresse suivante :{" "}
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+                google.com/settings/ads
+              </a>.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              Pour en savoir plus sur la façon dont Google utilise ces données, consultez la{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+                politique de confidentialité de Google
+              </a>.
+            </p>
             <p style={{ marginTop: 14 }}>
               Aucun cookie analytique (Google Analytics, Matomo, etc.) n'est utilisé sur ce site.
             </p>
           </Section>
 
-          <Section title="Finalités du traitement">
-            <p>Les seules finalités de traitement sur ce site sont :</p>
-            <ul style={{ marginTop: 14, paddingLeft: 20, display: "grid", gap: 8 }}>
-              <li>Le calcul en temps réel de la simulation de retraite (traitement local, sans transmission) ;</li>
-              <li>L'affichage éventuel de publicités via Google AdSense ;</li>
-              <li>La sécurité et la disponibilité du service (hébergement Vercel).</li>
-            </ul>
-          </Section>
-
-          <Section title="Base légale (RGPD)">
+          <Section title="Analytics">
             <p>
-              En l'absence de collecte de données personnelles identifiantes, la plupart des obligations du RGPD ne s'appliquent pas directement à ce site.
-            </p>
-            <p style={{ marginTop: 14 }}>
-              Si des cookies publicitaires sont utilisés (Google AdSense), leur dépôt repose sur votre{" "}
-              <strong style={{ color: "#e2e8f0" }}>consentement</strong> (article 6(1)(a) du RGPD), que vous pouvez retirer à tout moment via les paramètres de votre navigateur ou{" "}
-              <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" style={{ color: "#b8934a", textDecoration: "none" }}>
-                adssettings.google.com
-              </a>.
+              Aucun outil d'analytics n'est installé sur ce site. Aucune donnée de navigation (pages visitées, durée de session, origine géographique) n'est collectée ni transmise.
             </p>
           </Section>
 
-          <Section title="Vos droits">
+          <Section title="Vos droits (RGPD)">
             <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits suivants :</p>
             <ul style={{ marginTop: 14, paddingLeft: 20, display: "grid", gap: 8 }}>
-              <li><strong style={{ color: "#e2e8f0" }}>Droit d'accès</strong> — obtenir confirmation que des données vous concernant sont traitées ;</li>
-              <li><strong style={{ color: "#e2e8f0" }}>Droit de rectification</strong> — corriger des données inexactes ;</li>
-              <li><strong style={{ color: "#e2e8f0" }}>Droit à l'effacement</strong> — demander la suppression de vos données ;</li>
-              <li><strong style={{ color: "#e2e8f0" }}>Droit d'opposition</strong> — vous opposer au traitement à des fins publicitaires ;</li>
-              <li><strong style={{ color: "#e2e8f0" }}>Droit à la portabilité</strong> — recevoir vos données dans un format structuré.</li>
+              <li><strong style={{ color: "var(--text)" }}>Droit d'accès</strong> — obtenir confirmation que des données vous concernant sont traitées ;</li>
+              <li><strong style={{ color: "var(--text)" }}>Droit de rectification</strong> — corriger des données inexactes ;</li>
+              <li><strong style={{ color: "var(--text)" }}>Droit à l'effacement</strong> — demander la suppression de vos données ;</li>
+              <li><strong style={{ color: "var(--text)" }}>Droit d'opposition</strong> — vous opposer au traitement à des fins publicitaires ;</li>
+              <li><strong style={{ color: "var(--text)" }}>Droit à la portabilité</strong> — recevoir vos données dans un format structuré.</li>
             </ul>
             <p style={{ marginTop: 14 }}>
-              Compte tenu de l'absence de collecte de données personnelles, ces droits sont de portée limitée en pratique. Vous pouvez exercer vos droits liés aux cookies AdSense directement auprès de Google.
+              En l'absence de collecte de données personnelles identifiantes, ces droits s'appliquent principalement aux cookies AdSense, que vous pouvez gérer directement auprès de Google.
             </p>
-          </Section>
-
-          <Section title="Contact et réclamation">
-            <p>Pour toute question relative à cette politique ou à l'exercice de vos droits :</p>
             <p style={{ marginTop: 14 }}>
-              <strong style={{ color: "#e2e8f0" }}>Adrian Farago</strong><br />
-              <a href="mailto:contact@mesimulateurs.fr" style={{ color: "#b8934a", textDecoration: "none" }}>
-                contact@mesimulateurs.fr
+              Pour exercer vos droits ou pour toute question, contactez :{" "}
+              <a href="mailto:adrian.faragofer@gmail.com" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+                adrian.faragofer@gmail.com
               </a>
             </p>
             <p style={{ marginTop: 14 }}>
               Vous avez également le droit d'introduire une réclamation auprès de la{" "}
-              <strong style={{ color: "#e2e8f0" }}>CNIL</strong> :{" "}
-              <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" style={{ color: "#b8934a", textDecoration: "none" }}>
+              <strong style={{ color: "var(--text)" }}>CNIL</strong> :{" "}
+              <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
                 cnil.fr
               </a>.
             </p>
           </Section>
         </div>
       </div>
+
       <Footer />
     </div>
   );
