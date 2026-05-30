@@ -77,19 +77,37 @@ function calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel,
     if (patrimoine >= patrimoineCible && a > 0) break;
   }
 
+  // Fallback : formule analytique échoue (ratio ≤ 0) → source de vérité = simulation
+  if (ageAtteinte === null) {
+    for (let i = 1; i < projectionData.length; i++) {
+      if (projectionData[i].patrimoine >= patrimoineCible) {
+        anneesRestantes = projectionData[i].annee;
+        const candidateAge = projectionData[i].age;
+        ageAtteinte = candidateAge <= AGE_MAX ? candidateAge : null;
+        break;
+      }
+    }
+  }
+
   return { patrimoineCible, anneesRestantes, ageAtteinte, progressPct, revenuPassifMensuel, projectionData };
 }
 
 // ─── Courbe SVG ──────────────────────────────────────────────────────────────
 function GrowthCurve({ projectionData, patrimoineCible }) {
+  const animKey = useMemo(() => {
+    if (!projectionData || !projectionData.length) return "empty";
+    const last = projectionData[projectionData.length - 1];
+    return `${projectionData.length}_${Math.round(last?.patrimoine || 0)}_${Math.round(patrimoineCible)}`;
+  }, [projectionData, patrimoineCible]);
+
   if (!projectionData || projectionData.length < 2 || patrimoineCible <= 0) return null;
 
-  const PAD = { top: 16, right: 40, bottom: 32, left: 56 };
-  const W = 600, H = 180;
+  const PAD = { top: 24, right: 48, bottom: 36, left: 62 };
+  const W = 600, H = 300;
   const iW = W - PAD.left - PAD.right;
   const iH = H - PAD.top - PAD.bottom;
 
-  const maxP = Math.max(...projectionData.map(d => d.patrimoine), patrimoineCible) * 1.05;
+  const maxP = Math.max(...projectionData.map(d => d.patrimoine), patrimoineCible) * 1.1;
   const maxA = projectionData[projectionData.length - 1].annee || 1;
 
   const x = a => PAD.left + (a / maxA) * iW;
@@ -98,39 +116,119 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
   const pts = projectionData.map(d => `${x(d.annee).toFixed(1)},${y(d.patrimoine).toFixed(1)}`).join(" ");
   const cibleY = y(patrimoineCible).toFixed(1);
 
-  // Axes labels
-  const ages = projectionData.filter((_, i) => i % Math.ceil(projectionData.length / 5) === 0 || i === projectionData.length - 1);
+  const firePoint = projectionData.find(d => d.patrimoine >= patrimoineCible);
+  const fireX = firePoint ? x(firePoint.annee) : null;
+  const fireY = firePoint ? y(patrimoineCible) : null;
 
-  const fmtK = v => v >= 1000000 ? `${(v / 1000000).toFixed(1).replace(".", ",")} M€` : `${Math.round(v / 1000)} k€`;
+  const ages = projectionData.filter((_, i) => i % Math.ceil(projectionData.length / 5) === 0 || i === projectionData.length - 1);
+  const yTicks = [0.25, 0.5, 0.75, 1].map(f => ({ val: maxP * f, yv: y(maxP * f) }));
+
+  const fmtK = v => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(".", ",")}M€` : `${Math.round(v / 1000)}k€`;
+
+  const fillPts = `${x(0).toFixed(1)},${(H - PAD.bottom).toFixed(1)} ${pts} ${x(maxA).toFixed(1)},${(H - PAD.bottom).toFixed(1)}`;
+
+  const css = `
+    @keyframes drawLine_${animKey} {
+      from { stroke-dashoffset: 1000; }
+      to   { stroke-dashoffset: 0; }
+    }
+    @keyframes fadeArea_${animKey} {
+      from { opacity: 0; }
+      to   { opacity: 0.15; }
+    }
+    .gcLine_${animKey} {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: drawLine_${animKey} 1.4s ease-out forwards;
+    }
+    .gcArea_${animKey} {
+      opacity: 0;
+      animation: fadeArea_${animKey} 1.2s ease-out 0.3s forwards;
+    }
+  `;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }} aria-label="Courbe de croissance du patrimoine">
-      {/* Zone remplie sous la courbe */}
-      <polygon
-        points={`${x(0)},${y(0)} ${pts} ${x(maxA)},${y(0)}`}
-        fill="rgba(184,147,74,0.1)"
-      />
+    <svg
+      key={animKey}
+      viewBox={`0 0 ${W} ${H}`}
+      style={{ width: "100%", height: "min(300px, 55vw)", display: "block", overflow: "visible" }}
+      aria-label="Courbe de croissance du patrimoine"
+    >
+      <defs><style>{css}</style></defs>
+
+      {/* Zone remplie */}
+      <polygon className={`gcArea_${animKey}`} points={fillPts} fill="rgba(184,147,74,1)" />
+
       {/* Ligne cible pointillée */}
       <line x1={PAD.left} y1={cibleY} x2={W - PAD.right} y2={cibleY}
-        stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="5,4" opacity="0.55" />
-      {/* Label cible */}
+        stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="5,4" opacity="0.5" />
       <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="10" fill="var(--gold)" opacity="0.75" fontFamily="DM Sans, sans-serif">
         {fmtK(patrimoineCible)}
       </text>
-      {/* Courbe de croissance */}
-      <polyline points={pts} fill="none" stroke="var(--gold)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* Ligne verticale FIRE + label */}
+      {fireX !== null && (
+        <>
+          <line x1={fireX} y1={PAD.top} x2={fireX} y2={H - PAD.bottom}
+            stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="4,3" opacity="0.55" />
+          <text x={fireX + 5} y={PAD.top + 13} fontSize="9" fill="var(--gold)"
+            fontFamily="DM Sans, sans-serif" opacity="0.9">
+            Liberté financière
+          </text>
+        </>
+      )}
+
+      {/* Courbe */}
+      <polyline
+        className={`gcLine_${animKey}`}
+        points={pts}
+        fill="none"
+        stroke="var(--gold)"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        pathLength="1000"
+      />
+
       {/* Point de départ */}
       <circle cx={x(0)} cy={y(projectionData[0]?.patrimoine || 0)} r="4" fill="var(--gold-mid)" />
-      {/* Point d'arrivée */}
-      <circle cx={x(maxA)} cy={y(projectionData[projectionData.length - 1]?.patrimoine || 0)} r="4" fill="var(--gold)" />
-      {/* Labels d'âge en bas */}
+
+      {/* Point FIRE pulsatant */}
+      {fireX !== null && fireY !== null && (
+        <>
+          <circle cx={fireX} cy={fireY} r="8" fill="var(--gold)" opacity="0.25">
+            <animate attributeName="r" values="6;12;6" dur="2s" begin="1.5s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.3;0.08;0.3" dur="2s" begin="1.5s" repeatCount="indefinite" />
+          </circle>
+          <circle cx={fireX} cy={fireY} r="5" fill="var(--gold)" />
+        </>
+      )}
+
+      {/* Point final si pas de FIRE */}
+      {fireX === null && (
+        <circle cx={x(maxA)} cy={y(projectionData[projectionData.length - 1]?.patrimoine || 0)} r="4" fill="var(--gold)" />
+      )}
+
+      {/* Labels âge (axe X) */}
       {ages.map(d => (
-        <text key={d.age} x={x(d.annee)} y={H - 4} textAnchor="middle" fontSize="9" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+        <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="9"
+          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
           {d.age} ans
         </text>
       ))}
-      {/* Axe X */}
+
+      {/* Labels patrimoine (axe Y) */}
+      {yTicks.map((t, i) => (
+        <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="9"
+          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          {fmtK(t.val)}
+        </text>
+      ))}
+
+      {/* Axes */}
       <line x1={PAD.left} y1={H - PAD.bottom} x2={W - PAD.right} y2={H - PAD.bottom}
+        stroke="var(--border)" strokeWidth="1" />
+      <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={H - PAD.bottom}
         stroke="var(--border)" strokeWidth="1" />
     </svg>
   );
