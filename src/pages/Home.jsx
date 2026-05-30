@@ -23,12 +23,15 @@ const SIMULATEURS = [
   { path: "/simulateurs/plus-value-immobiliere", icon: "📈", title: "Plus-value immobilière", desc: "Calculez l'imposition de la plus-value lors de la vente d'un bien immobilier selon la durée de détention et les abattements applicables.", tag: "Impôts", categories: ["Impôts"], badges: ["new"], available: true },
   // Finances
   { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
-  { path: "/simulateurs/fire", icon: "🔥", title: "Indépendance financière (FIRE)", desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez combien d'années vous séparent de la liberté financière.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
+  { path: "/simulateurs/fire", icon: "🔥", title: "Indépendance financière (FIRE)", desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez à quel âge vous atteindrez la liberté financière. Courbe de projection incluse.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
+  // Vie & Temps
+  { path: "/simulateurs/cout-en-heures", icon: "⏰", title: "Le vrai prix en heures de vie", desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
+  { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
 ];
 
 const COMING_SOON = [];
 
-const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances"];
+const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps"];
 
 function BadgePill({ type }) {
   const styles = {
@@ -78,7 +81,7 @@ export default function Home() {
         </p>
         <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
           {[
-            { v: "14", l: "simulateurs actifs" },
+            { v: "16", l: "simulateurs actifs" },
             { v: "30 s", l: "pour une première estimation" },
             { v: "100 %", l: "gratuit & sans inscription" },
           ].map(({ v, l }) => (

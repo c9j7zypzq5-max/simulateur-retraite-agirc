@@ -72,6 +72,10 @@ const NAV_GROUPS = [
     { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
     { path: "/simulateurs/fire",    icon: "🔥", title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
   ] },
+  { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
+    { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+    { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
+  ] },
 ];
 
 export default function Navbar({ theme, setTheme }) {

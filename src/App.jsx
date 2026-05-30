@@ -20,6 +20,9 @@ import PlusValue from "./pages/simulateurs/PlusValue.jsx";
 // Finances
 import Epargne from "./pages/simulateurs/Epargne.jsx";
 import Fire from "./pages/simulateurs/Fire.jsx";
+// Vie & Temps
+import CoutEnHeures from "./pages/simulateurs/CoutEnHeures.jsx";
+import VieEnSemaines from "./pages/simulateurs/VieEnSemaines.jsx";
 
 export default function App() {
   return (
@@ -44,6 +47,9 @@ export default function App() {
         {/* Finances */}
         <Route path="/simulateurs/epargne" element={<Epargne />} />
         <Route path="/simulateurs/fire" element={<Fire />} />
+        {/* Vie & Temps */}
+        <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
