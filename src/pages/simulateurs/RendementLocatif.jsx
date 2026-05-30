@@ -1,0 +1,236 @@
+import { useState, useEffect } from "react";
+import { useTheme } from "../../hooks/useTheme.js";
+import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
+import AdUnit from "../../components/AdUnit.jsx";
+import {
+  NumInput, StepperInput, AccordionSection, Toggle,
+  Chip, ProgressBar, useAnimatedNumber,
+  fmt, fmtEur, SimulateurHeader,
+} from "../../components/ui.jsx";
+
+// ─── Logique de calcul rendement locatif ──────────────────────────────────────
+function calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative }) {
+  if (!prix || !loyer) return {
+    fraisNotaire: 0, prixRevient: 0, rendementBrut: 0,
+    chargesAnnuelles: 0, gestionLocativeAnnuelle: 0,
+    rendementNet: 0, cashflowMensuel: 0,
+    rendementFondsPropres: 0, dureeAmortissement: 0,
+  };
+
+  const tauxNotaire = neuf ? 0.025 : 0.075;
+  const fraisNotaire = prix * tauxNotaire;
+  const prixRevient = prix + fraisNotaire + (travaux || 0);
+
+  const gestionLocativeAnnuelle = gestionLocative ? loyer * 12 * 0.08 : 0;
+  const chargesAnnuelles = chargesCopro * 12 + taxeFonciere + gestionLocativeAnnuelle;
+
+  const rendementBrut = (loyer * 12) / prixRevient * 100;
+  const rendementNet = chargesAnnuelles > 0
+    ? ((loyer * 12 - chargesAnnuelles) / prixRevient) * 100
+    : (loyer * 12) / prixRevient * 100;
+
+  const cashflowMensuel = loyer - chargesCopro - (taxeFonciere / 12) - (gestionLocativeAnnuelle / 12);
+  const cashflowAnnuel = loyer * 12 - chargesAnnuelles;
+  const dureeAmortissement = cashflowAnnuel > 0 ? prixRevient / cashflowAnnuel : 0;
+
+  const rendementFondsPropres = apport > 0
+    ? (cashflowAnnuel / apport) * 100
+    : 0;
+
+  return {
+    fraisNotaire,
+    prixRevient,
+    rendementBrut,
+    chargesAnnuelles,
+    gestionLocativeAnnuelle,
+    rendementNet,
+    cashflowMensuel,
+    cashflowAnnuel,
+    rendementFondsPropres,
+    dureeAmortissement,
+  };
+}
+
+const FAQ = [
+  { q: "Quelle est la différence entre rendement brut et rendement net ?", a: "Le rendement brut compare le loyer annuel au prix d'achat (sans tenir compte des charges). Le rendement net déduit toutes les charges (copropriété, taxe foncière, gestion) du loyer pour donner une vision réaliste de votre rentabilité réelle." },
+  { q: "Comment sont calculés les frais de notaire ?", a: "Pour un bien neuf, les frais de notaire sont estimés à 2,5 % du prix (TVA incluse dans le prix). Pour l'ancien, comptez 7 à 8 % (frais légaux + droits de mutation). Ce simulateur applique 2,5 % neuf et 7,5 % ancien." },
+  { q: "Qu'est-ce que la durée d'amortissement ?", a: "C'est le nombre d'années nécessaires pour récupérer votre investissement initial grâce aux cash-flows nets annuels (loyer - charges). Par exemple, une durée de 15 ans signifie que votre bien sera rentable au bout de 15 ans." },
+  { q: "Comment calculer le rendement selon la fiscalité réelle ?", a: "Ce simulateur affiche le rendement net théorique. Votre imposition dépend de votre régime fiscal (micro-foncier 30 %, réel, LMNP). Consultez un expert pour intégrer la fiscalité personnalisée à votre situation." },
+];
+
+export default function RendementLocatif() {
+  const [theme, setTheme] = useTheme();
+
+  const [prix, setPrix]               = useState(null);
+  const [neuf, setNeuf]               = useState(false);
+  const [travaux, setTravaux]         = useState(0);
+  const [apport, setApport]           = useState(0);
+  const [loyer, setLoyer]             = useState(null);
+  const [chargesCopro, setChargesCopro] = useState(0);
+  const [taxeFonciere, setTaxeFonciere] = useState(0);
+  const [gestionLocative, setGestionLocative] = useState(false);
+
+  useEffect(() => {
+    document.title = "Simulateur Rendement Locatif 2026 — mesimulateurs.fr";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net d'un investissement locatif, incluant les frais, charges et cash-flow mensuel.");
+  }, []);
+
+  const res = calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative });
+  const rendementBrutAnim = useAnimatedNumber(res.rendementBrut);
+  const rendementNetAnim = useAnimatedNumber(res.rendementNet);
+  const cashflowAnim = useAnimatedNumber(res.cashflowMensuel);
+
+  const hasResult = prix > 0 && loyer > 0;
+
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+      <Navbar theme={theme} setTheme={setTheme} />
+
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+        <SimulateurHeader
+          icon="📊"
+          badge="Immobilier · Simulation 2026"
+          title="Rendement locatif"
+          desc="Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion."
+        />
+
+        {/* Formulaire — Bien */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Le bien immobilier</h2>
+          <NumInput id="prix" label="Prix d'achat" value={prix} onChange={setPrix} unit="€" min={20000} max={5000000}
+            hint={prix ? `Frais notaire estimés : ${fmtEur(prix * (neuf ? 0.025 : 0.075))}` : "Montant avant frais"}
+          />
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Type de bien</label>
+            <Toggle options={["Ancien", "Neuf"]} checked={neuf} onChange={setNeuf} />
+          </div>
+          <StepperInput
+            label="Travaux et rénovation (optionnel)"
+            value={travaux} onChange={setTravaux} min={0} max={500000} step={5000} unit=" €"
+            hint={travaux > 0 ? `Ajouté au coût d'acquisition` : "Laissez à 0 si pas de travaux prévus"}
+          />
+          <StepperInput
+            label="Apport personnel (optionnel)"
+            value={apport} onChange={setApport} min={0} max={999999} step={10000} unit=" €"
+            hint={apport > 0 ? `Permet de calculer le rendement sur fonds propres` : "Votre contribution personnelle (hors emprunt)"}
+          />
+        </div>
+
+        {/* Formulaire — Revenus */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Revenus et charges</h2>
+          <NumInput id="loyer" label="Loyer mensuel" value={loyer} onChange={setLoyer} unit="€/mois" min={100} max={10000}
+            hint={loyer ? `Annualisé : ${fmtEur(loyer * 12)}/an` : "Loyer hors charges"}
+          />
+          <NumInput id="charges-copro" label="Charges de copropriété" value={chargesCopro} onChange={setChargesCopro} unit="€/mois" min={0} max={2000}
+            hint={chargesCopro > 0 ? `Annualisées : ${fmtEur(chargesCopro * 12)}/an` : "Charges communes (immeuble)"}
+          />
+          <NumInput id="taxe-fonciere" label="Taxe foncière" value={taxeFonciere} onChange={setTaxeFonciere} unit="€/an" min={0} max={50000}
+            hint="Charge annuelle fixe"
+          />
+          <div style={{ marginBottom: 24 }}>
+            <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Gestion locative (8 % du loyer)</label>
+            <Toggle options={["Non facturée", "Facturée par agence"]} checked={gestionLocative} onChange={setGestionLocative} />
+          </div>
+        </div>
+
+        {/* Résultats */}
+        {hasResult && (
+          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Rentabilité estimée</h2>
+
+            {/* Rendement brut */}
+            <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Rendement brut</div>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                {rendementBrutAnim.toFixed(2)} %
+              </div>
+            </div>
+
+            {/* Rendement net */}
+            <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Rendement net (après charges)</div>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(36px,8vw,56px)", fontWeight: 700, lineHeight: 1, color: res.rendementNet > 0 ? "var(--text)" : "rgba(239,68,68,0.8)" }}>
+                {rendementNetAnim.toFixed(2)} %
+              </div>
+              {res.cashflowAnnuel <= 0 && (
+                <div style={{ marginTop: 10, fontSize: 12, color: "rgba(239,68,68,0.8)" }}>
+                  ⚠️ Flux négatif : charges supérieures aux revenus
+                </div>
+              )}
+            </div>
+
+            {/* Chips récapitulatif */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginBottom: 20 }}>
+              <Chip label="Prix de revient" value={fmtEur(res.prixRevient)} />
+              <Chip label="Cash-flow mensuel" value={fmtEur(Math.round(res.cashflowMensuel * 100) / 100)} accent={res.cashflowMensuel > 0} />
+              {apport > 0 && <Chip label="Rendement fonds propres" value={`${res.rendementFondsPropres.toFixed(2)} %`} accent />}
+              {res.dureeAmortissement > 0 && <Chip label="Durée amortissement" value={`${Math.round(res.dureeAmortissement)} ans`} />}
+            </div>
+          </div>
+        )}
+
+        {!hasResult && prix === null && loyer === null && (
+          <div style={{ textAlign: "center", padding: "40px 28px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, color: "var(--text-secondary)" }}>
+            Saisissez le prix du bien et le loyer pour voir votre estimation.
+          </div>
+        )}
+
+        {/* Détail charges */}
+        {hasResult && (
+          <AccordionSection title="Détail des charges annuelles" subtitle="Ventilation par type">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+              <div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>Copropriété</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--text)" }}>{fmtEur(chargesCopro * 12)}</div>
+              </div>
+              <div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>Taxe foncière</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--text)" }}>{fmtEur(taxeFonciere)}</div>
+              </div>
+              {gestionLocative && (
+                <div>
+                  <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>Gestion locative (8 %)</div>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.gestionLocativeAnnuelle)}</div>
+                </div>
+              )}
+              <div>
+                <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>Total annuel</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(res.chargesAnnuelles)}</div>
+              </div>
+            </div>
+            <ProgressBar label="Charges / Revenus locatifs" value={res.chargesAnnuelles} total={loyer * 12} color="linear-gradient(90deg,rgba(239,68,68,0.6),rgba(239,68,68,0.3))" />
+          </AccordionSection>
+        )}
+
+        {/* Ad */}
+        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+
+        {/* FAQ */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes</h2>
+          {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
+        </div>
+
+        {/* Ad */}
+        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
+      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+      </button>
+      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
+    </div>
+  );
+}
