@@ -11,8 +11,8 @@ const SIMULATEURS = [
     icon: "🏆",
     title: "Retraite complémentaire Agirc-Arrco",
     desc: "Calculez vos points et estimez votre pension nette mensuelle. Intègre bonus-malus, GMP cadres, revalorisation projetée et comparateur de scénarios.",
-    tag: "Salariés privés",
-    categories: ["Salariés", "Complémentaires"],
+    tag: "Retraite · Salariés privés",
+    categories: ["Retraite"],
     badges: ["popular", "updated"],
     featured: true,
     available: true,
@@ -22,8 +22,8 @@ const SIMULATEURS = [
     icon: "🏛",
     title: "Régime général CNAV",
     desc: "Estimez votre pension de base en fonction de vos trimestres validés, de votre salaire annuel moyen et de votre âge de départ.",
-    tag: "Salariés privés",
-    categories: ["Salariés"],
+    tag: "Retraite · Salariés",
+    categories: ["Retraite"],
     badges: ["new"],
     available: true,
   },
@@ -32,8 +32,8 @@ const SIMULATEURS = [
     icon: "⚖️",
     title: "Retraite Fonction publique",
     desc: "Calculez votre pension selon votre indice majoré, votre durée de service, vos bonifications et votre catégorie (sédentaire ou active).",
-    tag: "Fonctionnaires",
-    categories: ["Fonctionnaires"],
+    tag: "Retraite · Fonctionnaires",
+    categories: ["Retraite"],
     badges: ["new"],
     available: true,
   },
@@ -42,8 +42,8 @@ const SIMULATEURS = [
     icon: "💼",
     title: "Indépendants & TNS",
     desc: "Simulez votre retraite si vous êtes artisan, commerçant ou profession libérale — régime de base SSI et complémentaire.",
-    tag: "Indépendants",
-    categories: ["Indépendants"],
+    tag: "Retraite · Indépendants",
+    categories: ["Retraite"],
     badges: ["new"],
     available: true,
   },
@@ -52,8 +52,8 @@ const SIMULATEURS = [
     icon: "🏢",
     title: "Complémentaire IRCANTEC",
     desc: "Pour les agents non-titulaires de la fonction publique et élus locaux. Estimez vos points IRCANTEC et votre pension complémentaire.",
-    tag: "Contractuels publics",
-    categories: ["Complémentaires", "Fonctionnaires"],
+    tag: "Retraite · Contractuels publics",
+    categories: ["Retraite"],
     badges: [],
     available: true,
   },
@@ -62,8 +62,8 @@ const SIMULATEURS = [
     icon: "📅",
     title: "Retraite progressive",
     desc: "Envisagez-vous de réduire votre activité avant la retraite complète ? Simulez la pension partielle et l'impact sur votre future pension définitive.",
-    tag: "Tous régimes",
-    categories: ["Salariés", "Fonctionnaires", "Indépendants"],
+    tag: "Retraite · Tous régimes",
+    categories: ["Retraite"],
     badges: ["new"],
     available: true,
   },
@@ -74,23 +74,53 @@ const COMING_SOON = [
     icon: "👨‍⚕️",
     title: "Professions libérales (CNAVPL)",
     desc: "Médecins, avocats, architectes — simulateur adapté aux régimes CARMF, CNBF, CIPAV…",
-    tag: "Libéraux",
+    tag: "Retraite",
   },
   {
     icon: "🌾",
     title: "Agriculteurs (MSA)",
     desc: "Estimez votre retraite de base et complémentaire selon le régime agricole de la MSA.",
-    tag: "Agriculture",
+    tag: "Retraite",
   },
   {
-    icon: "🌍",
-    title: "Expatriés & carrières mixtes",
-    desc: "Simulation multi-régimes pour les carrières à cheval sur plusieurs pays ou statuts.",
-    tag: "Multi-régimes",
+    icon: "🏠",
+    title: "Capacité d'emprunt immobilier",
+    desc: "Calculez le montant que vous pouvez emprunter selon vos revenus, charges et durée souhaitée.",
+    tag: "Immobilier",
+  },
+  {
+    icon: "📊",
+    title: "Rendement locatif",
+    desc: "Évaluez la rentabilité brute et nette d'un investissement locatif en tenant compte des charges et de la fiscalité.",
+    tag: "Immobilier",
+  },
+  {
+    icon: "📋",
+    title: "Impôt sur le revenu",
+    desc: "Estimez votre IR net, votre tranche marginale et l'impact d'une variation de revenu ou d'une déduction fiscale.",
+    tag: "Impôts",
+  },
+  {
+    icon: "📈",
+    title: "Plus-value immobilière",
+    desc: "Calculez l'imposition de votre plus-value selon la durée de détention, les abattements applicables et votre profil.",
+    tag: "Impôts",
+  },
+  {
+    icon: "💰",
+    title: "Épargne & intérêts composés",
+    desc: "Projetez la croissance de votre épargne sur le long terme avec versements réguliers et revalorisation annuelle.",
+    tag: "Finances",
+  },
+  {
+    icon: "🔥",
+    title: "Indépendance financière (FIRE)",
+    desc: "Calculez la date à laquelle votre patrimoine peut couvrir vos dépenses sans travailler, selon vos objectifs.",
+    tag: "Finances",
   },
 ];
 
-const FILTERS = ["Tous", "Salariés", "Fonctionnaires", "Indépendants", "Complémentaires"];
+const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances"];
 
 function BadgePill({ type }) {
   const styles = {
@@ -112,8 +142,8 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState("Tous");
 
   useEffect(() => {
-    document.title = "mesimulateurs.fr — Simulateurs de retraite gratuits";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "6 simulateurs de retraite gratuits et pédagogiques : Agirc-Arrco, CNAV, Fonction publique, Indépendants, IRCANTEC, Retraite progressive. Données officielles 2026.");
+    document.title = "mesimulateurs.fr — Simulateurs financiers gratuits";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulateurs gratuits pour vos grandes décisions : retraite, immobilier, impôts, finances personnelles. Précis, pédagogiques, données 2026.");
   }, []);
 
   const filtered = activeFilter === "Tous"
@@ -130,17 +160,17 @@ export default function Home() {
       {/* ── Hero ── */}
       <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
-          <span style={{ opacity: 0.7 }}>✦</span> Données officielles 2026 <span style={{ opacity: 0.7 }}>✦</span>
+          <span style={{ opacity: 0.7 }}>✦</span> Retraite · Immobilier · Impôts · Finances <span style={{ opacity: 0.7 }}>✦</span>
         </div>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem,5vw,3.4rem)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20 }}>
-          Simulez votre retraite<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>en toute clarté</em>
+          Simulez vos grandes décisions<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>en toute clarté</em>
         </h1>
         <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
-          Des simulateurs gratuits, précis et pédagogiques pour estimer votre future pension selon votre régime — salarié, fonctionnaire, indépendant ou cadre.
+          Des simulateurs gratuits, précis et pédagogiques pour vos décisions financières importantes — retraite, investissement immobilier, fiscalité et épargne.
         </p>
         <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
           {[
-            { v: "6", l: "simulateurs disponibles" },
+            { v: "6", l: "simulateurs actifs" },
             { v: "30 s", l: "pour une première estimation" },
             { v: "100 %", l: "gratuit & sans inscription" },
           ].map(({ v, l }) => (
@@ -218,32 +248,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
-      {/* ── Divider ── */}
-      <div style={{ height: 1, background: "var(--border)", maxWidth: 1100, margin: "0 auto 48px" }} />
-
-      {/* ── CTA Newsletter ── */}
-      <section style={{ maxWidth: 700, margin: "0 auto 64px", padding: "0 24px", textAlign: "center" }}>
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.04))", border: "1px solid var(--border-gold)", borderRadius: 18, padding: "44px 40px" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--text)", marginBottom: 12 }}>Restez informé des évolutions</h2>
-          <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", marginBottom: 28, lineHeight: 1.65 }}>
-            Revalorisation des pensions, nouveaux simulateurs, changements législatifs — recevez une synthèse mensuelle claire et sans jargon.
-          </p>
-          <div style={{ display: "flex", gap: 10, maxWidth: 420, margin: "0 auto 12px", flexWrap: "wrap", justifyContent: "center" }}>
-            <input type="email" placeholder="votre@email.fr"
-              style={{ flex: 1, minWidth: 200, background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)", padding: "11px 16px", borderRadius: 10, fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem", outline: "none" }} />
-            <button style={{ background: "linear-gradient(135deg,#b8934a,#e8c06a)", color: "#060e1c", border: "none", padding: "11px 22px", borderRadius: 10, fontFamily: "'DM Sans', sans-serif", fontSize: "0.88rem", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
-              S'abonner
-            </button>
-          </div>
-          <p style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>Gratuit · Désabonnement en un clic · Aucune publicité</p>
-        </div>
-      </section>
-
-      {/* ── AdSense ── */}
-      <div style={{ maxWidth: 1100, margin: "0 auto 24px", padding: "0 24px" }}>
-        <AdUnit slot="auto" format="auto" />
-      </div>
 
       <Footer />
     </div>

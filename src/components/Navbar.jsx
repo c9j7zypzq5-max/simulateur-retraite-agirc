@@ -1,6 +1,76 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 
+function IosToggle({ theme, setTheme, compact = false }) {
+  const isDark = theme === "dark";
+  return compact ? (
+    <button
+      onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+      aria-label={isDark ? "Passer en mode clair" : "Passer en mode sombre"}
+      role="switch" aria-checked={isDark}
+      style={{
+        width: 54, height: 28, borderRadius: 14, padding: 0, border: "none",
+        background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
+        cursor: "pointer", position: "relative", flexShrink: 0,
+        boxShadow: isDark
+          ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22)"
+          : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45)",
+        transition: "background 0.3s ease, box-shadow 0.3s ease",
+      }}
+    >
+      <div style={{
+        position: "absolute", top: 3,
+        left: isDark ? 3 : 29,
+        width: 22, height: 22, borderRadius: "50%",
+        background: isDark
+          ? "linear-gradient(145deg,#1c2f66,#2b4396)"
+          : "linear-gradient(145deg,#f8d050,#e89010)",
+        boxShadow: isDark ? "0 1px 6px rgba(40,80,200,0.4)" : "0 1px 6px rgba(240,160,0,0.5)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 13, userSelect: "none",
+        transition: "left 0.28s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, box-shadow 0.35s ease",
+      }}>
+        {isDark ? "🌙" : "☀️"}
+      </div>
+    </button>
+  ) : (
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0" }}>
+      <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>
+        {isDark ? "Mode sombre" : "Mode clair"}
+      </span>
+      <button
+        onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
+        aria-label={isDark ? "Passer en mode clair" : "Passer en mode sombre"}
+        role="switch" aria-checked={isDark}
+        style={{
+          width: 54, height: 28, borderRadius: 14, padding: 0, border: "none",
+          background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
+          cursor: "pointer", position: "relative", flexShrink: 0,
+          boxShadow: isDark
+            ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22)"
+            : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45)",
+          transition: "background 0.3s ease, box-shadow 0.3s ease",
+        }}
+      >
+        <div style={{
+          position: "absolute", top: 3,
+          left: isDark ? 3 : 29,
+          width: 22, height: 22, borderRadius: "50%",
+          background: isDark
+            ? "linear-gradient(145deg,#1c2f66,#2b4396)"
+            : "linear-gradient(145deg,#f8d050,#e89010)",
+          boxShadow: isDark ? "0 1px 6px rgba(40,80,200,0.4)" : "0 1px 6px rgba(240,160,0,0.5)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: 13, userSelect: "none",
+          transition: "left 0.28s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, box-shadow 0.35s ease",
+        }}>
+          {isDark ? "🌙" : "☀️"}
+        </div>
+      </button>
+    </div>
+  );
+}
+
 const NAV_ITEMS = [
   { path: "/",                                  icon: "🏠", title: "Accueil",                 subtitle: "Tous les simulateurs" },
   { path: "/simulateurs/agirc-arrco",           icon: "🏆", title: "Agirc-Arrco",             subtitle: "Retraite complémentaire" },
@@ -95,21 +165,8 @@ export default function Navbar({ theme, setTheme }) {
         {/* Spacer on mobile (nav-center is hidden) */}
         <div style={{ flex: 1 }} aria-hidden="true" className="nav-center" />
 
-        {/* Theme toggle */}
-        <button
-          onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-          aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
-          style={{
-            background: "var(--card-bg)", border: "1px solid var(--border)",
-            color: "var(--text-secondary)", fontSize: 12,
-            padding: "6px 14px", borderRadius: 20,
-            cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
-            whiteSpace: "nowrap", flexShrink: 0,
-            transition: "all 0.2s",
-          }}
-        >
-          {theme === "dark" ? "☀ Clair" : "🌙 Sombre"}
-        </button>
+        {/* Theme toggle — iOS slider */}
+        <IosToggle theme={theme} setTheme={setTheme} compact />
       </nav>
 
       {/* Overlay */}
@@ -230,20 +287,8 @@ export default function Navbar({ theme, setTheme }) {
         </nav>
 
         {/* Footer: theme toggle */}
-        <div style={{ padding: "12px 16px 16px", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
-          <button
-            onClick={() => { setTheme(t => t === "dark" ? "light" : "dark"); }}
-            style={{
-              width: "100%", display: "flex", alignItems: "center", gap: 10,
-              background: "rgba(255,255,255,0.04)", border: "1px solid var(--border)",
-              color: "var(--text-secondary)", padding: "10px 16px", borderRadius: 10,
-              cursor: "pointer", fontFamily: "'DM Sans', sans-serif", fontSize: "0.86rem",
-              minHeight: 44,
-            }}
-          >
-            <span style={{ fontSize: "1rem" }}>{theme === "dark" ? "☀" : "🌙"}</span>
-            {theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
-          </button>
+        <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
+          <IosToggle theme={theme} setTheme={setTheme} />
         </div>
       </aside>
     </>
