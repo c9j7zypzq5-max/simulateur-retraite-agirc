@@ -27,6 +27,8 @@ export function useAnimatedNumber(target, duration = 700) {
 }
 
 // ─── NumInput ─────────────────────────────────────────────────────────────────
+// Champ entier. Accepte les espaces et virgules comme séparateurs de milliers
+// (ex: "100 000" ou "100,000" → 100000). Pas de décimales.
 export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999, id, tooltip }) {
   const inputId = id || label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const hintId  = hint ? `${inputId}-hint` : undefined;
@@ -35,16 +37,20 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
   useEffect(() => {
     if (!focused) setRaw(value === null || value === undefined ? "" : String(value));
   }, [value, focused]);
+
   const handleChange = e => {
-    const v = e.target.value.replace(/[^0-9]/g, "");
+    // Garder uniquement les chiffres et espaces (séparateurs de milliers)
+    const v = e.target.value.replace(/[^0-9\s]/g, "");
     setRaw(v);
-    const n = Number(v);
-    if (!isNaN(n) && v !== "") onChange(Math.min(Math.max(n, min), max));
+    const normalized = v.replace(/\s/g, "");
+    const n = Number(normalized);
+    if (!isNaN(n) && normalized !== "") onChange(Math.min(Math.max(n, min), max));
   };
   const handleBlur = () => {
     setFoc(false);
-    const n = Number(raw);
-    if (isNaN(n) || raw === "") setRaw(value === null || value === undefined ? "" : String(value));
+    const normalized = raw.replace(/\s/g, "");
+    const n = Number(normalized);
+    if (isNaN(n) || normalized === "") setRaw(value === null || value === undefined ? "" : String(value));
     else { const c = Math.min(Math.max(n, min), max); onChange(c); setRaw(String(c)); }
   };
   return (
@@ -71,6 +77,8 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
 }
 
 // ─── StepperInput ─────────────────────────────────────────────────────────────
+// Champ décimal. Accepte indifféremment "." et "," comme séparateur décimal
+// (conventions française et anglaise). "3,5" est parsé comme 3.5.
 export function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", hint, tooltip }) {
   const [raw, setRaw] = useState(value === null || value === undefined ? "" : String(value));
   const [focused, setFocused] = useState(false);
@@ -81,22 +89,29 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
 
   function clamp(n) { return Math.min(Math.max(n, min), max); }
 
+  // Normalise "3,5" → "3.5", strip espaces
+  function norm(s) { return String(s).replace(/,/g, ".").replace(/\s/g, ""); }
+
   function handleChange(e) {
-    const v = e.target.value.replace(/[^0-9.\-]/g, "");
+    // Autoriser chiffres, séparateurs décimaux (. et ,), signe moins
+    const v = e.target.value.replace(/[^0-9.,\-]/g, "");
     setRaw(v);
-    const n = parseFloat(v);
-    if (!isNaN(n)) onChange(clamp(n));
+    const n = norm(v);
+    // Ne pas déclencher onChange sur valeur incomplète ("3." ou "3,")
+    if (!n || n.endsWith(".")) return;
+    const parsed = parseFloat(n);
+    if (!isNaN(parsed)) onChange(clamp(parsed));
   }
 
   function handleBlur() {
     setFocused(false);
-    const n = parseFloat(raw);
+    const n = parseFloat(norm(raw));
     if (isNaN(n) || raw === "") { onChange(min); setRaw(String(min)); }
     else { const c = clamp(n); onChange(c); setRaw(String(c)); }
   }
 
-  const dec = () => onChange(clamp(parseFloat(raw || value || min) - step));
-  const inc = () => onChange(clamp(parseFloat(raw || value || min) + step));
+  const dec = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) - step));
+  const inc = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) + step));
 
   const btnStyle = {
     width: 40, height: 44, borderRadius: 10, border: "1.5px solid var(--border)",
