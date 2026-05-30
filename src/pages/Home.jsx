@@ -128,7 +128,7 @@ export default function Home() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Hero ── */}
-      <section style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto" }}>
+      <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
           <span style={{ opacity: 0.7 }}>✦</span> Données officielles 2026 <span style={{ opacity: 0.7 }}>✦</span>
         </div>
@@ -138,7 +138,7 @@ export default function Home() {
         <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
           Des simulateurs gratuits, précis et pédagogiques pour estimer votre future pension selon votre régime — salarié, fonctionnaire, indépendant ou cadre.
         </p>
-        <div style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
+        <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
           {[
             { v: "6", l: "simulateurs disponibles" },
             { v: "30 s", l: "pour une première estimation" },
@@ -158,7 +158,7 @@ export default function Home() {
       </div>
 
       {/* ── Filter bar ── */}
-      <div style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      <div className="filter-bar" style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
         <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4 }}>Filtrer :</span>
         {FILTERS.map(f => (
           <button key={f} onClick={() => setActiveFilter(f)}
@@ -182,7 +182,7 @@ export default function Home() {
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
+        <div className="sim-grid">
           {featured && (
             <FeaturedCard sim={featured} />
           )}
@@ -202,7 +202,7 @@ export default function Home() {
           Bientôt disponibles
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
+        <div className="sim-grid">
           {COMING_SOON.map(s => (
             <div key={s.title} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, opacity: 0.55, display: "flex", flexDirection: "column", gap: 16 }}>
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
@@ -252,14 +252,13 @@ export default function Home() {
 
 function FeaturedCard({ sim }) {
   return (
-    <Link to={sim.path} style={{
+    <Link to={sim.path} className="sim-featured" style={{
       background: "linear-gradient(145deg,rgba(184,147,74,0.07),var(--card-bg))",
       border: "1px solid var(--border-gold)",
       borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start",
       textDecoration: "none",
       transition: "transform 0.2s, box-shadow 0.25s",
-      gridColumn: "span 2",
       position: "relative", overflow: "hidden",
     }}
       onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(184,147,74,0.12)"; }}
