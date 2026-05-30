@@ -86,6 +86,9 @@ export default function Epargne() {
   useEffect(() => {
     document.title = "Simulateur Épargne 2025 — Intérêts composés et capital final";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcEpargne({ capitalInitial, versement, tauxAnnuel, duree });

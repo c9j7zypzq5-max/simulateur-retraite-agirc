@@ -202,6 +202,9 @@ export default function Cnavpl() {
   useEffect(() => {
     document.title = "Simulateur Retraite CIPAV 2025 — Professions libérales";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcCnavpl({

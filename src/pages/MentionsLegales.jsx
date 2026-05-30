@@ -22,6 +22,9 @@ export default function MentionsLegales() {
     document.title = "Mentions légales — mesimulateurs.fr";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Mentions légales du site mesimulateurs.fr : éditeur, hébergeur, propriété intellectuelle et responsabilité.");
     if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     return () => {
       document.title = prevTitle;
       if (prevDesc) document.querySelector('meta[name="description"]')?.setAttribute("content", prevDesc);

@@ -71,6 +71,9 @@ export default function CoutEnHeures() {
   useEffect(() => {
     document.title = "Simulateur Coût en Heures de Vie — Le vrai prix de vos achats";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Convertissez n'importe quel prix en heures de travail réel : combien de jours, semaines ou % de votre salaire représente cet achat ?");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcCout({ prix, salaire, heuresSemaine, moisParAn });

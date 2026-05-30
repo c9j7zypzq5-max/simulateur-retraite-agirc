@@ -166,6 +166,9 @@ export default function EmpruntImmobilier() {
   useEffect(() => {
     document.title = "Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const fn = prix ? fraisNotaire(prix, neuf) : 0;

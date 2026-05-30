@@ -173,6 +173,9 @@ export default function Msa() {
   useEffect(() => {
     document.title = "Simulateur Retraite MSA 2025 — Agriculteurs";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const isExploitant = type === "exploitant";

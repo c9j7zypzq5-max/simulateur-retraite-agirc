@@ -89,6 +89,9 @@ export default function Cnav() {
   useEffect(() => {
     document.title = "Simulateur Retraite CNAV 2025 — Régime général salariés";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });

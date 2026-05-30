@@ -306,6 +306,9 @@ export default function Fire() {
   useEffect(() => {
     document.title = "Simulateur FIRE 2025 — Liberté financière et indépendance";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez la liberté financière avec la règle des 4% : capital cible, projection de patrimoine, courbe de croissance.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait });

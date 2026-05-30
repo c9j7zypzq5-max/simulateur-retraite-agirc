@@ -106,6 +106,9 @@ export default function VieEnSemaines() {
   useEffect(() => {
     document.title = "Simulateur Ma Vie en Semaines — Visualisez votre temps de vie";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcVie({ dateNaissance, esperance });

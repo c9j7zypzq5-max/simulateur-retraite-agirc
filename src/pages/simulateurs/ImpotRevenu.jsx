@@ -96,6 +96,9 @@ export default function ImpotRevenu() {
   useEffect(() => {
     document.title = "Simulateur Impôt sur le Revenu 2025 — Calcul IR barème officiel";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2025 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = revenuBrut ? calcIR(revenuBrut, situation, nbEnfants) : null;

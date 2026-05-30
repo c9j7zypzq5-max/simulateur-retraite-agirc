@@ -89,6 +89,9 @@ export default function Ircantec() {
   useEffect(() => {
     document.title = "Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval });

@@ -89,6 +89,9 @@ export default function Independants() {
   useEffect(() => {
     document.title = "Simulateur Retraite Indépendants TNS 2025 — SSI";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite });

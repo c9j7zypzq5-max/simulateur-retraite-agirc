@@ -62,6 +62,9 @@ export default function RetraiteProgressive() {
   useEffect(() => {
     document.title = "Simulateur Retraite Progressive 2025";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const res = calcRP({ pensionPleineTaux, salaire, quotite, duree });

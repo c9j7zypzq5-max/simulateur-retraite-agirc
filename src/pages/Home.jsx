@@ -55,6 +55,9 @@ export default function Home() {
   useEffect(() => {
     document.title = "Mesimulateurs.fr — Simulateurs gratuits retraite, immobilier, finances";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite, emprunt immobilier, impôts, épargne et liberté financière. 16 simulateurs gratuits, calculs en temps réel, sans inscription.");
+    let link = document.querySelector('link[rel="canonical"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
+    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
   const filtered = activeFilter === "Tous"
