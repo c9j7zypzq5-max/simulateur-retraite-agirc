@@ -8,6 +8,8 @@ import FonctionPublique from "./pages/simulateurs/FonctionPublique.jsx";
 import Independants from "./pages/simulateurs/Independants.jsx";
 import Ircantec from "./pages/simulateurs/Ircantec.jsx";
 import RetraiteProgressive from "./pages/simulateurs/RetraiteProgressive.jsx";
+import SimulateurEmprunt from "./simulateurs/SimulateurEmprunt.jsx";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -19,6 +21,7 @@ export default function App() {
         <Route path="/simulateurs/independants" element={<Independants />} />
         <Route path="/simulateurs/ircantec" element={<Ircantec />} />
         <Route path="/simulateurs/retraite-progressive" element={<RetraiteProgressive />} />
+        <Route path="/simulateurs/emprunt-immobilier" element={<SimulateurEmprunt />} />
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
       </Routes>

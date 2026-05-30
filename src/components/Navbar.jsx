@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 function IosToggle({ theme, setTheme, compact = false }) {
   const isDark = theme === "dark";
   const track = {
-    width: 54, height: 28, borderRadius: 14, padding: 0, border: "none",
+    width: 54, height: 28, minHeight: 28, borderRadius: 14, padding: 0, border: "none",
     background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
     cursor: "pointer", position: "relative", flexShrink: 0,
     boxShadow: isDark
@@ -58,7 +58,9 @@ const NAV_GROUPS = [
     id: "retraite", icon: "🏦", label: "Retraite",
     items: ALL_ITEMS,
   },
-  { id: "immobilier", icon: "🏡", label: "Immobilier", items: [], comingSoon: true },
+  { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
+    { path: "/simulateurs/emprunt-immobilier", icon: "🏠", title: "Emprunt immobilier", subtitle: "Mensualités & capacité" },
+  ] },
   { id: "impots",     icon: "📋", label: "Impôts",     items: [], comingSoon: true },
   { id: "finances",   icon: "💰", label: "Finances",   items: [], comingSoon: true },
 ];

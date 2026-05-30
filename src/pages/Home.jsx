@@ -67,6 +67,16 @@ const SIMULATEURS = [
     badges: ["new"],
     available: true,
   },
+  {
+    path: "/simulateurs/emprunt-immobilier",
+    icon: "🏠",
+    title: "Emprunt immobilier",
+    desc: "Calculez vos mensualités, votre capacité d'emprunt, le coût total du crédit et votre taux d'endettement. Inclut frais de notaire, primo-accédant et tableau d'amortissement.",
+    tag: "Immobilier",
+    categories: ["Immobilier"],
+    badges: ["new"],
+    available: true,
+  },
 ];
 
 const COMING_SOON = [
@@ -81,12 +91,6 @@ const COMING_SOON = [
     title: "Agriculteurs (MSA)",
     desc: "Estimez votre retraite de base et complémentaire selon le régime agricole de la MSA.",
     tag: "Retraite",
-  },
-  {
-    icon: "🏠",
-    title: "Capacité d'emprunt immobilier",
-    desc: "Calculez le montant que vous pouvez emprunter selon vos revenus, charges et durée souhaitée.",
-    tag: "Immobilier",
   },
   {
     icon: "📊",
