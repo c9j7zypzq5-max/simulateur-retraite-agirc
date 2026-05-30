@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
+import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
@@ -95,10 +96,34 @@ const card = { background: "var(--card-bg)", border: "1px solid var(--border)", 
 const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
-  { q: "Comment est calculée la mensualité ?", a: "La mensualité est calculée selon la formule des annuités constantes : M = C × r × (1+r)ⁿ / ((1+r)ⁿ − 1), où C est le capital, r le taux mensuel et n le nombre de mensualités." },
-  { q: "Qu'est-ce que le taux d'endettement ?", a: "Le taux d'endettement (ou taux d'effort) rapporte vos mensualités de crédit à vos revenus nets. Les banques appliquent un seuil de 35% depuis 2021 (recommandation HCSF). Au-delà, le dossier est en général refusé sauf exceptions." },
-  { q: "Qu'est-ce que le PTZ (primo-accédant) ?", a: "Le Prêt à Taux Zéro est réservé aux primo-accédants (achetant leur première résidence principale). Ce simulateur en fait une approximation en supposant 10% du capital emprunté à taux réduit (1,95%). Les conditions réelles dépendent de la zone géographique et des revenus." },
-  { q: "Les frais de notaire sont-ils obligatoires ?", a: "Oui. Pour un logement ancien, ils représentent environ 7-8% du prix d'achat (droits de mutation, honoraires notaire, frais de dossier). Pour le neuf, ils sont réduits à environ 2-3%. Ils peuvent être inclus dans le crédit ou payés comptant." },
+  {
+    q: "Quel apport minimum est recommandé ?",
+    a: "Les banques exigent généralement un apport d'au moins 10 % du prix d'achat pour couvrir les frais de notaire et réduire le risque. Un apport de 20 % ou plus améliore significativement les conditions d'emprunt (taux, durée). Sans apport, le dossier est très difficile à financer hors cas exceptionnels.",
+  },
+  {
+    q: "Comment est calculée la mensualité ?",
+    a: "La mensualité est calculée selon la formule des annuités constantes : M = C × r × (1+r)ⁿ / ((1+r)ⁿ − 1), où C est le capital emprunté, r le taux mensuel (taux annuel ÷ 12) et n le nombre total de mensualités. Elle reste fixe tout au long du prêt à taux fixe.",
+  },
+  {
+    q: "Comment est calculé le taux d'endettement et quel est le plafond légal ?",
+    a: "Le taux d'endettement (ou taux d'effort) = mensualités de crédit ÷ revenus nets × 100. Depuis janvier 2022, le HCSF (Haut Conseil de Stabilité Financière) impose un plafond légal de 35 % pour les banques françaises. Au-delà, le dossier est refusé dans la grande majorité des cas.",
+  },
+  {
+    q: "Qu'est-ce que le PTZ (primo-accédant) ?",
+    a: "Le Prêt à Taux Zéro (PTZ) est réservé aux primo-accédants achetant leur première résidence principale. Il finance jusqu'à 50 % de l'opération dans les zones tendues (A, Abis, B1) avec un taux à 0 %. Ce simulateur l'approxime à 10 % du capital à 1,95 % — les conditions réelles varient selon la zone, les revenus et le type de logement.",
+  },
+  {
+    q: "Quelle durée d'emprunt choisir ?",
+    a: "Une durée plus longue réduit la mensualité mais augmente le coût total des intérêts. Les banques françaises prêtent généralement jusqu'à 25 ans (27 ans pour le neuf avec travaux). Règle pratique : remboursez le moins longtemps possible tout en restant sous 35 % de taux d'endettement. Les durées de 20-25 ans sont les plus courantes.",
+  },
+  {
+    q: "Comment sont estimés les frais de notaire ?",
+    a: "Pour un logement ancien : ~7,5 % du prix (droits de mutation 5,8 %, émoluments notaire, frais de dossier). Pour le neuf : ~2,5 % (droits réduits car la TVA est déjà payée). Ces taux sont approximatifs — le simulateur en donne une estimation, votre notaire établira le montant exact.",
+  },
+  {
+    q: "Assurance emprunteur : est-ce obligatoire ?",
+    a: "L'assurance de prêt n'est pas légalement obligatoire, mais toutes les banques l'exigent en pratique. Elle couvre le décès, l'invalidité et parfois la perte d'emploi. Depuis la loi Lemoine (2022), vous pouvez changer d'assurance à tout moment, ce qui peut générer des économies significatives sur la durée.",
+  },
 ];
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
@@ -363,16 +388,22 @@ export default function EmpruntImmobilier() {
           </div>
         </div>
 
+        {/* AdSense mid */}
+        <div style={{ margin: "24px 0" }}>
+          <AdUnit slot="auto" format="auto" />
+        </div>
+
         {/* FAQ */}
-        {FAQ.map(({ q, a }) => (
-          <AccordionSection key={q} title={q}>
-            <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75 }}>{a}</p>
-          </AccordionSection>
-        ))}
+        <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
           Simulation indicative · Ne constitue pas un engagement de la banque
         </p>
+
+        {/* AdSense bas */}
+        <div style={{ margin: "24px 0" }}>
+          <AdUnit slot="auto" format="auto" />
+        </div>
       </main>
       <Footer />
     </div>
