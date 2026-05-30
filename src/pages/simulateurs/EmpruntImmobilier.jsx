@@ -1,0 +1,380 @@
+import { useState, useEffect, useRef } from "react";
+import { useTheme } from "../../hooks/useTheme.js";
+import Navbar from "../../components/Navbar.jsx";
+import Footer from "../../components/Footer.jsx";
+import {
+  NumInput, StepperInput, AccordionSection,
+  Chip, Toggle, useAnimatedNumber,
+  fmt, fmtEur, SimulateurHeader,
+} from "../../components/ui.jsx";
+
+// ─── Calculs ─────────────────────────────────────────────────────────────────
+function fraisNotaire(prix, neuf) { return prix * (neuf ? 0.025 : 0.075); }
+
+function mensualite(capital, tauxAnnuel, dureeAns) {
+  if (capital <= 0 || dureeAns <= 0) return 0;
+  const r = tauxAnnuel / 100 / 12;
+  const n = dureeAns * 12;
+  if (r === 0) return capital / n;
+  return (capital * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
+// ─── Jauge d'endettement ─────────────────────────────────────────────────────
+function JaugeEndettement({ taux }) {
+  const color = taux <= 0 ? "var(--text-secondary)"
+    : taux <= 25 ? "#6aaa6a"
+    : taux <= 33 ? "var(--gold)"
+    : taux <= 35 ? "#e08030"
+    : "#cc5555";
+  const label = taux <= 0 ? "—" : taux <= 25 ? "Excellent" : taux <= 33 ? "Acceptable" : taux <= 35 ? "Limite" : "Trop élevé";
+  const pct = Math.min(100, (taux / 50) * 100);
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+        <span style={{ fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+          Taux d'endettement
+        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 12, color, fontWeight: 600 }}>{label}</span>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color, fontWeight: 700 }}>
+            {taux > 0 ? taux.toFixed(1) : "—"}%
+          </span>
+        </div>
+      </div>
+      <div style={{ height: 8, borderRadius: 4, background: "var(--progress-track)", overflow: "hidden", position: "relative" }}>
+        <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${pct}%`, background: `linear-gradient(90deg,#4a9a4a,${color})`, borderRadius: 4, transition: "width 0.4s, background 0.3s" }} />
+        {[25, 33, 35].map(s => (
+          <div key={s} style={{ position: "absolute", top: 0, left: `${s / 50 * 100}%`, width: 1, height: "100%", background: "rgba(255,255,255,0.15)" }} />
+        ))}
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4, fontSize: 10, color: "var(--text-secondary)", opacity: 0.7 }}>
+        <span>0%</span><span>25%</span><span>33%</span><span>35%</span><span>50%+</span>
+      </div>
+    </div>
+  );
+}
+
+// ─── Tableau d'amortissement ─────────────────────────────────────────────────
+function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, primoTaux }) {
+  const rows = [];
+  let rP = capital - primoCapital, rPr = primoCapital;
+  const mP = mensualite(rP, tauxAnnuel, dureeAns);
+  const mPr = mensualite(rPr, primoTaux, dureeAns);
+  for (let i = 1; i <= dureeAns * 12; i++) {
+    const iP = rP * (tauxAnnuel / 100 / 12); rP = Math.max(0, rP - (mP - iP));
+    const iPr = rPr * (primoTaux / 100 / 12); rPr = Math.max(0, rPr - (mPr - iPr));
+    if (i % 12 === 0) rows.push({ annee: i / 12, mensualite: mP + mPr, capitalRestant: rP + rPr });
+  }
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--border)" }}>
+            {["Année", "Mensualité", "Capital restant"].map(h => (
+              <th key={h} style={{ textAlign: "right", padding: "8px 10px", fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.07em", textTransform: "uppercase", fontWeight: 500 }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{r.annee}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(r.mensualite))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: r.capitalRestant < 50000 ? "var(--gold)" : "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(r.capitalRestant))}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ─── Carte section ────────────────────────────────────────────────────────────
+const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" };
+const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+
+const FAQ = [
+  { q: "Comment est calculée la mensualité ?", a: "La mensualité est calculée selon la formule des annuités constantes : M = C × r × (1+r)ⁿ / ((1+r)ⁿ − 1), où C est le capital, r le taux mensuel et n le nombre de mensualités." },
+  { q: "Qu'est-ce que le taux d'endettement ?", a: "Le taux d'endettement (ou taux d'effort) rapporte vos mensualités de crédit à vos revenus nets. Les banques appliquent un seuil de 35% depuis 2021 (recommandation HCSF). Au-delà, le dossier est en général refusé sauf exceptions." },
+  { q: "Qu'est-ce que le PTZ (primo-accédant) ?", a: "Le Prêt à Taux Zéro est réservé aux primo-accédants (achetant leur première résidence principale). Ce simulateur en fait une approximation en supposant 10% du capital emprunté à taux réduit (1,95%). Les conditions réelles dépendent de la zone géographique et des revenus." },
+  { q: "Les frais de notaire sont-ils obligatoires ?", a: "Oui. Pour un logement ancien, ils représentent environ 7-8% du prix d'achat (droits de mutation, honoraires notaire, frais de dossier). Pour le neuf, ils sont réduits à environ 2-3%. Ils peuvent être inclus dans le crédit ou payés comptant." },
+];
+
+// ─── Simulateur ───────────────────────────────────────────────────────────────
+export default function EmpruntImmobilier() {
+  const [theme, setTheme] = useTheme();
+
+  const [prix, setPrix]               = useState(null);
+  const [neuf, setNeuf]               = useState(false);
+  const [inclureNotaire, setInclure]  = useState(true);
+  const [apport, setApport]           = useState(null);
+  const [duree, setDuree]             = useState(20);
+  const [taux, setTaux]               = useState(3.5);
+  const [primo, setPrimo]             = useState(false);
+  const [salaire, setSalaire]         = useState(null);
+  const [coEmp, setCoEmp]             = useState(false);
+  const [salaireCoEmp, setSalaireCoEmp] = useState(null);
+  const [taxeFonc, setTaxeFonc]       = useState(0);
+  const [charges, setCharges]         = useState(0);
+  const [assurance, setAssurance]     = useState(0);
+
+  useEffect(() => {
+    document.title = "Emprunt immobilier — mesimulateurs.fr";
+  }, []);
+
+  const fn = prix ? fraisNotaire(prix, neuf) : 0;
+  const capitalEmprunte = Math.max(0, (prix ?? 0) + (inclureNotaire ? fn : 0) - (apport ?? 0));
+  const primoCapital = primo ? capitalEmprunte * 0.1 : 0;
+  const primoTaux = 1.95;
+  const capitalPrincipal = capitalEmprunte - primoCapital;
+
+  const mPrincipal = mensualite(capitalPrincipal, taux, duree);
+  const mPrimo = mensualite(primoCapital, primoTaux, duree);
+  const mTotal = mPrincipal + mPrimo;
+
+  const coutTotal = mTotal * duree * 12;
+  const coutInterets = coutTotal - capitalEmprunte;
+  const revenuTotal = (salaire ?? 0) + (coEmp ? (salaireCoEmp ?? 0) : 0);
+  const chargesTotal = taxeFonc / 12 + charges + assurance;
+  const tauxEndet = revenuTotal > 0 ? (mTotal / revenuTotal) * 100 : 0;
+  const resteAVivre = revenuTotal - mTotal - chargesTotal;
+  const apportPct = prix && prix > 0 ? ((apport ?? 0) / prix * 100).toFixed(1) : 0;
+
+  const animMensualite = useAnimatedNumber(mTotal);
+  const animCapital = useAnimatedNumber(capitalEmprunte);
+  const animInterets = useAnimatedNumber(coutInterets);
+  const animTauxEndet = useAnimatedNumber(tauxEndet);
+  const animReste = useAnimatedNumber(resteAVivre);
+
+  const hasResult = prix && prix > 0;
+
+  const indicateurs = [
+    { label: "Apport ≥ 10% du prix", ok: prix > 0 && (apport ?? 0) / prix >= 0.1 },
+    { label: "Taux d'endettement ≤ 35%", ok: tauxEndet > 0 && tauxEndet <= 35 },
+    { label: "Reste à vivre ≥ 1 200 €/mois", ok: resteAVivre >= 1200 },
+    { label: "Durée ≤ 25 ans", ok: duree <= 25 },
+    { label: "Taux de marché ≤ 5%", ok: taux <= 5 },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+      <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: "0 24px 80px" }}>
+        <SimulateurHeader
+          icon="🏠"
+          badge="Immobilier · Simulation 2026"
+          title="Simulateur d'emprunt immobilier"
+          subtitle="Mensualités · Capacité · Coût total"
+          desc="Calculez vos mensualités, votre taux d'endettement et le coût total de votre crédit. Inclut frais de notaire, primo-accédant et tableau d'amortissement."
+        />
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+
+          {/* ── Colonne gauche : formulaire ── */}
+          <div>
+            {/* Bien */}
+            <div style={card}>
+              <h2 style={sectionTitle}>Bien immobilier</h2>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Type de bien</span>
+                <Toggle options={["Ancien", "Neuf"]} checked={neuf} onChange={setNeuf} />
+              </div>
+              <NumInput label="Prix du bien" value={prix} onChange={setPrix} unit="€" min={10000} max={5000000} />
+              {prix > 0 && (
+                <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <div style={{ fontSize: 11, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Frais de notaire estimés</div>
+                      <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>{neuf ? "2,5% (neuf)" : "7,5% (ancien)"}</div>
+                    </div>
+                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(fn))}</span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
+                    <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Inclure dans l'emprunt</span>
+                    <Toggle options={["Non", "Oui"]} checked={inclureNotaire} onChange={setInclure} />
+                  </div>
+                </div>
+              )}
+              <NumInput label="Apport personnel" value={apport} onChange={setApport} unit="€" min={0} max={5000000}
+                hint={prix > 0 && apport ? `${apportPct}% du prix` : undefined} />
+              {prix > 0 && (
+                <div style={{ display: "flex", gap: 8, marginTop: -12, marginBottom: 24 }}>
+                  {[10, 20, 30].map(p => (
+                    <button key={p} onClick={() => setApport(Math.round(prix * p / 100))}
+                      style={{ flex: 1, padding: "7px 4px", background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text-secondary)", borderRadius: 8, cursor: "pointer", fontSize: 11, fontFamily: "'DM Sans', sans-serif" }}
+                      onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
+                      onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+                    >
+                      {p}%
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Prêt */}
+            <div style={card}>
+              <h2 style={sectionTitle}>Paramètres du prêt</h2>
+              <StepperInput label="Durée" value={duree} onChange={v => setDuree(Math.round(v))} min={1} max={30} step={1} unit="ans" />
+              <StepperInput label="Taux d'intérêt annuel" value={taux} onChange={setTaux} min={0.1} max={15} step={0.1} unit="%" />
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                <div>
+                  <div style={{ fontSize: 13, color: primo ? "var(--gold)" : "var(--text-secondary)", fontWeight: primo ? 500 : 400 }}>Primo-accédant (PTZ)</div>
+                  <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>10% du capital à 1,95%/an</div>
+                </div>
+                <Toggle options={["Non", "Oui"]} checked={primo} onChange={setPrimo} />
+              </div>
+              {primo && capitalEmprunte > 0 && (
+                <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  <Chip label="Tranche aidée (1,95%)" value={fmtEur(Math.round(primoCapital))} accent />
+                  <Chip label="Tranche principale" value={fmtEur(Math.round(capitalPrincipal))} />
+                </div>
+              )}
+            </div>
+
+            {/* Revenus */}
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                <h2 style={{ ...sectionTitle, marginBottom: 0 }}>Revenus mensuels nets</h2>
+                <Toggle options={["Seul", "À deux"]} checked={coEmp} onChange={setCoEmp} />
+              </div>
+              <NumInput label="Mon salaire net" value={salaire} onChange={setSalaire} unit="€/mois" />
+              {coEmp && <NumInput label="Salaire co-emprunteur" value={salaireCoEmp} onChange={setSalaireCoEmp} unit="€/mois" />}
+              {coEmp && salaire && salaireCoEmp && (
+                <div style={{ marginTop: -8 }}>
+                  <Chip label="Revenus cumulés" value={fmtEur(revenuTotal) + "/mois"} />
+                </div>
+              )}
+            </div>
+
+            {/* Charges optionnelles */}
+            <AccordionSection title="Charges du bien (optionnel)">
+              <StepperInput label="Taxe foncière" value={taxeFonc} onChange={setTaxeFonc} min={0} max={20000} step={50} unit="€/an"
+                hint={taxeFonc > 0 ? `soit ${fmtEur(Math.round(taxeFonc / 12))}/mois` : undefined} />
+              <StepperInput label="Charges de copropriété" value={charges} onChange={setCharges} min={0} max={5000} step={10} unit="€/mois" />
+              <StepperInput label="Assurance emprunteur" value={assurance} onChange={setAssurance} min={0} max={2000} step={5} unit="€/mois" />
+            </AccordionSection>
+          </div>
+
+          {/* ── Colonne droite : résultats ── */}
+          <div>
+            {/* Résultat principal */}
+            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+                Mensualité crédit
+              </div>
+              {hasResult ? (
+                <>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                    {fmtEur(Math.round(animMensualite))}
+                  </div>
+                  <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
+                    /mois · sur {duree} ans
+                  </div>
+                  {primo && (
+                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 10, fontSize: 12, color: "var(--text-secondary)" }}>
+                      <span style={{ color: "var(--gold)" }}>{fmtEur(Math.round(mPrimo))}/mois</span> à 1,95% (PTZ) ·{" "}
+                      <span>{fmtEur(Math.round(mPrincipal))}/mois</span> principal
+                    </div>
+                  )}
+                  {chargesTotal > 0 && (
+                    <div style={{ marginTop: 14, padding: "10px 16px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10 }}>
+                      <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Coût mensuel total (crédit + charges)</div>
+                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>
+                        {fmtEur(Math.round(mTotal + chargesTotal))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p style={{ color: "var(--text-secondary)", padding: "20px 0", fontSize: 14 }}>
+                  Saisissez le prix du bien pour voir votre estimation.
+                </p>
+              )}
+            </div>
+
+            {/* Taux d'endettement */}
+            {hasResult && salaire && (
+              <div style={card}>
+                <JaugeEndettement taux={animTauxEndet} />
+                {tauxEndet > 35 && (
+                  <div style={{ marginTop: 14, padding: "10px 14px", background: "rgba(200,80,80,0.06)", border: "1px solid rgba(200,80,80,0.25)", borderRadius: 10, fontSize: 12, color: "#cc7070", lineHeight: 1.6 }}>
+                    ⚠ Taux supérieur à 35 %. Augmentez l'apport, réduisez le montant ou rallongez la durée.
+                  </div>
+                )}
+                <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  <Chip label="Reste à vivre" value={fmtEur(Math.round(animReste)) + "/mois"} accent={resteAVivre >= 1200} />
+                  <Chip label="Capacité max (35%)" value={fmtEur(Math.round(revenuTotal * 0.35)) + "/mois"} />
+                </div>
+              </div>
+            )}
+
+            {/* Chips principaux */}
+            {hasResult && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+                <Chip label="Capital emprunté" value={fmtEur(Math.round(animCapital))} accent />
+                <Chip label="Dont intérêts" value={fmtEur(Math.round(animInterets))} />
+                <Chip label="Coût total crédit" value={fmtEur(Math.round(mTotal * duree * 12))} />
+                <Chip label="Frais de notaire" value={fmtEur(Math.round(fn))} />
+              </div>
+            )}
+
+            {/* Indicateurs */}
+            {hasResult && salaire && (
+              <AccordionSection title="Indicateurs bancaires" defaultOpen>
+                {indicateurs.map(({ label, ok }) => (
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: "1px solid var(--border)" }}>
+                    <div style={{ width: 20, height: 20, borderRadius: "50%", background: ok ? "rgba(100,200,100,0.08)" : "rgba(200,80,80,0.08)", border: `1px solid ${ok ? "rgba(100,200,100,0.3)" : "rgba(200,80,80,0.3)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, flexShrink: 0, color: ok ? "#6aaa6a" : "#cc5555" }}>
+                      {ok ? "✓" : "✗"}
+                    </div>
+                    <span style={{ fontSize: 13, color: ok ? "var(--text)" : "var(--text-secondary)" }}>{label}</span>
+                  </div>
+                ))}
+              </AccordionSection>
+            )}
+
+            {/* Récapitulatif */}
+            {hasResult && (
+              <AccordionSection title="Récapitulatif du projet">
+                {[
+                  { label: "Prix du bien", value: fmtEur(prix) },
+                  { label: `Frais de notaire (${neuf ? "2,5" : "7,5"}%)`, value: fmtEur(Math.round(fn)) },
+                  { label: "Apport personnel", value: "− " + fmtEur(apport ?? 0) },
+                  { label: "Capital emprunté", value: fmtEur(Math.round(capitalEmprunte)), accent: true },
+                ].map(({ label, value, accent }) => (
+                  <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
+                    <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
+                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                  </div>
+                ))}
+              </AccordionSection>
+            )}
+
+            {/* Tableau d'amortissement */}
+            {hasResult && capitalEmprunte > 0 && (
+              <AccordionSection title="Tableau d'amortissement" subtitle={`${duree} ans · ${duree * 12} mensualités`}>
+                <TableauAmortissement
+                  capital={capitalEmprunte} tauxAnnuel={taux} dureeAns={duree}
+                  primoCapital={primoCapital} primoTaux={primoTaux}
+                />
+              </AccordionSection>
+            )}
+          </div>
+        </div>
+
+        {/* FAQ */}
+        {FAQ.map(({ q, a }) => (
+          <AccordionSection key={q} title={q}>
+            <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.75 }}>{a}</p>
+          </AccordionSection>
+        ))}
+
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+          Simulation indicative · Ne constitue pas un engagement de la banque
+        </p>
+      </main>
+      <Footer />
+    </div>
+  );
+}

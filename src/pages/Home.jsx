@@ -6,123 +6,27 @@ import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 
 const SIMULATEURS = [
-  {
-    path: "/simulateurs/agirc-arrco",
-    icon: "🏆",
-    title: "Retraite complémentaire Agirc-Arrco",
-    desc: "Calculez vos points et estimez votre pension nette mensuelle. Intègre bonus-malus, GMP cadres, revalorisation projetée et comparateur de scénarios.",
-    tag: "Retraite · Salariés privés",
-    categories: ["Retraite"],
-    badges: ["popular", "updated"],
-    featured: true,
-    available: true,
-  },
-  {
-    path: "/simulateurs/cnav",
-    icon: "🏛",
-    title: "Régime général CNAV",
-    desc: "Estimez votre pension de base en fonction de vos trimestres validés, de votre salaire annuel moyen et de votre âge de départ.",
-    tag: "Retraite · Salariés",
-    categories: ["Retraite"],
-    badges: ["new"],
-    available: true,
-  },
-  {
-    path: "/simulateurs/fonction-publique",
-    icon: "⚖️",
-    title: "Retraite Fonction publique",
-    desc: "Calculez votre pension selon votre indice majoré, votre durée de service, vos bonifications et votre catégorie (sédentaire ou active).",
-    tag: "Retraite · Fonctionnaires",
-    categories: ["Retraite"],
-    badges: ["new"],
-    available: true,
-  },
-  {
-    path: "/simulateurs/independants",
-    icon: "💼",
-    title: "Indépendants & TNS",
-    desc: "Simulez votre retraite si vous êtes artisan, commerçant ou profession libérale — régime de base SSI et complémentaire.",
-    tag: "Retraite · Indépendants",
-    categories: ["Retraite"],
-    badges: ["new"],
-    available: true,
-  },
-  {
-    path: "/simulateurs/ircantec",
-    icon: "🏢",
-    title: "Complémentaire IRCANTEC",
-    desc: "Pour les agents non-titulaires de la fonction publique et élus locaux. Estimez vos points IRCANTEC et votre pension complémentaire.",
-    tag: "Retraite · Contractuels publics",
-    categories: ["Retraite"],
-    badges: [],
-    available: true,
-  },
-  {
-    path: "/simulateurs/retraite-progressive",
-    icon: "📅",
-    title: "Retraite progressive",
-    desc: "Envisagez-vous de réduire votre activité avant la retraite complète ? Simulez la pension partielle et l'impact sur votre future pension définitive.",
-    tag: "Retraite · Tous régimes",
-    categories: ["Retraite"],
-    badges: ["new"],
-    available: true,
-  },
-  {
-    path: "/simulateurs/emprunt-immobilier",
-    icon: "🏠",
-    title: "Emprunt immobilier",
-    desc: "Calculez vos mensualités, votre capacité d'emprunt, le coût total du crédit et votre taux d'endettement. Inclut frais de notaire, primo-accédant et tableau d'amortissement.",
-    tag: "Immobilier",
-    categories: ["Immobilier"],
-    badges: ["new"],
-    available: true,
-  },
+  // Retraite
+  { path: "/simulateurs/agirc-arrco", icon: "🏆", title: "Retraite complémentaire Agirc-Arrco", desc: "Calculez vos points et estimez votre pension nette mensuelle. Intègre bonus-malus, GMP cadres, revalorisation projetée et comparateur de scénarios.", tag: "Retraite · Salariés privés", categories: ["Retraite"], badges: ["popular", "updated"], featured: true, available: true },
+  { path: "/simulateurs/cnav", icon: "🏛", title: "Régime général CNAV", desc: "Estimez votre pension de base en fonction de vos trimestres validés, de votre salaire annuel moyen et de votre âge de départ.", tag: "Retraite · Salariés", categories: ["Retraite"], badges: [], available: true },
+  { path: "/simulateurs/fonction-publique", icon: "⚖️", title: "Retraite Fonction publique", desc: "Calculez votre pension selon votre indice majoré, votre durée de service, vos bonifications et votre catégorie (sédentaire ou active).", tag: "Retraite · Fonctionnaires", categories: ["Retraite"], badges: [], available: true },
+  { path: "/simulateurs/independants", icon: "💼", title: "Indépendants & TNS", desc: "Simulez votre retraite si vous êtes artisan, commerçant ou profession libérale — régime de base SSI et complémentaire.", tag: "Retraite · Indépendants", categories: ["Retraite"], badges: [], available: true },
+  { path: "/simulateurs/ircantec", icon: "🏢", title: "Complémentaire IRCANTEC", desc: "Pour les agents non-titulaires de la fonction publique et élus locaux. Estimez vos points IRCANTEC et votre pension complémentaire.", tag: "Retraite · Contractuels publics", categories: ["Retraite"], badges: [], available: true },
+  { path: "/simulateurs/retraite-progressive", icon: "📅", title: "Retraite progressive", desc: "Envisagez-vous de réduire votre activité avant la retraite complète ? Simulez la pension partielle et l'impact sur votre future pension définitive.", tag: "Retraite · Tous régimes", categories: ["Retraite"], badges: [], available: true },
+  { path: "/simulateurs/cnavpl", icon: "👨‍⚕️", title: "Professions libérales (CIPAV)", desc: "Estimez votre retraite de base SSI et votre complémentaire CIPAV si vous exercez une profession libérale non réglementée.", tag: "Retraite · Libéraux", categories: ["Retraite"], badges: ["new"], available: true },
+  { path: "/simulateurs/msa", icon: "🌾", title: "Retraite agricole MSA", desc: "Calculez votre retraite de base MSA et votre retraite complémentaire obligatoire (RCO) en tant qu'exploitant ou salarié agricole.", tag: "Retraite · Agriculture", categories: ["Retraite"], badges: ["new"], available: true },
+  // Immobilier
+  { path: "/simulateurs/emprunt-immobilier", icon: "🏠", title: "Emprunt immobilier", desc: "Calculez vos mensualités, votre capacité d'emprunt, le coût total du crédit et votre taux d'endettement. Inclut frais de notaire, primo-accédant et tableau d'amortissement.", tag: "Immobilier", categories: ["Immobilier"], badges: ["new"], available: true },
+  { path: "/simulateurs/rendement-locatif", icon: "📊", title: "Rendement locatif", desc: "Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion.", tag: "Immobilier", categories: ["Immobilier"], badges: ["new"], available: true },
+  // Impôts
+  { path: "/simulateurs/impot-revenu", icon: "📋", title: "Impôt sur le revenu", desc: "Estimez votre IR net, votre tranche marginale d'imposition (TMI) et votre taux moyen selon votre situation familiale.", tag: "Impôts", categories: ["Impôts"], badges: ["new"], available: true },
+  { path: "/simulateurs/plus-value-immobiliere", icon: "📈", title: "Plus-value immobilière", desc: "Calculez l'imposition de la plus-value lors de la vente d'un bien immobilier selon la durée de détention et les abattements applicables.", tag: "Impôts", categories: ["Impôts"], badges: ["new"], available: true },
+  // Finances
+  { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
+  { path: "/simulateurs/fire", icon: "🔥", title: "Indépendance financière (FIRE)", desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez combien d'années vous séparent de la liberté financière.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
 ];
 
-const COMING_SOON = [
-  {
-    icon: "👨‍⚕️",
-    title: "Professions libérales (CNAVPL)",
-    desc: "Médecins, avocats, architectes — simulateur adapté aux régimes CARMF, CNBF, CIPAV…",
-    tag: "Retraite",
-  },
-  {
-    icon: "🌾",
-    title: "Agriculteurs (MSA)",
-    desc: "Estimez votre retraite de base et complémentaire selon le régime agricole de la MSA.",
-    tag: "Retraite",
-  },
-  {
-    icon: "📊",
-    title: "Rendement locatif",
-    desc: "Évaluez la rentabilité brute et nette d'un investissement locatif en tenant compte des charges et de la fiscalité.",
-    tag: "Immobilier",
-  },
-  {
-    icon: "📋",
-    title: "Impôt sur le revenu",
-    desc: "Estimez votre IR net, votre tranche marginale et l'impact d'une variation de revenu ou d'une déduction fiscale.",
-    tag: "Impôts",
-  },
-  {
-    icon: "📈",
-    title: "Plus-value immobilière",
-    desc: "Calculez l'imposition de votre plus-value selon la durée de détention, les abattements applicables et votre profil.",
-    tag: "Impôts",
-  },
-  {
-    icon: "💰",
-    title: "Épargne & intérêts composés",
-    desc: "Projetez la croissance de votre épargne sur le long terme avec versements réguliers et revalorisation annuelle.",
-    tag: "Finances",
-  },
-  {
-    icon: "🔥",
-    title: "Indépendance financière (FIRE)",
-    desc: "Calculez la date à laquelle votre patrimoine peut couvrir vos dépenses sans travailler, selon vos objectifs.",
-    tag: "Finances",
-  },
-];
+const COMING_SOON = [];
 
 const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances"];
 
@@ -174,7 +78,7 @@ export default function Home() {
         </p>
         <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
           {[
-            { v: "6", l: "simulateurs actifs" },
+            { v: "14", l: "simulateurs actifs" },
             { v: "30 s", l: "pour une première estimation" },
             { v: "100 %", l: "gratuit & sans inscription" },
           ].map(({ v, l }) => (
@@ -231,26 +135,6 @@ export default function Home() {
           </p>
         )}
 
-        {/* Coming soon */}
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 600, color: "var(--text)", margin: "48px 0 24px", display: "flex", alignItems: "center", gap: 12 }}>
-          Bientôt disponibles
-          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-        </div>
-        <div className="sim-grid">
-          {COMING_SOON.map(s => (
-            <div key={s.title} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, opacity: 0.55, display: "flex", flexDirection: "column", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-                <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.4rem", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}>{s.icon}</div>
-                <span style={{ fontSize: 11, fontWeight: 500, padding: "3px 9px", borderRadius: 12, textTransform: "uppercase", letterSpacing: "0.06em", background: "rgba(148,163,184,0.1)", color: "var(--text-secondary)", border: "1px solid var(--border)" }}>Bientôt</span>
-              </div>
-              <div>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 8 }}>{s.title}</h3>
-                <p style={{ fontSize: "0.84rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{s.desc}</p>
-              </div>
-              <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "rgba(255,255,255,0.04)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10, alignSelf: "flex-start" }}>{s.tag}</span>
-            </div>
-          ))}
-        </div>
       </section>
 
       <Footer />

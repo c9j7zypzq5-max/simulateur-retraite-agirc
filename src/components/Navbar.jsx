@@ -51,6 +51,8 @@ const ALL_ITEMS = [
   { path: "/simulateurs/independants",         icon: "💼", title: "Indépendants / TNS",     subtitle: "SSI + RCI" },
   { path: "/simulateurs/ircantec",             icon: "🏢", title: "IRCANTEC",               subtitle: "Agents non-titulaires" },
   { path: "/simulateurs/retraite-progressive", icon: "📅", title: "Retraite progressive",   subtitle: "Mi-temps + pension" },
+  { path: "/simulateurs/cnavpl",               icon: "👨‍⚕️", title: "Professions libérales", subtitle: "CIPAV / base SSI" },
+  { path: "/simulateurs/msa",                  icon: "🌾", title: "Retraite agricole MSA",  subtitle: "Exploitants & salariés" },
 ];
 
 const NAV_GROUPS = [
@@ -59,10 +61,17 @@ const NAV_GROUPS = [
     items: ALL_ITEMS,
   },
   { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
-    { path: "/simulateurs/emprunt-immobilier", icon: "🏠", title: "Emprunt immobilier", subtitle: "Mensualités & capacité" },
+    { path: "/simulateurs/emprunt-immobilier",  icon: "🏠", title: "Emprunt immobilier",  subtitle: "Mensualités & capacité" },
+    { path: "/simulateurs/rendement-locatif",   icon: "📊", title: "Rendement locatif",   subtitle: "Rentabilité brute & nette" },
   ] },
-  { id: "impots",     icon: "📋", label: "Impôts",     items: [], comingSoon: true },
-  { id: "finances",   icon: "💰", label: "Finances",   items: [], comingSoon: true },
+  { id: "impots", icon: "📋", label: "Impôts", items: [
+    { path: "/simulateurs/impot-revenu",             icon: "📋", title: "Impôt sur le revenu",    subtitle: "TMI & taux moyen" },
+    { path: "/simulateurs/plus-value-immobiliere",   icon: "📈", title: "Plus-value immobilière", subtitle: "IR + prélèvements sociaux" },
+  ] },
+  { id: "finances", icon: "💰", label: "Finances", items: [
+    { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
+    { path: "/simulateurs/fire",    icon: "🔥", title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
+  ] },
 ];
 
 export default function Navbar({ theme, setTheme }) {
