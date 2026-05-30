@@ -1,4 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
+
+function useIsMobile(breakpoint = 680) {
+  const [mob, setMob] = useState(() =>
+    typeof window !== "undefined" && window.innerWidth < breakpoint
+  );
+  useEffect(() => {
+    const fn = () => setMob(window.innerWidth < breakpoint);
+    window.addEventListener("resize", fn, { passive: true });
+    return () => window.removeEventListener("resize", fn);
+  }, [breakpoint]);
+  return mob;
+}
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -91,8 +103,7 @@ function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, pri
   );
 }
 
-// ─── Carte section ────────────────────────────────────────────────────────────
-const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" };
+// ─── sectionTitle constant (pas de dépendance mobile) ────────────────────────
 const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
@@ -129,6 +140,14 @@ const FAQ = [
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function EmpruntImmobilier() {
   const [theme, setTheme] = useTheme();
+  const isMobile = useIsMobile();
+
+  // card padding responsive : 28/32px desktop, 20/16px mobile
+  const card = {
+    background: "var(--card-bg)", border: "1px solid var(--border)",
+    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    marginBottom: 20, boxShadow: "var(--card-shadow)",
+  };
 
   const [prix, setPrix]               = useState(null);
   const [neuf, setNeuf]               = useState(false);
@@ -185,7 +204,7 @@ export default function EmpruntImmobilier() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
         <SimulateurHeader
           icon="🏠"
           badge="Immobilier · Simulation 2026"
@@ -194,10 +213,10 @@ export default function EmpruntImmobilier() {
           desc="Calculez vos mensualités, votre taux d'endettement et le coût total de votre crédit. Inclut frais de notaire, primo-accédant et tableau d'amortissement."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
 
-          {/* ── Colonne gauche : formulaire ── */}
-          <div>
+          {/* ── Colonne formulaire — visuellement 2e sur mobile (order 2) ── */}
+          <div style={{ order: isMobile ? 2 : 1 }}>
             {/* Bien */}
             <div style={card}>
               <h2 style={sectionTitle}>Bien immobilier</h2>
@@ -251,7 +270,7 @@ export default function EmpruntImmobilier() {
                 <Toggle options={["Non", "Oui"]} checked={primo} onChange={setPrimo} />
               </div>
               {primo && capitalEmprunte > 0 && (
-                <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                <div style={{ marginTop: 12, display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 8 }}>
                   <Chip label="Tranche aidée (1,95%)" value={fmtEur(Math.round(primoCapital))} accent />
                   <Chip label="Tranche principale" value={fmtEur(Math.round(capitalPrincipal))} />
                 </div>
@@ -282,8 +301,8 @@ export default function EmpruntImmobilier() {
             </AccordionSection>
           </div>
 
-          {/* ── Colonne droite : résultats ── */}
-          <div>
+          {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
+          <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
             {/* Résultat principal */}
             <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }}>
               <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
@@ -329,19 +348,19 @@ export default function EmpruntImmobilier() {
                   </div>
                 )}
                 <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  <Chip label="Reste à vivre" value={fmtEur(Math.round(animReste)) + "/mois"} accent={resteAVivre >= 1200} />
-                  <Chip label="Capacité max (35%)" value={fmtEur(Math.round(revenuTotal * 0.35)) + "/mois"} />
+                  <Chip label="Reste à vivre" value={fmtEur(Math.round(animReste)) + "/mois"} accent={resteAVivre >= 1200} small />
+                  <Chip label="Capacité max (35%)" value={fmtEur(Math.round(revenuTotal * 0.35)) + "/mois"} small />
                 </div>
               </div>
             )}
 
-            {/* Chips principaux */}
+            {/* Chips principaux — toujours 2 colonnes car la colonne résultats est pleine largeur sur mobile */}
             {hasResult && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-                <Chip label="Capital emprunté" value={fmtEur(Math.round(animCapital))} accent />
-                <Chip label="Dont intérêts" value={fmtEur(Math.round(animInterets))} />
-                <Chip label="Coût total crédit" value={fmtEur(Math.round(mTotal * duree * 12))} />
-                <Chip label="Frais de notaire" value={fmtEur(Math.round(fn))} />
+                <Chip label="Capital emprunté" value={fmtEur(Math.round(animCapital))} accent small />
+                <Chip label="Dont intérêts" value={fmtEur(Math.round(animInterets))} small />
+                <Chip label="Coût total crédit" value={fmtEur(Math.round(mTotal * duree * 12))} small />
+                <Chip label="Frais de notaire" value={fmtEur(Math.round(fn))} small />
               </div>
             )}
 
