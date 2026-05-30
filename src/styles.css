@@ -38,7 +38,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+  /* box-shadow inclus pour que les hover glow s'animent sans transition inline */
+  transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.2s ease;
 }
 
 body {
@@ -92,6 +93,25 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes progressFill {
+  from { width: 0%; }
+}
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184,147,74,0); }
+  50%       { box-shadow: 0 0 18px 3px rgba(184,147,74,0.18); }
 }
 
 /* ── Responsive simulator grid ── */

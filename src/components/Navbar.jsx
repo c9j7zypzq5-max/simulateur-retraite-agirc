@@ -9,8 +9,8 @@ function IosToggle({ theme, setTheme, compact = false }) {
     background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
     cursor: "pointer", position: "relative", flexShrink: 0,
     boxShadow: isDark
-      ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22)"
-      : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45)",
+      ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22), 0 0 12px rgba(30,80,200,0.1)"
+      : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45), 0 0 10px rgba(210,160,40,0.08)",
     transition: "background 0.3s ease, box-shadow 0.3s ease",
   };
   const knob = {

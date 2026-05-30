@@ -155,8 +155,20 @@ export function Toggle({ options, checked, onChange }) {
 
 // ─── Chip ─────────────────────────────────────────────────────────────────────
 export function Chip({ label, value, accent, small }) {
+  const [hovered, setHovered] = useState(false);
   return (
-    <div style={{ background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)", border: `1px solid ${accent ? "rgba(184,147,74,0.4)" : "var(--border)"}`, borderRadius: 10, padding: small ? "10px 12px" : "14px 16px", boxShadow: "var(--card-shadow)" }}>
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+        border: `1px solid ${hovered ? "var(--border-gold)" : (accent ? "rgba(184,147,74,0.4)" : "var(--border)")}`,
+        borderRadius: 10,
+        padding: small ? "10px 12px" : "14px 16px",
+        boxShadow: hovered ? "0 4px 18px rgba(184,147,74,0.1)" : "var(--card-shadow)",
+        cursor: "default",
+      }}
+    >
       <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 5 }}>{label}</div>
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
     </div>
@@ -166,14 +178,30 @@ export function Chip({ label, value, accent, small }) {
 // ─── ProgressBar ─────────────────────────────────────────────────────────────
 export function ProgressBar({ label, value, total, color }) {
   const pct = total > 0 ? Math.min((value / total) * 100, 100) : 0;
+  // Couleur sémantique auto si non spécifiée
+  const autoColor = color || (
+    pct >= 100 ? "#22c55e" :
+    pct >= 75  ? "linear-gradient(90deg,var(--gold-mid),var(--gold))" :
+    pct >= 40  ? "linear-gradient(90deg,#b8934a,var(--gold))" :
+                 "linear-gradient(90deg,#94a3b8,var(--gold-mid))"
+  );
+  const complete = pct >= 100;
   return (
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 12, color: "var(--text-secondary)" }}>
         <span>{label}</span>
-        <span style={{ color: "var(--text)" }}>{fmt(value)} ({pct.toFixed(0)} %)</span>
+        <span style={{ color: complete ? "#22c55e" : "var(--text)", fontWeight: complete ? 600 : 400 }}>
+          {fmt(value)} ({pct.toFixed(0)} %)
+        </span>
       </div>
-      <div style={{ height: 5, background: "var(--progress-track)", borderRadius: 3, overflow: "hidden" }}>
-        <div style={{ height: "100%", width: `${pct}%`, background: color, borderRadius: 3, transition: "width 0.5s cubic-bezier(.4,0,.2,1)" }} />
+      <div style={{ height: 6, background: "var(--progress-track)", borderRadius: 3, overflow: "hidden" }}>
+        <div style={{
+          height: "100%", width: `${pct}%`,
+          background: autoColor,
+          borderRadius: 3,
+          transition: "width 0.6s cubic-bezier(.4,0,.2,1)",
+          boxShadow: complete ? "0 0 8px rgba(34,197,94,0.4)" : "none",
+        }} />
       </div>
     </div>
   );
@@ -182,19 +210,22 @@ export function ProgressBar({ label, value, total, color }) {
 // ─── AccordionSection ────────────────────────────────────────────────────────
 export function AccordionSection({ title, subtitle, children, gold = false, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
+  const [btnHovered, setBtnHovered] = useState(false);
   const panelId = `acc-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`;
   return (
     <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={panelId}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: "none", border: "none", cursor: "pointer" }}>
+        onMouseEnter={() => setBtnHovered(true)}
+        onMouseLeave={() => setBtnHovered(false)}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(184,147,74,0.04)" : "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
           <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
           {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
         </div>
-        <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0 }} aria-hidden="true">{open ? "−" : "+"}</span>
+        <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0, transition: "transform 0.2s ease, color 0.2s", transform: open ? "rotate(0deg)" : "rotate(0deg)" }} aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
       {open && (
-        <div id={panelId} role="region" aria-label={title} style={{ padding: "0 28px 28px" }}>
+        <div id={panelId} role="region" aria-label={title} style={{ padding: "0 28px 28px", animation: "slideDown 0.18s ease" }}>
           {children}
         </div>
       )}
@@ -213,12 +244,64 @@ export function ResultCard({ label, pension, subLabel, empty }) {
         </p>
       ) : (
         <>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <div key={pension} style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "scaleIn 0.3s ease" }}>
             {pension}
           </div>
           {subLabel && <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>{subLabel}</div>}
         </>
       )}
+    </div>
+  );
+}
+
+// ─── StatusBadge ──────────────────────────────────────────────────────────────
+export function StatusBadge({ status, label }) {
+  const palette = {
+    good: { bg: "rgba(34,197,94,0.1)",    color: "#22c55e", border: "1px solid rgba(34,197,94,0.25)" },
+    warn: { bg: "rgba(249,115,22,0.1)",   color: "#f97316", border: "1px solid rgba(249,115,22,0.25)" },
+    bad:  { bg: "rgba(239,68,68,0.1)",    color: "#ef4444", border: "1px solid rgba(239,68,68,0.25)" },
+    info: { bg: "rgba(99,102,241,0.1)",   color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" },
+    gold: { bg: "rgba(184,147,74,0.1)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
+  };
+  const s = palette[status] || palette.info;
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", fontSize: 11, fontWeight: 500, padding: "3px 10px", borderRadius: 12, ...s }}>
+      {label}
+    </span>
+  );
+}
+
+// ─── FaqItem + FaqSection ────────────────────────────────────────────────────
+export function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}
+      >
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)", transition: "color 0.2s" }}>
+          {open ? "−" : "+"}
+        </span>
+      </button>
+      {open && (
+        <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8, animation: "slideDown 0.18s ease" }}>
+          {a}
+        </p>
+      )}
+    </div>
+  );
+}
+
+export function FaqSection({ title = "Questions fréquentes", items }) {
+  return (
+    <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
+        {title}
+      </h2>
+      {items.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
     </div>
   );
 }
