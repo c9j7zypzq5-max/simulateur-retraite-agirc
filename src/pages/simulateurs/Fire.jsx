@@ -304,11 +304,8 @@ export default function Fire() {
   const [tauxRetrait, setTauxRetrait]     = useState(TAUX_RETRAIT_DEFAUT);
 
   useEffect(() => {
-    document.title = "Simulateur FIRE — Indépendance financière · mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      "Calculez le patrimoine nécessaire pour vivre de vos investissements (FIRE) et estimez à quel âge vous atteindrez la liberté financière."
-    );
+    document.title = "Simulateur FIRE 2025 — Liberté financière et indépendance";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez la liberté financière avec la règle des 4% : capital cible, projection de patrimoine, courbe de croissance.");
   }, []);
 
   const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait });

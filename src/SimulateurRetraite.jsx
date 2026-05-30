@@ -439,8 +439,8 @@ export default function SimulateurRetraite() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Agirc-Arrco 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez gratuitement votre pension de retraite complémentaire Agirc-Arrco. Calcul de points, bonus-malus, GMP cadres, revalorisation projetée.");
+    document.title = "Simulateur Retraite Agirc-Arrco 2025 — Calcul points et pension";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite complémentaire Agirc-Arrco : nombre de points, valeur du point 2025, pension brute et nette estimée.");
     document.querySelector('link[rel="canonical"]')?.setAttribute("href", "https://www.mesimulateurs.fr/simulateurs/agirc-arrco");
   }, []);
 

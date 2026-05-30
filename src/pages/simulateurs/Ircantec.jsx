@@ -87,8 +87,8 @@ export default function Ircantec() {
   const [tauxReval, setTauxReval]         = useState(null);
 
   useEffect(() => {
-    document.title = "Simulateur IRCANTEC 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension complémentaire IRCANTEC en 2026 : points tranche A et B, valeur de service, revalorisation.");
+    document.title = "Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
   }, []);
 
   const res = calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval });

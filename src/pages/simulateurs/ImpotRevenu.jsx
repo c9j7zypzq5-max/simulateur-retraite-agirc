@@ -94,8 +94,8 @@ export default function ImpotRevenu() {
   const [nbEnfants, setNbEnfants]         = useState(0);
 
   useEffect(() => {
-    document.title = "Simulateur Impôt sur le revenu 2025 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu, TMI et taux moyen selon votre situation familiale et vos revenus 2025.");
+    document.title = "Simulateur Impôt sur le Revenu 2025 — Calcul IR barème officiel";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2025 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
   }, []);
 
   const res = revenuBrut ? calcIR(revenuBrut, situation, nbEnfants) : null;

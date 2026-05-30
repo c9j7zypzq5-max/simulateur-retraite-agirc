@@ -104,11 +104,8 @@ export default function VieEnSemaines() {
   }, [genre, esperanceModifiee]);
 
   useEffect(() => {
-    document.title = "Ma vie en semaines — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      "Visualisez votre vie en semaines sous forme de grille. Combien de semaines avez-vous vécues ? Combien reste-t-il ?"
-    );
+    document.title = "Simulateur Ma Vie en Semaines — Visualisez votre temps de vie";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
   }, []);
 
   const res = calcVie({ dateNaissance, esperance });

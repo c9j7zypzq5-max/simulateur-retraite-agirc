@@ -200,11 +200,8 @@ export default function Cnavpl() {
   const [ageDépart, setAgeDépart] = useState(65);
 
   useEffect(() => {
-    document.title = "Simulateur CNAVPL — Professions libérales · mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      "Estimez votre retraite si vous exercez une profession libérale (CIPAV) : régime de base + complémentaire."
-    );
+    document.title = "Simulateur Retraite CIPAV 2025 — Professions libérales";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
   }, []);
 
   const res = calcCnavpl({

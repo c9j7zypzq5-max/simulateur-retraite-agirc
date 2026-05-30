@@ -87,8 +87,8 @@ export default function Cnav() {
   const [ageDépart, setAgeDépart]         = useState(null);
 
   useEffect(() => {
-    document.title = "Simulateur CNAV Régime général 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite de base CNAV en 2026 : trimestres, SAM, taux de liquidation, décote et surcote.");
+    document.title = "Simulateur Retraite CNAV 2025 — Régime général salariés";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
   }, []);
 
   const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });

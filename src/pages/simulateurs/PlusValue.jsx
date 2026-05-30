@@ -92,8 +92,8 @@ export default function PlusValue() {
   const [prixVente, setPrixVente]         = useState(null);
 
   useEffect(() => {
-    document.title = "Simulateur Plus-value immobilière 2025 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez l'imposition de votre plus-value immobilière selon la durée de détention. IR, prélèvements sociaux, abattements.");
+    document.title = "Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
   }, []);
 
   const isValid = prixVente && prixVente > 0 && anneeAchat && anneeVente && anneeVente > anneeAchat;

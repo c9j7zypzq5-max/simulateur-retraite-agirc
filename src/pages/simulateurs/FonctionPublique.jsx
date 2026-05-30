@@ -63,8 +63,8 @@ export default function FonctionPublique() {
   const [bonus3Enfants, setBonus3Enfants] = useState(false);
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Fonction publique 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite de la fonction publique selon votre traitement indiciaire, vos années de service et votre catégorie.");
+    document.title = "Simulateur Retraite Fonction Publique 2025";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
   }, []);
 
   const res = calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants });

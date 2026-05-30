@@ -69,11 +69,8 @@ export default function CoutEnHeures() {
   const [moisParAn, setMois]        = useState(MOIS_AN_DEFAUT);
 
   useEffect(() => {
-    document.title = "Le vrai prix en heures de vie — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      "Convertissez le prix de n'importe quel achat en heures de travail réelles. Un outil pour mieux évaluer la valeur de votre argent."
-    );
+    document.title = "Simulateur Coût en Heures de Vie — Le vrai prix de vos achats";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Convertissez n'importe quel prix en heures de travail réel : combien de jours, semaines ou % de votre salaire représente cet achat ?");
   }, []);
 
   const res = calcCout({ prix, salaire, heuresSemaine, moisParAn });

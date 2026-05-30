@@ -53,8 +53,8 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState("Tous");
 
   useEffect(() => {
-    document.title = "mesimulateurs.fr — Simulateurs financiers gratuits";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulateurs gratuits pour vos grandes décisions : retraite, immobilier, impôts, finances personnelles. Précis, pédagogiques, données 2026.");
+    document.title = "Mesimulateurs.fr — Simulateurs gratuits retraite, immobilier, finances";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite, emprunt immobilier, impôts, épargne et liberté financière. 16 simulateurs gratuits, calculs en temps réel, sans inscription.");
   }, []);
 
   const filtered = activeFilter === "Tous"

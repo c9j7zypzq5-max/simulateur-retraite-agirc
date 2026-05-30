@@ -20,7 +20,7 @@ export default function MentionsLegales() {
     const prevDesc  = document.querySelector('meta[name="description"]')?.getAttribute("content");
     const robotsMeta = document.querySelector('meta[name="robots"]');
     document.title = "Mentions légales — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Mentions légales de mesimulateurs.fr — éditeur, hébergeur, propriété intellectuelle, responsabilité.");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Mentions légales du site mesimulateurs.fr : éditeur, hébergeur, propriété intellectuelle et responsabilité.");
     if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
     return () => {
       document.title = prevTitle;

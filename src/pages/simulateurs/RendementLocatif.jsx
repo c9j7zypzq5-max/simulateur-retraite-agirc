@@ -72,8 +72,8 @@ export default function RendementLocatif() {
   const [gestionLocative, setGestionLocative] = useState(false);
 
   useEffect(() => {
-    document.title = "Simulateur Rendement Locatif 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net d'un investissement locatif, incluant les frais, charges et cash-flow mensuel.");
+    document.title = "Simulateur Rendement Locatif 2025 — Rentabilité investissement immobilier";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.");
   }, []);
 
   const res = calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative });

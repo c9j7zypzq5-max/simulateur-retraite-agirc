@@ -84,8 +84,8 @@ export default function Epargne() {
   const [duree, setDuree]                     = useState(20);
 
   useEffect(() => {
-    document.title = "Simulateur Épargne & Intérêts Composés 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et versements réguliers.");
+    document.title = "Simulateur Épargne 2025 — Intérêts composés et capital final";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.");
   }, []);
 
   const res = calcEpargne({ capitalInitial, versement, tauxAnnuel, duree });

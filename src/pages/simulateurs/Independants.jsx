@@ -87,8 +87,8 @@ export default function Independants() {
   const [activite, setActivite]           = useState(false); // false=artisan/comm, true=liberal
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Indépendants & TNS 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'artisan, commerçant ou travailleur indépendant : régime de base SSI et complémentaire RCI 2026.");
+    document.title = "Simulateur Retraite Indépendants TNS 2025 — SSI";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
   }, []);
 
   const res = calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite });

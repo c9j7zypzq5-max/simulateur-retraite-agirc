@@ -171,8 +171,8 @@ export default function Msa() {
   const [ageDépart, setAgeDépart] = useState(null);
 
   useEffect(() => {
-    document.title = "Simulateur MSA Retraite agricole 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite MSA en 2026 : exploitants et salariés agricoles, régime de base + RCO complémentaire.");
+    document.title = "Simulateur Retraite MSA 2025 — Agriculteurs";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
   }, []);
 
   const isExploitant = type === "exploitant";

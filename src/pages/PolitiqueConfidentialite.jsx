@@ -20,7 +20,7 @@ export default function PolitiqueConfidentialite() {
     const prevDesc  = document.querySelector('meta[name="description"]')?.getAttribute("content");
     const robotsMeta = document.querySelector('meta[name="robots"]');
     document.title = "Politique de confidentialité — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Politique de confidentialité de mesimulateurs.fr — données collectées, cookies Google AdSense, RGPD, droits des utilisateurs.");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Politique de confidentialité et cookies de mesimulateurs.fr : données collectées, Google AdSense, RGPD.");
     if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
     return () => {
       document.title = prevTitle;

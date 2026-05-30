@@ -60,8 +60,8 @@ export default function RetraiteProgressive() {
   const [duree, setDuree]               = useState(null);
 
   useEffect(() => {
-    document.title = "Simulateur Retraite progressive 2026 — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : pension partielle, revenu à temps partiel, impact sur la pension finale.");
+    document.title = "Simulateur Retraite Progressive 2025";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
   }, []);
 
   const res = calcRP({ pensionPleineTaux, salaire, quotite, duree });
