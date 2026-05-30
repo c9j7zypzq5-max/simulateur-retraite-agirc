@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Footer from "./components/Footer.jsx";
 import AdUnit from "./components/AdUnit.jsx";
+import Navbar from "./components/Navbar.jsx";
+import { useTheme } from "./hooks/useTheme.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 47_100;
@@ -434,16 +436,13 @@ function FaqItem({ q, a }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function SimulateurRetraite() {
-  // Theme — persisté dans localStorage, détecte prefers-color-scheme
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem("theme");
-    if (saved) return saved;
-    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  });
+  const [theme, setTheme] = useTheme();
+
   useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    document.title = "Simulateur Retraite Agirc-Arrco 2026 — mesimulateurs.fr";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez gratuitement votre pension de retraite complémentaire Agirc-Arrco. Calcul de points, bonus-malus, GMP cadres, revalorisation projetée.");
+    document.querySelector('link[rel="canonical"]')?.setAttribute("href", "https://www.mesimulateurs.fr/simulateurs/agirc-arrco");
+  }, []);
 
   // Base inputs — null = pas de valeur par défaut
   const [salaire, setSalaire]                 = useState(null);
@@ -481,42 +480,13 @@ export default function SimulateurRetraite() {
 
   return (
     <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
+      <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 0 36px", animation: "fadeUp .5s ease both" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
-            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Simulation gratuite · Données 2026</span>
-          </div>
-          {/* ── Theme toggle ── */}
-          <button
-            onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-            aria-label={theme === "dark" ? "Passer en mode clair" : "Passer en mode sombre"}
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              background: "var(--card-bg)", border: "1px solid var(--border)",
-              borderRadius: 50, padding: "8px 16px", cursor: "pointer",
-              color: "var(--text-secondary)", fontSize: 13,
-              boxShadow: "var(--card-shadow)",
-            }}
-          >
-            <span aria-hidden="true">{theme === "dark" ? "🌙" : "☀️"}</span>
-            <div aria-hidden="true" style={{
-              width: 36, height: 20, borderRadius: 10, position: "relative",
-              background: theme === "dark" ? "rgba(184,147,74,0.3)" : "rgba(154,111,42,0.3)",
-              transition: "background 0.25s",
-              flexShrink: 0,
-            }}>
-              <div style={{
-                position: "absolute", top: 2,
-                left: theme === "dark" ? 2 : 18,
-                width: 16, height: 16, borderRadius: "50%",
-                background: "var(--gold)", transition: "left 0.25s ease",
-              }} />
-            </div>
-            <span>{theme === "dark" ? "Mode sombre" : "Mode clair"}</span>
-          </button>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "40px 0 32px", animation: "fadeUp .5s ease both" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+          <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
+          <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Simulation gratuite · Données 2026</span>
         </div>
 
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(30px,6vw,50px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)", marginBottom: 8 }}>
