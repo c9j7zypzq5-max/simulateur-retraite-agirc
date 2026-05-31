@@ -33,7 +33,7 @@ export default function APropos() {
         </h1>
 
         <Section title="Notre mission">
-          <p>mesimulateurs.fr propose des outils de simulation financière <strong style={{ color: "var(--text)" }}>gratuits, transparents et sans inscription</strong>. Pas de création de compte, pas de publicité intrusive, pas de collecte de données personnelles.</p>
+          <p>mesimulateurs.fr propose des outils de simulation financière <strong style={{ color: "var(--text)" }}>gratuits, transparents et sans inscription</strong>. Pas de création de compte, pas de collecte de données personnelles.</p>
           <p style={{ marginTop: 12 }}>Tous les calculs s'effectuent directement dans votre navigateur. Aucune donnée n'est transmise à nos serveurs : vos informations restent sur votre appareil.</p>
         </Section>
 
@@ -62,13 +62,13 @@ export default function APropos() {
 
         <Section title="Contact">
           <p>Pour toute question, suggestion ou signalement d'erreur :</p>
-          <a href="mailto:adrian.faragofer@gmail.com" style={{ color: "var(--gold)", fontWeight: 500, textDecoration: "none", display: "inline-block", marginTop: 8 }}>
-            adrian.faragofer@gmail.com
+          <a href="mailto:contact@mesimulateurs.fr" style={{ color: "var(--gold)", fontWeight: 500, textDecoration: "none", display: "inline-block", marginTop: 8 }}>
+            contact@mesimulateurs.fr
           </a>
         </Section>
 
         <Section title="Technologies">
-          <p>Le site est construit avec <strong style={{ color: "var(--text)" }}>React / Vite</strong>, hébergé sur <strong style={{ color: "var(--text)" }}>Vercel</strong>. Le code source est open source.</p>
+          <p>Le site est construit avec <strong style={{ color: "var(--text)" }}>React / Vite</strong>, hébergé sur <strong style={{ color: "var(--text)" }}>Vercel</strong>.</p>
           <p style={{ marginTop: 12 }}>Les simulations sont des estimations à titre indicatif. Elles ne constituent pas un conseil financier ou juridique.</p>
         </Section>
       </main>
