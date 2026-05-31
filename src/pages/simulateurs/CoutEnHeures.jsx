@@ -94,7 +94,7 @@ export default function CoutEnHeures() {
   useEffect(() => {
     const shared = readShareParams();
     if (shared) {
-      if (shared.prix !== undefined) setPrix(shared.prix); if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.heuresSemaine !== undefined) setHeuresSemaine(shared.heuresSemaine); if (shared.moisParAn !== undefined) setMoisParAn(shared.moisParAn)
+      if (shared.prix !== undefined) setPrix(shared.prix); if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.heuresSemaine !== undefined) setHeures(shared.heuresSemaine); if (shared.moisParAn !== undefined) setMois(shared.moisParAn)
     }
   }, []);
   useEffect(() => {
@@ -127,7 +127,7 @@ export default function CoutEnHeures() {
         </div>
 
         {/* Résultat héro — toujours en premier pour mobile */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)", textAlign: "center" }}>
+        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)", textAlign: "center" }}>
           <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
             Coût en heures de vie
           </div>
@@ -160,6 +160,8 @@ export default function CoutEnHeures() {
             </>
           )}
         </div>
+
+        <ShareBar params={{ prix, salaire, heuresSemaine, moisParAn }} resultsRef={resultsRef} name="cout-en-heures" />
 
         {/* Formulaire */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>

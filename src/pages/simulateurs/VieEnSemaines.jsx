@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -165,7 +165,7 @@ export default function VieEnSemaines() {
         </div>
 
         {/* Grille — toujours visible en premier */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--text)", margin: 0 }}>
               {hasResult
@@ -200,6 +200,8 @@ export default function VieEnSemaines() {
             </div>
           )}
         </div>
+
+        <ShareBar params={{ dateNaissance, genre, esperance }} resultsRef={resultsRef} name="vie-en-semaines" />
 
         {/* Métriques clés */}
         {hasResult && (
