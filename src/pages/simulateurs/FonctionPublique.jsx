@@ -63,6 +63,9 @@ export default function FonctionPublique() {
   const [categActive, setCategActive]     = useState(false);
   const [bonus3Enfants, setBonus3Enfants] = useState(false);
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Retraite Fonction Publique 2025";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
@@ -79,6 +82,17 @@ export default function FonctionPublique() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.traitement !== undefined) setTraitement(shared.traitement); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.categActive !== undefined) setCategActive(shared.categActive); if (shared.bonus3Enfants !== undefined) setBonus3Enfants(shared.bonus3Enfants)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }));
+  }, [traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants]);
+
+
 
   const res = calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants });
   const pensionAnim = useAnimatedNumber(res.pensionNette);

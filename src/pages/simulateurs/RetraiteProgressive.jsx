@@ -60,6 +60,9 @@ export default function RetraiteProgressive() {
   const [quotite, setQuotite]           = useState(null);
   const [duree, setDuree]               = useState(null);
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Retraite Progressive 2025";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
@@ -76,6 +79,17 @@ export default function RetraiteProgressive() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.pensionPleineTaux !== undefined) setPensionPleineTaux(shared.pensionPleineTaux); if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.quotite !== undefined) setQuotite(shared.quotite); if (shared.duree !== undefined) setDuree(shared.duree)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ pensionPleineTaux, salaire, quotite, duree }));
+  }, [pensionPleineTaux, salaire, quotite, duree]);
+
+
 
   const res = calcRP({ pensionPleineTaux, salaire, quotite, duree });
   const pensionAnim = useAnimatedNumber(res.revenuTotal);

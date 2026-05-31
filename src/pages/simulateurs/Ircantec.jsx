@@ -87,6 +87,9 @@ export default function Ircantec() {
   const [ageDépart, setAgeDépart]         = useState(null);
   const [tauxReval, setTauxReval]         = useState(null);
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
@@ -103,6 +106,17 @@ export default function Ircantec() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.tauxReval !== undefined) setTauxReval(shared.tauxReval)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval }));
+  }, [salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval]);
+
+
 
   const res = calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval });
   const pensionAnim = useAnimatedNumber(res.pensionMensuelle);

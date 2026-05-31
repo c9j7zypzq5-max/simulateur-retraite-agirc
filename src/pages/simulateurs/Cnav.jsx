@@ -87,6 +87,9 @@ export default function Cnav() {
   const [anneesRestantes, setAnneesRest]  = useState(null);
   const [ageDépart, setAgeDépart]         = useState(null);
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Retraite CNAV 2025 — Régime général salariés";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
@@ -103,6 +106,17 @@ export default function Cnav() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ salaire, anneesFaites, anneesRestantes, ageDépart }));
+  }, [salaire, anneesFaites, anneesRestantes, ageDépart]);
+
+
 
   const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });
   const pensionAnim = useAnimatedNumber(res.pensionNette);

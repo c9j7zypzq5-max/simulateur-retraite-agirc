@@ -72,6 +72,9 @@ export default function CoutEnHeures() {
   const [heuresSemaine, setHeures]  = useState(HEURES_SEMAINE_DEFAUT);
   const [moisParAn, setMois]        = useState(MOIS_AN_DEFAUT);
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Coût en Heures de Vie — Le vrai prix de vos achats";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Convertissez n'importe quel prix en heures de travail réel : combien de jours, semaines ou % de votre salaire représente cet achat ?");
@@ -88,6 +91,17 @@ export default function CoutEnHeures() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.prix !== undefined) setPrix(shared.prix); if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.heuresSemaine !== undefined) setHeuresSemaine(shared.heuresSemaine); if (shared.moisParAn !== undefined) setMoisParAn(shared.moisParAn)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ prix, salaire, heuresSemaine, moisParAn }));
+  }, [prix, salaire, heuresSemaine, moisParAn]);
+
+
 
   const res = calcCout({ prix, salaire, heuresSemaine, moisParAn });
   const heuresAnim = useAnimatedNumber(res?.heures ?? 0);

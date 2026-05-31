@@ -101,6 +101,9 @@ export default function VieEnSemaines() {
   const [frequenceVisites, setFrequenceVisites]   = useState(0);
 
   // Quand le genre change, met à jour l'espérance par défaut sauf si modifiée manuellement
+
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     if (!esperanceModifiee) {
       setEsperance(genre === "femme" ? ESPERANCE_FEMME : ESPERANCE_HOMME);
@@ -123,6 +126,17 @@ export default function VieEnSemaines() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ dateNaissance, genre, esperance }));
+  }, [dateNaissance, genre, esperance]);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.dateNaissance !== undefined) setDateNaissance(shared.dateNaissance); if (shared.genre !== undefined) setGenre(shared.genre); if (shared.esperance !== undefined) setEsperance(shared.esperance)
+    }
+  }, []);
+
 
   const res = calcVie({ dateNaissance, esperance });
   const hasResult = !!res;

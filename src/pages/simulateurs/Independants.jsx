@@ -87,6 +87,9 @@ export default function Independants() {
   const [ageDépart, setAgeDépart]         = useState(null);
   const [activite, setActivite]           = useState(false); // false=artisan/comm, true=liberal
 
+  const resultsRef = useRef(null);
+
+
   useEffect(() => {
     document.title = "Simulateur Retraite Indépendants TNS 2025 — SSI";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
@@ -103,6 +106,17 @@ export default function Independants() {
       }).catch(() => {});
     }
   }, []);
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.revenu !== undefined) setRevenu(shared.revenu); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.activite !== undefined) setActivite(shared.activite)
+    }
+  }, []);
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ revenu, anneesFaites, anneesRestantes, ageDépart, activite }));
+  }, [revenu, anneesFaites, anneesRestantes, ageDépart, activite]);
+
+
 
   const res = calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite });
   const pensionAnim = useAnimatedNumber(res.totalNette);
