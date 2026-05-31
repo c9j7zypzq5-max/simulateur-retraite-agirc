@@ -20,7 +20,7 @@ const ShareIcon = () => (
   </svg>
 );
 
-export default function ShareBar({ params, resultsRef, name }) {
+export default function ShareBar({ params, resultsRef, name, showDownload = true }) {
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -111,16 +111,18 @@ export default function ShareBar({ params, resultsRef, name }) {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
-      <button
-        style={btnStyle}
-        onClick={handleDownload}
-        disabled={downloading}
-        onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; }}
-        onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
-      >
-        <DownloadIcon />
-        {downloading ? "…" : "Télécharger"}
-      </button>
+      {showDownload && (
+        <button
+          style={btnStyle}
+          onClick={handleDownload}
+          disabled={downloading}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
+        >
+          <DownloadIcon />
+          {downloading ? "…" : "Télécharger"}
+        </button>
+      )}
       <div style={{ position: "relative" }}>
         <button
           style={btnStyle}

@@ -732,7 +732,7 @@ export default function SimulateurRetraite() {
           </div>
         </div>
 
-        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" />
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" showDownload={false} />
 
         {/* ── Bouton export PDF ── */}
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
