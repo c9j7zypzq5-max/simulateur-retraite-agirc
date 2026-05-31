@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import html2canvas from "html2canvas";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
 
@@ -23,6 +23,12 @@ const ShareIcon = () => (
 export default function ShareBar({ params, resultsRef, name }) {
   const [downloading, setDownloading] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const timer = setTimeout(() => setCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [copied]);
 
   const btnStyle = {
     display: "inline-flex",
@@ -90,7 +96,6 @@ export default function ShareBar({ params, resultsRef, name }) {
       try {
         await navigator.clipboard.writeText(url);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
       } catch {
         // fallback: select text
         const el = document.createElement("textarea");
@@ -100,7 +105,6 @@ export default function ShareBar({ params, resultsRef, name }) {
         document.execCommand("copy");
         document.body.removeChild(el);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
       }
     }
   }
