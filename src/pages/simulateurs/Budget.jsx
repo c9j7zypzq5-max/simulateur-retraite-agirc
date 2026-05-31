@@ -300,7 +300,7 @@ export default function Budget() {
   const [revenus,   setRevenus]   = useState(3000);
   const [fixe,      setFixe]      = useState(1200);
   const [variable,  setVariable]  = useState(600);
-  const [, setEpargneActuelle]    = useState(0);
+  const [epargneActuelle, setEpargneActuelle] = useState(0);
 
   useEffect(() => {
     document.title = "Simulateur Budget 50/30/20 — Mesimulateurs.fr";
@@ -347,7 +347,7 @@ export default function Budget() {
             <NumInput label="Revenus nets mensuels" value={revenus} onChange={setRevenus} unit="€/mois" min={0} max={50000} />
             <NumInput label="Dépenses fixes" value={fixe} onChange={setFixe} unit="€/mois" hint="Loyer, charges, abonnements..." min={0} max={20000} />
             <NumInput label="Dépenses variables" value={variable} onChange={setVariable} unit="€/mois" hint="Courses, loisirs, restaurants..." min={0} max={20000} />
-            <NumInput label="Épargne actuelle" value={0} onChange={setEpargneActuelle} unit="€" hint="Patrimoine déjà constitué" min={0} max={9999999} />
+            <NumInput label="Épargne actuelle" value={epargneActuelle} onChange={setEpargneActuelle} unit="€" hint="Patrimoine déjà constitué" min={0} max={9999999} />
           </div>
 
           <MonthProgress />
