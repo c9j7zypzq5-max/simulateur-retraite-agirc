@@ -117,13 +117,16 @@ function SalaryReveal({ value }) {
   );
 }
 
-// ─── Courbe de carrière SVG ───────────────────────────────────────────────────
-const SVG_W = 520, SVG_H = 180;
+// ─── Courbe de carrière SVG interactive ──────────────────────────────────────
+const SVG_W = 520, SVG_H = 210;
+const PAD = { t: 20, b: 42, l: 46, r: 12 };
 
 function CareerCurve({ years, net, pouvAchat }) {
   const [progress, setProgress] = useState(0);
-  const rafRef = useRef(null);
+  const [tooltip, setTooltip] = useState(null); // { svgX, idx } | null
+  const rafRef  = useRef(null);
   const prevKey = useRef(null);
+  const svgRef  = useRef(null);
   const key = `${net}-${years.length}`;
 
   useEffect(() => {
@@ -131,10 +134,10 @@ function CareerCurve({ years, net, pouvAchat }) {
     prevKey.current = key;
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     setProgress(0);
+    setTooltip(null);
     const start = performance.now();
-    const dur = 900;
     const step = now => {
-      const p = Math.min((now - start) / dur, 1);
+      const p    = Math.min((now - start) / 900, 1);
       const ease = 1 - Math.pow(1 - p, 3);
       setProgress(ease);
       if (p < 1) rafRef.current = requestAnimationFrame(step);
@@ -145,61 +148,186 @@ function CareerCurve({ years, net, pouvAchat }) {
 
   if (!years.length) return null;
 
-  const maxVal = Math.max(...years.map(r => r.netY), ...pouvAchat.map(r => r.realNet));
-  const minVal = Math.min(...years.map(r => r.netY), ...pouvAchat.map(r => r.realNet)) * 0.9;
-  const pad = { t: 16, b: 28, l: 8, r: 8 };
-  const w = SVG_W - pad.l - pad.r;
-  const h = SVG_H - pad.t - pad.b;
+  const w = SVG_W - PAD.l - PAD.r;
+  const h = SVG_H - PAD.t - PAD.b;
 
-  const xOf = i => pad.l + (i / (years.length - 1)) * w;
-  const yOf = v => pad.t + h - ((v - minVal) / (maxVal - minVal)) * h;
+  const allNetY  = years.map(r => r.netY);
+  const allRealN = pouvAchat.map(r => r.realNet);
+  const maxVal   = Math.max(...allNetY, ...allRealN) * 1.05;
+  const minVal   = Math.min(...allNetY, ...allRealN) * 0.92;
 
-  // Points visibles selon progress (stroke-dashoffset simulé via slice)
-  const visibleCount = Math.max(2, Math.round(progress * years.length));
-  const visYears = years.slice(0, visibleCount);
-  const visPow   = pouvAchat.slice(0, visibleCount);
+  const xOf = i => PAD.l + (i / Math.max(years.length - 1, 1)) * w;
+  const yOf = v => PAD.t + h - ((v - minVal) / (maxVal - minVal)) * h;
 
-  const pathD = (pts) => pts.map((p, i) => `${i === 0 ? "M" : "L"}${xOf(i)},${yOf(p)}`).join(" ");
-  const areaD = (pts, topPath) => {
-    if (!pts.length) return "";
-    const last = pts.length - 1;
-    return topPath + ` L${xOf(last)},${yOf(minVal)} L${xOf(0)},${yOf(minVal)} Z`;
+  const visCount = Math.max(2, Math.round(progress * years.length));
+  const visYears = years.slice(0, visCount);
+  const visPow   = pouvAchat.slice(0, visCount);
+
+  const pathD = pts => pts.map((p, i) => `${i === 0 ? "M" : "L"}${xOf(i).toFixed(1)},${yOf(p).toFixed(1)}`).join(" ");
+  const netPath  = pathD(visYears.map(r => r.netY));
+  const realPath = pathD(visPow.map(r => r.realNet));
+  const netArea  = visYears.length >= 2
+    ? netPath + ` L${xOf(visYears.length - 1).toFixed(1)},${yOf(minVal).toFixed(1)} L${xOf(0).toFixed(1)},${yOf(minVal).toFixed(1)} Z`
+    : "";
+
+  // Y axis: 4 nice ticks
+  const yTicks = Array.from({ length: 5 }, (_, i) => minVal + (i / 4) * (maxVal - minVal));
+
+  // X axis: ticks every 5 years (or every 2 for short horizons)
+  const horizon  = years.length - 1;
+  const xStep    = horizon <= 10 ? 2 : 5;
+  const xTicks   = [];
+  for (let y = 0; y <= horizon; y += xStep) xTicks.push(y);
+  if (xTicks[xTicks.length - 1] !== horizon) xTicks.push(horizon);
+
+  // Pointer → tooltip
+  const resolvePointer = clientX => {
+    if (!svgRef.current) return;
+    const rect = svgRef.current.getBoundingClientRect();
+    const svgX = ((clientX - rect.left) / rect.width) * SVG_W;
+    const relX = svgX - PAD.l;
+    if (relX < 0 || relX > w) { setTooltip(null); return; }
+    const idx = Math.round((relX / w) * (years.length - 1));
+    const clamped = Math.max(0, Math.min(years.length - 1, idx));
+    setTooltip({ svgX: xOf(clamped), idx: clamped });
   };
 
-  const netPath   = pathD(visYears.map(r => r.netY));
-  const realPath  = pathD(visPow.map(r => r.realNet));
-  const netArea   = areaD(visYears, netPath);
+  const ttRow = tooltip ? years[tooltip.idx] : null;
+  const ttOnRight = tooltip ? tooltip.svgX < SVG_W * 0.6 : true;
 
   return (
-    <svg viewBox={`0 0 ${SVG_W} ${SVG_H}`} style={{ width: "100%", height: SVG_H, overflow: "visible" }}>
-      <defs>
-        <linearGradient id="career-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%"   stopColor="#b8934a" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#b8934a" stopOpacity="0.02" />
-        </linearGradient>
-      </defs>
-      {/* Zone dorée */}
-      {visYears.length >= 2 && <path d={netArea} fill="url(#career-grad)" />}
-      {/* Ligne pouvoir d'achat réel */}
-      {visPow.length >= 2 && (
-        <path d={realPath} stroke="#f87171" strokeWidth={1.5} fill="none" strokeDasharray="5 4" opacity={0.6} />
+    <div style={{ position: "relative", userSelect: "none" }}>
+      <svg
+        ref={svgRef}
+        viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        style={{ width: "100%", height: SVG_H, overflow: "visible", cursor: "crosshair", touchAction: "none" }}
+        onMouseMove={e => resolvePointer(e.clientX)}
+        onMouseLeave={() => setTooltip(null)}
+        onTouchStart={e => { e.preventDefault(); resolvePointer(e.touches[0].clientX); }}
+        onTouchMove={e => { e.preventDefault(); resolvePointer(e.touches[0].clientX); }}
+        onTouchEnd={() => setTooltip(null)}
+      >
+        <defs>
+          <linearGradient id="career-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stopColor="#b8934a" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#b8934a" stopOpacity="0.01" />
+          </linearGradient>
+        </defs>
+
+        {/* Grille horizontale */}
+        {yTicks.map((v, i) => (
+          <g key={i}>
+            <line
+              x1={PAD.l} y1={yOf(v)} x2={PAD.l + w} y2={yOf(v)}
+              stroke="var(--border)" strokeWidth={0.5} strokeDasharray="4 4"
+            />
+            <text x={PAD.l - 4} y={yOf(v) + 3.5} textAnchor="end"
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              {Math.round(v / 1000)}k
+            </text>
+          </g>
+        ))}
+
+        {/* Axe X */}
+        <line x1={PAD.l} y1={PAD.t + h} x2={PAD.l + w} y2={PAD.t + h}
+          stroke="var(--border)" strokeWidth={0.5} />
+        {xTicks.map(y => (
+          <g key={y}>
+            <line x1={xOf(y)} y1={PAD.t + h} x2={xOf(y)} y2={PAD.t + h + 4}
+              stroke="var(--border)" strokeWidth={0.5} />
+            <text x={xOf(y)} y={PAD.t + h + 14} textAnchor="middle"
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              {y === 0 ? "Auj." : `+${y}a`}
+            </text>
+          </g>
+        ))}
+
+        {/* Zone dégradé */}
+        {visYears.length >= 2 && <path d={netArea} fill="url(#career-grad)" />}
+
+        {/* Courbe pouvoir d'achat */}
+        {visPow.length >= 2 && (
+          <path d={realPath} stroke="#f87171" strokeWidth={1.5} fill="none"
+            strokeDasharray="5 4" opacity={0.6} />
+        )}
+
+        {/* Courbe salaire net */}
+        {visYears.length >= 2 && (
+          <path d={netPath} stroke="#b8934a" strokeWidth={2.5} fill="none"
+            strokeLinecap="round" strokeLinejoin="round" />
+        )}
+
+        {/* Points annuels */}
+        {visYears.map((r, i) => (
+          <circle key={i} cx={xOf(i)} cy={yOf(r.netY)} r={2.2}
+            fill="#b8934a" opacity={0.65} />
+        ))}
+
+        {/* Trait vertical tooltip */}
+        {tooltip && (
+          <line x1={tooltip.svgX} y1={PAD.t} x2={tooltip.svgX} y2={PAD.t + h}
+            stroke="var(--gold)" strokeWidth={1} strokeDasharray="3 3" opacity={0.85} />
+        )}
+
+        {/* Point surligné tooltip */}
+        {tooltip && ttRow && (
+          <circle cx={tooltip.svgX} cy={yOf(ttRow.netY)} r={5}
+            fill="#b8934a" stroke="var(--card-bg)" strokeWidth={2} />
+        )}
+
+        {/* Légende */}
+        <g>
+          <line x1={PAD.l} y1={SVG_H - 6} x2={PAD.l + 18} y2={SVG_H - 6}
+            stroke="#b8934a" strokeWidth={2} />
+          <text x={PAD.l + 22} y={SVG_H - 2}
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            Salaire net
+          </text>
+          <line x1={PAD.l + 84} y1={SVG_H - 6} x2={PAD.l + 102} y2={SVG_H - 6}
+            stroke="#f87171" strokeWidth={1.5} strokeDasharray="5 4" />
+          <text x={PAD.l + 106} y={SVG_H - 2}
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            Pouvoir d'achat réel (inflation 2%)
+          </text>
+        </g>
+      </svg>
+
+      {/* Bulle tooltip HTML */}
+      {tooltip && ttRow && (
+        <div style={{
+          position: "absolute",
+          top: 28,
+          ...(ttOnRight
+            ? { left: `calc(${(tooltip.svgX / SVG_W) * 100}% + 10px)` }
+            : { right: `calc(${((SVG_W - tooltip.svgX) / SVG_W) * 100}% + 10px)` }),
+          background: "var(--card-bg)",
+          border: "1px solid var(--border-gold)",
+          borderRadius: 8,
+          padding: "8px 12px",
+          fontSize: "0.77rem",
+          pointerEvents: "none",
+          zIndex: 10,
+          minWidth: 155,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
+          whiteSpace: "nowrap",
+        }}>
+          <div style={{ fontWeight: 600, color: "var(--gold)", marginBottom: 5, fontSize: "0.82rem" }}>
+            {ttRow.year === 0 ? "Aujourd'hui" : `Dans ${ttRow.year} an${ttRow.year > 1 ? "s" : ""}`}
+            {ttRow.year > 0 && (
+              <span style={{ fontWeight: 400, color: "var(--text-secondary)", marginLeft: 6 }}>
+                ({ttRow.age} ans)
+              </span>
+            )}
+          </div>
+          <div style={{ color: "var(--text)", marginBottom: 3 }}>
+            Net : <strong style={{ color: "#4ade80" }}>{fmtEur(Math.round(ttRow.netY))}/mois</strong>
+          </div>
+          <div style={{ color: "var(--text-secondary)" }}>
+            Brut : {fmtEur(Math.round(ttRow.brutY))}/mois
+          </div>
+        </div>
       )}
-      {/* Courbe principale */}
-      {visYears.length >= 2 && (
-        <path d={netPath} stroke="#b8934a" strokeWidth={2.5} fill="none" strokeLinecap="round" strokeLinejoin="round" />
-      )}
-      {/* Point actuel */}
-      {visYears.length >= 1 && (
-        <circle cx={xOf(visYears.length - 1)} cy={yOf(visYears[visYears.length - 1].netY)} r={4} fill="#b8934a" />
-      )}
-      {/* Légende */}
-      <g>
-        <line x1={pad.l} y1={SVG_H - 8} x2={pad.l + 20} y2={SVG_H - 8} stroke="#b8934a" strokeWidth={2} />
-        <text x={pad.l + 24} y={SVG_H - 4} style={{ fill: "var(--text-secondary)", fontSize: 9 }}>Salaire net projeté</text>
-        <line x1={pad.l + 120} y1={SVG_H - 8} x2={pad.l + 140} y2={SVG_H - 8} stroke="#f87171" strokeWidth={1.5} strokeDasharray="5 4" />
-        <text x={pad.l + 144} y={SVG_H - 4} style={{ fill: "var(--text-secondary)", fontSize: 9 }}>Pouvoir d'achat réel (inflation 2%)</text>
-      </g>
-    </svg>
+    </div>
   );
 }
 
