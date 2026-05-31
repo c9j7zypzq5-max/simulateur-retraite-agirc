@@ -652,7 +652,7 @@ export default function SimulateurRetraite() {
           </div>
         </div>
 
-        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" showDownload={false} />
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" />
 
         {/* ── Comparateur ── */}
         <AccordionSection title="Comparer deux scénarios" subtitle="Simulez un départ ou un salaire différent et comparez les pensions côte à côte" gold>
