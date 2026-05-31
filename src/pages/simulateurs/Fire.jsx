@@ -311,11 +311,14 @@ export default function Fire() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'fire' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'fire' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_fire')) {
+      sessionStorage.setItem('tracked_fire', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'fire' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait });

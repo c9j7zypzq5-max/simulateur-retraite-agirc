@@ -91,11 +91,14 @@ export default function Epargne() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'epargne' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'epargne' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_epargne')) {
+      sessionStorage.setItem('tracked_epargne', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'epargne' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcEpargne({ capitalInitial, versement, tauxAnnuel, duree });

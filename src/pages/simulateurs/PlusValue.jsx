@@ -99,11 +99,14 @@ export default function PlusValue() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'plus-value-immobiliere' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'plus-value-immobiliere' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_plus-value-immobiliere')) {
+      sessionStorage.setItem('tracked_plus-value-immobiliere', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'plus-value-immobiliere' })
+      }).catch(() => {});
+    }
   }, []);
 
   const isValid = prixVente && prixVente > 0 && anneeAchat && anneeVente && anneeVente > anneeAchat;

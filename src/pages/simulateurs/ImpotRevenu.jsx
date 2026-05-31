@@ -101,11 +101,14 @@ export default function ImpotRevenu() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'impot-revenu' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'impot-revenu' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_impot-revenu')) {
+      sessionStorage.setItem('tracked_impot-revenu', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'impot-revenu' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = revenuBrut ? calcIR(revenuBrut, situation, nbEnfants) : null;

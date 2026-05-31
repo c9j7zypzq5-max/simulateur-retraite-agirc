@@ -48,6 +48,14 @@ function BadgePill({ type }) {
   );
 }
 
+function getCachedScores() {
+  try {
+    const cached = JSON.parse(localStorage.getItem('sim_scores_cache') || 'null');
+    if (cached && Date.now() - cached.ts < 10 * 60 * 1000) return cached.data;
+  } catch {}
+  return null;
+}
+
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
@@ -59,7 +67,15 @@ export default function Home() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
-    fetch('/api/scores').then(r => r.json()).then(setScores).catch(() => {});
+    const cached = getCachedScores();
+    if (cached) { setScores(cached); return; }
+    fetch('/api/scores')
+      .then(r => r.json())
+      .then(data => {
+        setScores(data);
+        localStorage.setItem('sim_scores_cache', JSON.stringify({ ts: Date.now(), data }));
+      })
+      .catch(() => {});
   }, []);
   const filtered = activeFilter === "Tous"
     ? SIMULATEURS

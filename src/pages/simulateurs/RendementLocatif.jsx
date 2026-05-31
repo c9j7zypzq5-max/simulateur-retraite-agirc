@@ -79,11 +79,14 @@ export default function RendementLocatif() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'rendement-locatif' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'rendement-locatif' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_rendement-locatif')) {
+      sessionStorage.setItem('tracked_rendement-locatif', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'rendement-locatif' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative });

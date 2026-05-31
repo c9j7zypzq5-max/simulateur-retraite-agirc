@@ -94,11 +94,14 @@ export default function Cnav() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'cnav' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'cnav' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_cnav')) {
+      sessionStorage.setItem('tracked_cnav', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'cnav' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });

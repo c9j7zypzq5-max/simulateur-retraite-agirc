@@ -94,11 +94,14 @@ export default function Independants() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'independants' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'independants' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_independants')) {
+      sessionStorage.setItem('tracked_independants', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'independants' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite });

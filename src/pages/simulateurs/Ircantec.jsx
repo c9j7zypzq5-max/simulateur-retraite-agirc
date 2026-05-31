@@ -94,11 +94,14 @@ export default function Ircantec() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'ircantec' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'ircantec' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_ircantec')) {
+      sessionStorage.setItem('tracked_ircantec', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'ircantec' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval });

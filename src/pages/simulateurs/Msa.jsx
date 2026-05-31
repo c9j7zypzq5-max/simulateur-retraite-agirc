@@ -178,11 +178,14 @@ export default function Msa() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'msa' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'msa' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_msa')) {
+      sessionStorage.setItem('tracked_msa', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'msa' })
+      }).catch(() => {});
+    }
   }, []);
 
   const isExploitant = type === "exploitant";

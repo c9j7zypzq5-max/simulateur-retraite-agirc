@@ -171,11 +171,14 @@ export default function EmpruntImmobilier() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'emprunt-immobilier' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'emprunt-immobilier' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_emprunt-immobilier')) {
+      sessionStorage.setItem('tracked_emprunt-immobilier', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'emprunt-immobilier' })
+      }).catch(() => {});
+    }
   }, []);
 
   const fn = prix ? fraisNotaire(prix, neuf) : 0;

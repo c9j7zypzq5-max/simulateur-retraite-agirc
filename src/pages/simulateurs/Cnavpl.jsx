@@ -207,11 +207,14 @@ export default function Cnavpl() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'cnavpl' });
-    fetch('/api/track', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ slug: 'cnavpl' })
-    }).catch(() => {});
+    if (!sessionStorage.getItem('tracked_cnavpl')) {
+      sessionStorage.setItem('tracked_cnavpl', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'cnavpl' })
+      }).catch(() => {});
+    }
   }, []);
 
   const res = calcCnavpl({
