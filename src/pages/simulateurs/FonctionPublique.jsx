@@ -70,9 +70,11 @@ export default function FonctionPublique() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'fonction-publique' });
-    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
-    _pop['fonction-publique'] = (_pop['fonction-publique'] || 0) + 1;
-    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'fonction-publique' })
+    }).catch(() => {});
   }, []);
 
   const res = calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants });

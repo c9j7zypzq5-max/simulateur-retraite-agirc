@@ -48,15 +48,10 @@ function BadgePill({ type }) {
   );
 }
 
-function getPopularityScores() {
-  try {
-    return JSON.parse(localStorage.getItem('sim_popularity') || '{}');
-  } catch { return {}; }
-}
-
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
+  const [scores, setScores] = useState({});
 
   useEffect(() => {
     document.title = "Mesimulateurs.fr — Simulateurs gratuits retraite, immobilier, finances";
@@ -64,9 +59,8 @@ export default function Home() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    fetch('/api/scores').then(r => r.json()).then(setScores).catch(() => {});
   }, []);
-
-  const scores = getPopularityScores();
   const filtered = activeFilter === "Tous"
     ? SIMULATEURS
     : SIMULATEURS.filter(s => s.categories.includes(activeFilter));

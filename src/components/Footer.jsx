@@ -20,6 +20,9 @@ export default function Footer() {
           mesimulateurs.fr
         </span>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+          <Link to="/a-propos" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            À propos
+          </Link>
           <Link to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             Mentions légales
           </Link>

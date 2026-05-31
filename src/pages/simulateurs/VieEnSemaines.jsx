@@ -111,9 +111,11 @@ export default function VieEnSemaines() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'vie-en-semaines' });
-    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
-    _pop['vie-en-semaines'] = (_pop['vie-en-semaines'] || 0) + 1;
-    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'vie-en-semaines' })
+    }).catch(() => {});
   }, []);
 
   const res = calcVie({ dateNaissance, esperance });

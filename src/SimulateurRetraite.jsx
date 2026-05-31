@@ -446,9 +446,11 @@ export default function SimulateurRetraite() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr/simulateurs/agirc-arrco';
     track('simulator_view', { name: 'agirc-arrco' });
-    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
-    _pop['agirc-arrco'] = (_pop['agirc-arrco'] || 0) + 1;
-    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'agirc-arrco' })
+    }).catch(() => {});
   }, []);
 
   // Base inputs — null = pas de valeur par défaut

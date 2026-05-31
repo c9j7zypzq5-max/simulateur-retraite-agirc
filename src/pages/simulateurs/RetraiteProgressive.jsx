@@ -67,9 +67,11 @@ export default function RetraiteProgressive() {
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
     track('simulator_view', { name: 'retraite-progressive' });
-    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
-    _pop['retraite-progressive'] = (_pop['retraite-progressive'] || 0) + 1;
-    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
+    fetch('/api/track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: 'retraite-progressive' })
+    }).catch(() => {});
   }, []);
 
   const res = calcRP({ pensionPleineTaux, salaire, quotite, duree });

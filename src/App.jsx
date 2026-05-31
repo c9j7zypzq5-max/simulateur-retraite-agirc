@@ -3,6 +3,7 @@ import Home from "./pages/Home.jsx";
 import SimulateurRetraite from "./SimulateurRetraite.jsx";
 import MentionsLegales from "./pages/MentionsLegales.jsx";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite.jsx";
+import APropos from "./pages/APropos.jsx";
 // Retraite
 import Cnav from "./pages/simulateurs/Cnav.jsx";
 import FonctionPublique from "./pages/simulateurs/FonctionPublique.jsx";
@@ -53,6 +54,7 @@ export default function App() {
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        <Route path="/a-propos" element={<APropos />} />
       </Routes>
     </BrowserRouter>
   );
