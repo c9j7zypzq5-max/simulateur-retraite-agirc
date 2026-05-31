@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import { NumInput, useAnimatedNumber, fmt, fmtEur } from "../../components/ui.jsx";
@@ -267,10 +269,26 @@ export default function Budget() {
   const [variable,  setVariable]  = useState(600);
   const [epargneActuelle, setEpargneActuelle] = useState(0);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Budget 50/30/20 — Mesimulateurs.fr";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Répartissez votre budget mensuel selon la règle 50/30/20. Donut chart animé, jauges en temps réel, conseils personnalisés.");
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.revenus !== undefined) setRevenus(shared.revenus);
+      if (shared.fixe !== undefined) setFixe(shared.fixe);
+      if (shared.variable !== undefined) setVariable(shared.variable);
+      if (shared.epargneActuelle !== undefined) setEpargneActuelle(shared.epargneActuelle);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ revenus, fixe, variable, epargneActuelle }));
+  }, [revenus, fixe, variable, epargneActuelle]);
 
   const res = calcBudget({ revenus, fixe, variable });
 
@@ -355,7 +373,7 @@ export default function Budget() {
           </div>
 
           {/* Jauges */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }}>
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }} ref={resultsRef}>
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Jauges par catégorie
             </div>
@@ -369,6 +387,12 @@ export default function Budget() {
                 {res ? (res.epargneReel >= 0 ? "+" : "") + fmtEur(Math.round(animEpargne)) : "—"}
               </div>
             </div>
+
+            <ShareBar
+              params={{ revenus, fixe, variable, epargneActuelle }}
+              resultsRef={resultsRef}
+              name="budget"
+            />
           </div>
         </div>
       </div>

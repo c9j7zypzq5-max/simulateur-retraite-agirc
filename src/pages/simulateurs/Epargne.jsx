@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -84,6 +86,8 @@ export default function Epargne() {
   const [tauxAnnuel, setTauxAnnuel]           = useState(5);
   const [duree, setDuree]                     = useState(20);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Épargne 2025 — Intérêts composés et capital final";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.");
@@ -100,6 +104,20 @@ export default function Epargne() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.capitalInitial !== undefined) setCapitalInitial(shared.capitalInitial);
+      if (shared.versement !== undefined) setVersement(shared.versement);
+      if (shared.tauxAnnuel !== undefined) setTauxAnnuel(shared.tauxAnnuel);
+      if (shared.duree !== undefined) setDuree(shared.duree);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ capitalInitial, versement, tauxAnnuel, duree }));
+  }, [capitalInitial, versement, tauxAnnuel, duree]);
 
   const res = calcEpargne({ capitalInitial, versement, tauxAnnuel, duree });
   const capitalFinalAnim = useAnimatedNumber(res.capitalFinal);
@@ -146,7 +164,7 @@ export default function Epargne() {
 
         {/* Résultats */}
         {hasResult && (
-          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Projection de votre épargne</h2>
 
             {/* Capital final */}
@@ -179,6 +197,12 @@ export default function Epargne() {
             <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
               ⚠️ <strong>Simulation indicative.</strong> Les performances passées ne préjugent pas des performances futures. Taux de rendement constant supposé. Résultats avant fiscalité et inflation.
             </div>
+
+            <ShareBar
+              params={{ capitalInitial, versement, tauxAnnuel, duree }}
+              resultsRef={resultsRef}
+              name="epargne"
+            />
           </div>
         )}
 

@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -72,6 +74,8 @@ export default function RendementLocatif() {
   const [taxeFonciere, setTaxeFonciere] = useState(0);
   const [gestionLocative, setGestionLocative] = useState(false);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Rendement Locatif 2025 — Rentabilité investissement immobilier";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.");
@@ -88,6 +92,22 @@ export default function RendementLocatif() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.prix !== undefined) setPrix(shared.prix);
+      if (shared.travaux !== undefined) setTravaux(shared.travaux);
+      if (shared.apport !== undefined) setApport(shared.apport);
+      if (shared.loyer !== undefined) setLoyer(shared.loyer);
+      if (shared.chargesCopro !== undefined) setChargesCopro(shared.chargesCopro);
+      if (shared.taxeFonciere !== undefined) setTaxeFonciere(shared.taxeFonciere);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ prix, travaux, apport, loyer, chargesCopro, taxeFonciere }));
+  }, [prix, travaux, apport, loyer, chargesCopro, taxeFonciere]);
 
   const res = calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative });
   const rendementBrutAnim = useAnimatedNumber(res.rendementBrut);
@@ -150,7 +170,7 @@ export default function RendementLocatif() {
 
         {/* Résultats */}
         {hasResult && (
-          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
             <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Rentabilité estimée</h2>
 
             {/* Rendement brut */}
@@ -181,6 +201,12 @@ export default function RendementLocatif() {
               {apport > 0 && <Chip label="Rendement fonds propres" value={`${res.rendementFondsPropres.toFixed(2)} %`} accent />}
               {res.dureeAmortissement > 0 && <Chip label="Durée amortissement" value={`${Math.round(res.dureeAmortissement)} ans`} />}
             </div>
+
+            <ShareBar
+              params={{ prix, travaux, apport, loyer, chargesCopro, taxeFonciere }}
+              resultsRef={resultsRef}
+              name="rendement-locatif"
+            />
           </div>
         )}
 

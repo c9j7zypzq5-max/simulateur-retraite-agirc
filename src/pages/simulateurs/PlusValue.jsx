@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -92,6 +94,8 @@ export default function PlusValue() {
   const [inclureFrais, setInclureFrais]   = useState(true);
   const [prixVente, setPrixVente]         = useState(null);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
@@ -108,6 +112,21 @@ export default function PlusValue() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.prixAchat !== undefined) setPrixAchat(shared.prixAchat);
+      if (shared.anneeAchat !== undefined) setAnneeAchat(shared.anneeAchat);
+      if (shared.anneeVente !== undefined) setAnneeVente(shared.anneeVente);
+      if (shared.travaux !== undefined) setTravaux(shared.travaux);
+      if (shared.prixVente !== undefined) setPrixVente(shared.prixVente);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ prixAchat, anneeAchat, anneeVente, travaux, prixVente }));
+  }, [prixAchat, anneeAchat, anneeVente, travaux, prixVente]);
 
   const isValid = prixVente && prixVente > 0 && anneeAchat && anneeVente && anneeVente > anneeAchat;
   const res = isValid ? calcPlusValue({ prixAchat, anneeAchat, anneeVente, travaux, inclureFrais, prixVente }) : null;
@@ -219,7 +238,7 @@ export default function PlusValue() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Impôt et gain net</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
@@ -325,6 +344,12 @@ export default function PlusValue() {
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Résidence principale exonérée.</strong> Hors surtaxe (plus-value {">"}50 k€) et cas particuliers (propriété démembrée, droits d'enregistrement, frais de vente agence). Votre notaire établira le calcul exact à partir du compromis de vente.
               </div>
+
+              <ShareBar
+                params={{ prixAchat, anneeAchat, anneeVente, travaux, prixVente }}
+                resultsRef={resultsRef}
+                name="plus-value-immobiliere"
+              />
             </>
           )}
         </div>

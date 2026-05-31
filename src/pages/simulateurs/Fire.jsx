@@ -1,5 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { track } from '@vercel/analytics';
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -304,6 +306,8 @@ export default function Fire() {
   const [depensesAnnuelles, setDepenses]  = useState(null);
   const [tauxRetrait, setTauxRetrait]     = useState(TAUX_RETRAIT_DEFAUT);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur FIRE 2025 — Liberté financière et indépendance";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez la liberté financière avec la règle des 4% : capital cible, projection de patrimoine, courbe de croissance.");
@@ -320,6 +324,22 @@ export default function Fire() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.ageActuel !== undefined) setAge(shared.ageActuel);
+      if (shared.capitalActuel !== undefined) setCapital(shared.capitalActuel);
+      if (shared.epargneMensuelle !== undefined) setEpargne(shared.epargneMensuelle);
+      if (shared.rendementAnnuel !== undefined) setRendement(shared.rendementAnnuel);
+      if (shared.depensesAnnuelles !== undefined) setDepenses(shared.depensesAnnuelles);
+      if (shared.tauxRetrait !== undefined) setTauxRetrait(shared.tauxRetrait);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait }));
+  }, [ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait]);
 
   const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait });
   const patrimoineAnim = useAnimatedNumber(res.patrimoineCible);
@@ -377,7 +397,7 @@ export default function Fire() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>
             Votre trajectoire FIRE
           </h2>
@@ -460,6 +480,12 @@ export default function Fire() {
               ⚠️ <strong>Simulation indicative.</strong> Ne constitue pas un conseil en investissement. Les marchés financiers sont volatiles et les rendements passés ne garantissent pas les rendements futurs.
             </div>
           )}
+
+          <ShareBar
+            params={{ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait }}
+            resultsRef={resultsRef}
+            name="fire"
+          />
         </div>
 
         {/* AdSense mid */}

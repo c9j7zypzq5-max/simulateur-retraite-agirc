@@ -1,5 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -94,6 +96,8 @@ export default function ImpotRevenu() {
   const [situation, setSituation]         = useState("celibataire");
   const [nbEnfants, setNbEnfants]         = useState(0);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Impôt sur le Revenu 2025 — Calcul IR barème officiel";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2025 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
@@ -110,6 +114,19 @@ export default function ImpotRevenu() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.revenuBrut !== undefined) setRevenuBrut(shared.revenuBrut);
+      if (shared.situation !== undefined) setSituation(shared.situation);
+      if (shared.nbEnfants !== undefined) setNbEnfants(shared.nbEnfants);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ revenuBrut, situation, nbEnfants }));
+  }, [revenuBrut, situation, nbEnfants]);
 
   const res = revenuBrut ? calcIR(revenuBrut, situation, nbEnfants) : null;
   const irNetAnim = useAnimatedNumber(res?.irNet || 0);
@@ -186,7 +203,7 @@ export default function ImpotRevenu() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre impôt estimé</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
@@ -261,6 +278,12 @@ export default function ImpotRevenu() {
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Calcul simplifié</strong>. Ce simulateur ne tient pas compte des crédits et réductions d'impôt, revenus fonciers, plus-values, cotisations Madelin, heures supplémentaires exonérées, etc. Pour un calcul exact : <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener" style={{ color: "var(--gold-mid)" }}>impots.gouv.fr</a> ou consultant un expert.
               </div>
+
+              <ShareBar
+                params={{ revenuBrut, situation, nbEnfants }}
+                resultsRef={resultsRef}
+                name="impot-revenu"
+              />
             </>
           )}
         </div>

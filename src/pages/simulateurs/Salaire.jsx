@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import { NumInput, StepperInput, Chip, fmt, fmtEur } from "../../components/ui.jsx";
@@ -438,10 +440,27 @@ export default function Salaire() {
   const [evolution, setEvolution] = useState(2);
   const [horizon,   setHorizon]   = useState(20);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Mesimulateurs.fr";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.brut !== undefined) setBrut(shared.brut);
+      if (shared.statut !== undefined) setStatut(shared.statut);
+      if (shared.age !== undefined) setAge(shared.age);
+      if (shared.evolution !== undefined) setEvolution(shared.evolution);
+      if (shared.horizon !== undefined) setHorizon(shared.horizon);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ brut, statut, age, evolution, horizon }));
+  }, [brut, statut, age, evolution, horizon]);
 
   const res = calcSalaire({ brut, statut, age, evolution, horizon });
 
@@ -476,12 +495,18 @@ export default function Salaire() {
         {/* ── Colonne gauche : inputs + salary reveal — passe en second sur mobile ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
           {/* Salary reveal */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28, marginBottom: 24, textAlign: "center" }}>
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28, marginBottom: 24, textAlign: "center" }} ref={resultsRef}>
             <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>Salaire net mensuel</div>
             <SalaryReveal value={res.net} />
             <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: 8 }}>
               pour {fmtEur(brut)} brut · cotisations {statut === "cadre" ? "25" : "23"}%
             </div>
+
+            <ShareBar
+              params={{ brut, statut, age, evolution, horizon }}
+              resultsRef={resultsRef}
+              name="salaire"
+            />
           </div>
 
           {/* Inputs */}

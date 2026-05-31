@@ -196,6 +196,8 @@ export default function Cnavpl() {
 
   const [revenuAnnuel, setRevenuAnnuel] = useState(null);
   const [anneesFaites, setAnneesFaites] = useState(null);
+
+  const resultsRef = useRef(null);
   const [anneesRestantes, setAnneesRestantes] = useState(null);
   const [anneeNaissance, setAnneeNaissance] = useState(null);
   const [ageDépart, setAgeDépart] = useState(65);

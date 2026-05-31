@@ -166,6 +166,8 @@ export default function Msa() {
 
   const [type, setType] = useState("exploitant"); // "exploitant" or "salarie"
   const [revenuSalaire, setRevenuSalaire] = useState(null);
+
+  const resultsRef = useRef(null);
   const [anneeNaissance, setAnneeNaiss] = useState(null);
   const [anneesFaites, setAnneesFaites] = useState(null);
   const [anneesRestantes, setAnneesRest] = useState(null);

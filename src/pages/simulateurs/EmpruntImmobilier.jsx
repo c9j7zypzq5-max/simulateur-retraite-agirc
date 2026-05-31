@@ -15,6 +15,8 @@ function useIsMobile(breakpoint = 680) {
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
@@ -164,6 +166,8 @@ export default function EmpruntImmobilier() {
   const [charges, setCharges]         = useState(0);
   const [assurance, setAssurance]     = useState(0);
 
+  const resultsRef = useRef(null);
+
   useEffect(() => {
     document.title = "Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
@@ -180,6 +184,22 @@ export default function EmpruntImmobilier() {
       }).catch(() => {});
     }
   }, []);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.prix !== undefined) setPrix(shared.prix);
+      if (shared.apport !== undefined) setApport(shared.apport);
+      if (shared.duree !== undefined) setDuree(shared.duree);
+      if (shared.taux !== undefined) setTaux(shared.taux);
+      if (shared.primo !== undefined) setPrimo(shared.primo);
+      if (shared.salaire !== undefined) setSalaire(shared.salaire);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ prix, apport, duree, taux, primo, salaire }));
+  }, [prix, apport, duree, taux, primo, salaire]);
 
   const fn = prix ? fraisNotaire(prix, neuf) : 0;
   const capitalEmprunte = Math.max(0, (prix ?? 0) + (inclureNotaire ? fn : 0) - (apport ?? 0));
@@ -318,7 +338,7 @@ export default function EmpruntImmobilier() {
           {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
             {/* Résultat principal */}
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }}>
+            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
               <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
                 Mensualité crédit
               </div>
@@ -350,6 +370,12 @@ export default function EmpruntImmobilier() {
                   Saisissez le prix du bien pour voir votre estimation.
                 </p>
               )}
+
+              <ShareBar
+                params={{ prix, apport, duree, taux, primo, salaire }}
+                resultsRef={resultsRef}
+                name="emprunt-immobilier"
+              />
             </div>
 
             {/* Taux d'endettement */}
