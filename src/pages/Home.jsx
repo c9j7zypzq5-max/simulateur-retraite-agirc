@@ -123,54 +123,78 @@ function getCachedScores() {
 }
 
 // ── Sliding filter indicator ──────────────────────────────────────────────────
+function useIsMobile(breakpoint = 480) {
+  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    const handler = () => setMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", handler, { passive: true });
+    return () => window.removeEventListener("resize", handler);
+  }, [breakpoint]);
+  return mobile;
+}
+
 function FilterBar({ activeFilter, setActiveFilter }) {
   const refs = useRef({});
   const barRef = useRef(null);
-  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+  const isMobile = useIsMobile(480);
+  // indicator tracks {left, top, width, height} relative to barRef
+  const [indicator, setIndicator] = useState({ left: 0, top: 0, width: 0, height: 0 });
 
   useEffect(() => {
+    if (isMobile) return;
     const el = refs.current[activeFilter];
     const bar = barRef.current;
     if (!el || !bar) return;
     const barRect = bar.getBoundingClientRect();
-    const elRect = el.getBoundingClientRect();
-    setIndicator({ left: elRect.left - barRect.left, width: elRect.width });
-  }, [activeFilter]);
+    const elRect  = el.getBoundingClientRect();
+    setIndicator({
+      left:   elRect.left   - barRect.left,
+      top:    elRect.top    - barRect.top,
+      width:  elRect.width,
+      height: elRect.height,
+    });
+  }, [activeFilter, isMobile]);
 
   return (
     <div ref={barRef} style={{ position: "relative", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-      {/* Sliding indicator (position absolute, behind buttons) */}
-      <div style={{
-        position: "absolute",
-        top: 0,
-        left: indicator.left,
-        width: indicator.width,
-        height: "100%",
-        background: "rgba(184,147,74,0.1)",
-        border: "1px solid var(--border-gold)",
-        borderRadius: 20,
-        transition: "left 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)",
-        pointerEvents: "none",
-        zIndex: 0,
-      }} />
+      {/* Sliding indicator — desktop uniquement, suit exactement le bouton actif */}
+      {!isMobile && (
+        <div style={{
+          position: "absolute",
+          top: indicator.top,
+          left: indicator.left,
+          width: indicator.width,
+          height: indicator.height,
+          background: "rgba(184,147,74,0.1)",
+          border: "1px solid var(--border-gold)",
+          borderRadius: 20,
+          transition: "left 0.3s cubic-bezier(0.4,0,0.2,1), top 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }} />
+      )}
       <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>Filtrer :</span>
-      {FILTERS.map(f => (
-        <button
-          key={f}
-          ref={el => { refs.current[f] = el; }}
-          onClick={() => setActiveFilter(f)}
-          style={{
-            background: "transparent",
-            border: `1px solid ${activeFilter === f ? "transparent" : "var(--border)"}`,
-            color: activeFilter === f ? "var(--gold)" : "var(--text-secondary)",
-            padding: "7px 16px", borderRadius: 20, fontSize: "0.8rem",
-            cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
-            transition: "color 0.2s, border-color 0.2s",
-            position: "relative", zIndex: 1,
-          }}>
-          {f}
-        </button>
-      ))}
+      {FILTERS.map(f => {
+        const isActive = activeFilter === f;
+        return (
+          <button
+            key={f}
+            ref={el => { refs.current[f] = el; }}
+            onClick={() => setActiveFilter(f)}
+            style={{
+              // Sur mobile : background direct sur le bouton actif ; sur desktop : géré par l'indicateur
+              background: isMobile && isActive ? "rgba(184,147,74,0.1)" : "transparent",
+              border: `1px solid ${isActive ? (isMobile ? "var(--border-gold)" : "transparent") : "var(--border)"}`,
+              color: isActive ? "var(--gold)" : "var(--text-secondary)",
+              padding: "7px 16px", borderRadius: 20, fontSize: "0.8rem",
+              cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
+              transition: "color 0.2s, border-color 0.2s, background 0.2s",
+              position: "relative", zIndex: 1,
+            }}>
+            {f}
+          </button>
+        );
+      })}
     </div>
   );
 }
