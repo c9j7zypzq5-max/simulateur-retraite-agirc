@@ -30,9 +30,6 @@ const getCoefLabel = age =>
 const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fmtEur = n => fmt(n) + " €";
 const signFmt = n => (n > 0 ? "+" : "") + fmtEur(n);
-const fmtPDF    = (n, d = 0) => Number(n).toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-const fmtEurPDF = n => fmtPDF(Math.round(n)) + " EUR";
-
 // ─── Calcul principal ─────────────────────────────────────────────────────────
 function calcResult({ salaire, anneesFaites, anneesRestantes,
                       evolutionSalaire = 2, tauxReval = 1,
@@ -93,81 +90,6 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
     cotSalTotal: cotSalPassé + cotSalFutur,
     cotPatTotal: cotPatPassé + cotPatFutur,
   };
-}
-
-// ─── Export PDF ───────────────────────────────────────────────────────────────
-async function generatePDF(inputs, res, setExp) {
-  setExp(true);
-  try {
-    const { jsPDF } = await import("jspdf");
-    const doc = new jsPDF({ unit: "mm", format: "a4" });
-    const now = new Date().toLocaleDateString("fr-FR", { day: "2-digit", month: "long", year: "numeric" });
-    const G = [184, 147, 74], D = [6, 14, 28], S = [100, 116, 139], W = [226, 232, 240];
-
-    doc.setFillColor(...D); doc.rect(0, 0, 210, 297, "F");
-    doc.setFillColor(...G); doc.rect(0, 0, 210, 2,   "F");
-
-    doc.setTextColor(241, 228, 195); doc.setFont("helvetica", "bold"); doc.setFontSize(18);
-    doc.text("Simulation Retraite Agirc-Arrco 2026", 20, 22);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...S);
-    doc.text(`Générée le ${now} — Simulation indicative non contractuelle`, 20, 30);
-    doc.setDrawColor(...G); doc.setLineWidth(0.3); doc.line(20, 34, 190, 34);
-
-    let y = 44;
-    const sec = t => { doc.setTextColor(232, 192, 106); doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.text(t, 20, y); y += 8; };
-    const row = (l, v) => { doc.setTextColor(...S); doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.text(l, 20, y); doc.setTextColor(...W); doc.text(String(v), 185, y, { align: "right" }); y += 6.5; };
-    const div = () => { doc.setDrawColor(30, 41, 59); doc.line(20, y, 190, y); y += 8; };
-
-    sec("Paramètres saisis");
-    row("Salaire brut mensuel",          fmtEurPDF(inputs.salaire ?? 0));
-    row("Années déjà cotisées",          `${inputs.anneesFaites ?? 0} ans`);
-    row("Années restantes à cotiser",    `${inputs.anneesRestantes ?? 0} ans`);
-    row("Âge de départ prévu",           `${inputs.ageDépart ?? "—"} ans`);
-    row("Évolution annuelle du salaire", `${(inputs.evolutionSalaire ?? 0) >= 0 ? "+" : ""}${inputs.evolutionSalaire ?? 0} %`);
-    row("Taux de revalorisation estimé", `${inputs.tauxReval ?? 0} %/an`);
-    row("Statut",                        inputs.estCadre ? "Cadre" : "Non-cadre");
-    row("Bonus 3 enfants ou plus",       inputs.bonus3Enfants ? "Oui (+10 %)" : "Non");
-    div();
-
-    sec("Points & coefficients");
-    row("Points acquis (carrière passée)",   `${fmtPDF(res.pointsAcquis)} pts`);
-    row("Points futurs estimés",             `${fmtPDF(res.pointsFuturs)} pts`);
-    row("Total de points",                   `${fmtPDF(res.totalPoints)} pts`);
-    row("Valeur de service projetée",        `${res.valServProj.toFixed(4)} EUR/point`);
-    row("Coefficient appliqué",             `x ${res.coefTotal.toFixed(2)} (${getCoefLabel(inputs.ageDépart)}${inputs.bonus3Enfants ? " + 10 % enfants" : ""})`);
-    y += 3;
-
-    doc.setFillColor(15, 23, 42); doc.roundedRect(20, y, 170, 26, 3, 3, "F");
-    doc.setDrawColor(...G); doc.setLineWidth(0.3); doc.roundedRect(20, y, 170, 26, 3, 3, "S");
-    doc.setTextColor(...S); doc.setFont("helvetica", "normal"); doc.setFontSize(9);
-    doc.text("Pension nette mensuelle estimée", 30, y + 9);
-    doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.setTextColor(...G);
-    doc.text(fmtEurPDF(res.pensionNette), 30, y + 20);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...S);
-    doc.text(`(${fmtEurPDF(res.pensionBrute)} brut/mois)`, 120, y + 20);
-    y += 34;
-
-    row("Avec revalorisation estimée",      `${fmtEurPDF(res.pensionNette)}/mois`);
-    row("Sans revalorisation (base 2026)", `${fmtEurPDF(res.pensionNetteSansReval)}/mois`);
-    row("Gain lié à la revalorisation",    `+${fmtEurPDF(res.pensionNette - res.pensionNetteSansReval)}/mois`);
-    row("Salaire estimé au départ",         fmtEurPDF(res.salaireDépart));
-    div();
-
-    sec("Cotisations totales (carrière complète)");
-    row("Part salariale",                  fmtEurPDF(res.cotSalTotal));
-    row("Part patronale",                  fmtEurPDF(res.cotPatTotal));
-    row("Total cotisé (salarié + employeur)", fmtEurPDF(res.cotSalTotal + res.cotPatTotal));
-    y += 8;
-
-    doc.setTextColor(...S); doc.setFont("helvetica", "italic"); doc.setFontSize(8);
-    const disc = "Simulation indicative basée sur les paramètres Agirc-Arrco 2026 (PASS 47 100 €, valeur d'achat 7,46 €, valeur de service 1,4098 €/point). Les résultats réels dépendent de votre carrière exacte, des revalorisations futures et de la législation en vigueur. Pour un calcul officiel et personnalisé, consultez info-retraite.fr.";
-    doc.text(doc.splitTextToSize(disc, 170), 20, y);
-    doc.setTextColor(30, 41, 59); doc.setFont("helvetica", "normal"); doc.setFontSize(8);
-    doc.text("www.mesimulateurs.fr · Données officielles Agirc-Arrco 2026", 20, 287);
-
-    doc.save("simulation-retraite-agirc-arrco.pdf");
-  } catch (e) { console.error("PDF error:", e); }
-  setExp(false);
 }
 
 // ─── Animated number hook ────────────────────────────────────────────────────
@@ -469,8 +391,6 @@ export default function SimulateurRetraite() {
   // Scénario B
   const [salaireB, setSalaireB]     = useState(null);
   const [ageDépartB, setAgeDépartB] = useState(null);
-  // UI
-  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     const shared = readShareParams();
@@ -733,19 +653,6 @@ export default function SimulateurRetraite() {
         </div>
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" showDownload={false} />
-
-        {/* ── Bouton export PDF ── */}
-        <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>
-          <button
-            onClick={() => generatePDF(inputs, res, setExporting)}
-            disabled={exporting}
-            aria-busy={exporting}
-            aria-label={exporting ? "Génération du PDF en cours, veuillez patienter" : "Télécharger ma simulation en PDF"}
-            style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "14px 28px", borderRadius: 12, border: "1px solid rgba(184,147,74,0.4)", background: exporting ? "rgba(184,147,74,0.05)" : "rgba(184,147,74,0.1)", color: exporting ? "var(--text-secondary)" : "var(--gold)", fontSize: 14, cursor: exporting ? "not-allowed" : "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif", letterSpacing: "0.03em" }}>
-            <span aria-hidden="true" style={{ fontSize: 18 }}>{exporting ? "⏳" : "⬇"}</span>
-            {exporting ? "Génération du PDF en cours…" : "Télécharger ma simulation (PDF)"}
-          </button>
-        </div>
 
         {/* ── Comparateur ── */}
         <AccordionSection title="Comparer deux scénarios" subtitle="Simulez un départ ou un salaire différent et comparez les pensions côte à côte" gold>
