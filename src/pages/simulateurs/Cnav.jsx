@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -92,6 +93,10 @@ export default function Cnav() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    track('simulator_view', { name: 'cnav' });
+    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
+    _pop['cnav'] = (_pop['cnav'] || 0) + 1;
+    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
   }, []);
 
   const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });

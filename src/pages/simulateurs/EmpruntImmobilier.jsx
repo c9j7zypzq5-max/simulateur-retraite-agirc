@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { track } from '@vercel/analytics';
 
 function useIsMobile(breakpoint = 680) {
   const [mob, setMob] = useState(() =>
@@ -169,6 +170,10 @@ export default function EmpruntImmobilier() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    track('simulator_view', { name: 'emprunt-immobilier' });
+    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
+    _pop['emprunt-immobilier'] = (_pop['emprunt-immobilier'] || 0) + 1;
+    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
   }, []);
 
   const fn = prix ? fraisNotaire(prix, neuf) : 0;

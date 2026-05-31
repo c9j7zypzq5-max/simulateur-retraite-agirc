@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { track } from '@vercel/analytics';
 import Footer from "./components/Footer.jsx";
 import AdUnit from "./components/AdUnit.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -444,6 +445,10 @@ export default function SimulateurRetraite() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr/simulateurs/agirc-arrco';
+    track('simulator_view', { name: 'agirc-arrco' });
+    const _pop = JSON.parse(localStorage.getItem('sim_popularity') || '{}');
+    _pop['agirc-arrco'] = (_pop['agirc-arrco'] || 0) + 1;
+    localStorage.setItem('sim_popularity', JSON.stringify(_pop));
   }, []);
 
   // Base inputs — null = pas de valeur par défaut

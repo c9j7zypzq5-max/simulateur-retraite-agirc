@@ -48,6 +48,12 @@ function BadgePill({ type }) {
   );
 }
 
+function getPopularityScores() {
+  try {
+    return JSON.parse(localStorage.getItem('sim_popularity') || '{}');
+  } catch { return {}; }
+}
+
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
@@ -60,12 +66,15 @@ export default function Home() {
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
   }, []);
 
+  const scores = getPopularityScores();
   const filtered = activeFilter === "Tous"
     ? SIMULATEURS
     : SIMULATEURS.filter(s => s.categories.includes(activeFilter));
 
   const featured = filtered.find(s => s.featured);
-  const regular  = filtered.filter(s => !s.featured);
+  const regular = [...filtered.filter(s => !s.featured)].sort(
+    (a, b) => (scores[b.path.split('/').pop()] || 0) - (scores[a.path.split('/').pop()] || 0)
+  );
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
