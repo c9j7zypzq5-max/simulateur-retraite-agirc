@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -9,6 +9,8 @@ import {
   Chip, ProgressBar, useAnimatedNumber,
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
 const PASS = 47_100;
@@ -190,6 +192,22 @@ export default function Msa() {
     }
   }, []);
 
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.type !== undefined) setType(shared.type);
+      if (shared.revenuSalaire !== undefined) setRevenuSalaire(shared.revenuSalaire);
+      if (shared.anneeNaissance !== undefined) setAnneeNaiss(shared.anneeNaissance);
+      if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites);
+      if (shared.anneesRestantes !== undefined) setAnneesRest(shared.anneesRestantes);
+      if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }));
+  }, [type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart]);
+
   const isExploitant = type === "exploitant";
   const res = isExploitant
     ? calcMsaExploitant({ revenu: revenuSalaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance })
@@ -288,7 +306,7 @@ export default function Msa() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
@@ -382,6 +400,8 @@ export default function Msa() {
             </>
           )}
         </div>
+
+        <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} name="msa" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -9,6 +9,8 @@ import {
   Chip, ProgressBar, useAnimatedNumber,
   fmt, fmtEur, signFmt, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Calcul Retraite Progressive ─────────────────────────────────────────────
 function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
@@ -188,7 +190,7 @@ export default function RetraiteProgressive() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre revenu en retraite progressive</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
@@ -233,6 +235,8 @@ export default function RetraiteProgressive() {
             </>
           )}
         </div>
+
+        <ShareBar params={{ pensionPleineTaux, salaire, quotite, duree }} resultsRef={resultsRef} name="retraite-progressive" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

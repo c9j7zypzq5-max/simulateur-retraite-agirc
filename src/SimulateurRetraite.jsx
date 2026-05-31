@@ -4,6 +4,8 @@ import Footer from "./components/Footer.jsx";
 import AdUnit from "./components/AdUnit.jsx";
 import Navbar from "./components/Navbar.jsx";
 import { useTheme } from "./hooks/useTheme.js";
+import ShareBar from "./components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 47_100;
@@ -438,6 +440,7 @@ function FaqItem({ q, a }) {
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function SimulateurRetraite() {
   const [theme, setTheme] = useTheme();
+  const resultsRef = useRef(null);
 
   useEffect(() => {
     document.title = "Simulateur Retraite Agirc-Arrco 2025 — Calcul points et pension";
@@ -468,6 +471,23 @@ export default function SimulateurRetraite() {
   const [ageDépartB, setAgeDépartB] = useState(null);
   // UI
   const [exporting, setExporting] = useState(false);
+
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.salaire !== undefined) setSalaire(shared.salaire);
+      if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites);
+      if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes);
+      if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart);
+      if (shared.evolutionSalaire !== undefined) setEvolutionSalaire(shared.evolutionSalaire);
+      if (shared.tauxReval !== undefined) setTauxReval(shared.tauxReval);
+      if (shared.estCadre !== undefined) setEstCadre(shared.estCadre);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }));
+  }, [salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre]);
 
   const inputs = { salaire, anneesFaites, anneesRestantes, evolutionSalaire, tauxReval, ageDépart, bonus3Enfants, estCadre };
   const res = calcResult(inputs);
@@ -616,7 +636,7 @@ export default function SimulateurRetraite() {
         </AccordionSection>
 
         {/* ── Carte résultats ── */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
 
           {/* Pension principale */}
@@ -711,6 +731,8 @@ export default function SimulateurRetraite() {
             ⚠️ <strong style={{ color: "var(--text-secondary)" }}>Simulation indicative.</strong> Paramètres Agirc-Arrco 2026 (valeur d'achat : {VALEUR_ACHAT} €, valeur de service : {VALEUR_SERVICE} €/pt). Résultats réels soumis à votre historique exact, aux revalorisations futures et aux coefficients définitifs. Pour un calcul officiel : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener" style={{ color: "var(--gold-mid)" }}>info-retraite.fr</a>.
           </div>
         </div>
+
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" />
 
         {/* ── Bouton export PDF ── */}
         <div style={{ marginTop: 20, display: "flex", justifyContent: "center" }}>

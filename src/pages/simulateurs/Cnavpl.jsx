@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -9,6 +9,8 @@ import {
   Chip, ProgressBar, useAnimatedNumber,
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ShareBar from "../../components/ShareBar.jsx";
+import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
@@ -219,6 +221,21 @@ export default function Cnavpl() {
     }
   }, []);
 
+  useEffect(() => {
+    const shared = readShareParams();
+    if (shared) {
+      if (shared.revenuAnnuel !== undefined) setRevenuAnnuel(shared.revenuAnnuel);
+      if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites);
+      if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes);
+      if (shared.anneeNaissance !== undefined) setAnneeNaissance(shared.anneeNaissance);
+      if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart);
+    }
+  }, []);
+
+  useEffect(() => {
+    window.history.replaceState(null, '', buildShareUrl({ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }));
+  }, [revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart]);
+
   const res = calcCnavpl({
     revenuAnnuel,
     anneesFaites,
@@ -407,6 +424,7 @@ export default function Cnavpl() {
 
         {/* Résultats */}
         <div
+          ref={resultsRef}
           style={{
             background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))",
             border: "1px solid var(--border-gold)",
@@ -558,6 +576,8 @@ export default function Cnavpl() {
             </>
           )}
         </div>
+
+        <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} name="cnavpl" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>
