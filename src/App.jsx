@@ -26,6 +26,7 @@ import Fire from "./pages/simulateurs/Fire.jsx";
 // Vie & Temps
 import CoutEnHeures from "./pages/simulateurs/CoutEnHeures.jsx";
 import VieEnSemaines from "./pages/simulateurs/VieEnSemaines.jsx";
+import DefiRichesse from "./pages/simulateurs/DefiRichesse.jsx";
 
 export default function App() {
   return (
@@ -55,6 +56,7 @@ export default function App() {
         {/* Vie & Temps */}
         <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
+        <Route path="/simulateurs/defi-richesse" element={<DefiRichesse />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

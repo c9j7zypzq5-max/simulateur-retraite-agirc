@@ -79,6 +79,7 @@ const NAV_GROUPS = [
   { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
     { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
     { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
+    { path: "/simulateurs/defi-richesse",   icon: "🎮", title: "Défi Richesse",          subtitle: "30 décisions · 30 ans" },
   ] },
 ];
 

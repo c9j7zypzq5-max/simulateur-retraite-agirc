@@ -29,6 +29,7 @@ const SIMULATEURS = [
   // Vie & Temps
   { path: "/simulateurs/cout-en-heures", icon: "⏰", title: "Le vrai prix en heures de vie", desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
   { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
+  { path: "/simulateurs/defi-richesse", icon: "🎮", title: "Défi Richesse — 30 décisions", desc: "30 décisions financières de la vie quotidienne. Voyez leur impact sur votre patrimoine à 10, 20 et 30 ans. Jeu interactif ultra-animé.", tag: "Vie & Temps · Jeu", categories: ["Vie & Temps", "Finances"], badges: ["new"], available: true },
 ];
 
 const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps"];
