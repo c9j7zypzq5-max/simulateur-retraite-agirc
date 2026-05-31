@@ -381,6 +381,19 @@ export default function Msa() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La Mutualité Sociale Agricole : un régime complet</h3>
+            <p style={{ marginBottom: 16 }}>La MSA (Mutualité Sociale Agricole) est le guichet unique de protection sociale de l'agriculture française. Elle gère l'assurance maladie, la retraite, les allocations familiales et les accidents du travail pour les exploitants agricoles, leurs conjoints collaborateurs, et les salariés agricoles. Avec plus de 5 millions de bénéficiaires, c'est le deuxième régime de protection sociale français après le régime général.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Exploitants et salariés : deux régimes distincts</h3>
+            <p style={{ marginBottom: 16 }}>La retraite MSA couvre deux populations différentes. Les salariés agricoles bénéficient d'un régime aligné sur le régime général (CNAV), avec les mêmes règles de trimestres, de SAM et de taux de liquidation. Les exploitants agricoles relèvent d'un régime spécifique où la retraite de base est calculée en points, sur la base des revenus professionnels agricoles déclarés chaque année.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La Retraite Complémentaire Obligatoire (RCO)</h3>
+            <p>En plus de la retraite de base, les exploitants agricoles bénéficient depuis 2003 d'une Retraite Complémentaire Obligatoire (RCO) par points. La loi Chassaigne de 2021 a renforcé ce dispositif en revalorisent les petites retraites agricoles au niveau de 85 % du SMIC net pour une carrière complète. La cotisation RCO est obligatoire pour tous les chefs d'exploitation depuis 2003, et étendue aux conjoints collaborateurs depuis 2011.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — MSA</h2>

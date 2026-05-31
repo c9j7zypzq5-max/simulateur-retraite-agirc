@@ -423,6 +423,19 @@ export default function EmpruntImmobilier() {
           <AdUnit slot="auto" format="auto" />
         </div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La formule de calcul de la mensualité</h3>
+            <p style={{ marginBottom: 16 }}>La mensualité d'un crédit immobilier est calculée par la formule d'amortissement constant : M = C × t / (1 − (1 + t)⁻ⁿ), où C est le capital emprunté, t le taux mensuel (taux annuel ÷ 12) et n la durée en mois. Au début du prêt, la mensualité se compose principalement d'intérêts ; au fil du temps, la part en capital augmente progressivement. Le tableau d'amortissement détaille cette décomposition mois par mois.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le taux d'endettement et la règle HCSF des 35 %</h3>
+            <p style={{ marginBottom: 16 }}>Depuis janvier 2022, les règles du Haut Conseil de Stabilité Financière (HCSF) sont contraignantes pour les banques : le taux d'endettement ne peut pas dépasser 35 % des revenus nets (assurance comprise) et la durée du prêt est limitée à 25 ans (27 ans pour les achats dans le neuf avec différé). Ces règles visent à protéger les emprunteurs contre le surendettement. Les banques disposent d'un quota de dérogations limité à 20 % des dossiers.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Frais de notaire et coût total du crédit</h3>
+            <p>Les frais de notaire représentent environ 7 à 8 % du prix d'achat dans l'ancien (droits de mutation, émoluments, débours) et seulement 2 à 3 % dans le neuf. Le coût total du crédit comprend les intérêts versés sur toute la durée, l'assurance emprunteur (souvent 0,2 à 0,5 % du capital par an) et les éventuelles garanties. Ce coût peut représenter 30 à 50 % du capital emprunté sur 20 ans.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <FaqSection items={FAQ} />
 

@@ -222,6 +222,19 @@ export default function Epargne() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La magie des intérêts composés</h3>
+            <p style={{ marginBottom: 16 }}>L'épargne à long terme tire toute sa puissance des intérêts composés : les intérêts générés chaque année s'ajoutent au capital et produisent eux-mêmes des intérêts l'année suivante. Ce mécanisme crée une croissance exponentielle. Ainsi, 10 000 € investis à 5 % par an valent 16 289 € après 10 ans, 26 533 € après 20 ans et 43 219 € après 30 ans — le capital a plus que quadruplé sans aucun versement supplémentaire.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La règle des 72</h3>
+            <p style={{ marginBottom: 16 }}>La règle des 72 est un raccourci mental pour estimer le temps nécessaire à un capital pour doubler : divisez 72 par le taux d'intérêt annuel. À 4 %, un capital double en environ 18 ans. À 6 %, en 12 ans. À 9 %, en 8 ans. Cette règle donne une intuition immédiate de l'impact du taux choisi sur la croissance de son épargne et souligne l'importance de chercher le meilleur rendement possible.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Durée vs taux : l'arbitrage fondamental</h3>
+            <p>Dans l'épargne de long terme, la durée a généralement plus d'impact que le taux. Un investisseur qui place 200 € par mois à 5 % pendant 30 ans accumule environ 166 000 €. S'il attend 10 ans pour commencer (20 ans seulement), il n'atteindra que 82 000 €. La régularité des versements et la durée d'investissement sont les deux leviers les plus accessibles pour construire un patrimoine significatif.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes</h2>

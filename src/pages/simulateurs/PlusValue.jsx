@@ -329,6 +329,19 @@ export default function PlusValue() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le calcul de la plus-value imposable</h3>
+            <p style={{ marginBottom: 16 }}>La plus-value immobilière brute est la différence entre le prix de cession (net vendeur) et le prix d'acquisition majoré des frais d'acquisition et des travaux. La plus-value nette imposable est obtenue après application des abattements pour durée de détention. Elle est soumise à l'impôt sur le revenu au taux forfaitaire de 19 % et aux prélèvements sociaux au taux de 17,2 %, soit une imposition globale de 36,2 % avant abattements.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les abattements pour durée de détention</h3>
+            <p style={{ marginBottom: 16 }}>Les abattements réduisent progressivement la plus-value imposable au-delà de la 5ème année. Pour l'impôt sur le revenu, l'abattement est de 6 % par an de la 6ème à la 21ème année, puis 4 % la 22ème — soit une exonération totale à partir de 22 ans de détention. Pour les prélèvements sociaux, l'abattement est de 1,65 % par an de la 6ème à la 21ème année, puis de 9 % par an jusqu'à la 30ème — exonération totale à 30 ans.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Résidence principale et autres exonérations</h3>
+            <p>La plus-value réalisée sur la cession de votre résidence principale est totalement exonérée d'impôt et de prélèvements sociaux, sans condition de durée de détention. D'autres exonérations existent : cession dont le prix est inférieur à 15 000 €, première cession d'une résidence secondaire sous conditions, expropriation, et cessions par des personnes âgées ou invalides sous conditions de revenus.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Plus-value</h2>

@@ -223,6 +223,19 @@ export default function Ircantec() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime des agents non titulaires de l'État</h3>
+            <p style={{ marginBottom: 16 }}>L'IRCANTEC (Institution de Retraite Complémentaire des Agents Non Titulaires de l'État et des Collectivités) est le régime de retraite complémentaire obligatoire des agents contractuels de la fonction publique. Il couvre les contractuels de l'État, des collectivités territoriales, des hôpitaux publics et de nombreux organismes parapublics, soit environ 4 millions de cotisants actifs.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un système de points, comme l'Agirc-Arrco</h3>
+            <p style={{ marginBottom: 16 }}>L'IRCANTEC est un régime par points. Chaque année, vos cotisations sont converties en points : votre salaire brut est multiplié par un taux global (5,50 % jusqu'au PASS en 2026, 11,35 % au-delà), puis divisé par la valeur d'achat du point. En 2026, la valeur de service du point IRCANTEC est de 0,5204 € et la valeur d'achat de 12,516 €. À la liquidation, vos points accumulés sont multipliés par la valeur de service pour obtenir votre pension annuelle complémentaire.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions de liquidation</h3>
+            <p>La pension IRCANTEC suit les mêmes règles d'âge que le régime général (64 ans pour les générations 1965+). Aucun taux plein n'est requis pour liquider : la pension est calculée proportionnellement aux points acquis, quel que soit l'âge ou la durée de cotisation. Les droits IRCANTEC s'ajoutent à la pension de base du régime général pour les agents qui y ont également cotisé.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — IRCANTEC</h2>

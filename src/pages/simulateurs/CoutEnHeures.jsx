@@ -197,6 +197,19 @@ export default function CoutEnHeures() {
           <AdUnit slot="auto" format="auto" />
         </div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Votre salaire horaire net : l'étalon caché</h3>
+            <p style={{ marginBottom: 16 }}>Le concept de « coût en heures de travail » consiste à exprimer le prix de tout achat non pas en euros, mais en temps de travail nécessaire pour le gagner. Pour l'utiliser, calculez votre salaire horaire net réel : divisez votre revenu mensuel net par le nombre d'heures effectivement consacrées au travail (trajet, préparation, heures supplémentaires inclus). Si vous gagnez 2 500 € nets pour 160 heures travaillées, votre heure vaut 15,63 €. Un achat à 300 € représente alors 19 heures de votre vie.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'origine du concept : Your Money or Your Life</h3>
+            <p style={{ marginBottom: 16 }}>Cette approche a été popularisée par Vicki Robin et Joe Dominguez dans leur livre « Your Money or Your Life » publié en 1992. Leur thèse centrale : l'argent est du temps de vie transformé. Chaque dépense n'est pas seulement une sortie financière — c'est une portion de votre vie que vous échangez contre un bien ou un service. Cette prise de conscience modifie profondément le rapport à la consommation et à l'épargne.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un outil de décision, pas de privation</h3>
+            <p>L'objectif n'est pas de culpabiliser sur chaque dépense, mais de prendre des décisions plus conscientes. Certains achats valent clairement « le coup » en termes de satisfaction par heure de travail correspondante ; d'autres, passés au filtre de ce calcul, semblent soudainement moins indispensables. Ce simulateur vous aide à intégrer spontanément cette dimension dans vos réflexions financières quotidiennes.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 8 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>

@@ -214,6 +214,19 @@ export default function Independants() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La SSI, régime obligatoire des indépendants</h3>
+            <p style={{ marginBottom: 16 }}>La Sécurité Sociale des Indépendants (SSI), anciennement appelée RSI, est le régime obligatoire des travailleurs non-salariés : artisans, commerçants, dirigeants de sociétés soumises à l'impôt sur le revenu. Depuis 2020, la SSI est intégrée au régime général géré par les URSSAF, mais les règles de calcul de la retraite restent distinctes. Elle couvre plus de 3 millions de cotisants actifs.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Des cotisations sur le revenu professionnel</h3>
+            <p style={{ marginBottom: 16 }}>Contrairement aux salariés, les indépendants cotisent sur leur revenu professionnel net (bénéfice), non sur un salaire brut. Le taux de cotisation retraite de base s'élève à 17,75 % jusqu'au PASS et 0,60 % au-delà. La retraite de base fonctionne en trimestres, comme le régime général, avec les mêmes règles de décote et surcote. Une cotisation minimale assure la validation d'au moins 3 trimestres même en cas de faibles revenus.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite complémentaire RCI</h3>
+            <p>En plus de la retraite de base, les artisans et commerçants bénéficient d'une retraite complémentaire par points (RCI). Le taux de cotisation est de 7 % sur les revenus jusqu'à 37 960 € et de 8 % sur la tranche supérieure. La valeur du point RCI est révisée annuellement. Cette complémentaire représente en moyenne 30 à 40 % du total de la pension versée à la retraite.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Indépendants</h2>

@@ -227,6 +227,19 @@ export default function Cnav() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime général de la Sécurité Sociale</h3>
+            <p style={{ marginBottom: 16 }}>La Caisse Nationale d'Assurance Vieillesse (CNAV) est le régime de retraite de base de tous les salariés du secteur privé. Elle verse une pension proportionnelle à vos revenus et à la durée de votre cotisation. En 2026, la pension de base est plafonnée à 50 % du Plafond Annuel de la Sécurité Sociale (PASS), soit 23 550 € brut par an au maximum.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Trimestres, SAM et taux de liquidation</h3>
+            <p style={{ marginBottom: 16 }}>Votre pension CNAV dépend de trois variables. Le Salaire Annuel Moyen (SAM) correspond à la moyenne de vos 25 meilleures années de salaire brut, plafonné au PASS chaque année. Le taux de liquidation est de 50 % si vous avez validé le nombre de trimestres requis (entre 167 et 172 selon votre année de naissance) ou si vous avez 67 ans. La proratisation réduit la pension si vous n'avez pas atteint la durée complète de cotisation.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Décote et surcote : partir au bon moment</h3>
+            <p>Si vous partez avant 67 ans sans avoir validé le nombre de trimestres requis, une décote de 0,625 % par trimestre manquant s'applique, jusqu'à 12,5 % maximum. À l'inverse, chaque trimestre cotisé après le taux plein génère une surcote de +1,25 %, sans plafond. L'âge légal de départ varie de 62 à 64 ans selon votre génération. À 67 ans, le taux plein est automatiquement attribué quelle que soit la durée de cotisation.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — CNAV</h2>

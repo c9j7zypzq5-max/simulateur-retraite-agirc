@@ -221,6 +221,19 @@ export default function FonctionPublique() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La formule de la pension civile</h3>
+            <p style={{ marginBottom: 16 }}>La pension de retraite des fonctionnaires de l'État est calculée selon une formule spécifique : traitement indiciaire brut de référence × nombre de trimestres liquidables / durée de référence (172 trimestres pour les générations 1965+) × valeur du point d'indice. Le traitement de référence est celui du dernier échelon, sur les 6 derniers mois. Cette logique diffère fondamentalement du régime général, où la base est la moyenne des 25 meilleures années de salaire.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Catégorie active ou sédentaire</h3>
+            <p style={{ marginBottom: 16 }}>Les fonctionnaires sont répartis en deux catégories selon la pénibilité de leur emploi. La catégorie active (policiers, infirmiers, agents des égouts...) bénéficie d'un départ anticipé dès 52 ou 57 ans et d'une durée de référence réduite à 160 trimestres. La catégorie sédentaire suit le calendrier de droit commun avec un âge légal de départ à 64 ans. La distinction est déterminée par l'emploi occupé, pas par le statut général.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La bonification du cinquième</h3>
+            <p>Certains fonctionnaires de catégorie active bénéficient d'une bonification dite « du cinquième » : pour chaque période de 5 ans de services actifs, une année supplémentaire est ajoutée au calcul de la durée de cotisation. Cette bonification, cumulée avec le départ anticipé, permet à certains agents de partir nettement avant l'âge légal tout en conservant un niveau de pension satisfaisant.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Fonction publique</h2>

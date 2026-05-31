@@ -287,6 +287,19 @@ export default function VieEnSemaines() {
           </AccordionSection>
         )}
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>4 160 semaines : un chiffre qui change tout</h3>
+            <p style={{ marginBottom: 16 }}>Une vie humaine de 80 ans représente exactement 4 160 semaines. C'est peu, et c'est beaucoup — mais c'est surtout un nombre concret qu'on peut visualiser d'un seul regard. Ce simulateur met en perspective le temps déjà écoulé et celui qu'il reste selon votre espérance de vie. Contrairement à une représentation en années ou en jours, la semaine est une unité à la fois suffisamment petite pour être tangible et suffisamment grande pour être significative.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'origine : Tim Urban et Wait But Why</h3>
+            <p style={{ marginBottom: 16 }}>Cette visualisation a été popularisée en 2014 par Tim Urban sur son blog Wait But Why, avec l'article « Your Life in Weeks ». Sa représentation sous forme de grille — chaque case représentant une semaine, les cases passées en gris et les cases à venir en blanc — a eu un impact profond sur de nombreux lecteurs, les poussant à repenser leurs priorités et l'usage de leur temps. L'article est devenu viral et a engendré une prise de conscience sur le caractère fini du temps disponible.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Comment utiliser cet outil positivement</h3>
+            <p>La visualisation de sa vie en semaines n'est pas un exercice morbide, mais un outil de clarification. Confronté à cette grille, chacun peut identifier ce qui mérite vraiment son temps et ce qui n'en vaut pas la peine. Les psychologues parlent de « salience of mortality » : rappeler que le temps est fini augmente la motivation à vivre conformément à ses valeurs et à ne pas remettre à demain ce qui compte aujourd'hui.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>

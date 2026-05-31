@@ -265,6 +265,19 @@ export default function ImpotRevenu() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le barème progressif 2025</h3>
+            <p style={{ marginBottom: 16 }}>L'impôt sur le revenu français est calculé selon un barème progressif par tranches. Pour les revenus 2025 (déclarés en 2026), les taux sont : 0 % jusqu'à 11 497 €, 11 % de 11 497 € à 29 315 €, 30 % de 29 315 € à 83 823 €, 41 % de 83 823 € à 180 294 €, et 45 % au-delà. Ces tranches s'appliquent sur le revenu net imposable par part de quotient familial — pas sur le revenu brut.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Quotient familial et décote</h3>
+            <p style={{ marginBottom: 16 }}>Le quotient familial réduit l'impôt des familles avec enfants : le revenu imposable est divisé par le nombre de parts (2 pour un couple, +0,5 par enfant en règle générale), l'impôt est calculé puis multiplié par ce nombre de parts. La décote efface partiellement la cotisation des foyers modestes : elle s'applique lorsque l'impôt brut est inférieur à 1 929 € (célibataire) ou 3 191 € (couple) en 2025.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>TMI et taux moyen : deux notions essentielles</h3>
+            <p>Le Taux Marginal d'Imposition (TMI) est le taux de la tranche la plus haute dans laquelle vous cotisez. C'est lui qui détermine l'impact fiscal d'un revenu supplémentaire. Le taux moyen rapporte l'impôt total payé à l'ensemble du revenu imposable — il est toujours inférieur au TMI. Un contribuable avec un TMI à 30 % peut avoir un taux moyen de 12 %, ce qui signifie qu'il ne subit pas 30 % d'imposition sur l'ensemble de ses revenus.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — IR</h2>

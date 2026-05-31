@@ -480,6 +480,19 @@ export default function Fire() {
           </>
         )}
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La règle des 4 % et l'étude Trinity</h3>
+            <p style={{ marginBottom: 16 }}>Le mouvement FIRE (Financial Independence, Retire Early) repose sur l'étude Trinity de 1998, qui a analysé la survie de portefeuilles d'investissement sur des périodes de 15 à 30 ans. Conclusion : un taux de retrait de 4 % par an sur un portefeuille diversifié actions/obligations a historiquement permis de ne jamais épuiser le capital sur 30 ans, avec un taux de succès supérieur à 95 %. Ce taux est parfois ajusté à 3–3,5 % pour les retraites très anticipées.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Calculer son capital cible</h3>
+            <p style={{ marginBottom: 16 }}>La logique découle directement de la règle des 4 % : votre capital cible est égal à vos dépenses annuelles multipliées par 25. Si vous dépensez 30 000 € par an, il vous faut 750 000 € investis pour atteindre l'indépendance financière. Ce capital doit être placé dans des actifs productifs (ETF, immobilier locatif, obligations) dont la croissance annuelle est censée couvrir les retraits tout en préservant le capital en termes réels.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les variantes : Lean, Fat et Barista FIRE</h3>
+            <p>Le Lean FIRE cible un train de vie frugal (moins de 25 000 €/an), avec un capital modeste mais une grande discipline budgétaire. Le Fat FIRE vise le confort sans contrainte (plus de 80 000 €/an), nécessitant souvent plus de 2 millions d'euros. Le Barista FIRE est une approche hybride : on atteint une indépendance partielle et on conserve un emploi à temps partiel pour couvrir les dépenses courantes, laissant le portefeuille croître sans retrait total.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>

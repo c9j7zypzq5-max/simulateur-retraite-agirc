@@ -220,6 +220,19 @@ export default function RetraiteProgressive() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un dispositif de cumul emploi-retraite partiel</h3>
+            <p style={{ marginBottom: 16 }}>La retraite progressive permet de réduire son temps de travail tout en percevant une fraction de sa pension de retraite, avant même de liquider définitivement ses droits. C'est une solution intermédiaire entre l'activité à temps plein et la retraite complète, particulièrement adaptée aux fins de carrière difficiles ou aux personnes souhaitant une transition douce vers la retraite.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions d'accès</h3>
+            <p style={{ marginBottom: 16 }}>Pour bénéficier de la retraite progressive, trois conditions doivent être réunies : avoir atteint l'âge légal diminué de deux ans (soit 62 ans pour les générations 1965+), avoir validé au minimum 150 trimestres tous régimes confondus, et exercer une activité à temps partiel représentant entre 40 % et 80 % de la durée légale du travail. Le dispositif est ouvert aux salariés du secteur privé et à certains agents publics.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le calcul de la fraction de pension versée</h3>
+            <p>La fraction de pension versée est égale à 100 % moins le pourcentage de temps de travail par rapport au temps complet. Ainsi, un salarié à mi-temps (50 %) percevra 50 % de sa pension calculée à la date de la demande. Cette pension provisoire est recalculée à la liquidation définitive pour intégrer les trimestres et salaires supplémentaires acquis, ce qui améliore généralement le montant final.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Retraite progressive</h2>

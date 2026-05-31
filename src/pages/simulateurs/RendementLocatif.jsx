@@ -217,6 +217,19 @@ export default function RendementLocatif() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
+        {/* À propos */}
+        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Rendement brut et rendement net</h3>
+            <p style={{ marginBottom: 16 }}>Le rendement brut d'un investissement locatif se calcule simplement : (loyer annuel / prix d'acquisition) × 100. Il donne une première indication rapide mais ne tient pas compte des charges. Le rendement net déduit les charges non récupérables (taxe foncière, charges de copropriété, frais de gestion, entretien) et les impôts. Un rendement brut de 6 % peut tomber à 3,5 % net selon la fiscalité et les charges du bien.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Charges déductibles et fiscalité</h3>
+            <p style={{ marginBottom: 16 }}>En régime réel (location nue), les charges déductibles comprennent les intérêts d'emprunt, la taxe foncière, les primes d'assurance, les travaux d'entretien et de réparation, et les frais de gestion. Le déficit foncier est imputable sur le revenu global dans la limite de 10 750 € par an. En location meublée (LMNP), l'amortissement comptable du bien peut annuler fiscalement le revenu locatif pendant de nombreuses années.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le cash-flow : indicateur clé</h3>
+            <p>Le cash-flow mesure ce qu'il reste réellement dans votre poche chaque mois après avoir payé toutes les charges et le remboursement du crédit. Un cash-flow positif signifie que le loyer finance le bien et génère un surplus. Un cash-flow nul ou légèrement négatif est souvent acceptable si le bien prend de la valeur dans le temps — c'est la notion de rentabilité globale qui intègre la plus-value potentielle à la revente.</p>
+          </div>
+        </div>
+
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes</h2>

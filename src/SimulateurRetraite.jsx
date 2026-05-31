@@ -785,10 +785,10 @@ export default function SimulateurRetraite() {
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "40px 32px", boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
             <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
-            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Guide</span>
+            <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>À propos</span>
           </div>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 36, lineHeight: 1.2 }}>
-            Comment fonctionne l'Agirc-Arrco ?
+            À propos de ce simulateur
           </h2>
           <div style={{ display: "grid", gap: 28 }}>
             {EDITORIAL.map((s, i) => (
