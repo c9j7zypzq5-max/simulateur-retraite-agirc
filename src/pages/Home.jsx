@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
@@ -29,15 +29,81 @@ const SIMULATEURS = [
   { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
 ];
 
-const COMING_SOON = [];
-
 const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps"];
+
+// ── Animated counter via requestAnimationFrame ────────────────────────────────
+function useCountUp(target, duration = 1200, delay = 0) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    let raf, timeout;
+    timeout = setTimeout(() => {
+      const start = performance.now();
+      const step = (now) => {
+        const elapsed = now - start;
+        const p = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        setValue(Math.round(ease * target));
+        if (p < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }, delay);
+    return () => { clearTimeout(timeout); cancelAnimationFrame(raf); };
+  }, [target, duration, delay]);
+  return value;
+}
+
+// ── Gold particles (SVG pur, CSS animé) ──────────────────────────────────────
+const PARTICLES = [
+  { cx: "8%",  cy: "15%", r: 2.5, dur: "18s", dx: "30px", dy: "20px" },
+  { cx: "18%", cy: "60%", r: 1.8, dur: "22s", dx: "-20px", dy: "35px" },
+  { cx: "30%", cy: "30%", r: 2,   dur: "25s", dx: "15px",  dy: "-25px" },
+  { cx: "45%", cy: "80%", r: 1.5, dur: "20s", dx: "-25px", dy: "15px" },
+  { cx: "55%", cy: "10%", r: 2.2, dur: "28s", dx: "20px",  dy: "30px" },
+  { cx: "65%", cy: "50%", r: 1.6, dur: "16s", dx: "-15px", dy: "-20px" },
+  { cx: "72%", cy: "25%", r: 2.8, dur: "23s", dx: "25px",  dy: "20px" },
+  { cx: "80%", cy: "70%", r: 1.4, dur: "19s", dx: "-30px", dy: "10px" },
+  { cx: "88%", cy: "40%", r: 2,   dur: "26s", dx: "10px",  dy: "-30px" },
+  { cx: "92%", cy: "85%", r: 1.7, dur: "21s", dx: "-20px", dy: "25px" },
+  { cx: "12%", cy: "90%", r: 2.1, dur: "24s", dx: "35px",  dy: "-15px" },
+  { cx: "38%", cy: "55%", r: 1.9, dur: "17s", dx: "-10px", dy: "30px" },
+  { cx: "58%", cy: "75%", r: 1.3, dur: "29s", dx: "20px",  dy: "-20px" },
+];
+
+function Particles() {
+  return (
+    <svg
+      aria-hidden="true"
+      style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", overflow: "visible" }}
+    >
+      <defs>
+        {PARTICLES.map((p, i) => (
+          <style key={i}>{`
+            @keyframes drift-${i} {
+              0%   { transform: translate(0, 0) scale(1); opacity: 0.5; }
+              33%  { transform: translate(${p.dx}, ${p.dy}) scale(1.3); opacity: 0.8; }
+              66%  { transform: translate(calc(${p.dx} * -0.5), calc(${p.dy} * 0.7)) scale(0.9); opacity: 0.4; }
+              100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            }
+          `}</style>
+        ))}
+      </defs>
+      {PARTICLES.map((p, i) => (
+        <circle
+          key={i}
+          cx={p.cx} cy={p.cy} r={p.r}
+          fill="rgba(184,147,74,0.55)"
+          style={{ animation: `drift-${i} ${p.dur} ease-in-out infinite`, animationDelay: `${(i * 1.3).toFixed(1)}s` }}
+        />
+      ))}
+    </svg>
+  );
+}
 
 function BadgePill({ type }) {
   const styles = {
-    popular:  { bg: "rgba(184,147,74,0.12)", color: "var(--gold)", border: "1px solid rgba(184,147,74,0.35)" },
-    updated:  { bg: "rgba(99,102,241,0.12)",  color: "#818cf8",    border: "1px solid rgba(99,102,241,0.25)" },
-    new:      { bg: "rgba(34,197,94,0.12)",   color: "#4ade80",    border: "1px solid rgba(34,197,94,0.25)" },
+    popular: { bg: "rgba(184,147,74,0.12)", color: "var(--gold)", border: "1px solid rgba(184,147,74,0.35)" },
+    updated: { bg: "rgba(99,102,241,0.12)",  color: "#818cf8",    border: "1px solid rgba(99,102,241,0.25)" },
+    new:     { bg: "rgba(34,197,94,0.12)",   color: "#4ade80",    border: "1px solid rgba(34,197,94,0.25)" },
   };
   const labels = { popular: "★ Populaire", updated: "Mis à jour 2026", new: "Nouveau" };
   const s = styles[type] || {};
@@ -56,10 +122,68 @@ function getCachedScores() {
   return null;
 }
 
+// ── Sliding filter indicator ──────────────────────────────────────────────────
+function FilterBar({ activeFilter, setActiveFilter }) {
+  const refs = useRef({});
+  const barRef = useRef(null);
+  const [indicator, setIndicator] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    const el = refs.current[activeFilter];
+    const bar = barRef.current;
+    if (!el || !bar) return;
+    const barRect = bar.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    setIndicator({ left: elRect.left - barRect.left, width: elRect.width });
+  }, [activeFilter]);
+
+  return (
+    <div ref={barRef} style={{ position: "relative", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
+      {/* Sliding indicator (position absolute, behind buttons) */}
+      <div style={{
+        position: "absolute",
+        top: 0,
+        left: indicator.left,
+        width: indicator.width,
+        height: "100%",
+        background: "rgba(184,147,74,0.1)",
+        border: "1px solid var(--border-gold)",
+        borderRadius: 20,
+        transition: "left 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)",
+        pointerEvents: "none",
+        zIndex: 0,
+      }} />
+      <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>Filtrer :</span>
+      {FILTERS.map(f => (
+        <button
+          key={f}
+          ref={el => { refs.current[f] = el; }}
+          onClick={() => setActiveFilter(f)}
+          style={{
+            background: "transparent",
+            border: `1px solid ${activeFilter === f ? "transparent" : "var(--border)"}`,
+            color: activeFilter === f ? "var(--gold)" : "var(--text-secondary)",
+            padding: "7px 16px", borderRadius: 20, fontSize: "0.8rem",
+            cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
+            transition: "color 0.2s, border-color 0.2s",
+            position: "relative", zIndex: 1,
+          }}>
+          {f}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
   const [scores, setScores] = useState({});
+  const [totalViews, setTotalViews] = useState(0);
+  const [cardsVisible, setCardsVisible] = useState(false);
+
+  const simCount = useCountUp(16, 900, 200);
+  const displayedViews = useCountUp(totalViews, 1200, 600);
 
   useEffect(() => {
     document.title = "Mesimulateurs.fr — Simulateurs gratuits retraite, immobilier, finances";
@@ -67,16 +191,28 @@ export default function Home() {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+
     const cached = getCachedScores();
-    if (cached) { setScores(cached); return; }
+    if (cached) {
+      setScores(cached);
+      const total = Object.values(cached).reduce((a, b) => a + b, 0);
+      setTotalViews(total);
+    }
     fetch('/api/scores')
       .then(r => r.json())
       .then(data => {
         setScores(data);
         localStorage.setItem('sim_scores_cache', JSON.stringify({ ts: Date.now(), data }));
+        const total = Object.values(data).reduce((a, b) => a + b, 0);
+        setTotalViews(total);
       })
       .catch(() => {});
+
+    // Trigger card cascade after a short delay
+    const t = setTimeout(() => setCardsVisible(true), 100);
+    return () => clearTimeout(t);
   }, []);
+
   const filtered = activeFilter === "Tous"
     ? SIMULATEURS
     : SIMULATEURS.filter(s => s.categories.includes(activeFilter));
@@ -86,34 +222,58 @@ export default function Home() {
     (a, b) => (scores[b.path.split('/').pop()] || 0) - (scores[a.path.split('/').pop()] || 0)
   );
 
+  const allCards = [featured, ...regular].filter(Boolean);
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Hero ── */}
-      <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
-          <span style={{ opacity: 0.7 }}>✦</span> Retraite · Immobilier · Impôts · Finances <span style={{ opacity: 0.7 }}>✦</span>
-        </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem,5vw,3.4rem)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20 }}>
-          Simulez vos grandes décisions<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>en toute clarté</em>
-        </h1>
-        <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
-          Des simulateurs gratuits, précis et pédagogiques pour vos décisions financières importantes — retraite, investissement immobilier, fiscalité et épargne.
-        </p>
-        <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
-          {[
-            { v: "16", l: "simulateurs actifs" },
-            { v: "30 s", l: "pour une première estimation" },
-            { v: "100 %", l: "gratuit & sans inscription" },
-          ].map(({ v, l }) => (
-            <div key={l} style={{ textAlign: "center" }}>
-              <strong style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--gold)" }}>{v}</strong>
-              <small style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>{l}</small>
+      <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto", position: "relative" }}>
+        <Particles />
+
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
+            <span style={{ opacity: 0.7 }}>✦</span> Retraite · Immobilier · Impôts · Finances <span style={{ opacity: 0.7 }}>✦</span>
+          </div>
+          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem,5vw,3.4rem)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20 }}>
+            Simulez vos grandes décisions<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>en toute clarté</em>
+          </h1>
+          <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
+            Des simulateurs gratuits, précis et pédagogiques pour vos décisions financières importantes — retraite, investissement immobilier, fiscalité et épargne.
+          </p>
+          <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
+            {[
+              { v: simCount, l: "simulateurs actifs", suffix: "" },
+              { v: "30 s", l: "pour une première estimation", suffix: "" },
+              { v: "100 %", l: "gratuit & sans inscription", suffix: "" },
+            ].map(({ v, l }) => (
+              <div key={l} style={{ textAlign: "center" }}>
+                <strong style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--gold)" }}>
+                  {v}
+                </strong>
+                <small style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>{l}</small>
+              </div>
+            ))}
+          </div>
+
+          {/* Visitor counter */}
+          {totalViews > 0 && (
+            <div style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: "var(--text-secondary)", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)", padding: "6px 16px", borderRadius: 20 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", display: "inline-block", boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
+              <span><strong style={{ color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem" }}>{displayedViews.toLocaleString("fr-FR")}</strong> simulations réalisées</span>
             </div>
-          ))}
+          )}
         </div>
       </section>
+
+      {/* Pulse animation for live dot */}
+      <style>{`
+        @keyframes pulse-dot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.4); }
+        }
+      `}</style>
 
       {/* ── AdSense ── */}
       <div style={{ maxWidth: 1100, margin: "0 auto 24px", padding: "0 24px" }}>
@@ -121,21 +281,8 @@ export default function Home() {
       </div>
 
       {/* ── Filter bar ── */}
-      <div className="filter-bar" style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px", display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
-        <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4 }}>Filtrer :</span>
-        {FILTERS.map(f => (
-          <button key={f} onClick={() => setActiveFilter(f)}
-            style={{
-              background: activeFilter === f ? "rgba(184,147,74,0.1)" : "rgba(255,255,255,0.04)",
-              border: `1px solid ${activeFilter === f ? "var(--border-gold)" : "var(--border)"}`,
-              color: activeFilter === f ? "var(--gold)" : "var(--text-secondary)",
-              padding: "7px 16px", borderRadius: 20, fontSize: "0.8rem",
-              cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
-              transition: "all 0.2s",
-            }}>
-            {f}
-          </button>
-        ))}
+      <div className="filter-bar" style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }}>
+        <FilterBar activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
       </div>
 
       {/* ── Grid ── */}
@@ -146,11 +293,10 @@ export default function Home() {
         </div>
 
         <div className="sim-grid">
-          {featured && (
-            <FeaturedCard sim={featured} />
-          )}
-          {regular.map(sim => (
-            <SimCard key={sim.path} sim={sim} />
+          {allCards.map((sim, index) => (
+            sim.featured
+              ? <FeaturedCard key={sim.path} sim={sim} index={0} visible={cardsVisible} />
+              : <SimCard key={sim.path} sim={sim} index={index} visible={cardsVisible} />
           ))}
         </div>
 
@@ -159,7 +305,6 @@ export default function Home() {
             Aucun simulateur dans cette catégorie pour l'instant.
           </p>
         )}
-
       </section>
 
       <Footer />
@@ -167,7 +312,10 @@ export default function Home() {
   );
 }
 
-function FeaturedCard({ sim }) {
+function FeaturedCard({ sim, index, visible }) {
+  const [hovered, setHovered] = useState(false);
+  const delay = index * 80;
+
   return (
     <Link to={sim.path} className="sim-featured" style={{
       background: "linear-gradient(145deg,rgba(184,147,74,0.07),var(--card-bg))",
@@ -175,11 +323,24 @@ function FeaturedCard({ sim }) {
       borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start",
       textDecoration: "none",
-      transition: "transform 0.2s, box-shadow 0.25s",
       position: "relative", overflow: "hidden",
+      transition: `
+        transform 0.35s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.35s cubic-bezier(0.4,0,0.2,1),
+        opacity 0.5s ease ${delay}ms,
+        translate 0.5s ease ${delay}ms
+      `,
+      opacity: visible ? 1 : 0,
+      translate: visible ? "0 0" : "0 24px",
+      transform: hovered
+        ? "perspective(800px) rotateY(3deg) translateY(-2px)"
+        : "perspective(800px) rotateY(0deg) translateY(0)",
+      boxShadow: hovered
+        ? "0 12px 40px rgba(184,147,74,0.2), 0 4px 12px rgba(0,0,0,0.15)"
+        : "none",
     }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 32px rgba(184,147,74,0.12)"; }}
-      onMouseLeave={e => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = "none"; }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.7rem", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}>{sim.icon}</div>
       <div style={{ flex: 1 }}>
@@ -197,19 +358,36 @@ function FeaturedCard({ sim }) {
   );
 }
 
-function SimCard({ sim }) {
+function SimCard({ sim, index, visible }) {
+  const [hovered, setHovered] = useState(false);
+  const delay = index * 80;
+
   return (
     <Link to={sim.path} style={{
       background: "var(--card-bg)",
-      border: "1px solid var(--border)",
+      border: `1px solid ${hovered ? "var(--border-gold)" : "var(--border)"}`,
       borderRadius: 14, padding: 28,
       display: "flex", flexDirection: "column", gap: 16,
       textDecoration: "none",
       position: "relative", overflow: "hidden",
-      transition: "border-color 0.25s, background 0.25s, transform 0.2s",
+      transition: `
+        border-color 0.25s,
+        transform 0.35s cubic-bezier(0.4,0,0.2,1),
+        box-shadow 0.35s cubic-bezier(0.4,0,0.2,1),
+        opacity 0.5s ease ${delay}ms,
+        translate 0.5s ease ${delay}ms
+      `,
+      opacity: visible ? 1 : 0,
+      translate: visible ? "0 0" : "0 24px",
+      transform: hovered
+        ? "perspective(800px) rotateY(3deg) translateY(-2px)"
+        : "perspective(800px) rotateY(0deg) translateY(0)",
+      boxShadow: hovered
+        ? "0 12px 40px rgba(184,147,74,0.15), 0 4px 12px rgba(0,0,0,0.12)"
+        : "none",
     }}
-      onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-gold)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-      onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.transform = "none"; }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.4rem", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}>{sim.icon}</div>
