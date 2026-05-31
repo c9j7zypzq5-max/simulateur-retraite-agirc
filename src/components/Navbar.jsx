@@ -69,6 +69,7 @@ const NAV_GROUPS = [
     { path: "/simulateurs/plus-value-immobiliere",   icon: "📈", title: "Plus-value immobilière", subtitle: "IR + prélèvements sociaux" },
   ] },
   { id: "finances", icon: "💰", label: "Finances", items: [
+    { path: "/simulateurs/budget",  icon: "📊", title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
     { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
     { path: "/simulateurs/fire",    icon: "🔥", title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
   ] },

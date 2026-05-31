@@ -19,6 +19,7 @@ import RendementLocatif from "./pages/simulateurs/RendementLocatif.jsx";
 import ImpotRevenu from "./pages/simulateurs/ImpotRevenu.jsx";
 import PlusValue from "./pages/simulateurs/PlusValue.jsx";
 // Finances
+import Budget from "./pages/simulateurs/Budget.jsx";
 import Epargne from "./pages/simulateurs/Epargne.jsx";
 import Fire from "./pages/simulateurs/Fire.jsx";
 // Vie & Temps
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/simulateurs/impot-revenu" element={<ImpotRevenu />} />
         <Route path="/simulateurs/plus-value-immobiliere" element={<PlusValue />} />
         {/* Finances */}
+        <Route path="/simulateurs/budget" element={<Budget />} />
         <Route path="/simulateurs/epargne" element={<Epargne />} />
         <Route path="/simulateurs/fire" element={<Fire />} />
         {/* Vie & Temps */}
