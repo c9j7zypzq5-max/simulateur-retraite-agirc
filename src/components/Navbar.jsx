@@ -85,11 +85,23 @@ const NAV_GROUPS = [
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openGroups, setOpenGroups] = useState(() => {
+    const init = {};
+    NAV_GROUPS.forEach(g => { init[g.id] = g.items.some(i => i.path === pathname); });
+    return init;
+  });
 
   const onSim = pathname.startsWith("/simulateurs/");
   const current = ALL_ITEMS.find(i => i.path === pathname);
 
   const close = useCallback(() => setDrawerOpen(false), []);
+  const toggleGroup = useCallback((id) => setOpenGroups(prev => ({ ...prev, [id]: !prev[id] })), []);
+
+  useEffect(() => {
+    const next = {};
+    NAV_GROUPS.forEach(g => { next[g.id] = g.items.some(i => i.path === pathname); });
+    setOpenGroups(next);
+  }, [pathname]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -274,71 +286,100 @@ export default function Navbar({ theme, setTheme }) {
           </Link>
 
           {/* Groupes de catégories */}
-          {NAV_GROUPS.map(group => (
-            <div key={group.id} style={{ marginBottom: 6 }}>
-              {/* En-tête de catégorie */}
-              <div style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "8px 10px 6px",
-                opacity: group.comingSoon ? 0.5 : 1,
-              }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <span style={{ fontSize: "0.95rem" }}>{group.icon}</span>
-                  <span style={{
-                    fontSize: 10, fontWeight: 600, letterSpacing: "0.07em",
-                    textTransform: "uppercase", color: "var(--text-secondary)",
-                  }}>
-                    {group.label}
-                  </span>
-                </div>
-                {group.comingSoon && (
-                  <span style={{
-                    fontSize: 9, padding: "2px 7px", borderRadius: 8,
-                    background: "rgba(148,163,184,0.12)",
-                    color: "var(--text-secondary)",
-                    border: "1px solid var(--border)",
-                    letterSpacing: "0.05em", textTransform: "uppercase",
-                  }}>
-                    Bientôt
-                  </span>
-                )}
-              </div>
-
-              {/* Items actifs */}
-              {group.items.map(item => {
-                const isCurrent = pathname === item.path;
-                return (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    onClick={close}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 10,
-                      padding: "8px 10px 8px 14px", borderRadius: 9,
-                      textDecoration: "none", marginBottom: 2,
-                      background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
-                      border: `1px solid ${isCurrent ? "var(--border-gold)" : "transparent"}`,
-                    }}
-                    onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-                    onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
-                  >
-                    <span style={{ fontSize: "1.05rem", width: 24, textAlign: "center", flexShrink: 0 }}>{item.icon}</span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        fontSize: "0.86rem", fontWeight: isCurrent ? 500 : 400,
-                        color: isCurrent ? "var(--gold)" : "var(--text)",
-                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+          {NAV_GROUPS.map(group => {
+            const isOpen = openGroups[group.id];
+            return (
+              <div key={group.id} style={{ marginBottom: 6 }}>
+                {/* En-tête de catégorie — cliquable */}
+                <button
+                  onClick={() => toggleGroup(group.id)}
+                  style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "8px 10px 6px", width: "100%",
+                    background: "transparent", border: "none", cursor: "pointer",
+                    opacity: group.comingSoon ? 0.5 : 1,
+                    borderRadius: 8,
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                    <span style={{ fontSize: "0.95rem" }}>{group.icon}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 600, letterSpacing: "0.07em",
+                      textTransform: "uppercase",
+                      color: isOpen ? "var(--gold)" : "var(--text-secondary)",
+                      transition: "color 0.2s ease",
+                    }}>
+                      {group.label}
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    {group.comingSoon && (
+                      <span style={{
+                        fontSize: 9, padding: "2px 7px", borderRadius: 8,
+                        background: "rgba(148,163,184,0.12)",
+                        color: "var(--text-secondary)",
+                        border: "1px solid var(--border)",
+                        letterSpacing: "0.05em", textTransform: "uppercase",
                       }}>
-                        {item.title}
-                      </div>
-                      <div style={{ fontSize: "0.71rem", color: "var(--text-secondary)" }}>{item.subtitle}</div>
-                    </div>
-                    {isCurrent && <span style={{ fontSize: 8, color: "var(--gold)", flexShrink: 0 }}>●</span>}
-                  </Link>
-                );
-              })}
-            </div>
-          ))}
+                        Bientôt
+                      </span>
+                    )}
+                    <span style={{
+                      fontSize: "0.7rem", color: "var(--text-secondary)", userSelect: "none",
+                      display: "inline-block",
+                      transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
+                      transition: "transform 0.25s ease",
+                      lineHeight: 1,
+                    }}>
+                      ›
+                    </span>
+                  </div>
+                </button>
+
+                {/* Items avec animation max-height */}
+                <div style={{
+                  overflow: "hidden",
+                  maxHeight: isOpen ? "520px" : "0",
+                  transition: "max-height 0.28s ease",
+                }}>
+                  {group.items.map(item => {
+                    const isCurrent = pathname === item.path;
+                    return (
+                      <Link
+                        key={item.path}
+                        to={item.path}
+                        onClick={close}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 10,
+                          padding: "8px 10px 8px 14px", borderRadius: 9,
+                          textDecoration: "none", marginBottom: 2,
+                          background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
+                          border: `1px solid ${isCurrent ? "var(--border-gold)" : "transparent"}`,
+                        }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                        onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
+                      >
+                        <span style={{ fontSize: "1.05rem", width: 24, textAlign: "center", flexShrink: 0 }}>{item.icon}</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{
+                            fontSize: "0.86rem", fontWeight: isCurrent ? 500 : 400,
+                            color: isCurrent ? "var(--gold)" : "var(--text)",
+                            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+                          }}>
+                            {item.title}
+                          </div>
+                          <div style={{ fontSize: "0.71rem", color: "var(--text-secondary)" }}>{item.subtitle}</div>
+                        </div>
+                        {isCurrent && <span style={{ fontSize: 8, color: "var(--gold)", flexShrink: 0 }}>●</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </nav>
 
         {/* Footer : toggle thème */}
