@@ -181,41 +181,6 @@ function Gauge({ label, value, total, color, icon }) {
   );
 }
 
-// ─── Confetti épargne positive ────────────────────────────────────────────────
-const CONFETTI_ITEMS = Array.from({ length: 12 }, (_, i) => ({
-  x: `${8 + (i * 7.5) % 90}%`,
-  delay: `${(i * 0.2).toFixed(1)}s`,
-  dur: `${1.2 + (i % 4) * 0.3}s`,
-  color: ["#b8934a","#4ade80","#818cf8","#f59e0b"][i % 4],
-  size: 4 + (i % 3) * 2,
-}));
-
-function Confetti({ active }) {
-  if (!active) return null;
-  return (
-    <svg aria-hidden="true" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: 60, pointerEvents: "none", overflow: "visible" }}>
-      {CONFETTI_ITEMS.map((c, i) => (
-        <rect
-          key={i}
-          x={c.x} y="-10"
-          width={c.size} height={c.size}
-          fill={c.color}
-          rx={1}
-          style={{
-            animation: active ? `confetti-fall ${c.dur} ease-in ${c.delay} infinite` : "none",
-            transformOrigin: "center",
-          }}
-        />
-      ))}
-      <style>{`
-        @keyframes confetti-fall {
-          0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
-          100% { transform: translateY(70px) rotate(360deg); opacity: 0; }
-        }
-      `}</style>
-    </svg>
-  );
-}
 
 // ─── Barre de mois simulé ─────────────────────────────────────────────────────
 function MonthProgress() {
@@ -314,7 +279,6 @@ export default function Budget() {
   const animEpargne  = useAnimatedValue(res?.epargneReel  ?? 0);
   const animTaux     = useAnimatedValue(res?.tauxEpargne  ?? 0);
 
-  const hasPositiveEpargne = (res?.epargneReel ?? 0) > 0;
   const isMobile = useIsMobile(680);
 
   return (
@@ -358,8 +322,7 @@ export default function Budget() {
         {/* ── Colonne droite : visualisations — passe en premier sur mobile ── */}
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Donut */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24, position: "relative" }}>
-            <Confetti active={hasPositiveEpargne} />
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Répartition du budget
             </div>
