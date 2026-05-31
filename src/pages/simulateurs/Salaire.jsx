@@ -4,6 +4,16 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import { NumInput, StepperInput, Chip, fmt, fmtEur } from "../../components/ui.jsx";
 
+function useIsMobile(breakpoint = 680) {
+  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    const h = () => setMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", h, { passive: true });
+    return () => window.removeEventListener("resize", h);
+  }, [breakpoint]);
+  return mobile;
+}
+
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
   const tauxCotisation = statut === "cadre" ? 0.25 : 0.23;
@@ -312,6 +322,7 @@ export default function Salaire() {
   const maxNet   = Math.max(res.net, res.last.netY);
 
   const pouvoirRatio = res.pouvAchat[res.pouvAchat.length - 1]?.realNet / res.net;
+  const isMobile = useIsMobile(680);
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
@@ -332,10 +343,10 @@ export default function Salaire() {
       </div>
 
       {/* ── Layout 2 colonnes ── */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: "340px 1fr", gap: 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "340px 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
 
-        {/* ── Colonne gauche : inputs + salary reveal ── */}
-        <div>
+        {/* ── Colonne gauche : inputs + salary reveal — passe en second sur mobile ── */}
+        <div style={{ order: isMobile ? 2 : 1 }}>
           {/* Salary reveal */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28, marginBottom: 24, textAlign: "center" }}>
             <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>Salaire net mensuel</div>
@@ -375,8 +386,8 @@ export default function Salaire() {
           </div>
         </div>
 
-        {/* ── Colonne droite : visualisations ── */}
-        <div>
+        {/* ── Colonne droite : visualisations — passe en premier sur mobile ── */}
+        <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Courbe de carrière */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
