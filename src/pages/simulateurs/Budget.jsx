@@ -4,6 +4,16 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import { NumInput, useAnimatedNumber, fmt, fmtEur } from "../../components/ui.jsx";
 
+function useIsMobile(breakpoint = 680) {
+  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
+  useEffect(() => {
+    const h = () => setMobile(window.innerWidth < breakpoint);
+    window.addEventListener("resize", h, { passive: true });
+    return () => window.removeEventListener("resize", h);
+  }, [breakpoint]);
+  return mobile;
+}
+
 // ─── Calcul règle 50/30/20 ────────────────────────────────────────────────────
 function calcBudget({ revenus, fixe, variable, epargneActuelle }) {
   const rev = revenus ?? 0;
@@ -305,6 +315,7 @@ export default function Budget() {
   const animTaux     = useAnimatedValue(res?.tauxEpargne  ?? 0);
 
   const hasPositiveEpargne = (res?.epargneReel ?? 0) > 0;
+  const isMobile = useIsMobile(680);
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
@@ -325,10 +336,10 @@ export default function Budget() {
       </div>
 
       {/* ── Main layout ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
 
-        {/* ── Colonne gauche : inputs ── */}
-        <div>
+        {/* ── Colonne gauche : inputs — passe en second sur mobile ── */}
+        <div style={{ order: isMobile ? 2 : 1 }}>
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Vos revenus & dépenses
@@ -344,15 +355,15 @@ export default function Budget() {
           {res && <MotivationMessage tauxEpargne={res.tauxEpargne} />}
         </div>
 
-        {/* ── Colonne droite : visualisations ── */}
-        <div>
+        {/* ── Colonne droite : visualisations — passe en premier sur mobile ── */}
+        <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Donut */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24, position: "relative" }}>
             <Confetti active={hasPositiveEpargne} />
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Répartition du budget
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
               <DonutChart
                 besoins={res?.besoinsReel ?? 0}
                 envies={res?.enviesReel ?? 0}
