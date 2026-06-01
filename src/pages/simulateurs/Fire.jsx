@@ -1,8 +1,12 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
+import { useProfile } from "../../hooks/useProfile.js";
+import { useSimHistory } from "../../hooks/useSimHistory.js";
+import { downloadCSV } from "../../utils/export.js";
+import JsonLd from "../../components/JsonLd.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -424,8 +428,11 @@ export default function Fire() {
   const [fiscaliteOn, setFiscaliteOn]     = useState(false);
   const [ageCoast, setAgeCoast]           = useState(AGE_COAST_DEFAUT);
   const [now] = useState(() => Date.now());
+  const [historySaved, setHistorySaved] = useState(false);
 
   const resultsRef = useRef(null);
+  const { getProfile, updateProfile } = useProfile();
+  const { saveEntry } = useSimHistory();
 
   useEffect(() => {
     document.title = "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE";
@@ -446,6 +453,7 @@ export default function Fire() {
 
   useEffect(() => {
     const shared = readShareParams();
+    const profile = getProfile();
     if (shared) {
       if (shared.ageActuel !== undefined) setAge(shared.ageActuel);
       if (shared.capitalActuel !== undefined) setCapital(shared.capitalActuel);
@@ -456,8 +464,19 @@ export default function Fire() {
       if (shared.tauxRetrait !== undefined) setTauxRetrait(shared.tauxRetrait);
       if (shared.tauxImpot !== undefined) { setTauxImpot(shared.tauxImpot); if (shared.tauxImpot > 0) setFiscaliteOn(true); }
       if (shared.ageCoast !== undefined) setAgeCoast(shared.ageCoast);
+    } else {
+      // Pas d'URL partagée → pré-remplir depuis le profil sauvegardé
+      if (profile.ageActuel !== undefined) setAge(profile.ageActuel);
+      if (profile.capitalActuel !== undefined) setCapital(profile.capitalActuel);
+      if (profile.epargneMensuelle !== undefined) setEpargne(profile.epargneMensuelle);
+      if (profile.revenuMensuel !== undefined) setRevenu(profile.revenuMensuel);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Synchronise les champs "profil global" avec localStorage
+  useEffect(() => {
+    updateProfile({ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel });
+  }, [ageActuel, capitalActuel, epargneMensuelle, revenuMensuel]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     window.history.replaceState(null, '', buildShareUrl({ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot, ageCoast }));
@@ -508,6 +527,17 @@ export default function Fire() {
     : null;
   const fireDateLabel = fireDate ? fireDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) : null;
 
+  const handleSaveHistory = useCallback(() => {
+    const label = isAlreadyFire
+      ? 'FIRE déjà atteint 🎉'
+      : res.ageAtteinte
+        ? `FIRE à ${res.ageAtteinte} ans · ${fmtEur(Math.round(res.patrimoineCible))}`
+        : `Cible ${fmtEur(Math.round(res.patrimoineCible))}`;
+    saveEntry({ simulator: 'fire', label, shareUrl: window.location.pathname + window.location.search });
+    setHistorySaved(true);
+    setTimeout(() => setHistorySaved(false), 2500);
+  }, [res, isAlreadyFire, saveEntry]);
+
   const totalEpargne = hasResult && res.anneesRestantes
     ? (epargneMensuelle || 0) * Math.ceil(res.anneesRestantes) * 12
     : 0;
@@ -517,6 +547,23 @@ export default function Fire() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur FIRE — Indépendance financière",
+        "url": "https://www.mesimulateurs.fr/simulateurs/fire",
+        "description": "Calculez à quel âge vous atteindrez l'indépendance financière avec la règle des 4 %. Coast FIRE, paliers Lean/Fat/Barista, projection année par année.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
@@ -689,6 +736,23 @@ export default function Fire() {
             </div>
           )}
 
+          {hasResult && (
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 4 }}>
+              <button
+                onClick={handleSaveHistory}
+                style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "7px 14px", borderRadius: 8,
+                  border: `1px solid ${historySaved ? "rgba(34,197,94,0.4)" : "var(--border)"}`,
+                  background: historySaved ? "rgba(34,197,94,0.08)" : "transparent",
+                  color: historySaved ? "#22c55e" : "var(--text-secondary)",
+                  fontSize: 12, cursor: "pointer", transition: "all 0.2s",
+                }}
+              >
+                {historySaved ? "✓ Sauvegardée" : "💾 Sauvegarder cette simulation"}
+              </button>
+            </div>
+          )}
           <ShareBar
             params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
             resultsRef={resultsRef}
@@ -704,6 +768,26 @@ export default function Fire() {
         {hasResult && (
           <>
             <AccordionSection title="Détail année par année" subtitle="Versements, intérêts et patrimoine cumulé">
+              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+                <button
+                  onClick={() => downloadCSV(
+                    res.projectionData.slice(1).map(d => ({
+                      'Âge': d.age,
+                      'Versements (€)': Math.round(d.versements),
+                      'Intérêts (€)': Math.round(d.interets),
+                      'Patrimoine (€)': Math.round(d.patrimoine),
+                    })),
+                    'projection-fire.csv'
+                  )}
+                  style={{
+                    padding: "6px 14px", borderRadius: 8, border: "1px solid var(--border)",
+                    background: "transparent", color: "var(--text-secondary)",
+                    fontSize: 12, cursor: "pointer",
+                  }}
+                >
+                  ↓ Exporter CSV
+                </button>
+              </div>
               <YearTable projectionData={res.projectionData} />
             </AccordionSection>
 

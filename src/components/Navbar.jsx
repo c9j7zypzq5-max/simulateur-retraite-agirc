@@ -1,5 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useSimHistory } from "../hooks/useSimHistory.js";
+
+function relativeDate(iso) {
+  const ms = Date.now() - new Date(iso).getTime();
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor(ms / 60000);
+  if (d > 0) return `il y a ${d}j`;
+  if (h > 0) return `il y a ${h}h`;
+  if (m > 0) return `il y a ${m} min`;
+  return "à l'instant";
+}
 
 /* ── iOS toggle (réutilisé dans la barre et le drawer) ── */
 function IosToggle({ theme, setTheme, compact = false }) {
@@ -92,6 +104,9 @@ export default function Navbar({ theme, setTheme }) {
   const onSim = pathname.startsWith("/simulateurs/");
   const current = ALL_ITEMS.find(i => i.path === pathname);
 
+  const [history, setHistory] = useState([]);
+  const { getHistory, removeEntry, clearHistory } = useSimHistory();
+
   const close = useCallback(() => setDrawerOpen(false), []);
   const toggleGroup = useCallback((id) => setOpenGroups(prev => ({ ...prev, [id]: !prev[id] })), []);
 
@@ -100,6 +115,10 @@ export default function Navbar({ theme, setTheme }) {
     NAV_GROUPS.forEach(g => { next[g.id] = g.items.some(i => i.path === pathname); });
     setOpenGroups(next);
   }, [pathname]);
+
+  useEffect(() => {
+    if (drawerOpen) setHistory(getHistory());
+  }, [drawerOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -379,6 +398,50 @@ export default function Navbar({ theme, setTheme }) {
             );
           })}
         </nav>
+
+        {/* Simulations sauvegardées */}
+        {history.length > 0 && (
+          <div style={{ borderTop: "1px solid var(--border)", padding: "10px 10px 4px", flexShrink: 0 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, padding: "0 2px" }}>
+              <span style={{ fontSize: 9.5, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                Simulations sauvegardées
+              </span>
+              <button
+                onClick={() => { clearHistory(); setHistory([]); }}
+                style={{ fontSize: 10, color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", padding: "2px 4px" }}
+              >
+                Effacer
+              </button>
+            </div>
+            {history.slice(0, 4).map(entry => (
+              <div key={entry.id} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 2 }}>
+                <Link
+                  to={entry.shareUrl}
+                  onClick={close}
+                  style={{
+                    flex: 1, display: "flex", justifyContent: "space-between", alignItems: "center",
+                    padding: "7px 10px", borderRadius: 8, textDecoration: "none",
+                    background: "transparent", minWidth: 0,
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                >
+                  <span style={{ fontSize: "0.8rem", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, minWidth: 0 }}>
+                    {entry.label}
+                  </span>
+                  <span style={{ fontSize: 10, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 6 }}>
+                    {relativeDate(entry.savedAt)}
+                  </span>
+                </Link>
+                <button
+                  onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
+                  style={{ fontSize: 11, color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", padding: "4px", flexShrink: 0 }}
+                  aria-label="Supprimer"
+                >✕</button>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Footer : toggle thème */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
