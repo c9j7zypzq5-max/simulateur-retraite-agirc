@@ -27,6 +27,7 @@ import Patrimoine from "./pages/simulateurs/Patrimoine.jsx";
 // Vie & Temps
 import CoutEnHeures from "./pages/simulateurs/CoutEnHeures.jsx";
 import VieEnSemaines from "./pages/simulateurs/VieEnSemaines.jsx";
+import Comparateur from "./pages/simulateurs/Comparateur.jsx";
 
 export default function App() {
   return (
@@ -57,6 +58,8 @@ export default function App() {
         {/* Vie & Temps */}
         <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
+        {/* Comparateur */}
+        <Route path="/simulateurs/comparateur" element={<Comparateur />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
