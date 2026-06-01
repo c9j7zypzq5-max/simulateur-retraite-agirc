@@ -389,6 +389,140 @@ function SavingsRateTable({ savingsRate }) {
   );
 }
 
+// ─── Comparaison de scénarios ─────────────────────────────────────────────────
+function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, rendementAnnuel, tauxRetrait, tauxImpotEff, capitalActuel, ageActuel }) {
+  const [active, setActive] = useState(false);
+  const [compEpargne, setCompEpargne]     = useState(epargneMensuelle);
+  const [compDepenses, setCompDepenses]   = useState(depensesAnnuelles);
+  const [compRendement, setCompRendement] = useState(rendementAnnuel);
+
+  // Reset Scénario B to current values when toggled on
+  const enable = useCallback(() => {
+    setCompEpargne(epargneMensuelle);
+    setCompDepenses(depensesAnnuelles);
+    setCompRendement(rendementAnnuel);
+    setActive(true);
+  }, [epargneMensuelle, depensesAnnuelles, rendementAnnuel]);
+
+  const resB = active ? calcFire({
+    ageActuel: ageActuel || 30,
+    capitalActuel: capitalActuel || 0,
+    epargneMensuelle: compEpargne,
+    rendementAnnuel: compRendement,
+    depensesAnnuelles: compDepenses,
+    tauxRetrait,
+    tauxImpot: tauxImpotEff,
+  }) : null;
+
+  const btnStyle = {
+    padding: '7px 16px', borderRadius: 9,
+    border: '1px solid var(--border-gold)',
+    background: 'rgba(184,147,74,0.07)',
+    color: 'var(--gold)', fontSize: 13, cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
+  };
+
+  if (!active) {
+    return (
+      <div style={{ textAlign: 'center', padding: '16px 0 4px' }}>
+        <button onClick={enable} style={btnStyle}>⚖️ Comparer deux scénarios</button>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8 }}>
+          Testez l'impact d'une variation d'épargne, de dépenses ou de rendement
+        </div>
+      </div>
+    );
+  }
+
+  // Build comparison rows
+  const rows = [
+    {
+      label: 'Âge FIRE',
+      a: resA.ageAtteinte != null ? `${resA.ageAtteinte} ans` : '> 80 ans',
+      av: resA.ageAtteinte,
+      b: resB.ageAtteinte != null ? `${resB.ageAtteinte} ans` : '> 80 ans',
+      bv: resB.ageAtteinte,
+      invert: true, unit: 'ans',
+    },
+    {
+      label: 'Années restantes',
+      a: resA.anneesRestantes != null ? `${Math.ceil(resA.anneesRestantes)}` : '—',
+      av: resA.anneesRestantes != null ? Math.ceil(resA.anneesRestantes) : null,
+      b: resB.anneesRestantes != null ? `${Math.ceil(resB.anneesRestantes)}` : '—',
+      bv: resB.anneesRestantes != null ? Math.ceil(resB.anneesRestantes) : null,
+      invert: true, unit: 'ans',
+    },
+    {
+      label: 'Capital cible',
+      a: fmtEur(Math.round(resA.patrimoineCible)),
+      av: resA.patrimoineCible,
+      b: fmtEur(Math.round(resB.patrimoineCible)),
+      bv: resB.patrimoineCible,
+      invert: false, unit: '€',
+    },
+    {
+      label: 'Revenu passif / mois',
+      a: fmtEur(Math.round(resA.revenuPassifMensuel)),
+      av: resA.revenuPassifMensuel,
+      b: fmtEur(Math.round(resB.revenuPassifMensuel)),
+      bv: resB.revenuPassifMensuel,
+      invert: false, unit: '€',
+    },
+  ];
+
+  return (
+    <div>
+      {/* Inputs Scénario B */}
+      <div style={{ marginBottom: 6 }}>
+        <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 14 }}>
+          Scénario B — paramètres modifiés
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 20 }}>
+          <NumInput id="cmp-epargne"  label="Épargne mensuelle"      value={compEpargne}   onChange={setCompEpargne}   unit="€/mois" min={0}    max={50000}  />
+          <NumInput id="cmp-depenses" label="Dépenses annuelles"     value={compDepenses}  onChange={setCompDepenses}  unit="€/an"   min={1000} max={500000} />
+          <StepperInput               label="Rendement"              value={compRendement} onChange={setCompRendement} unit="%"      min={0}    max={15} step={0.5} />
+        </div>
+      </div>
+
+      {/* Table de comparaison */}
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              <th style={{ textAlign: 'left',  padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Métrique</th>
+              <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Scénario A</th>
+              <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--gold)', fontWeight: 600 }}>Scénario B</th>
+              <th style={{ textAlign: 'right', padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Δ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(row => {
+              const diff = row.bv != null && row.av != null ? row.bv - row.av : null;
+              const better = diff !== null && diff !== 0 ? (row.invert ? diff < 0 : diff > 0) : null;
+              const diffLabel = diff !== null && diff !== 0
+                ? (diff > 0 ? '+' : '') + (row.unit === '€' ? fmtEur(Math.abs(Math.round(diff))) : Math.round(Math.abs(diff)) + ' ' + row.unit)
+                : '—';
+              return (
+                <tr key={row.label} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '11px 0', color: 'var(--text)' }}>{row.label}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 8px', color: 'var(--text-secondary)' }}>{row.a}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 8px', fontWeight: 500, color: better === null ? 'var(--text)' : better ? '#22c55e' : '#ef4444' }}>{row.b}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 0', fontSize: 11, color: better === null ? 'var(--text-secondary)' : better ? '#22c55e' : '#ef4444' }}>{diffLabel}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+        <button onClick={() => setActive(false)} style={{ fontSize: 11, color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px' }}>
+          Fermer la comparaison
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
 const FAQ = [
   { q: "Qu'est-ce que la règle des 25x ?", a: "La règle des 25x stipule que votre patrimoine de retraite doit être égal à 25 fois vos dépenses annuelles, ce qui correspond à un taux de retrait de 4 %/an. Exemple : 30 000 €/an de dépenses → 750 000 € de patrimoine cible." },
@@ -834,6 +968,20 @@ export default function Fire() {
 
             <AccordionSection title="Sensibilité : impact du taux de retrait" subtitle="Patrimoine cible selon différents taux">
               <SensibiliteTable depensesBrutes={res.depensesBrutes} tauxRetrait={tauxRetrait} />
+            </AccordionSection>
+
+            <AccordionSection title="⚖️ Comparer deux scénarios" subtitle="Mesurez l'impact d'une variation clé côte à côte">
+              <CompareSection
+                resA={res}
+                ageRef={ageRef}
+                epargneMensuelle={epargneMensuelle}
+                depensesAnnuelles={depensesAnnuelles}
+                rendementAnnuel={rendementAnnuel}
+                tauxRetrait={tauxRetrait}
+                tauxImpotEff={tauxImpotEff}
+                capitalActuel={capitalActuel}
+                ageActuel={ageActuel}
+              />
             </AccordionSection>
           </>
         )}

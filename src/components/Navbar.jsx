@@ -84,7 +84,8 @@ const NAV_GROUPS = [
     { path: "/simulateurs/budget",  icon: "📊", title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
     { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
     { path: "/simulateurs/fire",    icon: "🔥", title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
-    { path: "/simulateurs/salaire", icon: "💼", title: "Salaire Net/Brut & Carrière", subtitle: "Projection & pouvoir d'achat" },
+    { path: "/simulateurs/salaire",     icon: "💼", title: "Salaire Net/Brut & Carrière", subtitle: "Projection & pouvoir d'achat" },
+    { path: "/simulateurs/patrimoine",  icon: "💎", title: "Patrimoine global",            subtitle: "Financier + immo + retraite" },
   ] },
   { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
     { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
