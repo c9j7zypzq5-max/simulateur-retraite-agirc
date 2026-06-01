@@ -5,8 +5,9 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import { useProfile } from "../../hooks/useProfile.js";
 import { useSimHistory } from "../../hooks/useSimHistory.js";
-import { downloadCSV } from "../../utils/export.js";
+import { downloadCSV, downloadXLSX } from "../../utils/export.js";
 import JsonLd from "../../components/JsonLd.jsx";
+import VideoExport from "../../components/VideoExport.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -753,11 +754,21 @@ export default function Fire() {
               </button>
             </div>
           )}
-          <ShareBar
-            params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
-            resultsRef={resultsRef}
-            name="fire"
-          />
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <VideoExport
+              projectionData={res.projectionData}
+              patrimoineCible={res.patrimoineCible}
+              ageAtteinte={res.ageAtteinte}
+              revenuMensuel={Math.round(res.revenuPassifMensuel)}
+              ageActuel={ageRef}
+              disabled={!hasResult}
+            />
+            <ShareBar
+              params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
+              resultsRef={resultsRef}
+              name="fire"
+            />
+          </div>
         </div>
 
         {/* AdSense mid */}
@@ -768,7 +779,7 @@ export default function Fire() {
         {hasResult && (
           <>
             <AccordionSection title="Détail année par année" subtitle="Versements, intérêts et patrimoine cumulé">
-              <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 12 }}>
                 <button
                   onClick={() => downloadCSV(
                     res.projectionData.slice(1).map(d => ({
@@ -785,7 +796,25 @@ export default function Fire() {
                     fontSize: 12, cursor: "pointer",
                   }}
                 >
-                  ↓ Exporter CSV
+                  ↓ CSV
+                </button>
+                <button
+                  onClick={() => downloadXLSX(
+                    [{ name: 'Projection FIRE', rows: res.projectionData.slice(1).map(d => ({
+                      'Âge': d.age,
+                      'Versements (€)': Math.round(d.versements),
+                      'Intérêts (€)': Math.round(d.interets),
+                      'Patrimoine (€)': Math.round(d.patrimoine),
+                    })) }],
+                    'projection-fire.xlsx'
+                  )}
+                  style={{
+                    padding: "6px 14px", borderRadius: 8, border: "1px solid var(--border)",
+                    background: "transparent", color: "var(--text-secondary)",
+                    fontSize: 12, cursor: "pointer",
+                  }}
+                >
+                  ↓ Excel
                 </button>
               </div>
               <YearTable projectionData={res.projectionData} />
