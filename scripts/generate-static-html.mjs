@@ -48,18 +48,13 @@ const ROUTES = [
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
-function ogImageUrl(meta) {
-  const p = new URLSearchParams({ title: meta.title, emoji: meta.emoji });
-  if (meta.cat) p.set('cat', meta.cat);
-  return `${BASE}/api/og?${p.toString()}`;
-}
-
 function patchHtml(html, route) {
-  const meta = ROUTE_META[route] || ROUTE_META['/blog'] || { title: 'mesimulateurs.fr', emoji: '📊', cat: '' };
-  const img  = ogImageUrl(meta);
+  const meta = ROUTE_META[route] || { title: 'mesimulateurs.fr' };
+  const ogImg = `${BASE}/og-image.svg`;
   return html
-    .replace(/content="\/og-image\.png"/g, `content="${img}"`)
-    .replace(/content="\/og-image\.svg"/g, `content="${img}"`);
+    .replace(/content="\/og-image\.png"/g, `content="${ogImg}"`)
+    .replace(/content="\/og-image\.svg"/g, `content="${ogImg}"`)
+    .replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
