@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import VideoExport from "../../components/VideoExport.jsx";
+import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import { useProfile } from "../../hooks/useProfile.js";
@@ -302,6 +304,25 @@ export default function Patrimoine() {
   const patrimoineAnim = useAnimatedNumber(res.patrimoineFinal);
   const hasResult = (capitalFinancier || 0) > 0 || (versementMensuel || 0) > 0 || (immoActive && (valeurImmo || 0) > 0);
 
+  const patrimoineChartData = useMemo(() => {
+    if (!hasResult || !res.annees) return [];
+    const cap0 = capitalFinancier || 0;
+    const vers = versementMensuel || 0;
+    const r = (rendementPortefeuille || 5) / 100 / 12;
+    const pts = [];
+    for (let m = 0; m <= res.annees * 12; m++) {
+      let val;
+      if (r > 1e-10) {
+        const f = Math.pow(1 + r, m);
+        val = cap0 * f + vers * ((f - 1) / r);
+      } else {
+        val = cap0 + vers * m;
+      }
+      pts.push({ t: m / 12, value: val });
+    }
+    return pts;
+  }, [capitalFinancier, versementMensuel, rendementPortefeuille, res.annees, hasResult]);
+
   const pctFinancier = res.patrimoineFinal > 0 ? (res.capitalFinancierFinal / res.patrimoineFinal) * 100 : 0;
   const pctImmo = res.patrimoineFinal > 0 ? (res.valeurImmoFinal / res.patrimoineFinal) * 100 : 0;
 
@@ -360,6 +381,9 @@ export default function Patrimoine() {
             hint={versementMensuel ? `soit ${fmtEur((versementMensuel || 0) * 12)} / an` : 'Montant régulièrement investi chaque mois'} />
           <StepperInput label="Rendement annuel espéré" value={rendementPortefeuille} onChange={setRend} min={0} max={15} step={0.5} unit="%"
             hint="Rendement réel après inflation (portefeuille actions diversifié ~5 %)" />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
+            <HistoricalReturnPicker duration={(ageCible || 65) - (ageActuel || 35)} onSelect={setRend} />
+          </div>
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
             Immobilier locatif <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>(optionnel)</span>
@@ -480,15 +504,31 @@ export default function Patrimoine() {
                     fontSize: 12, cursor: 'pointer', transition: 'all 0.2s',
                   }}
                 >
-                  {historySaved ? '✓ Sauvegardée' : '💾 Sauvegarder'}
+                  {historySaved ? '✓' : '💾'}<span className="btn-text"> {historySaved ? 'Sauvegardée' : 'Sauvegarder'}</span>
                 </button>
               </div>
 
-              <ShareBar
-                params={{ ageActuel, ageCible, capitalFinancier, versementMensuel, rendementPortefeuille }}
-                resultsRef={resultsRef}
-                name="patrimoine"
-              />
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                <VideoExport
+                  simulatorName="Patrimoine global"
+                  emoji="💎"
+                  chartData={patrimoineChartData}
+                  metrics={[
+                    { label: 'Patrimoine total', value: fmtEur(Math.round(res.patrimoineFinal)) },
+                    { label: 'Revenu / mois', value: fmtEur(Math.round(res.revenuMensuelTotal)) },
+                    { label: 'Capital financier', value: fmtEur(Math.round(res.capitalFinancierFinal)) },
+                    ...(immoActive && res.valeurImmoFinal > 0 ? [{ label: 'Valeur immo', value: fmtEur(Math.round(res.valeurImmoFinal)) }] : []),
+                  ]}
+                  color="#b8934a"
+                  ageActuel={ageActuel || 35}
+                  disabled={!hasResult}
+                />
+                <ShareBar
+                  params={{ ageActuel, ageCible, capitalFinancier, versementMensuel, rendementPortefeuille }}
+                  resultsRef={resultsRef}
+                  name="patrimoine"
+                />
+              </div>
             </>
           )}
         </div>

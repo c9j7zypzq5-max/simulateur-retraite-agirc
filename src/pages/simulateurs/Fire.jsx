@@ -8,6 +8,7 @@ import { useSimHistory } from "../../hooks/useSimHistory.js";
 import { downloadCSV, downloadXLSX } from "../../utils/export.js";
 import JsonLd from "../../components/JsonLd.jsx";
 import VideoExport from "../../components/VideoExport.jsx";
+import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -680,6 +681,27 @@ export default function Fire() {
     ? Math.max(0, res.patrimoineCible - (capitalActuel || 0) - totalEpargne)
     : 0;
 
+  const fireChartData = useMemo(() => {
+    if (!hasResult) return [];
+    const cap = capitalActuel || 0;
+    const vers = epargneMensuelle || 0;
+    const r = rendementAnnuel / 100 / 12;
+    const maxMonths = (Math.ceil(res.anneesRestantes || 30) + 2) * 12;
+    const pts = [];
+    for (let m = 0; m <= maxMonths; m++) {
+      let val;
+      if (r > 1e-10) {
+        const f = Math.pow(1 + r, m);
+        val = cap * f + vers * ((f - 1) / r);
+      } else {
+        val = cap + vers * m;
+      }
+      pts.push({ t: m / 12, value: val });
+      if (res.patrimoineCible > 0 && val >= res.patrimoineCible * 1.02) break;
+    }
+    return pts;
+  }, [capitalActuel, epargneMensuelle, rendementAnnuel, hasResult, res.anneesRestantes, res.patrimoineCible]);
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -736,6 +758,9 @@ export default function Fire() {
           <NumInput id="depenses-annuelles" label="Dépenses annuelles cibles" value={depensesAnnuelles} onChange={setDepenses} unit="€/an" min={1000} max={500000}
             hint={depensesAnnuelles ? `soit ${fmtEur(Math.round(depensesAnnuelles / 12))} / mois (euros d'aujourd'hui)` : "Vos dépenses estimées une fois à la retraite"} />
           <StepperInput label="Rendement annuel espéré" value={rendementAnnuel} onChange={setRendement} min={0} max={15} step={0.5} unit="%" hint="Rendement réel après inflation (portefeuille actions ~5 %)" tooltip="5 % réel = ~7 % nominal − 2 % inflation" />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
+            <HistoricalReturnPicker duration={Math.ceil(res.anneesRestantes) || 30} onSelect={setRendement} />
+          </div>
           <StepperInput label="Taux de retrait sécurisé" value={tauxRetrait} onChange={setTauxRetrait} min={1} max={6} step={0.25} unit="%" hint="4 % recommandé (étude Trinity) · 3,5 % pour une retraite très longue" tooltip="3,5 % = très conservateur · 4 % = équilibré · 5 % = agressif" />
           <StepperInput label="Âge de retraite « classique » (Coast FIRE)" value={ageCoast} onChange={setAgeCoast} min={Math.max(ageRef + 1, 50)} max={75} step={1} unit="ans" hint="Âge cible si vous laissez votre capital croître sans plus épargner" />
 
@@ -884,16 +909,23 @@ export default function Fire() {
                   fontSize: 12, cursor: "pointer", transition: "all 0.2s",
                 }}
               >
-                {historySaved ? "✓ Sauvegardée" : "💾 Sauvegarder cette simulation"}
+                {historySaved ? "✓" : "💾"}<span className="btn-text"> {historySaved ? "Sauvegardée" : "Sauvegarder cette simulation"}</span>
               </button>
             </div>
           )}
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
             <VideoExport
-              projectionData={res.projectionData}
-              patrimoineCible={res.patrimoineCible}
-              ageAtteinte={res.ageAtteinte}
-              revenuMensuel={Math.round(res.revenuPassifMensuel)}
+              simulatorName="Indépendance financière FIRE"
+              emoji="🔥"
+              chartData={fireChartData}
+              targetValue={res.patrimoineCible > 0 ? res.patrimoineCible : undefined}
+              metrics={[
+                { label: 'Âge FIRE', value: res.ageAtteinte ? `${res.ageAtteinte} ans` : 'Non atteint' },
+                { label: 'Capital cible', value: fmtEur(Math.round(res.patrimoineCible)) },
+                { label: 'Revenu passif/mois', value: fmtEur(Math.round(res.revenuPassifMensuel)) },
+                ...(res.anneesRestantes ? [{ label: 'Années restantes', value: `${Math.ceil(res.anneesRestantes)} ans` }] : []),
+              ]}
+              color="#b8934a"
               ageActuel={ageRef}
               disabled={!hasResult}
             />

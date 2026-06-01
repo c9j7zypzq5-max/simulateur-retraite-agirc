@@ -102,6 +102,11 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+
+/* ── Texte boutons : masqué sur mobile ── */
+@media (max-width: 640px) {
+  .btn-text { display: none; }
+}
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.96); }
   to   { opacity: 1; transform: scale(1); }

@@ -120,7 +120,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
         >
           <DownloadIcon />
-          {downloading ? "…" : "Télécharger"}
+          <span className="btn-text">{downloading ? "…" : "Télécharger"}</span>
         </button>
       )}
       <div style={{ position: "relative" }}>
@@ -131,7 +131,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
         >
           <ShareIcon />
-          Partager
+          <span className="btn-text">Partager</span>
         </button>
         {copied && (
           <div style={{
