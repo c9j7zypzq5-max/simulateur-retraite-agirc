@@ -4,6 +4,8 @@ import SimulateurRetraite from "./SimulateurRetraite.jsx";
 import MentionsLegales from "./pages/MentionsLegales.jsx";
 import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite.jsx";
 import APropos from "./pages/APropos.jsx";
+import Blog from "./pages/Blog.jsx";
+import Article from "./pages/Article.jsx";
 // Retraite
 import Cnav from "./pages/simulateurs/Cnav.jsx";
 import FonctionPublique from "./pages/simulateurs/FonctionPublique.jsx";
@@ -55,6 +57,9 @@ export default function App() {
         {/* Vie & Temps */}
         <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
+        {/* Blog */}
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<Article />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

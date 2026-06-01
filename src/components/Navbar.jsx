@@ -283,6 +283,28 @@ export default function Navbar({ theme, setTheme }) {
             {pathname === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
           </Link>
 
+          {/* Blog */}
+          <Link
+            to="/blog"
+            onClick={close}
+            style={{
+              display: "flex", alignItems: "center", gap: 10,
+              padding: "9px 10px", borderRadius: 9,
+              textDecoration: "none", marginBottom: 6,
+              background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(184,147,74,0.1)" : "transparent",
+              border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--border-gold)" : "transparent"}`,
+            }}
+            onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseLeave={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "transparent"; }}
+          >
+            <span style={{ fontSize: "1.1rem", width: 26, textAlign: "center", flexShrink: 0 }}>📰</span>
+            <div>
+              <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text)" }}>Blog</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Articles & guides financiers</div>
+            </div>
+            {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+          </Link>
+
           {/* Groupes de catégories */}
           {NAV_GROUPS.map(group => {
             const isOpen = openGroups[group.id];
