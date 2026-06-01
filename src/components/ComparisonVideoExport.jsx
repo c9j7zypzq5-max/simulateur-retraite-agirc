@@ -73,15 +73,31 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
 
   // Chart progress (phase graphique : t 0→0.92)
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
-  const chartProgress = easeInOut(chartPhase);
+  // easeOut rapide : 28% des données à t=7s (10%), smooth au lieu de easeInOut quasi-vide
+  const chartProgress = Math.pow(chartPhase, 0.45);
 
-  // Compute visible points per ticker
+  // Compute visible points per ticker (t-based pour sync parfaite entre actifs)
+  const maxT = chartProgress;
   const tickerPts = {};
   for (const [ticker, pts] of Object.entries(chartData)) {
     if (!Array.isArray(pts) || pts.length < 2) continue;
-    const n = pts.length;
-    const idx = Math.max(1, Math.floor(chartProgress * (n - 1)));
-    tickerPts[ticker] = pts.slice(0, idx + 1);
+    const visible = pts.filter(p => p.t <= maxT);
+    if (visible.length < 1) { tickerPts[ticker] = [pts[0]]; continue; }
+
+    // Sub-point interpolation : dernier point interpolé entre visible[-1] et le suivant
+    const nextIdx = pts.findIndex(p => p.t > maxT);
+    if (nextIdx > 0) {
+      const prev  = pts[nextIdx - 1];
+      const next  = pts[nextIdx];
+      const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
+      const interp = {
+        t:     maxT,
+        value: prev.value + (next.value - prev.value) * alpha,
+      };
+      tickerPts[ticker] = [...visible.slice(0, -1), interp];
+    } else {
+      tickerPts[ticker] = visible;
+    }
   }
 
   const allVisible = Object.values(tickerPts).flat();
@@ -391,7 +407,8 @@ export default function ComparisonVideoExport({
   const chunksRef  = useRef([]);
   const stateRef   = useRef({ smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false });
 
-  const [state, setState] = useState('idle');
+  const [state,    setState]    = useState('idle');
+  const [progress, setProgress] = useState(0);
 
   const stopAll = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -401,6 +418,7 @@ export default function ComparisonVideoExport({
   const startRecording = useCallback(async () => {
     if (!canvasRef.current || disabled) return;
     setState('recording');
+    setProgress(0);
     chunksRef.current = [];
     // Reset smooth state
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
@@ -442,6 +460,8 @@ export default function ComparisonVideoExport({
         totalYears, startYear, endYear, fromLabel, toLabel,
         metrics, stateRef,
       });
+
+      setProgress(Math.round(tt * 100));
 
       if (tt < 1) {
         rafRef.current = requestAnimationFrame(frame);
@@ -493,9 +513,16 @@ export default function ComparisonVideoExport({
         </span>
       )}
       {state === 'recording' && (
-        <span style={{ fontSize: 10, color: '#ef4444', letterSpacing: '0.03em' }}>
-          Enregistrement en cours… (1min10)
-        </span>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 180 }}>
+          <progress
+            value={progress}
+            max={100}
+            style={{ width: '100%', height: 4, accentColor: '#b8934a' }}
+          />
+          <span style={{ fontSize: 10, color: '#ef4444', letterSpacing: '0.03em' }}>
+            Enregistrement… {progress}% (1min10)
+          </span>
+        </div>
       )}
     </div>
   );

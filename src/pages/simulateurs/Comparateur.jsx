@@ -20,19 +20,53 @@ function fmtK(v) {
   return `${Math.round(v)} €`;
 }
 
+const FREQ_MONTHS = { monthly: 1, quarterly: 3, semi: 6, annual: 12 };
+
 // ── Calcul de la performance normalisée ────────────────────────────────────────
-function calcPerf(rawData, assets, montant) {
+function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestDivs) {
+  const freqMos = FREQ_MONTHS[periodicFreq] || 1;
   const computed = {};
+
   for (const asset of assets) {
     const raw = rawData[asset.ticker];
     if (!raw || raw.error || !Array.isArray(raw) || raw.length < 2) continue;
-    const base = raw[0].close;
+
+    // Prix selon mode réinvestissement : adjClose (avec dividendes) ou close (sans)
+    const getPrice = p => reinvestDivs
+      ? (p.adjClose ?? p.close ?? 0)
+      : (p.close    ?? p.adjClose ?? 0);
+
+    // Aussi calculer la série sans réinvestissement pour afficher les intérêts
+    const getPriceNoReinvest = p => (p.close ?? p.adjClose ?? 0);
+
+    const base = getPrice(raw[0]);
     if (!base || base <= 0) continue;
-    computed[asset.ticker] = raw.map(p => ({
-      date:  p.date,
-      value: montant * (p.close / base),
-      pct:   ((p.close / base) - 1) * 100,
-    }));
+
+    let shares         = montant / base;
+    let invested       = montant;
+    let sharesNoReinv  = montant / (getPriceNoReinvest(raw[0]) || base);
+
+    computed[asset.ticker] = raw.map((p, idx) => {
+      const price        = getPrice(p) || base;
+      const priceNoReinv = getPriceNoReinvest(p) || price;
+
+      if (idx > 0 && periodicAmt > 0 && idx % freqMos === 0) {
+        shares        += periodicAmt / price;
+        sharesNoReinv += periodicAmt / priceNoReinv;
+        invested      += periodicAmt;
+      }
+
+      const value        = shares * price;
+      const valueNoReinv = sharesNoReinv * priceNoReinv;
+
+      return {
+        date:      p.date,
+        value,
+        invested,
+        interest:  Math.max(0, value - valueNoReinv),  // gain lié aux dividendes réinvestis
+        pct:       ((value / montant) - 1) * 100,
+      };
+    });
   }
   return computed;
 }
@@ -42,11 +76,12 @@ function calcMetrics(computed, assets, montant) {
     .map(asset => {
       const pts = computed[asset.ticker];
       if (!pts || pts.length < 2) return null;
-      const last    = pts[pts.length - 1];
-      const years   = pts.length / 12;
-      const tot     = ((last.value / montant) - 1) * 100;
-      const cagr    = years > 0.5 ? (Math.pow(last.value / montant, 1 / years) - 1) * 100 : tot;
-      return { ...asset, totalReturn: tot, cagr, finalValue: last.value, nPts: pts.length };
+      const last      = pts[pts.length - 1];
+      const totalInv  = last.invested ?? montant;
+      const years     = pts.length / 12;
+      const tot       = ((last.value / totalInv) - 1) * 100;
+      const cagr      = years > 0.5 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
+      return { ...asset, totalReturn: tot, cagr, finalValue: last.value, totalInvested: totalInv, nPts: pts.length };
     })
     .filter(Boolean)
     .sort((a, b) => b.totalReturn - a.totalReturn);
@@ -68,7 +103,7 @@ function buildVideoChartData(computed, fromDate, toDate) {
 }
 
 // ── SVG multi-courbes ─────────────────────────────────────────────────────────
-function ComparisonChart({ computed, assets, montant }) {
+function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest }) {
   if (!computed || Object.keys(computed).length === 0) return null;
 
   const PAD = { top: 20, right: 70, bottom: 36, left: 68 };
@@ -118,6 +153,43 @@ function ComparisonChart({ computed, assets, montant }) {
             stroke="rgba(255,255,255,0.2)" strokeWidth="1" strokeDasharray="4,3" />
         );
       })()}
+
+      {/* Ligne "capital investi" (DCA) */}
+      {showPeriodicInChart && (() => {
+        const refSeries = Object.values(computed)[0];
+        if (!refSeries) return null;
+        const pts = refSeries
+          .map(p => {
+            const idx = allDates.indexOf(p.date);
+            return idx >= 0 ? `${x(idx).toFixed(1)},${y(p.invested ?? montant).toFixed(1)}` : null;
+          })
+          .filter(Boolean)
+          .join(' ');
+        return (
+          <polyline points={pts} fill="none" stroke="rgba(255,255,255,0.35)"
+            strokeWidth="1.5" strokeDasharray="5,4" />
+        );
+      })()}
+
+      {/* Aires intérêts/dividendes réinvestis */}
+      {showInterest && assets.map((asset) => {
+        const series = computed[asset.ticker];
+        if (!series) return null;
+        const color = asset.color;
+        const pts = series.map(p => {
+          const idx = allDates.indexOf(p.date);
+          if (idx < 0) return null;
+          return { x: x(idx), yTop: y(p.value), yBot: y(p.value - (p.interest ?? 0)) };
+        }).filter(Boolean);
+        if (pts.length < 2) return null;
+        const top   = pts.map(p => `${p.x.toFixed(1)},${p.yTop.toFixed(1)}`).join(' ');
+        const botRev = [...pts].reverse().map(p => `${p.x.toFixed(1)},${p.yBot.toFixed(1)}`).join(' ');
+        return (
+          <polygon key={`int-${asset.ticker}`}
+            points={`${top} ${botRev}`}
+            fill={color} fillOpacity="0.12" stroke="none" />
+        );
+      })}
 
       {/* Courbes */}
       {assets.map((asset, i) => {
@@ -180,6 +252,7 @@ function ComparisonChart({ computed, assets, montant }) {
 // ── Tableau de comparaison ────────────────────────────────────────────────────
 function MetricsTable({ metrics, montant }) {
   if (!metrics || metrics.length === 0) return null;
+  const hasDCA = metrics.some(m => m.totalInvested > montant + 0.01);
   return (
     <div style={{ overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -188,6 +261,7 @@ function MetricsTable({ metrics, montant }) {
             <th style={{ textAlign: 'left',  padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Actif</th>
             <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Retour total</th>
             <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>CAGR/an</th>
+            {hasDCA && <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Capital investi</th>}
             <th style={{ textAlign: 'right', padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Valeur finale</th>
           </tr>
         </thead>
@@ -216,6 +290,11 @@ function MetricsTable({ metrics, montant }) {
                 <td style={{ textAlign: 'right', padding: '12px 8px', color: 'var(--text-secondary)' }}>
                   {fmtPct(m.cagr)}
                 </td>
+                {hasDCA && (
+                  <td style={{ textAlign: 'right', padding: '12px 8px', color: 'var(--text-secondary)' }}>
+                    {fmtK(m.totalInvested ?? montant)}
+                  </td>
+                )}
                 <td style={{ textAlign: 'right', padding: '12px 0', color: m.color || 'var(--gold)', fontWeight: 500 }}>
                   {fmtK(m.finalValue)}
                 </td>
@@ -240,18 +319,36 @@ function hexToRgbSafe(hex) {
 
 // ── Sélecteur d'actifs ────────────────────────────────────────────────────────
 function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
-  const [query, setQuery] = useState(asset.ticker);
-  const [open, setOpen]   = useState(false);
-  const inputRef = useRef(null);
+  const [query,      setQuery]      = useState(asset.ticker);
+  const [open,       setOpen]       = useState(false);
+  const [apiResults, setApiResults] = useState([]);
+  const inputRef   = useRef(null);
+  const debounceRef = useRef(null);
+
+  useEffect(() => {
+    clearTimeout(debounceRef.current);
+    if (query.length < 2) { setApiResults([]); return; }
+    debounceRef.current = setTimeout(async () => {
+      try {
+        const r    = await fetch(`/api/ticker-search?q=${encodeURIComponent(query)}`);
+        const data = await r.json();
+        setApiResults(Array.isArray(data) ? data : []);
+      } catch { setApiResults([]); }
+    }, 300);
+    return () => clearTimeout(debounceRef.current);
+  }, [query]);
 
   const matches = useMemo(() => {
-    if (!query) return ASSET_PRESETS;
     const q = query.toLowerCase();
-    return ASSET_PRESETS.filter(p =>
+    const local = !query ? ASSET_PRESETS : ASSET_PRESETS.filter(p =>
       p.ticker.toLowerCase().includes(q) ||
       p.label.toLowerCase().includes(q)
-    ).slice(0, 8);
-  }, [query]);
+    );
+    const remote = apiResults
+      .filter(r => !local.some(l => l.ticker === r.ticker))
+      .map(r => ({ ticker: r.ticker, label: r.label, emoji: '📈', desc: `${r.exchange} · ${r.type}` }));
+    return [...local, ...remote].slice(0, 10);
+  }, [query, apiResults]);
 
   function selectPreset(preset) {
     setQuery(preset.ticker);
@@ -385,6 +482,15 @@ export default function Comparateur() {
   const [toDate,   setToDate]   = useState({ year: 2024, month: 12 });
   const [montant,  setMontant]  = useState(10000);
 
+  // DCA
+  const [periodicAmt,         setPeriodicAmt]         = useState(0);
+  const [periodicFreq,        setPeriodicFreq]        = useState('monthly');
+  const [showPeriodicInChart, setShowPeriodicInChart] = useState(true);
+
+  // Réinvestissement & intérêts
+  const [reinvestDivs,  setReinvestDivs]  = useState(true);
+  const [showInterest,  setShowInterest]  = useState(false);
+
   const [rawData,  setRawData]  = useState({});
   const [loading,  setLoading]  = useState(false);
   const [errors,   setErrors]   = useState({});
@@ -446,8 +552,10 @@ export default function Comparateur() {
   );
 
   const computed = useMemo(
-    () => Object.keys(rawData).length > 0 ? calcPerf(rawData, assetsWithColors, montant) : {},
-    [rawData, assetsWithColors, montant]
+    () => Object.keys(rawData).length > 0
+      ? calcPerf(rawData, assetsWithColors, montant, periodicAmt, periodicFreq, reinvestDivs)
+      : {},
+    [rawData, assetsWithColors, montant, periodicAmt, periodicFreq, reinvestDivs]
   );
 
   const metrics = useMemo(
@@ -548,7 +656,7 @@ export default function Comparateur() {
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
             Investissement initial
           </h2>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <input
               type="number"
               value={montant}
@@ -562,6 +670,85 @@ export default function Comparateur() {
               }}
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>€ investis au départ (normalisé pour tous les actifs)</span>
+          </div>
+
+          <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 20px' }} />
+
+          {/* DCA */}
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
+            Versements périodiques (DCA)
+          </h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
+            <input
+              type="number"
+              value={periodicAmt}
+              min={0}
+              max={1_000_000}
+              placeholder="0"
+              onChange={e => setPeriodicAmt(Math.max(0, parseFloat(e.target.value) || 0))}
+              style={{
+                width: 110, padding: '8px 12px', borderRadius: 9,
+                background: 'var(--input-bg)', border: '1px solid var(--border)',
+                color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
+              }}
+            />
+            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>€</span>
+            <select
+              value={periodicFreq}
+              onChange={e => setPeriodicFreq(e.target.value)}
+              disabled={periodicAmt === 0}
+              style={{
+                padding: '8px 10px', borderRadius: 9,
+                background: 'var(--input-bg)', border: '1px solid var(--border)',
+                color: 'var(--text)', fontSize: 13, fontFamily: "'DM Sans', sans-serif",
+                cursor: periodicAmt === 0 ? 'not-allowed' : 'pointer',
+                opacity: periodicAmt === 0 ? 0.5 : 1,
+              }}
+            >
+              <option value="monthly">chaque mois</option>
+              <option value="quarterly">chaque trimestre</option>
+              <option value="semi">chaque semestre</option>
+              <option value="annual">chaque année</option>
+            </select>
+          </div>
+          {periodicAmt > 0 && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text-secondary)', cursor: 'pointer', marginBottom: 8 }}>
+              <input
+                type="checkbox"
+                checked={showPeriodicInChart}
+                onChange={e => setShowPeriodicInChart(e.target.checked)}
+                style={{ accentColor: 'var(--gold)', width: 14, height: 14 }}
+              />
+              Afficher le capital investi dans le graphique
+            </label>
+          )}
+
+          <div style={{ height: 1, background: 'var(--border)', margin: '16px 0' }} />
+
+          {/* Réinvestissement & intérêts */}
+          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 14, fontWeight: 400 }}>
+            Dividendes & intérêts
+          </h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={reinvestDivs}
+                onChange={e => setReinvestDivs(e.target.checked)}
+                style={{ accentColor: 'var(--gold)', width: 14, height: 14 }}
+              />
+              <span>Réinvestir les dividendes <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>(prix ajustés — adjClose)</span></span>
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={showInterest}
+                onChange={e => setShowInterest(e.target.checked)}
+                disabled={!reinvestDivs}
+                style={{ accentColor: 'var(--gold)', width: 14, height: 14, cursor: !reinvestDivs ? 'not-allowed' : 'pointer' }}
+              />
+              <span style={{ opacity: !reinvestDivs ? 0.45 : 1 }}>Afficher les intérêts/dividendes générés <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>(zone colorée sur le graphique)</span></span>
+            </label>
           </div>
         </div>
 
@@ -598,7 +785,13 @@ export default function Comparateur() {
 
             {/* Graphique */}
             <div style={{ marginBottom: 24 }}>
-              <ComparisonChart computed={computed} assets={assetsWithColors} montant={montant} />
+              <ComparisonChart
+                computed={computed}
+                assets={assetsWithColors}
+                montant={montant}
+                showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
+                showInterest={showInterest && reinvestDivs}
+              />
             </div>
 
             {/* Tableau métriques */}

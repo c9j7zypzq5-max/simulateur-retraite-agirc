@@ -42,16 +42,18 @@ export default async function handler(req, res) {
       const timestamps = result.timestamp;
       const adjCloses  = result.indicators?.adjclose?.[0]?.adjclose;
       const rawCloses  = result.indicators?.quote?.[0]?.close;
-      const prices     = adjCloses || rawCloses || [];
 
       const pts = [];
       for (let i = 0; i < timestamps.length; i++) {
-        const p = prices[i];
-        if (p == null || isNaN(p) || p <= 0) continue;
+        const adj = adjCloses?.[i];
+        const raw = rawCloses?.[i];
+        const price = adj ?? raw;
+        if (price == null || isNaN(price) || price <= 0) continue;
         const d = new Date(timestamps[i] * 1000);
         pts.push({
-          date:  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
-          close: p,
+          date:     `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`,
+          adjClose: (adj != null && !isNaN(adj) && adj > 0) ? adj : (raw ?? null),
+          close:    (raw != null && !isNaN(raw) && raw > 0) ? raw : null,
         });
       }
 
