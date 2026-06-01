@@ -25,9 +25,11 @@ import Budget from "./pages/simulateurs/Budget.jsx";
 import Salaire from "./pages/simulateurs/Salaire.jsx";
 import Epargne from "./pages/simulateurs/Epargne.jsx";
 import Fire from "./pages/simulateurs/Fire.jsx";
+import Patrimoine from "./pages/simulateurs/Patrimoine.jsx";
 // Vie & Temps
 import CoutEnHeures from "./pages/simulateurs/CoutEnHeures.jsx";
 import VieEnSemaines from "./pages/simulateurs/VieEnSemaines.jsx";
+import Comparateur from "./pages/simulateurs/Comparateur.jsx";
 
 export default function App() {
   return (
@@ -54,9 +56,12 @@ export default function App() {
         <Route path="/simulateurs/salaire" element={<Salaire />} />
         <Route path="/simulateurs/epargne" element={<Epargne />} />
         <Route path="/simulateurs/fire" element={<Fire />} />
+        <Route path="/simulateurs/patrimoine" element={<Patrimoine />} />
         {/* Vie & Temps */}
         <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
+        {/* Comparateur */}
+        <Route path="/simulateurs/comparateur" element={<Comparateur />} />
         {/* Blog */}
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Article />} />

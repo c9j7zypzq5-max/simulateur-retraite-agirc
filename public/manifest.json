@@ -1,0 +1,28 @@
+{
+  "name": "mesimulateurs.fr",
+  "short_name": "Simulateurs",
+  "description": "16 simulateurs financiers gratuits : retraite, épargne, FIRE, immobilier, impôts",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#060e1c",
+  "theme_color": "#b8934a",
+  "lang": "fr-FR",
+  "orientation": "any",
+  "categories": ["finance", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.svg",
+      "type": "image/svg+xml",
+      "label": "mesimulateurs.fr — accueil"
+    }
+  ]
+}

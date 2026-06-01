@@ -1,8 +1,14 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
+import { useProfile } from "../../hooks/useProfile.js";
+import { useSimHistory } from "../../hooks/useSimHistory.js";
+import { downloadCSV, downloadXLSX } from "../../utils/export.js";
+import JsonLd from "../../components/JsonLd.jsx";
+import VideoExport from "../../components/VideoExport.jsx";
+import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -384,6 +390,140 @@ function SavingsRateTable({ savingsRate }) {
   );
 }
 
+// ─── Comparaison de scénarios ─────────────────────────────────────────────────
+function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, rendementAnnuel, tauxRetrait, tauxImpotEff, capitalActuel, ageActuel }) {
+  const [active, setActive] = useState(false);
+  const [compEpargne, setCompEpargne]     = useState(epargneMensuelle);
+  const [compDepenses, setCompDepenses]   = useState(depensesAnnuelles);
+  const [compRendement, setCompRendement] = useState(rendementAnnuel);
+
+  // Reset Scénario B to current values when toggled on
+  const enable = useCallback(() => {
+    setCompEpargne(epargneMensuelle);
+    setCompDepenses(depensesAnnuelles);
+    setCompRendement(rendementAnnuel);
+    setActive(true);
+  }, [epargneMensuelle, depensesAnnuelles, rendementAnnuel]);
+
+  const resB = active ? calcFire({
+    ageActuel: ageActuel || 30,
+    capitalActuel: capitalActuel || 0,
+    epargneMensuelle: compEpargne,
+    rendementAnnuel: compRendement,
+    depensesAnnuelles: compDepenses,
+    tauxRetrait,
+    tauxImpot: tauxImpotEff,
+  }) : null;
+
+  const btnStyle = {
+    padding: '7px 16px', borderRadius: 9,
+    border: '1px solid var(--border-gold)',
+    background: 'rgba(184,147,74,0.07)',
+    color: 'var(--gold)', fontSize: 13, cursor: 'pointer',
+    fontFamily: "'DM Sans', sans-serif",
+  };
+
+  if (!active) {
+    return (
+      <div style={{ textAlign: 'center', padding: '16px 0 4px' }}>
+        <button onClick={enable} style={btnStyle}>⚖️ Comparer deux scénarios</button>
+        <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8 }}>
+          Testez l'impact d'une variation d'épargne, de dépenses ou de rendement
+        </div>
+      </div>
+    );
+  }
+
+  // Build comparison rows
+  const rows = [
+    {
+      label: 'Âge FIRE',
+      a: resA.ageAtteinte != null ? `${resA.ageAtteinte} ans` : '> 80 ans',
+      av: resA.ageAtteinte,
+      b: resB.ageAtteinte != null ? `${resB.ageAtteinte} ans` : '> 80 ans',
+      bv: resB.ageAtteinte,
+      invert: true, unit: 'ans',
+    },
+    {
+      label: 'Années restantes',
+      a: resA.anneesRestantes != null ? `${Math.ceil(resA.anneesRestantes)}` : '—',
+      av: resA.anneesRestantes != null ? Math.ceil(resA.anneesRestantes) : null,
+      b: resB.anneesRestantes != null ? `${Math.ceil(resB.anneesRestantes)}` : '—',
+      bv: resB.anneesRestantes != null ? Math.ceil(resB.anneesRestantes) : null,
+      invert: true, unit: 'ans',
+    },
+    {
+      label: 'Capital cible',
+      a: fmtEur(Math.round(resA.patrimoineCible)),
+      av: resA.patrimoineCible,
+      b: fmtEur(Math.round(resB.patrimoineCible)),
+      bv: resB.patrimoineCible,
+      invert: false, unit: '€',
+    },
+    {
+      label: 'Revenu passif / mois',
+      a: fmtEur(Math.round(resA.revenuPassifMensuel)),
+      av: resA.revenuPassifMensuel,
+      b: fmtEur(Math.round(resB.revenuPassifMensuel)),
+      bv: resB.revenuPassifMensuel,
+      invert: false, unit: '€',
+    },
+  ];
+
+  return (
+    <div>
+      {/* Inputs Scénario B */}
+      <div style={{ marginBottom: 6 }}>
+        <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 14 }}>
+          Scénario B — paramètres modifiés
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 20 }}>
+          <NumInput id="cmp-epargne"  label="Épargne mensuelle"      value={compEpargne}   onChange={setCompEpargne}   unit="€/mois" min={0}    max={50000}  />
+          <NumInput id="cmp-depenses" label="Dépenses annuelles"     value={compDepenses}  onChange={setCompDepenses}  unit="€/an"   min={1000} max={500000} />
+          <StepperInput               label="Rendement"              value={compRendement} onChange={setCompRendement} unit="%"      min={0}    max={15} step={0.5} />
+        </div>
+      </div>
+
+      {/* Table de comparaison */}
+      <div style={{ overflowX: 'auto' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--border)' }}>
+              <th style={{ textAlign: 'left',  padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Métrique</th>
+              <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Scénario A</th>
+              <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--gold)', fontWeight: 600 }}>Scénario B</th>
+              <th style={{ textAlign: 'right', padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Δ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(row => {
+              const diff = row.bv != null && row.av != null ? row.bv - row.av : null;
+              const better = diff !== null && diff !== 0 ? (row.invert ? diff < 0 : diff > 0) : null;
+              const diffLabel = diff !== null && diff !== 0
+                ? (diff > 0 ? '+' : '') + (row.unit === '€' ? fmtEur(Math.abs(Math.round(diff))) : Math.round(Math.abs(diff)) + ' ' + row.unit)
+                : '—';
+              return (
+                <tr key={row.label} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '11px 0', color: 'var(--text)' }}>{row.label}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 8px', color: 'var(--text-secondary)' }}>{row.a}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 8px', fontWeight: 500, color: better === null ? 'var(--text)' : better ? '#22c55e' : '#ef4444' }}>{row.b}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 0', fontSize: 11, color: better === null ? 'var(--text-secondary)' : better ? '#22c55e' : '#ef4444' }}>{diffLabel}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 12 }}>
+        <button onClick={() => setActive(false)} style={{ fontSize: 11, color: 'var(--text-secondary)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px' }}>
+          Fermer la comparaison
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
 const FAQ = [
   { q: "Qu'est-ce que la règle des 25x ?", a: "La règle des 25x stipule que votre patrimoine de retraite doit être égal à 25 fois vos dépenses annuelles, ce qui correspond à un taux de retrait de 4 %/an. Exemple : 30 000 €/an de dépenses → 750 000 € de patrimoine cible." },
@@ -424,8 +564,11 @@ export default function Fire() {
   const [fiscaliteOn, setFiscaliteOn]     = useState(false);
   const [ageCoast, setAgeCoast]           = useState(AGE_COAST_DEFAUT);
   const [now] = useState(() => Date.now());
+  const [historySaved, setHistorySaved] = useState(false);
 
   const resultsRef = useRef(null);
+  const { getProfile, updateProfile } = useProfile();
+  const { saveEntry } = useSimHistory();
 
   useEffect(() => {
     document.title = "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE";
@@ -446,6 +589,7 @@ export default function Fire() {
 
   useEffect(() => {
     const shared = readShareParams();
+    const profile = getProfile();
     if (shared) {
       if (shared.ageActuel !== undefined) setAge(shared.ageActuel);
       if (shared.capitalActuel !== undefined) setCapital(shared.capitalActuel);
@@ -456,8 +600,19 @@ export default function Fire() {
       if (shared.tauxRetrait !== undefined) setTauxRetrait(shared.tauxRetrait);
       if (shared.tauxImpot !== undefined) { setTauxImpot(shared.tauxImpot); if (shared.tauxImpot > 0) setFiscaliteOn(true); }
       if (shared.ageCoast !== undefined) setAgeCoast(shared.ageCoast);
+    } else {
+      // Pas d'URL partagée → pré-remplir depuis le profil sauvegardé
+      if (profile.ageActuel !== undefined) setAge(profile.ageActuel);
+      if (profile.capitalActuel !== undefined) setCapital(profile.capitalActuel);
+      if (profile.epargneMensuelle !== undefined) setEpargne(profile.epargneMensuelle);
+      if (profile.revenuMensuel !== undefined) setRevenu(profile.revenuMensuel);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Synchronise les champs "profil global" avec localStorage
+  useEffect(() => {
+    updateProfile({ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel });
+  }, [ageActuel, capitalActuel, epargneMensuelle, revenuMensuel]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     window.history.replaceState(null, '', buildShareUrl({ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot, ageCoast }));
@@ -508,6 +663,17 @@ export default function Fire() {
     : null;
   const fireDateLabel = fireDate ? fireDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) : null;
 
+  const handleSaveHistory = useCallback(() => {
+    const label = isAlreadyFire
+      ? 'FIRE déjà atteint 🎉'
+      : res.ageAtteinte
+        ? `FIRE à ${res.ageAtteinte} ans · ${fmtEur(Math.round(res.patrimoineCible))}`
+        : `Cible ${fmtEur(Math.round(res.patrimoineCible))}`;
+    saveEntry({ simulator: 'fire', label, shareUrl: window.location.pathname + window.location.search });
+    setHistorySaved(true);
+    setTimeout(() => setHistorySaved(false), 2500);
+  }, [res, isAlreadyFire, saveEntry]);
+
   const totalEpargne = hasResult && res.anneesRestantes
     ? (epargneMensuelle || 0) * Math.ceil(res.anneesRestantes) * 12
     : 0;
@@ -515,8 +681,46 @@ export default function Fire() {
     ? Math.max(0, res.patrimoineCible - (capitalActuel || 0) - totalEpargne)
     : 0;
 
+  const fireChartData = useMemo(() => {
+    if (!hasResult) return [];
+    const cap = capitalActuel || 0;
+    const vers = epargneMensuelle || 0;
+    const r = rendementAnnuel / 100 / 12;
+    const maxMonths = (Math.ceil(res.anneesRestantes || 30) + 2) * 12;
+    const pts = [];
+    for (let m = 0; m <= maxMonths; m++) {
+      let val;
+      if (r > 1e-10) {
+        const f = Math.pow(1 + r, m);
+        val = cap * f + vers * ((f - 1) / r);
+      } else {
+        val = cap + vers * m;
+      }
+      pts.push({ t: m / 12, value: val });
+      if (res.patrimoineCible > 0 && val >= res.patrimoineCible * 1.02) break;
+    }
+    return pts;
+  }, [capitalActuel, epargneMensuelle, rendementAnnuel, hasResult, res.anneesRestantes, res.patrimoineCible]);
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur FIRE — Indépendance financière",
+        "url": "https://www.mesimulateurs.fr/simulateurs/fire",
+        "description": "Calculez à quel âge vous atteindrez l'indépendance financière avec la règle des 4 %. Coast FIRE, paliers Lean/Fat/Barista, projection année par année.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
@@ -554,6 +758,9 @@ export default function Fire() {
           <NumInput id="depenses-annuelles" label="Dépenses annuelles cibles" value={depensesAnnuelles} onChange={setDepenses} unit="€/an" min={1000} max={500000}
             hint={depensesAnnuelles ? `soit ${fmtEur(Math.round(depensesAnnuelles / 12))} / mois (euros d'aujourd'hui)` : "Vos dépenses estimées une fois à la retraite"} />
           <StepperInput label="Rendement annuel espéré" value={rendementAnnuel} onChange={setRendement} min={0} max={15} step={0.5} unit="%" hint="Rendement réel après inflation (portefeuille actions ~5 %)" tooltip="5 % réel = ~7 % nominal − 2 % inflation" />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
+            <HistoricalReturnPicker duration={Math.ceil(res.anneesRestantes) || 30} onSelect={setRendement} />
+          </div>
           <StepperInput label="Taux de retrait sécurisé" value={tauxRetrait} onChange={setTauxRetrait} min={1} max={6} step={0.25} unit="%" hint="4 % recommandé (étude Trinity) · 3,5 % pour une retraite très longue" tooltip="3,5 % = très conservateur · 4 % = équilibré · 5 % = agressif" />
           <StepperInput label="Âge de retraite « classique » (Coast FIRE)" value={ageCoast} onChange={setAgeCoast} min={Math.max(ageRef + 1, 50)} max={75} step={1} unit="ans" hint="Âge cible si vous laissez votre capital croître sans plus épargner" />
 
@@ -689,11 +896,45 @@ export default function Fire() {
             </div>
           )}
 
-          <ShareBar
-            params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
-            resultsRef={resultsRef}
-            name="fire"
-          />
+          {hasResult && (
+            <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 4 }}>
+              <button
+                onClick={handleSaveHistory}
+                style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "7px 14px", borderRadius: 8,
+                  border: `1px solid ${historySaved ? "rgba(34,197,94,0.4)" : "var(--border)"}`,
+                  background: historySaved ? "rgba(34,197,94,0.08)" : "transparent",
+                  color: historySaved ? "#22c55e" : "var(--text-secondary)",
+                  fontSize: 12, cursor: "pointer", transition: "all 0.2s",
+                }}
+              >
+                {historySaved ? "✓" : "💾"}<span className="btn-text"> {historySaved ? "Sauvegardée" : "Sauvegarder cette simulation"}</span>
+              </button>
+            </div>
+          )}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+            <VideoExport
+              simulatorName="Indépendance financière FIRE"
+              emoji="🔥"
+              chartData={fireChartData}
+              targetValue={res.patrimoineCible > 0 ? res.patrimoineCible : undefined}
+              metrics={[
+                { label: 'Âge FIRE', value: res.ageAtteinte ? `${res.ageAtteinte} ans` : 'Non atteint' },
+                { label: 'Capital cible', value: fmtEur(Math.round(res.patrimoineCible)) },
+                { label: 'Revenu passif/mois', value: fmtEur(Math.round(res.revenuPassifMensuel)) },
+                ...(res.anneesRestantes ? [{ label: 'Années restantes', value: `${Math.ceil(res.anneesRestantes)} ans` }] : []),
+              ]}
+              color="#b8934a"
+              ageActuel={ageRef}
+              disabled={!hasResult}
+            />
+            <ShareBar
+              params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
+              resultsRef={resultsRef}
+              name="fire"
+            />
+          </div>
         </div>
 
         {/* AdSense mid */}
@@ -704,6 +945,44 @@ export default function Fire() {
         {hasResult && (
           <>
             <AccordionSection title="Détail année par année" subtitle="Versements, intérêts et patrimoine cumulé">
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 12 }}>
+                <button
+                  onClick={() => downloadCSV(
+                    res.projectionData.slice(1).map(d => ({
+                      'Âge': d.age,
+                      'Versements (€)': Math.round(d.versements),
+                      'Intérêts (€)': Math.round(d.interets),
+                      'Patrimoine (€)': Math.round(d.patrimoine),
+                    })),
+                    'projection-fire.csv'
+                  )}
+                  style={{
+                    padding: "6px 14px", borderRadius: 8, border: "1px solid var(--border)",
+                    background: "transparent", color: "var(--text-secondary)",
+                    fontSize: 12, cursor: "pointer",
+                  }}
+                >
+                  ↓ CSV
+                </button>
+                <button
+                  onClick={() => downloadXLSX(
+                    [{ name: 'Projection FIRE', rows: res.projectionData.slice(1).map(d => ({
+                      'Âge': d.age,
+                      'Versements (€)': Math.round(d.versements),
+                      'Intérêts (€)': Math.round(d.interets),
+                      'Patrimoine (€)': Math.round(d.patrimoine),
+                    })) }],
+                    'projection-fire.xlsx'
+                  )}
+                  style={{
+                    padding: "6px 14px", borderRadius: 8, border: "1px solid var(--border)",
+                    background: "transparent", color: "var(--text-secondary)",
+                    fontSize: 12, cursor: "pointer",
+                  }}
+                >
+                  ↓ Excel
+                </button>
+              </div>
               <YearTable projectionData={res.projectionData} />
             </AccordionSection>
 
@@ -721,6 +1000,20 @@ export default function Fire() {
 
             <AccordionSection title="Sensibilité : impact du taux de retrait" subtitle="Patrimoine cible selon différents taux">
               <SensibiliteTable depensesBrutes={res.depensesBrutes} tauxRetrait={tauxRetrait} />
+            </AccordionSection>
+
+            <AccordionSection title="⚖️ Comparer deux scénarios" subtitle="Mesurez l'impact d'une variation clé côte à côte">
+              <CompareSection
+                resA={res}
+                ageRef={ageRef}
+                epargneMensuelle={epargneMensuelle}
+                depensesAnnuelles={depensesAnnuelles}
+                rendementAnnuel={rendementAnnuel}
+                tauxRetrait={tauxRetrait}
+                tauxImpotEff={tauxImpotEff}
+                capitalActuel={capitalActuel}
+                ageActuel={ageActuel}
+              />
             </AccordionSection>
           </>
         )}

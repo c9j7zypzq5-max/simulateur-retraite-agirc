@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import VideoExport from "../../components/VideoExport.jsx";
+import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -124,6 +126,25 @@ export default function Epargne() {
 
   const hasResult = duree > 0 && ((capitalInitial ?? 0) > 0 || (versement ?? 0) > 0);
 
+  const epargneChartData = useMemo(() => {
+    if (!hasResult) return [];
+    const cap = capitalInitial ?? 0;
+    const vers = versement ?? 0;
+    const r = tauxAnnuel / 100 / 12;
+    const pts = [];
+    for (let m = 0; m <= duree * 12; m++) {
+      let val;
+      if (Math.abs(r) < 1e-10) {
+        val = cap + vers * m;
+      } else {
+        const f = Math.pow(1 + r, m);
+        val = cap * f + vers * ((f - 1) / r);
+      }
+      pts.push({ t: m / 12, value: val });
+    }
+    return pts;
+  }, [capitalInitial, versement, tauxAnnuel, duree, hasResult]);
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
@@ -154,6 +175,9 @@ export default function Epargne() {
             hint="Taux nominal constant supposé (non réinvestis manquants)"
             tooltip="Exemples : 1 % (compte courant), 3 % (assurance-vie fonds euros), 6 % (obligations/actions moyennes)"
           />
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
+            <HistoricalReturnPicker duration={duree} onSelect={setTauxAnnuel} />
+          </div>
 
           <StepperInput
             label="Durée de l'épargne"
@@ -198,11 +222,26 @@ export default function Epargne() {
               ⚠️ <strong>Simulation indicative.</strong> Les performances passées ne préjugent pas des performances futures. Taux de rendement constant supposé. Résultats avant fiscalité et inflation.
             </div>
 
-            <ShareBar
-              params={{ capitalInitial, versement, tauxAnnuel, duree }}
-              resultsRef={resultsRef}
-              name="epargne"
-            />
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+              <VideoExport
+                simulatorName="Épargne & intérêts composés"
+                emoji="💰"
+                chartData={epargneChartData}
+                metrics={[
+                  { label: 'Capital final', value: `${Math.round(res.capitalFinal).toLocaleString('fr-FR')} €` },
+                  { label: 'Intérêts générés', value: `${Math.round(res.totalInterets).toLocaleString('fr-FR')} €` },
+                  { label: 'Multiplicateur', value: `×${res.multiplicateur.toFixed(2)}` },
+                  { label: 'Total versé', value: `${Math.round(res.totalVerse).toLocaleString('fr-FR')} €` },
+                ]}
+                color="#b8934a"
+                disabled={!hasResult}
+              />
+              <ShareBar
+                params={{ capitalInitial, versement, tauxAnnuel, duree }}
+                resultsRef={resultsRef}
+                name="epargne"
+              />
+            </div>
           </div>
         )}
 
