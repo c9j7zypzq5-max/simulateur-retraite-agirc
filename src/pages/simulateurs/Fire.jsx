@@ -27,9 +27,10 @@ function yearsToTarget({ cap, epargneMensuelle, rAnnual, target }) {
   const epargne = epargneMensuelle || 0;
   const r = rAnnual / 100 / 12;
   if (r > 1e-10) {
+    // target = cap·(1+r)ⁿ + épargne·[((1+r)ⁿ−1)/r]  ⟹  (1+r)ⁿ = (target+Sr)/(cap+Sr)
     const Sr = epargne / r;
-    const ratio = (target - Sr) / (cap - Sr);
-    if (ratio > 0) {
+    const ratio = (target + Sr) / (cap + Sr);
+    if (ratio > 1) {
       const n = Math.log(ratio) / Math.log(1 + r);
       if (isFinite(n) && n > 0) return n / 12;
     }
