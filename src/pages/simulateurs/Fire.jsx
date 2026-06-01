@@ -7,92 +7,87 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
-  NumInput, StepperInput, AccordionSection,
-  Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  NumInput, StepperInput, Toggle, AccordionSection,
+  Chip, ProgressBar, StatusBadge, useAnimatedNumber,
+  fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 const RENDEMENT_DEFAUT = 5;
 const TAUX_RETRAIT_DEFAUT = 4;
+const AGE_COAST_DEFAUT = 65;
 const AGE_MAX = 80;
 
-// ─── Calculs ─────────────────────────────────────────────────────────────────
-function calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait }) {
-  const empty = { patrimoineCible: 0, anneesRestantes: null, ageAtteinte: null, progressPct: 0, revenuPassifMensuel: 0, projectionData: [] };
+// ─── Helpers de calcul ─────────────────────────────────────────────────────────
+// Nombre d'années (flottant) pour qu'un capital `cap`, abondé de `epargneMensuelle`
+// et capitalisé à `rAnnual` %/an, atteigne `target`. Renvoie null si jamais atteint.
+function yearsToTarget({ cap, epargneMensuelle, rAnnual, target }) {
+  if (!target || target <= 0) return null;
+  if (cap >= target) return 0;
+  const epargne = epargneMensuelle || 0;
+  const r = rAnnual / 100 / 12;
+  if (r > 1e-10) {
+    const Sr = epargne / r;
+    const ratio = (target - Sr) / (cap - Sr);
+    if (ratio > 0) {
+      const n = Math.log(ratio) / Math.log(1 + r);
+      if (isFinite(n) && n > 0) return n / 12;
+    }
+    return null;
+  }
+  if (epargne > 0) return (target - cap) / (epargne * 12);
+  return null;
+}
+
+// ─── Calcul principal ──────────────────────────────────────────────────────────
+function calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot }) {
+  const empty = {
+    patrimoineCible: 0, depensesBrutes: 0, anneesRestantes: null, ageAtteinte: null,
+    progressPct: 0, revenuPassifMensuel: 0, revenuPassifBrutMensuel: 0, projectionData: [],
+  };
   if (!depensesAnnuelles || depensesAnnuelles <= 0) return empty;
 
-  const patrimoineCible = depensesAnnuelles / (tauxRetrait / 100);
+  const swr = tauxRetrait / 100;
+  // Retraits bruts nécessaires pour disposer de `depensesAnnuelles` nets après impôt
+  const depensesBrutes = depensesAnnuelles / (1 - (tauxImpot || 0) / 100);
+  const patrimoineCible = depensesBrutes / swr;
+
   const cap = capitalActuel || 0;
   const epargne = epargneMensuelle || 0;
+  const ageRef = ageActuel || 30;
   const r = rendementAnnuel / 100 / 12;
 
-  let anneesRestantes = null;
-  let ageAtteinte = null;
-
-  if (cap >= patrimoineCible) {
-    anneesRestantes = 0;
-    ageAtteinte = ageActuel || 0;
-  } else if (epargne > 0 || cap > 0) {
-    if (r > 1e-10) {
-      const Sr = epargne / r;
-      const ratio = (patrimoineCible - Sr) / (cap - Sr);
-      if (ratio > 0) {
-        const n = Math.log(ratio) / Math.log(1 + r);
-        if (isFinite(n) && n > 0) {
-          anneesRestantes = n / 12;
-          const age = ageActuel || 30;
-          ageAtteinte = age + Math.ceil(anneesRestantes);
-        }
-      }
-    } else if (epargne > 0) {
-      anneesRestantes = (patrimoineCible - cap) / (epargne * 12);
-      ageAtteinte = (ageActuel || 30) + Math.ceil(anneesRestantes);
-    }
-  }
-
-  // Plafonner à AGE_MAX
-  const ageRef = ageActuel || 30;
-  if (ageAtteinte !== null && ageAtteinte > AGE_MAX) {
-    ageAtteinte = null; // Non atteint avant 80 ans
-    anneesRestantes = null;
-  }
+  // Âge / années d'atteinte (formule analytique précise)
+  let anneesRestantes = yearsToTarget({ cap, epargneMensuelle: epargne, rAnnual: rendementAnnuel, target: patrimoineCible });
+  let ageAtteinte = anneesRestantes != null ? ageRef + Math.ceil(anneesRestantes) : null;
+  if (ageAtteinte !== null && ageAtteinte > AGE_MAX) { ageAtteinte = null; anneesRestantes = null; }
 
   const progressPct = patrimoineCible > 0 ? Math.min((cap / patrimoineCible) * 100, 100) : 0;
-  const revenuPassifMensuel = (patrimoineCible * tauxRetrait) / 100 / 12;
+  const revenuPassifMensuel = depensesAnnuelles / 12;
+  const revenuPassifBrutMensuel = depensesBrutes / 12;
 
-  // Projection annuelle jusqu'à min(ageAtteinte+5, AGE_MAX) ou AGE_MAX
-  const maxAge = Math.min(AGE_MAX, ageAtteinte ? ageAtteinte + 3 : ageRef + 40);
-  const maxAnnees = Math.max(1, maxAge - ageRef);
-  const projectionData = [];
+  // Projection annuelle détaillée (capital début, versements, intérêts, capital fin)
+  const fireYear = anneesRestantes != null ? Math.ceil(anneesRestantes) : null;
+  const maxAnnees = Math.min(AGE_MAX - ageRef, fireYear != null ? fireYear + 2 : 45);
+  const projectionData = [{ annee: 0, age: ageRef, debut: cap, versements: 0, interets: 0, patrimoine: cap }];
   let patrimoine = cap;
-  projectionData.push({ annee: 0, patrimoine, age: ageRef });
-
-  for (let a = 1; a <= maxAnnees; a++) {
+  for (let a = 1; a <= Math.max(1, maxAnnees); a++) {
+    const debut = patrimoine;
+    let fin;
     if (r > 1e-10) {
       const factor = Math.pow(1 + r, 12);
-      patrimoine = patrimoine * factor + epargne * ((factor - 1) / r);
+      fin = debut * factor + epargne * ((factor - 1) / r);
     } else {
-      patrimoine += epargne * 12;
+      fin = debut + epargne * 12;
     }
-    patrimoine = Math.min(patrimoine, patrimoineCible * 2);
-    projectionData.push({ annee: a, patrimoine, age: ageRef + a });
-    if (patrimoine >= patrimoineCible && a > 0) break;
+    const versements = epargne * 12;
+    const interets = fin - debut - versements;
+    patrimoine = fin;
+    projectionData.push({ annee: a, age: ageRef + a, debut, versements, interets, patrimoine: fin });
+    if (fin >= patrimoineCible) break;
   }
 
-  // Fallback : formule analytique échoue (ratio ≤ 0) → source de vérité = simulation
-  if (ageAtteinte === null) {
-    for (let i = 1; i < projectionData.length; i++) {
-      if (projectionData[i].patrimoine >= patrimoineCible) {
-        anneesRestantes = projectionData[i].annee;
-        const candidateAge = projectionData[i].age;
-        ageAtteinte = candidateAge <= AGE_MAX ? candidateAge : null;
-        break;
-      }
-    }
-  }
-
-  return { patrimoineCible, anneesRestantes, ageAtteinte, progressPct, revenuPassifMensuel, projectionData };
+  return { patrimoineCible, depensesBrutes, anneesRestantes, ageAtteinte, progressPct, revenuPassifMensuel, revenuPassifBrutMensuel, projectionData };
 }
 
 // ─── Courbe SVG ──────────────────────────────────────────────────────────────
@@ -237,10 +232,84 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
   );
 }
 
+// ─── Paliers FIRE (Barista / Lean / FIRE / Fat) ───────────────────────────────
+function MilestonesTable({ milestones }) {
+  if (!milestones || !milestones.length) return null;
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--border)" }}>
+            <th style={{ textAlign: "left", padding: "10px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Palier</th>
+            <th style={{ textAlign: "right", padding: "10px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Capital requis</th>
+            <th style={{ textAlign: "right", padding: "10px 8px", color: "var(--text-secondary)", fontWeight: 600 }}>Atteint à</th>
+            <th style={{ textAlign: "right", padding: "10px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          {milestones.map(m => (
+            <tr key={m.key} style={{ borderBottom: "1px solid var(--border)", background: m.key === "fire" ? "rgba(184,147,74,0.08)" : "transparent" }}>
+              <td style={{ padding: "12px 0" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 15 }}>{m.icon}</span>
+                  <div>
+                    <div style={{ color: m.key === "fire" ? "var(--gold)" : "var(--text)", fontWeight: m.key === "fire" ? 600 : 400 }}>{m.label}</div>
+                    <div style={{ fontSize: 10.5, color: "var(--text-secondary)", lineHeight: 1.3 }}>{m.desc}</div>
+                  </div>
+                </div>
+              </td>
+              <td style={{ textAlign: "right", padding: "12px 0", color: "var(--text)", whiteSpace: "nowrap" }}>{fmtEur(Math.round(m.target))}</td>
+              <td style={{ textAlign: "right", padding: "12px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
+                {m.reached ? "—" : m.age != null ? `${m.age} ans` : "> 80 ans"}
+              </td>
+              <td style={{ textAlign: "right", padding: "12px 0" }}>
+                {m.reached
+                  ? <StatusBadge status="good" label="Atteint" />
+                  : m.age != null
+                    ? <StatusBadge status="gold" label={`${Math.ceil(m.years)} ans`} />
+                    : <StatusBadge status="warn" label="Lointain" />}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// ─── Tableau année par année ──────────────────────────────────────────────────
+function YearTable({ projectionData }) {
+  if (!projectionData || projectionData.length < 2) return null;
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--border)" }}>
+            <th style={{ textAlign: "left", padding: "9px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Âge</th>
+            <th style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", fontWeight: 600 }}>Versements</th>
+            <th style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", fontWeight: 600 }}>Intérêts</th>
+            <th style={{ textAlign: "right", padding: "9px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Patrimoine</th>
+          </tr>
+        </thead>
+        <tbody>
+          {projectionData.slice(1).map(d => (
+            <tr key={d.annee} style={{ borderBottom: "1px solid var(--border)" }}>
+              <td style={{ padding: "9px 0", color: "var(--text)" }}>{d.age} ans</td>
+              <td style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>+{fmtEur(Math.round(d.versements))}</td>
+              <td style={{ textAlign: "right", padding: "9px 8px", color: "#22c55e", whiteSpace: "nowrap" }}>+{fmtEur(Math.round(d.interets))}</td>
+              <td style={{ textAlign: "right", padding: "9px 0", color: "var(--text)", fontWeight: 500, whiteSpace: "nowrap" }}>{fmtEur(Math.round(d.patrimoine))}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
 // ─── Table de sensibilité ─────────────────────────────────────────────────────
-function SensibiliteTable({ depensesAnnuelles, tauxRetrait }) {
+function SensibiliteTable({ depensesBrutes, tauxRetrait }) {
   const taux = [3, 3.5, 4, 4.5, 5];
-  if (!depensesAnnuelles) return null;
+  if (!depensesBrutes) return null;
   return (
     <div style={{ overflowX: "auto", marginBottom: 20 }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
@@ -253,8 +322,8 @@ function SensibiliteTable({ depensesAnnuelles, tauxRetrait }) {
         </thead>
         <tbody>
           {taux.map(t => {
-            const target = depensesAnnuelles / (t / 100);
-            const target4 = depensesAnnuelles / 0.04;
+            const target = depensesBrutes / (t / 100);
+            const target4 = depensesBrutes / 0.04;
             const diff = target4 - target;
             return (
               <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(184,147,74,0.08)" : "transparent" }}>
@@ -272,13 +341,57 @@ function SensibiliteTable({ depensesAnnuelles, tauxRetrait }) {
   );
 }
 
+// ─── Référence taux d'épargne → années (rendement réel ~5 %) ──────────────────
+const SAVINGS_REF = [
+  { sr: 10, ans: 51 }, { sr: 15, ans: 43 }, { sr: 20, ans: 37 }, { sr: 25, ans: 32 },
+  { sr: 30, ans: 28 }, { sr: 40, ans: 22 }, { sr: 50, ans: 17 }, { sr: 60, ans: 12.5 },
+  { sr: 70, ans: 8.5 },
+];
+
+function SavingsRateTable({ savingsRate }) {
+  return (
+    <div style={{ overflowX: "auto" }}>
+      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+        <thead>
+          <tr style={{ borderBottom: "1px solid var(--border)" }}>
+            <th style={{ textAlign: "left", padding: "10px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Taux d'épargne</th>
+            <th style={{ textAlign: "right", padding: "10px 0", color: "var(--text-secondary)", fontWeight: 600 }}>Années avant l'indépendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {SAVINGS_REF.map(({ sr, ans }, i) => {
+            const next = SAVINGS_REF[i + 1];
+            const active = savingsRate != null && savingsRate >= sr && (!next || savingsRate < next.sr);
+            return (
+              <tr key={sr} style={{ borderBottom: "1px solid var(--border)", background: active ? "rgba(184,147,74,0.1)" : "transparent" }}>
+                <td style={{ padding: "10px 0", color: active ? "var(--gold)" : "var(--text)", fontWeight: active ? 600 : 400 }}>
+                  {sr} %{active ? "  ← vous" : ""}
+                </td>
+                <td style={{ textAlign: "right", padding: "10px 0", color: active ? "var(--gold)" : "var(--text)" }}>
+                  ~{String(ans).replace(".", ",")} ans
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 12, lineHeight: 1.6 }}>
+        Hypothèses : rendement réel 5 %/an, retrait 4 %, en partant de zéro. Ce qui détermine
+        l'âge de votre indépendance, ce n'est pas tant votre salaire que la <strong>part que vous épargnez</strong>.
+      </p>
+    </div>
+  );
+}
+
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
 const FAQ = [
   { q: "Qu'est-ce que la règle des 25x ?", a: "La règle des 25x stipule que votre patrimoine de retraite doit être égal à 25 fois vos dépenses annuelles, ce qui correspond à un taux de retrait de 4 %/an. Exemple : 30 000 €/an de dépenses → 750 000 € de patrimoine cible." },
-  { q: "Quel est le taux de retrait sécurisé ?", a: "L'étude Trinity (1998) a conclu que 4 % est historiquement sûr sur 30 ans (probabilité de succès ~95 % avec un portefeuille actions/obligations). Pour une retraite anticipée longue, 3,5 % est plus conservateur. 5 % est risqué sur 40+ ans." },
-  { q: "Le rendement est-il avant ou après inflation ?", a: "Ce simulateur utilise un rendement réel (après inflation). Un portefeuille d'actions diversifié a historiquement rapporté ~7 % nominal. En soustrayant 2 % d'inflation moyenne, on obtient ~5 % réel. Ajustez selon votre allocation." },
-  { q: "Dois-je compter mon capital immobilier ?", a: "Si votre résidence principale n'est pas mise en location, elle ne génère pas de revenus passifs et ne devrait pas être comptée dans le capital FIRE. Si vous avez des investissements locatifs, intégrez les revenus nets dans vos ressources." },
-  { q: "Et les impôts sur les revenus de placement ?", a: "Ce simulateur ne tient pas compte de la fiscalité des plus-values et dividendes (PFU 30% en France). En pratique, l'impact dépend de vos enveloppes (PEA, assurance-vie) — consultez un conseiller fiscal pour optimiser." },
+  { q: "Qu'est-ce que le Coast FIRE ?", a: "Le Coast FIRE est le montant que vous devez avoir investi aujourd'hui pour que, sans ajouter le moindre euro, la seule capitalisation suffise à atteindre votre objectif FIRE à l'âge de la retraite classique. Une fois ce palier franchi, vous pouvez cesser d'épargner pour la retraite : votre capital « roule en roue libre » jusqu'à l'objectif." },
+  { q: "Barista, Lean, Fat FIRE : quelles différences ?", a: "Lean FIRE vise un train de vie frugal (capital moindre, grande discipline). Fat FIRE vise le confort sans contrainte (capital nettement plus élevé). Barista FIRE est hybride : un emploi à temps partiel couvre une partie des dépenses, ce qui réduit le capital nécessaire et laisse le portefeuille croître." },
+  { q: "Quel est le taux de retrait sécurisé ?", a: "L'étude Trinity (1998) a conclu que 4 % est historiquement sûr sur 30 ans (probabilité de succès ~95 % avec un portefeuille actions/obligations). Pour une retraite anticipée longue (40+ ans), 3,25 à 3,5 % est plus prudent — c'est le « risque de séquence des rendements » : de mauvaises années en début de retraite font plus de dégâts." },
+  { q: "Le rendement est-il avant ou après inflation ?", a: "Ce simulateur raisonne en rendement réel (après inflation) et en euros d'aujourd'hui. Un portefeuille d'actions diversifié a historiquement rapporté ~7 % nominal ; en retirant ~2 % d'inflation, on obtient ~5 % réel. Vos dépenses cibles restent donc exprimées en pouvoir d'achat actuel." },
+  { q: "Et les impôts sur les revenus de placement ?", a: "Activez l'option fiscalité pour majorer le capital cible. En France, le PFU (« flat tax ») est de 30 % sur les gains, mais comme seule la part de plus-value d'un retrait est taxée, le taux effectif sur un retrait est souvent de l'ordre de 10 à 17 %. Les enveloppes PEA et assurance-vie (après 8 ans) réduisent fortement cette charge." },
+  { q: "Dois-je compter ma résidence principale ?", a: "Si elle n'est pas louée, elle ne génère pas de revenus passifs et ne devrait pas entrer dans le capital FIRE. En revanche, le fait d'être propriétaire réduit vos dépenses annuelles cibles (pas de loyer), ce qui abaisse mécaniquement le capital nécessaire." },
 ];
 
 function FaqItem({ q, a }) {
@@ -302,15 +415,20 @@ export default function Fire() {
   const [ageActuel, setAge]               = useState(null);
   const [capitalActuel, setCapital]       = useState(null);
   const [epargneMensuelle, setEpargne]    = useState(null);
+  const [revenuMensuel, setRevenu]        = useState(null);
   const [rendementAnnuel, setRendement]   = useState(RENDEMENT_DEFAUT);
   const [depensesAnnuelles, setDepenses]  = useState(null);
   const [tauxRetrait, setTauxRetrait]     = useState(TAUX_RETRAIT_DEFAUT);
+  const [tauxImpot, setTauxImpot]         = useState(0);
+  const [fiscaliteOn, setFiscaliteOn]     = useState(false);
+  const [ageCoast, setAgeCoast]           = useState(AGE_COAST_DEFAUT);
+  const [now] = useState(() => Date.now());
 
   const resultsRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Simulateur FIRE 2025 — Liberté financière et indépendance";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez la liberté financière avec la règle des 4% : capital cible, projection de patrimoine, courbe de croissance.");
+    document.title = "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
@@ -331,25 +449,65 @@ export default function Fire() {
       if (shared.ageActuel !== undefined) setAge(shared.ageActuel);
       if (shared.capitalActuel !== undefined) setCapital(shared.capitalActuel);
       if (shared.epargneMensuelle !== undefined) setEpargne(shared.epargneMensuelle);
+      if (shared.revenuMensuel !== undefined) setRevenu(shared.revenuMensuel);
       if (shared.rendementAnnuel !== undefined) setRendement(shared.rendementAnnuel);
       if (shared.depensesAnnuelles !== undefined) setDepenses(shared.depensesAnnuelles);
       if (shared.tauxRetrait !== undefined) setTauxRetrait(shared.tauxRetrait);
+      if (shared.tauxImpot !== undefined) { setTauxImpot(shared.tauxImpot); if (shared.tauxImpot > 0) setFiscaliteOn(true); }
+      if (shared.ageCoast !== undefined) setAgeCoast(shared.ageCoast);
     }
   }, []);
 
   useEffect(() => {
-    window.history.replaceState(null, '', buildShareUrl({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait }));
-  }, [ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait]);
+    window.history.replaceState(null, '', buildShareUrl({ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot, ageCoast }));
+  }, [ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot, ageCoast]);
 
-  const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait });
+  const tauxImpotEff = fiscaliteOn ? tauxImpot : 0;
+  const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff });
   const patrimoineAnim = useAnimatedNumber(res.patrimoineCible);
-  const progressAnim   = useAnimatedNumber(res.progressPct);
 
-  const hasResult    = (depensesAnnuelles || 0) > 0;
+  const hasResult     = (depensesAnnuelles || 0) > 0;
   const isAlreadyFire = res.anneesRestantes === 0 && hasResult;
-  const nonAtteint   = hasResult && !isAlreadyFire && res.ageAtteinte === null;
+  const nonAtteint    = hasResult && !isAlreadyFire && res.ageAtteinte === null;
 
-  const totalEpargne  = hasResult && res.anneesRestantes
+  const ageRef = ageActuel || 30;
+  const swr = tauxRetrait / 100;
+
+  // Taux d'épargne (métrique clé du mouvement FIRE)
+  const savingsRate = (revenuMensuel && revenuMensuel > 0 && epargneMensuelle)
+    ? Math.min((epargneMensuelle / revenuMensuel) * 100, 100)
+    : null;
+
+  // Coast FIRE : capital à avoir aujourd'hui pour atteindre la cible à l'âge `ageCoast` sans rien ajouter
+  const yearsToCoast = (ageCoast || AGE_COAST_DEFAUT) - ageRef;
+  const coastNumber = hasResult && yearsToCoast > 0
+    ? res.patrimoineCible / Math.pow(1 + rendementAnnuel / 100, yearsToCoast)
+    : res.patrimoineCible;
+  const coastReached = (capitalActuel || 0) >= coastNumber;
+  const coastPct = coastNumber > 0 ? Math.min(((capitalActuel || 0) / coastNumber) * 100, 100) : 0;
+
+  // Paliers FIRE
+  const milestoneDefs = [
+    { key: "barista", icon: "☕", label: "Barista FIRE", mult: 0.5, desc: "Un mi-temps couvre l'autre moitié" },
+    { key: "lean",    icon: "🌿", label: "Lean FIRE",    mult: 0.7, desc: "Train de vie frugal" },
+    { key: "fire",    icon: "🔥", label: "FIRE",          mult: 1,   desc: "Indépendance complète (25×)" },
+    { key: "fat",     icon: "🛋️", label: "Fat FIRE",      mult: 1.5, desc: "Confort, sans contrainte" },
+  ];
+  const milestones = hasResult ? milestoneDefs.map(m => {
+    const target = (res.depensesBrutes * m.mult) / swr;
+    const years = yearsToTarget({ cap: capitalActuel || 0, epargneMensuelle, rAnnual: rendementAnnuel, target });
+    const reached = (capitalActuel || 0) >= target;
+    const age = years != null && (ageRef + Math.ceil(years)) <= AGE_MAX ? ageRef + Math.ceil(years) : null;
+    return { ...m, target, years, reached, age };
+  }) : [];
+
+  // Date d'atteinte FIRE
+  const fireDate = res.anneesRestantes
+    ? new Date(now + res.anneesRestantes * 365.25 * 86400000)
+    : null;
+  const fireDateLabel = fireDate ? fireDate.toLocaleDateString("fr-FR", { month: "long", year: "numeric" }) : null;
+
+  const totalEpargne = hasResult && res.anneesRestantes
     ? (epargneMensuelle || 0) * Math.ceil(res.anneesRestantes) * 12
     : 0;
   const interetsGeneres = hasResult && res.patrimoineCible > 0
@@ -365,12 +523,12 @@ export default function Fire() {
           icon="🔥"
           badge="Finances · Simulation 2026"
           title="Indépendance financière (FIRE)"
-          desc="À quel âge pourrez-vous vivre de vos investissements ? Calculez votre patrimoine cible et votre trajectoire vers la liberté financière."
+          desc="À quel âge pourrez-vous vivre de vos investissements ? Capital cible, Coast FIRE, paliers Lean / Barista / Fat et trajectoire année par année."
         />
 
         {/* Reassurance */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
-          {["✓ Règle des 25x (SWR 4 %)", "✓ Courbe de projection SVG", "✓ Calcul 100 % local"].map((t, i) => (
+          {["✓ Règle des 25x (SWR 4 %)", "✓ Coast FIRE & paliers", "✓ Taux d'épargne", "✓ Calcul 100 % local"].map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>
           ))}
         </div>
@@ -385,15 +543,33 @@ export default function Fire() {
           <NumInput id="capital-actuel" label="Capital actuel" value={capitalActuel} onChange={setCapital} unit="€" min={0} max={10000000} hint="Épargne + investissements (hors résidence principale)" />
           <NumInput id="epargne-mensuelle" label="Épargne mensuelle" value={epargneMensuelle} onChange={setEpargne} unit="€/mois" min={0} max={50000}
             hint={epargneMensuelle ? `${fmtEur(epargneMensuelle * 12)} / an épargnés` : "Montant réellement mis de côté chaque mois"} />
+          <NumInput id="revenu-mensuel" label="Revenu net mensuel (optionnel)" value={revenuMensuel} onChange={setRevenu} unit="€/mois" min={0} max={100000}
+            hint={savingsRate != null ? `Taux d'épargne : ${Math.round(savingsRate)} % de vos revenus` : "Pour calculer votre taux d'épargne"} />
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             Objectif FIRE
           </h2>
 
           <NumInput id="depenses-annuelles" label="Dépenses annuelles cibles" value={depensesAnnuelles} onChange={setDepenses} unit="€/an" min={1000} max={500000}
-            hint={depensesAnnuelles ? `soit ${fmtEur(Math.round(depensesAnnuelles / 12))} / mois` : "Vos dépenses estimées une fois à la retraite"} />
+            hint={depensesAnnuelles ? `soit ${fmtEur(Math.round(depensesAnnuelles / 12))} / mois (euros d'aujourd'hui)` : "Vos dépenses estimées une fois à la retraite"} />
           <StepperInput label="Rendement annuel espéré" value={rendementAnnuel} onChange={setRendement} min={0} max={15} step={0.5} unit="%" hint="Rendement réel après inflation (portefeuille actions ~5 %)" tooltip="5 % réel = ~7 % nominal − 2 % inflation" />
-          <StepperInput label="Taux de retrait sécurisé" value={tauxRetrait} onChange={setTauxRetrait} min={1} max={6} step={0.5} unit="%" hint="4 % recommandé (étude Trinity)" tooltip="3,5 % = très conservateur · 4 % = équilibré · 5 % = agressif" />
+          <StepperInput label="Taux de retrait sécurisé" value={tauxRetrait} onChange={setTauxRetrait} min={1} max={6} step={0.25} unit="%" hint="4 % recommandé (étude Trinity) · 3,5 % pour une retraite très longue" tooltip="3,5 % = très conservateur · 4 % = équilibré · 5 % = agressif" />
+          <StepperInput label="Âge de retraite « classique » (Coast FIRE)" value={ageCoast} onChange={setAgeCoast} min={Math.max(ageRef + 1, 50)} max={75} step={1} unit="ans" hint="Âge cible si vous laissez votre capital croître sans plus épargner" />
+
+          {/* Fiscalité */}
+          <div style={{ marginTop: 4 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: fiscaliteOn ? 18 : 0 }}>
+              <div>
+                <div style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)" }}>Tenir compte de la fiscalité</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Majore le capital cible pour absorber l'impôt sur les retraits</div>
+              </div>
+              <Toggle checked={fiscaliteOn} onChange={setFiscaliteOn} />
+            </div>
+            {fiscaliteOn && (
+              <StepperInput label="Imposition effective sur les retraits" value={tauxImpot} onChange={setTauxImpot} min={0} max={30} step={1} unit="%"
+                hint="PFU 30 % sur les gains → souvent ~10–17 % en effectif (PEA/assurance-vie réduisent ce taux)" tooltip="Seule la part de plus-value d'un retrait est taxée, pas le capital." />
+            )}
+          </div>
         </div>
 
         {/* Résultats */}
@@ -436,7 +612,7 @@ export default function Fire() {
                   {res.ageAtteinte} ans
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
-                  {ageActuel ? `dans ${Math.ceil(res.anneesRestantes)} ans · ` : ""}patrimoine cible{" "}
+                  {ageActuel ? `dans ${Math.ceil(res.anneesRestantes)} ans` : ""}{fireDateLabel ? ` · vers ${fireDateLabel}` : ""} · patrimoine cible{" "}
                   <strong style={{ color: "var(--text)" }}>{fmtEur(Math.round(res.patrimoineCible))}</strong>
                 </div>
               </>
@@ -469,20 +645,51 @@ export default function Fire() {
                 {res.anneesRestantes && <Chip label="Années restantes" value={`${Math.ceil(res.anneesRestantes)}`} />}
                 <Chip label="Revenu passif mensuel" value={fmtEur(Math.round(res.revenuPassifMensuel))} accent />
                 <Chip label="Capital cible" value={fmtEur(Math.round(res.patrimoineCible))} />
+                {savingsRate != null && <Chip label="Taux d'épargne" value={`${Math.round(savingsRate)} %`} accent />}
                 {totalEpargne > 0 && <Chip label="Total épargné" value={fmtEur(Math.round(totalEpargne))} />}
                 {interetsGeneres > 0 && <Chip label="Intérêts générés" value={fmtEur(Math.round(interetsGeneres))} accent />}
+                {tauxImpotEff > 0 && <Chip label="Retrait brut visé" value={fmtEur(Math.round(res.revenuPassifBrutMensuel))} />}
               </div>
+
+              {/* Coast FIRE */}
+              {yearsToCoast > 0 && (
+                <div style={{ background: "var(--card-bg)", border: `1px solid ${coastReached ? "rgba(34,197,94,0.35)" : "var(--border)"}`, borderRadius: 14, padding: "18px 20px", marginBottom: 20 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 10 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ fontSize: 18 }}>🛟</span>
+                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>Coast FIRE</span>
+                    </div>
+                    <StatusBadge status={coastReached ? "good" : "gold"} label={coastReached ? "Atteint ✓" : `${Math.round(coastPct)} %`} />
+                  </div>
+                  <p style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 12 }}>
+                    {coastReached
+                      ? <>Avec <strong style={{ color: "var(--text)" }}>{fmtEur(capitalActuel || 0)}</strong> déjà investis, vous pouvez cesser d'épargner pour la retraite : la seule capitalisation atteindra votre objectif vers {ageCoast} ans.</>
+                      : <>Il vous faut <strong style={{ color: "var(--gold)" }}>{fmtEur(Math.round(coastNumber))}</strong> investis aujourd'hui pour atteindre votre objectif à {ageCoast} ans <em>sans plus rien épargner</em>. Au-delà de ce palier, votre capital « roule en roue libre ».</>}
+                  </p>
+                  <ProgressBar label="Vers le Coast FIRE" value={capitalActuel || 0} total={coastNumber} />
+                </div>
+              )}
+
+              {/* Paliers FIRE */}
+              {milestones.length > 0 && (
+                <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
+                    Vos paliers d'indépendance
+                  </div>
+                  <MilestonesTable milestones={milestones} />
+                </div>
+              )}
             </>
           )}
 
           {hasResult && (
             <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-              ⚠️ <strong>Simulation indicative.</strong> Ne constitue pas un conseil en investissement. Les marchés financiers sont volatiles et les rendements passés ne garantissent pas les rendements futurs.
+              ⚠️ <strong>Simulation indicative.</strong> Ne constitue pas un conseil en investissement. Les marchés financiers sont volatils et les rendements passés ne garantissent pas les rendements futurs. Calculs en euros d'aujourd'hui (rendement réel).
             </div>
           )}
 
           <ShareBar
-            params={{ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait }}
+            params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
             resultsRef={resultsRef}
             name="fire"
           />
@@ -495,16 +702,24 @@ export default function Fire() {
 
         {hasResult && (
           <>
+            <AccordionSection title="Détail année par année" subtitle="Versements, intérêts et patrimoine cumulé">
+              <YearTable projectionData={res.projectionData} />
+            </AccordionSection>
+
+            <AccordionSection title="Le taux d'épargne, vrai moteur du FIRE" subtitle="Combien d'années selon la part que vous épargnez">
+              <SavingsRateTable savingsRate={savingsRate} />
+            </AccordionSection>
+
             <AccordionSection title="Comprendre la règle des 25x" subtitle="Math du taux de retrait sécurisé">
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-                <p style={{ marginBottom: 14 }}>La <strong>règle des 25x</strong> : votre patrimoine doit être égal à 25 fois vos dépenses annuelles pour soutenir un taux de retrait de 4 % à perpetuité.</p>
+                <p style={{ marginBottom: 14 }}>La <strong>règle des 25x</strong> : votre patrimoine doit être égal à 25 fois vos dépenses annuelles pour soutenir un taux de retrait de 4 % à perpétuité.</p>
                 <p style={{ marginBottom: 14 }}><strong>Exemple :</strong> {fmtEur(depensesAnnuelles || 30000)} / an × 25 = <strong>{fmtEur((depensesAnnuelles || 30000) * 25)}</strong> de patrimoine cible.</p>
                 <p>Cette règle repose sur l'<strong>étude Trinity (1998)</strong>, qui a analysé les marchés depuis 1926 et établi qu'un taux de 4 % résiste à 95 % des scénarios sur 30 ans.</p>
               </div>
             </AccordionSection>
 
             <AccordionSection title="Sensibilité : impact du taux de retrait" subtitle="Patrimoine cible selon différents taux">
-              <SensibiliteTable depensesAnnuelles={depensesAnnuelles} tauxRetrait={tauxRetrait} />
+              <SensibiliteTable depensesBrutes={res.depensesBrutes} tauxRetrait={tauxRetrait} />
             </AccordionSection>
           </>
         )}
@@ -514,11 +729,13 @@ export default function Fire() {
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La règle des 4 % et l'étude Trinity</h3>
-            <p style={{ marginBottom: 16 }}>Le mouvement FIRE (Financial Independence, Retire Early) repose sur l'étude Trinity de 1998, qui a analysé la survie de portefeuilles d'investissement sur des périodes de 15 à 30 ans. Conclusion : un taux de retrait de 4 % par an sur un portefeuille diversifié actions/obligations a historiquement permis de ne jamais épuiser le capital sur 30 ans, avec un taux de succès supérieur à 95 %. Ce taux est parfois ajusté à 3–3,5 % pour les retraites très anticipées.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Calculer son capital cible</h3>
-            <p style={{ marginBottom: 16 }}>La logique découle directement de la règle des 4 % : votre capital cible est égal à vos dépenses annuelles multipliées par 25. Si vous dépensez 30 000 € par an, il vous faut 750 000 € investis pour atteindre l'indépendance financière. Ce capital doit être placé dans des actifs productifs (ETF, immobilier locatif, obligations) dont la croissance annuelle est censée couvrir les retraits tout en préservant le capital en termes réels.</p>
+            <p style={{ marginBottom: 16 }}>Le mouvement FIRE (Financial Independence, Retire Early) repose sur l'étude Trinity de 1998, qui a analysé la survie de portefeuilles d'investissement sur des périodes de 15 à 30 ans. Conclusion : un taux de retrait de 4 % par an sur un portefeuille diversifié actions/obligations a historiquement permis de ne jamais épuiser le capital sur 30 ans, avec un taux de succès supérieur à 95 %. Pour une retraite très anticipée (40 ans ou plus de retraits), beaucoup retiennent 3,25 à 3,5 % afin de se prémunir contre le risque de séquence des rendements — l'idée qu'une chute des marchés en début de retraite est bien plus dangereuse qu'une chute tardive.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le taux d'épargne, métrique reine</h3>
+            <p style={{ marginBottom: 16 }}>Contre-intuitivement, ce qui détermine la durée du chemin vers l'indépendance n'est pas tant le niveau de revenu que la <strong>part de ce revenu réellement épargnée</strong>. Une personne épargnant 50 % de ses revenus atteint l'indépendance en ~17 ans, contre ~37 ans à 20 % d'épargne, indépendamment du montant absolu. Augmenter son taux d'épargne agit à la fois en accélérant l'accumulation et en abaissant les dépenses cibles — donc le capital nécessaire.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Coast FIRE : le point de bascule</h3>
+            <p style={{ marginBottom: 16 }}>Le Coast FIRE désigne le moment où votre capital investi est suffisant pour atteindre, par la seule magie des intérêts composés, votre objectif FIRE à l'âge de la retraite classique — sans avoir besoin d'épargner un euro de plus. Une fois ce palier franchi, vous n'avez plus à mettre de côté pour la retraite : vous pouvez réduire votre temps de travail, changer pour un métier moins rémunérateur mais plus épanouissant, et simplement couvrir vos dépenses courantes.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les variantes : Lean, Fat et Barista FIRE</h3>
-            <p>Le Lean FIRE cible un train de vie frugal (moins de 25 000 €/an), avec un capital modeste mais une grande discipline budgétaire. Le Fat FIRE vise le confort sans contrainte (plus de 80 000 €/an), nécessitant souvent plus de 2 millions d'euros. Le Barista FIRE est une approche hybride : on atteint une indépendance partielle et on conserve un emploi à temps partiel pour couvrir les dépenses courantes, laissant le portefeuille croître sans retrait total.</p>
+            <p>Le Lean FIRE cible un train de vie frugal, avec un capital modeste mais une grande discipline budgétaire. Le Fat FIRE vise le confort sans contrainte, nécessitant un patrimoine nettement plus élevé. Le Barista FIRE est une approche hybride : on atteint une indépendance partielle et on conserve un emploi à temps partiel pour couvrir une partie des dépenses, laissant le portefeuille croître sans retrait total.</p>
           </div>
         </div>
 
