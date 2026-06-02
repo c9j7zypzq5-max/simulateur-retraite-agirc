@@ -334,28 +334,42 @@ function drawFrame(ctx, {
       const lx = cx(last.t), ly = cy(last.value);
       if (lx >= CX && lx <= CX + CW) {
         const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
-        ctx.fillStyle = `rgba(${hexToRgb(color)},${0.15 + 0.12 * pulse})`;
-        ctx.beginPath(); ctx.arc(lx, ly, 10 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = lightenHex(color, 0.2);
-        ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI * 2); ctx.fill();
+        const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
+        const tipLetter = (curve.label || curve.ticker || '?');
 
+        // Pulsing glow ring autour du logo
+        ctx.fillStyle = `rgba(${hexToRgb(color)},${0.18 + 0.12 * pulse})`;
+        ctx.beginPath(); ctx.arc(lx, ly, 16 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
+
+        // Logo de l'actif au tip de la courbe (remplace le simple dot)
+        drawLogoInCircle(ctx, tipLogo, lx, ly, 12, color, tipLetter);
+
+        // Label à droite du graphique
         let labelY = Math.max(CY + 22, Math.min(CY + CH - 22, ly));
         for (const prev of tipPositions) {
-          if (Math.abs(labelY - prev) < 46) labelY = prev + 46;
+          if (Math.abs(labelY - prev) < 48) labelY = prev + 48;
         }
         tipPositions.push(labelY);
         const lbX = CX + CW + 10;
+
+        // Petit logo devant la valeur (actifs seulement, pas capital investi)
+        const LR = 8;
+        if (!curve.isInvested) {
+          drawLogoInCircle(ctx, tipLogo, lbX + LR, labelY - 5, LR, color, tipLetter);
+        }
+        const textX = curve.isInvested ? lbX : lbX + LR * 2 + 5;
+
         ctx.textAlign = 'left';
-        ctx.font = 'bold 16px DM Sans, sans-serif';
+        ctx.font = 'bold 14px DM Sans, sans-serif';
         ctx.fillStyle = lightenHex(color, 0.15);
-        ctx.fillText(fmtFull(last.value), lbX, labelY);
-        ctx.font = '12px DM Sans, sans-serif';
+        ctx.fillText(fmtFull(last.value), textX, labelY);
+        ctx.font = '11px DM Sans, sans-serif';
         ctx.fillStyle = `rgba(${hexToRgb(color)},0.8)`;
         if (curve.isInvested) {
-          ctx.fillText('investi', lbX, labelY + 16);
+          ctx.fillText('investi', textX, labelY + 15);
         } else {
           const perfPct = ((last.value / montantInitial) - 1) * 100;
-          ctx.fillText(`${perfPct >= 0 ? '+' : ''}${perfPct.toFixed(1)}%`, lbX, labelY + 16);
+          ctx.fillText(`${perfPct >= 0 ? '+' : ''}${perfPct.toFixed(1)}%`, textX, labelY + 15);
         }
       }
     }
