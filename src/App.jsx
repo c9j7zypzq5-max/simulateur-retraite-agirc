@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
+import VideoRecordingToast from "./components/VideoRecordingToast";
 import Home from "./pages/Home.jsx";
 import SimulateurRetraite from "./SimulateurRetraite.jsx";
 import MentionsLegales from "./pages/MentionsLegales.jsx";
@@ -33,7 +35,9 @@ import Comparateur from "./pages/simulateurs/Comparateur.jsx";
 
 export default function App() {
   return (
+    <VideoRecordingProvider>
     <BrowserRouter>
+      <VideoRecordingToast />
       <Routes>
         <Route path="/" element={<Home />} />
         {/* Retraite */}
@@ -71,5 +75,6 @@ export default function App() {
         <Route path="/a-propos" element={<APropos />} />
       </Routes>
     </BrowserRouter>
+    </VideoRecordingProvider>
   );
 }

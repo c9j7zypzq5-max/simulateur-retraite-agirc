@@ -1,6 +1,5 @@
-import { useState, useRef, useCallback } from 'react';
-
-const DURATION = 70_000;
+import { useState, useRef } from 'react';
+import { useVideoRecording } from '../contexts/VideoRecordingContext';
 
 // Ticker → domaine Clearbit pour logo
 const TICKER_LOGO = {
@@ -49,8 +48,15 @@ const TICKER_LOGO = {
   'GC=F':      'gold.org',
 };
 
-const FREQ_FR     = { monthly: '/mois', quarterly: '/trimestre', semi: '/semestre', annual: '/an' };
+const FREQ_FR        = { monthly: '/mois', quarterly: '/trimestre', semi: '/semestre', annual: '/an' };
 const INVESTED_COLOR = '#8eb8d6';
+
+const DURATION_OPTIONS = [
+  { value: 15, label: '15 s — aperçu rapide' },
+  { value: 30, label: '30 s — version courte' },
+  { value: 60, label: '1 min — standard' },
+  { value: 70, label: '1 min 10 — complet', recommended: true },
+];
 
 function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
 
@@ -88,7 +94,6 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-// Logo dans un cercle — fallback : lettre colorée
 function drawLogoInCircle(ctx, img, cx, cy, r, color, letter) {
   ctx.save();
   ctx.beginPath();
@@ -104,13 +109,11 @@ function drawLogoInCircle(ctx, img, cx, cy, r, color, letter) {
     ctx.fill();
   }
   ctx.restore();
-  // Bordure colorée
   ctx.strokeStyle = `rgba(${hexToRgb(color)},0.8)`;
   ctx.lineWidth = 1.5;
   ctx.beginPath();
   ctx.arc(cx, cy, r, 0, Math.PI * 2);
   ctx.stroke();
-  // Lettre si pas de logo
   if (!img || img.naturalWidth === 0) {
     ctx.fillStyle = 'white';
     ctx.font = `bold ${Math.max(8, Math.round(r * 0.88))}px DM Sans, sans-serif`;
@@ -129,7 +132,6 @@ function drawFrame(ctx, {
 }) {
   const W = 720, H = 1280;
 
-  // ── Background
   const bg = ctx.createLinearGradient(0, 0, W, H);
   bg.addColorStop(0, '#060e1c');
   bg.addColorStop(0.6, '#0e1e3a');
@@ -141,7 +143,7 @@ function drawFrame(ctx, {
   for (let gx = 0; gx <= W; gx += 60) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
   for (let gy = 0; gy <= H; gy += 60) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
 
-  // ── Header 2 lignes (boîte)
+  // ── Header
   const BOX_TOP = 26, BOX_H = 126;
   ctx.globalAlpha = 1;
   ctx.fillStyle = 'rgba(184,147,74,0.1)';
@@ -152,12 +154,8 @@ function drawFrame(ctx, {
   roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
   ctx.stroke();
 
-  // Ligne 1 : logos + noms, layout manuel centré
   {
-    const LOGO_R = 11;
-    const LOGO_GAP = 7;
-    const VS_SEP = '  vs  ';
-
+    const LOGO_R = 11, LOGO_GAP = 7, VS_SEP = '  vs  ';
     let hFontSize = 24;
     ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
 
@@ -199,7 +197,6 @@ function drawFrame(ctx, {
     });
   }
 
-  // Ligne 2 : description investissement
   {
     let subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
     if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
@@ -221,7 +218,6 @@ function drawFrame(ctx, {
   const chartProgress = Math.pow(chartPhase, 0.45);
   const maxT = chartProgress;
 
-  // Points t-based par actif
   const tickerPts = {};
   for (const [ticker, pts] of Object.entries(chartData)) {
     if (ticker === '__invested__') continue;
@@ -238,7 +234,6 @@ function drawFrame(ctx, {
     }
   }
 
-  // Série capital investi (DCA)
   let investedPts = null;
   if (showPeriodicInChart && Array.isArray(chartData['__invested__']) && chartData['__invested__'].length >= 2) {
     const raw = chartData['__invested__'];
@@ -281,7 +276,6 @@ function drawFrame(ctx, {
     const cx = frac => CX + (frac / Math.max(xWindow, 0.001)) * CW;
     const cy = v    => CY + CH - ((v - yMin) / Math.max(yMax - yMin, 1)) * CH;
 
-    // Ligne de base (montant initial)
     const baseY = cy(montantInitial);
     if (baseY >= CY - 2 && baseY <= CY + CH + 2) {
       ctx.globalAlpha = 0.3;
@@ -296,7 +290,6 @@ function drawFrame(ctx, {
       ctx.globalAlpha = 1;
     }
 
-    // ── Toutes les courbes : actifs + capital investi (même style)
     const curves = [
       ...assets.map((a, i) => ({ ...a, pts: tickerPts[a.ticker], isInvested: false, idx: i })),
       ...(investedPts ? [{ ticker: '__invested__', label: 'Capital investi', color: INVESTED_COLOR, pts: investedPts, isInvested: true, idx: assets.length }] : []),
@@ -311,7 +304,6 @@ function drawFrame(ctx, {
       const visPts = pts.filter(p => p.t <= xWindow + 0.005);
       if (visPts.length < 2) continue;
 
-      // Aire (identique pour tous)
       ctx.globalAlpha = 0.06 + idx * 0.01;
       ctx.fillStyle = color;
       ctx.beginPath();
@@ -323,7 +315,6 @@ function drawFrame(ctx, {
       ctx.lineTo(cx(visPts[visPts.length-1].t), cy(yMin));
       ctx.closePath(); ctx.fill();
 
-      // Ligne solide (même pour capital investi)
       ctx.globalAlpha = 1;
       ctx.strokeStyle = color;
       ctx.lineWidth = 2.5;
@@ -339,7 +330,6 @@ function drawFrame(ctx, {
       });
       ctx.stroke();
 
-      // Point pulsant au tip
       const last = visPts[visPts.length - 1];
       const lx = cx(last.t), ly = cy(last.value);
       if (lx >= CX && lx <= CX + CW) {
@@ -349,7 +339,6 @@ function drawFrame(ctx, {
         ctx.fillStyle = lightenHex(color, 0.2);
         ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI * 2); ctx.fill();
 
-        // Label tip à droite du graphique
         let labelY = Math.max(CY + 22, Math.min(CY + CH - 22, ly));
         for (const prev of tipPositions) {
           if (Math.abs(labelY - prev) < 46) labelY = prev + 46;
@@ -371,7 +360,6 @@ function drawFrame(ctx, {
       }
     }
 
-    // ── Axes
     ctx.globalAlpha = 1;
     ctx.setLineDash([]);
     ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1;
@@ -380,7 +368,6 @@ function drawFrame(ctx, {
     ctx.moveTo(CX, CY + CH); ctx.lineTo(CX + CW, CY + CH);
     ctx.stroke();
 
-    // ── Ticks Y
     ctx.fillStyle = 'rgba(255,255,255,0.25)';
     ctx.font = '11px DM Sans, sans-serif'; ctx.textAlign = 'right';
     for (const f of [0.25, 0.5, 0.75, 1.0]) {
@@ -392,7 +379,6 @@ function drawFrame(ctx, {
       ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
     }
 
-    // ── Labels X
     ctx.font = '12px DM Sans, sans-serif'; ctx.textAlign = 'center';
     const yearsRange = endYear - startYear;
     for (let yr = startYear; yr <= endYear; yr++) {
@@ -407,17 +393,14 @@ function drawFrame(ctx, {
       }
     }
 
-    // ── Bottom panel : légende (gauche) + date (droite)
     ctx.globalAlpha = 1;
     const PANEL_TOP = CY + CH + 28;
     ctx.strokeStyle = 'rgba(255,255,255,0.07)'; ctx.lineWidth = 1; ctx.setLineDash([]);
     ctx.beginPath();
     ctx.moveTo(CX, PANEL_TOP); ctx.lineTo(W - 34, PANEL_TOP); ctx.stroke();
 
-    const ROW_H = 52;
-    const MAX_NAME_W = 330;
+    const ROW_H = 52, MAX_NAME_W = 330;
 
-    // Actifs réels
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
       const pts   = tickerPts[asset.ticker];
@@ -452,7 +435,6 @@ function drawFrame(ctx, {
       }
     }
 
-    // Capital investi (même style que les actifs)
     if (investedPts && investedPts.length >= 1) {
       const last = investedPts[investedPts.length - 1];
       const rowY = PANEL_TOP + 16 + assets.length * ROW_H;
@@ -465,7 +447,6 @@ function drawFrame(ctx, {
       ctx.fillText(fmtFull(last.value), CX + 24, rowY + 37);
     }
 
-    // Date courante (droite)
     const MONTHS_S = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juil.','Août','Sep.','Oct.','Nov.','Déc.'];
     const sMonth = startMonth || 1;
     const startTotalMo   = startYear * 12 + sMonth - 1;
@@ -483,7 +464,6 @@ function drawFrame(ctx, {
     ctx.fillText(String(curYear), dX, dY + 72);
   }
 
-  // ── Branding permanent
   {
     const BH = 56;
     ctx.globalAlpha = 1;
@@ -495,14 +475,12 @@ function drawFrame(ctx, {
     ctx.fillText('mesimulateurs.fr', W / 2, H - BH + 35);
   }
 
-  // ── Outro (t 0.92→1.00) — textes plus grands
   const outroPhase = Math.max(0, Math.min(1, (t - 0.92) / 0.08));
   if (outroPhase > 0) {
     ctx.globalAlpha = easeOut(outroPhase) * 0.92;
     ctx.fillStyle = '#060e1c'; ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = easeOut(outroPhase);
 
-    // Titre outro plus grand
     ctx.fillStyle = '#b8934a'; ctx.font = 'bold 30px DM Sans, sans-serif'; ctx.textAlign = 'center';
     ctx.fillText('Résultats de votre simulation', W / 2, 108);
     ctx.fillStyle = 'rgba(255,255,255,0.42)'; ctx.font = '15px DM Sans, sans-serif';
@@ -510,7 +488,6 @@ function drawFrame(ctx, {
     if (periodicAmt > 0) outroSub += `  +  ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
     ctx.fillText(outroSub, W / 2, 140);
 
-    // Cards métriques (texte agrandi)
     const n      = Math.min(metrics.length, 5);
     const cardH  = n <= 2 ? 185 : n === 3 ? 158 : n === 4 ? 132 : 110;
     const cardGap = 10;
@@ -566,6 +543,101 @@ function drawFrame(ctx, {
   ctx.setLineDash([]);
 }
 
+// ─── Modal ────────────────────────────────────────────────────────────────────
+function ExportModal({ onClose, onLaunch }) {
+  const [dur, setDur] = useState(70);
+  const font = "'DM Sans', sans-serif";
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)',
+        zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#0d1a30', border: '1px solid rgba(184,147,74,0.45)',
+          borderRadius: 16, padding: '24px 28px', width: 340, maxWidth: '90vw',
+          fontFamily: font, boxShadow: '0 12px 40px rgba(0,0,0,0.7)',
+        }}
+      >
+        <h3 style={{ color: '#b8934a', fontSize: 16, margin: '0 0 18px', fontWeight: 700 }}>
+          🎬 Exporter en vidéo
+        </h3>
+
+        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Durée
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+          {DURATION_OPTIONS.map(opt => (
+            <label
+              key={opt.value}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                padding: '8px 12px', borderRadius: 8,
+                background: dur === opt.value ? 'rgba(184,147,74,0.12)' : 'transparent',
+                border: `1px solid ${dur === opt.value ? 'rgba(184,147,74,0.4)' : 'rgba(255,255,255,0.06)'}`,
+                transition: 'all 0.15s',
+              }}
+            >
+              <input
+                type="radio" name="dur" value={opt.value}
+                checked={dur === opt.value}
+                onChange={() => setDur(opt.value)}
+                style={{ accentColor: '#b8934a' }}
+              />
+              <span style={{ color: dur === opt.value ? '#e8c47e' : 'rgba(255,255,255,0.65)', fontSize: 13, flex: 1 }}>
+                {opt.label}
+              </span>
+              {opt.recommended && (
+                <span style={{
+                  fontSize: 10, color: '#b8934a',
+                  border: '1px solid rgba(184,147,74,0.4)', borderRadius: 4,
+                  padding: '1px 6px',
+                }}>
+                  recommandé
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
+
+        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
+          Format : WebM VP9 · 720×1280 · 9:16 · Reels / TikTok
+          <br />La génération se fait en temps réel dans votre navigateur.
+        </p>
+
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button
+            onClick={onClose}
+            style={{
+              background: 'none', border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 8, color: 'rgba(255,255,255,0.5)',
+              padding: '8px 16px', cursor: 'pointer', fontSize: 13, fontFamily: font,
+            }}
+          >
+            Annuler
+          </button>
+          <button
+            onClick={() => onLaunch(dur)}
+            style={{
+              background: 'rgba(184,147,74,0.18)', border: '1px solid rgba(184,147,74,0.5)',
+              borderRadius: 8, color: '#e8c47e',
+              padding: '8px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 600,
+              fontFamily: font,
+            }}
+          >
+            ▶ Lancer
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Composant ────────────────────────────────────────────────────────────────
 export default function ComparisonVideoExport({
   assets = [],
@@ -583,29 +655,28 @@ export default function ComparisonVideoExport({
   periodicFreq = 'monthly',
   showPeriodicInChart = false,
 }) {
-  const canvasRef = useRef(null);
-  const recRef    = useRef(null);
-  const rafRef    = useRef(null);
-  const chunksRef = useRef([]);
+  const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
+  const [showModal, setShowModal] = useState(false);
+
   const stateRef  = useRef({ smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false });
   const logoRef   = useRef({});
+  const drawFnRef = useRef(null);
 
-  const [state,    setState]    = useState('idle');
-  const [progress, setProgress] = useState(0);
+  // Always keep drawFnRef.current pointing to a function with the latest closure values.
+  // Assigning in render body (not useEffect) ensures it's fresh every render.
+  drawFnRef.current = (ctx, t) => {
+    drawFrame(ctx, {
+      t, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear,
+      fromLabel, toLabel, metrics, stateRef, periodicAmt, periodicFreq, showPeriodicInChart,
+      logoImages: logoRef.current,
+    });
+  };
 
-  const stopAll = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
-  }, []);
-
-  const startRecording = useCallback(async () => {
-    if (!canvasRef.current || disabled) return;
-    setState('recording');
-    setProgress(0);
-    chunksRef.current = [];
+  const handleLaunch = async (durationSec) => {
+    setShowModal(false);
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
 
-    // Préchargement des logos (en parallèle, max 3s)
+    // Preload logos (max 3s each)
     logoRef.current = {};
     await Promise.all(assets.map(async (asset) => {
       const domain = TICKER_LOGO[asset.ticker];
@@ -614,8 +685,7 @@ export default function ComparisonVideoExport({
         const img = new Image();
         img.crossOrigin = 'anonymous';
         await new Promise((resolve) => {
-          img.onload = resolve;
-          img.onerror = resolve;
+          img.onload = resolve; img.onerror = resolve;
           img.src = `https://logo.clearbit.com/${domain}`;
           setTimeout(resolve, 3000);
         });
@@ -623,89 +693,56 @@ export default function ComparisonVideoExport({
       } catch {}
     }));
 
-    const canvas = canvasRef.current;
-    const ctx    = canvas.getContext('2d');
-    const stream = canvas.captureStream(30);
+    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.webm`;
+    const lbl = assets.map(a => a.label || a.ticker).join(' vs ');
 
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9' : 'video/webm';
-    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
-    recRef.current = rec;
-
-    rec.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
-    rec.onstop = () => {
-      setState('processing');
-      const blob = new Blob(chunksRef.current, { type: mime });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href = url;
-      a.download = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.webm`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 3000);
-      setState('idle');
-    };
-
-    rec.start();
-    const start = performance.now();
-
-    function frame(now) {
-      const elapsed = now - start;
-      const tt = Math.min(elapsed / DURATION, 1);
-      drawFrame(ctx, {
-        t: tt, chartData, assets, montantInitial,
-        totalYears, startYear, startMonth, endYear, fromLabel, toLabel,
-        metrics, stateRef, periodicAmt, periodicFreq, showPeriodicInChart,
-        logoImages: logoRef.current,
-      });
-      setProgress(Math.round(tt * 100));
-      if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
-      else { rec.stop(); }
-    }
-    rafRef.current = requestAnimationFrame(frame);
-  }, [disabled, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics, periodicAmt, periodicFreq, showPeriodicInChart]);
+    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl });
+  };
 
   const isSupported = typeof MediaRecorder !== 'undefined';
+  const isRecording = recState === 'recording';
+  const isProcessing = recState === 'processing';
+
+  const font = "'DM Sans', sans-serif";
 
   const btnStyle = {
     display: 'inline-flex', alignItems: 'center', gap: 6, padding: '7px 14px',
-    background: state === 'recording' ? 'rgba(239,68,68,0.12)' : 'var(--card-bg)',
-    border: `1px solid ${state === 'recording' ? 'rgba(239,68,68,0.5)' : 'var(--border)'}`,
-    borderRadius: 10, color: state === 'recording' ? '#ef4444' : 'var(--text-secondary)',
-    fontSize: 12, fontFamily: "'DM Sans', sans-serif",
-    cursor: state === 'processing' ? 'wait' : (disabled ? 'not-allowed' : 'pointer'),
+    background: isRecording ? 'rgba(239,68,68,0.12)' : 'var(--card-bg)',
+    border: `1px solid ${isRecording ? 'rgba(239,68,68,0.5)' : 'var(--border)'}`,
+    borderRadius: 10, color: isRecording ? '#ef4444' : 'var(--text-secondary)',
+    fontSize: 12, fontFamily: font,
+    cursor: isProcessing ? 'wait' : (disabled ? 'not-allowed' : 'pointer'),
     transition: 'all 0.2s', opacity: disabled ? 0.5 : 1,
   };
 
   return (
-    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none' }} />
-
-      {isSupported && (
-        <button
-          onClick={state === 'recording' ? stopAll : startRecording}
-          disabled={state === 'processing' || disabled}
-          style={btnStyle}
-          onMouseEnter={e => { if (state === 'idle' && !disabled) { e.currentTarget.style.borderColor = 'var(--gold-mid)'; e.currentTarget.style.color = 'var(--gold)'; } }}
-          onMouseLeave={e => { if (state === 'idle') { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
-        >
-          {state === 'recording' && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', flexShrink: 0 }} />}
-          {state === 'processing' ? '⏳ Génération…' : state === 'recording' ? '⏹ Arrêter' : '🎬 Reel (1min10)'}
-        </button>
+    <>
+      {showModal && (
+        <ExportModal onClose={() => setShowModal(false)} onLaunch={handleLaunch} />
       )}
-
-      {state === 'idle' && isSupported && !disabled && (
-        <span style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.03em' }}>
-          9:16 · 70 s · Reels / TikTok
-        </span>
-      )}
-      {state === 'recording' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 180 }}>
-          <progress value={progress} max={100} style={{ width: '100%', height: 4, accentColor: '#b8934a' }} />
-          <span style={{ fontSize: 10, color: '#ef4444', letterSpacing: '0.03em' }}>
-            Enregistrement… {progress}% (1min10)
+      <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
+        {isSupported && (
+          <button
+            onClick={() => {
+              if (disabled || isProcessing) return;
+              if (isRecording) { stop(); return; }
+              setShowModal(true);
+            }}
+            disabled={isProcessing || disabled}
+            style={btnStyle}
+            onMouseEnter={e => { if (!isRecording && !disabled) { e.currentTarget.style.borderColor = 'var(--gold-mid)'; e.currentTarget.style.color = 'var(--gold)'; } }}
+            onMouseLeave={e => { if (!isRecording) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
+          >
+            {isRecording && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', flexShrink: 0 }} />}
+            {isProcessing ? '⏳ Génération…' : isRecording ? '⏹ Arrêter' : '🎬 Reel vidéo'}
+          </button>
+        )}
+        {!isRecording && !isProcessing && isSupported && !disabled && (
+          <span style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.03em' }}>
+            9:16 · Reels / TikTok
           </span>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
