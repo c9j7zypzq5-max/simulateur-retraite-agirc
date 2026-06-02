@@ -84,6 +84,17 @@ function fmtFull(v) {
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 }
 
+function staircasePoints(pts) {
+  if (pts.length < 2) return pts;
+  const out = [pts[0]];
+  for (let i = 1; i < pts.length; i++) {
+    if (pts[i].value !== pts[i - 1].value)
+      out.push({ ...pts[i], value: pts[i - 1].value });
+    out.push(pts[i]);
+  }
+  return out;
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y);
@@ -270,9 +281,8 @@ function drawFrame(ctx, {
     if (visible.length >= 1) {
       const nextIdx = raw.findIndex(p => p.t > maxT);
       if (nextIdx > 0) {
-        const prev = raw[nextIdx - 1], next = raw[nextIdx];
-        const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
-        investedPts = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha }];
+        const prev = raw[nextIdx - 1];
+        investedPts = [...visible, { t: maxT, value: prev.value }];
       } else {
         investedPts = visible;
       }
@@ -332,26 +342,27 @@ function drawFrame(ctx, {
       const { color, idx } = curve;
       const visPts = pts.filter(p => p.t <= xWindow + 0.005);
       if (visPts.length < 2) continue;
+      const drawPts = curve.isInvested ? staircasePoints(visPts) : visPts;
 
       ctx.globalAlpha = 0.06 + idx * 0.01;
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(cx(visPts[0].t), cy(yMin));
-      visPts.forEach(p => {
+      ctx.moveTo(cx(drawPts[0].t), cy(yMin));
+      drawPts.forEach(p => {
         const px = cx(p.t);
         if (px >= CX - 2 && px <= CX + CW + 2) ctx.lineTo(px, cy(p.value));
       });
-      ctx.lineTo(cx(visPts[visPts.length-1].t), cy(yMin));
+      ctx.lineTo(cx(drawPts[drawPts.length-1].t), cy(yMin));
       ctx.closePath(); ctx.fill();
 
       ctx.globalAlpha = 1;
       ctx.strokeStyle = color;
       ctx.lineWidth = 2.5;
-      ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+      ctx.lineJoin = curve.isInvested ? 'miter' : 'round'; ctx.lineCap = 'round';
       ctx.setLineDash([]);
       ctx.beginPath();
       let started = false;
-      visPts.forEach(p => {
+      drawPts.forEach(p => {
         const px = cx(p.t), py = cy(p.value);
         if (px < CX - 5 || px > CX + CW + 5) return;
         if (!started) { ctx.moveTo(px, py); started = true; }
@@ -376,9 +387,10 @@ function drawFrame(ctx, {
 
         // Montant collé directement au logo (valeur + %, sur deux lignes)
         const valStr = fmtFull(last.value);
+        const base = last.invested ?? montantInitial;
         const subStr = curve.isInvested
           ? 'investi'
-          : `${((last.value / montantInitial) - 1) * 100 >= 0 ? '+' : ''}${(((last.value / montantInitial) - 1) * 100).toFixed(1)}%`;
+          : (() => { const p = ((last.value / base) - 1) * 100; return `${p >= 0 ? '+' : ''}${p.toFixed(1)}%`; })();
 
         ctx.font = 'bold 19px DM Sans, sans-serif';
         const valW = ctx.measureText(valStr).width;
@@ -425,7 +437,8 @@ function drawFrame(ctx, {
 
     ctx.font = 'bold 16px DM Sans, sans-serif'; ctx.textAlign = 'center';
     const yearsRange = endYear - startYear;
-    for (let yr = startYear; yr <= endYear; yr++) {
+    const yearStep = Math.max(1, Math.ceil(yearsRange / 8));
+    for (let yr = startYear; yr <= endYear; yr += yearStep) {
       const frac = yearsRange > 0 ? (yr - startYear) / yearsRange : 0;
       if (frac > xWindow + 0.02) break;
       const px = cx(frac);
@@ -471,7 +484,7 @@ function drawFrame(ctx, {
 
       if (pts && pts.length >= 1) {
         const last   = pts[pts.length - 1];
-        const pct    = ((last.value / montantInitial) - 1) * 100;
+        const pct    = ((last.value / (last.invested ?? montantInitial)) - 1) * 100;
         const pctClr = pct >= 0 ? '#4ade80' : '#f87171';
         const valStr = fmtFull(last.value);
         ctx.fillStyle = lightenHex(color, 0.1);

@@ -96,7 +96,7 @@ function buildVideoChartData(computed, fromDate, toDate, periodicAmt, showInvest
     result[ticker] = series.map(p => {
       const [y, m] = p.date.split('-').map(Number);
       const ms = new Date(y, m - 1, 1).getTime();
-      return { t: Math.max(0, Math.min(1, (ms - fromMs) / span)), value: p.value };
+      return { t: Math.max(0, Math.min(1, (ms - fromMs) / span)), value: p.value, invested: p.invested };
     });
   }
   if (periodicAmt > 0 && showInvestedInVideo) {
