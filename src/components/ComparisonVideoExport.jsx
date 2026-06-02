@@ -268,7 +268,7 @@ function drawFrame(ctx, {
     if (nextIdx > 0) {
       const prev = pts[nextIdx - 1], next = pts[nextIdx];
       const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
-      tickerPts[ticker] = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha }];
+      tickerPts[ticker] = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha, invested: prev.invested }];
     } else {
       tickerPts[ticker] = visible;
     }
@@ -630,7 +630,21 @@ function drawFrame(ctx, {
 // ─── Modal ────────────────────────────────────────────────────────────────────
 function ExportModal({ onClose, onLaunch }) {
   const [dur, setDur] = useState(70);
+  const [fmt, setFmt] = useState('webm');
   const font = "'DM Sans', sans-serif";
+
+  const formats = [];
+  if (typeof MediaRecorder !== 'undefined') {
+    formats.push({
+      value: 'webm', ext: 'webm',
+      label: 'WebM — compatible partout (Chrome, Firefox…)',
+      mime: MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm',
+    });
+    const mp4Mime = ['video/mp4;codecs=avc1', 'video/mp4;codecs=h264', 'video/mp4']
+      .find(t => MediaRecorder.isTypeSupported(t));
+    if (mp4Mime) formats.push({ value: 'mp4', ext: 'mp4', label: 'MP4 H.264 — iPhone · iMovie · Windows', mime: mp4Mime });
+  }
+  const selectedFmt = formats.find(f => f.value === fmt) || { mime: 'video/webm;codecs=vp9', ext: 'webm' };
 
   return (
     <div
@@ -689,8 +703,33 @@ function ExportModal({ onClose, onLaunch }) {
           ))}
         </div>
 
+        {formats.length > 1 && (
+          <>
+            <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+              Format
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+              {formats.map(f => (
+                <label key={f.value} style={{
+                  display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                  padding: '8px 12px', borderRadius: 8,
+                  background: fmt === f.value ? 'var(--border-gold)' : 'transparent',
+                  border: `1px solid ${fmt === f.value ? 'var(--border-gold)' : 'var(--border)'}`,
+                  transition: 'all 0.15s',
+                }}>
+                  <input type="radio" name="fmt" value={f.value}
+                    checked={fmt === f.value} onChange={() => setFmt(f.value)}
+                    style={{ accentColor: 'var(--gold-mid)' }} />
+                  <span style={{ color: fmt === f.value ? 'var(--gold)' : 'var(--text)', fontSize: 13 }}>
+                    {f.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </>
+        )}
         <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
-          Format : WebM VP9 · 720×1280 · 9:16 · Reels / TikTok
+          720×1280 · 9:16 · Reels / TikTok
           <br />La génération se fait en temps réel dans votre navigateur.
         </p>
 
@@ -706,7 +745,7 @@ function ExportModal({ onClose, onLaunch }) {
             Annuler
           </button>
           <button
-            onClick={() => onLaunch(dur)}
+            onClick={() => onLaunch(dur, selectedFmt.mime, selectedFmt.ext)}
             style={{
               background: 'var(--border-gold)', border: '1px solid var(--gold-mid)',
               borderRadius: 8, color: 'var(--gold)',
@@ -756,7 +795,7 @@ export default function ComparisonVideoExport({
     });
   };
 
-  const handleLaunch = async (durationSec) => {
+  const handleLaunch = async (durationSec, mimeType, ext = 'webm') => {
     setShowModal(false);
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
 
@@ -778,10 +817,10 @@ export default function ComparisonVideoExport({
       } catch {}
     }));
 
-    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.webm`;
+    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.${ext}`;
     const lbl = assets.map(a => a.label || a.ticker).join(' vs ');
 
-    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl });
+    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl, mimeType });
   };
 
   const isSupported = typeof MediaRecorder !== 'undefined';

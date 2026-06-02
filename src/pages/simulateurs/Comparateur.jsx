@@ -562,7 +562,7 @@ export default function Comparateur() {
   );
 
   const computed = useMemo(
-    () => Object.keys(rawData).length > 0
+    () => Object.keys(rawData).length > 0 && montant > 0
       ? calcPerf(rawData, assetsWithColors, montant, periodicAmt, periodicFreq, reinvestDivs)
       : {},
     [rawData, assetsWithColors, montant, periodicAmt, periodicFreq, reinvestDivs]
@@ -669,10 +669,10 @@ export default function Comparateur() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <input
               type="number"
-              value={montant}
-              min={100}
+              value={montant || ''}
+              min={0}
               max={10_000_000}
-              onChange={e => setMontant(Math.max(1, parseFloat(e.target.value) || 0))}
+              onChange={e => setMontant(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -691,11 +691,11 @@ export default function Comparateur() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
             <input
               type="number"
-              value={periodicAmt}
+              value={periodicAmt || ''}
               min={0}
               max={1_000_000}
               placeholder="0"
-              onChange={e => setPeriodicAmt(Math.max(0, parseFloat(e.target.value) || 0))}
+              onChange={e => setPeriodicAmt(e.target.value === '' ? 0 : Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 110, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',

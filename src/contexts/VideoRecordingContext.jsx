@@ -26,6 +26,7 @@ export function VideoRecordingProvider({ children }) {
     duration = 70_000,
     filename = 'video.webm',
     label: lbl = '',
+    mimeType,
   }) => {
     const canvas = canvasRef.current;
     if (!canvas || typeof MediaRecorder === 'undefined') return;
@@ -38,9 +39,8 @@ export function VideoRecordingProvider({ children }) {
     const ctx  = canvas.getContext('2d');
     const stream = canvas.captureStream(30);
 
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
+    const mime = mimeType
+      || (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm');
     const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
     recRef.current = rec;
 
