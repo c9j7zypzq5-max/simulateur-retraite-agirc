@@ -8,13 +8,13 @@ export default function VideoRecordingToast() {
   return (
     <div style={{
       position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
-      background: 'rgba(6,14,28,0.97)',
-      border: '1px solid rgba(184,147,74,0.4)',
+      background: 'var(--surface)',
+      border: '1px solid var(--border-gold)',
       borderRadius: 14,
       padding: '12px 16px',
       display: 'flex', flexDirection: 'column', gap: 8,
       minWidth: 220, maxWidth: 300,
-      boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+      boxShadow: 'var(--card-shadow, 0 8px 32px rgba(0,0,0,0.5))',
       fontFamily: "'DM Sans', sans-serif",
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
@@ -25,7 +25,7 @@ export default function VideoRecordingToast() {
               boxShadow: '0 0 6px #ef4444',
             }} />
           )}
-          <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>
+          <span style={{ fontSize: 12, color: 'var(--text)', fontWeight: 600 }}>
             {recState === 'processing' ? '⏳ Finalisation…' : '🎬 Enregistrement'}
           </span>
         </div>
@@ -44,7 +44,7 @@ export default function VideoRecordingToast() {
       </div>
 
       {label && (
-        <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.38)', lineHeight: 1.3 }}>
+        <span style={{ fontSize: 10, color: 'var(--text-secondary)', lineHeight: 1.3 }}>
           {label}
         </span>
       )}
@@ -53,7 +53,7 @@ export default function VideoRecordingToast() {
         <>
           <progress
             value={progress} max={100}
-            style={{ width: '100%', height: 3, accentColor: '#b8934a' }}
+            style={{ width: '100%', height: 3, accentColor: 'var(--gold-mid)' }}
           />
           <span style={{ fontSize: 10, color: '#ef4444' }}>
             {progress}% — ne fermez pas l'onglet

@@ -566,23 +566,23 @@ function ExportModal({ onClose, onLaunch }) {
     <div
       onClick={onClose}
       style={{
-        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)',
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.55)',
         zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#0d1a30', border: '1px solid rgba(184,147,74,0.45)',
+          background: 'var(--surface)', border: '1px solid var(--border-gold)',
           borderRadius: 16, padding: '24px 28px', width: 340, maxWidth: '90vw',
-          fontFamily: font, boxShadow: '0 12px 40px rgba(0,0,0,0.7)',
+          fontFamily: font, boxShadow: 'var(--card-shadow, 0 12px 40px rgba(0,0,0,0.5))',
         }}
       >
-        <h3 style={{ color: '#b8934a', fontSize: 16, margin: '0 0 18px', fontWeight: 700 }}>
+        <h3 style={{ color: 'var(--gold-mid)', fontSize: 16, margin: '0 0 18px', fontWeight: 700 }}>
           🎬 Exporter en vidéo
         </h3>
 
-        <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
           Durée
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
@@ -592,8 +592,8 @@ function ExportModal({ onClose, onLaunch }) {
               style={{
                 display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
                 padding: '8px 12px', borderRadius: 8,
-                background: dur === opt.value ? 'rgba(184,147,74,0.12)' : 'transparent',
-                border: `1px solid ${dur === opt.value ? 'rgba(184,147,74,0.4)' : 'rgba(255,255,255,0.06)'}`,
+                background: dur === opt.value ? 'var(--border-gold)' : 'transparent',
+                border: `1px solid ${dur === opt.value ? 'var(--border-gold)' : 'var(--border)'}`,
                 transition: 'all 0.15s',
               }}
             >
@@ -601,15 +601,15 @@ function ExportModal({ onClose, onLaunch }) {
                 type="radio" name="dur" value={opt.value}
                 checked={dur === opt.value}
                 onChange={() => setDur(opt.value)}
-                style={{ accentColor: '#b8934a' }}
+                style={{ accentColor: 'var(--gold-mid)' }}
               />
-              <span style={{ color: dur === opt.value ? '#e8c47e' : 'rgba(255,255,255,0.65)', fontSize: 13, flex: 1 }}>
+              <span style={{ color: dur === opt.value ? 'var(--gold)' : 'var(--text)', fontSize: 13, flex: 1 }}>
                 {opt.label}
               </span>
               {opt.recommended && (
                 <span style={{
-                  fontSize: 10, color: '#b8934a',
-                  border: '1px solid rgba(184,147,74,0.4)', borderRadius: 4,
+                  fontSize: 10, color: 'var(--gold-mid)',
+                  border: '1px solid var(--border-gold)', borderRadius: 4,
                   padding: '1px 6px',
                 }}>
                   recommandé
@@ -619,7 +619,7 @@ function ExportModal({ onClose, onLaunch }) {
           ))}
         </div>
 
-        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
           Format : WebM VP9 · 720×1280 · 9:16 · Reels / TikTok
           <br />La génération se fait en temps réel dans votre navigateur.
         </p>
@@ -628,8 +628,8 @@ function ExportModal({ onClose, onLaunch }) {
           <button
             onClick={onClose}
             style={{
-              background: 'none', border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 8, color: 'rgba(255,255,255,0.5)',
+              background: 'transparent', border: '1px solid var(--border)',
+              borderRadius: 8, color: 'var(--text-secondary)',
               padding: '8px 16px', cursor: 'pointer', fontSize: 13, fontFamily: font,
             }}
           >
@@ -638,8 +638,8 @@ function ExportModal({ onClose, onLaunch }) {
           <button
             onClick={() => onLaunch(dur)}
             style={{
-              background: 'rgba(184,147,74,0.18)', border: '1px solid rgba(184,147,74,0.5)',
-              borderRadius: 8, color: '#e8c47e',
+              background: 'var(--border-gold)', border: '1px solid var(--gold-mid)',
+              borderRadius: 8, color: 'var(--gold)',
               padding: '8px 20px', cursor: 'pointer', fontSize: 13, fontWeight: 600,
               fontFamily: font,
             }}

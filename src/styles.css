@@ -15,6 +15,7 @@
   --progress-acquired: linear-gradient(90deg,#334155,#64748b);
   --card-shadow: none;
   --scrollbar-thumb: #334155;
+  --surface: #0d1a30;
 }
 
 [data-theme="light"] {
@@ -32,6 +33,7 @@
   --progress-acquired: linear-gradient(90deg,#c8b99a,#a08060);
   --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
   --scrollbar-thumb: #c8b99a;
+  --surface: #ffffff;
 }
 
 *, *::before, *::after {
