@@ -11,16 +11,18 @@ export default async function handler(req, res) {
     return res.status(400).end();
   }
 
+  // Google favicons en premier : rapide et fiable. Clearbit (API publique fermée
+  // en 2025) en dernier, au cas où il revienne ou pour certains domaines.
   const sources = [
-    `https://logo.clearbit.com/${domain}?size=128&format=png`,
     `https://www.google.com/s2/favicons?domain=${domain}&sz=128`,
     `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    `https://logo.clearbit.com/${domain}?size=128&format=png`,
   ];
 
   for (const url of sources) {
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 4000);
+      const timer = setTimeout(() => ctrl.abort(), 2800);
       const resp = await fetch(url, {
         signal: ctrl.signal,
         headers: { 'User-Agent': 'Mozilla/5.0 (compatible; mesimulateurs/1.0)' },
