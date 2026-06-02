@@ -8,9 +8,6 @@
     <rect x="45.5" y="19" width="8" height="32" rx="2"/>
   </g>
   <!-- Courbe blanche de croissance -->
-  <path d="M11 45 C 24 42, 33 28, 52.5 16.5" fill="none" stroke="#ffffff"
-    stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Flèche en pointe -->
-  <path d="M52.5 16.5 L 45.5 17.5 M52.5 16.5 L 51.5 23.5" fill="none" stroke="#ffffff"
-    stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M10.5 46 C 24 43, 33 28, 53 15.5" fill="none" stroke="#ffffff"
+    stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

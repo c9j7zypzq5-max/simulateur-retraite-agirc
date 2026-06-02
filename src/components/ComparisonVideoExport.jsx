@@ -365,41 +365,42 @@ function drawFrame(ctx, {
         const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
         const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
         const tipLetter = (curve.label || curve.ticker || '?');
+        const R = 12;
 
         // Pulsing glow ring autour du logo
         ctx.fillStyle = `rgba(${hexToRgb(color)},${0.18 + 0.12 * pulse})`;
-        ctx.beginPath(); ctx.arc(lx, ly, 16 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(lx, ly, R + 4 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
 
-        // Logo de l'actif au tip de la courbe (remplace le simple dot)
-        drawLogoInCircle(ctx, tipLogo, lx, ly, 12, color, tipLetter);
+        // Logo de l'actif au tip de la courbe
+        drawLogoInCircle(ctx, tipLogo, lx, ly, R, color, tipLetter);
 
-        // Label à droite du graphique
-        let labelY = Math.max(CY + 22, Math.min(CY + CH - 22, ly));
+        // Montant collé directement au logo (valeur + %, sur deux lignes)
+        const valStr = fmtFull(last.value);
+        const subStr = curve.isInvested
+          ? 'investi'
+          : `${((last.value / montantInitial) - 1) * 100 >= 0 ? '+' : ''}${(((last.value / montantInitial) - 1) * 100).toFixed(1)}%`;
+
+        ctx.font = 'bold 15px DM Sans, sans-serif';
+        const valW = ctx.measureText(valStr).width;
+        const GAP = 7;
+        // Si le logo est trop près du bord droit, on place le texte à gauche
+        const placeLeft = lx + R + GAP + valW > W - 8;
+
+        let labelY = Math.max(CY + 16, Math.min(CY + CH - 16, ly));
         for (const prev of tipPositions) {
-          if (Math.abs(labelY - prev) < 48) labelY = prev + 48;
+          if (Math.abs(labelY - prev) < 38) labelY = prev + 38;
         }
         tipPositions.push(labelY);
-        const lbX = CX + CW + 10;
 
-        // Petit logo devant la valeur (actifs seulement, pas capital investi)
-        const LR = 8;
-        if (!curve.isInvested) {
-          drawLogoInCircle(ctx, tipLogo, lbX + LR, labelY - 5, LR, color, tipLetter);
-        }
-        const textX = curve.isInvested ? lbX : lbX + LR * 2 + 5;
+        ctx.textAlign = placeLeft ? 'right' : 'left';
+        const textX = placeLeft ? lx - R - GAP : lx + R + GAP;
 
-        ctx.textAlign = 'left';
-        ctx.font = 'bold 14px DM Sans, sans-serif';
+        ctx.font = 'bold 15px DM Sans, sans-serif';
         ctx.fillStyle = lightenHex(color, 0.15);
-        ctx.fillText(fmtFull(last.value), textX, labelY);
+        ctx.fillText(valStr, textX, labelY - 2);
         ctx.font = '11px DM Sans, sans-serif';
-        ctx.fillStyle = `rgba(${hexToRgb(color)},0.8)`;
-        if (curve.isInvested) {
-          ctx.fillText('investi', textX, labelY + 15);
-        } else {
-          const perfPct = ((last.value / montantInitial) - 1) * 100;
-          ctx.fillText(`${perfPct >= 0 ? '+' : ''}${perfPct.toFixed(1)}%`, textX, labelY + 15);
-        }
+        ctx.fillStyle = `rgba(${hexToRgb(color)},0.85)`;
+        ctx.fillText(subStr, textX, labelY + 13);
       }
     }
 
