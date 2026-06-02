@@ -142,7 +142,7 @@ function drawFrame(ctx, {
   for (let gy = 0; gy <= H; gy += 60) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
 
   // ── Header 2 lignes (boîte)
-  const BOX_TOP = 26, BOX_H = 108;
+  const BOX_TOP = 26, BOX_H = 126;
   ctx.globalAlpha = 1;
   ctx.fillStyle = 'rgba(184,147,74,0.1)';
   roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
@@ -158,7 +158,7 @@ function drawFrame(ctx, {
     const LOGO_GAP = 7;
     const VS_SEP = '  vs  ';
 
-    let hFontSize = 17;
+    let hFontSize = 24;
     ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
 
     const computeW = () => {
@@ -170,14 +170,14 @@ function drawFrame(ctx, {
       });
       return w;
     };
-    while (computeW() > W - 80 && hFontSize > 10) {
+    while (computeW() > W - 70 && hFontSize > 12) {
       hFontSize--;
       ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
     }
 
     const totalW = computeW();
     let hx = Math.round(W / 2 - totalW / 2);
-    const textY  = BOX_TOP + 47;
+    const textY  = BOX_TOP + 54;
     const logoCY = textY - Math.round(hFontSize * 0.38);
 
     assets.forEach((a, i) => {
@@ -203,19 +203,19 @@ function drawFrame(ctx, {
   {
     let subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
     if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
-    let sFontSize = 14;
+    let sFontSize = 16;
     ctx.font = `${sFontSize}px DM Sans, sans-serif`;
-    while (ctx.measureText(subtitle).width > W - 90 && sFontSize > 9) {
+    while (ctx.measureText(subtitle).width > W - 80 && sFontSize > 9) {
       sFontSize--;
       ctx.font = `${sFontSize}px DM Sans, sans-serif`;
     }
     ctx.fillStyle = 'rgba(255,255,255,0.58)';
     ctx.textAlign = 'center';
-    ctx.fillText(subtitle, W / 2, BOX_TOP + 78);
+    ctx.fillText(subtitle, W / 2, BOX_TOP + 96);
   }
 
   // ── Chart area
-  const CX = 50, CY = 154, CW = W - 50 - 96, CH = 710;
+  const CX = 50, CY = 168, CW = W - 50 - 96, CH = 696;
 
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
   const chartProgress = Math.pow(chartPhase, 0.45);
