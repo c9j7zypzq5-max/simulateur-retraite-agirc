@@ -24,6 +24,11 @@ function fmtK(v) {
   return `${Math.round(v)} €`;
 }
 
+function fmtFull(v) {
+  if (v >= 1_000_000) return `${(v/1_000_000).toFixed(2).replace('.',',')} M€`;
+  return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y);
@@ -37,7 +42,7 @@ function roundRect(ctx, x, y, w, h, r) {
 // ─── drawFrame ────────────────────────────────────────────────────────────────
 // t: 0→1 (fraction de la durée totale)
 // stateRef.current: { smoothYMax, smoothYMin, smoothXW } — mis à jour chaque frame
-function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, startYear, endYear, fromLabel, toLabel, metrics, stateRef }) {
+function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics, stateRef }) {
   const W = 720, H = 1280;
 
   // ── Background
@@ -63,13 +68,22 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
   ctx.lineWidth = 1;
   roundRect(ctx, 36, 44, W - 72, 56, 28);
   ctx.stroke();
+  // Header : "🇺🇸 S&P 500  vs  🌍 MSCI World  vs  ₿ Bitcoin"
+  const headerTitle = assets.map(a => `${a.emoji || ''} ${(a.label || a.ticker)}`).join('  vs  ');
+  let hFontSize = 15;
+  ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
+  while (ctx.measureText(headerTitle).width > W - 130 && hFontSize > 9) {
+    hFontSize--;
+    ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
+  }
   ctx.fillStyle = '#b8934a';
-  ctx.font = 'bold 15px DM Sans, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText(`📊 Comparateur d'actifs  ·  ${fromLabel} → ${toLabel}`, W/2, 78);
+  ctx.fillText(headerTitle, W/2, 78);
 
   // ── Chart area
-  const CX = 72, CY = 140, CW = W - 180, CH = 760;
+  const CX = 72, CY = 122, CW = W - 220, CH = 670;
+  // CW=500 → right edge at 572 (148px right margin for tip labels)
+  // CH=670 → chart bottom at 792
 
   // Chart progress (phase graphique : t 0→0.92)
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
@@ -206,25 +220,25 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
         ctx.arc(lx, ly, 5, 0, Math.PI * 2);
         ctx.fill();
 
-        // Label valeur + % (à droite du graphique)
+        // Label valeur + % (à droite du graphique) — chiffres complets
         const perfPct  = ((last.value / montantInitial) - 1) * 100;
-        const perfStr  = (perfPct >= 0 ? '+' : '') + perfPct.toFixed(1) + ' %';
-        const valStr   = fmtK(last.value);
+        const perfStr  = (perfPct >= 0 ? '+' : '') + perfPct.toFixed(1) + '%';
+        const valStr   = fmtFull(last.value);
 
-        let labelY = Math.max(CY + 20, Math.min(CY + CH - 20, ly));
+        let labelY = Math.max(CY + 22, Math.min(CY + CH - 22, ly));
         for (const prev of tipPositions) {
-          if (Math.abs(labelY - prev) < 36) labelY = prev + 36;
+          if (Math.abs(labelY - prev) < 46) labelY = prev + 46;
         }
         tipPositions.push(labelY);
 
-        const lbX = CX + CW + 10;
-        ctx.font = 'bold 13px DM Sans, sans-serif';
+        const lbX = CX + CW + 12;
+        ctx.font = 'bold 16px DM Sans, sans-serif';
         ctx.textAlign = 'left';
         ctx.fillStyle = lightenHex(color, 0.15);
-        ctx.fillText(valStr, lbX, labelY - 4);
-        ctx.font = '11px DM Sans, sans-serif';
-        ctx.fillStyle = `rgba(${hexToRgb(color)},0.8)`;
-        ctx.fillText(perfStr, lbX, labelY + 11);
+        ctx.fillText(valStr, lbX, labelY);
+        ctx.font = '13px DM Sans, sans-serif';
+        ctx.fillStyle = `rgba(${hexToRgb(color)},0.85)`;
+        ctx.fillText(perfStr, lbX, labelY + 16);
       }
     }
 
@@ -273,24 +287,95 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       }
     }
 
-    // ── Légende
-    ctx.textAlign = 'left';
-    let lx = CX, ly = CY + CH + 40;
+    // ── Bottom panel : légende (gauche) + date courante (droite)
+    ctx.globalAlpha = 1;
+    const PANEL_TOP = CY + CH + 24;
+
+    // Séparateur
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(CX, PANEL_TOP); ctx.lineTo(W - 40, PANEL_TOP); ctx.stroke();
+
+    // Légende avec valeurs évolutives (gauche)
+    const ROW_H = 54;
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
+      const pts   = tickerPts[asset.ticker];
       const color = asset.color;
+      const rowY  = PANEL_TOP + 18 + i * ROW_H;
+
+      // Dot couleur
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(lx + 6, ly - 4, 5, 0, Math.PI * 2);
+      ctx.arc(CX + 8, rowY + 9, 7, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.65)';
-      ctx.font = '12px DM Sans, sans-serif';
-      const lbl = asset.emoji ? `${asset.emoji} ${asset.label || asset.ticker}` : (asset.label || asset.ticker);
-      ctx.fillText(lbl, lx + 16, ly);
-      const w = ctx.measureText(lbl).width;
-      lx += 22 + w + 12;
-      if (lx > W - 80) { lx = CX; ly += 22; }
+
+      // Nom de l'actif
+      const assetName = asset.emoji
+        ? `${asset.emoji} ${asset.label || asset.ticker}`
+        : (asset.label || asset.ticker);
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      ctx.font = '13px DM Sans, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(assetName, CX + 22, rowY + 12);
+
+      // Valeur + pourcentage (évoluent en temps réel)
+      if (pts && pts.length >= 1) {
+        const last   = pts[pts.length - 1];
+        const pct    = ((last.value / montantInitial) - 1) * 100;
+        const pctClr = pct >= 0 ? '#4ade80' : '#f87171';
+        const valStr = fmtFull(last.value);
+
+        ctx.fillStyle = lightenHex(color, 0.1);
+        ctx.font = 'bold 20px DM Sans, sans-serif';
+        ctx.fillText(valStr, CX + 22, rowY + 33);
+
+        const vw = ctx.measureText(valStr).width;
+        ctx.fillStyle = pctClr;
+        ctx.font = 'bold 13px DM Sans, sans-serif';
+        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, CX + 22 + vw + 8, rowY + 33);
+      }
     }
+
+    // Date courante (droite) — mois + année en grand
+    const MONTHS_S = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juil.','Août','Sep.','Oct.','Nov.','Déc.'];
+    const sMonth = startMonth || 1;
+    const startTotalMo = startYear * 12 + sMonth - 1;
+    const currentTotalMo = Math.round(startTotalMo + maxT * totalYears * 12);
+    const curYear  = Math.floor(currentTotalMo / 12);
+    const curMoIdx = currentTotalMo % 12;
+
+    const dX = W - 44;
+    const dY = PANEL_TOP + 22;
+    ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255,255,255,0.28)';
+    ctx.font = '11px DM Sans, sans-serif';
+    ctx.fillText('Date en cours', dX, dY);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = 'bold 22px DM Sans, sans-serif';
+    ctx.fillText(MONTHS_S[curMoIdx], dX, dY + 28);
+    ctx.fillStyle = '#b8934a';
+    ctx.font = 'bold 40px DM Sans, sans-serif';
+    ctx.fillText(String(curYear), dX, dY + 72);
+  }
+
+  // ── Branding permanent (toute la vidéo, fond sombre en bas)
+  {
+    const BH = 56;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = 'rgba(4,10,22,0.97)';
+    ctx.fillRect(0, H - BH, W, BH);
+    ctx.strokeStyle = 'rgba(184,147,74,0.3)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    ctx.beginPath();
+    ctx.moveTo(40, H - BH); ctx.lineTo(W - 40, H - BH); ctx.stroke();
+    ctx.fillStyle = '#b8934a';
+    ctx.font = 'bold 20px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('mesimulateurs.fr', W / 2, H - BH + 35);
   }
 
   // ── Outro overlay (t 0.92→1.00)
@@ -397,6 +482,7 @@ export default function ComparisonVideoExport({
   fromLabel = '',
   toLabel = '',
   startYear = 2015,
+  startMonth = 1,
   endYear = 2024,
   totalYears = 9,
   montantInitial = 10000,
@@ -459,7 +545,7 @@ export default function ComparisonVideoExport({
 
       drawFrame(ctx, {
         t: tt, chartData, assets, montantInitial,
-        totalYears, startYear, endYear, fromLabel, toLabel,
+        totalYears, startYear, startMonth, endYear, fromLabel, toLabel,
         metrics, stateRef,
       });
 
@@ -473,7 +559,7 @@ export default function ComparisonVideoExport({
     }
 
     rafRef.current = requestAnimationFrame(frame);
-  }, [disabled, chartData, assets, montantInitial, totalYears, startYear, endYear, fromLabel, toLabel, metrics]);
+  }, [disabled, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics]);
 
   const isSupported = typeof MediaRecorder !== 'undefined';
 

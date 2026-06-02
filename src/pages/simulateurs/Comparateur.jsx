@@ -810,6 +810,7 @@ export default function Comparateur() {
                 fromLabel={fromLabel}
                 toLabel={toLabel}
                 startYear={fromDate.year}
+                startMonth={fromDate.month}
                 endYear={toDate.year}
                 totalYears={Math.max(1, totalYears)}
                 montantInitial={montant}
