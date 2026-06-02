@@ -184,8 +184,8 @@ function drawFrame(ctx, {
   ctx.stroke();
 
   {
-    const LOGO_R = 11, LOGO_GAP = 7, VS_SEP = '  vs  ';
-    let hFontSize = 24;
+    const LOGO_R = 13, LOGO_GAP = 8, VS_SEP = '  vs  ';
+    let hFontSize = 30;
     ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
 
     const computeW = () => {
@@ -197,7 +197,7 @@ function drawFrame(ctx, {
       });
       return w;
     };
-    while (computeW() > W - 70 && hFontSize > 12) {
+    while (computeW() > W - 64 && hFontSize > 15) {
       hFontSize--;
       ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
     }
@@ -229,15 +229,15 @@ function drawFrame(ctx, {
   {
     let subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
     if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
-    let sFontSize = 16;
+    let sFontSize = 20;
     ctx.font = `${sFontSize}px DM Sans, sans-serif`;
-    while (ctx.measureText(subtitle).width > W - 80 && sFontSize > 9) {
+    while (ctx.measureText(subtitle).width > W - 72 && sFontSize > 12) {
       sFontSize--;
       ctx.font = `${sFontSize}px DM Sans, sans-serif`;
     }
-    ctx.fillStyle = 'rgba(255,255,255,0.58)';
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
     ctx.textAlign = 'center';
-    ctx.fillText(subtitle, W / 2, BOX_TOP + 96);
+    ctx.fillText(subtitle, W / 2, BOX_TOP + 98);
   }
 
   // ── Chart area
@@ -365,7 +365,7 @@ function drawFrame(ctx, {
         const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
         const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
         const tipLetter = (curve.label || curve.ticker || '?');
-        const R = 12;
+        const R = 14;
 
         // Pulsing glow ring autour du logo
         ctx.fillStyle = `rgba(${hexToRgb(color)},${0.18 + 0.12 * pulse})`;
@@ -380,27 +380,27 @@ function drawFrame(ctx, {
           ? 'investi'
           : `${((last.value / montantInitial) - 1) * 100 >= 0 ? '+' : ''}${(((last.value / montantInitial) - 1) * 100).toFixed(1)}%`;
 
-        ctx.font = 'bold 15px DM Sans, sans-serif';
+        ctx.font = 'bold 19px DM Sans, sans-serif';
         const valW = ctx.measureText(valStr).width;
-        const GAP = 7;
+        const GAP = 8;
         // Si le logo est trop près du bord droit, on place le texte à gauche
         const placeLeft = lx + R + GAP + valW > W - 8;
 
-        let labelY = Math.max(CY + 16, Math.min(CY + CH - 16, ly));
+        let labelY = Math.max(CY + 20, Math.min(CY + CH - 20, ly));
         for (const prev of tipPositions) {
-          if (Math.abs(labelY - prev) < 38) labelY = prev + 38;
+          if (Math.abs(labelY - prev) < 46) labelY = prev + 46;
         }
         tipPositions.push(labelY);
 
         ctx.textAlign = placeLeft ? 'right' : 'left';
         const textX = placeLeft ? lx - R - GAP : lx + R + GAP;
 
-        ctx.font = 'bold 15px DM Sans, sans-serif';
+        ctx.font = 'bold 19px DM Sans, sans-serif';
         ctx.fillStyle = lightenHex(color, 0.15);
-        ctx.fillText(valStr, textX, labelY - 2);
-        ctx.font = '11px DM Sans, sans-serif';
-        ctx.fillStyle = `rgba(${hexToRgb(color)},0.85)`;
-        ctx.fillText(subStr, textX, labelY + 13);
+        ctx.fillText(valStr, textX, labelY - 3);
+        ctx.font = 'bold 14px DM Sans, sans-serif';
+        ctx.fillStyle = `rgba(${hexToRgb(color)},0.9)`;
+        ctx.fillText(subStr, textX, labelY + 15);
       }
     }
 
@@ -412,26 +412,26 @@ function drawFrame(ctx, {
     ctx.moveTo(CX, CY + CH); ctx.lineTo(CX + CW, CY + CH);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(255,255,255,0.25)';
-    ctx.font = '11px DM Sans, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillStyle = 'rgba(255,255,255,0.32)';
+    ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'right';
     for (const f of [0.25, 0.5, 0.75, 1.0]) {
       const val = yMin + (yMax - yMin) * f;
       const yy  = cy(val);
-      if (yy < CY + 10 || yy > CY + CH - 10) continue;
-      ctx.fillText(fmtK(val), CX - 4, yy + 4);
+      if (yy < CY + 12 || yy > CY + CH - 12) continue;
+      ctx.fillText(fmtK(val), CX - 5, yy + 5);
       ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
     }
 
-    ctx.font = '12px DM Sans, sans-serif'; ctx.textAlign = 'center';
+    ctx.font = 'bold 16px DM Sans, sans-serif'; ctx.textAlign = 'center';
     const yearsRange = endYear - startYear;
     for (let yr = startYear; yr <= endYear; yr++) {
       const frac = yearsRange > 0 ? (yr - startYear) / yearsRange : 0;
       if (frac > xWindow + 0.02) break;
       const px = cx(frac);
       if (px >= CX && px <= CX + CW) {
-        ctx.fillStyle = 'rgba(255,255,255,0.28)';
-        ctx.fillText(String(yr), px, CY + CH + 22);
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillText(String(yr), px, CY + CH + 24);
         ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
         ctx.beginPath(); ctx.moveTo(px, CY); ctx.lineTo(px, CY + CH); ctx.stroke();
       }
@@ -443,26 +443,31 @@ function drawFrame(ctx, {
     ctx.beginPath();
     ctx.moveTo(CX, PANEL_TOP); ctx.lineTo(W - 34, PANEL_TOP); ctx.stroke();
 
-    const ROW_H = 52, MAX_NAME_W = 330;
+    const MAX_NAME_W = 320;
+    const nRows = assets.length + (investedPts && investedPts.length >= 1 ? 1 : 0);
+    // Hauteur de ligne adaptative pour rester au-dessus de la barre de marque
+    const ROW_H = Math.max(46, Math.min(64, Math.floor((H - 56 - (PANEL_TOP + 18)) / Math.max(nRows, 1))));
+    const LOGO_R = 12;
 
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
       const pts   = tickerPts[asset.ticker];
       const color = asset.color;
-      const rowY  = PANEL_TOP + 16 + i * ROW_H;
+      const rowY  = PANEL_TOP + 14 + i * ROW_H;
       const logo  = logoImages?.[asset.ticker];
 
-      drawLogoInCircle(ctx, logo, CX + 10, rowY + 10, 10, color, asset.label || asset.ticker);
+      drawLogoInCircle(ctx, logo, CX + LOGO_R, rowY + 12, LOGO_R, color, asset.label || asset.ticker);
+      const tx = CX + LOGO_R * 2 + 8;
 
       const assetName = asset.label || asset.ticker;
-      ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'left';
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.font = '19px DM Sans, sans-serif'; ctx.textAlign = 'left';
       let nameText = assetName;
       if (ctx.measureText(nameText).width > MAX_NAME_W) {
         while (ctx.measureText(nameText + '…').width > MAX_NAME_W && nameText.length > 1) nameText = nameText.slice(0, -1);
         nameText += '…';
       }
-      ctx.fillText(nameText, CX + 24, rowY + 14);
+      ctx.fillText(nameText, tx, rowY + 12);
 
       if (pts && pts.length >= 1) {
         const last   = pts[pts.length - 1];
@@ -470,25 +475,26 @@ function drawFrame(ctx, {
         const pctClr = pct >= 0 ? '#4ade80' : '#f87171';
         const valStr = fmtFull(last.value);
         ctx.fillStyle = lightenHex(color, 0.1);
-        ctx.font = 'bold 22px DM Sans, sans-serif';
-        ctx.fillText(valStr, CX + 24, rowY + 37);
+        ctx.font = 'bold 28px DM Sans, sans-serif';
+        ctx.fillText(valStr, tx, rowY + 40);
         const vw = ctx.measureText(valStr).width;
         ctx.fillStyle = pctClr;
-        ctx.font = 'bold 14px DM Sans, sans-serif';
-        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, CX + 24 + vw + 8, rowY + 37);
+        ctx.font = 'bold 18px DM Sans, sans-serif';
+        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, tx + vw + 10, rowY + 40);
       }
     }
 
     if (investedPts && investedPts.length >= 1) {
       const last = investedPts[investedPts.length - 1];
-      const rowY = PANEL_TOP + 16 + assets.length * ROW_H;
-      drawLogoInCircle(ctx, null, CX + 10, rowY + 10, 10, INVESTED_COLOR, '€');
-      ctx.fillStyle = 'rgba(200,215,235,0.55)';
-      ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'left';
-      ctx.fillText('Capital investi', CX + 24, rowY + 14);
+      const rowY = PANEL_TOP + 14 + assets.length * ROW_H;
+      drawLogoInCircle(ctx, null, CX + LOGO_R, rowY + 12, LOGO_R, INVESTED_COLOR, '€');
+      const tx = CX + LOGO_R * 2 + 8;
+      ctx.fillStyle = 'rgba(200,215,235,0.6)';
+      ctx.font = '19px DM Sans, sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText('Capital investi', tx, rowY + 12);
       ctx.fillStyle = lightenHex(INVESTED_COLOR, 0.1);
-      ctx.font = 'bold 22px DM Sans, sans-serif';
-      ctx.fillText(fmtFull(last.value), CX + 24, rowY + 37);
+      ctx.font = 'bold 28px DM Sans, sans-serif';
+      ctx.fillText(fmtFull(last.value), tx, rowY + 40);
     }
 
     const MONTHS_S = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juil.','Août','Sep.','Oct.','Nov.','Déc.'];
@@ -498,14 +504,14 @@ function drawFrame(ctx, {
     const curYear  = Math.floor(currentTotalMo / 12);
     const curMoIdx = currentTotalMo % 12;
 
-    const dX = W - 38, dY = PANEL_TOP + 22;
+    const dX = W - 38, dY = PANEL_TOP + 24;
     ctx.textAlign = 'right';
-    ctx.fillStyle = 'rgba(255,255,255,0.28)'; ctx.font = '11px DM Sans, sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '14px DM Sans, sans-serif';
     ctx.fillText('Date en cours', dX, dY);
-    ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.font = 'bold 22px DM Sans, sans-serif';
-    ctx.fillText(MONTHS_S[curMoIdx], dX, dY + 28);
-    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 40px DM Sans, sans-serif';
-    ctx.fillText(String(curYear), dX, dY + 72);
+    ctx.fillStyle = 'rgba(255,255,255,0.85)'; ctx.font = 'bold 28px DM Sans, sans-serif';
+    ctx.fillText(MONTHS_S[curMoIdx], dX, dY + 32);
+    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 50px DM Sans, sans-serif';
+    ctx.fillText(String(curYear), dX, dY + 84);
   }
 
   {
@@ -516,10 +522,10 @@ function drawFrame(ctx, {
     ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1; ctx.setLineDash([]);
     ctx.beginPath(); ctx.moveTo(40, H - BH); ctx.lineTo(W - 40, H - BH); ctx.stroke();
     // Marque + wordmark, centrés ensemble
-    ctx.font = 'bold 20px DM Sans, sans-serif';
+    ctx.font = 'bold 24px DM Sans, sans-serif';
     const txt = 'mesimulateurs.fr';
     const tw = ctx.measureText(txt).width;
-    const markS = 26, gap = 9;
+    const markS = 32, gap = 10;
     const groupW = markS + gap + tw;
     const gx = W / 2 - groupW / 2;
     const cy = H - BH + 28;
@@ -535,16 +541,16 @@ function drawFrame(ctx, {
     ctx.fillStyle = '#060e1c'; ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = easeOut(outroPhase);
 
-    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 30px DM Sans, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('Résultats de votre simulation', W / 2, 108);
-    ctx.fillStyle = 'rgba(255,255,255,0.42)'; ctx.font = '15px DM Sans, sans-serif';
+    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 36px DM Sans, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('Résultats de votre simulation', W / 2, 110);
+    ctx.fillStyle = 'rgba(255,255,255,0.48)'; ctx.font = '19px DM Sans, sans-serif';
     let outroSub = `${fromLabel} → ${toLabel}  ·  ${fmtK(montantInitial)} investis`;
     if (periodicAmt > 0) outroSub += `  +  ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
-    ctx.fillText(outroSub, W / 2, 140);
+    ctx.fillText(outroSub, W / 2, 146);
 
     const n      = Math.min(metrics.length, 5);
-    const cardH  = n <= 2 ? 185 : n === 3 ? 158 : n === 4 ? 132 : 110;
-    const cardGap = 10;
+    const cardH  = n <= 2 ? 195 : n === 3 ? 172 : n === 4 ? 150 : 128;
+    const cardGap = 11;
     const totalH = n * cardH + (n - 1) * cardGap;
     let cardY = Math.max(160, (H - 200 - totalH) / 2);
 
@@ -559,36 +565,36 @@ function drawFrame(ctx, {
       ctx.strokeStyle = `rgba(${hexToRgb(color)},0.4)`; ctx.lineWidth = 1;
       roundRect(ctx, 36, my, W - 72, cardH, 16); ctx.stroke();
 
-      const mx = 68, midY = my + cardH / 2;
+      const mx = 70, midY = my + cardH / 2;
       const logo = logoImages?.[m.ticker];
-      drawLogoInCircle(ctx, logo, mx, midY - 18, 14, color, m.label || m.ticker);
+      drawLogoInCircle(ctx, logo, mx, midY - 20, 17, color, m.label || m.ticker);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.92)'; ctx.font = 'bold 19px DM Sans, sans-serif'; ctx.textAlign = 'left';
-      ctx.fillText(m.label || m.ticker, mx + 20, midY - 6);
+      ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.font = 'bold 23px DM Sans, sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText(m.label || m.ticker, mx + 26, midY - 7);
 
       ctx.fillStyle = perfColor;
-      ctx.font = `bold ${cardH >= 158 ? 28 : 23}px DM Sans, sans-serif`;
-      ctx.fillText(`${perf >= 0 ? '+' : ''}${perf.toFixed(1)} %`, mx + 20, midY + 24);
+      ctx.font = `bold ${cardH >= 158 ? 34 : 27}px DM Sans, sans-serif`;
+      ctx.fillText(`${perf >= 0 ? '+' : ''}${perf.toFixed(1)} %`, mx + 26, midY + 28);
 
-      ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '13px DM Sans, sans-serif';
-      ctx.fillText(`CAGR: ${m.cagr >= 0 ? '+' : ''}${m.cagr.toFixed(1)} %/an`, mx + 20, midY + 44);
+      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '16px DM Sans, sans-serif';
+      ctx.fillText(`CAGR: ${m.cagr >= 0 ? '+' : ''}${m.cagr.toFixed(1)} %/an`, mx + 26, midY + 50);
 
       ctx.textAlign = 'right';
       ctx.fillStyle = lightenHex(color, 0.12);
-      ctx.font = `bold ${cardH >= 158 ? 25 : 21}px DM Sans, sans-serif`;
-      ctx.fillText(fmtK(m.finalValue), W - 50, midY + 24);
-      ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '13px DM Sans, sans-serif';
-      ctx.fillText('valeur finale', W - 50, midY + 44);
+      ctx.font = `bold ${cardH >= 158 ? 30 : 25}px DM Sans, sans-serif`;
+      ctx.fillText(fmtK(m.finalValue), W - 52, midY + 28);
+      ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '16px DM Sans, sans-serif';
+      ctx.fillText('valeur finale', W - 52, midY + 50);
     });
 
     const brandY = H - 130;
     ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(40, brandY); ctx.lineTo(W - 40, brandY); ctx.stroke();
     // Marque + wordmark, centrés ensemble
-    ctx.font = 'bold 32px DM Sans, sans-serif';
+    ctx.font = 'bold 36px DM Sans, sans-serif';
     const oTxt = 'mesimulateurs.fr';
     const oTw = ctx.measureText(oTxt).width;
-    const oMarkS = 40, oGap = 12;
+    const oMarkS = 44, oGap = 13;
     const oGroupW = oMarkS + oGap + oTw;
     const oGx = W / 2 - oGroupW / 2;
     const oCy = brandY + 34;
@@ -597,8 +603,8 @@ function drawFrame(ctx, {
     ctx.fillText(oTxt, oGx + oMarkS + oGap, oCy + 1);
     ctx.textBaseline = 'alphabetic';
     ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '15px DM Sans, sans-serif';
-    ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, brandY + 74);
+    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '18px DM Sans, sans-serif';
+    ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, brandY + 76);
     ctx.globalAlpha = 1;
   }
 
