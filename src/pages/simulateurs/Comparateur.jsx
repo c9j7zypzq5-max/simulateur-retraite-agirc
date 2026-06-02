@@ -814,22 +814,24 @@ export default function Comparateur() {
 
             {/* Actions */}
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginTop: 16 }}>
-              <ComparisonVideoExport
-                assets={assetsWithColors}
-                chartData={videoChartData}
-                fromLabel={fromLabel}
-                toLabel={toLabel}
-                startYear={fromDate.year}
-                startMonth={fromDate.month}
-                endYear={toDate.year}
-                totalYears={Math.max(1, totalYears)}
-                montantInitial={montant}
-                metrics={metrics}
-                disabled={!hasResult}
-                periodicAmt={periodicAmt}
-                periodicFreq={periodicFreq}
-                showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
-              />
+              {__VIDEO_ENABLED__ ? (
+                <ComparisonVideoExport
+                  assets={assetsWithColors}
+                  chartData={videoChartData}
+                  fromLabel={fromLabel}
+                  toLabel={toLabel}
+                  startYear={fromDate.year}
+                  startMonth={fromDate.month}
+                  endYear={toDate.year}
+                  totalYears={Math.max(1, totalYears)}
+                  montantInitial={montant}
+                  metrics={metrics}
+                  disabled={!hasResult}
+                  periodicAmt={periodicAmt}
+                  periodicFreq={periodicFreq}
+                  showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
+                />
+              ) : <div />}
               <ShareBar
                 params={{ montant }}
                 resultsRef={resultsRef}
