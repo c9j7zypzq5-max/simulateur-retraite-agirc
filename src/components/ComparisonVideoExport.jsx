@@ -252,7 +252,7 @@ function drawFrame(ctx, {
   }
 
   // ── Chart area
-  const CX = 50, CY = 168, CW = W - 50 - 96, CH = 696;
+  const CX = 80, CY = 168, CW = W - 160, CH = 696;
 
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
   const chartProgress = Math.pow(chartPhase, 0.45);
