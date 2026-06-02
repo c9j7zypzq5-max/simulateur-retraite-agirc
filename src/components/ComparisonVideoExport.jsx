@@ -424,12 +424,18 @@ function drawFrame(ctx, {
     ctx.moveTo(CX, CY + CH); ctx.lineTo(CX + CW, CY + CH);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(255,255,255,0.32)';
+    // Ticks Y — valeurs rondes dont les positions bougent avec le range (comme les années sur X)
+    const yRange = yMax - yMin;
+    const rawStep = yRange / 5;
+    const mag  = Math.pow(10, Math.floor(Math.log10(Math.max(rawStep, 1))));
+    const fr   = rawStep / mag;
+    const yStep = (fr <= 1 ? 1 : fr <= 2 ? 2 : fr <= 5 ? 5 : 10) * mag;
+    const firstY = Math.ceil(yMin / yStep) * yStep;
     ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'right';
-    for (const f of [0.25, 0.5, 0.75, 1.0]) {
-      const val = yMin + (yMax - yMin) * f;
-      const yy  = cy(val);
+    for (let val = firstY; val <= yMax * 1.01; val += yStep) {
+      const yy = cy(val);
       if (yy < CY + 12 || yy > CY + CH - 12) continue;
+      ctx.fillStyle = 'rgba(255,255,255,0.32)';
       ctx.fillText(fmtK(val), CX - 5, yy + 5);
       ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
