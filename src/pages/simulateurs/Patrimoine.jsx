@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
-import VideoExport from "../../components/VideoExport.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -509,21 +508,7 @@ export default function Patrimoine() {
               </div>
 
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-                <VideoExport
-                  simulatorName="Patrimoine global"
-                  emoji="💎"
-                  chartData={patrimoineChartData}
-                  metrics={[
-                    { label: 'Patrimoine total', value: fmtEur(Math.round(res.patrimoineFinal)) },
-                    { label: 'Revenu / mois', value: fmtEur(Math.round(res.revenuMensuelTotal)) },
-                    { label: 'Capital financier', value: fmtEur(Math.round(res.capitalFinancierFinal)) },
-                    ...(immoActive && res.valeurImmoFinal > 0 ? [{ label: 'Valeur immo', value: fmtEur(Math.round(res.valeurImmoFinal)) }] : []),
-                  ]}
-                  color="#b8934a"
-                  ageActuel={ageActuel || 35}
-                  disabled={!hasResult}
-                />
-                <ShareBar
+<ShareBar
                   params={{ ageActuel, ageCible, capitalFinancier, versementMensuel, rendementPortefeuille }}
                   resultsRef={resultsRef}
                   name="patrimoine"

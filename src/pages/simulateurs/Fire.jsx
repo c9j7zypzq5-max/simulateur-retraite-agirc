@@ -7,7 +7,6 @@ import { useProfile } from "../../hooks/useProfile.js";
 import { useSimHistory } from "../../hooks/useSimHistory.js";
 import { downloadCSV, downloadXLSX } from "../../utils/export.js";
 import JsonLd from "../../components/JsonLd.jsx";
-import VideoExport from "../../components/VideoExport.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -914,22 +913,7 @@ export default function Fire() {
             </div>
           )}
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-            <VideoExport
-              simulatorName="Indépendance financière FIRE"
-              emoji="🔥"
-              chartData={fireChartData}
-              targetValue={res.patrimoineCible > 0 ? res.patrimoineCible : undefined}
-              metrics={[
-                { label: 'Âge FIRE', value: res.ageAtteinte ? `${res.ageAtteinte} ans` : 'Non atteint' },
-                { label: 'Capital cible', value: fmtEur(Math.round(res.patrimoineCible)) },
-                { label: 'Revenu passif/mois', value: fmtEur(Math.round(res.revenuPassifMensuel)) },
-                ...(res.anneesRestantes ? [{ label: 'Années restantes', value: `${Math.ceil(res.anneesRestantes)} ans` }] : []),
-              ]}
-              color="#b8934a"
-              ageActuel={ageRef}
-              disabled={!hasResult}
-            />
-            <ShareBar
+<ShareBar
               params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
               resultsRef={resultsRef}
               name="fire"

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
-import VideoExport from "../../components/VideoExport.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -223,20 +222,7 @@ export default function Epargne() {
             </div>
 
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-              <VideoExport
-                simulatorName="Épargne & intérêts composés"
-                emoji="💰"
-                chartData={epargneChartData}
-                metrics={[
-                  { label: 'Capital final', value: `${Math.round(res.capitalFinal).toLocaleString('fr-FR')} €` },
-                  { label: 'Intérêts générés', value: `${Math.round(res.totalInterets).toLocaleString('fr-FR')} €` },
-                  { label: 'Multiplicateur', value: `×${res.multiplicateur.toFixed(2)}` },
-                  { label: 'Total versé', value: `${Math.round(res.totalVerse).toLocaleString('fr-FR')} €` },
-                ]}
-                color="#b8934a"
-                disabled={!hasResult}
-              />
-              <ShareBar
+<ShareBar
                 params={{ capitalInitial, versement, tauxAnnuel, duree }}
                 resultsRef={resultsRef}
                 name="epargne"
