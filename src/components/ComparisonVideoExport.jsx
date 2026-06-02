@@ -26,7 +26,7 @@ function fmtK(v) {
 
 function fmtFull(v) {
   if (v >= 1_000_000) return `${(v/1_000_000).toFixed(2).replace('.',',')} M€`;
-  return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
+  return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -39,10 +39,13 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
+const FREQ_FR = { monthly: '/mois', quarterly: '/trimestre', semi: '/semestre', annual: '/an' };
+
 // ─── drawFrame ────────────────────────────────────────────────────────────────
-// t: 0→1 (fraction de la durée totale)
-// stateRef.current: { smoothYMax, smoothYMin, smoothXW } — mis à jour chaque frame
-function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics, stateRef }) {
+function drawFrame(ctx, {
+  t, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear,
+  fromLabel, toLabel, metrics, stateRef, periodicAmt, periodicFreq, showPeriodicInChart,
+}) {
   const W = 720, H = 1280;
 
   // ── Background
@@ -53,73 +56,96 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Grille décorative subtile
   ctx.strokeStyle = 'rgba(100,120,180,0.04)';
   ctx.lineWidth = 1;
-  for (let x = 0; x <= W; x += 60) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-  for (let y = 0; y <= H; y += 60) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  for (let gx = 0; gx <= W; gx += 60) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,H); ctx.stroke(); }
+  for (let gy = 0; gy <= H; gy += 60) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(W,gy); ctx.stroke(); }
 
-  // ── Header (toujours visible)
+  // ── Header 2 lignes (boîte plus haute)
+  const BOX_TOP = 26, BOX_H = 108;
   ctx.globalAlpha = 1;
   ctx.fillStyle = 'rgba(184,147,74,0.1)';
-  roundRect(ctx, 36, 44, W - 72, 56, 28);
+  roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
   ctx.fill();
   ctx.strokeStyle = 'rgba(184,147,74,0.4)';
   ctx.lineWidth = 1;
-  roundRect(ctx, 36, 44, W - 72, 56, 28);
+  roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
   ctx.stroke();
-  // Header : "🇺🇸 S&P 500  vs  🌍 MSCI World  vs  ₿ Bitcoin"
-  const headerTitle = assets.map(a => `${a.emoji || ''} ${(a.label || a.ticker)}`).join('  vs  ');
-  let hFontSize = 15;
+
+  // Ligne 1 : noms des actifs "S&P 500  vs  MSCI World"
+  const headerTitle = assets.map(a => `${a.emoji || ''} ${a.label || a.ticker}`).join('  vs  ');
+  let hFontSize = 20;
   ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
-  while (ctx.measureText(headerTitle).width > W - 130 && hFontSize > 9) {
+  while (ctx.measureText(headerTitle).width > W - 80 && hFontSize > 11) {
     hFontSize--;
     ctx.font = `bold ${hFontSize}px DM Sans, sans-serif`;
   }
   ctx.fillStyle = '#b8934a';
   ctx.textAlign = 'center';
-  ctx.fillText(headerTitle, W/2, 78);
+  ctx.fillText(headerTitle, W/2, BOX_TOP + 42);
 
-  // ── Chart area
-  const CX = 72, CY = 122, CW = W - 220, CH = 670;
-  // CW=500 → right edge at 572 (148px right margin for tip labels)
-  // CH=670 → chart bottom at 792
+  // Ligne 2 : "10 000 € investis en Jan. 2015 · + 200 €/mois"
+  let subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
+  if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
+  let sFontSize = 14;
+  ctx.font = `${sFontSize}px DM Sans, sans-serif`;
+  while (ctx.measureText(subtitle).width > W - 90 && sFontSize > 9) {
+    sFontSize--;
+    ctx.font = `${sFontSize}px DM Sans, sans-serif`;
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.58)';
+  ctx.fillText(subtitle, W/2, BOX_TOP + 72);
 
-  // Chart progress (phase graphique : t 0→0.92)
+  // ── Chart area (plus grand)
+  // CX=50, CY=154, CW=574 (marge droite 96px pour tip labels), CH=710
+  const CX = 50, CY = 154, CW = W - 50 - 96, CH = 710;
+  // chart bottom = 864
+
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
-  // easeOut rapide : 28% des données à t=7s (10%), smooth au lieu de easeInOut quasi-vide
   const chartProgress = Math.pow(chartPhase, 0.45);
-
-  // Compute visible points per ticker (t-based pour sync parfaite entre actifs)
   const maxT = chartProgress;
+
+  // Points visibles par actif (t-based, sync parfaite)
   const tickerPts = {};
   for (const [ticker, pts] of Object.entries(chartData)) {
+    if (ticker === '__invested__') continue;
     if (!Array.isArray(pts) || pts.length < 2) continue;
     const visible = pts.filter(p => p.t <= maxT);
     if (visible.length < 1) { tickerPts[ticker] = [pts[0]]; continue; }
-
-    // Sub-point interpolation : dernier point interpolé entre visible[-1] et le suivant
-  // Sub-point interpolation: add an interpolated tip point AFTER visible points
     const nextIdx = pts.findIndex(p => p.t > maxT);
     if (nextIdx > 0) {
-      const prev  = pts[nextIdx - 1];
-      const next  = pts[nextIdx];
+      const prev = pts[nextIdx - 1];
+      const next = pts[nextIdx];
       const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
-      const interp = {
-        t:     maxT,
-        value: prev.value + (next.value - prev.value) * alpha,
-      };
-      // On ajoute le point interpolé APRÈS les points fixes (ne pas enlever le dernier)
-      tickerPts[ticker] = [...visible, interp];
+      tickerPts[ticker] = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha }];
     } else {
       tickerPts[ticker] = visible;
     }
   }
 
+  // Série capital investi (DCA)
+  let investedPts = null;
+  if (showPeriodicInChart && Array.isArray(chartData['__invested__']) && chartData['__invested__'].length >= 2) {
+    const raw = chartData['__invested__'];
+    const visible = raw.filter(p => p.t <= maxT);
+    if (visible.length >= 1) {
+      const nextIdx = raw.findIndex(p => p.t > maxT);
+      if (nextIdx > 0) {
+        const prev = raw[nextIdx - 1];
+        const next = raw[nextIdx];
+        const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
+        investedPts = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha }];
+      } else {
+        investedPts = visible;
+      }
+    }
+  }
+
   const allVisible = Object.values(tickerPts).flat();
+  if (investedPts) allVisible.push(...investedPts);
 
   if (allVisible.length >= 2) {
-    // ── Smooth Y axis (mise à jour chaque frame)
+    // ── Y axis lissé
     const rawYMax = Math.max(...allVisible.map(p => p.value), montantInitial) * 1.18;
     const rawYMin = Math.min(...allVisible.map(p => p.value), montantInitial) * 0.88;
 
@@ -135,18 +161,16 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
     const yMax = st.smoothYMax;
     const yMin = st.smoothYMin;
 
-    // ── Smooth X window
-    const currentFrac    = Math.max(...allVisible.map(p => p.t), 0);
-    const initXW         = totalYears > 0 ? Math.min(1, 1 / totalYears) : 1;
-    const targetXW       = Math.min(1, Math.max(initXW, currentFrac * 1.18));
+    const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
+    const initXW      = totalYears > 0 ? Math.min(1, 1 / totalYears) : 1;
+    const targetXW    = Math.min(1, Math.max(initXW, currentFrac * 1.18));
     st.smoothXW += (targetXW - st.smoothXW) * 0.04;
     const xWindow = Math.min(1, st.smoothXW);
 
-    // Coordinate transforms
     const cx = frac => CX + (frac / Math.max(xWindow, 0.001)) * CW;
     const cy = v    => CY + CH - ((v - yMin) / Math.max(yMax - yMin, 1)) * CH;
 
-    // ── Ligne de base (montant initial)
+    // Ligne de base (montant initial)
     const baseY = cy(montantInitial);
     if (baseY >= CY - 2 && baseY <= CY + CH + 2) {
       ctx.globalAlpha = 0.3;
@@ -163,17 +187,14 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       ctx.globalAlpha = 1;
     }
 
-    // ── Courbes par actif
+    // ── Courbes des actifs
     const tipPositions = [];
 
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
       const pts   = tickerPts[asset.ticker];
       if (!pts || pts.length < 2) continue;
-
       const color = asset.color;
-
-      // Points visibles dans la fenêtre X
       const visPts = pts.filter(p => p.t <= xWindow + 0.005);
       if (visPts.length < 2) continue;
 
@@ -212,26 +233,20 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       if (lx >= CX && lx <= CX + CW) {
         const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + i * 1.6);
         ctx.fillStyle = `rgba(${hexToRgb(color)},${0.15 + 0.12 * pulse})`;
-        ctx.beginPath();
-        ctx.arc(lx, ly, 10 + 3 * pulse, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(lx, ly, 10 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = lightenHex(color, 0.2);
-        ctx.beginPath();
-        ctx.arc(lx, ly, 5, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.beginPath(); ctx.arc(lx, ly, 5, 0, Math.PI * 2); ctx.fill();
 
-        // Label valeur + % (à droite du graphique) — chiffres complets
-        const perfPct  = ((last.value / montantInitial) - 1) * 100;
-        const perfStr  = (perfPct >= 0 ? '+' : '') + perfPct.toFixed(1) + '%';
-        const valStr   = fmtFull(last.value);
-
+        // Label valeur + % à droite du graphique
+        const perfPct = ((last.value / montantInitial) - 1) * 100;
+        const perfStr = (perfPct >= 0 ? '+' : '') + perfPct.toFixed(1) + '%';
+        const valStr  = fmtFull(last.value);
         let labelY = Math.max(CY + 22, Math.min(CY + CH - 22, ly));
         for (const prev of tipPositions) {
           if (Math.abs(labelY - prev) < 46) labelY = prev + 46;
         }
         tipPositions.push(labelY);
-
-        const lbX = CX + CW + 12;
+        const lbX = CX + CW + 10;
         ctx.font = 'bold 16px DM Sans, sans-serif';
         ctx.textAlign = 'left';
         ctx.fillStyle = lightenHex(color, 0.15);
@@ -239,6 +254,29 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
         ctx.font = '13px DM Sans, sans-serif';
         ctx.fillStyle = `rgba(${hexToRgb(color)},0.85)`;
         ctx.fillText(perfStr, lbX, labelY + 16);
+      }
+    }
+
+    // ── Ligne capital investi (DCA) dans le graphique
+    if (investedPts && investedPts.length >= 2) {
+      const visPts = investedPts.filter(p => p.t <= xWindow + 0.005);
+      if (visPts.length >= 2) {
+        ctx.globalAlpha = 0.6;
+        ctx.strokeStyle = 'rgba(200,210,230,0.85)';
+        ctx.setLineDash([8, 5]);
+        ctx.lineWidth = 1.8;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        let started = false;
+        visPts.forEach(p => {
+          const px = cx(p.t), py = cy(p.value);
+          if (px < CX - 5 || px > CX + CW + 5) return;
+          if (!started) { ctx.moveTo(px, py); started = true; }
+          else ctx.lineTo(px, py);
+        });
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.globalAlpha = 1;
       }
     }
 
@@ -262,12 +300,10 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       ctx.fillText(fmtK(val), CX - 4, yy + 4);
       ctx.strokeStyle = 'rgba(255,255,255,0.05)';
       ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy);
-      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
     }
 
-    // ── Labels X (années entières)
+    // ── Labels X (années)
     ctx.fillStyle = 'rgba(255,255,255,0.3)';
     ctx.font = '12px DM Sans, sans-serif';
     ctx.textAlign = 'center';
@@ -281,47 +317,52 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
         ctx.fillText(String(yr), px, CY + CH + 22);
         ctx.strokeStyle = 'rgba(255,255,255,0.06)';
         ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(px, CY); ctx.lineTo(px, CY + CH);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(px, CY); ctx.lineTo(px, CY + CH); ctx.stroke();
       }
     }
 
-    // ── Bottom panel : légende (gauche) + date courante (droite)
+    // ── Bottom panel : légende (gauche) + date (droite)
     ctx.globalAlpha = 1;
-    const PANEL_TOP = CY + CH + 24;
+    const PANEL_TOP = CY + CH + 28;
 
-    // Séparateur
     ctx.strokeStyle = 'rgba(255,255,255,0.07)';
     ctx.lineWidth = 1;
     ctx.setLineDash([]);
     ctx.beginPath();
-    ctx.moveTo(CX, PANEL_TOP); ctx.lineTo(W - 40, PANEL_TOP); ctx.stroke();
+    ctx.moveTo(CX, PANEL_TOP); ctx.lineTo(W - 34, PANEL_TOP); ctx.stroke();
 
-    // Légende avec valeurs évolutives (gauche)
-    const ROW_H = 54;
+    const ROW_H = 52;
+    const MAX_NAME_W = 330;
+
     for (let i = 0; i < assets.length; i++) {
       const asset = assets[i];
       const pts   = tickerPts[asset.ticker];
       const color = asset.color;
-      const rowY  = PANEL_TOP + 18 + i * ROW_H;
+      const rowY  = PANEL_TOP + 16 + i * ROW_H;
 
-      // Dot couleur
+      // Dot
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.arc(CX + 8, rowY + 9, 7, 0, Math.PI * 2);
+      ctx.arc(CX + 8, rowY + 10, 7, 0, Math.PI * 2);
       ctx.fill();
 
-      // Nom de l'actif
+      // Nom de l'actif (tronqué si trop long)
       const assetName = asset.emoji
         ? `${asset.emoji} ${asset.label || asset.ticker}`
         : (asset.label || asset.ticker);
       ctx.fillStyle = 'rgba(255,255,255,0.55)';
-      ctx.font = '13px DM Sans, sans-serif';
+      ctx.font = '15px DM Sans, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText(assetName, CX + 22, rowY + 12);
+      let nameText = assetName;
+      if (ctx.measureText(nameText).width > MAX_NAME_W) {
+        while (ctx.measureText(nameText + '…').width > MAX_NAME_W && nameText.length > 1) {
+          nameText = nameText.slice(0, -1);
+        }
+        nameText += '…';
+      }
+      ctx.fillText(nameText, CX + 22, rowY + 14);
 
-      // Valeur + pourcentage (évoluent en temps réel)
+      // Valeur + pourcentage (plus grand)
       if (pts && pts.length >= 1) {
         const last   = pts[pts.length - 1];
         const pct    = ((last.value / montantInitial) - 1) * 100;
@@ -329,25 +370,50 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
         const valStr = fmtFull(last.value);
 
         ctx.fillStyle = lightenHex(color, 0.1);
-        ctx.font = 'bold 20px DM Sans, sans-serif';
-        ctx.fillText(valStr, CX + 22, rowY + 33);
+        ctx.font = 'bold 22px DM Sans, sans-serif';
+        ctx.fillText(valStr, CX + 22, rowY + 37);
 
         const vw = ctx.measureText(valStr).width;
         ctx.fillStyle = pctClr;
-        ctx.font = 'bold 13px DM Sans, sans-serif';
-        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, CX + 22 + vw + 8, rowY + 33);
+        ctx.font = 'bold 14px DM Sans, sans-serif';
+        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, CX + 22 + vw + 8, rowY + 37);
       }
     }
 
-    // Date courante (droite) — mois + année en grand
+    // ── Capital investi dans la légende (si DCA activé)
+    if (investedPts && investedPts.length >= 1) {
+      const last = investedPts[investedPts.length - 1];
+      const rowY = PANEL_TOP + 16 + assets.length * ROW_H;
+
+      // Tiret pointillé (indicateur visuel)
+      ctx.strokeStyle = 'rgba(200,210,230,0.65)';
+      ctx.setLineDash([6, 4]);
+      ctx.lineWidth = 1.8;
+      ctx.beginPath();
+      ctx.moveTo(CX + 2, rowY + 10);
+      ctx.lineTo(CX + 18, rowY + 10);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = 'rgba(200,210,230,0.45)';
+      ctx.font = '13px DM Sans, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('Capital investi', CX + 24, rowY + 14);
+
+      ctx.fillStyle = 'rgba(200,210,230,0.8)';
+      ctx.font = 'bold 19px DM Sans, sans-serif';
+      ctx.fillText(fmtFull(last.value), CX + 24, rowY + 35);
+    }
+
+    // ── Date courante (droite du panel)
     const MONTHS_S = ['Jan.','Fév.','Mars','Avr.','Mai','Juin','Juil.','Août','Sep.','Oct.','Nov.','Déc.'];
     const sMonth = startMonth || 1;
-    const startTotalMo = startYear * 12 + sMonth - 1;
-    const currentTotalMo = Math.round(startTotalMo + maxT * totalYears * 12);
+    const startTotalMo    = startYear * 12 + sMonth - 1;
+    const currentTotalMo  = Math.round(startTotalMo + maxT * totalYears * 12);
     const curYear  = Math.floor(currentTotalMo / 12);
     const curMoIdx = currentTotalMo % 12;
 
-    const dX = W - 44;
+    const dX = W - 38;
     const dY = PANEL_TOP + 22;
     ctx.textAlign = 'right';
     ctx.fillStyle = 'rgba(255,255,255,0.28)';
@@ -361,7 +427,7 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
     ctx.fillText(String(curYear), dX, dY + 72);
   }
 
-  // ── Branding permanent (toute la vidéo, fond sombre en bas)
+  // ── Branding permanent
   {
     const BH = 56;
     ctx.globalAlpha = 1;
@@ -378,16 +444,14 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
     ctx.fillText('mesimulateurs.fr', W / 2, H - BH + 35);
   }
 
-  // ── Outro overlay (t 0.92→1.00)
+  // ── Outro (t 0.92→1.00)
   const outroPhase = Math.max(0, Math.min(1, (t - 0.92) / 0.08));
   if (outroPhase > 0) {
-    // Fondu sombre
     ctx.globalAlpha = easeOut(outroPhase) * 0.92;
     ctx.fillStyle = '#060e1c';
     ctx.fillRect(0, 0, W, H);
     ctx.globalAlpha = easeOut(outroPhase);
 
-    // Titre outro
     ctx.fillStyle = '#b8934a';
     ctx.font = 'bold 22px DM Sans, sans-serif';
     ctx.textAlign = 'center';
@@ -396,7 +460,6 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
     ctx.font = '13px DM Sans, sans-serif';
     ctx.fillText(`${fromLabel} → ${toLabel}  ·  ${fmtK(montantInitial)} investis`, W/2, 128);
 
-    // Cards métriques
     const n      = Math.min(metrics.length, 5);
     const cardH  = n <= 2 ? 170 : n === 3 ? 145 : n === 4 ? 122 : 104;
     const cardGap = 10;
@@ -420,30 +483,25 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       const mx = 62;
       const midY = my + cardH / 2;
 
-      // Dot couleur
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.arc(mx, midY - 12, 8, 0, Math.PI * 2);
       ctx.fill();
 
-      // Nom actif
       ctx.fillStyle = 'rgba(255,255,255,0.9)';
       ctx.font = 'bold 16px DM Sans, sans-serif';
       ctx.textAlign = 'left';
       const name = m.emoji ? `${m.emoji} ${m.label || m.ticker}` : (m.label || m.ticker);
       ctx.fillText(name, mx + 18, midY - 6);
 
-      // Performance totale
       ctx.fillStyle = perfColor;
       ctx.font = `bold ${cardH >= 145 ? 24 : 20}px DM Sans, sans-serif`;
       ctx.fillText(`${perf >= 0 ? '+' : ''}${perf.toFixed(1)} %`, mx + 18, midY + 18);
 
-      // CAGR
       ctx.fillStyle = 'rgba(255,255,255,0.4)';
       ctx.font = '12px DM Sans, sans-serif';
       ctx.fillText(`CAGR: ${m.cagr >= 0 ? '+' : ''}${m.cagr.toFixed(1)} %/an`, mx + 18, midY + 36);
 
-      // Valeur finale (droite)
       ctx.textAlign = 'right';
       ctx.fillStyle = lightenHex(color, 0.12);
       ctx.font = `bold ${cardH >= 145 ? 22 : 18}px DM Sans, sans-serif`;
@@ -453,7 +511,6 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
       ctx.fillText('valeur finale', W - 50, midY + 36);
     });
 
-    // Branding
     const brandY = H - 130;
     ctx.strokeStyle = 'rgba(184,147,74,0.3)';
     ctx.lineWidth = 1;
@@ -488,6 +545,9 @@ export default function ComparisonVideoExport({
   montantInitial = 10000,
   metrics = [],
   disabled = false,
+  periodicAmt = 0,
+  periodicFreq = 'monthly',
+  showPeriodicInChart = false,
 }) {
   const canvasRef  = useRef(null);
   const recRef     = useRef(null);
@@ -508,7 +568,6 @@ export default function ComparisonVideoExport({
     setState('recording');
     setProgress(0);
     chunksRef.current = [];
-    // Reset smooth state
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
 
     const canvas = canvasRef.current;
@@ -536,7 +595,6 @@ export default function ComparisonVideoExport({
     };
 
     rec.start();
-
     const start = performance.now();
 
     function frame(now) {
@@ -546,7 +604,7 @@ export default function ComparisonVideoExport({
       drawFrame(ctx, {
         t: tt, chartData, assets, montantInitial,
         totalYears, startYear, startMonth, endYear, fromLabel, toLabel,
-        metrics, stateRef,
+        metrics, stateRef, periodicAmt, periodicFreq, showPeriodicInChart,
       });
 
       setProgress(Math.round(tt * 100));
@@ -559,7 +617,7 @@ export default function ComparisonVideoExport({
     }
 
     rafRef.current = requestAnimationFrame(frame);
-  }, [disabled, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics]);
+  }, [disabled, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear, fromLabel, toLabel, metrics, periodicAmt, periodicFreq, showPeriodicInChart]);
 
   const isSupported = typeof MediaRecorder !== 'undefined';
 

@@ -87,7 +87,7 @@ function calcMetrics(computed, assets, montant) {
     .sort((a, b) => b.totalReturn - a.totalReturn);
 }
 
-function buildVideoChartData(computed, fromDate, toDate) {
+function buildVideoChartData(computed, fromDate, toDate, periodicAmt, showInvestedInVideo) {
   const fromMs = new Date(fromDate.year, fromDate.month - 1, 1).getTime();
   const toMs   = new Date(toDate.year,   toDate.month - 1,   1).getTime();
   const span   = toMs - fromMs || 1;
@@ -98,6 +98,16 @@ function buildVideoChartData(computed, fromDate, toDate) {
       const ms = new Date(y, m - 1, 1).getTime();
       return { t: Math.max(0, Math.min(1, (ms - fromMs) / span)), value: p.value };
     });
+  }
+  if (periodicAmt > 0 && showInvestedInVideo) {
+    const firstSeries = Object.values(computed)[0];
+    if (firstSeries) {
+      result['__invested__'] = firstSeries.map(p => {
+        const [y, m] = p.date.split('-').map(Number);
+        const ms = new Date(y, m - 1, 1).getTime();
+        return { t: Math.max(0, Math.min(1, (ms - fromMs) / span)), value: p.invested };
+      });
+    }
   }
   return result;
 }
@@ -564,8 +574,8 @@ export default function Comparateur() {
   );
 
   const videoChartData = useMemo(
-    () => buildVideoChartData(computed, fromDate, toDate),
-    [computed, fromDate, toDate]
+    () => buildVideoChartData(computed, fromDate, toDate, periodicAmt, periodicAmt > 0 && showPeriodicInChart),
+    [computed, fromDate, toDate, periodicAmt, showPeriodicInChart]
   );
 
   const hasResult  = Object.keys(computed).length >= 1;
@@ -816,6 +826,9 @@ export default function Comparateur() {
                 montantInitial={montant}
                 metrics={metrics}
                 disabled={!hasResult}
+                periodicAmt={periodicAmt}
+                periodicFreq={periodicFreq}
+                showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
               />
               <ShareBar
                 params={{ montant }}
