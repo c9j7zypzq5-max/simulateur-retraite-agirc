@@ -85,6 +85,7 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
     if (visible.length < 1) { tickerPts[ticker] = [pts[0]]; continue; }
 
     // Sub-point interpolation : dernier point interpolé entre visible[-1] et le suivant
+  // Sub-point interpolation: add an interpolated tip point AFTER visible points
     const nextIdx = pts.findIndex(p => p.t > maxT);
     if (nextIdx > 0) {
       const prev  = pts[nextIdx - 1];
@@ -94,7 +95,8 @@ function drawFrame(ctx, { t, chartData, assets, montantInitial, totalYears, star
         t:     maxT,
         value: prev.value + (next.value - prev.value) * alpha,
       };
-      tickerPts[ticker] = [...visible.slice(0, -1), interp];
+      // On ajoute le point interpolé APRÈS les points fixes (ne pas enlever le dernier)
+      tickerPts[ticker] = [...visible, interp];
     } else {
       tickerPts[ticker] = visible;
     }
