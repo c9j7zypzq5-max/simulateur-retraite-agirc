@@ -1,13 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="mesimulateurs.fr">
   <rect width="64" height="64" rx="14" fill="#163a6e"/>
+  <!-- Barres ascendantes -->
   <g fill="#f5c01f">
     <rect x="12.5" y="39" width="8" height="12" rx="2"/>
     <rect x="23.5" y="33" width="8" height="18" rx="2"/>
     <rect x="34.5" y="26" width="8" height="25" rx="2"/>
     <rect x="45.5" y="19" width="8" height="32" rx="2"/>
   </g>
+  <!-- Courbe blanche de croissance -->
   <path d="M11 45 C 24 42, 33 28, 52.5 16.5" fill="none" stroke="#ffffff"
     stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Flèche en pointe -->
   <path d="M52.5 16.5 L 45.5 17.5 M52.5 16.5 L 51.5 23.5" fill="none" stroke="#ffffff"
     stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

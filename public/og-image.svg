@@ -40,8 +40,19 @@
   <rect x="466" y="420" width="200" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
   <text x="566" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ Calcul local</text>
 
-  <!-- Domain -->
-  <text x="108" y="560" font-family="DM Sans, sans-serif" font-size="18" fill="#475569" letter-spacing="1">mesimulateurs.fr</text>
+  <!-- Brand mark + domain -->
+  <g transform="translate(80,520)">
+    <rect width="40" height="40" rx="9" fill="#163a6e"/>
+    <g fill="#f5c01f">
+      <rect x="7.8"  y="24.4" width="5" height="7.5"  rx="1.3"/>
+      <rect x="14.7" y="20.6" width="5" height="11.3" rx="1.3"/>
+      <rect x="21.6" y="16.3" width="5" height="15.6" rx="1.3"/>
+      <rect x="28.4" y="11.9" width="5" height="20"   rx="1.3"/>
+    </g>
+    <path d="M6.9 28.1 C 15 26.3, 20.6 17.5, 32.8 10.3" fill="none" stroke="#ffffff"
+      stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="132" y="546" font-family="DM Sans, sans-serif" font-size="20" font-weight="600" fill="#94a3b8" letter-spacing="1">mesimulateurs.fr</text>
 
   <defs>
     <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">

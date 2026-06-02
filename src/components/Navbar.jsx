@@ -194,12 +194,17 @@ export default function Navbar({ theme, setTheme }) {
         {/* Centre : logo toujours centré (position absolute) */}
         <Link to="/" style={{
           position: "absolute", left: "50%", transform: "translateX(-50%)",
-          fontFamily: "'Cormorant Garamond', serif",
-          fontSize: "1.15rem", fontWeight: 700,
-          color: "var(--gold)", textDecoration: "none",
-          letterSpacing: "0.02em", whiteSpace: "nowrap",
-          zIndex: 0,
-        }}>mesimulateurs.fr</Link>
+          display: "flex", alignItems: "center", gap: 8,
+          textDecoration: "none", zIndex: 0,
+        }}>
+          <img src="/logo-mark.svg" alt="" width={26} height={26} style={{ display: "block", flexShrink: 0 }} />
+          <span style={{
+            fontFamily: "'Cormorant Garamond', serif",
+            fontSize: "1.15rem", fontWeight: 700,
+            color: "var(--gold)",
+            letterSpacing: "0.02em", whiteSpace: "nowrap",
+          }}>mesimulateurs.fr</span>
+        </Link>
 
         {/* Droite : toggle thème */}
         <div style={{ zIndex: 1 }}>

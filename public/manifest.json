@@ -12,10 +12,16 @@
   "categories": ["finance", "utilities"],
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "/logo-mark.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any"
+    },
+    {
+      "src": "/logo-mark.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
   "screenshots": [

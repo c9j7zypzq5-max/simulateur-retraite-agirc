@@ -124,6 +124,35 @@ function drawLogoInCircle(ctx, img, cx, cy, r, color, letter) {
   }
 }
 
+// Marque mesimulateurs.fr dessinée au canvas (carré navy + barres or + courbe)
+function drawBrandMark(ctx, x, y, s) {
+  // s = côté du carré ; (x,y) = coin haut-gauche
+  const r = s * 0.22;
+  ctx.save();
+  ctx.fillStyle = '#163a6e';
+  roundRect(ctx, x, y, s, s, r);
+  ctx.fill();
+  // Barres ascendantes
+  ctx.fillStyle = '#f5c01f';
+  const bw = s * 0.125, base = y + s * 0.80;
+  const bx = [0.195, 0.367, 0.539, 0.711];
+  const bh = [0.19, 0.28, 0.39, 0.50];
+  bx.forEach((fx, i) => {
+    const h = s * bh[i];
+    roundRect(ctx, x + s * fx, base - h, bw, h, bw * 0.32);
+    ctx.fill();
+  });
+  // Courbe blanche
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = Math.max(1, s * 0.047);
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.beginPath();
+  ctx.moveTo(x + s * 0.17, y + s * 0.70);
+  ctx.bezierCurveTo(x + s * 0.37, y + s * 0.66, x + s * 0.52, y + s * 0.44, x + s * 0.82, y + s * 0.26);
+  ctx.stroke();
+  ctx.restore();
+}
+
 // ─── drawFrame ────────────────────────────────────────────────────────────────
 function drawFrame(ctx, {
   t, chartData, assets, montantInitial, totalYears, startYear, startMonth, endYear,
@@ -485,8 +514,18 @@ function drawFrame(ctx, {
     ctx.fillRect(0, H - BH, W, BH);
     ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1; ctx.setLineDash([]);
     ctx.beginPath(); ctx.moveTo(40, H - BH); ctx.lineTo(W - 40, H - BH); ctx.stroke();
-    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 20px DM Sans, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('mesimulateurs.fr', W / 2, H - BH + 35);
+    // Marque + wordmark, centrés ensemble
+    ctx.font = 'bold 20px DM Sans, sans-serif';
+    const txt = 'mesimulateurs.fr';
+    const tw = ctx.measureText(txt).width;
+    const markS = 26, gap = 9;
+    const groupW = markS + gap + tw;
+    const gx = W / 2 - groupW / 2;
+    const cy = H - BH + 28;
+    drawBrandMark(ctx, gx, cy - markS / 2, markS);
+    ctx.fillStyle = '#b8934a'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(txt, gx + markS + gap, cy + 1);
+    ctx.textBaseline = 'alphabetic';
   }
 
   const outroPhase = Math.max(0, Math.min(1, (t - 0.92) / 0.08));
@@ -544,8 +583,19 @@ function drawFrame(ctx, {
     const brandY = H - 130;
     ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(40, brandY); ctx.lineTo(W - 40, brandY); ctx.stroke();
-    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 32px DM Sans, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('mesimulateurs.fr', W / 2, brandY + 46);
+    // Marque + wordmark, centrés ensemble
+    ctx.font = 'bold 32px DM Sans, sans-serif';
+    const oTxt = 'mesimulateurs.fr';
+    const oTw = ctx.measureText(oTxt).width;
+    const oMarkS = 40, oGap = 12;
+    const oGroupW = oMarkS + oGap + oTw;
+    const oGx = W / 2 - oGroupW / 2;
+    const oCy = brandY + 34;
+    drawBrandMark(ctx, oGx, oCy - oMarkS / 2, oMarkS);
+    ctx.fillStyle = '#b8934a'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.fillText(oTxt, oGx + oMarkS + oGap, oCy + 1);
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '15px DM Sans, sans-serif';
     ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, brandY + 74);
     ctx.globalAlpha = 1;
@@ -697,11 +747,12 @@ export default function ComparisonVideoExport({
       if (!domain) return;
       try {
         const img = new Image();
-        img.crossOrigin = 'anonymous';
+        // Proxy same-origin : évite de "tainter" le canvas (sinon MediaRecorder
+        // planterait) et contourne la fermeture de l'API Clearbit publique.
         await new Promise((resolve) => {
           img.onload = resolve; img.onerror = resolve;
-          img.src = `https://logo.clearbit.com/${domain}`;
-          setTimeout(resolve, 3000);
+          img.src = `/api/logo?domain=${encodeURIComponent(domain)}`;
+          setTimeout(resolve, 4500);
         });
         if (img.naturalWidth > 0) logoRef.current[asset.ticker] = img;
       } catch {}
