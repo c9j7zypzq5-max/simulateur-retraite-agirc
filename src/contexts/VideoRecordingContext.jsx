@@ -39,11 +39,23 @@ export function VideoRecordingProvider({ children }) {
     const ctx  = canvas.getContext('2d');
     // Dessiner le frame t=0 avant de démarrer le recorder pour effacer le contenu de la vidéo précédente
     if (drawFnRef.current) drawFnRef.current(ctx, 0);
-    const stream = canvas.captureStream(30);
+    const videoStream = canvas.captureStream(30);
+
+    // Piste audio silencieuse — indispensable sur iOS Safari : sans elle, TikTok Create
+    // et d'autres éditeurs mobiles figent la vidéo après 1-2 secondes (fichier vidéo-only rejeté).
+    let recordingStream = videoStream;
+    try {
+      const audioCtx   = new (window.AudioContext || window.webkitAudioContext)();
+      const dest       = audioCtx.createMediaStreamDestination();
+      recordingStream  = new MediaStream([
+        ...videoStream.getVideoTracks(),
+        dest.stream.getAudioTracks()[0],
+      ]);
+    } catch { /* navigateur sans AudioContext — on continue sans audio */ }
 
     const mime = mimeType
       || (MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm');
-    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
+    const rec = new MediaRecorder(recordingStream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
     recRef.current = rec;
 
     rec.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
