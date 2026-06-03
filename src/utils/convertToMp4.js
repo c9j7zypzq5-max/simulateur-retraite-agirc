@@ -31,9 +31,11 @@ export async function convertToMp4(inputBlob, onProgress) {
   try {
     await instance.writeFile(`in.${ext}`, new Uint8Array(await inputBlob.arrayBuffer()));
     await instance.exec([
+      '-fflags', '+genpts',
       '-i', `in.${ext}`,
       '-c', 'copy',
       '-movflags', '+faststart',
+      '-avoid_negative_ts', 'make_zero',
       'out.mp4',
     ]);
     const data = await instance.readFile('out.mp4');

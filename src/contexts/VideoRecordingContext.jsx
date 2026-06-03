@@ -97,12 +97,14 @@ export function VideoRecordingProvider({ children }) {
 
     rec.start();
     const t0 = performance.now();
+    let lastPct = -1;
 
     function frame(now) {
       if (cancelRef.current) { rec.stop(); return; }
       const tt = Math.min((now - t0) / duration, 1);
       if (drawFnRef.current) drawFnRef.current(ctx, tt);
-      setProgress(Math.round(tt * 100));
+      const pct = Math.round(tt * 100);
+      if (pct !== lastPct) { lastPct = pct; setProgress(pct); }
       if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
       else { rafRef.current = null; rec.stop(); }
     }
