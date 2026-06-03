@@ -94,8 +94,7 @@ export function VideoRecordingProvider({ children }) {
 
   return (
     <VideoRecordingCtx.Provider value={{ recState, progress, label, startRecording, stop }}>
-      {/* opacity:0 instead of display:none — iOS Safari needs the canvas in the render pipeline for captureStream to work */}
-      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: 0, left: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }} />
+      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none', position: 'fixed' }} />
       {children}
     </VideoRecordingCtx.Provider>
   );

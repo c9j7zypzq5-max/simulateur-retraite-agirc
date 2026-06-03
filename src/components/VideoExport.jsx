@@ -388,8 +388,7 @@ export default function VideoExport({
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-      {/* opacity:0 instead of display:none — iOS Safari needs the canvas in the render pipeline for captureStream to work */}
-      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: 0, left: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }} />
+      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none' }} />
 
       {isSupported && (
         <button
