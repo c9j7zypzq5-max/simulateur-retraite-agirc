@@ -363,8 +363,7 @@ export default function VideoExport({
       setState('idle');
     };
 
-    // timeslice=1000ms forces a keyframe every second — required for TikTok/Reels compatibility
-    rec.start(1000);
+    rec.start();
 
     const DURATION = 7000;
     const start    = performance.now();

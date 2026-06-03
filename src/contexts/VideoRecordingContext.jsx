@@ -79,8 +79,7 @@ export function VideoRecordingProvider({ children }) {
       setProgress(0);
     };
 
-    // timeslice=1000ms forces a keyframe every second — required for TikTok/Reels compatibility
-    rec.start(1000);
+    rec.start();
     const t0 = performance.now();
 
     function frame(now) {
