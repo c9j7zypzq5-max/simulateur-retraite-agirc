@@ -17,7 +17,7 @@ export function VideoRecordingProvider({ children }) {
   const [label,    setLabel]    = useState('');
 
   const stop = useCallback(() => {
-    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
+    if (rafRef.current) { clearInterval(rafRef.current); rafRef.current = null; }
     if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
   }, []);
 
@@ -36,9 +36,15 @@ export function VideoRecordingProvider({ children }) {
     chunksRef.current = [];
 
     const ctx = canvas.getContext('2d');
+    const FPS = 30;
 
-    // Silent audio track — TikTok Creator and Reels require an audio track to re-encode
-    const videoStream = canvas.captureStream(30);
+    // captureStream(0) = manual frame capture: we push exactly one frame per tick
+    // via track.requestFrame() so the output is constant-frame-rate (CFR).
+    // Letting captureStream sample on its own under requestAnimationFrame on iOS
+    // Safari yields variable-frame-rate video with gaps, which TikTok's re-encoder
+    // turns into a freeze. Photos plays VFR fine, TikTok does not.
+    const videoStream = canvas.captureStream(0);
+    const videoTrack  = videoStream.getVideoTracks()[0];
     let stream = videoStream;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -80,16 +86,25 @@ export function VideoRecordingProvider({ children }) {
     };
 
     rec.start();
-    const t0 = performance.now();
 
-    function frame(now) {
-      const tt = Math.min((now - t0) / duration, 1);
+    // Fixed-cadence render loop: advance logical time by a constant step and push
+    // exactly one frame per tick. Guarantees evenly-spaced frames (no gaps), so the
+    // recorded video is smooth CFR that TikTok can re-encode without freezing.
+    const totalFrames = Math.max(1, Math.round((duration / 1000) * FPS));
+    let frameIdx = 0;
+    rafRef.current = setInterval(() => {
+      const tt = Math.min(frameIdx / totalFrames, 1);
       if (drawFnRef.current) drawFnRef.current(ctx, tt);
+      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
+      else if (videoStream.requestFrame) videoStream.requestFrame();
       setProgress(Math.round(tt * 100));
-      if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
-      else { rafRef.current = null; rec.stop(); }
-    }
-    rafRef.current = requestAnimationFrame(frame);
+      frameIdx++;
+      if (tt >= 1) {
+        clearInterval(rafRef.current);
+        rafRef.current = null;
+        rec.stop();
+      }
+    }, 1000 / FPS);
   }, []);
 
   return (

@@ -309,7 +309,7 @@ export default function VideoExport({
   const [state, setState] = useState('idle');
 
   const stopAll = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (rafRef.current) clearInterval(rafRef.current);
     if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
   }, []);
 
@@ -321,8 +321,13 @@ export default function VideoExport({
     const canvas = canvasRef.current;
     const ctx    = canvas.getContext('2d');
 
-    // Silent audio track — TikTok Creator and Reels require an audio track to re-encode
-    const videoStream = canvas.captureStream(30);
+    const FPS = 30;
+    // captureStream(0) = manual frame capture: one frame pushed per tick via
+    // requestFrame() → constant-frame-rate output. captureStream's own sampling
+    // under requestAnimationFrame on iOS Safari is variable-frame-rate with gaps,
+    // which TikTok's re-encoder turns into a freeze (Photos plays VFR fine).
+    const videoStream = canvas.captureStream(0);
+    const videoTrack  = videoStream.getVideoTracks()[0];
     let stream = videoStream;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -365,23 +370,25 @@ export default function VideoExport({
 
     rec.start();
 
-    const DURATION = 7000;
-    const start    = performance.now();
+    const DURATION    = 7000;
+    const totalFrames = Math.max(1, Math.round((DURATION / 1000) * FPS));
+    let frameIdx = 0;
 
-    function frame(now) {
-      const elapsed = now - start;
-      const tt      = Math.min(elapsed / DURATION, 1);
+    // Fixed-cadence loop: one frame per tick, evenly-spaced logical time → smooth CFR.
+    rafRef.current = setInterval(() => {
+      const tt = Math.min(frameIdx / totalFrames, 1);
 
       drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
+      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
+      else if (videoStream.requestFrame) videoStream.requestFrame();
 
-      if (tt < 1) {
-        rafRef.current = requestAnimationFrame(frame);
-      } else {
+      frameIdx++;
+      if (tt >= 1) {
+        clearInterval(rafRef.current);
+        rafRef.current = null;
         rec.stop();
       }
-    }
-
-    rafRef.current = requestAnimationFrame(frame);
+    }, 1000 / FPS);
   }, [disabled, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel]);
 
   const isSupported = typeof MediaRecorder !== 'undefined';
