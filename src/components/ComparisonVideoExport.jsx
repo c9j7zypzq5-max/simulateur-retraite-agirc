@@ -251,7 +251,7 @@ function drawFrame(ctx, {
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
   const chartProgress = Math.pow(chartPhase, 0.45);
   const minStartFrac  = Math.min(2.5 / Math.max(totalYears, 1), 0.3);
-  const maxT = minStartFrac + (1 - minStartFrac) * chartProgress;
+  const maxT = chartProgress;
 
   const tickerPts = {};
   for (const [ticker, pts] of Object.entries(chartData)) {
@@ -294,7 +294,7 @@ function drawFrame(ctx, {
     const st = stateRef.current;
     if (!st.initDone) {
       st.smoothYMax = rawYMax; st.smoothYMin = rawYMin;
-      st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac * 1.1)) : 1;
+      st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
     st.smoothYMax += (rawYMax - st.smoothYMax) * 0.05;
@@ -302,7 +302,7 @@ function drawFrame(ctx, {
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
-    const initXW      = totalYears > 0 ? Math.min(1, 1 / totalYears) : 1;
+    const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
     const targetXW    = Math.min(1, Math.max(initXW, currentFrac * 1.18));
     st.smoothXW += (targetXW - st.smoothXW) * 0.04;
     const xWindow = Math.min(1, st.smoothXW);
@@ -330,6 +330,7 @@ function drawFrame(ctx, {
     ];
 
     const tipPositions = [];
+    const showTip = maxT >= minStartFrac;
 
     for (const curve of curves) {
       const pts = curve.pts;
@@ -368,7 +369,7 @@ function drawFrame(ctx, {
 
       const last = visPts[visPts.length - 1];
       const lx = cx(last.t), ly = cy(last.value);
-      if (lx >= CX && lx <= CX + CW) {
+      if (showTip && lx >= CX && lx <= CX + CW) {
         const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
         const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
         const tipLetter = (curve.label || curve.ticker || '?');
