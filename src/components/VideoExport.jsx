@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
 
 function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
 function easeOut(t)   { return 1 - Math.pow(1 - t, 3); }
@@ -301,94 +302,137 @@ export default function VideoExport({
   ageActuel,
   disabled,
 }) {
-  const canvasRef = useRef(null);
-  const recRef    = useRef(null);
-  const rafRef    = useRef(null);
-  const chunksRef = useRef([]);
+  const canvasRef  = useRef(null);
+  const recRef     = useRef(null);
+  const rafRef     = useRef(null);
+  const chunksRef  = useRef([]);
+  const cancelRef  = useRef(false);
 
   const [state, setState] = useState('idle');
 
   const stopAll = useCallback(() => {
-    if (rafRef.current) clearInterval(rafRef.current);
+    cancelRef.current = true;
+    if (rafRef.current) { clearInterval(rafRef.current); rafRef.current = null; }
     if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
   }, []);
 
   const startRecording = useCallback(async () => {
     if (!canvasRef.current || disabled) return;
     setState('recording');
+    cancelRef.current = false;
     chunksRef.current = [];
 
     const canvas = canvasRef.current;
     const ctx    = canvas.getContext('2d');
+    const FPS    = 30;
+    const DURATION = 7000;
+    const slug = simulatorName.toLowerCase().replace(/\s+/g, '-');
 
-    const FPS = 30;
-    // captureStream(0) = manual frame capture: one frame pushed per tick via
-    // requestFrame() → constant-frame-rate output. captureStream's own sampling
-    // under requestAnimationFrame on iOS Safari is variable-frame-rate with gaps,
-    // which TikTok's re-encoder turns into a freeze (Photos plays VFR fine).
-    const videoStream = canvas.captureStream(0);
-    const videoTrack  = videoStream.getVideoTracks()[0];
+    // ── WebCodecs path (Safari 15.4+, Chrome 94+) ──────────────────────────
+    // Produces a traditional MP4 with moov-at-start. TikTok Creator's
+    // AVAssetExportSession needs a seekable MP4; fragmented fMP4 from
+    // MediaRecorder causes it to stall after the first fragment (~1-2s).
+    if (typeof VideoEncoder !== 'undefined' && typeof VideoFrame !== 'undefined') {
+      const target = new ArrayBufferTarget();
+      const muxer  = new Muxer({
+        target,
+        video: { codec: 'avc', width: canvas.width, height: canvas.height },
+        fastStart: 'in-memory',
+      });
+
+      const encoder = new VideoEncoder({
+        output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
+        error:  (e) => console.error('VideoEncoder', e),
+      });
+
+      encoder.configure({
+        codec:                'avc1.4D0029',
+        width:                canvas.width,
+        height:               canvas.height,
+        bitrate:              4_000_000,
+        framerate:            FPS,
+        hardwareAcceleration: 'prefer-hardware',
+      });
+
+      const totalFrames = Math.round((DURATION / 1000) * FPS);
+
+      await new Promise((resolve) => {
+        let frameIdx = 0;
+        rafRef.current = setInterval(async () => {
+          if (cancelRef.current) {
+            clearInterval(rafRef.current); rafRef.current = null;
+            encoder.close(); resolve(); return;
+          }
+          const tt = Math.min(frameIdx / totalFrames, 1);
+          drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
+
+          const vf = new VideoFrame(canvas, {
+            timestamp: Math.round((frameIdx / FPS) * 1_000_000),
+          });
+          encoder.encode(vf, { keyFrame: frameIdx % (FPS * 2) === 0 });
+          vf.close();
+
+          frameIdx++;
+          if (tt >= 1) {
+            clearInterval(rafRef.current); rafRef.current = null;
+            await encoder.flush(); resolve();
+          }
+        }, 1000 / FPS);
+      });
+
+      if (cancelRef.current) { setState('idle'); return; }
+
+      setState('processing');
+      muxer.finalize();
+      const blob = new Blob([target.buffer], { type: 'video/mp4' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url; a.download = `simulation-${slug}.mp4`; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+      setState('idle');
+      return;
+    }
+
+    // ── MediaRecorder fallback ──────────────────────────────────────────────
+    const videoStream = canvas.captureStream(30);
     let stream = videoStream;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const gain = audioCtx.createGain();
-      gain.gain.value = 0;
-      const osc = audioCtx.createOscillator();
-      osc.connect(gain);
-      const dest = audioCtx.createMediaStreamDestination();
-      gain.connect(dest);
-      osc.start();
+      const gain = audioCtx.createGain(); gain.gain.value = 0;
+      const osc = audioCtx.createOscillator(); osc.connect(gain);
+      const dest = audioCtx.createMediaStreamDestination(); gain.connect(dest); osc.start();
       stream = new MediaStream([...videoStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
-    } catch (_) { /* fallback: video-only */ }
+    } catch (_) { /* video-only */ }
 
     const MIME_CANDIDATES = [
-      'video/mp4;codecs=avc1',
-      'video/mp4;codecs=h264',
-      'video/mp4',              // Safari iOS — pas de spec codec nécessaire
-      'video/webm;codecs=h264',
-      'video/webm;codecs=vp9',
-      'video/webm',
+      'video/mp4;codecs=avc1', 'video/mp4;codecs=h264', 'video/mp4',
+      'video/webm;codecs=h264', 'video/webm;codecs=vp9', 'video/webm',
     ];
     const mime = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/mp4';
     const ext  = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
 
     const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4_000_000 });
     recRef.current = rec;
-
     rec.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
     rec.onstop = () => {
       setState('processing');
       const blob = new Blob(chunksRef.current, { type: mime });
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
-      a.href     = url;
-      a.download = `simulation-${simulatorName.toLowerCase().replace(/\s+/g, '-')}.${ext}`;
-      a.click();
+      a.href = url; a.download = `simulation-${slug}.${ext}`; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       setState('idle');
     };
 
     rec.start();
-
-    const DURATION    = 7000;
-    const totalFrames = Math.max(1, Math.round((DURATION / 1000) * FPS));
-    let frameIdx = 0;
-
-    // Fixed-cadence loop: one frame per tick, evenly-spaced logical time → smooth CFR.
-    rafRef.current = setInterval(() => {
-      const tt = Math.min(frameIdx / totalFrames, 1);
-
+    const t0 = performance.now();
+    function frame(now) {
+      const tt = Math.min((now - t0) / DURATION, 1);
       drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
-      if (videoTrack && videoTrack.requestFrame) videoTrack.requestFrame();
-      else if (videoStream.requestFrame) videoStream.requestFrame();
-
-      frameIdx++;
-      if (tt >= 1) {
-        clearInterval(rafRef.current);
-        rafRef.current = null;
-        rec.stop();
-      }
-    }, 1000 / FPS);
+      if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
+      else { rafRef.current = null; rec.stop(); }
+    }
+    rafRef.current = requestAnimationFrame(frame);
   }, [disabled, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel]);
 
   const isSupported = typeof MediaRecorder !== 'undefined';
