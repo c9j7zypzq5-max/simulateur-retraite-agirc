@@ -1,6 +1,22 @@
 import { useState, useRef, useCallback } from "react";
 import { Muxer, ArrayBufferTarget } from 'mp4-muxer';
 
+const AVC_CODECS = ['avc1.42E01F', 'avc1.4D0028', 'avc1.640028'];
+
+async function pickAvcCodec(width, height, framerate, bitrate) {
+  if (typeof VideoEncoder === 'undefined') return null;
+  for (const codec of AVC_CODECS) {
+    try {
+      const { supported } = await VideoEncoder.isConfigSupported({
+        codec, width, height, framerate, bitrate,
+        hardwareAcceleration: 'prefer-hardware',
+      });
+      if (supported) return codec;
+    } catch (_) { /* try next */ }
+  }
+  return null;
+}
+
 function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
 function easeOut(t)   { return 1 - Math.pow(1 - t, 3); }
 
@@ -322,17 +338,16 @@ export default function VideoExport({
     cancelRef.current = false;
     chunksRef.current = [];
 
-    const canvas = canvasRef.current;
-    const ctx    = canvas.getContext('2d');
-    const FPS    = 30;
+    const canvas   = canvasRef.current;
+    const ctx      = canvas.getContext('2d');
+    const FPS      = 30;
     const DURATION = 7000;
-    const slug = simulatorName.toLowerCase().replace(/\s+/g, '-');
+    const slug     = simulatorName.toLowerCase().replace(/\s+/g, '-');
 
-    // ── WebCodecs path (Safari 15.4+, Chrome 94+) ──────────────────────────
-    // Produces a traditional MP4 with moov-at-start. TikTok Creator's
-    // AVAssetExportSession needs a seekable MP4; fragmented fMP4 from
-    // MediaRecorder causes it to stall after the first fragment (~1-2s).
-    if (typeof VideoEncoder !== 'undefined' && typeof VideoFrame !== 'undefined') {
+    const avcCodec = await pickAvcCodec(canvas.width, canvas.height, FPS, 4_000_000);
+
+    // ── WebCodecs path ──────────────────────────────────────────────────────
+    if (avcCodec && typeof VideoFrame !== 'undefined') {
       const target = new ArrayBufferTarget();
       const muxer  = new Muxer({
         target,
@@ -340,57 +355,50 @@ export default function VideoExport({
         fastStart: 'in-memory',
       });
 
+      let encoderError = null;
       const encoder = new VideoEncoder({
         output: (chunk, meta) => muxer.addVideoChunk(chunk, meta),
-        error:  (e) => console.error('VideoEncoder', e),
+        error:  (e) => { encoderError = e; },
       });
-
       encoder.configure({
-        codec:                'avc1.4D0029',
-        width:                canvas.width,
-        height:               canvas.height,
-        bitrate:              4_000_000,
-        framerate:            FPS,
-        hardwareAcceleration: 'prefer-hardware',
+        codec: avcCodec, width: canvas.width, height: canvas.height,
+        bitrate: 4_000_000, framerate: FPS, hardwareAcceleration: 'prefer-hardware',
       });
 
       const totalFrames = Math.round((DURATION / 1000) * FPS);
 
-      await new Promise((resolve) => {
-        let frameIdx = 0;
-        rafRef.current = setInterval(async () => {
-          if (cancelRef.current) {
-            clearInterval(rafRef.current); rafRef.current = null;
-            encoder.close(); resolve(); return;
-          }
-          const tt = Math.min(frameIdx / totalFrames, 1);
+      try {
+        for (let i = 0; i <= totalFrames; i++) {
+          if (cancelRef.current || encoderError) break;
+          const tt = Math.min(i / totalFrames, 1);
           drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
 
-          const vf = new VideoFrame(canvas, {
-            timestamp: Math.round((frameIdx / FPS) * 1_000_000),
-          });
-          encoder.encode(vf, { keyFrame: frameIdx % (FPS * 2) === 0 });
+          const vf = new VideoFrame(canvas, { timestamp: Math.round((i / FPS) * 1_000_000) });
+          encoder.encode(vf, { keyFrame: i % (FPS * 2) === 0 });
           vf.close();
 
-          frameIdx++;
-          if (tt >= 1) {
-            clearInterval(rafRef.current); rafRef.current = null;
-            await encoder.flush(); resolve();
-          }
-        }, 1000 / FPS);
-      });
+          while (encoder.encodeQueueSize > 5) await new Promise(r => setTimeout(r, 16));
+          await new Promise(r => setTimeout(r, 0));
+        }
 
-      if (cancelRef.current) { setState('idle'); return; }
-
-      setState('processing');
-      muxer.finalize();
-      const blob = new Blob([target.buffer], { type: 'video/mp4' });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href = url; a.download = `simulation-${slug}.mp4`; a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
-      setState('idle');
-      return;
+        if (encoderError) throw encoderError;
+        if (!cancelRef.current) {
+          await encoder.flush();
+          setState('processing');
+          muxer.finalize();
+          const blob = new Blob([target.buffer], { type: 'video/mp4' });
+          const url  = URL.createObjectURL(blob);
+          const a    = document.createElement('a');
+          a.href = url; a.download = `simulation-${slug}.mp4`; a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }
+        setState('idle');
+        return;
+      } catch (err) {
+        console.warn('WebCodecs failed, using MediaRecorder fallback:', err);
+        encoder.close?.();
+        // fall through
+      }
     }
 
     // ── MediaRecorder fallback ──────────────────────────────────────────────
@@ -423,7 +431,6 @@ export default function VideoExport({
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       setState('idle');
     };
-
     rec.start();
     const t0 = performance.now();
     function frame(now) {
