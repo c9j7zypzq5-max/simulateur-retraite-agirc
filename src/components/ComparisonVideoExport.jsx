@@ -823,7 +823,14 @@ export default function ComparisonVideoExport({
       } catch {}
     }));
 
-    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.${ext}`;
+    const fmtAmt  = v => v >= 1_000_000 ? `${Math.round(v/100000)/10}M` : v >= 1_000 ? `${Math.round(v/1000)}k` : String(Math.round(v));
+    const clean   = s => s.normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'');
+    const freqTag = { monthly:'mois', quarterly:'trim', semi:'sem', annual:'an' };
+    const nameParts = [fmtAmt(montantInitial)];
+    if (periodicAmt > 0) nameParts.push(`${fmtAmt(periodicAmt)}-par-${freqTag[periodicFreq] || 'mois'}`);
+    assets.forEach(a => nameParts.push(clean(a.label || a.ticker).slice(0, 18)));
+    nameParts.push(String(startYear), String(endYear));
+    const filename = nameParts.join('_') + '.' + ext;
     const lbl = assets.map(a => a.label || a.ticker).join(' vs ');
 
     ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl, mimeType });
