@@ -37,6 +37,8 @@ export function VideoRecordingProvider({ children }) {
     chunksRef.current = [];
 
     const ctx  = canvas.getContext('2d');
+    // Dessiner le frame t=0 avant de démarrer le recorder pour effacer le contenu de la vidéo précédente
+    if (drawFnRef.current) drawFnRef.current(ctx, 0);
     const stream = canvas.captureStream(30);
 
     const mime = mimeType
