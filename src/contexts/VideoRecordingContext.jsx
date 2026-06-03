@@ -38,9 +38,17 @@ export function VideoRecordingProvider({ children }) {
     const ctx  = canvas.getContext('2d');
     const stream = canvas.captureStream(30);
 
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
+    const MIME_CANDIDATES = [
+      'video/mp4;codecs=avc1',
+      'video/mp4;codecs=h264',
+      'video/webm;codecs=h264',
+      'video/webm;codecs=vp9',
+      'video/webm',
+    ];
+    const mime = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
+    const ext  = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
+    const finalFilename = filename.replace(/\.(webm|mp4)$/i, '') + '.' + ext;
+
     const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
     recRef.current = rec;
 
@@ -50,13 +58,14 @@ export function VideoRecordingProvider({ children }) {
       const blob = new Blob(chunksRef.current, { type: mime });
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
-      a.href = url; a.download = filename; a.click();
+      a.href = url; a.download = finalFilename; a.click();
       setTimeout(() => URL.revokeObjectURL(url), 3000);
       setRecState('idle');
       setProgress(0);
     };
 
-    rec.start();
+    // timeslice=1000ms forces a keyframe every second — required for TikTok/Reels compatibility
+    rec.start(1000);
     const t0 = performance.now();
 
     function frame(now) {

@@ -322,9 +322,15 @@ export default function VideoExport({
     const ctx    = canvas.getContext('2d');
     const stream = canvas.captureStream(30);
 
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
+    const MIME_CANDIDATES = [
+      'video/mp4;codecs=avc1',
+      'video/mp4;codecs=h264',
+      'video/webm;codecs=h264',
+      'video/webm;codecs=vp9',
+      'video/webm',
+    ];
+    const mime = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
+    const ext  = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
 
     const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4_000_000 });
     recRef.current = rec;
@@ -336,13 +342,14 @@ export default function VideoExport({
       const url  = URL.createObjectURL(blob);
       const a    = document.createElement('a');
       a.href     = url;
-      a.download = `simulation-${simulatorName.toLowerCase().replace(/\s+/g, '-')}.webm`;
+      a.download = `simulation-${simulatorName.toLowerCase().replace(/\s+/g, '-')}.${ext}`;
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 2000);
       setState('idle');
     };
 
-    rec.start();
+    // timeslice=1000ms forces a keyframe every second — required for TikTok/Reels compatibility
+    rec.start(1000);
 
     const DURATION = 7000;
     const start    = performance.now();
