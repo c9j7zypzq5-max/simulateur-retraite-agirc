@@ -58,7 +58,7 @@ export function VideoRecordingProvider({ children }) {
       setProgress(0);
     };
 
-    rec.start();
+    rec.start(500); // timeslice 500ms — keyframes réguliers, meilleure compatibilité éditeurs
     const t0 = performance.now();
 
     function frame(now) {
