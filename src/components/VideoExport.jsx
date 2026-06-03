@@ -320,7 +320,21 @@ export default function VideoExport({
 
     const canvas = canvasRef.current;
     const ctx    = canvas.getContext('2d');
-    const stream = canvas.captureStream(30);
+
+    // Silent audio track — TikTok Creator and Reels require an audio track to re-encode
+    const videoStream = canvas.captureStream(30);
+    let stream = videoStream;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0;
+      const osc = audioCtx.createOscillator();
+      osc.connect(gain);
+      const dest = audioCtx.createMediaStreamDestination();
+      gain.connect(dest);
+      osc.start();
+      stream = new MediaStream([...videoStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+    } catch (_) { /* fallback: video-only */ }
 
     const MIME_CANDIDATES = [
       'video/mp4;codecs=avc1',
@@ -375,7 +389,8 @@ export default function VideoExport({
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none' }} />
+      {/* opacity:0 instead of display:none — iOS Safari needs the canvas in the render pipeline for captureStream to work */}
+      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: 0, left: 0, opacity: 0, pointerEvents: 'none', zIndex: -1 }} />
 
       {isSupported && (
         <button
