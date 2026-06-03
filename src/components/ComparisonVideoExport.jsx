@@ -330,7 +330,6 @@ function drawFrame(ctx, {
     ];
 
     const tipPositions = [];
-    const showTip = maxT >= minStartFrac;
 
     for (const curve of curves) {
       const pts = curve.pts;
@@ -369,15 +368,14 @@ function drawFrame(ctx, {
 
       const last = visPts[visPts.length - 1];
       const lx = cx(last.t), ly = cy(last.value);
-      if (showTip && lx >= CX && lx <= CX + CW) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
+      if (lx >= CX && lx <= CX + CW) {
         const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
         const tipLetter = (curve.label || curve.ticker || '?');
         const R = 14;
 
-        // Pulsing glow ring autour du logo
-        ctx.fillStyle = `rgba(${hexToRgb(color)},${0.18 + 0.12 * pulse})`;
-        ctx.beginPath(); ctx.arc(lx, ly, R + 4 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
+        // Static glow ring — pulsing caused flickering when tips overlap at start
+        ctx.fillStyle = `rgba(${hexToRgb(color)},0.22)`;
+        ctx.beginPath(); ctx.arc(lx, ly, R + 6, 0, Math.PI * 2); ctx.fill();
 
         // Logo de l'actif au tip de la courbe
         drawLogoInCircle(ctx, tipLogo, lx, ly, R, color, tipLetter);
