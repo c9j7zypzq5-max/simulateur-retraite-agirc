@@ -615,8 +615,14 @@ function drawFrame(ctx, {
 }
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
+const FORMAT_OPTIONS = [
+  { value: 'mp4',  label: 'MP4 H.264',         desc: 'TikTok / iPhone',        recommended: true },
+  { value: 'webm', label: 'WebM VP9',           desc: 'Téléchargement rapide',  recommended: false },
+];
+
 function ExportModal({ onClose, onLaunch }) {
   const [dur, setDur] = useState(70);
+  const [fmt, setFmt] = useState('mp4');
   const font = "'DM Sans', sans-serif";
 
   return (
@@ -676,9 +682,50 @@ function ExportModal({ onClose, onLaunch }) {
           ))}
         </div>
 
+        <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Format
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+          {FORMAT_OPTIONS.map(opt => (
+            <label
+              key={opt.value}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                padding: '8px 12px', borderRadius: 8,
+                background: fmt === opt.value ? 'var(--border-gold)' : 'transparent',
+                border: `1px solid ${fmt === opt.value ? 'var(--border-gold)' : 'var(--border)'}`,
+                transition: 'all 0.15s',
+              }}
+            >
+              <input
+                type="radio" name="fmt" value={opt.value}
+                checked={fmt === opt.value}
+                onChange={() => setFmt(opt.value)}
+                style={{ accentColor: 'var(--gold-mid)' }}
+              />
+              <span style={{ color: fmt === opt.value ? 'var(--gold)' : 'var(--text)', fontSize: 13, flex: 1 }}>
+                {opt.label}
+                <span style={{ color: 'var(--text-secondary)', fontSize: 11, marginLeft: 6 }}>
+                  — {opt.desc}
+                </span>
+              </span>
+              {opt.recommended && (
+                <span style={{
+                  fontSize: 10, color: 'var(--gold-mid)',
+                  border: '1px solid var(--border-gold)', borderRadius: 4,
+                  padding: '1px 6px',
+                }}>
+                  recommandé
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
+
         <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
-          Format : WebM VP9 · 720×1280 · 9:16 · Reels / TikTok
-          <br />La génération se fait en temps réel dans votre navigateur.
+          720×1280 · 9:16 · Reels / TikTok
+          {fmt === 'mp4' && <><br />MP4 : enregistrement temps réel + conversion ffmpeg (≈ 5-15 s).</>}
+          {fmt === 'webm' && <><br />WebM : téléchargement direct après enregistrement.</>}
         </p>
 
         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
@@ -693,7 +740,7 @@ function ExportModal({ onClose, onLaunch }) {
             Annuler
           </button>
           <button
-            onClick={() => onLaunch(dur)}
+            onClick={() => onLaunch(dur, fmt)}
             style={{
               background: 'var(--border-gold)', border: '1px solid var(--gold-mid)',
               borderRadius: 8, color: 'var(--gold)',
@@ -743,7 +790,7 @@ export default function ComparisonVideoExport({
     });
   };
 
-  const handleLaunch = async (durationSec) => {
+  const handleLaunch = async (durationSec, format) => {
     setShowModal(false);
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
 
@@ -765,15 +812,16 @@ export default function ComparisonVideoExport({
       } catch {}
     }));
 
-    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.webm`;
-    const lbl = assets.map(a => a.label || a.ticker).join(' vs ');
+    const slug = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}`;
+    const lbl  = assets.map(a => a.label || a.ticker).join(' vs ');
 
-    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl });
+    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename: slug, label: lbl, format });
   };
 
-  const isSupported = typeof MediaRecorder !== 'undefined';
-  const isRecording = recState === 'recording';
-  const isProcessing = recState === 'processing';
+  const isSupported   = typeof MediaRecorder !== 'undefined';
+  const isRecording   = recState === 'recording';
+  const isConverting  = recState === 'converting';
+  const isProcessing  = recState === 'processing' || isConverting;
 
   const font = "'DM Sans', sans-serif";
 
@@ -806,7 +854,7 @@ export default function ComparisonVideoExport({
             onMouseLeave={e => { if (!isRecording) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
           >
             {isRecording && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', flexShrink: 0 }} />}
-            {isProcessing ? '⏳ Génération…' : isRecording ? '⏹ Arrêter' : '🎬 Reel vidéo'}
+            {isConverting ? '⚙️ Conversion…' : isProcessing ? '⏳ Génération…' : isRecording ? '⏹ Arrêter' : '🎬 Reel vidéo'}
           </button>
         )}
         {!isRecording && !isProcessing && isSupported && !disabled && (
