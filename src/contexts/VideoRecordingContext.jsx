@@ -41,11 +41,12 @@ export function VideoRecordingProvider({ children }) {
     const MIME_CANDIDATES = [
       'video/mp4;codecs=avc1',
       'video/mp4;codecs=h264',
+      'video/mp4',              // Safari iOS — pas de spec codec nécessaire
       'video/webm;codecs=h264',
       'video/webm;codecs=vp9',
       'video/webm',
     ];
-    const mime = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
+    const mime = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/mp4';
     const ext  = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
     const finalFilename = filename.replace(/\.(webm|mp4)$/i, '') + '.' + ext;
 
