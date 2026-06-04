@@ -45,6 +45,9 @@ export function VideoRecordingProvider({ children }) {
 
     // Silent audio track — keeps TikTok / Reels pipeline happy
     const videoStream = canvas.captureStream(30);
+    // Grab the canvas track so we can call requestFrame() explicitly each rAF.
+    // This prevents Safari from silently stalling the captureStream track under memory pressure.
+    const videoTrack = videoStream.getVideoTracks()[0] ?? null;
     let stream = videoStream;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -102,7 +105,18 @@ export function VideoRecordingProvider({ children }) {
     function frame(now) {
       if (cancelRef.current) { rec.stop(); return; }
       const tt = Math.min((now - t0) / duration, 1);
-      if (drawFnRef.current) drawFnRef.current(ctx, tt);
+      // try/catch: an exception in the draw function must NOT kill the rAF loop,
+      // otherwise captureStream freezes the last frame for the rest of the video.
+      try {
+        if (drawFnRef.current) drawFnRef.current(ctx, tt);
+      } catch (err) {
+        console.error('[VideoRecording] draw error at t=', tt, err);
+      }
+      // Explicit requestFrame() forces Safari to capture this canvas frame even
+      // when the captureStream track has been silently throttled/muted.
+      try {
+        if (videoTrack && typeof videoTrack.requestFrame === 'function') videoTrack.requestFrame();
+      } catch (_) {}
       const pct = Math.round(tt * 100);
       if (pct !== lastPct) { lastPct = pct; setProgress(pct); }
       if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }

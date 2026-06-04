@@ -331,6 +331,7 @@ export default function VideoExport({
     const format   = fmt;
 
     const videoStream = canvas.captureStream(30);
+    const videoTrack = videoStream.getVideoTracks()[0] ?? null;
     let stream = videoStream;
     try {
       const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -380,7 +381,14 @@ export default function VideoExport({
     function frame(now) {
       if (cancelRef.current) { rec.stop(); return; }
       const tt = Math.min((now - t0) / DURATION, 1);
-      drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
+      try {
+        drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
+      } catch (err) {
+        console.error('[VideoExport] draw error at t=', tt, err);
+      }
+      try {
+        if (videoTrack && typeof videoTrack.requestFrame === 'function') videoTrack.requestFrame();
+      } catch (_) {}
       if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
       else { rafRef.current = null; rec.stop(); }
     }
