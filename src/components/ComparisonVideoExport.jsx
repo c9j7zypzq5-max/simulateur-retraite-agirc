@@ -460,7 +460,8 @@ function drawFrame(ctx, {
       if (alpha < 0.02) continue;
       const inChart = yy >= CY + 10 && yy <= CY + CH - 10;
       if (inChart) {
-        ctx.globalAlpha = alpha * 0.85;
+        // Même couleur/opacité que les dates de l'axe X (rgba 0.35, sans atténuation)
+        ctx.globalAlpha = alpha;
         ctx.fillStyle = 'rgba(255,255,255,0.35)';
         ctx.fillText(fmtK(tickVal), CX - 5, yy + 5);
       }
@@ -470,18 +471,26 @@ function drawFrame(ctx, {
     }
     ctx.globalAlpha = 1;
 
-    ctx.font = 'bold 16px DM Sans, sans-serif'; ctx.textAlign = 'center';
+    // Axe X : même comportement que l'axe Y — graduations annuelles à intervalle
+    // fixe dont la densité s'adapte (estompage en relais via tickAlpha) quand les
+    // années se resserrent, au lieu d'afficher brutalement chaque année.
+    ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'center';
     const yearsRange = endYear - startYear;
+    const pixPerYear = yearsRange > 0 ? (1 / yearsRange / Math.max(xWindow, 0.001)) * CW : CW;
     for (let yr = startYear; yr <= endYear; yr++) {
       const frac = yearsRange > 0 ? (yr - startYear) / yearsRange : 0;
       if (frac > xWindow + 0.02) break;
       const px = cx(frac);
-      if (px >= CX && px <= CX + CW) {
-        ctx.fillStyle = 'rgba(255,255,255,0.35)';
-        ctx.fillText(String(yr), px, CY + CH + 24);
-        ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(px, CY); ctx.lineTo(px, CY + CH); ctx.stroke();
-      }
+      if (px < CX || px > CX + CW) continue;
+      const ord = yr - startYear;
+      const alpha = tickAlpha(ord, pixPerYear);
+      if (alpha < 0.02) continue;
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.fillText(String(yr), px, CY + CH + 24);
+      ctx.globalAlpha = alpha * 0.6;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(px, CY); ctx.lineTo(px, CY + CH); ctx.stroke();
     }
 
     ctx.globalAlpha = 1;
