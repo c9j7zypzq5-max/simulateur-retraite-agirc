@@ -145,10 +145,14 @@ export function parseTable(text) {
 
     const dca = parseAmount(rec.dca);
 
+    // Montant : une cellule vide (—, n/a…) prend le défaut 10000, mais un « 0 »
+    // explicite reste 0 (simulations DCA pur sans capital de départ).
+    const montant = isEmptyCell(rec.montant) ? 10000 : parseAmount(rec.montant);
+
     rows.push({
       idx:         (rec.idx && rec.idx.trim()) || String(rows.length + 1),
       tickers,
-      montant:     parseAmount(rec.montant) || 10000,
+      montant,
       dca,
       freq:        parseFreq(rec.freq, dca),
       from:        parseMonthYear(rec.from),

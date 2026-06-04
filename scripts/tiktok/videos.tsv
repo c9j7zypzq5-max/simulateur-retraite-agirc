@@ -1,0 +1,51 @@
+#	Actif 1	Actif 2	Actif 3	Montant initial	DCA	Fréquence	De	À	Titre TikTok	Description TikTok
+1	^GSPC	BTC-USD	—	10 000	0	—	Jan 2017	Déc 2024	10 000€ dans le S&P 500 vs Bitcoin depuis 2017 — résultat choc	Et si tu avais choisi Bitcoin plutôt que la bourse américaine ? Résultats réels 🔥 #bitcoin #investissement #bourse
+2	AAPL	MSFT	—	10 000	0	—	Jan 2015	Déc 2024	Apple vs Microsoft : le duel des titans sur 10 ans	Laquelle des deux t'aurait rendu le plus riche ? 📊 #apple #microsoft #bourse #investissement
+3	MC.PA	^FCHI	—	10 000	0	—	Jan 2014	Déc 2024	LVMH vs CAC 40 sur 10 ans — le luxe français écrase tout	L'exception LVMH face à l'indice français 🇫🇷👜 #lvmh #cac40 #actionsfr #bourse
+4	NVDA	INTC	—	10 000	0	—	Jan 2019	Déc 2024	Nvidia vs Intel depuis 2019 — l'IA qui change tout	L'une vaut 10x l'autre. Tu aurais misé sur laquelle ? 🤖 #nvidia #intel #ia #bourse
+5	GC=F	^GSPC	—	10 000	0	—	Jan 2000	Déc 2024	Or vs S&P 500 depuis 2000 : la valeur refuge est-elle vraiment utile ?	25 ans de données réelles. Le résultat va te surprendre 🥇 #or #bourse #investissement #epargne
+6	^GSPC	—	—	0	200	Mensuel	Jan 2004	Déc 2024	200€ par mois pendant 20 ans dans le S&P 500	Le miracle des intérêts composés sur 20 ans 📈 Capital investi vs valeur finale #dca #epargne #interetscomposes
+7	TSLA	TM	—	10 000	0	—	Jan 2015	Déc 2024	Tesla vs Toyota sur 10 ans — disruption ou stabilité ?	L'électrique vs le roi du fiable. Qui a gagné ? 🚗⚡ #tesla #toyota #bourse #investissement
+8	IWDA.AS	—	—	10 000	0	—	Jan 1994	Déc 2024	MSCI World sur 30 ans — la retraite du salarié lambda	Si ton grand-père avait investi 10 000€ en 1994... 🌍 #etf #msciworld #retraite #investissement
+9	^GSPC	—	—	10 000	0	—	Jan 2020	Déc 2024	Investir au pic de jan 2020 vs au creux de mars 2020	Même actif, même durée, résultat très différent 📉📈 #timing #bourse #sp500
+10	AMZN	—	—	10 000	0	—	Jan 2001	Déc 2024	Amazon depuis 2001 — la patience du siècle	10 000€ → combien aujourd'hui ? 😱 #amazon #bourse #investissementlongterme
+11	BTC-USD	—	—	0	100	Mensuel	Jan 2018	Déc 2024	100€/mois en Bitcoin depuis 2018 — le DCA qui calme	Moins risqué qu'un achat unique. Les chiffres prouvent tout 🟠 #bitcoin #dca #crypto #investissement
+12	RMS.PA	^FCHI	—	10 000	0	—	Jan 2012	Déc 2024	Hermès vs CAC 40 depuis 2012 — l'exception absolue	L'action la plus impressionnante de France 🇫🇷 #hermes #luxe #cac40 #bourse
+13	NVDA	—	—	10 000	0	—	Jan 2016	Déc 2024	10 000€ dans Nvidia en 2016 → aujourd'hui	Le trade du siècle. En avais-tu ? 🔥 #nvidia #bourse #investissement
+14	AIR.PA	BA	—	10 000	0	—	Jan 2015	Déc 2024	Airbus vs Boeing sur 10 ans — Europe vs USA dans l'aéro	Deux géants, deux trajectoires très différentes ✈️ #airbus #boeing #bourse #investissement
+15	^GSPC	BTC-USD	GC=F	10 000	0	—	Jan 2020	Déc 2024	S&P 500 vs Bitcoin vs Or depuis le COVID	Lequel a le mieux traversé la crise ? 🦠📊 #covid #investissement #bitcoin #or
+16	MC.PA	RMS.PA	OR.PA	10 000	0	—	Jan 2015	Déc 2024	LVMH vs Hermès vs L'Oréal — le CAC 40 du luxe	Le trio gagnant de la bourse française 🇫🇷✨ #luxe #bourse #cac40
+17	AAPL	—	—	0	100	Mensuel	Jan 2010	Déc 2020	100€/mois dans Apple pendant 10 ans	Ce que tu aurais eu si tu avais sauté ton café quotidien ☕📱 #apple #dca #investissement
+18	META	SNAP	—	10 000	0	—	Jan 2017	Déc 2024	Meta vs Snapchat depuis 2017 — le copycat vs l'original	L'un vaut des milliards, l'autre survit à peine. #meta #snapchat #tech #bourse
+19	TTE.PA	ENPH	—	10 000	0	—	Jan 2014	Déc 2024	TotalEnergies vs Enphase : fossile vs solaire sur 10 ans	L'avenir de l'énergie en chiffres réels 🌞⚡ #energie #bourse #renouvelable
+20	^GSPC	—	—	0	500	Mensuel	Jan 2004	Déc 2024	500€/mois pendant 20 ans — la méthode des millionnaires	Combien ont les personnes qui font ça depuis 20 ans ? 💰 #dca #investissement #libertemfinanciere
+21	BNP.PA	JPM	—	10 000	0	—	Jan 2012	Déc 2024	BNP Paribas vs JPMorgan — banques des deux côtés de l'Atlantique	Europe vs USA dans la finance. Résultat sans appel 🏦 #bnp #jpmorgan #banque #bourse
+22	SAN.PA	PFE	—	10 000	0	—	Jan 2015	Déc 2024	Sanofi vs Pfizer sur 10 ans — pharma franco-américaine	Après le COVID, qui a le mieux résisté ? 💊 #sanofi #pfizer #pharma #bourse
+23	IWDA.AS	BTC-USD	—	5 000	0	—	Jan 2017	Déc 2024	5 000€ : MSCI World vs Bitcoin depuis 2017	Portefeuille sage vs pari risqué. Lequel choisirais-tu ? 🌍🟠 #etf #bitcoin #investissement
+24	^GSPC	—	—	10 000	0	—	Jan 2008	Déc 2016	Investir 10 000€ juste avant la crise de 2008	Même en entrant au pire moment, tu aurais gagné 📉→📈 #crise2008 #bourse #sp500
+25	GOOGL	META	—	10 000	0	—	Jan 2016	Déc 2024	Google vs Meta depuis 2016 — la pub digitale en guerre	Deux monopoles publicitaires, une seule gagnante 🎯 #google #meta #publicite #bourse
+26	DSY.PA	CAP.PA	—	10 000	0	—	Jan 2015	Déc 2024	Dassault Systèmes vs Capgemini — la tech française	Les deux fleurons tech du CAC 40 face à face 💻🇫🇷 #dassault #capgemini #tech #bourse
+27	^GSPC	—	—	1 000	50	Mensuel	Jan 2010	Déc 2024	1 000€ de départ + 50€/mois pendant 14 ans	Ce que le SMIC peut faire en bourse avec de la patience ⏳ #bourse #dca #epargne
+28	NFLX	DIS	—	10 000	0	—	Jan 2015	Déc 2024	Netflix vs Disney sur 10 ans — streaming wars	La guerre du streaming en chiffres. Qui a gagné ? 🎬 #netflix #disney #streaming #bourse
+29	BTC-USD	ETH-USD	—	10 000	0	—	Jan 2019	Déc 2024	Bitcoin vs Ethereum depuis 2019	Les deux cryptos dominantes face à face 🟠🔷 #bitcoin #ethereum #crypto #investissement
+30	^GSPC	IWDA.AS	—	0	300	Mensuel	Jan 2015	Déc 2024	300€/mois : S&P 500 vs MSCI World depuis 2015	Tout US ou diversifié monde ? Les données tranchent 🌍🇺🇸 #etf #dca #investissement
+31	SAF.PA	AIR.PA	—	10 000	0	—	Jan 2015	Déc 2024	Safran vs Airbus — l'industrie aéro française	Deux géants français, deux trajectoires différentes ✈️🇫🇷 #safran #airbus #bourse #cac40
+32	AAPL	GOOGL	MSFT	10 000	0	—	Jan 2010	Déc 2024	Apple vs Google vs Microsoft depuis 2010	Les 3 plus grandes entreprises mondiales. Laquelle a gagné ? 📱🔍💻 #bigtech #bourse
+33	GC=F	BTC-USD	—	10 000	0	—	Jan 2015	Déc 2024	Or vs Bitcoin : les deux "valeurs refuges" sur 10 ans	L'or numérique a-t-il écrasé l'or physique ? 🥇🟠 #or #bitcoin #investissement
+34	^GSPC	—	—	0	1 000	Mensuel	Jan 2000	Déc 2024	1 000€/mois dans le S&P 500 pendant 25 ans	Le plan retraite ultime du salarié ambitieux 💼 #retraite #dca #sp500 #investissement
+35	MC.PA	TTE.PA	BNP.PA	10 000	0	—	Jan 2015	Déc 2024	Le portefeuille 100% CAC 40 français — 3 secteurs	Luxe + énergie + banque : le pari tricolore 🇫🇷 #cac40 #bourse #france #investissement
+36	TSLA	—	—	10 000	0	—	Jan 2019	Déc 2023	10 000€ dans Tesla en 2019 — le roller coaster	L'action la plus volatile du monde sur 5 ans 🎢 #tesla #bourse #volatilite
+37	IWDA.AS	GC=F	—	5 000	200	Mensuel	Jan 2010	Déc 2024	Portefeuille équilibré : MSCI World + Or depuis 2010	La stratégie des fonds de pension en version perso ⚖️ #diversification #etf #or #investissement
+38	AMZN	NFLX	—	10 000	0	—	Jan 2010	Déc 2020	Amazon vs Netflix dans les années 2010	La décennie des FAANG en chiffres réels 🚀 #amazon #netflix #tech #bourse
+39	^FCHI	^GSPC	—	10 000	0	—	Jan 2000	Déc 2024	CAC 40 vs S&P 500 depuis 2000 — France vs USA	25 ans de comparaison. L'hégémonie américaine en données 🇫🇷🇺🇸 #cac40 #sp500 #bourse
+40	BTC-USD	—	—	0	50	Mensuel	Jan 2020	Déc 2024	50€/mois en Bitcoin depuis le COVID	Le DCA crypto ultra-accessible. Résultat sur 5 ans 🟠 #bitcoin #dca #crypto
+41	OR.PA	MC.PA	—	10 000	0	—	Jan 2010	Déc 2024	L'Oréal vs LVMH depuis 2010 — beauté vs luxe	Deux piliers du CAC 40 : laquelle choisir ? 💄👜 #loreal #lvmh #bourse #luxe
+42	NVDA	AMD	—	10 000	0	—	Jan 2020	Déc 2024	Nvidia vs AMD depuis 2020 — la guerre des puces IA	L'une a pris 10x, l'autre 3x. Les deux méritaient ta confiance 🤖 #nvidia #amd #semiconducteurs
+43	^GSPC	—	—	500	0	—	Jan 2010	Déc 2024	500€ seulement en 2010 dans le S&P 500	On pense que c'est trop peu. Les chiffres disent autre chose 💡 #bourse #investissement #debutant
+44	IWDA.AS	BTC-USD	GC=F	0	300	Mensuel	Jan 2018	Déc 2024	Portefeuille DCA 3 actifs : ETF + crypto + or depuis 2018	La stratégie de diversification maximale sur 6 ans 🌍🟠🥇 #dca #diversification #investissement
+45	JPM	GS	—	10 000	0	—	Jan 2012	Déc 2024	JPMorgan vs Goldman Sachs depuis 2012	Les deux titans de Wall Street. Lequel choisir ? 🏦💰 #jpmorgan #goldman #wallstreet #finance
+46	^GSPC	—	—	10 000	500	Mensuel	Jan 2004	Déc 2024	10 000€ + 500€/mois pendant 20 ans dans le S&P 500	La simulation qui change ta vision de la retraite 💼 #retraite #dca #sp500 #libertemfinanciere
+47	AAPL	—	—	10 000	0	—	Jan 2003	Déc 2024	Apple depuis 2003 — l'iPod qui a tout changé	21 ans de la plus belle success story boursière 📱 #apple #bourse #investissementlongterme
+48	SU.PA	ENPH	TTE.PA	10 000	0	—	Jan 2018	Déc 2024	Schneider Electric vs Enphase vs TotalEnergies — la transition énergétique	3 façons d'investir dans l'énergie. Les gagnants 🌱⚡ #energierenouvelable #bourse #transition
+49	BTC-USD	ETH-USD	^GSPC	3 000	0	—	Jan 2021	Déc 2024	Investir 3 000€ au sommet de 2021 — crypto vs bourse	Même en entrant au pire moment crypto, qu'est-ce qui résiste ? 📉 #crypto #bitcoin #bourse #crise
+50	^GSPC	—	—	0	100	Mensuel	Jan 2015	Déc 2024	100€/mois pendant 10 ans — le plan qui bat la majorité des Français	La régularité bat le timing. Toujours. 📊 #dca #investissement #bourse #epargne

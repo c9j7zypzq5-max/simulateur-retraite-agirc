@@ -184,10 +184,11 @@ async function main() {
         console.log(`     ↳ bouton vidéo : ${diag.videoButton ? `"${diag.videoButton.text}" disabled=${diag.videoButton.disabled}` : 'introuvable'}`);
         if (diag.bodyError) console.log(`     ↳ erreur affichée : ${diag.bodyError}`);
       } catch { /* ignore */ }
+      // Journal console écrit uniquement en cas d'échec (diagnostic). En succès,
+      // on ne produit que le .mp4.
+      try { await writeFile(path.join(outDir, `${stem}.log`), logLines.join('\n'), 'utf8'); } catch { /* ignore */ }
       console.log('');
     } finally {
-      // Toujours écrire le journal console (utile aussi pour confirmer l'auto-lancement).
-      try { await writeFile(path.join(outDir, `${stem}.log`), logLines.join('\n'), 'utf8'); } catch { /* ignore */ }
       await page.close();
     }
 
@@ -211,23 +212,14 @@ async function main() {
 
   await browser.close();
 
-  // Métadonnées (récap de toutes les vidéos)
-  await writeFile(path.join(outDir, 'metadata.json'), JSON.stringify(results, null, 2), 'utf8');
-
-  // Une légende prête à coller par vidéo (titre + description) — à copier dans
-  // TikTok au moment de la publication manuelle.
-  for (const r of results.filter(x => x.ok)) {
-    const caption = [r.title, r.description].filter(Boolean).join('\n\n');
-    await writeFile(path.join(outDir, r.file.replace(/\.(mp4|webm)$/i, '.txt')), caption, 'utf8');
-  }
-
+  // Sortie volontairement limitée aux fichiers .mp4 : ni metadata.json ni .txt.
+  // (En cas d'échec sur une ligne, un .error.png + un .log restent écrits pour
+  // diagnostic — voir le bloc catch.)
   const okCount = results.filter(r => r.ok).length;
   console.log(`\n🎉 Terminé : ${okCount}/${results.length} vidéo(s) générée(s) dans ${outDir}`);
   if (okCount < results.length) {
     console.log('   Lignes en échec :', results.filter(r => !r.ok).map(r => `#${r.idx}`).join(', '));
   }
-  console.log('   Vidéos + légendes (.txt) prêtes à publier à la main sur TikTok.');
-  console.log('   Récap : metadata.json');
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
