@@ -26,7 +26,7 @@ import path from 'node:path';
 import { parseTable, buildComparateurUrl, slugify } from './lib/parse.mjs';
 
 function parseArgs(argv) {
-  const args = { input: 'videos.tsv', out: './out', duration: 70 };
+  const args = { input: 'videos.tsv', out: './out', duration: 70, format: 'mp4' };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -34,6 +34,7 @@ function parseArgs(argv) {
     else if (a === '--input') args.input = next();
     else if (a === '--out') args.out = next();
     else if (a === '--duration') args.duration = parseInt(next(), 10) || 70;
+    else if (a === '--format') args.format = (next() || 'mp4').toLowerCase() === 'webm' ? 'webm' : 'mp4';
     else if (a === '--limit') args.limit = parseInt(next(), 10);
     else if (a === '--only') args.only = next().split(',').map(s => s.trim());
     else if (a === '--headful') args.headful = true;
@@ -52,6 +53,7 @@ Options :
   --input FILE     Tableau TSV/CSV (défaut: videos.tsv)
   --out DIR        Dossier de sortie (défaut: ./out)
   --duration SEC   15 | 30 | 60 | 70 (défaut: 70)
+  --format FMT     mp4 | webm (défaut: mp4 — prêt pour TikTok)
   --limit N        Limiter aux N premières lignes
   --only 1,3,5     Ne traiter que ces numéros de lignes (#)
   --headful        Afficher le navigateur
@@ -92,11 +94,14 @@ async function main() {
   const results = [];
   const durationMs = args.duration * 1000;
 
+  // Le rendu (durée réelle) + la conversion MP4 (ffmpeg.wasm : chargement du core
+  // depuis unpkg + remux) peuvent prendre du temps : large marge de sécurité.
+  const downloadTimeout = durationMs + 240000;
+
   for (const row of rows) {
     const slug = slugify(row.title || row.tickers.join('-vs-'), `video-${row.idx}`);
-    const fileName = `${String(row.idx).padStart(2, '0')}-${slug}.webm`;
-    const dest = path.join(outDir, fileName);
-    const url = buildComparateurUrl(args.baseUrl, row, args.duration);
+    const stem = `${String(row.idx).padStart(2, '0')}-${slug}`;
+    const url = buildComparateurUrl(args.baseUrl, row, args.duration, args.format);
 
     console.log(`▶ #${row.idx} ${row.tickers.join(' vs ')}`);
     console.log(`  ${url}`);
@@ -104,21 +109,26 @@ async function main() {
     const page = await context.newPage();
     let ok = false;
     let error = null;
+    let fileName = null;
 
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
       // Attendre que les données chargent et que la zone de résultats apparaisse
       // (bouton d'export vidéo présent une fois le graphique calculé).
-      await page.waitForSelector('text=/Reel vidéo|Arrêter|Génération/', { timeout: 45000 });
+      await page.waitForSelector('text=/Reel vidéo|Arrêter|Génération|Conversion/', { timeout: 45000 });
 
       // Les polices doivent être prêtes pour un rendu propre du canvas.
       await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
 
-      // L'enregistrement démarre automatiquement (?video=NN). On attend le
-      // téléchargement du WebM produit en fin d'animation.
-      const download = await page.waitForEvent('download', { timeout: durationMs + 90000 });
-      await download.saveAs(dest);
+      // L'enregistrement démarre automatiquement (?video=NN&format=…). On attend
+      // le téléchargement final (MP4 après conversion, ou WebM selon le format).
+      const download = await page.waitForEvent('download', { timeout: downloadTimeout });
+      // Extension réelle telle que produite par le site (.mp4 ou .webm).
+      const suggested = download.suggestedFilename() || '';
+      const ext = (suggested.match(/\.(mp4|webm)$/i)?.[1] || args.format).toLowerCase();
+      fileName = `${stem}.${ext}`;
+      await download.saveAs(path.join(outDir, fileName));
       ok = true;
       console.log(`  ✅ ${fileName}\n`);
     } catch (e) {
@@ -153,7 +163,7 @@ async function main() {
   // Une légende prête à coller par vidéo (titre + description)
   for (const r of results.filter(x => x.ok)) {
     const caption = [r.title, r.description].filter(Boolean).join('\n\n');
-    await writeFile(path.join(outDir, r.file.replace(/\.webm$/, '.txt')), caption, 'utf8');
+    await writeFile(path.join(outDir, r.file.replace(/\.(mp4|webm)$/i, '.txt')), caption, 'utf8');
   }
 
   const okCount = results.filter(r => r.ok).length;

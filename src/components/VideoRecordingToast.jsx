@@ -26,7 +26,9 @@ export default function VideoRecordingToast() {
             }} />
           )}
           <span style={{ fontSize: 12, color: 'var(--text)', fontWeight: 600 }}>
-            {recState === 'processing' ? '⏳ Finalisation…' : '🎬 Enregistrement'}
+            {recState === 'processing'  ? '⏳ Finalisation…'   :
+             recState === 'converting'  ? '⚙️ Conversion MP4…' :
+             '🎬 Enregistrement'}
           </span>
         </div>
         {recState === 'recording' && (
@@ -49,13 +51,13 @@ export default function VideoRecordingToast() {
         </span>
       )}
 
-      {recState === 'recording' && (
+      {(recState === 'recording' || recState === 'converting') && (
         <>
           <progress
             value={progress} max={100}
             style={{ width: '100%', height: 3, accentColor: 'var(--gold-mid)' }}
           />
-          <span style={{ fontSize: 10, color: '#ef4444' }}>
+          <span style={{ fontSize: 10, color: recState === 'converting' ? 'var(--gold-mid)' : '#ef4444' }}>
             {progress}% — ne fermez pas l'onglet
           </span>
         </>

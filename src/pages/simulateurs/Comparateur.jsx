@@ -63,15 +63,17 @@ function parseInitialConfig() {
   const freq = p.get('freq');
   const videoRaw = p.get('video');
   const videoDur = videoRaw != null ? parseInt(videoRaw, 10) : null;
+  const fmt = (p.get('format') || '').toLowerCase();
 
   return {
     assets,
     fromDate:     parseYM(p.get('from')),
     toDate:       parseYM(p.get('to')),
-    montant:      p.has('montant') ? Math.max(1, parseFloat(p.get('montant')) || 0) : null,
+    montant:      p.has('montant') ? Math.max(0, parseFloat(p.get('montant')) || 0) : null,
     periodicAmt:  p.has('dca')     ? Math.max(0, parseFloat(p.get('dca'))     || 0) : null,
     periodicFreq: FREQ_OK.has(freq) ? freq : null,
     videoDur:     videoDur && videoDur > 0 ? videoDur : null,
+    videoFormat:  fmt === 'webm' ? 'webm' : 'mp4',
   };
 }
 
@@ -117,7 +119,7 @@ function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestD
         value,
         invested,
         interest:  Math.max(0, value - valueNoReinv),  // gain lié aux dividendes réinvestis
-        pct:       ((value / montant) - 1) * 100,
+        pct:       montant > 0 ? ((value / montant) - 1) * 100 : (invested > 0 ? ((value / invested) - 1) * 100 : 0),
       };
     });
   }
@@ -132,8 +134,8 @@ function calcMetrics(computed, assets, montant) {
       const last      = pts[pts.length - 1];
       const totalInv  = last.invested ?? montant;
       const years     = pts.length / 12;
-      const tot       = ((last.value / totalInv) - 1) * 100;
-      const cagr      = years > 0.5 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
+      const tot       = totalInv > 0 ? ((last.value / totalInv) - 1) * 100 : 0;
+      const cagr      = years > 0.5 && totalInv > 0 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
       return { ...asset, totalReturn: tot, cagr, finalValue: last.value, totalInvested: totalInv, nPts: pts.length };
     })
     .filter(Boolean)
@@ -208,7 +210,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       ))}
 
       {/* Ligne de référence (montant initial) */}
-      {(() => {
+      {montant > 0 && (() => {
         const refY = y(montant);
         if (refY < PAD.top || refY > H - PAD.bottom) return null;
         return (
@@ -221,15 +223,23 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       {showPeriodicInChart && (() => {
         const refSeries = Object.values(computed)[0];
         if (!refSeries) return null;
-        const pts = refSeries
-          .map(p => {
-            const idx = allDates.indexOf(p.date);
-            return idx >= 0 ? `${x(idx).toFixed(1)},${y(p.invested ?? montant).toFixed(1)}` : null;
-          })
-          .filter(Boolean)
-          .join(' ');
+        let d = '';
+        let prevY = null;
+        refSeries.forEach((p, i) => {
+          const idx = allDates.indexOf(p.date);
+          if (idx < 0) return;
+          const px = x(idx).toFixed(1);
+          const py = y(p.invested ?? montant).toFixed(1);
+          if (i === 0 || prevY === null) {
+            d += `M ${px} ${py}`;
+          } else {
+            d += ` H ${px} V ${py}`;
+          }
+          prevY = py;
+        });
+        if (!d) return null;
         return (
-          <polyline points={pts} fill="none" stroke="rgba(255,255,255,0.35)"
+          <path d={d} fill="none" stroke="rgba(255,255,255,0.35)"
             strokeWidth="1.5" strokeDasharray="5,4" />
         );
       })()}
@@ -725,9 +735,9 @@ export default function Comparateur() {
             <input
               type="number"
               value={montant}
-              min={100}
+              min={0}
               max={10_000_000}
-              onChange={e => setMontant(Math.max(1, parseFloat(e.target.value) || 0))}
+              onChange={e => setMontant(Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -746,7 +756,7 @@ export default function Comparateur() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
             <input
               type="number"
-              value={periodicAmt}
+              value={periodicAmt || ''}
               min={0}
               max={1_000_000}
               placeholder="0"
@@ -886,6 +896,7 @@ export default function Comparateur() {
                   periodicFreq={periodicFreq}
                   showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
                   autoLaunchDuration={urlCfg?.videoDur || null}
+                  autoLaunchFormat={urlCfg?.videoFormat || 'mp4'}
                 />
               ) : <div />}
               <ShareBar

@@ -163,7 +163,7 @@ export function parseTable(text) {
 }
 
 // Construit l'URL pilotant le comparateur pour une ligne donnée.
-export function buildComparateurUrl(baseUrl, row, durationSec) {
+export function buildComparateurUrl(baseUrl, row, durationSec, format = 'mp4') {
   const u = new URL('/simulateurs/comparateur', baseUrl);
   u.searchParams.set('a', row.tickers.join(','));
   u.searchParams.set('montant', String(row.montant));
@@ -171,7 +171,10 @@ export function buildComparateurUrl(baseUrl, row, durationSec) {
   u.searchParams.set('freq', row.freq);
   if (row.from) u.searchParams.set('from', `${row.from.year}-${String(row.from.month).padStart(2, '0')}`);
   if (row.to)   u.searchParams.set('to',   `${row.to.year}-${String(row.to.month).padStart(2, '0')}`);
-  if (durationSec) u.searchParams.set('video', String(durationSec));
+  if (durationSec) {
+    u.searchParams.set('video', String(durationSec));
+    u.searchParams.set('format', format === 'webm' ? 'webm' : 'mp4');
+  }
   return u.toString();
 }
 

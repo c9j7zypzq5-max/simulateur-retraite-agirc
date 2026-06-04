@@ -227,8 +227,13 @@ function drawFrame(ctx, {
   }
 
   {
-    let subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
-    if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
+    let subtitle;
+    if (montantInitial > 0) {
+      subtitle = `${fmtFull(montantInitial)} investis en ${fromLabel}`;
+      if (periodicAmt > 0) subtitle += `  ·  + ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
+    } else {
+      subtitle = `DCA ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'} depuis ${fromLabel}`;
+    }
     let sFontSize = 20;
     ctx.font = `${sFontSize}px DM Sans, sans-serif`;
     while (ctx.measureText(subtitle).width > W - 72 && sFontSize > 12) {
@@ -245,6 +250,7 @@ function drawFrame(ctx, {
 
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
   const chartProgress = Math.pow(chartPhase, 0.45);
+  const minStartFrac  = Math.min(2.5 / Math.max(totalYears, 1), 0.3);
   const maxT = chartProgress;
 
   const tickerPts = {};
@@ -270,9 +276,8 @@ function drawFrame(ctx, {
     if (visible.length >= 1) {
       const nextIdx = raw.findIndex(p => p.t > maxT);
       if (nextIdx > 0) {
-        const prev = raw[nextIdx - 1], next = raw[nextIdx];
-        const alpha = (maxT - prev.t) / Math.max(next.t - prev.t, 0.0001);
-        investedPts = [...visible, { t: maxT, value: prev.value + (next.value - prev.value) * alpha }];
+        const prev = raw[nextIdx - 1];
+        investedPts = [...visible, { t: maxT, value: prev.value }];
       } else {
         investedPts = visible;
       }
@@ -289,7 +294,7 @@ function drawFrame(ctx, {
     const st = stateRef.current;
     if (!st.initDone) {
       st.smoothYMax = rawYMax; st.smoothYMin = rawYMin;
-      st.smoothXW = totalYears > 0 ? Math.min(1, 1 / totalYears) : 1;
+      st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
     st.smoothYMax += (rawYMax - st.smoothYMax) * 0.05;
@@ -297,7 +302,7 @@ function drawFrame(ctx, {
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
-    const initXW      = totalYears > 0 ? Math.min(1, 1 / totalYears) : 1;
+    const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
     const targetXW    = Math.min(1, Math.max(initXW, currentFrac * 1.18));
     st.smoothXW += (targetXW - st.smoothXW) * 0.04;
     const xWindow = Math.min(1, st.smoothXW);
@@ -306,7 +311,7 @@ function drawFrame(ctx, {
     const cy = v    => CY + CH - ((v - yMin) / Math.max(yMax - yMin, 1)) * CH;
 
     const baseY = cy(montantInitial);
-    if (baseY >= CY - 2 && baseY <= CY + CH + 2) {
+    if (montantInitial > 0 && baseY >= CY - 2 && baseY <= CY + CH + 2) {
       ctx.globalAlpha = 0.3;
       ctx.strokeStyle = 'rgba(255,255,255,0.55)';
       ctx.setLineDash([6, 5]); ctx.lineWidth = 1;
@@ -350,35 +355,37 @@ function drawFrame(ctx, {
       ctx.lineJoin = 'round'; ctx.lineCap = 'round';
       ctx.setLineDash([]);
       ctx.beginPath();
-      let started = false;
+      let started = false, prevStepY = 0;
       visPts.forEach(p => {
         const px = cx(p.t), py = cy(p.value);
         if (px < CX - 5 || px > CX + CW + 5) return;
         if (!started) { ctx.moveTo(px, py); started = true; }
+        else if (curve.isInvested) { ctx.lineTo(px, prevStepY); ctx.lineTo(px, py); }
         else ctx.lineTo(px, py);
+        prevStepY = py;
       });
       ctx.stroke();
 
       const last = visPts[visPts.length - 1];
       const lx = cx(last.t), ly = cy(last.value);
       if (lx >= CX && lx <= CX + CW) {
-        const pulse = 0.5 + 0.5 * Math.sin(t * Math.PI * 10 + idx * 1.6);
         const tipLogo   = curve.isInvested ? null : logoImages?.[curve.ticker];
         const tipLetter = (curve.label || curve.ticker || '?');
         const R = 14;
 
-        // Pulsing glow ring autour du logo
-        ctx.fillStyle = `rgba(${hexToRgb(color)},${0.18 + 0.12 * pulse})`;
-        ctx.beginPath(); ctx.arc(lx, ly, R + 4 + 3 * pulse, 0, Math.PI * 2); ctx.fill();
+        // Static glow ring — pulsing caused flickering when tips overlap at start
+        ctx.fillStyle = `rgba(${hexToRgb(color)},0.22)`;
+        ctx.beginPath(); ctx.arc(lx, ly, R + 6, 0, Math.PI * 2); ctx.fill();
 
         // Logo de l'actif au tip de la courbe
         drawLogoInCircle(ctx, tipLogo, lx, ly, R, color, tipLetter);
 
         // Montant collé directement au logo (valeur + %, sur deux lignes)
         const valStr = fmtFull(last.value);
+        const tipPct = montantInitial > 0 ? (last.value / montantInitial - 1) * 100 : null;
         const subStr = curve.isInvested
           ? 'investi'
-          : `${((last.value / montantInitial) - 1) * 100 >= 0 ? '+' : ''}${(((last.value / montantInitial) - 1) * 100).toFixed(1)}%`;
+          : tipPct !== null ? `${tipPct >= 0 ? '+' : ''}${tipPct.toFixed(1)}%` : '';
 
         ctx.font = 'bold 19px DM Sans, sans-serif';
         const valW = ctx.measureText(valStr).width;
@@ -471,16 +478,18 @@ function drawFrame(ctx, {
 
       if (pts && pts.length >= 1) {
         const last   = pts[pts.length - 1];
-        const pct    = ((last.value / montantInitial) - 1) * 100;
-        const pctClr = pct >= 0 ? '#4ade80' : '#f87171';
+        const pct    = montantInitial > 0 ? (last.value / montantInitial - 1) * 100 : null;
+        const pctClr = pct === null || pct >= 0 ? '#4ade80' : '#f87171';
         const valStr = fmtFull(last.value);
         ctx.fillStyle = lightenHex(color, 0.1);
         ctx.font = 'bold 28px DM Sans, sans-serif';
         ctx.fillText(valStr, tx, rowY + 40);
         const vw = ctx.measureText(valStr).width;
-        ctx.fillStyle = pctClr;
-        ctx.font = 'bold 18px DM Sans, sans-serif';
-        ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, tx + vw + 10, rowY + 40);
+        if (pct !== null) {
+          ctx.fillStyle = pctClr;
+          ctx.font = 'bold 18px DM Sans, sans-serif';
+          ctx.fillText(`${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%`, tx + vw + 10, rowY + 40);
+        }
       }
     }
 
@@ -535,79 +544,6 @@ function drawFrame(ctx, {
     ctx.textBaseline = 'alphabetic';
   }
 
-  const outroPhase = Math.max(0, Math.min(1, (t - 0.92) / 0.08));
-  if (outroPhase > 0) {
-    ctx.globalAlpha = easeOut(outroPhase) * 0.92;
-    ctx.fillStyle = '#060e1c'; ctx.fillRect(0, 0, W, H);
-    ctx.globalAlpha = easeOut(outroPhase);
-
-    ctx.fillStyle = '#b8934a'; ctx.font = 'bold 36px DM Sans, sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('Résultats de votre simulation', W / 2, 110);
-    ctx.fillStyle = 'rgba(255,255,255,0.48)'; ctx.font = '19px DM Sans, sans-serif';
-    let outroSub = `${fromLabel} → ${toLabel}  ·  ${fmtK(montantInitial)} investis`;
-    if (periodicAmt > 0) outroSub += `  +  ${fmtK(periodicAmt)}${FREQ_FR[periodicFreq] || '/mois'}`;
-    ctx.fillText(outroSub, W / 2, 146);
-
-    const n      = Math.min(metrics.length, 5);
-    const cardH  = n <= 2 ? 195 : n === 3 ? 172 : n === 4 ? 150 : 128;
-    const cardGap = 11;
-    const totalH = n * cardH + (n - 1) * cardGap;
-    let cardY = Math.max(160, (H - 200 - totalH) / 2);
-
-    metrics.slice(0, 5).forEach((m, i) => {
-      const my        = cardY + i * (cardH + cardGap);
-      const color     = m.color || '#b8934a';
-      const perf      = m.totalReturn;
-      const perfColor = perf >= 0 ? '#22c55e' : '#ef4444';
-
-      ctx.fillStyle = `rgba(${hexToRgb(color)},0.08)`;
-      roundRect(ctx, 36, my, W - 72, cardH, 16); ctx.fill();
-      ctx.strokeStyle = `rgba(${hexToRgb(color)},0.4)`; ctx.lineWidth = 1;
-      roundRect(ctx, 36, my, W - 72, cardH, 16); ctx.stroke();
-
-      const mx = 70, midY = my + cardH / 2;
-      const logo = logoImages?.[m.ticker];
-      drawLogoInCircle(ctx, logo, mx, midY - 20, 17, color, m.label || m.ticker);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.95)'; ctx.font = 'bold 23px DM Sans, sans-serif'; ctx.textAlign = 'left';
-      ctx.fillText(m.label || m.ticker, mx + 26, midY - 7);
-
-      ctx.fillStyle = perfColor;
-      ctx.font = `bold ${cardH >= 158 ? 34 : 27}px DM Sans, sans-serif`;
-      ctx.fillText(`${perf >= 0 ? '+' : ''}${perf.toFixed(1)} %`, mx + 26, midY + 28);
-
-      ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '16px DM Sans, sans-serif';
-      ctx.fillText(`CAGR: ${m.cagr >= 0 ? '+' : ''}${m.cagr.toFixed(1)} %/an`, mx + 26, midY + 50);
-
-      ctx.textAlign = 'right';
-      ctx.fillStyle = lightenHex(color, 0.12);
-      ctx.font = `bold ${cardH >= 158 ? 30 : 25}px DM Sans, sans-serif`;
-      ctx.fillText(fmtK(m.finalValue), W - 52, midY + 28);
-      ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '16px DM Sans, sans-serif';
-      ctx.fillText('valeur finale', W - 52, midY + 50);
-    });
-
-    const brandY = H - 130;
-    ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(40, brandY); ctx.lineTo(W - 40, brandY); ctx.stroke();
-    // Marque + wordmark, centrés ensemble
-    ctx.font = 'bold 36px DM Sans, sans-serif';
-    const oTxt = 'mesimulateurs.fr';
-    const oTw = ctx.measureText(oTxt).width;
-    const oMarkS = 44, oGap = 13;
-    const oGroupW = oMarkS + oGap + oTw;
-    const oGx = W / 2 - oGroupW / 2;
-    const oCy = brandY + 34;
-    drawBrandMark(ctx, oGx, oCy - oMarkS / 2, oMarkS);
-    ctx.fillStyle = '#b8934a'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-    ctx.fillText(oTxt, oGx + oMarkS + oGap, oCy + 1);
-    ctx.textBaseline = 'alphabetic';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.font = '18px DM Sans, sans-serif';
-    ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, brandY + 76);
-    ctx.globalAlpha = 1;
-  }
-
   ctx.textAlign = 'left';
   ctx.textBaseline = 'alphabetic';
   ctx.globalAlpha = 1;
@@ -615,8 +551,14 @@ function drawFrame(ctx, {
 }
 
 // ─── Modal ────────────────────────────────────────────────────────────────────
+const FORMAT_OPTIONS = [
+  { value: 'mp4',  label: 'MP4 H.264',         desc: 'TikTok / iPhone',        recommended: true },
+  { value: 'webm', label: 'WebM VP9',           desc: 'Téléchargement rapide',  recommended: false },
+];
+
 function ExportModal({ onClose, onLaunch }) {
   const [dur, setDur] = useState(70);
+  const [fmt, setFmt] = useState('mp4');
   const font = "'DM Sans', sans-serif";
 
   return (
@@ -676,9 +618,50 @@ function ExportModal({ onClose, onLaunch }) {
           ))}
         </div>
 
+        <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 10px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+          Format
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 }}>
+          {FORMAT_OPTIONS.map(opt => (
+            <label
+              key={opt.value}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+                padding: '8px 12px', borderRadius: 8,
+                background: fmt === opt.value ? 'var(--border-gold)' : 'transparent',
+                border: `1px solid ${fmt === opt.value ? 'var(--border-gold)' : 'var(--border)'}`,
+                transition: 'all 0.15s',
+              }}
+            >
+              <input
+                type="radio" name="fmt" value={opt.value}
+                checked={fmt === opt.value}
+                onChange={() => setFmt(opt.value)}
+                style={{ accentColor: 'var(--gold-mid)' }}
+              />
+              <span style={{ color: fmt === opt.value ? 'var(--gold)' : 'var(--text)', fontSize: 13, flex: 1 }}>
+                {opt.label}
+                <span style={{ color: 'var(--text-secondary)', fontSize: 11, marginLeft: 6 }}>
+                  — {opt.desc}
+                </span>
+              </span>
+              {opt.recommended && (
+                <span style={{
+                  fontSize: 10, color: 'var(--gold-mid)',
+                  border: '1px solid var(--border-gold)', borderRadius: 4,
+                  padding: '1px 6px',
+                }}>
+                  recommandé
+                </span>
+              )}
+            </label>
+          ))}
+        </div>
+
         <p style={{ color: 'var(--text-secondary)', fontSize: 11, margin: '0 0 22px', lineHeight: 1.5 }}>
-          Format : WebM VP9 · 720×1280 · 9:16 · Reels / TikTok
-          <br />La génération se fait en temps réel dans votre navigateur.
+          720×1280 · 9:16 · Reels / TikTok
+          {fmt === 'mp4' && <><br />MP4 : enregistrement temps réel + conversion ffmpeg (≈ 5-15 s).</>}
+          {fmt === 'webm' && <><br />WebM : téléchargement direct après enregistrement.</>}
         </p>
 
         <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
@@ -693,7 +676,7 @@ function ExportModal({ onClose, onLaunch }) {
             Annuler
           </button>
           <button
-            onClick={() => onLaunch(dur)}
+            onClick={() => onLaunch(dur, fmt)}
             style={{
               background: 'var(--border-gold)', border: '1px solid var(--gold-mid)',
               borderRadius: 8, color: 'var(--gold)',
@@ -726,6 +709,7 @@ export default function ComparisonVideoExport({
   periodicFreq = 'monthly',
   showPeriodicInChart = false,
   autoLaunchDuration = null,
+  autoLaunchFormat = 'mp4',
 }) {
   const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
   const [showModal, setShowModal] = useState(false);
@@ -744,7 +728,7 @@ export default function ComparisonVideoExport({
     });
   };
 
-  const handleLaunch = async (durationSec) => {
+  const handleLaunch = async (durationSec, format) => {
     setShowModal(false);
     stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
 
@@ -766,15 +750,23 @@ export default function ComparisonVideoExport({
       } catch {}
     }));
 
-    const filename = `comparateur-${fromLabel.replace(/\s/g,'-')}-${toLabel.replace(/\s/g,'-')}.webm`;
-    const lbl = assets.map(a => a.label || a.ticker).join(' vs ');
+    const FREQ_SLUG = { monthly: 'par-mois', quarterly: 'par-trim', semi: 'par-sem', annual: 'par-an' };
+    const slugify = s => s.toLowerCase().replace(/[éèêë]/g,'e').replace(/[àâä]/g,'a').replace(/[ùûü]/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+    const amtFmt = v => v >= 1_000_000 ? `${Math.round(v/1_000_000)}M` : v >= 1_000 ? `${Math.round(v/1000)}k` : String(Math.round(v));
+    const slugParts = [];
+    if (montantInitial > 0) slugParts.push(amtFmt(montantInitial));
+    if (periodicAmt > 0) slugParts.push(`${amtFmt(periodicAmt)}_${FREQ_SLUG[periodicFreq] || 'par-mois'}`);
+    slugParts.push(assets.map(a => slugify(a.label || a.ticker).slice(0, 12)).join('-'));
+    slugParts.push(`${startYear}_${endYear}`);
+    const slug = slugParts.join('_');
+    const lbl  = assets.map(a => a.label || a.ticker).join(' vs ');
 
-    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl });
+    ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename: slug, label: lbl, format });
   };
 
-  // Auto-lancement piloté par l'URL (?video=NN) : démarre l'enregistrement dès que
-  // les données du graphique sont prêtes. Utilisé par la génération automatisée
-  // de vidéos (scripts/tiktok). Ne se déclenche qu'une seule fois.
+  // Auto-lancement piloté par l'URL (?video=NN&format=mp4) : démarre
+  // l'enregistrement dès que les données du graphique sont prêtes. Utilisé par la
+  // génération automatisée de vidéos (scripts/tiktok). Ne se déclenche qu'une fois.
   const autoLaunchedRef = useRef(false);
   useEffect(() => {
     if (autoLaunchedRef.current) return;
@@ -782,14 +774,15 @@ export default function ComparisonVideoExport({
     if (disabled) return;
     if (!chartData || Object.keys(chartData).length === 0) return;
     autoLaunchedRef.current = true;
-    const id = setTimeout(() => { handleLaunch(autoLaunchDuration); }, 1200);
+    const id = setTimeout(() => { handleLaunch(autoLaunchDuration, autoLaunchFormat || 'mp4'); }, 1200);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoLaunchDuration, disabled, chartData]);
+  }, [autoLaunchDuration, autoLaunchFormat, disabled, chartData]);
 
-  const isSupported = typeof MediaRecorder !== 'undefined';
-  const isRecording = recState === 'recording';
-  const isProcessing = recState === 'processing';
+  const isSupported   = typeof MediaRecorder !== 'undefined';
+  const isRecording   = recState === 'recording';
+  const isConverting  = recState === 'converting';
+  const isProcessing  = recState === 'processing' || isConverting;
 
   const font = "'DM Sans', sans-serif";
 
@@ -822,7 +815,7 @@ export default function ComparisonVideoExport({
             onMouseLeave={e => { if (!isRecording) { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
           >
             {isRecording && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%', flexShrink: 0 }} />}
-            {isProcessing ? '⏳ Génération…' : isRecording ? '⏹ Arrêter' : '🎬 Reel vidéo'}
+            {isConverting ? '⚙️ Conversion…' : isProcessing ? '⏳ Génération…' : isRecording ? '⏹ Arrêter' : '🎬 Reel vidéo'}
           </button>
         )}
         {!isRecording && !isProcessing && isSupported && !disabled && (

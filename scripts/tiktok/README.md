@@ -56,16 +56,18 @@ Options utiles :
 | `--input FILE`   | Fichier tableau | `videos.tsv` |
 | `--out DIR`      | Dossier de sortie | `./out` |
 | `--duration SEC` | Durée : `15`, `30`, `60`, `70` | `70` |
+| `--format FMT`   | `mp4` (prêt TikTok) ou `webm` | `mp4` |
 | `--only 1,3`     | Ne traiter que ces n° de lignes | toutes |
 | `--limit N`      | Traiter les N premières lignes | toutes |
 | `--headful`      | Afficher le navigateur (debug) | masqué |
 
-Chaque vidéo est enregistrée **en temps réel** (≈ la durée choisie), donc une
-vidéo de 70 s prend ~70 s à produire. Résultat dans `out/` :
+Chaque vidéo est enregistrée **en temps réel** (≈ la durée choisie) puis
+**convertie en MP4** dans le navigateur (ffmpeg.wasm) — prévois donc un peu plus
+que la durée brute. Résultat dans `out/` :
 
 ```
 out/
-  01-10-000-dans-le-s-p-500-vs-bitcoin.webm
+  01-10-000-dans-le-s-p-500-vs-bitcoin.mp4
   01-10-000-dans-le-s-p-500-vs-bitcoin.txt   ← légende prête à coller
   metadata.json                              ← infos de toutes les vidéos
 ```
@@ -95,11 +97,12 @@ node upload-tiktok.mjs --out ./out
 Le script pilote la page comparateur via des **paramètres d'URL** :
 
 ```
-/simulateurs/comparateur?a=^GSPC,BTC-USD&montant=10000&dca=0&freq=monthly&from=2017-01&to=2024-12&video=70
+/simulateurs/comparateur?a=^GSPC,BTC-USD&montant=10000&dca=0&freq=monthly&from=2017-01&to=2024-12&video=70&format=mp4
 ```
 
-Le paramètre `video=NN` déclenche automatiquement l'enregistrement (durée NN s) ;
-Playwright intercepte le téléchargement du WebM et l'enregistre dans `out/`.
-Tu peux d'ailleurs ouvrir cette URL toi-même dans un navigateur pour vérifier un rendu.
+Les paramètres `video=NN` (durée) et `format=mp4|webm` déclenchent automatiquement
+l'enregistrement ; Playwright intercepte le téléchargement final et l'enregistre
+dans `out/`. Tu peux d'ailleurs ouvrir cette URL toi-même dans un navigateur pour
+vérifier un rendu.
 
-Format de sortie : **WebM VP9 · 720×1280 · 9:16**, idéal Reels / TikTok / Shorts.
+Format de sortie : **MP4 (H.264) · 720×1280 · 9:16**, prêt pour TikTok / Reels / Shorts.
