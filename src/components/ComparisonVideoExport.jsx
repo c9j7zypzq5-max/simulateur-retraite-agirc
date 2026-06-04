@@ -111,6 +111,26 @@ function niceYAxis(rawMax) {
   return { axisMax, ticks };
 }
 
+// Floors rawMin down to the largest "nice" interval that fits ≤5 times in rawMin,
+// giving a Y-axis floor that hugs the data rather than always starting at 0.
+function niceFloor(v) {
+  if (v <= 0) return 0;
+  const candidates = [
+    10, 20, 50,
+    100, 200, 500,
+    1_000, 2_000, 5_000,
+    10_000, 20_000, 50_000,
+    100_000, 200_000, 500_000,
+    1_000_000, 2_000_000, 5_000_000,
+    10_000_000, 20_000_000, 50_000_000,
+  ];
+  let interval = 10;
+  for (const c of candidates) {
+    if (Math.ceil(v / c) <= 5) { interval = c; break; }
+  }
+  return Math.max(0, Math.floor(v / interval) * interval);
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y);
@@ -320,14 +340,18 @@ function drawFrame(ctx, {
     // targetYMax jumps in discrete steps (3-5 ticks); smoothYMax lerps toward it
     // so the transition is fluid while labels stay on clean round values.
     const currentMax = Math.max(...allVisible.map(p => p.value), montantInitial);
+    const currentMin = Math.min(...allVisible.map(p => p.value), montantInitial);
     const { axisMax: targetYMax, ticks: yTicks } = niceYAxis(currentMax);
+    const targetYMin = niceFloor(currentMin * 0.9);
     if (!st.initDone) {
       st.smoothYMax = targetYMax;
+      st.smoothYMin = targetYMin;
       st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
     st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
-    const yMax = st.smoothYMax, yMin = 0;
+    st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
+    const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
     const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
@@ -739,7 +763,7 @@ export default function ComparisonVideoExport({
   const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
   const [showModal, setShowModal] = useState(false);
 
-  const stateRef  = useRef({ smoothXW: 0, initDone: false });
+  const stateRef  = useRef({ smoothXW: 0, smoothYMin: 0, initDone: false });
   const logoRef   = useRef({});
   const drawFnRef = useRef(null);
 
@@ -755,7 +779,7 @@ export default function ComparisonVideoExport({
 
   const handleLaunch = async (durationSec, format) => {
     setShowModal(false);
-    stateRef.current = { smoothXW: 0, initDone: false };
+    stateRef.current = { smoothXW: 0, smoothYMin: 0, initDone: false };
 
     // Preload logos (max 3s each)
     logoRef.current = {};
