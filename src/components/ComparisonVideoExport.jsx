@@ -84,6 +84,23 @@ function fmtFull(v) {
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 }
 
+// Compute fixed, nice round Y-axis ticks from the full dataset maximum.
+// Returns { axisMax, ticks } — both stable throughout the animation.
+function niceYAxis(rawMax) {
+  if (!rawMax || rawMax <= 0) return { axisMax: 1000, ticks: [500, 1000] };
+  const rough = rawMax / 4;
+  const exp   = Math.floor(Math.log10(Math.max(rough, 1)));
+  const unit  = Math.pow(10, exp);
+  let interval = 10 * unit;
+  for (const m of [1, 2, 2.5, 5, 10]) {
+    if (m * unit >= rough) { interval = m * unit; break; }
+  }
+  const axisMax = Math.ceil(rawMax / interval) * interval;
+  const ticks = [];
+  for (let v = interval; v <= axisMax + interval * 0.01; v += interval) ticks.push(Math.round(v));
+  return { axisMax, ticks };
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y);
@@ -288,18 +305,22 @@ function drawFrame(ctx, {
   if (investedPts) allVisible.push(...investedPts);
 
   if (allVisible.length >= 2) {
-    const rawYMax = Math.max(...allVisible.map(p => p.value), montantInitial) * 1.18;
-    const rawYMin = Math.min(...allVisible.map(p => p.value), montantInitial) * 0.88;
-
     const st = stateRef.current;
     if (!st.initDone) {
-      st.smoothYMax = rawYMax; st.smoothYMin = rawYMin;
+      // Compute Y scale from ALL chart data (not just the currently visible slice)
+      // so gridline values are fixed from frame 1 — like X-axis year labels.
+      const allFinalVals = [montantInitial];
+      for (const [, pts] of Object.entries(chartData)) {
+        if (Array.isArray(pts)) pts.forEach(p => allFinalVals.push(p.value));
+      }
+      const { axisMax, ticks } = niceYAxis(Math.max(...allFinalVals));
+      st.axisMax = axisMax;
+      st.yTicks  = ticks;
       st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
-    st.smoothYMax += (rawYMax - st.smoothYMax) * 0.05;
-    st.smoothYMin += (rawYMin - st.smoothYMin) * 0.05;
-    const yMax = st.smoothYMax, yMin = st.smoothYMin;
+    const yMax = st.axisMax;
+    const yMin = 0;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
     const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
@@ -421,11 +442,10 @@ function drawFrame(ctx, {
 
     ctx.fillStyle = 'rgba(255,255,255,0.32)';
     ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'right';
-    for (const f of [0.25, 0.5, 0.75, 1.0]) {
-      const val = yMin + (yMax - yMin) * f;
-      const yy  = cy(val);
+    for (const tickVal of (st.yTicks || [])) {
+      const yy = cy(tickVal);
       if (yy < CY + 12 || yy > CY + CH - 12) continue;
-      ctx.fillText(fmtK(val), CX - 5, yy + 5);
+      ctx.fillText(fmtK(tickVal), CX - 5, yy + 5);
       ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
     }
@@ -712,7 +732,7 @@ export default function ComparisonVideoExport({
   const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
   const [showModal, setShowModal] = useState(false);
 
-  const stateRef  = useRef({ smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false });
+  const stateRef  = useRef({ smoothXW: 0, initDone: false });
   const logoRef   = useRef({});
   const drawFnRef = useRef(null);
 
@@ -728,7 +748,7 @@ export default function ComparisonVideoExport({
 
   const handleLaunch = async (durationSec, format) => {
     setShowModal(false);
-    stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
+    stateRef.current = { smoothXW: 0, initDone: false };
 
     // Preload logos (max 3s each)
     logoRef.current = {};
