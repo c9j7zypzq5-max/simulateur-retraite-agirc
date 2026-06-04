@@ -21,7 +21,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { chromium } from 'playwright';
-import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import { readFile, mkdir, writeFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { parseTable, buildComparateurUrl, slugify } from './lib/parse.mjs';
 
@@ -43,6 +43,7 @@ function parseArgs(argv) {
     else if (a === '--limit') args.limit = parseInt(next(), 10);
     else if (a === '--only') args.only = next().split(',').map(s => s.trim());
     else if (a === '--headful') args.headful = true;
+    else if (a === '--continue') args.continue = true;
     else if (a === '--insecure') args.insecure = true;
     else if (a === '--help' || a === '-h') args.help = true;
   }
@@ -64,6 +65,7 @@ Options :
   --insecure       Ignorer les erreurs de certificat TLS (proxy/MITM)
   --limit N        Limiter aux N premières lignes
   --only 1,3,5     Ne traiter que ces numéros de lignes (#)
+  --continue       Sauter les lignes dont le .mp4 existe déjà (reprise de lot)
   --headful        Afficher le navigateur
 `;
 
@@ -116,9 +118,19 @@ async function main() {
   // depuis unpkg + remux) peuvent prendre du temps : large marge de sécurité.
   const downloadTimeout = durationMs + 240000;
 
+  // --continue : on liste les fichiers déjà présents pour sauter ceux déjà générés.
+  const existingFiles = args.continue ? await readdir(outDir).catch(() => []) : [];
+
   for (const row of rows) {
     const slug = slugify(row.title || row.tickers.join('-vs-'), `video-${row.idx}`);
     const stem = `${String(row.idx).padStart(2, '0')}-${slug}`;
+
+    if (args.continue && existingFiles.some(f => f === `${stem}.mp4` || f === `${stem}.webm`)) {
+      console.log(`▶ #${row.idx} — déjà généré, ignoré (--continue)\n`);
+      results.push({ idx: row.idx, ok: true, skipped: true, file: `${stem}.mp4` });
+      continue;
+    }
+
     const url = buildComparateurUrl(args.baseUrl, row, args.duration, args.format);
 
     console.log(`▶ #${row.idx} ${row.tickers.join(' vs ')}`);
