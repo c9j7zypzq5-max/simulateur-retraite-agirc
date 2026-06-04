@@ -342,7 +342,7 @@ function drawFrame(ctx, {
     const currentMax = Math.max(...allVisible.map(p => p.value), montantInitial);
     const currentMin = Math.min(...allVisible.map(p => p.value), montantInitial);
     const { axisMax: targetYMax, ticks: yTicks } = niceYAxis(currentMax);
-    const targetYMin = niceFloor(currentMin * 0.9);
+    const targetYMin = Math.max(0, currentMin - (currentMax - currentMin) * 0.05);
     if (!st.initDone) {
       st.smoothYMax = targetYMax;
       st.smoothYMin = targetYMin;
