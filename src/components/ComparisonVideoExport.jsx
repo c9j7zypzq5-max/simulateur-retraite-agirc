@@ -265,7 +265,11 @@ function drawFrame(ctx, {
   }
 
   // ── Chart area
-  const CX = 50, CY = 168, CW = W - 50 - 96, CH = 696;
+  // CX (marge gauche) élargi : les libellés de l'axe Y (« 100 k€ »…) sont dessinés
+  // à gauche de l'axe et étaient collés au bord — sur TikTok le bord gauche est
+  // rogné, ne laissant que le « € ». On décale donc tout le graphique vers la
+  // droite pour leur laisser de la marge. Le bord droit reste inchangé.
+  const CX = 90, CY = 168, CW = W - 90 - 96, CH = 696;
 
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
   // Révélation linéaire (vitesse constante) : sur les longues périodes, un
