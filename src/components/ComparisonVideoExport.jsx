@@ -84,6 +84,25 @@ function fmtFull(v) {
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 }
 
+// Picks the nice number from candidates closest to target.
+function niceNearest(target) {
+  const candidates = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1_000, 2_000, 5_000,
+    10_000, 20_000, 50_000, 100_000, 200_000, 500_000, 1_000_000, 2_000_000, 5_000_000];
+  return candidates.reduce((best, c) =>
+    Math.abs(c - target) < Math.abs(best - target) ? c : best, candidates[0]);
+}
+
+// Alpha for a gridline at ordinal `ord` (tickValue / baseInterval) given the
+// current pixel spacing between adjacent ticks. Odd ordinals fade first, then
+// multiples-of-2, then multiples-of-4 — a smooth relay so density stays comfortable.
+function tickAlpha(ord, pixPerTick) {
+  if (ord === 0) return 1;
+  let depth = 0, n = Math.abs(ord);
+  while (n % 2 === 0) { depth++; n = Math.floor(n / 2); }
+  const effective = pixPerTick * Math.pow(2, depth);
+  return Math.min(1, Math.max(0, (effective - 30) / 30));
+}
+
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.moveTo(x+r, y);
@@ -288,17 +307,25 @@ function drawFrame(ctx, {
   if (investedPts) allVisible.push(...investedPts);
 
   if (allVisible.length >= 2) {
-    const rawYMax = Math.max(...allVisible.map(p => p.value), montantInitial) * 1.18;
-    const rawYMin = Math.min(...allVisible.map(p => p.value), montantInitial) * 0.88;
-
     const st = stateRef.current;
+    // Nice Y scale from visible data — recalibrates as the curve grows.
+    // targetYMax jumps in discrete steps (3-5 ticks); smoothYMax lerps toward it
+    // so the transition is fluid while labels stay on clean round values.
+    const currentMax = Math.max(...allVisible.map(p => p.value), montantInitial);
+    const currentMin = Math.min(...allVisible.map(p => p.value), montantInitial);
     if (!st.initDone) {
-      st.smoothYMax = rawYMax; st.smoothYMin = rawYMin;
+      // base interval ≈ 10% of initial investment, snapped to a nice number
+      st.baseInterval = niceNearest(montantInitial > 0 ? montantInitial / 10 : 1000);
+      st.smoothYMax = currentMax + st.baseInterval * 0.5;
+      st.smoothYMin = Math.max(0, currentMin - st.baseInterval * 0.5);
       st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
-    st.smoothYMax += (rawYMax - st.smoothYMax) * 0.05;
-    st.smoothYMin += (rawYMin - st.smoothYMin) * 0.05;
+    const interval = st.baseInterval;
+    const targetYMax = currentMax + interval * 0.5;
+    const targetYMin = Math.max(0, currentMin - (currentMax - currentMin) * 0.05);
+    st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
+    st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
@@ -419,16 +446,29 @@ function drawFrame(ctx, {
     ctx.moveTo(CX, CY + CH); ctx.lineTo(CX + CW, CY + CH);
     ctx.stroke();
 
-    ctx.fillStyle = 'rgba(255,255,255,0.32)';
+    // Fixed-interval gridlines — values never change, density adapts via alpha
     ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'right';
-    for (const f of [0.25, 0.5, 0.75, 1.0]) {
-      const val = yMin + (yMax - yMin) * f;
-      const yy  = cy(val);
-      if (yy < CY + 12 || yy > CY + CH - 12) continue;
-      ctx.fillText(fmtK(val), CX - 5, yy + 5);
-      ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
+    const pixPerTick = (interval / Math.max(yMax - yMin, 1)) * CH;
+    const firstTick = Math.ceil(yMin / interval) * interval;
+    const lastTick  = Math.ceil(yMax / interval) * interval;
+    for (let v = firstTick; v <= lastTick + interval * 0.01; v += interval) {
+      const tickVal = Math.round(v);
+      const yy = cy(tickVal);
+      if (yy < CY - 10 || yy > CY + CH + 10) continue;
+      const ord = Math.round(tickVal / interval);
+      const alpha = tickAlpha(ord, pixPerTick);
+      if (alpha < 0.02) continue;
+      const inChart = yy >= CY + 10 && yy <= CY + CH - 10;
+      if (inChart) {
+        ctx.globalAlpha = alpha * 0.85;
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.fillText(fmtK(tickVal), CX - 5, yy + 5);
+      }
+      ctx.globalAlpha = alpha * 0.6;
+      ctx.strokeStyle = 'rgba(255,255,255,0.06)'; ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(CX, yy); ctx.lineTo(CX + CW, yy); ctx.stroke();
     }
+    ctx.globalAlpha = 1;
 
     ctx.font = 'bold 16px DM Sans, sans-serif'; ctx.textAlign = 'center';
     const yearsRange = endYear - startYear;
@@ -714,7 +754,7 @@ export default function ComparisonVideoExport({
   const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
   const [showModal, setShowModal] = useState(false);
 
-  const stateRef  = useRef({ smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false });
+  const stateRef  = useRef({ smoothXW: 0, smoothYMin: 0, baseInterval: 1000, initDone: false });
   const logoRef   = useRef({});
   const drawFnRef = useRef(null);
 
@@ -730,7 +770,7 @@ export default function ComparisonVideoExport({
 
   const handleLaunch = async (durationSec, format) => {
     setShowModal(false);
-    stateRef.current = { smoothYMax: 0, smoothYMin: 0, smoothXW: 0, initDone: false };
+    stateRef.current = { smoothXW: 0, smoothYMin: 0, baseInterval: 1000, initDone: false };
 
     // Preload logos (max 3s each)
     logoRef.current = {};
