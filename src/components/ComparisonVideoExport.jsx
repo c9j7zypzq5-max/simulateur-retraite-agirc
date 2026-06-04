@@ -461,7 +461,7 @@ function drawFrame(ctx, {
       const inChart = yy >= CY + 10 && yy <= CY + CH - 10;
       if (inChart) {
         ctx.globalAlpha = alpha * 0.85;
-        ctx.fillStyle = 'rgba(255,255,255,0.32)';
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
         ctx.fillText(fmtK(tickVal), CX - 5, yy + 5);
       }
       ctx.globalAlpha = alpha * 0.6;
