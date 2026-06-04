@@ -771,14 +771,18 @@ export default function ComparisonVideoExport({
   useEffect(() => {
     if (autoLaunchedRef.current) return;
     if (!autoLaunchDuration || autoLaunchDuration <= 0) return;
-    if (disabled) return;
-    if (!chartData || Object.keys(chartData).length === 0) return;
+    // Logs tracés (préfixe [tiktok]) : la génération automatisée capture la console
+    // du navigateur pour diagnostiquer pourquoi l'enregistrement ne démarre pas.
+    if (disabled) { console.log('[tiktok] auto-launch en attente : bouton désactivé (données pas encore prêtes)'); return; }
+    if (!chartData || Object.keys(chartData).length === 0) { console.log('[tiktok] auto-launch en attente : chartData vide'); return; }
+    console.log('[tiktok] auto-launch armé (démarrage dans 1.2 s)', { duration: autoLaunchDuration, format: autoLaunchFormat });
     // Le garde est posé DANS le timeout (et non avant) : sous React.StrictMode le
     // double-montage en dev annule ce timer via le cleanup, et il faut pouvoir le
     // re-programmer au remontage. Sans ça, l'auto-lancement ne partirait jamais en dev.
     const id = setTimeout(() => {
       if (autoLaunchedRef.current) return;
       autoLaunchedRef.current = true;
+      console.log('[tiktok] auto-launch : démarrage de l’enregistrement');
       handleLaunch(autoLaunchDuration, autoLaunchFormat || 'mp4');
     }, 1200);
     return () => clearTimeout(id);

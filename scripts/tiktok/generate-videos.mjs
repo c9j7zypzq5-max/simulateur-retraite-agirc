@@ -125,6 +125,21 @@ async function main() {
     let error = null;
     let fileName = null;
 
+    // ── Diagnostic : on capture la console du navigateur, les erreurs JS et le
+    // statut de l'API prix. En cas d'échec on écrit un .log + une capture d'écran,
+    // ce qui permet de comprendre pourquoi l'enregistrement n'a pas démarré.
+    const logLines = [];
+    const log = (s) => { logLines.push(s); };
+    page.on('console', (msg) => log(`[console.${msg.type()}] ${msg.text()}`));
+    page.on('pageerror', (err) => log(`[pageerror] ${err.message}`));
+    page.on('requestfailed', (req) => log(`[requestfailed] ${req.url()} — ${req.failure()?.errorText || ''}`));
+    page.on('response', (resp) => {
+      const u = resp.url();
+      if (u.includes('/api/prices') || u.includes('/api/logo') || u.includes('ffmpeg-core')) {
+        log(`[response ${resp.status()}] ${u}`);
+      }
+    });
+
     try {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
@@ -147,8 +162,32 @@ async function main() {
       console.log(`  ✅ ${fileName}\n`);
     } catch (e) {
       error = e.message;
-      console.log(`  ⚠️  échec : ${e.message}\n`);
+      console.log(`  ⚠️  échec : ${e.message}`);
+      // Capture d'écran + log pour diagnostic à distance.
+      try {
+        await page.screenshot({ path: path.join(outDir, `${stem}.error.png`) });
+        console.log(`     ↳ capture : ${stem}.error.png`);
+      } catch { /* page peut-être déjà fermée */ }
+      // État de la page au moment de l'échec (titre, bouton vidéo, message d'erreur visible).
+      try {
+        const diag = await page.evaluate(() => {
+          const btn = [...document.querySelectorAll('button')].find(b => /Reel vidéo|Arrêter|Génération|Conversion/.test(b.textContent));
+          const err = document.querySelector('[class*="error"]') || document.querySelector('[role="alert"]');
+          return {
+            title: document.title,
+            url: location.href,
+            videoButton: btn ? { text: btn.textContent.trim(), disabled: btn.disabled } : null,
+            bodyError: err?.textContent?.trim()?.slice(0, 200) || null,
+          };
+        });
+        log(`[diag] ${JSON.stringify(diag)}`);
+        console.log(`     ↳ bouton vidéo : ${diag.videoButton ? `"${diag.videoButton.text}" disabled=${diag.videoButton.disabled}` : 'introuvable'}`);
+        if (diag.bodyError) console.log(`     ↳ erreur affichée : ${diag.bodyError}`);
+      } catch { /* ignore */ }
+      console.log('');
     } finally {
+      // Toujours écrire le journal console (utile aussi pour confirmer l'auto-lancement).
+      try { await writeFile(path.join(outDir, `${stem}.log`), logLines.join('\n'), 'utf8'); } catch { /* ignore */ }
       await page.close();
     }
 
@@ -156,6 +195,7 @@ async function main() {
       idx: row.idx,
       ok,
       error,
+      consoleTail: logLines.slice(-40),
       file: ok ? fileName : null,
       tickers: row.tickers,
       montant: row.montant,
