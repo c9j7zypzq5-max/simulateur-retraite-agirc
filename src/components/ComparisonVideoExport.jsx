@@ -84,20 +84,30 @@ function fmtFull(v) {
   return Math.round(v).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' €';
 }
 
-// Compute fixed, nice round Y-axis ticks from the full dataset maximum.
-// Returns { axisMax, ticks } — both stable throughout the animation.
+// Returns { axisMax, ticks } with 3-5 nice round gridline values.
+// Uses a candidates list so tick values are always clean integers — no drift.
+// Called every frame from currently visible data: axis recalibrates when the
+// curve approaches the current ceiling (smooth lerp handles the transition).
 function niceYAxis(rawMax) {
   if (!rawMax || rawMax <= 0) return { axisMax: 1000, ticks: [500, 1000] };
-  const rough = rawMax / 4;
-  const exp   = Math.floor(Math.log10(Math.max(rough, 1)));
-  const unit  = Math.pow(10, exp);
-  let interval = 10 * unit;
-  for (const m of [1, 2, 2.5, 5, 10]) {
-    if (m * unit >= rough) { interval = m * unit; break; }
+  const candidates = [
+    10, 20, 50,
+    100, 200, 500,
+    1_000, 2_000, 5_000,
+    10_000, 20_000, 50_000,
+    100_000, 200_000, 500_000,
+    1_000_000, 2_000_000, 5_000_000,
+    10_000_000, 20_000_000, 50_000_000,
+  ];
+  let bestInterval = candidates[candidates.length - 1];
+  for (const c of candidates) {
+    const n = Math.ceil(rawMax / c);
+    if (n >= 3 && n <= 5) { bestInterval = c; break; }
   }
-  const axisMax = Math.ceil(rawMax / interval) * interval;
+  const axisMax = Math.ceil(rawMax / bestInterval) * bestInterval;
   const ticks = [];
-  for (let v = interval; v <= axisMax + interval * 0.01; v += interval) ticks.push(Math.round(v));
+  for (let v = bestInterval; v <= axisMax + bestInterval * 0.01; v += bestInterval)
+    ticks.push(Math.round(v));
   return { axisMax, ticks };
 }
 
@@ -306,21 +316,18 @@ function drawFrame(ctx, {
 
   if (allVisible.length >= 2) {
     const st = stateRef.current;
+    // Nice Y scale from visible data — recalibrates as the curve grows.
+    // targetYMax jumps in discrete steps (3-5 ticks); smoothYMax lerps toward it
+    // so the transition is fluid while labels stay on clean round values.
+    const currentMax = Math.max(...allVisible.map(p => p.value), montantInitial);
+    const { axisMax: targetYMax, ticks: yTicks } = niceYAxis(currentMax);
     if (!st.initDone) {
-      // Compute Y scale from ALL chart data (not just the currently visible slice)
-      // so gridline values are fixed from frame 1 — like X-axis year labels.
-      const allFinalVals = [montantInitial];
-      for (const [, pts] of Object.entries(chartData)) {
-        if (Array.isArray(pts)) pts.forEach(p => allFinalVals.push(p.value));
-      }
-      const { axisMax, ticks } = niceYAxis(Math.max(...allFinalVals));
-      st.axisMax = axisMax;
-      st.yTicks  = ticks;
+      st.smoothYMax = targetYMax;
       st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
-    const yMax = st.axisMax;
-    const yMin = 0;
+    st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
+    const yMax = st.smoothYMax, yMin = 0;
 
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
     const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
@@ -442,7 +449,7 @@ function drawFrame(ctx, {
 
     ctx.fillStyle = 'rgba(255,255,255,0.32)';
     ctx.font = '15px DM Sans, sans-serif'; ctx.textAlign = 'right';
-    for (const tickVal of (st.yTicks || [])) {
+    for (const tickVal of yTicks) {
       const yy = cy(tickVal);
       if (yy < CY + 12 || yy > CY + CH - 12) continue;
       ctx.fillText(fmtK(tickVal), CX - 5, yy + 5);
