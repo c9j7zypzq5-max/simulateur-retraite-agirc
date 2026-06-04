@@ -211,10 +211,11 @@ async function main() {
 
   await browser.close();
 
-  // Métadonnées pour l'étape de publication TikTok
+  // Métadonnées (récap de toutes les vidéos)
   await writeFile(path.join(outDir, 'metadata.json'), JSON.stringify(results, null, 2), 'utf8');
 
-  // Une légende prête à coller par vidéo (titre + description)
+  // Une légende prête à coller par vidéo (titre + description) — à copier dans
+  // TikTok au moment de la publication manuelle.
   for (const r of results.filter(x => x.ok)) {
     const caption = [r.title, r.description].filter(Boolean).join('\n\n');
     await writeFile(path.join(outDir, r.file.replace(/\.(mp4|webm)$/i, '.txt')), caption, 'utf8');
@@ -225,8 +226,8 @@ async function main() {
   if (okCount < results.length) {
     console.log('   Lignes en échec :', results.filter(r => !r.ok).map(r => `#${r.idx}`).join(', '));
   }
-  console.log('   Métadonnées : metadata.json');
-  console.log('   Étape suivante : node upload-tiktok.mjs --out ' + args.out);
+  console.log('   Vidéos + légendes (.txt) prêtes à publier à la main sur TikTok.');
+  console.log('   Récap : metadata.json');
 }
 
 main().catch(e => { console.error(e); process.exit(1); });

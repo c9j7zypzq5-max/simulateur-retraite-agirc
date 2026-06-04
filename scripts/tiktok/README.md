@@ -1,11 +1,11 @@
 # 🎬 Générateur de vidéos TikTok (comparateur)
 
 Génère **en lot** les vidéos du comparateur de [mesimulateurs.fr](https://www.mesimulateurs.fr)
-à partir d'un simple tableau, puis t'aide à les publier sur TikTok.
+à partir d'un simple tableau.
 
 Tu mets tes scénarios dans un tableau, le script ouvre le site en preview, remplit
 les données pour chaque ligne, **télécharge les vidéos une par une**, et prépare
-les légendes (titre + description) pour TikTok.
+les légendes (titre + description). Tu n'as plus qu'à **publier toi-même** sur TikTok.
 
 ---
 
@@ -76,21 +76,14 @@ out/
 
 ---
 
-## 4. Publier sur TikTok (étape 2)
+## 4. Publier (à la main)
 
-Script **assisté** : tu te connectes une fois (session mémorisée), il attache la
-vidéo et pré-remplit la légende. Par défaut **il ne publie pas** — tu vérifies et
-tu cliques « Publier » toi-même.
+Les vidéos `.mp4` et leurs légendes `.txt` sont dans `out/`. Tu les publies
+toi-même sur TikTok : importe le `.mp4`, ouvre le `.txt` correspondant et
+copie-colle le titre + la description.
 
-```bash
-node upload-tiktok.mjs --out ./out
-```
-
-- `--auto-post` : tente de cliquer « Publier » automatiquement (à tes risques).
-- `--profile DIR` : dossier du profil navigateur persistant (défaut `./.tiktok-profile`).
-
-> ⚠️ Automatiser une plateforme tierce peut enfreindre ses CGU, et son interface
-> évolue souvent. Garde la main sur la connexion et la publication.
+> 💡 En cas d'échec sur une ligne, le script écrit aussi `XX-….error.png`
+> (capture) et `XX-….log` (journal navigateur) dans `out/` pour comprendre.
 
 ---
 

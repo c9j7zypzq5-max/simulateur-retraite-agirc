@@ -3,10 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Génère en lot les vidéos du comparateur (mesimulateurs.fr) à partir d'un tableau, puis aide à les publier sur TikTok.",
+  "description": "Génère en lot les vidéos du comparateur (mesimulateurs.fr) à partir d'un tableau.",
   "scripts": {
     "generate": "node generate-videos.mjs",
-    "upload": "node upload-tiktok.mjs",
     "setup": "playwright install chromium",
     "postinstall": "playwright install chromium || true"
   },
