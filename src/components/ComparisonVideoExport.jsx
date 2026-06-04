@@ -773,8 +773,14 @@ export default function ComparisonVideoExport({
     if (!autoLaunchDuration || autoLaunchDuration <= 0) return;
     if (disabled) return;
     if (!chartData || Object.keys(chartData).length === 0) return;
-    autoLaunchedRef.current = true;
-    const id = setTimeout(() => { handleLaunch(autoLaunchDuration, autoLaunchFormat || 'mp4'); }, 1200);
+    // Le garde est posé DANS le timeout (et non avant) : sous React.StrictMode le
+    // double-montage en dev annule ce timer via le cleanup, et il faut pouvoir le
+    // re-programmer au remontage. Sans ça, l'auto-lancement ne partirait jamais en dev.
+    const id = setTimeout(() => {
+      if (autoLaunchedRef.current) return;
+      autoLaunchedRef.current = true;
+      handleLaunch(autoLaunchDuration, autoLaunchFormat || 'mp4');
+    }, 1200);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoLaunchDuration, autoLaunchFormat, disabled, chartData]);

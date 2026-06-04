@@ -31,6 +31,7 @@ function parseArgs(argv) {
     const a = argv[i];
     const next = () => argv[++i];
     if (a === '--base-url') args.baseUrl = next();
+    else if (a === '--bypass-url') args.bypassUrl = next();
     else if (a === '--input') args.input = next();
     else if (a === '--out') args.out = next();
     else if (a === '--duration') args.duration = parseInt(next(), 10) || 70;
@@ -38,6 +39,7 @@ function parseArgs(argv) {
     else if (a === '--limit') args.limit = parseInt(next(), 10);
     else if (a === '--only') args.only = next().split(',').map(s => s.trim());
     else if (a === '--headful') args.headful = true;
+    else if (a === '--insecure') args.insecure = true;
     else if (a === '--help' || a === '-h') args.help = true;
   }
   return args;
@@ -54,6 +56,8 @@ Options :
   --out DIR        Dossier de sortie (défaut: ./out)
   --duration SEC   15 | 30 | 60 | 70 (défaut: 70)
   --format FMT     mp4 | webm (défaut: mp4 — prêt pour TikTok)
+  --bypass-url URL Lien de partage Vercel (?_vercel_share=…) pour un preview protégé
+  --insecure       Ignorer les erreurs de certificat TLS (proxy/MITM)
   --limit N        Limiter aux N premières lignes
   --only 1,3,5     Ne traiter que ces numéros de lignes (#)
   --headful        Afficher le navigateur
@@ -89,7 +93,17 @@ async function main() {
     acceptDownloads: true,
     viewport: { width: 480, height: 900 },
     deviceScaleFactor: 2,
+    ignoreHTTPSErrors: !!args.insecure,
   });
+
+  // Preview Vercel protégé : un lien de partage (?_vercel_share=…) pose un cookie
+  // d'accès valable pour tout le domaine. On le visite une fois au démarrage.
+  if (args.bypassUrl) {
+    const bp = await context.newPage();
+    await bp.goto(args.bypassUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    await bp.close();
+    console.log('🔓 Accès au preview protégé établi.\n');
+  }
 
   const results = [];
   const durationMs = args.duration * 1000;

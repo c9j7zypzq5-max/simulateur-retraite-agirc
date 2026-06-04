@@ -7,9 +7,10 @@
   "scripts": {
     "generate": "node generate-videos.mjs",
     "upload": "node upload-tiktok.mjs",
-    "postinstall": "playwright install chromium"
+    "setup": "playwright install chromium",
+    "postinstall": "playwright install chromium || true"
   },
   "devDependencies": {
-    "playwright": "^1.49.0"
+    "playwright": "^1.56.1"
   }
 }

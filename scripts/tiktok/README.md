@@ -59,6 +59,8 @@ Options utiles :
 | `--format FMT`   | `mp4` (prêt TikTok) ou `webm` | `mp4` |
 | `--only 1,3`     | Ne traiter que ces n° de lignes | toutes |
 | `--limit N`      | Traiter les N premières lignes | toutes |
+| `--bypass-url`   | Lien de partage Vercel (`?_vercel_share=…`) si le preview est protégé | — |
+| `--insecure`     | Ignorer les erreurs TLS (proxy d'entreprise) | off |
 | `--headful`      | Afficher le navigateur (debug) | masqué |
 
 Chaque vidéo est enregistrée **en temps réel** (≈ la durée choisie) puis
