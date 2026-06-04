@@ -268,7 +268,11 @@ function drawFrame(ctx, {
   const CX = 50, CY = 168, CW = W - 50 - 96, CH = 696;
 
   const chartPhase    = Math.max(0, Math.min(1, t / 0.92));
-  const chartProgress = Math.pow(chartPhase, 0.45);
+  // Révélation linéaire (vitesse constante) : sur les longues périodes, un
+  // exposant < 1 front-chargeait l'animation (la pente quasi infinie en t=0
+  // faisait « sauter » l'axe X de plusieurs années dès le début). En linéaire,
+  // les courbes et les dates avancent à rythme constant, sans bond initial.
+  const chartProgress = chartPhase;
   const minStartFrac  = Math.min(2.5 / Math.max(totalYears, 1), 0.3);
   const maxT = chartProgress;
 
