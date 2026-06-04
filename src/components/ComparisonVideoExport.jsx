@@ -319,24 +319,29 @@ function drawFrame(ctx, {
     if (!st.initDone) {
       // base interval ≈ 10% of initial investment, snapped to a nice number
       st.baseInterval = niceNearest(montantInitial > 0 ? montantInitial / 10 : 1000);
-      st.smoothYMax = currentMax + st.baseInterval * 0.5;
+      st.smoothYMax = currentMax + Math.max(st.baseInterval * 0.6, (currentMax - currentMin) * 0.12);
       st.smoothYMin = Math.max(0, currentMin - st.baseInterval * 0.5);
       st.initDone = true;
     }
     const interval = st.baseInterval;
-    const targetYMax = currentMax + interval * 0.5;
+    // Marge en haut du graphique : au moins une demi-graduation, et au moins 12 %
+    // de l'amplitude visible — pour que la courbe la plus haute (logo + montant au
+    // bout) ne colle jamais au bord supérieur.
+    const targetYMax = currentMax + Math.max(interval * 0.6, (currentMax - currentMin) * 0.12);
     const targetYMin = Math.max(0, currentMin - (currentMax - currentMin) * 0.05);
     st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
     st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
-    // Pointe de la courbe épinglée au bord droit : la fenêtre visible vaut
-    // exactement la fraction déjà révélée, donc le dernier point est toujours à
-    // l'extrême droite. Comme la révélation est linéaire, la fenêtre grandit à
-    // vitesse constante et l'historique se comprime vers la gauche, sans marge ni
-    // lissage (currentFrac est déjà fluide). Petit plancher pour éviter /0.
+    // Pointe de la courbe épinglée juste à l'intérieur du bord droit : la fenêtre
+    // dépasse la fraction révélée d'un facteur RIGHT_HEADROOM, ce qui laisse une
+    // marge constante à droite pour que l'étiquette du montant tienne toujours à
+    // droite de la pointe sans déborder. La révélation reste linéaire (vitesse
+    // constante) et la fenêtre n'est pas plafonnée à 1, pour garder cette marge
+    // jusqu'à la fin. Petit plancher pour éviter une division par zéro.
+    const RIGHT_HEADROOM = 1.13;
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
-    const xWindow = Math.min(1, Math.max(currentFrac, 0.0001));
+    const xWindow = Math.max(currentFrac * RIGHT_HEADROOM, 0.0001);
 
     const cx = frac => CX + (frac / Math.max(xWindow, 0.001)) * CW;
     const cy = v    => CY + CH - ((v - yMin) / Math.max(yMax - yMin, 1)) * CH;
