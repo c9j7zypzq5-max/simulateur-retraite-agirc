@@ -376,7 +376,7 @@ export default function VideoExport({
       setState('idle');
     };
 
-    rec.start();
+    rec.start(1000);
     const t0 = performance.now();
     function frame(now) {
       if (cancelRef.current) { rec.stop(); return; }
@@ -402,7 +402,7 @@ export default function VideoExport({
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none' }} />
+      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: '-9999px', left: '-9999px', pointerEvents: 'none' }} />
 
       {isSupported && (
         <button

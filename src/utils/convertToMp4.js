@@ -31,6 +31,7 @@ export async function convertToMp4(inputBlob, onProgress) {
   try {
     await instance.writeFile(`in.${ext}`, new Uint8Array(await inputBlob.arrayBuffer()));
     await instance.exec([
+      '-ignore_editlist', '1',   // strip Safari fMP4 edit-list PTS offset before remux
       '-fflags', '+genpts',
       '-i', `in.${ext}`,
       '-c', 'copy',

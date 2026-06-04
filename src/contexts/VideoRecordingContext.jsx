@@ -98,7 +98,7 @@ export function VideoRecordingProvider({ children }) {
       setRecState('idle'); setProgress(0);
     };
 
-    rec.start();
+    rec.start(1000); // timeslice keeps Safari's MediaRecorder alive on long recordings
     const t0 = performance.now();
     let lastPct = -1;
 
@@ -127,7 +127,9 @@ export function VideoRecordingProvider({ children }) {
 
   return (
     <VideoRecordingCtx.Provider value={{ recState, progress, label, startRecording, stop }}>
-      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none', position: 'fixed' }} />
+      {/* position off-screen rather than display:none — Safari mutes captureStream tracks
+          on hidden (display:none) elements after ~15s, freezing the recording */}
+      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: '-9999px', left: '-9999px', pointerEvents: 'none' }} />
       {children}
     </VideoRecordingCtx.Provider>
   );
