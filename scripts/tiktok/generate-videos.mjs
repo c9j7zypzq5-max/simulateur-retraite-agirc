@@ -25,8 +25,12 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { parseTable, buildComparateurUrl, slugify } from './lib/parse.mjs';
 
+// Preview par défaut (alias stable de la branche claude/tiktok-video-generator-pwL1L).
+// Surchargeable avec --base-url.
+const DEFAULT_BASE_URL = 'https://simulateur-retraite-git-claude-4289ab-c9j7zypzq5-maxs-projects.vercel.app';
+
 function parseArgs(argv) {
-  const args = { input: 'videos.tsv', out: './out', duration: 70, format: 'mp4' };
+  const args = { input: 'videos.tsv', out: './out', duration: 70, format: 'mp4', baseUrl: DEFAULT_BASE_URL };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -48,10 +52,10 @@ function parseArgs(argv) {
 const HELP = `
 Génération de vidéos comparateur → TikTok
 
-  node generate-videos.mjs --base-url <preview-url> [options]
+  node generate-videos.mjs [options]   (la preview par défaut est déjà configurée)
 
 Options :
-  --base-url URL   URL de la preview (obligatoire), ex: https://xxx.vercel.app
+  --base-url URL   URL de la preview (défaut: alias de la branche tiktok)
   --input FILE     Tableau TSV/CSV (défaut: videos.tsv)
   --out DIR        Dossier de sortie (défaut: ./out)
   --duration SEC   15 | 30 | 60 | 70 (défaut: 70)
