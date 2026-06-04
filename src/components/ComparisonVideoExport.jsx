@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useVideoRecording } from '../contexts/VideoRecordingContext';
 
 // Ticker → domaine Clearbit pour logo
@@ -725,6 +725,7 @@ export default function ComparisonVideoExport({
   periodicAmt = 0,
   periodicFreq = 'monthly',
   showPeriodicInChart = false,
+  autoLaunchDuration = null,
 }) {
   const { recState, startRecording: ctxStartRecording, stop } = useVideoRecording();
   const [showModal, setShowModal] = useState(false);
@@ -770,6 +771,21 @@ export default function ComparisonVideoExport({
 
     ctxStartRecording({ drawFnRef, duration: durationSec * 1000, filename, label: lbl });
   };
+
+  // Auto-lancement piloté par l'URL (?video=NN) : démarre l'enregistrement dès que
+  // les données du graphique sont prêtes. Utilisé par la génération automatisée
+  // de vidéos (scripts/tiktok). Ne se déclenche qu'une seule fois.
+  const autoLaunchedRef = useRef(false);
+  useEffect(() => {
+    if (autoLaunchedRef.current) return;
+    if (!autoLaunchDuration || autoLaunchDuration <= 0) return;
+    if (disabled) return;
+    if (!chartData || Object.keys(chartData).length === 0) return;
+    autoLaunchedRef.current = true;
+    const id = setTimeout(() => { handleLaunch(autoLaunchDuration); }, 1200);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoLaunchDuration, disabled, chartData]);
 
   const isSupported = typeof MediaRecorder !== 'undefined';
   const isRecording = recState === 'recording';

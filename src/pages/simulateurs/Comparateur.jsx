@@ -21,6 +21,59 @@ function fmtK(v) {
 }
 
 const FREQ_MONTHS = { monthly: 1, quarterly: 3, semi: 6, annual: 12 };
+const FREQ_OK = new Set(['monthly', 'quarterly', 'semi', 'annual']);
+
+// ── Pré-remplissage via paramètres d'URL ────────────────────────────────────────
+// Permet de piloter le comparateur depuis un lien (utile pour la génération
+// automatisée de vidéos TikTok via scripts/tiktok).
+//   ?a=^GSPC,BTC-USD&montant=10000&dca=0&freq=monthly&from=2017-01&to=2024-12&video=70
+function parseInitialConfig() {
+  if (typeof window === 'undefined') return null;
+  const p = new URLSearchParams(window.location.search);
+  if ([...p.keys()].length === 0) return null;
+
+  const aParam = p.get('a') || p.get('assets');
+  let assets = null;
+  if (aParam) {
+    assets = aParam
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .slice(0, 5)
+      .map((ticker, i) => {
+        const preset = ASSET_PRESETS.find(x => x.ticker.toLowerCase() === ticker.toLowerCase());
+        return {
+          id: i,
+          ticker: preset ? preset.ticker : ticker.toUpperCase(),
+          label: preset ? preset.label : ticker.toUpperCase(),
+          emoji: preset ? preset.emoji : '📈',
+          color: ASSET_COLORS[i % ASSET_COLORS.length],
+        };
+      });
+    if (assets.length === 0) assets = null;
+  }
+
+  const parseYM = (s) => {
+    if (!s) return null;
+    const m = /^(\d{4})-(\d{1,2})$/.exec(s.trim());
+    if (!m) return null;
+    return { year: +m[1], month: Math.min(12, Math.max(1, +m[2])) };
+  };
+
+  const freq = p.get('freq');
+  const videoRaw = p.get('video');
+  const videoDur = videoRaw != null ? parseInt(videoRaw, 10) : null;
+
+  return {
+    assets,
+    fromDate:     parseYM(p.get('from')),
+    toDate:       parseYM(p.get('to')),
+    montant:      p.has('montant') ? Math.max(1, parseFloat(p.get('montant')) || 0) : null,
+    periodicAmt:  p.has('dca')     ? Math.max(0, parseFloat(p.get('dca'))     || 0) : null,
+    periodicFreq: FREQ_OK.has(freq) ? freq : null,
+    videoDur:     videoDur && videoDur > 0 ? videoDur : null,
+  };
+}
 
 // ── Calcul de la performance normalisée ────────────────────────────────────────
 function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestDivs) {
@@ -483,18 +536,20 @@ function DateSelect({ label, value, onChange }) {
 export default function Comparateur() {
   const [theme, setTheme] = useTheme();
 
-  const [assets, setAssets] = useState([
+  const urlCfg = useRef(parseInitialConfig()).current;
+
+  const [assets, setAssets] = useState(urlCfg?.assets || [
     { id: 0, ticker: '^GSPC',   label: 'S&P 500',          emoji: '🇺🇸', color: ASSET_COLORS[0] },
     { id: 1, ticker: 'IWDA.AS', label: 'MSCI World (IWDA)', emoji: '🌍', color: ASSET_COLORS[1] },
   ]);
 
-  const [fromDate, setFromDate] = useState({ year: 2015, month: 1 });
-  const [toDate,   setToDate]   = useState({ year: 2024, month: 12 });
-  const [montant,  setMontant]  = useState(10000);
+  const [fromDate, setFromDate] = useState(urlCfg?.fromDate || { year: 2015, month: 1 });
+  const [toDate,   setToDate]   = useState(urlCfg?.toDate   || { year: 2024, month: 12 });
+  const [montant,  setMontant]  = useState(urlCfg?.montant ?? 10000);
 
   // DCA
-  const [periodicAmt,         setPeriodicAmt]         = useState(0);
-  const [periodicFreq,        setPeriodicFreq]        = useState('monthly');
+  const [periodicAmt,         setPeriodicAmt]         = useState(urlCfg?.periodicAmt ?? 0);
+  const [periodicFreq,        setPeriodicFreq]        = useState(urlCfg?.periodicFreq || 'monthly');
   const [showPeriodicInChart, setShowPeriodicInChart] = useState(true);
 
   // Réinvestissement & intérêts
@@ -830,6 +885,7 @@ export default function Comparateur() {
                   periodicAmt={periodicAmt}
                   periodicFreq={periodicFreq}
                   showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
+                  autoLaunchDuration={urlCfg?.videoDur || null}
                 />
               ) : <div />}
               <ShareBar
