@@ -14,7 +14,13 @@ les légendes (titre + description). Tu n'as plus qu'à **publier toi-même** su
 ```bash
 cd scripts/tiktok
 npm install          # installe Playwright + télécharge Chromium
+brew install ffmpeg  # requis pour des .mp4 compatibles Photos (macOS)
 ```
+
+> **Pourquoi ffmpeg ?** Le Chromium de Playwright n'a pas les codecs propriétaires
+> et enregistre en VP9/WebM, que l'app Photos d'Apple refuse. Le script ré-encode
+> donc chaque vidéo en **H.264 (yuv420p)** avec le `ffmpeg` du système → `.mp4`
+> lisible par Photos / QuickTime / TikTok. Sans ffmpeg, tu obtiens des `.webm`.
 
 > Le générateur vidéo n'est actif qu'en **preview** et en **local** (désactivé en
 > production pour préserver le quota). Utilise donc le lien d'une preview Vercel.

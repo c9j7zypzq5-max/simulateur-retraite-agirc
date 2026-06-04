@@ -21,9 +21,39 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { chromium } from 'playwright';
-import { readFile, mkdir, writeFile, readdir } from 'node:fs/promises';
+import { readFile, mkdir, writeFile, readdir, rm } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
 import path from 'node:path';
 import { parseTable, buildComparateurUrl, slugify } from './lib/parse.mjs';
+
+// ── Ré-encodage local (ffmpeg natif) ────────────────────────────────────────
+// Le Chromium de Playwright n'a pas les codecs propriétaires : il enregistre en
+// VP9/WebM. Un simple remux en .mp4 donnerait du VP9 dans un conteneur MP4, que
+// l'app Photos d'Apple refuse. On ré-encode donc le WebM en H.264 yuv420p
+// (+faststart) avec le ffmpeg du système → .mp4 lisible partout (Photos, TikTok).
+function run(cmd, cmdArgs) {
+  return new Promise((resolve) => {
+    const p = spawn(cmd, cmdArgs, { stdio: 'ignore' });
+    p.on('error', () => resolve(1));
+    p.on('close', (code) => resolve(code ?? 1));
+  });
+}
+
+async function hasFfmpeg() {
+  return (await run('ffmpeg', ['-version'])) === 0;
+}
+
+async function transcodeToMp4(input, output) {
+  const code = await run('ffmpeg', [
+    '-y', '-i', input,
+    '-c:v', 'libx264', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
+    '-preset', 'veryfast', '-crf', '18',
+    '-movflags', '+faststart',
+    '-c:a', 'aac', '-b:a', '128k',
+    output,
+  ]);
+  return code === 0;
+}
 
 // Preview par défaut (alias stable de la branche claude/tiktok-video-generator-pwL1L).
 // Surchargeable avec --base-url.
@@ -114,9 +144,16 @@ async function main() {
   const results = [];
   const durationMs = args.duration * 1000;
 
-  // Le rendu (durée réelle) + la conversion MP4 (ffmpeg.wasm : chargement du core
-  // depuis unpkg + remux) peuvent prendre du temps : large marge de sécurité.
-  const downloadTimeout = durationMs + 240000;
+  // Le rendu (durée réelle) puis le téléchargement du WebM brut : large marge.
+  const downloadTimeout = durationMs + 120000;
+
+  // ffmpeg natif requis pour produire des .mp4 compatibles Photos (H.264).
+  const ffmpegOK = await hasFfmpeg();
+  if (!ffmpegOK) {
+    console.log('⚠️  ffmpeg introuvable sur ce système.');
+    console.log('    Les vidéos seront enregistrées en .webm (NON importable dans Photos).');
+    console.log('    Installe ffmpeg pour des .mp4 compatibles :  brew install ffmpeg\n');
+  }
 
   // --continue : on liste les fichiers déjà présents pour sauter ceux déjà générés.
   const existingFiles = args.continue ? await readdir(outDir).catch(() => []) : [];
@@ -131,7 +168,9 @@ async function main() {
       continue;
     }
 
-    const url = buildComparateurUrl(args.baseUrl, row, args.duration, args.format);
+    // On télécharge le WebM brut (rapide, pas de remux dans le navigateur), puis
+    // on ré-encode localement en H.264. Si ffmpeg manque, on garde le .webm.
+    const url = buildComparateurUrl(args.baseUrl, row, args.duration, 'webm');
 
     console.log(`▶ #${row.idx} ${row.tickers.join(' vs ')}`);
     console.log(`  ${url}`);
@@ -166,16 +205,30 @@ async function main() {
       // Les polices doivent être prêtes pour un rendu propre du canvas.
       await page.evaluate(() => document.fonts && document.fonts.ready).catch(() => {});
 
-      // L'enregistrement démarre automatiquement (?video=NN&format=…). On attend
-      // le téléchargement final (MP4 après conversion, ou WebM selon le format).
+      // L'enregistrement démarre automatiquement (?video=NN&format=webm). On
+      // attend le téléchargement du WebM brut.
       const download = await page.waitForEvent('download', { timeout: downloadTimeout });
-      // Extension réelle telle que produite par le site (.mp4 ou .webm).
-      const suggested = download.suggestedFilename() || '';
-      const ext = (suggested.match(/\.(mp4|webm)$/i)?.[1] || args.format).toLowerCase();
-      fileName = `${stem}.${ext}`;
-      await download.saveAs(path.join(outDir, fileName));
+      const webmPath = path.join(outDir, `${stem}.webm`);
+      await download.saveAs(webmPath);
+
+      if (ffmpegOK) {
+        // Ré-encodage local en H.264 yuv420p → .mp4 compatible Photos/TikTok.
+        const mp4Path = path.join(outDir, `${stem}.mp4`);
+        const okEnc = await transcodeToMp4(webmPath, mp4Path);
+        if (okEnc) {
+          await rm(webmPath).catch(() => {});
+          fileName = `${stem}.mp4`;
+          console.log(`  ✅ ${fileName}\n`);
+        } else {
+          // Le ré-encodage a échoué : on garde le WebM plutôt que rien.
+          fileName = `${stem}.webm`;
+          console.log(`  ⚠️  ré-encodage ffmpeg échoué — conservé en ${fileName}\n`);
+        }
+      } else {
+        fileName = `${stem}.webm`;
+        console.log(`  ✅ ${fileName} (webm — installe ffmpeg pour un .mp4)\n`);
+      }
       ok = true;
-      console.log(`  ✅ ${fileName}\n`);
     } catch (e) {
       error = e.message;
       console.log(`  ⚠️  échec : ${e.message}`);
