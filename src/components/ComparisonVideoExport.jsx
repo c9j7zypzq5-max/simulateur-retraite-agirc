@@ -273,7 +273,6 @@ function drawFrame(ctx, {
   // faisait « sauter » l'axe X de plusieurs années dès le début). En linéaire,
   // les courbes et les dates avancent à rythme constant, sans bond initial.
   const chartProgress = chartPhase;
-  const minStartFrac  = Math.min(2.5 / Math.max(totalYears, 1), 0.3);
   const maxT = chartProgress;
 
   const tickerPts = {};
@@ -322,7 +321,6 @@ function drawFrame(ctx, {
       st.baseInterval = niceNearest(montantInitial > 0 ? montantInitial / 10 : 1000);
       st.smoothYMax = currentMax + st.baseInterval * 0.5;
       st.smoothYMin = Math.max(0, currentMin - st.baseInterval * 0.5);
-      st.smoothXW = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
       st.initDone = true;
     }
     const interval = st.baseInterval;
@@ -332,11 +330,13 @@ function drawFrame(ctx, {
     st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
+    // Pointe de la courbe épinglée au bord droit : la fenêtre visible vaut
+    // exactement la fraction déjà révélée, donc le dernier point est toujours à
+    // l'extrême droite. Comme la révélation est linéaire, la fenêtre grandit à
+    // vitesse constante et l'historique se comprime vers la gauche, sans marge ni
+    // lissage (currentFrac est déjà fluide). Petit plancher pour éviter /0.
     const currentFrac = Math.max(...allVisible.map(p => p.t), 0);
-    const initXW      = totalYears > 0 ? Math.min(1, Math.max(1 / totalYears, minStartFrac)) : 1;
-    const targetXW    = Math.min(1, Math.max(initXW, currentFrac * 1.18));
-    st.smoothXW += (targetXW - st.smoothXW) * 0.04;
-    const xWindow = Math.min(1, st.smoothXW);
+    const xWindow = Math.min(1, Math.max(currentFrac, 0.0001));
 
     const cx = frac => CX + (frac / Math.max(xWindow, 0.001)) * CW;
     const cy = v    => CY + CH - ((v - yMin) / Math.max(yMax - yMin, 1)) * CH;
