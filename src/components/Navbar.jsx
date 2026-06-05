@@ -67,7 +67,7 @@ const ALL_ITEMS = [
   { path: "/simulateurs/msa",                  icon: "🌾", title: "Retraite agricole MSA",  subtitle: "Exploitants & salariés" },
 ];
 
-const NAV_GROUPS = [
+export const NAV_GROUPS = [
   {
     id: "retraite", icon: "🏦", label: "Retraite",
     items: ALL_ITEMS,

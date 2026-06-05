@@ -6,6 +6,7 @@ import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { mensualite } from "../../utils/finance.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
@@ -77,15 +78,6 @@ function plafondRevenu(zone, personnes) {
 
 function plafondOperation(zone, personnes) {
   return Math.round(PLAFOND_OPERATION[zone] * coeff(personnes) / 1000) * 1000;
-}
-
-// Mensualité d'amortissement constant (pour la comparaison avec un prêt classique).
-function mensualite(capital, tauxAnnuel, dureeAns) {
-  if (capital <= 0 || dureeAns <= 0) return 0;
-  const r = tauxAnnuel / 100 / 12;
-  const n = dureeAns * 12;
-  if (r === 0) return capital / n;
-  return (capital * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
 }
 
 const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };

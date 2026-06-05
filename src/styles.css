@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
+/* Polices chargées via <link rel="preconnect"> + stylesheet dans index.html
+   (meilleur LCP que @import CSS, qui crée une chaîne de requêtes bloquante). */
 
 :root {
   --bg: #060e1c;

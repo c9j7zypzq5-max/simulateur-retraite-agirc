@@ -1,7 +1,57 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { NAV_GROUPS } from "./Navbar.jsx";
+
+// Sélectionne jusqu'à 6 simulateurs liés : d'abord ceux de la même catégorie que
+// la page courante, complétés par d'autres si besoin. Améliore le maillage interne
+// (SEO) et la découverte.
+function relatedSimulators(pathname) {
+  const group = NAV_GROUPS.find(g => g.items.some(i => i.path === pathname));
+  if (!group) return [];
+  const siblings = group.items.filter(i => i.path !== pathname);
+  const others = NAV_GROUPS.flatMap(g => g.items).filter(
+    i => i.path !== pathname && !siblings.some(s => s.path === i.path)
+  );
+  return [...siblings, ...others].slice(0, 6);
+}
+
+function RelatedSimulators() {
+  const { pathname } = useLocation();
+  if (!pathname.startsWith("/simulateurs/")) return null;
+  const related = relatedSimulators(pathname);
+  if (related.length === 0) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Simulateurs liés">
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+        Simulateurs liés
+        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
+        {related.map(item => (
+          <Link key={item.path} to={item.path} style={{
+            display: "flex", alignItems: "center", gap: 10,
+            padding: "12px 14px", borderRadius: 12, textDecoration: "none",
+            background: "var(--card-bg)", border: "1px solid var(--border)",
+            transition: "border-color 0.2s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+          >
+            <span style={{ fontSize: "1.25rem", flexShrink: 0 }} aria-hidden="true">{item.icon}</span>
+            <div style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 500, color: "var(--text)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.title}</div>
+              <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{item.subtitle}</div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
 
 export default function Footer() {
   return (
+    <>
+    <RelatedSimulators />
     <footer style={{
       borderTop: "1px solid var(--border)",
       padding: "28px 24px 40px",
@@ -44,5 +94,6 @@ export default function Footer() {
         </p>
       </div>
     </footer>
+    </>
   );
 }
