@@ -154,6 +154,30 @@ export default function AssuranceVie() {
   const animNet = useAnimatedNumber(capitalNet);
   const animPlusValue = useAnimatedNumber(plusValue);
 
+  const report = {
+    title: "Simulateur Assurance-Vie",
+    highlight: { label: "Capital net à terme", value: hasInput ? fmtEur(Math.round(capitalNet)) : "—" },
+    params: [
+      { label: "Versement initial", value: fmtEur(versementInitial) },
+      { label: "Versement mensuel", value: versementMensuel > 0 ? fmtEur(versementMensuel) : "—" },
+      { label: "Rendement annuel net", value: `${rendement} %` },
+      { label: "Durée de détention", value: `${duree} ans` },
+      { label: "Situation fiscale", value: couple ? "Couple" : "Seul" },
+    ],
+    results: hasInput ? [
+      { label: "Capital net après impôt", value: fmtEur(Math.round(capitalNet)), strong: true },
+      { label: "Capital brut à terme", value: fmtEur(Math.round(capital)) },
+      { label: "Total versé", value: fmtEur(totalVerse) },
+      { label: "Plus-value (gains)", value: fmtEur(Math.round(plusValue)) },
+      { label: "Impôt estimé sur les gains", value: fmtEur(Math.round(impot)) },
+    ] : [],
+    notes: hasInput ? [
+      apres8ans
+        ? `Après 8 ans : abattement de ${fmtEur(couple ? ABATTEMENT_COUPLE : ABATTEMENT_SEUL)} puis 7,5 % d'impôt + 17,2 % de prélèvements sociaux.`
+        : "Avant 8 ans : gains soumis au prélèvement forfaitaire unique de 30 %.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -242,6 +266,7 @@ export default function AssuranceVie() {
               <ShareBar
                 params={{ initial, mensuel, rendement, duree, couple }}
                 resultsRef={resultsRef}
+                report={report}
                 name="assurance-vie"
               />
             </div>

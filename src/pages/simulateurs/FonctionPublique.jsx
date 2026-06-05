@@ -102,6 +102,29 @@ export default function FonctionPublique() {
   const hasResult = res.pensionNette > 0;
   const totalTrim = ((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4;
 
+  const report = {
+    title: "Simulateur Retraite Fonction publique",
+    highlight: { label: "Pension nette mensuelle estimée", value: hasResult ? fmtEur(res.pensionNette) : "—" },
+    params: [
+      { label: "Traitement indiciaire brut mensuel", value: traitement ? fmtEur(traitement) : "—" },
+      { label: "Catégorie", value: categActive ? "Active" : "Sédentaire" },
+      { label: "Années de service passées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années de service restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+      { label: "Majoration 3 enfants", value: bonus3Enfants ? "Oui (+10 %)" : "Non" },
+    ],
+    results: hasResult ? [
+      { label: "Pension nette mensuelle", value: fmtEur(res.pensionNette), strong: true },
+      { label: "Pension brute mensuelle", value: fmtEur(res.pensionBrute) },
+      { label: "Taux de liquidation", value: `${(res.tauxLiquidation * 100).toFixed(2)} %` },
+      { label: "Proratisation", value: `${(res.prorat * 100).toFixed(0)} %` },
+      { label: "Trimestres de service", value: `${res.trimestresService} / ${DUREE_REQUISE}` },
+    ] : [],
+    notes: hasResult ? [
+      "Pension calculée sur le traitement indiciaire seul — primes et RAFP non inclus.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -255,7 +278,7 @@ export default function FonctionPublique() {
           )}
         </div>
 
-        <ShareBar params={{ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }} resultsRef={resultsRef} name="fonction-publique" />
+        <ShareBar params={{ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }} resultsRef={resultsRef} report={report} name="fonction-publique" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

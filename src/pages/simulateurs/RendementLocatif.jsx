@@ -117,6 +117,31 @@ export default function RendementLocatif() {
 
   const hasResult = prix > 0 && loyer > 0;
 
+  const report = {
+    title: "Simulateur Rendement Locatif",
+    highlight: { label: "Rendement brut", value: hasResult ? `${res.rendementBrut.toFixed(2)} %` : "—" },
+    params: [
+      { label: "Prix d'achat", value: prix ? fmtEur(prix) : "—" },
+      { label: "Travaux", value: (travaux ?? 0) > 0 ? fmtEur(travaux) : "—" },
+      { label: "Apport personnel", value: (apport ?? 0) > 0 ? fmtEur(apport) : "—" },
+      { label: "Loyer mensuel", value: loyer ? fmtEur(loyer) : "—" },
+      { label: "Charges de copropriété", value: (chargesCopro ?? 0) > 0 ? `${fmtEur(chargesCopro)}/mois` : "—" },
+      { label: "Taxe foncière", value: (taxeFonciere ?? 0) > 0 ? `${fmtEur(taxeFonciere)}/an` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Rendement brut", value: `${res.rendementBrut.toFixed(2)} %`, strong: true },
+      { label: "Rendement net (après charges)", value: `${res.rendementNet.toFixed(2)} %` },
+      { label: "Cash-flow mensuel", value: `${fmtEur(Math.round(res.cashflowMensuel * 100) / 100)}/mois` },
+      { label: "Prix de revient", value: fmtEur(Math.round(res.prixRevient)) },
+      ...(apport > 0 ? [{ label: "Rendement sur fonds propres", value: `${res.rendementFondsPropres.toFixed(2)} %` }] : []),
+    ] : [],
+    notes: hasResult ? [
+      res.cashflowAnnuel <= 0
+        ? "Flux de trésorerie négatif : les charges dépassent les revenus locatifs."
+        : `Durée d'amortissement estimée : ${Math.round(res.dureeAmortissement)} ans.`,
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -223,6 +248,7 @@ export default function RendementLocatif() {
             <ShareBar
               params={{ prix, travaux, apport, loyer, chargesCopro, taxeFonciere }}
               resultsRef={resultsRef}
+              report={report}
               name="rendement-locatif"
             />
           </div>

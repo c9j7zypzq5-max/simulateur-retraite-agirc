@@ -701,6 +701,34 @@ export default function Fire() {
     return pts;
   }, [capitalActuel, epargneMensuelle, rendementAnnuel, hasResult, res.anneesRestantes, res.patrimoineCible]);
 
+  const report = {
+    title: "Simulateur FIRE — Indépendance financière",
+    highlight: {
+      label: isAlreadyFire ? "Statut FIRE" : "Patrimoine cible (indépendance)",
+      value: !hasResult ? "—" : isAlreadyFire ? "FIRE déjà atteint" : fmtEur(Math.round(res.patrimoineCible)),
+    },
+    params: [
+      { label: "Âge actuel", value: ageActuel ? `${ageActuel} ans` : "—" },
+      { label: "Capital actuel", value: fmtEur(capitalActuel ?? 0) },
+      { label: "Épargne mensuelle", value: epargneMensuelle ? fmtEur(epargneMensuelle) : "—" },
+      { label: "Dépenses annuelles visées", value: depensesAnnuelles ? fmtEur(depensesAnnuelles) : "—" },
+      { label: "Rendement annuel réel", value: `${rendementAnnuel} %` },
+      { label: "Taux de retrait (SWR)", value: `${tauxRetrait} %` },
+    ],
+    results: hasResult ? [
+      { label: "Patrimoine cible", value: fmtEur(Math.round(res.patrimoineCible)), strong: true },
+      ...(res.ageAtteinte ? [{ label: "Âge d'atteinte FIRE", value: `${res.ageAtteinte} ans` }] : []),
+      ...(res.anneesRestantes ? [{ label: "Années restantes", value: `${Math.ceil(res.anneesRestantes)}` }] : []),
+      { label: "Revenu passif mensuel", value: fmtEur(Math.round(res.revenuPassifMensuel)) },
+      ...(savingsRate != null ? [{ label: "Taux d'épargne", value: `${Math.round(savingsRate)} %` }] : []),
+    ] : [],
+    notes: hasResult ? [
+      isAlreadyFire
+        ? "Votre capital actuel couvre déjà vos dépenses au taux de retrait choisi."
+        : `Règle des ${tauxRetrait} % : patrimoine cible = dépenses annuelles ÷ ${(tauxRetrait / 100).toFixed(2)}.`,
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -916,6 +944,7 @@ export default function Fire() {
 <ShareBar
               params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
               resultsRef={resultsRef}
+              report={report}
               name="fire"
             />
           </div>

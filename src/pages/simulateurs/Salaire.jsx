@@ -472,6 +472,27 @@ export default function Salaire() {
   const pouvoirRatio = res.pouvAchat[res.pouvAchat.length - 1]?.realNet / res.net;
   const isMobile = useIsMobile(680);
 
+  const report = {
+    title: "Simulateur Salaire Net / Brut & Carrière",
+    highlight: { label: "Salaire net mensuel estimé", value: brut ? fmtEur(Math.round(res.net)) : "—" },
+    params: [
+      { label: "Salaire brut mensuel", value: brut ? fmtEur(brut) : "—" },
+      { label: "Statut", value: statut === "cadre" ? "Cadre" : "Non-cadre" },
+      { label: "Âge actuel", value: `${age} ans` },
+      { label: "Évolution annuelle", value: `${evolution} %` },
+      { label: "Horizon de projection", value: `${horizon} ans` },
+    ],
+    results: brut ? [
+      { label: "Salaire net mensuel", value: fmtEur(Math.round(res.net)), strong: true },
+      { label: `Net mensuel dans ${horizon} ans`, value: fmtEur(Math.round(res.last.netY)) },
+      { label: "Gain net mensuel sur la période", value: fmtEur(Math.round(res.gainNet)) },
+      { label: "Cumul net sur la carrière", value: fmtEur(Math.round(res.cumNet)) },
+    ] : [],
+    notes: brut ? [
+      `Hypothèse d'inflation de 2 %/an : pouvoir d'achat réel à terme estimé à ${(pouvoirRatio * 100).toFixed(0)} % du net actuel.`,
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -516,6 +537,7 @@ export default function Salaire() {
             <ShareBar
               params={{ brut, statut, age, evolution, horizon }}
               resultsRef={resultsRef}
+              report={report}
               name="salaire"
             />
           </div>

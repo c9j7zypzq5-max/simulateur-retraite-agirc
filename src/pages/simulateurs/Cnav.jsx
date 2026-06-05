@@ -127,6 +127,31 @@ export default function Cnav() {
 
   const hasResult = res.pensionNette > 0;
 
+  const report = {
+    title: "Simulateur Retraite CNAV — Régime général",
+    highlight: { label: "Pension nette mensuelle (base CNAV)", value: hasResult ? fmtEur(res.pensionNette) : "—" },
+    params: [
+      { label: "Salaire brut mensuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Année de naissance", value: anneeNaissance ? String(anneeNaissance) : "—" },
+      { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension nette mensuelle", value: fmtEur(res.pensionNette), strong: true },
+      { label: "Pension brute mensuelle", value: fmtEur(res.pensionBrute) },
+      { label: "Taux de liquidation", value: `${(res.tauxEffectif * 100).toFixed(2)} %` },
+      { label: "Trimestres validés", value: `${res.trimestresTotal} / ${res.dureeRequise}` },
+      { label: "Proratisation", value: `${(res.proratisation * 100).toFixed(0)} %` },
+    ] : [],
+    notes: hasResult ? [
+      res.decote > 0 ? `Décote de ${(res.decote * 100).toFixed(2)} % appliquée (${Math.min(res.trimestresManquants, 20)} trimestres manquants).`
+        : res.surcote > 0 ? `Surcote de ${(res.surcote * 100).toFixed(2)} % (${res.trimestresSuppl} trimestres supplémentaires).`
+        : "Taux plein atteint — aucune décote ni surcote.",
+      "Pension de base CNAV à compléter par la retraite Agirc-Arrco.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -261,7 +286,7 @@ export default function Cnav() {
           )}
         </div>
 
-        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} name="cnav" />
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="cnav" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

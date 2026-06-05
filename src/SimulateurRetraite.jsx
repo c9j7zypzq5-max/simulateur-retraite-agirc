@@ -428,6 +428,30 @@ export default function SimulateurRetraite() {
 
   const diffB = resB.pensionNette - res.pensionNette;
 
+  const hasResult = res.pensionNette > 0;
+  const report = {
+    title: "Simulateur Retraite Agirc-Arrco",
+    highlight: { label: "Pension complémentaire nette mensuelle", value: hasResult ? fmtEur(res.pensionNette) : "—" },
+    params: [
+      { label: "Salaire brut mensuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+      { label: "Statut", value: estCadre ? "Cadre" : "Non-cadre" },
+      { label: "Évolution salaire", value: evolutionSalaire !== null ? `${evolutionSalaire} %/an` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension nette mensuelle", value: fmtEur(res.pensionNette), strong: true },
+      { label: "Pension brute mensuelle", value: fmtEur(res.pensionBrute) },
+      { label: "Total points acquis", value: fmt(res.totalPoints) },
+      { label: "Coefficient (âge de départ)", value: `${(res.coefTotal * 100).toFixed(0)} %` },
+      { label: "Valeur du point", value: `${VALEUR_SERVICE} €` },
+    ] : [],
+    notes: hasResult ? [
+      "Pension complémentaire à ajouter à votre retraite de base (CNAV).",
+    ] : undefined,
+  };
+
   return (
     <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
       <JsonLd data={{
@@ -670,7 +694,7 @@ export default function SimulateurRetraite() {
           </div>
         </div>
 
-        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} name="agirc-arrco" />
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} report={report} name="agirc-arrco" />
 
         {/* ── Comparateur ── */}
         <AccordionSection title="Comparer deux scénarios" subtitle="Simulez un départ ou un salaire différent et comparez les pensions côte à côte" gold>

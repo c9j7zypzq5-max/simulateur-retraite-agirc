@@ -172,6 +172,27 @@ export default function CreditConso() {
   const animMensualite = useAnimatedNumber(mensualiteTotale);
   const animCout = useAnimatedNumber(coutCredit);
 
+  const report = {
+    title: "Simulateur Crédit Conso",
+    highlight: { label: "Mensualité totale", value: hasInput ? `${fmtEur(Math.round(mensualiteTotale))}/mois` : "—" },
+    params: [
+      { label: "Montant emprunté", value: montant ? fmtEur(montant) : "—" },
+      { label: "TAEG annuel", value: `${taeg} %` },
+      { label: "Durée", value: `${duree} mois (${(duree / 12).toFixed(1)} an(s))` },
+      { label: "Assurance optionnelle", value: (assurance ?? 0) > 0 ? `${fmtEur(assurance)}/mois` : "—" },
+    ],
+    results: hasInput ? [
+      { label: "Mensualité totale", value: `${fmtEur(Math.round(mensualiteTotale))}/mois`, strong: true },
+      { label: "Mensualité (hors assurance)", value: fmtEur(Math.round(m)) },
+      { label: "Total des intérêts", value: fmtEur(Math.round(totalInterets)) },
+      { label: "Coût total du crédit", value: fmtEur(Math.round(coutCredit)) },
+      { label: "Total remboursé", value: fmtEur(Math.round(coutTotal)) },
+    ] : [],
+    notes: hasInput ? [
+      "Le TAEG accordé doit respecter le taux d'usure en vigueur publié par la Banque de France.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -245,6 +266,7 @@ export default function CreditConso() {
               <ShareBar
                 params={{ montant, taeg, duree, assurance }}
                 resultsRef={resultsRef}
+                report={report}
                 name="credit-conso"
               />
             </div>

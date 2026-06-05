@@ -108,6 +108,27 @@ export default function CoutEnHeures() {
   const heuresAnim = useAnimatedNumber(res?.heures ?? 0);
   const hasResult = !!res;
 
+  const report = {
+    title: "Simulateur Coût en Heures de Vie",
+    highlight: { label: "Coût en heures de vie", value: hasResult ? formatHeures(res.heures) : "—" },
+    params: [
+      { label: "Prix de l'article", value: prix ? fmtEur(prix) : "—" },
+      { label: "Salaire net mensuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Heures travaillées/semaine", value: `${heuresSemaine} h` },
+      { label: "Mois de salaire par an", value: `${moisParAn} mois` },
+    ],
+    results: hasResult ? [
+      { label: "Coût en heures de travail", value: formatHeures(res.heures), strong: true },
+      { label: "Jours ouvrés", value: res.joursOuvres.toFixed(1).replace(".", ",") },
+      { label: "Semaines", value: res.semaines.toFixed(1).replace(".", ",") },
+      { label: "% du salaire mensuel", value: `${res.pctMois.toFixed(1).replace(".", ",")} %` },
+      { label: "Taux horaire net", value: `${res.tauxHoraire.toFixed(2).replace(".", ",")} €/h` },
+    ] : [],
+    notes: hasResult ? [
+      "L'argent est du temps de vie transformé : évaluez chaque achat en heures de travail.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -179,7 +200,7 @@ export default function CoutEnHeures() {
           )}
         </div>
 
-        <ShareBar params={{ prix, salaire, heuresSemaine, moisParAn }} resultsRef={resultsRef} name="cout-en-heures" />
+        <ShareBar params={{ prix, salaire, heuresSemaine, moisParAn }} resultsRef={resultsRef} report={report} name="cout-en-heures" />
 
         {/* Formulaire */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>

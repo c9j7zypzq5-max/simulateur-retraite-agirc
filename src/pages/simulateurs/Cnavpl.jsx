@@ -251,6 +251,29 @@ export default function Cnavpl() {
 
   const hasResult = (revenuAnnuel || 0) > 0;
 
+  const report = {
+    title: "Simulateur Retraite Professions libérales — CNAVPL / CIPAV",
+    highlight: { label: "Pension nette mensuelle (base + CIPAV)", value: hasResult ? fmtEur(res.pensionTotale) : "—" },
+    params: [
+      { label: "Revenu professionnel annuel", value: revenuAnnuel ? fmtEur(revenuAnnuel) : "—" },
+      { label: "Année de naissance", value: anneeNaissance ? String(anneeNaissance) : "—" },
+      { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension totale nette mensuelle", value: fmtEur(res.pensionTotale), strong: true },
+      { label: "Régime de base CNAVPL", value: fmtEur(res.pensionBaseNette) },
+      { label: "Complémentaire CIPAV", value: fmtEur(res.pensionCipav) },
+      { label: "Classe CIPAV", value: `Classe ${res.classCipav.classe}` },
+      { label: "Trimestres validés", value: `${res.trimestresTotal} / ${res.dureeRequise}` },
+      { label: "Taux de liquidation (base)", value: `${(res.tauxEffectif * 100).toFixed(2)} %` },
+    ] : [],
+    notes: hasResult ? [
+      "Simulation établie sur l'hypothèse d'un régime CIPAV.",
+    ] : undefined,
+  };
+
   return (
     <div
       style={{
@@ -595,7 +618,7 @@ export default function Cnavpl() {
           )}
         </div>
 
-        <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} name="cnavpl" />
+        <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} report={report} name="cnavpl" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>

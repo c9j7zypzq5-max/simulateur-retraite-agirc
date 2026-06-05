@@ -156,6 +156,31 @@ export default function Per() {
   const animCapital = useAnimatedNumber(capital);
   const animEconomie = useAnimatedNumber(economieAnnuelle);
 
+  const report = {
+    title: "Simulateur PER — Plan d'Épargne Retraite",
+    highlight: { label: "Capital projeté à la retraite", value: hasInput ? fmtEur(Math.round(capital)) : "—" },
+    params: [
+      { label: "Versement annuel", value: versement ? fmtEur(versement) : "—" },
+      { label: "Revenu net professionnel", value: revenu ? fmtEur(revenu) : "—" },
+      { label: "Tranche marginale (TMI)", value: `${tmi} %` },
+      { label: "Âge actuel", value: `${ageActuel} ans` },
+      { label: "Âge de départ", value: `${ageDepart} ans` },
+      { label: "Rendement annuel", value: `${rendement} %` },
+    ],
+    results: hasInput ? [
+      { label: "Capital projeté à la retraite", value: fmtEur(Math.round(capital)), strong: true },
+      { label: "Économie d'impôt annuelle", value: fmtEur(Math.round(economieAnnuelle)) },
+      { label: "Effort net annuel", value: fmtEur(Math.round(effortNet)) },
+      { label: "Total versé", value: fmtEur(Math.round(totalVerse)) },
+      { label: "Économie d'impôt cumulée", value: fmtEur(Math.round(totalEconomie)) },
+    ] : [],
+    notes: hasInput ? [
+      auDelaPlafond
+        ? `Versement supérieur au plafond de déduction (${fmtEur(plafond)}) : seule la part déductible génère l'avantage fiscal.`
+        : `Part déductible : ${fmtEur(versementDeductible)} (plafond ${fmtEur(plafond)}).`,
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -274,6 +299,7 @@ export default function Per() {
               <ShareBar
                 params={{ versement, revenu, tmi, ageActuel, ageDepart, rendement }}
                 resultsRef={resultsRef}
+                report={report}
                 name="per"
               />
             </div>

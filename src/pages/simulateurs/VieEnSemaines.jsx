@@ -146,6 +146,26 @@ export default function VieEnSemaines() {
     ? Math.floor(res.semainesRestantes * frequenceVisites / 52)
     : null;
 
+  const report = {
+    title: "Ma Vie en Semaines",
+    highlight: { label: "Semaines restantes (estimation)", value: hasResult ? fmt(res.semainesRestantes) : "—" },
+    params: [
+      { label: "Date de naissance", value: dateNaissance || "—" },
+      { label: "Genre", value: genre === "femme" ? "Femme" : "Homme" },
+      { label: "Espérance de vie", value: `${esperance} ans` },
+    ],
+    results: hasResult ? [
+      { label: "Semaines restantes", value: fmt(res.semainesRestantes), strong: true },
+      { label: "Semaines vécues", value: fmt(res.semainesVecues) },
+      { label: "Vie écoulée", value: `${res.pctEcoule.toFixed(1).replace(".", ",")} %` },
+      { label: "Âge actuel", value: `${res.ageActuel} ans` },
+      { label: "Étés restants", value: `${res.etesRestants}` },
+    ] : [],
+    notes: hasResult ? [
+      "Chaque semaine restante est un capital précieux à investir consciemment.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -219,7 +239,7 @@ export default function VieEnSemaines() {
           )}
         </div>
 
-        <ShareBar params={{ dateNaissance, genre, esperance }} resultsRef={resultsRef} name="vie-en-semaines" />
+        <ShareBar params={{ dateNaissance, genre, esperance }} resultsRef={resultsRef} report={report} name="vie-en-semaines" />
 
         {/* Métriques clés */}
         {hasResult && (

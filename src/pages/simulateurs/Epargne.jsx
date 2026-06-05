@@ -145,6 +145,27 @@ export default function Epargne() {
     return pts;
   }, [capitalInitial, versement, tauxAnnuel, duree, hasResult]);
 
+  const report = {
+    title: "Simulateur Épargne — Intérêts composés",
+    highlight: { label: "Capital final estimé", value: hasResult ? fmtEur(Math.round(res.capitalFinal)) : "—" },
+    params: [
+      { label: "Capital initial", value: fmtEur(capitalInitial ?? 0) },
+      { label: "Versement mensuel", value: versement ? fmtEur(versement) : "—" },
+      { label: "Taux de rendement annuel", value: `${tauxAnnuel} %` },
+      { label: "Durée de l'épargne", value: `${duree} ans` },
+    ],
+    results: hasResult ? [
+      { label: "Capital final", value: fmtEur(Math.round(res.capitalFinal)), strong: true },
+      { label: "Total versé", value: fmtEur(Math.round(res.totalVerse)) },
+      { label: "Intérêts générés", value: fmtEur(Math.round(res.totalInterets)) },
+      { label: "Multiplicateur", value: `×${res.multiplicateur.toFixed(2)}` },
+      { label: "Gain", value: `+${((res.multiplicateur - 1) * 100).toFixed(1)} %` },
+    ] : [],
+    notes: hasResult ? [
+      "Taux de rendement constant supposé. Résultats avant fiscalité et inflation.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -243,6 +264,7 @@ export default function Epargne() {
 <ShareBar
                 params={{ capitalInitial, versement, tauxAnnuel, duree }}
                 resultsRef={resultsRef}
+                report={report}
                 name="epargne"
               />
             </div>

@@ -300,6 +300,26 @@ export default function Budget() {
 
   const isMobile = useIsMobile(680);
 
+  const report = {
+    title: "Simulateur Budget 50/30/20",
+    highlight: { label: "Solde mensuel disponible", value: res ? `${res.epargneReel >= 0 ? "+" : ""}${fmtEur(Math.round(res.epargneReel))}` : "—" },
+    params: [
+      { label: "Revenus nets mensuels", value: revenus ? fmtEur(revenus) : "—" },
+      { label: "Dépenses fixes", value: fmtEur(fixe ?? 0) },
+      { label: "Dépenses variables", value: fmtEur(variable ?? 0) },
+      { label: "Épargne actuelle", value: fmtEur(epargneActuelle ?? 0) },
+    ],
+    results: res ? [
+      { label: "Épargne mensuelle", value: fmtEur(Math.round(res.epargneReel)), strong: true },
+      { label: "Besoins (fixes)", value: `${fmtEur(Math.round(res.besoinsReel))} · ${res.tauxBesoins.toFixed(1)} %` },
+      { label: "Envies (variables)", value: `${fmtEur(Math.round(res.enviesReel))} · ${res.tauxEnvies.toFixed(1)} %` },
+      { label: "Taux d'épargne", value: `${res.tauxEpargne.toFixed(1)} %` },
+    ] : [],
+    notes: res ? [
+      `Règle 50/30/20 : 50 % besoins, 30 % envies, 20 % épargne. Votre taux d'épargne est de ${res.tauxEpargne.toFixed(1)} %.`,
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -402,6 +422,7 @@ export default function Budget() {
             <ShareBar
               params={{ revenus, fixe, variable, epargneActuelle }}
               resultsRef={resultsRef}
+              report={report}
               name="budget"
             />
           </div>

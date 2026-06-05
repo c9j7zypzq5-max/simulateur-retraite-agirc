@@ -325,6 +325,28 @@ export default function Patrimoine() {
   const pctFinancier = res.patrimoineFinal > 0 ? (res.capitalFinancierFinal / res.patrimoineFinal) * 100 : 0;
   const pctImmo = res.patrimoineFinal > 0 ? (res.valeurImmoFinal / res.patrimoineFinal) * 100 : 0;
 
+  const report = {
+    title: "Simulateur Patrimoine — Projection",
+    highlight: { label: "Patrimoine total projeté", value: hasResult ? fmtEur(Math.round(res.patrimoineFinal)) : "—" },
+    params: [
+      { label: "Âge actuel", value: ageActuel ? `${ageActuel} ans` : "—" },
+      { label: "Âge cible", value: ageCible ? `${ageCible} ans` : "—" },
+      { label: "Capital financier actuel", value: fmtEur(capitalFinancier ?? 0) },
+      { label: "Versement mensuel", value: versementMensuel ? fmtEur(versementMensuel) : "—" },
+      { label: "Rendement du portefeuille", value: `${rendementPortefeuille} %` },
+    ],
+    results: hasResult ? [
+      { label: "Patrimoine total projeté", value: fmtEur(Math.round(res.patrimoineFinal)), strong: true },
+      { label: "Capital financier final", value: fmtEur(Math.round(res.capitalFinancierFinal)) },
+      ...(immoActive ? [{ label: "Valeur immobilier final", value: fmtEur(Math.round(res.valeurImmoFinal)) }] : []),
+      { label: "Revenu passif mensuel total", value: fmtEur(Math.round(res.revenuMensuelTotal)) },
+      { label: "Revenu financier mensuel", value: fmtEur(Math.round(res.revenuMensuelFinancier)) },
+    ] : [],
+    notes: hasResult ? [
+      "Calculs en euros constants (rendement réel après inflation).",
+    ] : undefined,
+  };
+
   const handleSaveHistory = useCallback(() => {
     const label = `Patrimoine ${fmtEur(Math.round(res.patrimoineFinal))} à ${ageCible || 65} ans`;
     saveEntry({ simulator: 'patrimoine', label, shareUrl: window.location.pathname + window.location.search });
@@ -511,6 +533,7 @@ export default function Patrimoine() {
 <ShareBar
                   params={{ ageActuel, ageCible, capitalFinancier, versementMensuel, rendementPortefeuille }}
                   resultsRef={resultsRef}
+                  report={report}
                   name="patrimoine"
                 />
               </div>

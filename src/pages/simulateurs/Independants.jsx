@@ -125,6 +125,27 @@ export default function Independants() {
   const pensionAnim = useAnimatedNumber(res.totalNette);
   const hasResult = res.totalNette > 0;
 
+  const report = {
+    title: "Simulateur Retraite Indépendants — SSI",
+    highlight: { label: "Pension nette mensuelle (base + RCI)", value: hasResult ? fmtEur(res.totalNette) : "—" },
+    params: [
+      { label: "Revenu net mensuel moyen", value: revenu ? fmtEur(revenu) : "—" },
+      { label: "Années cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension totale nette mensuelle", value: fmtEur(res.totalNette), strong: true },
+      { label: "Régime de base SSI", value: fmtEur(res.baseNetteMensuelle) },
+      { label: "Complémentaire RCI", value: fmtEur(res.rciNetteMensuelle) },
+      { label: "Taux effectif (base)", value: `${(res.tauxEffectif * 100).toFixed(1)} %` },
+      { label: "Trimestres validés", value: `${res.trimestresTotal} / ${res.dureeRequise}` },
+    ] : [],
+    notes: hasResult ? [
+      "Les professions libérales (CNAVPL) ont des règles spécifiques non couvertes ici.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -248,7 +269,7 @@ export default function Independants() {
           )}
         </div>
 
-        <ShareBar params={{ revenu, anneesFaites, anneesRestantes, ageDépart, activite }} resultsRef={resultsRef} name="independants" />
+        <ShareBar params={{ revenu, anneesFaites, anneesRestantes, ageDépart, activite }} resultsRef={resultsRef} report={report} name="independants" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

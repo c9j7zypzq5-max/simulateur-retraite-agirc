@@ -134,6 +134,29 @@ export default function ImpotRevenu() {
 
   const hasResult = res && res.irNet > 0;
 
+  const report = {
+    title: "Simulateur Impôt sur le Revenu",
+    highlight: { label: "Impôt net annuel", value: res ? fmtEur(Math.round(res.irNet)) : "—" },
+    params: [
+      { label: "Revenus annuels bruts", value: revenuBrut ? fmtEur(revenuBrut) : "—" },
+      { label: "Situation familiale", value: situation === "marie" ? "Marié·e / Pacsé·e" : "Célibataire" },
+      { label: "Nombre d'enfants", value: String(nbEnfants) },
+    ],
+    results: res ? [
+      { label: "Impôt net annuel", value: fmtEur(Math.round(res.irNet)), strong: true },
+      { label: "Impôt mensuel", value: fmtEur(Math.round(res.irNet / 12)) },
+      { label: "TMI", value: `${(res.tmi * 100).toFixed(0)} %` },
+      { label: "Taux moyen", value: `${res.tauxMoyen.toFixed(1)} %` },
+      { label: "Revenu imposable", value: fmtEur(res.revenuImposable) },
+      { label: "Parts fiscales", value: res.nbParts.toFixed(1) },
+    ] : [],
+    notes: res ? [
+      res.irNet > 0
+        ? `Tranche marginale d'imposition (TMI) de ${(res.tmi * 100).toFixed(0)} % · taux moyen de ${res.tauxMoyen.toFixed(1)} %.`
+        : "Vous n'êtes pas imposable au titre de l'impôt sur le revenu.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -300,6 +323,7 @@ export default function ImpotRevenu() {
               <ShareBar
                 params={{ revenuBrut, situation, nbEnfants }}
                 resultsRef={resultsRef}
+                report={report}
                 name="impot-revenu"
               />
             </>

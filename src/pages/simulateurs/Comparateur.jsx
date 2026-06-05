@@ -703,6 +703,29 @@ export default function Comparateur() {
 
   const exportBaseName = `comparateur-${fromDate.year}-${toDate.year}`;
 
+  const best = metrics && metrics.length > 0 ? metrics[0] : null;
+  const report = {
+    title: "Comparateur de placements",
+    highlight: {
+      label: "Meilleure performance",
+      value: best ? `${best.label || best.ticker} · ${fmtPct(best.totalReturn)}` : "—",
+    },
+    params: [
+      { label: "Montant investi", value: montant ? fmtEur(montant) : "—" },
+      { label: "Période", value: `${fromLabel} → ${toLabel}` },
+      { label: "Durée", value: `${totalYears.toFixed(1)} ans` },
+      ...(periodicAmt > 0 ? [{ label: "Versement périodique", value: `${fmtEur(periodicAmt)} (${periodicFreq === 'monthly' ? 'mensuel' : periodicFreq})` }] : []),
+    ],
+    results: best ? metrics.slice(0, 5).map((m, i) => ({
+      label: `${i + 1}. ${m.label || m.ticker}`,
+      value: `${fmtPct(m.totalReturn)} · ${fmtEur(Math.round(m.finalValue))}`,
+      strong: i === 0,
+    })) : [],
+    notes: best ? [
+      `Sur la période, ${best.label || best.ticker} affiche la meilleure performance (${fmtPct(best.totalReturn)}, soit ${fmtPct(best.cagr)}/an).`,
+    ] : undefined,
+  };
+
   const handleExportCSV = useCallback(() => {
     const rows = buildSeriesRows(computed, assetsWithColors);
     if (rows.length) downloadCSV(rows, `${exportBaseName}.csv`);
@@ -1013,6 +1036,7 @@ export default function Comparateur() {
               <ShareBar
                 params={{ montant }}
                 resultsRef={resultsRef}
+                report={report}
                 name="comparateur"
                 showDownload
               />

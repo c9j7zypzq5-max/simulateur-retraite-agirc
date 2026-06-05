@@ -228,6 +228,29 @@ export default function EmpruntImmobilier() {
 
   const hasResult = prix && prix > 0;
 
+  const report = {
+    title: "Simulateur Emprunt Immobilier",
+    highlight: { label: "Mensualité totale", value: hasResult ? `${fmtEur(Math.round(mTotal))}/mois` : "—" },
+    params: [
+      { label: "Prix du bien", value: prix ? fmtEur(prix) : "—" },
+      { label: "Apport", value: apport ? `${fmtEur(apport)} (${apportPct} %)` : "—" },
+      { label: "Durée", value: `${duree} ans` },
+      { label: "Taux", value: `${taux} %` },
+      { label: "Primo-accédant (PTZ)", value: primo ? "Oui" : "Non" },
+      { label: "Revenu mensuel net", value: salaire ? fmtEur(salaire) : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Mensualité totale", value: `${fmtEur(Math.round(mTotal))}/mois`, strong: true },
+      { label: "Capital emprunté", value: fmtEur(Math.round(capitalEmprunte)) },
+      { label: "Coût total des intérêts", value: fmtEur(Math.round(coutInterets)) },
+      { label: "Taux d'endettement", value: `${tauxEndet.toFixed(1)} %` },
+      { label: "Reste à vivre", value: `${fmtEur(Math.round(resteAVivre))}/mois` },
+    ] : [],
+    notes: hasResult && revenuTotal > 0 ? [
+      `Taux d'endettement de ${tauxEndet.toFixed(1)} % (seuil HCSF : 35 %).`,
+    ] : undefined,
+  };
+
   const indicateurs = [
     { label: "Apport ≥ 10% du prix", ok: prix > 0 && (apport ?? 0) / prix >= 0.1 },
     { label: "Taux d'endettement ≤ 35%", ok: tauxEndet > 0 && tauxEndet <= 35 },
@@ -392,6 +415,7 @@ export default function EmpruntImmobilier() {
               <ShareBar
                 params={{ prix, apport, duree, taux, primo, salaire }}
                 resultsRef={resultsRef}
+                report={report}
                 name="emprunt-immobilier"
               />
             </div>

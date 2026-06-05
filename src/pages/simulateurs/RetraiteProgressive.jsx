@@ -98,6 +98,27 @@ export default function RetraiteProgressive() {
   const pensionAnim = useAnimatedNumber(res.revenuTotal);
   const hasResult = res.revenuTotal > 0;
 
+  const report = {
+    title: "Simulateur Retraite progressive",
+    highlight: { label: "Revenu mensuel total (pension + salaire)", value: hasResult ? fmtEur(res.revenuTotal) : "—" },
+    params: [
+      { label: "Pension estimée à taux plein", value: pensionPleineTaux ? fmtEur(pensionPleineTaux) : "—" },
+      { label: "Salaire brut mensuel actuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Quotité de travail", value: quotite ? `${quotite} %` : "—" },
+      { label: "Durée de la période progressive", value: duree ? `${duree} an(s)` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Revenu mensuel total", value: fmtEur(res.revenuTotal), strong: true },
+      { label: "Pension partielle", value: fmtEur(res.pensionPartielle) },
+      { label: "Revenu d'activité", value: fmtEur(res.revenuTravail) },
+      { label: "Fraction de pension versée", value: `${(res.fractionPension * 100).toFixed(0)} %` },
+      ...(duree ? [{ label: "Pension finale estimée", value: `${fmtEur(res.pensionFinale)}/mois` }] : []),
+    ] : [],
+    notes: hasResult ? [
+      "Conditions d'accès : 150 trimestres validés et âge légal − 2 ans.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -254,7 +275,7 @@ export default function RetraiteProgressive() {
           )}
         </div>
 
-        <ShareBar params={{ pensionPleineTaux, salaire, quotite, duree }} resultsRef={resultsRef} name="retraite-progressive" />
+        <ShareBar params={{ pensionPleineTaux, salaire, quotite, duree }} resultsRef={resultsRef} report={report} name="retraite-progressive" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

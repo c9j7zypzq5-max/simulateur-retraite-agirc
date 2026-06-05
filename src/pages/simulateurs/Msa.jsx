@@ -218,6 +218,32 @@ export default function Msa() {
   const dureeRequise = getDureeRequise(anneeNaissance);
   const hasResult = (isExploitant ? res.pensionTotale : res.pensionBaseNette) > 0;
 
+  const pensionTotaleMsa = isExploitant ? res.pensionTotale : res.pensionBaseNette;
+  const report = {
+    title: "Simulateur Retraite Agricole MSA",
+    highlight: { label: isExploitant ? "Pension nette mensuelle (base + RCO)" : "Pension nette mensuelle (base MSA)", value: hasResult ? fmtEur(pensionTotaleMsa) : "—" },
+    params: [
+      { label: "Type d'affilié", value: isExploitant ? "Exploitant" : "Salarié agricole" },
+      { label: isExploitant ? "Revenu professionnel annuel" : "Salaire brut mensuel", value: revenuSalaire ? fmtEur(revenuSalaire) : "—" },
+      { label: "Année de naissance", value: anneeNaissance ? String(anneeNaissance) : "—" },
+      { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension nette mensuelle", value: fmtEur(pensionTotaleMsa), strong: true },
+      { label: "Régime de base MSA", value: fmtEur(res.pensionBaseNette) },
+      ...(isExploitant ? [{ label: "Complémentaire RCO", value: fmtEur(res.pensionRCO) }] : []),
+      { label: "Taux de liquidation", value: `${(res.tauxEffectif * 100).toFixed(2)} %` },
+      { label: "Trimestres validés", value: `${res.trimestresTotal} / ${res.dureeRequise}` },
+    ] : [],
+    notes: hasResult ? [
+      res.decote > 0 ? `Décote de ${(res.decote * 100).toFixed(2)} % appliquée (${Math.min(res.trimestresManquants, 20)} trimestres manquants).`
+        : res.surcote > 0 ? `Surcote de ${(res.surcote * 100).toFixed(2)} % (${res.trimestresSuppl} trimestres supplémentaires).`
+        : "Taux plein atteint — aucune décote ni surcote.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -419,7 +445,7 @@ export default function Msa() {
           )}
         </div>
 
-        <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} name="msa" />
+        <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="msa" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

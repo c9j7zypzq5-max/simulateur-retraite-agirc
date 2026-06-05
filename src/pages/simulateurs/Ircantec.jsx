@@ -125,6 +125,28 @@ export default function Ircantec() {
   const pensionAnim = useAnimatedNumber(res.pensionMensuelle);
   const hasResult = res.pensionMensuelle > 0;
 
+  const report = {
+    title: "Simulateur Retraite IRCANTEC",
+    highlight: { label: "Pension complémentaire nette mensuelle", value: hasResult ? fmtEur(res.pensionMensuelle) : "—" },
+    params: [
+      { label: "Salaire brut mensuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
+      { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
+      { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+      { label: "Revalorisation annuelle", value: tauxReval !== null ? `${tauxReval} %` : "—" },
+    ],
+    results: hasResult ? [
+      { label: "Pension nette mensuelle", value: fmtEur(res.pensionMensuelle), strong: true },
+      { label: "Pension brute mensuelle", value: fmtEur(res.pensionBrute / 12) },
+      { label: "Total points acquis", value: fmt(res.totalPoints) },
+      { label: "Valeur de service du point", value: `${res.valServProj.toFixed(5)} €/pt` },
+      { label: "Total cotisé (carrière)", value: fmtEur(res.cotSalTotal + res.cotPatTotal) },
+    ] : [],
+    notes: hasResult ? [
+      "Pension complémentaire à ajouter à votre pension de base (CNAV ou CNRACL).",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -257,7 +279,7 @@ export default function Ircantec() {
           )}
         </div>
 
-        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval }} resultsRef={resultsRef} name="ircantec" />
+        <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval }} resultsRef={resultsRef} report={report} name="ircantec" />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

@@ -135,6 +135,29 @@ export default function PlusValue() {
 
   const hasResult = res && res.totalImpot > 0;
 
+  const report = {
+    title: "Simulateur Plus-Value Immobilière",
+    highlight: { label: "Impôt total estimé", value: res ? fmtEur(Math.round(res.totalImpot)) : "—" },
+    params: [
+      { label: "Prix d'acquisition", value: prixAchat ? fmtEur(prixAchat) : "—" },
+      { label: "Année d'achat", value: anneeAchat ? String(anneeAchat) : "—" },
+      { label: "Année de vente", value: anneeVente ? String(anneeVente) : "—" },
+      { label: "Travaux", value: (travaux ?? 0) > 0 ? fmtEur(travaux) : "—" },
+      { label: "Prix de vente", value: prixVente ? fmtEur(prixVente) : "—" },
+    ],
+    results: res ? [
+      { label: "Impôt total", value: fmtEur(Math.round(res.totalImpot)), strong: true },
+      { label: "Plus-value brute", value: fmtEur(Math.round(res.pvBrute)) },
+      { label: "Durée de détention", value: `${res.duree} ans` },
+      { label: "Impôt sur le revenu (19 %)", value: fmtEur(Math.round(res.impotIR)) },
+      { label: "Prélèvements sociaux (17,2 %)", value: fmtEur(Math.round(res.impotPS)) },
+      { label: "Gain net vendeur", value: fmtEur(Math.round(res.gainNet)) },
+    ] : [],
+    notes: res ? [
+      "Exonération IR totale après 22 ans de détention ; prélèvements sociaux après 30 ans.",
+    ] : undefined,
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -366,6 +389,7 @@ export default function PlusValue() {
               <ShareBar
                 params={{ prixAchat, anneeAchat, anneeVente, travaux, prixVente }}
                 resultsRef={resultsRef}
+                report={report}
                 name="plus-value-immobiliere"
               />
             </>
