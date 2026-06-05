@@ -7,6 +7,7 @@ import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import AdUnit from '../../components/AdUnit.jsx';
 import JsonLd from '../../components/JsonLd.jsx';
+import { downloadCSV, downloadXLSX } from '../../utils/export.js';
 import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
 import { SimulateurHeader, fmtEur } from '../../components/ui.jsx';
 
@@ -111,6 +112,39 @@ function buildVideoChartData(computed, fromDate, toDate, periodicAmt, showInvest
     }
   }
   return result;
+}
+
+// ── Construction des données d'export (CSV / XLSX) ──────────────────────────────
+// Table "large" : une ligne par date, une colonne de valeur (€) par actif.
+function buildSeriesRows(computed, assets) {
+  const allDates = [...new Set(
+    Object.values(computed).flatMap(s => s.map(p => p.date))
+  )].sort();
+  const byTicker = {};
+  for (const a of assets) {
+    const s = computed[a.ticker];
+    if (s) byTicker[a.ticker] = Object.fromEntries(s.map(p => [p.date, p.value]));
+  }
+  return allDates.map(date => {
+    const row = { Date: date };
+    for (const a of assets) {
+      if (!byTicker[a.ticker]) continue;
+      const v = byTicker[a.ticker][date];
+      row[`${a.label || a.ticker} (€)`] = v != null ? Math.round(v) : '';
+    }
+    return row;
+  });
+}
+
+function buildMetricsRows(metrics) {
+  return (metrics || []).map(m => ({
+    Actif: m.label || m.ticker,
+    Ticker: m.ticker,
+    'Retour total (%)': Number(m.totalReturn.toFixed(1)),
+    'CAGR (%/an)': Number(m.cagr.toFixed(1)),
+    'Capital investi (€)': Math.round(m.totalInvested),
+    'Valeur finale (€)': Math.round(m.finalValue),
+  }));
 }
 
 // ── SVG multi-courbes ─────────────────────────────────────────────────────────
@@ -613,6 +647,23 @@ export default function Comparateur() {
     setAssets(prev => prev.filter(a => a.id !== id));
   }, []);
 
+  const exportBaseName = `comparateur-${fromDate.year}-${toDate.year}`;
+
+  const handleExportCSV = useCallback(() => {
+    const rows = buildSeriesRows(computed, assetsWithColors);
+    if (rows.length) downloadCSV(rows, `${exportBaseName}.csv`);
+    track('comparateur_export', { format: 'csv' });
+  }, [computed, assetsWithColors, exportBaseName]);
+
+  const handleExportXLSX = useCallback(() => {
+    const sheets = [
+      { name: 'Valeurs (€)', rows: buildSeriesRows(computed, assetsWithColors) },
+      { name: 'Métriques',   rows: buildMetricsRows(metrics) },
+    ];
+    downloadXLSX(sheets, `${exportBaseName}.xlsx`);
+    track('comparateur_export', { format: 'xlsx' });
+  }, [computed, assetsWithColors, metrics, exportBaseName]);
+
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
@@ -861,6 +912,28 @@ export default function Comparateur() {
             {/* Note */}
             <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6, marginTop: 16 }}>
               ⚠️ <strong>Données historiques.</strong> Les performances passées ne garantissent pas les performances futures. Données Yahoo Finance (prix ajustés). Calculs hors fiscalité, frais de gestion et inflation.
+            </div>
+
+            {/* Export des données */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10, marginTop: 16 }}>
+              <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Exporter les données :</span>
+              {[
+                { label: '↓ CSV',  onClick: handleExportCSV },
+                { label: '↓ Excel', onClick: handleExportXLSX },
+              ].map(btn => (
+                <button key={btn.label} onClick={btn.onClick}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    padding: '6px 14px', borderRadius: 9,
+                    border: '1px solid var(--border-gold)',
+                    background: 'rgba(184,147,74,0.06)',
+                    color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
+                    fontFamily: "'DM Sans', sans-serif",
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(184,147,74,0.14)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(184,147,74,0.06)'}
+                >{btn.label}</button>
+              ))}
             </div>
 
             {/* Actions */}

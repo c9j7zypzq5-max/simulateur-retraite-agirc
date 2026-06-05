@@ -1,44 +1,59 @@
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import Home from "./pages/Home.jsx";
-import SimulateurRetraite from "./SimulateurRetraite.jsx";
-import MentionsLegales from "./pages/MentionsLegales.jsx";
-import PolitiqueConfidentialite from "./pages/PolitiqueConfidentialite.jsx";
-import APropos from "./pages/APropos.jsx";
-import Blog from "./pages/Blog.jsx";
-import Article from "./pages/Article.jsx";
+
+// Pages chargées à la demande (code splitting) : chaque simulateur devient son
+// propre chunk, téléchargé seulement quand l'utilisateur visite la route. La page
+// d'accueil (Home) reste en import direct pour un premier rendu immédiat.
+const SimulateurRetraite      = lazy(() => import("./SimulateurRetraite.jsx"));
+const MentionsLegales         = lazy(() => import("./pages/MentionsLegales.jsx"));
+const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite.jsx"));
+const APropos                 = lazy(() => import("./pages/APropos.jsx"));
+const Blog                    = lazy(() => import("./pages/Blog.jsx"));
+const Article                 = lazy(() => import("./pages/Article.jsx"));
 // Retraite
-import Cnav from "./pages/simulateurs/Cnav.jsx";
-import FonctionPublique from "./pages/simulateurs/FonctionPublique.jsx";
-import Independants from "./pages/simulateurs/Independants.jsx";
-import Ircantec from "./pages/simulateurs/Ircantec.jsx";
-import RetraiteProgressive from "./pages/simulateurs/RetraiteProgressive.jsx";
-import Cnavpl from "./pages/simulateurs/Cnavpl.jsx";
-import Msa from "./pages/simulateurs/Msa.jsx";
+const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
+const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
+const Independants        = lazy(() => import("./pages/simulateurs/Independants.jsx"));
+const Ircantec            = lazy(() => import("./pages/simulateurs/Ircantec.jsx"));
+const RetraiteProgressive = lazy(() => import("./pages/simulateurs/RetraiteProgressive.jsx"));
+const Cnavpl              = lazy(() => import("./pages/simulateurs/Cnavpl.jsx"));
+const Msa                 = lazy(() => import("./pages/simulateurs/Msa.jsx"));
 // Immobilier
-import EmpruntImmobilier from "./pages/simulateurs/EmpruntImmobilier.jsx";
-import RendementLocatif from "./pages/simulateurs/RendementLocatif.jsx";
-import Ptz from "./pages/simulateurs/Ptz.jsx";
+const EmpruntImmobilier = lazy(() => import("./pages/simulateurs/EmpruntImmobilier.jsx"));
+const RendementLocatif  = lazy(() => import("./pages/simulateurs/RendementLocatif.jsx"));
+const Ptz               = lazy(() => import("./pages/simulateurs/Ptz.jsx"));
 // Impôts
-import ImpotRevenu from "./pages/simulateurs/ImpotRevenu.jsx";
-import PlusValue from "./pages/simulateurs/PlusValue.jsx";
+const ImpotRevenu = lazy(() => import("./pages/simulateurs/ImpotRevenu.jsx"));
+const PlusValue   = lazy(() => import("./pages/simulateurs/PlusValue.jsx"));
 // Finances
-import Budget from "./pages/simulateurs/Budget.jsx";
-import Salaire from "./pages/simulateurs/Salaire.jsx";
-import Epargne from "./pages/simulateurs/Epargne.jsx";
-import Fire from "./pages/simulateurs/Fire.jsx";
-import Patrimoine from "./pages/simulateurs/Patrimoine.jsx";
+const Budget     = lazy(() => import("./pages/simulateurs/Budget.jsx"));
+const Salaire    = lazy(() => import("./pages/simulateurs/Salaire.jsx"));
+const Epargne    = lazy(() => import("./pages/simulateurs/Epargne.jsx"));
+const Fire       = lazy(() => import("./pages/simulateurs/Fire.jsx"));
+const Patrimoine = lazy(() => import("./pages/simulateurs/Patrimoine.jsx"));
 // Vie & Temps
-import CoutEnHeures from "./pages/simulateurs/CoutEnHeures.jsx";
-import VieEnSemaines from "./pages/simulateurs/VieEnSemaines.jsx";
-import Comparateur from "./pages/simulateurs/Comparateur.jsx";
+const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"));
+const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
+const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
+
+// Fallback affiché le temps de charger le chunk d'une route.
+function RouteFallback() {
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'DM Sans', sans-serif" }}>
+      <span style={{ fontSize: 14, opacity: 0.7 }}>Chargement…</span>
+    </div>
+  );
+}
 
 export default function App() {
   return (
     <VideoRecordingProvider>
     <BrowserRouter>
       <VideoRecordingToast />
+      <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
         {/* Retraite */}
@@ -76,6 +91,7 @@ export default function App() {
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         <Route path="/a-propos" element={<APropos />} />
       </Routes>
+      </Suspense>
     </BrowserRouter>
     </VideoRecordingProvider>
   );
