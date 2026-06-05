@@ -1,0 +1,15 @@
+{
+  "name": "tiktok-video-generator",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Génère en lot les vidéos du comparateur (mesimulateurs.fr) à partir d'un tableau.",
+  "scripts": {
+    "generate": "node generate-videos.mjs",
+    "setup": "playwright install chromium",
+    "postinstall": "playwright install chromium || true"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.1"
+  }
+}

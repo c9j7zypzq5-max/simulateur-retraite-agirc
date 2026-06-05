@@ -6,7 +6,7 @@ import ComparisonVideoExport from '../../components/ComparisonVideoExport.jsx';
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import AdUnit from '../../components/AdUnit.jsx';
-import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
+import { ASSET_PRESETS, ASSET_COLORS, TICKER_NAMES } from '../../data/assetPresets.js';
 import { SimulateurHeader, fmtEur } from '../../components/ui.jsx';
 
 const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
@@ -21,6 +21,63 @@ function fmtK(v) {
 }
 
 const FREQ_MONTHS = { monthly: 1, quarterly: 3, semi: 6, annual: 12 };
+const FREQ_OK = new Set(['monthly', 'quarterly', 'semi', 'annual']);
+
+// ── Pré-remplissage via paramètres d'URL ────────────────────────────────────────
+// Permet de piloter le comparateur depuis un lien (utile pour la génération
+// automatisée de vidéos TikTok via scripts/tiktok).
+//   ?a=^GSPC,BTC-USD&montant=10000&dca=0&freq=monthly&from=2017-01&to=2024-12&video=70
+function parseInitialConfig() {
+  if (typeof window === 'undefined') return null;
+  const p = new URLSearchParams(window.location.search);
+  if ([...p.keys()].length === 0) return null;
+
+  const aParam = p.get('a') || p.get('assets');
+  let assets = null;
+  if (aParam) {
+    assets = aParam
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .slice(0, 5)
+      .map((ticker, i) => {
+        const preset = ASSET_PRESETS.find(x => x.ticker.toLowerCase() === ticker.toLowerCase());
+        const tk = preset ? preset.ticker : ticker.toUpperCase();
+        return {
+          id: i,
+          ticker: tk,
+          // Repli sur un nom lisible (Toyota au lieu de TM) si l'actif n'a pas de preset.
+          label: preset ? preset.label : (TICKER_NAMES[tk] || tk),
+          emoji: preset ? preset.emoji : '📈',
+          color: ASSET_COLORS[i % ASSET_COLORS.length],
+        };
+      });
+    if (assets.length === 0) assets = null;
+  }
+
+  const parseYM = (s) => {
+    if (!s) return null;
+    const m = /^(\d{4})-(\d{1,2})$/.exec(s.trim());
+    if (!m) return null;
+    return { year: +m[1], month: Math.min(12, Math.max(1, +m[2])) };
+  };
+
+  const freq = p.get('freq');
+  const videoRaw = p.get('video');
+  const videoDur = videoRaw != null ? parseInt(videoRaw, 10) : null;
+  const fmt = (p.get('format') || '').toLowerCase();
+
+  return {
+    assets,
+    fromDate:     parseYM(p.get('from')),
+    toDate:       parseYM(p.get('to')),
+    montant:      p.has('montant') ? Math.max(0, parseFloat(p.get('montant')) || 0) : null,
+    periodicAmt:  p.has('dca')     ? Math.max(0, parseFloat(p.get('dca'))     || 0) : null,
+    periodicFreq: FREQ_OK.has(freq) ? freq : null,
+    videoDur:     videoDur && videoDur > 0 ? videoDur : null,
+    videoFormat:  fmt === 'webm' ? 'webm' : 'mp4',
+  };
+}
 
 // ── Calcul de la performance normalisée ────────────────────────────────────────
 function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestDivs) {
@@ -64,7 +121,7 @@ function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestD
         value,
         invested,
         interest:  Math.max(0, value - valueNoReinv),  // gain lié aux dividendes réinvestis
-        pct:       ((value / montant) - 1) * 100,
+        pct:       montant > 0 ? ((value / montant) - 1) * 100 : (invested > 0 ? ((value / invested) - 1) * 100 : 0),
       };
     });
   }
@@ -79,8 +136,8 @@ function calcMetrics(computed, assets, montant) {
       const last      = pts[pts.length - 1];
       const totalInv  = last.invested ?? montant;
       const years     = pts.length / 12;
-      const tot       = ((last.value / totalInv) - 1) * 100;
-      const cagr      = years > 0.5 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
+      const tot       = totalInv > 0 ? ((last.value / totalInv) - 1) * 100 : 0;
+      const cagr      = years > 0.5 && totalInv > 0 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
       return { ...asset, totalReturn: tot, cagr, finalValue: last.value, totalInvested: totalInv, nPts: pts.length };
     })
     .filter(Boolean)
@@ -155,7 +212,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       ))}
 
       {/* Ligne de référence (montant initial) */}
-      {(() => {
+      {montant > 0 && (() => {
         const refY = y(montant);
         if (refY < PAD.top || refY > H - PAD.bottom) return null;
         return (
@@ -168,15 +225,23 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       {showPeriodicInChart && (() => {
         const refSeries = Object.values(computed)[0];
         if (!refSeries) return null;
-        const pts = refSeries
-          .map(p => {
-            const idx = allDates.indexOf(p.date);
-            return idx >= 0 ? `${x(idx).toFixed(1)},${y(p.invested ?? montant).toFixed(1)}` : null;
-          })
-          .filter(Boolean)
-          .join(' ');
+        let d = '';
+        let prevY = null;
+        refSeries.forEach((p, i) => {
+          const idx = allDates.indexOf(p.date);
+          if (idx < 0) return;
+          const px = x(idx).toFixed(1);
+          const py = y(p.invested ?? montant).toFixed(1);
+          if (i === 0 || prevY === null) {
+            d += `M ${px} ${py}`;
+          } else {
+            d += ` H ${px} V ${py}`;
+          }
+          prevY = py;
+        });
+        if (!d) return null;
         return (
-          <polyline points={pts} fill="none" stroke="rgba(255,255,255,0.35)"
+          <path d={d} fill="none" stroke="rgba(255,255,255,0.35)"
             strokeWidth="1.5" strokeDasharray="5,4" />
         );
       })()}
@@ -483,18 +548,20 @@ function DateSelect({ label, value, onChange }) {
 export default function Comparateur() {
   const [theme, setTheme] = useTheme();
 
-  const [assets, setAssets] = useState([
+  const urlCfg = useRef(parseInitialConfig()).current;
+
+  const [assets, setAssets] = useState(urlCfg?.assets || [
     { id: 0, ticker: '^GSPC',   label: 'S&P 500',          emoji: '🇺🇸', color: ASSET_COLORS[0] },
     { id: 1, ticker: 'IWDA.AS', label: 'MSCI World (IWDA)', emoji: '🌍', color: ASSET_COLORS[1] },
   ]);
 
-  const [fromDate, setFromDate] = useState({ year: 2015, month: 1 });
-  const [toDate,   setToDate]   = useState({ year: 2024, month: 12 });
-  const [montant,  setMontant]  = useState(10000);
+  const [fromDate, setFromDate] = useState(urlCfg?.fromDate || { year: 2015, month: 1 });
+  const [toDate,   setToDate]   = useState(urlCfg?.toDate   || { year: 2024, month: 12 });
+  const [montant,  setMontant]  = useState(urlCfg?.montant ?? 10000);
 
   // DCA
-  const [periodicAmt,         setPeriodicAmt]         = useState(0);
-  const [periodicFreq,        setPeriodicFreq]        = useState('monthly');
+  const [periodicAmt,         setPeriodicAmt]         = useState(urlCfg?.periodicAmt ?? 0);
+  const [periodicFreq,        setPeriodicFreq]        = useState(urlCfg?.periodicFreq || 'monthly');
   const [showPeriodicInChart, setShowPeriodicInChart] = useState(true);
 
   // Réinvestissement & intérêts
@@ -670,9 +737,9 @@ export default function Comparateur() {
             <input
               type="number"
               value={montant}
-              min={100}
+              min={0}
               max={10_000_000}
-              onChange={e => setMontant(Math.max(1, parseFloat(e.target.value) || 0))}
+              onChange={e => setMontant(Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -691,7 +758,7 @@ export default function Comparateur() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
             <input
               type="number"
-              value={periodicAmt}
+              value={periodicAmt || ''}
               min={0}
               max={1_000_000}
               placeholder="0"
@@ -830,6 +897,8 @@ export default function Comparateur() {
                   periodicAmt={periodicAmt}
                   periodicFreq={periodicFreq}
                   showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
+                  autoLaunchDuration={urlCfg?.videoDur || null}
+                  autoLaunchFormat={urlCfg?.videoFormat || 'mp4'}
                 />
               ) : <div />}
               <ShareBar

@@ -27,3 +27,50 @@ export const ASSET_COLORS = [
   '#f59e0b', // amber
   '#a855f7', // violet
 ];
+
+// Noms d'affichage pour des tickers hors presets (utilisés en repli quand un
+// actif est passé par l'URL et n'a pas d'entrée dans ASSET_PRESETS). Évite
+// d'afficher le code brut (« TM ») au lieu du nom (« Toyota ») dans la vidéo.
+export const TICKER_NAMES = {
+  // Actions françaises (Euronext Paris)
+  'MC.PA':  'LVMH',
+  'RMS.PA': 'Hermès',
+  'OR.PA':  "L'Oréal",
+  'AIR.PA': 'Airbus',
+  'SAF.PA': 'Safran',
+  'TTE.PA': 'TotalEnergies',
+  'BNP.PA': 'BNP Paribas',
+  'SAN.PA': 'Sanofi',
+  'DSY.PA': 'Dassault Systèmes',
+  'CAP.PA': 'Capgemini',
+  'SU.PA':  'Schneider Electric',
+  'RI.PA':  'Pernod Ricard',
+  // Actions US
+  'INTC': 'Intel',
+  'AMD':  'AMD',
+  'TM':   'Toyota',
+  'BA':   'Boeing',
+  'SNAP': 'Snapchat',
+  'ENPH': 'Enphase',
+  'JPM':  'JPMorgan',
+  'GS':   'Goldman Sachs',
+  'BAC':  'Bank of America',
+  'PFE':  'Pfizer',
+  'NFLX': 'Netflix',
+  'DIS':  'Disney',
+  'ORCL': 'Oracle',
+  'IBM':  'IBM',
+  'GOOG': 'Alphabet (Google)',
+  // Indices & ETF
+  '^IXIC':  'Nasdaq Composite',
+  '^DJI':   'Dow Jones',
+  '^GDAXI': 'DAX',
+  'CSPX.L': 'S&P 500 (CSPX)',
+  'EUNL.DE':'MSCI World (EUNL)',
+  'VEUR.AS':'Europe (VEUR)',
+  'VWCE.DE':'FTSE All-World (VWCE)',
+  'VTI':    'Total US (VTI)',
+  'VEA':    'Développés ex-US (VEA)',
+  'SPY':    'S&P 500 (SPY)',
+  'QQQ':    'Nasdaq 100 (QQQ)',
+};

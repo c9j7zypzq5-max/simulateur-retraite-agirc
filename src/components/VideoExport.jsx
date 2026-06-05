@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import { convertToMp4 } from '../utils/convertToMp4';
 
 function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
 function easeOut(t)   { return 1 - Math.pow(1 - t, 3); }
@@ -301,104 +302,165 @@ export default function VideoExport({
   ageActuel,
   disabled,
 }) {
-  const canvasRef = useRef(null);
-  const recRef    = useRef(null);
-  const rafRef    = useRef(null);
-  const chunksRef = useRef([]);
+  const canvasRef  = useRef(null);
+  const recRef     = useRef(null);
+  const rafRef     = useRef(null);
+  const chunksRef  = useRef([]);
+  const cancelRef  = useRef(false);
 
+  // idle | recording | converting | processing
   const [state, setState] = useState('idle');
+  const [fmt, setFmt]     = useState('mp4');
 
   const stopAll = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    cancelRef.current = true;
+    if (rafRef.current) { cancelAnimationFrame(rafRef.current); rafRef.current = null; }
     if (recRef.current && recRef.current.state !== 'inactive') recRef.current.stop();
   }, []);
 
-  const startRecording = useCallback(async () => {
+  const startRecording = useCallback(() => {
     if (!canvasRef.current || disabled) return;
     setState('recording');
+    cancelRef.current = false;
     chunksRef.current = [];
 
-    const canvas = canvasRef.current;
-    const ctx    = canvas.getContext('2d');
-    const stream = canvas.captureStream(30);
+    const canvas   = canvasRef.current;
+    const ctx      = canvas.getContext('2d');
+    const DURATION = 7000;
+    const slug     = simulatorName.toLowerCase().replace(/\s+/g, '-');
+    const format   = fmt;
 
-    const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9')
-      ? 'video/webm;codecs=vp9'
-      : 'video/webm';
+    const videoStream = canvas.captureStream(30);
+    const videoTrack = videoStream.getVideoTracks()[0] ?? null;
+    let stream = videoStream;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const gain = audioCtx.createGain(); gain.gain.value = 0;
+      const osc = audioCtx.createOscillator(); osc.connect(gain);
+      const dest = audioCtx.createMediaStreamDestination(); gain.connect(dest); osc.start();
+      stream = new MediaStream([...videoStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+    } catch (_) { /* video-only */ }
 
-    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 4_000_000 });
+    const MIME_CANDIDATES = [
+      'video/mp4;codecs=avc1', 'video/mp4;codecs=h264', 'video/mp4',
+      'video/webm;codecs=h264', 'video/webm;codecs=vp9', 'video/webm',
+    ];
+    const mime    = MIME_CANDIDATES.find(m => MediaRecorder.isTypeSupported(m)) ?? 'video/webm';
+    const nativeExt = mime.startsWith('video/mp4') ? 'mp4' : 'webm';
+
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5_000_000 });
     recRef.current = rec;
-
     rec.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
-    rec.onstop = () => {
-      setState('processing');
-      const blob = new Blob(chunksRef.current, { type: mime });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
-      a.download = `simulation-${simulatorName.toLowerCase().replace(/\s+/g, '-')}.webm`;
-      a.click();
-      setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+    rec.onstop = async () => {
+      if (cancelRef.current) { setState('idle'); return; }
+      const rawBlob = new Blob(chunksRef.current, { type: mime });
+
+      if (format === 'webm') {
+        setState('processing');
+        dlBlob(rawBlob, `simulation-${slug}.webm`);
+        setState('idle');
+        return;
+      }
+
+      setState('converting');
+      try {
+        const mp4Blob = await convertToMp4(rawBlob, () => {});
+        setState('processing');
+        dlBlob(mp4Blob, `simulation-${slug}.mp4`);
+      } catch (err) {
+        console.error('ffmpeg conversion failed, downloading original:', err);
+        setState('processing');
+        dlBlob(rawBlob, `simulation-${slug}.${nativeExt}`);
+      }
       setState('idle');
     };
 
-    rec.start();
-
-    const DURATION = 7000;
-    const start    = performance.now();
-
+    rec.start(1000);
+    const t0 = performance.now();
     function frame(now) {
-      const elapsed = now - start;
-      const tt      = Math.min(elapsed / DURATION, 1);
-
-      drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
-
-      if (tt < 1) {
-        rafRef.current = requestAnimationFrame(frame);
-      } else {
-        rec.stop();
+      if (cancelRef.current) { rec.stop(); return; }
+      const tt = Math.min((now - t0) / DURATION, 1);
+      try {
+        drawFrame(ctx, { t: tt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel });
+      } catch (err) {
+        console.error('[VideoExport] draw error at t=', tt, err);
       }
+      try {
+        if (videoTrack && typeof videoTrack.requestFrame === 'function') videoTrack.requestFrame();
+      } catch (_) {}
+      if (tt < 1) { rafRef.current = requestAnimationFrame(frame); }
+      else { rafRef.current = null; rec.stop(); }
     }
-
     rafRef.current = requestAnimationFrame(frame);
-  }, [disabled, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel]);
+  }, [disabled, fmt, simulatorName, emoji, chartData, targetValue, metrics, color, ageActuel]);
 
-  const isSupported = typeof MediaRecorder !== 'undefined';
+  const isSupported  = typeof MediaRecorder !== 'undefined';
+  const isConverting = state === 'converting';
+  const isProcessing = state === 'processing' || isConverting;
+  const isRecording  = state === 'recording';
 
   return (
     <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'flex-start', gap: 6 }}>
-      <canvas ref={canvasRef} width={720} height={1280} style={{ display: 'none' }} />
+      <canvas ref={canvasRef} width={720} height={1280} style={{ position: 'fixed', top: '-9999px', left: '-9999px', pointerEvents: 'none' }} />
 
       {isSupported && (
         <button
-          onClick={state === 'recording' ? stopAll : startRecording}
-          disabled={state === 'processing' || disabled}
+          onClick={isRecording ? stopAll : startRecording}
+          disabled={isProcessing || disabled}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
             padding: '7px 14px',
-            background: state === 'recording' ? 'rgba(239,68,68,0.12)' : 'var(--card-bg)',
-            border: `1px solid ${state === 'recording' ? 'rgba(239,68,68,0.5)' : 'var(--border)'}`,
+            background: isRecording ? 'rgba(239,68,68,0.12)' : 'var(--card-bg)',
+            border: `1px solid ${isRecording ? 'rgba(239,68,68,0.5)' : 'var(--border)'}`,
             borderRadius: 10,
-            color: state === 'recording' ? '#ef4444' : 'var(--text-secondary)',
+            color: isRecording ? '#ef4444' : 'var(--text-secondary)',
             fontSize: 12, fontFamily: "'DM Sans', sans-serif",
-            cursor: state === 'processing' ? 'wait' : 'pointer',
+            cursor: isProcessing ? 'wait' : 'pointer',
             transition: 'all 0.2s',
           }}
           onMouseEnter={e => { if (state === 'idle') { e.currentTarget.style.borderColor = 'var(--gold-mid)'; e.currentTarget.style.color = 'var(--gold)'; } }}
           onMouseLeave={e => { if (state === 'idle') { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; } }}
         >
-          {state === 'recording' && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%' }} />}
-          {state === 'processing' ? '⏳ Génération…' :
-           state === 'recording'  ? '⏹ Arrêter'      :
+          {isRecording && <span style={{ width: 8, height: 8, background: '#ef4444', borderRadius: '50%' }} />}
+          {isConverting ? '⚙️ Conversion…' :
+           isProcessing  ? '⏳ Génération…'  :
+           isRecording   ? '⏹ Arrêter'       :
            '🎬 Reel'}
         </button>
       )}
 
       {state === 'idle' && isSupported && !disabled && (
-        <span style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.03em' }}>
-          9:16 · Reels / Stories
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 10, color: 'var(--text-secondary)', letterSpacing: '0.03em' }}>
+            9:16 ·
+          </span>
+          {['mp4', 'webm'].map(f => (
+            <button
+              key={f}
+              onClick={() => setFmt(f)}
+              style={{
+                padding: '1px 7px',
+                background: fmt === f ? 'rgba(184,147,74,0.15)' : 'transparent',
+                border: `1px solid ${fmt === f ? 'var(--gold-mid)' : 'var(--border)'}`,
+                borderRadius: 5,
+                color: fmt === f ? 'var(--gold)' : 'var(--text-secondary)',
+                fontSize: 10, fontFamily: "'DM Sans', sans-serif",
+                cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.04em',
+              }}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
       )}
     </div>
   );
+}
+
+function dlBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
 }
