@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "vite build && node scripts/generate-static-html.mjs",
     "lint": "eslint .",
+    "og": "node scripts/generate-og-png.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",

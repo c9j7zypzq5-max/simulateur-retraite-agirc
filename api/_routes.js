@@ -46,15 +46,17 @@ export const BLOG_SLUGS = [
 ];
 
 // og:image par catégorie (différenciation des aperçus de partage social).
+// PNG (pas SVG) : c'est le format réellement rendu par Facebook/LinkedIn/X.
+// Régénérables depuis les SVG via : node scripts/generate-og-png.mjs
 export const OG_IMAGE_BY_CAT = {
-  Retraite:   '/og-retraite.svg',
-  Immobilier: '/og-immobilier.svg',
-  Impôts:     '/og-impots.svg',
-  Finances:   '/og-finances.svg',
-  FIRE:       '/og-finances.svg',
-  Budget:     '/og-finances.svg',
+  Retraite:   '/og-retraite.png',
+  Immobilier: '/og-immobilier.png',
+  Impôts:     '/og-impots.png',
+  Finances:   '/og-finances.png',
+  FIRE:       '/og-finances.png',
+  Budget:     '/og-finances.png',
 };
-export const OG_IMAGE_DEFAULT = '/og-image.svg';
+export const OG_IMAGE_DEFAULT = '/og-image.png';
 
 export function ogImageForRoute(route) {
   const meta = ROUTE_META[route];

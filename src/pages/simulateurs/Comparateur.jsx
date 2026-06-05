@@ -24,6 +24,45 @@ function fmtK(v) {
 
 const FREQ_MONTHS = { monthly: 1, quarterly: 3, semi: 6, annual: 12 };
 
+// ── Cache des prix Yahoo (mémoire + localStorage avec TTL) ──────────────────────
+// Les données sont des cours historiques mensuels, quasi immuables : on évite de
+// relancer un fetch /api/prices pour une combinaison tickers+période déjà chargée,
+// y compris entre deux sessions (rechargement de page).
+const PRICE_CACHE_TTL    = 24 * 60 * 60 * 1000; // 24 h
+const PRICE_CACHE_PREFIX = 'cmp_prices_v1:';
+const priceMemCache = new Map();
+
+function readPriceCache(key) {
+  if (priceMemCache.has(key)) return priceMemCache.get(key);
+  try {
+    const raw = localStorage.getItem(PRICE_CACHE_PREFIX + key);
+    if (raw) {
+      const { ts, payload } = JSON.parse(raw);
+      if (Date.now() - ts < PRICE_CACHE_TTL) {
+        priceMemCache.set(key, payload);
+        return payload;
+      }
+      localStorage.removeItem(PRICE_CACHE_PREFIX + key);
+    }
+  } catch { /* localStorage indisponible */ }
+  return null;
+}
+
+function writePriceCache(key, payload) {
+  priceMemCache.set(key, payload);
+  try {
+    // Purge les entrées périmées pour limiter l'occupation du quota.
+    for (const k of Object.keys(localStorage)) {
+      if (!k.startsWith(PRICE_CACHE_PREFIX)) continue;
+      try {
+        const { ts } = JSON.parse(localStorage.getItem(k));
+        if (Date.now() - ts > PRICE_CACHE_TTL) localStorage.removeItem(k);
+      } catch { localStorage.removeItem(k); }
+    }
+    localStorage.setItem(PRICE_CACHE_PREFIX + key, JSON.stringify({ ts: Date.now(), payload }));
+  } catch { /* quota dépassé : le cache mémoire suffit */ }
+}
+
 // ── Calcul de la performance normalisée ────────────────────────────────────────
 function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestDivs) {
   const freqMos = FREQ_MONTHS[periodicFreq] || 1;
@@ -567,18 +606,29 @@ export default function Comparateur() {
     }
   }, []);
 
-  // Fetch avec debounce
+  // Fetch avec debounce + cache
   useEffect(() => {
     const validAssets = assets.filter(a => a.ticker.trim());
     if (validAssets.length === 0) return;
+
+    const tickers = validAssets.map(a => a.ticker).join(',');
+    const from = `${fromDate.year}-${String(fromDate.month).padStart(2, '0')}`;
+    const to   = `${toDate.year}-${String(toDate.month).padStart(2, '0')}`;
+    const cacheKey = `${tickers}|${from}|${to}`;
+
+    // Cache hit : restitution immédiate, sans réseau ni debounce.
+    const cached = readPriceCache(cacheKey);
+    if (cached) {
+      setErrors(cached.errors);
+      setRawData(cached.data);
+      setLoading(false);
+      return;
+    }
 
     const timer = setTimeout(async () => {
       setLoading(true);
       setErrors({});
       try {
-        const tickers = validAssets.map(a => a.ticker).join(',');
-        const from = `${fromDate.year}-${String(fromDate.month).padStart(2, '0')}`;
-        const to   = `${toDate.year}-${String(toDate.month).padStart(2, '0')}`;
         const resp = await fetch(`/api/prices?tickers=${encodeURIComponent(tickers)}&from=${from}&to=${to}`);
         if (!resp.ok) throw new Error(`Erreur serveur HTTP ${resp.status}`);
         const json = await resp.json();
@@ -592,6 +642,8 @@ export default function Comparateur() {
         }
         setErrors(errs);
         setRawData(clean);
+        // Ne mémorise que si au moins un actif a renvoyé des données.
+        if (Object.keys(clean).length) writePriceCache(cacheKey, { errors: errs, data: clean });
       } catch (e) {
         setErrors({ _global: e.message });
       } finally {

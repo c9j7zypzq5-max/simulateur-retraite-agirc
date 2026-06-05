@@ -22,7 +22,7 @@
   <line x1="80" y1="400" x2="600" y2="400" stroke="rgba(184,147,74,0.3)" stroke-width="1"/>
 
   <rect x="80"  y="420" width="200" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
-  <text x="180" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ Mensualités & capacité</text>
+  <text x="180" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ Mensualités &amp; capacité</text>
   <rect x="293" y="420" width="175" height="38" rx="8" fill="rgba(184,147,74,0.12)"/>
   <text x="380" y="443" font-family="DM Sans, sans-serif" font-size="15" fill="#e8c06a" text-anchor="middle">✓ 100 % gratuit</text>
 
