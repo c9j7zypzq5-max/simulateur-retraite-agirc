@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ROUTE_META, BLOG_SLUGS, ogImageForRoute } from '../api/_routes.js';
+import { ROUTE_META, BLOG_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,11 +14,13 @@ const ROUTES = [
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function patchHtml(html, route) {
   const meta = ROUTE_META[route] || { title: 'mesimulateurs.fr' };
-  const ogImg = ogImageForRoute(route); // chemin relatif, ex: /og-immobilier.svg
+  const ogImg = ogImageForRoute(route); // chemin relatif, ex: /og-immobilier.png
+  const ld = structuredDataScripts(route);
   return html
     .replace(/content="\/og-image\.png"/g, `content="${ogImg}"`)
     .replace(/content="\/og-image\.svg"/g, `content="${ogImg}"`)
-    .replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`);
+    .replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`)
+    .replace('</head>', ld ? `    ${ld}\n  </head>` : '</head>');
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────

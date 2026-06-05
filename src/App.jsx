@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import VideoRecordingToast from "./components/VideoRecordingToast";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Home from "./pages/Home.jsx";
 
 // Pages chargées à la demande (code splitting) : chaque simulateur devient son
@@ -53,6 +54,7 @@ export default function App() {
     <VideoRecordingProvider>
     <BrowserRouter>
       <VideoRecordingToast />
+      <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
@@ -92,6 +94,7 @@ export default function App() {
         <Route path="/a-propos" element={<APropos />} />
       </Routes>
       </Suspense>
+      </ErrorBoundary>
     </BrowserRouter>
     </VideoRecordingProvider>
   );

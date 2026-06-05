@@ -62,3 +62,35 @@ export function ogImageForRoute(route) {
   const meta = ROUTE_META[route];
   return (meta && OG_IMAGE_BY_CAT[meta.cat]) || OG_IMAGE_DEFAULT;
 }
+
+// Données structurées schema.org injectées EN DUR dans le <head> du HTML statique
+// au build (fiables sans exécution JS, contrairement aux blocs <JsonLd> rendus par
+// React). BreadcrumbList pour toutes les pages + WebApplication pour les simulateurs.
+export function structuredData(route) {
+  const meta = ROUTE_META[route];
+  if (!meta || route === '/') return [];
+  const url = `${BASE}${route}`;
+  const out = [{
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${BASE}/` },
+      { '@type': 'ListItem', position: 2, name: meta.title, item: url },
+    ],
+  }];
+  if (route.startsWith('/simulateurs/')) {
+    out.push({
+      '@context': 'https://schema.org', '@type': 'WebApplication',
+      name: meta.title, url,
+      applicationCategory: 'FinanceApplication', operatingSystem: 'Any',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+      inLanguage: 'fr-FR',
+    });
+  }
+  return out;
+}
+
+export function structuredDataScripts(route) {
+  return structuredData(route)
+    .map(d => `<script type="application/ld+json">${JSON.stringify(d)}</script>`)
+    .join('\n    ');
+}
