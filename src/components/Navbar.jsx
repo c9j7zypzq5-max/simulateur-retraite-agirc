@@ -65,6 +65,7 @@ const ALL_ITEMS = [
   { path: "/simulateurs/retraite-progressive", icon: "📅", title: "Retraite progressive",   subtitle: "Mi-temps + pension" },
   { path: "/simulateurs/cnavpl",               icon: "👨‍⚕️", title: "Professions libérales", subtitle: "CIPAV / base SSI" },
   { path: "/simulateurs/msa",                  icon: "🌾", title: "Retraite agricole MSA",  subtitle: "Exploitants & salariés" },
+  { path: "/simulateurs/per",                  icon: "💼", title: "Plan Épargne Retraite",  subtitle: "PER — déduction fiscale" },
 ];
 
 export const NAV_GROUPS = [
@@ -88,6 +89,8 @@ export const NAV_GROUPS = [
     { path: "/simulateurs/salaire",     icon: "💼", title: "Salaire Net/Brut & Carrière", subtitle: "Projection & pouvoir d'achat" },
     { path: "/simulateurs/patrimoine",  icon: "💎", title: "Patrimoine global",            subtitle: "Financier + immo + retraite" },
     { path: "/simulateurs/comparateur", icon: "📊", title: "Comparateur d'actifs",          subtitle: "ETF, actions, crypto…" },
+    { path: "/simulateurs/assurance-vie", icon: "🛡️", title: "Assurance-vie",               subtitle: "Rendement & fiscalité" },
+    { path: "/simulateurs/credit-conso",  icon: "💳", title: "Crédit conso",                 subtitle: "Mensualité & coût total" },
   ] },
   { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
     { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },

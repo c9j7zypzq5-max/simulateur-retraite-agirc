@@ -22,6 +22,7 @@ const Ircantec            = lazy(() => import("./pages/simulateurs/Ircantec.jsx"
 const RetraiteProgressive = lazy(() => import("./pages/simulateurs/RetraiteProgressive.jsx"));
 const Cnavpl              = lazy(() => import("./pages/simulateurs/Cnavpl.jsx"));
 const Msa                 = lazy(() => import("./pages/simulateurs/Msa.jsx"));
+const Per                 = lazy(() => import("./pages/simulateurs/Per.jsx"));
 // Immobilier
 const EmpruntImmobilier = lazy(() => import("./pages/simulateurs/EmpruntImmobilier.jsx"));
 const RendementLocatif  = lazy(() => import("./pages/simulateurs/RendementLocatif.jsx"));
@@ -35,6 +36,8 @@ const Salaire    = lazy(() => import("./pages/simulateurs/Salaire.jsx"));
 const Epargne    = lazy(() => import("./pages/simulateurs/Epargne.jsx"));
 const Fire       = lazy(() => import("./pages/simulateurs/Fire.jsx"));
 const Patrimoine = lazy(() => import("./pages/simulateurs/Patrimoine.jsx"));
+const AssuranceVie = lazy(() => import("./pages/simulateurs/AssuranceVie.jsx"));
+const CreditConso  = lazy(() => import("./pages/simulateurs/CreditConso.jsx"));
 // Vie & Temps
 const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"));
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
@@ -67,6 +70,7 @@ export default function App() {
         <Route path="/simulateurs/retraite-progressive" element={<RetraiteProgressive />} />
         <Route path="/simulateurs/cnavpl" element={<Cnavpl />} />
         <Route path="/simulateurs/msa" element={<Msa />} />
+        <Route path="/simulateurs/per" element={<Per />} />
         {/* Immobilier */}
         <Route path="/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/simulateurs/rendement-locatif" element={<RendementLocatif />} />
@@ -80,6 +84,8 @@ export default function App() {
         <Route path="/simulateurs/epargne" element={<Epargne />} />
         <Route path="/simulateurs/fire" element={<Fire />} />
         <Route path="/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        <Route path="/simulateurs/credit-conso" element={<CreditConso />} />
         {/* Vie & Temps */}
         <Route path="/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
