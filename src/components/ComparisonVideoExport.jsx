@@ -340,17 +340,21 @@ function drawFrame(ctx, {
     // bout) ne colle jamais au bord supérieur.
     const targetYMax = currentMax + Math.max(interval * 0.6, (currentMax - currentMin) * 0.12);
     const targetYMin = Math.max(0, currentMin - (currentMax - currentMin) * 0.05);
+
+    // Feed-forward : l'échelle suit la courbe à LA MÊME VITESSE. On répercute
+    // d'abord sur les bornes la variation de la donnée depuis la frame précédente
+    // (la courbe monte de X → yMax monte de X ; elle descend de Y → yMin descend
+    // de Y). La marge reste donc constante pendant une variation rapide : la
+    // courbe ne sort jamais du cadre, sans aucun saut. Le lissage 0.04 ne fait
+    // qu'ajuster doucement la marge quand tout est calme.
+    const dMax = Math.max(0, currentMax - (st.prevMax ?? currentMax));
+    const dMin = Math.max(0, (st.prevMin ?? currentMin) - currentMin);
+    st.prevMax = currentMax;
+    st.prevMin = currentMin;
+    st.smoothYMax += dMax;
+    st.smoothYMin -= dMin;
     st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
     st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
-
-    // Garde-fou anti-débordement : sur une variation brutale, le lissage est en
-    // retard et la courbe sortirait du cadre. On force alors la borne pour
-    // englober immédiatement la donnée visible avec une petite marge (attaque
-    // rapide), tout en gardant le retour lissé quand l'échelle se resserre.
-    const guardTop = Math.max(interval * 0.3, (currentMax - currentMin) * 0.08);
-    const guardBot = Math.max(interval * 0.2, (currentMax - currentMin) * 0.05);
-    if (st.smoothYMax < currentMax + guardTop) st.smoothYMax = currentMax + guardTop;
-    if (st.smoothYMin > currentMin - guardBot) st.smoothYMin = currentMin - guardBot;
     if (st.smoothYMin < 0) st.smoothYMin = 0;
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
