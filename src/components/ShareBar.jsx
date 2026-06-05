@@ -39,7 +39,7 @@ function cleanClone(clonedDoc) {
   });
 }
 
-export default function ShareBar({ params, resultsRef, name, showDownload = true }) {
+export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null }) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -104,6 +104,13 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   async function handleDownloadPDF() {
     setMenuOpen(false); setBusy(true);
     try {
+      // Compte-rendu PDF natif (document propre) si le simulateur fournit ses
+      // données structurées ; sinon, repli sur une capture pleine page.
+      if (report) {
+        const { buildReportPdf } = await import("../utils/pdfReport.js");
+        await buildReportPdf({ report, url: buildShareUrl(params), name });
+        return;
+      }
       const canvas = await snapshot(pageContainer(), { full: true });
       if (!canvas) return;
       const { jsPDF } = await import("jspdf");
