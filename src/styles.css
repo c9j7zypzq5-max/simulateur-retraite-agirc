@@ -17,6 +17,7 @@
   --card-shadow: none;
   --scrollbar-thumb: #334155;
   --surface: #0d1a30;
+  --chip-bg: rgba(255,255,255,0.04);
 }
 
 [data-theme="light"] {
@@ -35,6 +36,7 @@
   --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
   --scrollbar-thumb: #c8b99a;
   --surface: #ffffff;
+  --chip-bg: rgba(0,0,0,0.04);
 }
 
 *, *::before, *::after {

@@ -473,6 +473,7 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={e => { if (e.key === 'Enter') { commitQuery(); inputRef.current?.blur(); } }}
           placeholder="Ticker ou nom (ex: AAPL, MSCI World…)"
+          aria-label={`Actif ${idx + 1} : ticker ou nom`}
           style={{
             width: '100%', padding: '8px 12px', borderRadius: 9,
             background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -517,6 +518,7 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
         <button
           onClick={onRemove}
           title="Supprimer cet actif"
+          aria-label="Supprimer cet actif"
           style={{
             width: 28, height: 28, borderRadius: '50%',
             background: 'var(--card-bg)', border: '1px solid var(--border)',
