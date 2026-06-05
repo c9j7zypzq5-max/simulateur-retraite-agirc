@@ -85,7 +85,7 @@ export default function RetraiteProgressive() {
   useEffect(() => {
     const shared = readShareParams();
     if (shared) {
-      if (shared.pensionPleineTaux !== undefined) setPensionPleineTaux(shared.pensionPleineTaux); if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.quotite !== undefined) setQuotite(shared.quotite); if (shared.duree !== undefined) setDuree(shared.duree)
+      if (shared.salaire !== undefined) setSalaire(shared.salaire); if (shared.quotite !== undefined) setQuotite(shared.quotite); if (shared.duree !== undefined) setDuree(shared.duree)
     }
   }, []);
   useEffect(() => {

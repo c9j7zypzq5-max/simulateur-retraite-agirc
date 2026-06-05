@@ -169,7 +169,7 @@ function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", h
   function clamp(n) { return Math.min(Math.max(n, min), max); }
 
   function handleChange(e) {
-    const v = e.target.value.replace(/[^0-9.\-]/g, "");
+    const v = e.target.value.replace(/[^0-9.-]/g, "");
     setRaw(v);
     const n = parseFloat(v);
     if (!isNaN(n)) onChange(clamp(n));

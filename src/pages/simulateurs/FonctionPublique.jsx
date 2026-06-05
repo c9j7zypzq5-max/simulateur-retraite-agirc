@@ -88,7 +88,7 @@ export default function FonctionPublique() {
   useEffect(() => {
     const shared = readShareParams();
     if (shared) {
-      if (shared.traitement !== undefined) setTraitement(shared.traitement); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.categActive !== undefined) setCategActive(shared.categActive); if (shared.bonus3Enfants !== undefined) setBonus3Enfants(shared.bonus3Enfants)
+      if (shared.traitement !== undefined) setTraitement(shared.traitement); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.categActive !== undefined) setCategActive(shared.categActive); if (shared.bonus3Enfants !== undefined) setBonus3Enfants(shared.bonus3Enfants)
     }
   }, []);
   useEffect(() => {

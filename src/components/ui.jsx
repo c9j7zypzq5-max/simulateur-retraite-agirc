@@ -94,7 +94,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
 
   function handleChange(e) {
     // Autoriser chiffres, séparateurs décimaux (. et ,), signe moins
-    const v = e.target.value.replace(/[^0-9.,\-]/g, "");
+    const v = e.target.value.replace(/[^0-9.,-]/g, "");
     setRaw(v);
     const n = norm(v);
     // Ne pas déclencher onChange sur valeur incomplète ("3." ou "3,")

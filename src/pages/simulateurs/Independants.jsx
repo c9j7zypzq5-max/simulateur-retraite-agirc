@@ -112,7 +112,7 @@ export default function Independants() {
   useEffect(() => {
     const shared = readShareParams();
     if (shared) {
-      if (shared.revenu !== undefined) setRevenu(shared.revenu); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.anneesRestantes !== undefined) setAnneesRestantes(shared.anneesRestantes); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.activite !== undefined) setActivite(shared.activite)
+      if (shared.revenu !== undefined) setRevenu(shared.revenu); if (shared.anneesFaites !== undefined) setAnneesFaites(shared.anneesFaites); if (shared.ageDépart !== undefined) setAgeDépart(shared.ageDépart); if (shared.activite !== undefined) setActivite(shared.activite)
     }
   }, []);
   useEffect(() => {

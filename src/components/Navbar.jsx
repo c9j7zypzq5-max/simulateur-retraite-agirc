@@ -148,7 +148,6 @@ export default function Navbar({ theme, setTheme }) {
         display: "flex", alignItems: "center",
         justifyContent: "space-between",
         padding: "0 12px 0 4px",
-        position: "sticky",
       }}>
         {/* Gauche : hamburger + breadcrumb desktop */}
         <div style={{ display: "flex", alignItems: "center", gap: 4, zIndex: 1 }}>
