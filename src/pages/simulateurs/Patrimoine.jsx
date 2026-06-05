@@ -252,6 +252,7 @@ export default function Patrimoine() {
 
   const [historySaved, setHistorySaved] = useState(false);
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
   const { getProfile, updateProfile } = useProfile();
   const { saveEntry } = useSimHistory();
 
@@ -505,7 +506,9 @@ export default function Patrimoine() {
                   <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 8 }}>
                     Projection annuelle
                   </div>
-                  <StackedChart projectionData={res.projectionData} immoActive={immoActive} />
+                  <div ref={chartRef}>
+                    <StackedChart projectionData={res.projectionData} immoActive={immoActive} />
+                  </div>
                 </div>
               )}
 
@@ -533,6 +536,7 @@ export default function Patrimoine() {
 <ShareBar
                   params={{ ageActuel, ageCible, capitalFinancier, versementMensuel, rendementPortefeuille }}
                   resultsRef={resultsRef}
+                  chartRef={chartRef}
                   report={report}
                   name="patrimoine"
                 />

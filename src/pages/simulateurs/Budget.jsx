@@ -271,6 +271,7 @@ export default function Budget() {
   const [epargneActuelle, setEpargneActuelle] = useState(0);
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     document.title = "Simulateur Budget 50/30/20 — Mesimulateurs.fr";
@@ -375,7 +376,7 @@ export default function Budget() {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Répartition du budget
             </div>
-            <div style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
+            <div ref={chartRef} style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
               <DonutChart
                 besoins={res?.besoinsReel ?? 0}
                 envies={res?.enviesReel ?? 0}
@@ -422,6 +423,7 @@ export default function Budget() {
             <ShareBar
               params={{ revenus, fixe, variable, epargneActuelle }}
               resultsRef={resultsRef}
+              chartRef={chartRef}
               report={report}
               name="budget"
             />

@@ -566,6 +566,7 @@ export default function Fire() {
   const [historySaved, setHistorySaved] = useState(false);
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
   const { getProfile, updateProfile } = useProfile();
   const { saveEntry } = useSimHistory();
 
@@ -870,7 +871,9 @@ export default function Fire() {
                   <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                     Courbe de croissance du patrimoine
                   </div>
-                  <GrowthCurve projectionData={res.projectionData} patrimoineCible={res.patrimoineCible} />
+                  <div ref={chartRef}>
+                    <GrowthCurve projectionData={res.projectionData} patrimoineCible={res.patrimoineCible} />
+                  </div>
                 </div>
               )}
 
@@ -944,6 +947,7 @@ export default function Fire() {
 <ShareBar
               params={{ ageActuel, capitalActuel, epargneMensuelle, revenuMensuel, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff, ageCoast }}
               resultsRef={resultsRef}
+              chartRef={chartRef}
               report={report}
               name="fire"
             />

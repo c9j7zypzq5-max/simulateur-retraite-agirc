@@ -89,6 +89,7 @@ export default function Epargne() {
   const [duree, setDuree]                     = useState(20);
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     document.title = "Simulateur Épargne 2025 — Intérêts composés et capital final";
@@ -249,12 +250,14 @@ export default function Epargne() {
             </div>
 
             {/* Barre de composition */}
-            <ProgressBar
-              label="Composition : capital + intérêts"
-              value={res.totalInterets}
-              total={res.capitalFinal}
-              color="linear-gradient(90deg,rgba(184,147,74,0.5),rgba(184,147,74,0.2))"
-            />
+            <div ref={chartRef}>
+              <ProgressBar
+                label="Composition : capital + intérêts"
+                value={res.totalInterets}
+                total={res.capitalFinal}
+                color="linear-gradient(90deg,rgba(184,147,74,0.5),rgba(184,147,74,0.2))"
+              />
+            </div>
 
             <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
               ⚠️ <strong>Simulation indicative.</strong> Les performances passées ne préjugent pas des performances futures. Taux de rendement constant supposé. Résultats avant fiscalité et inflation.
@@ -264,6 +267,7 @@ export default function Epargne() {
 <ShareBar
                 params={{ capitalInitial, versement, tauxAnnuel, duree }}
                 resultsRef={resultsRef}
+                chartRef={chartRef}
                 report={report}
                 name="epargne"
               />

@@ -593,6 +593,7 @@ export default function Comparateur() {
   const [errors,   setErrors]   = useState({});
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     document.title = 'Comparateur d\'actifs 2025 — ETF, actions, crypto — mesimulateurs.fr';
@@ -967,7 +968,7 @@ export default function Comparateur() {
             </div>
 
             {/* Graphique */}
-            <div style={{ marginBottom: 24 }}>
+            <div ref={chartRef} style={{ marginBottom: 24 }}>
               <ComparisonChart
                 computed={computed}
                 assets={assetsWithColors}
@@ -1036,6 +1037,7 @@ export default function Comparateur() {
               <ShareBar
                 params={{ montant }}
                 resultsRef={resultsRef}
+                chartRef={chartRef}
                 report={report}
                 name="comparateur"
                 showDownload

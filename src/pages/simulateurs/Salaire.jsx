@@ -442,6 +442,7 @@ export default function Salaire() {
   const [horizon,   setHorizon]   = useState(20);
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
 
   useEffect(() => {
     document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Mesimulateurs.fr";
@@ -537,6 +538,7 @@ export default function Salaire() {
             <ShareBar
               params={{ brut, statut, age, evolution, horizon }}
               resultsRef={resultsRef}
+              chartRef={chartRef}
               report={report}
               name="salaire"
             />
@@ -579,7 +581,9 @@ export default function Salaire() {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
               Courbe de carrière
             </div>
-            <CareerCurve years={res.years} net={res.net} pouvAchat={res.pouvAchat} />
+            <div ref={chartRef}>
+              <CareerCurve years={res.years} net={res.net} pouvAchat={res.pouvAchat} />
+            </div>
           </div>
 
           {/* Timeline jalons */}
