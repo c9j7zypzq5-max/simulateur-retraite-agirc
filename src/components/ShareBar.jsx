@@ -39,7 +39,7 @@ function cleanClone(clonedDoc) {
   });
 }
 
-export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null }) {
+export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -107,8 +107,17 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       // Compte-rendu PDF natif (document propre) si le simulateur fournit ses
       // données structurées ; sinon, repli sur une capture pleine page.
       if (report) {
+        // Capture éventuelle du seul graphique pour l'insérer dans le CR.
+        let chartImage = null;
+        if (chartRef?.current) {
+          try {
+            const c = await snapshot(chartRef.current);
+            if (c) chartImage = { dataUrl: c.toDataURL("image/png"), w: c.width, h: c.height };
+          } catch { /* pas de graphique */ }
+        }
+        const cleanUrl = window.location.origin + window.location.pathname;
         const { buildReportPdf } = await import("../utils/pdfReport.js");
-        await buildReportPdf({ report, url: buildShareUrl(params), name });
+        await buildReportPdf({ report, url: cleanUrl, name, chartImage });
         return;
       }
       const canvas = await snapshot(pageContainer(), { full: true });
