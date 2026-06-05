@@ -6,7 +6,7 @@ import ComparisonVideoExport from '../../components/ComparisonVideoExport.jsx';
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import AdUnit from '../../components/AdUnit.jsx';
-import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
+import { ASSET_PRESETS, ASSET_COLORS, TICKER_NAMES } from '../../data/assetPresets.js';
 import { SimulateurHeader, fmtEur } from '../../components/ui.jsx';
 
 const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
@@ -42,10 +42,12 @@ function parseInitialConfig() {
       .slice(0, 5)
       .map((ticker, i) => {
         const preset = ASSET_PRESETS.find(x => x.ticker.toLowerCase() === ticker.toLowerCase());
+        const tk = preset ? preset.ticker : ticker.toUpperCase();
         return {
           id: i,
-          ticker: preset ? preset.ticker : ticker.toUpperCase(),
-          label: preset ? preset.label : ticker.toUpperCase(),
+          ticker: tk,
+          // Repli sur un nom lisible (Toyota au lieu de TM) si l'actif n'a pas de preset.
+          label: preset ? preset.label : (TICKER_NAMES[tk] || tk),
           emoji: preset ? preset.emoji : '📈',
           color: ASSET_COLORS[i % ASSET_COLORS.length],
         };
