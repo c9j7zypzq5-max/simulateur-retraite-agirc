@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { ROUTE_META, BLOG_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
+import { seoHtmlForRoute } from '../api/_seo.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,11 +17,13 @@ function patchHtml(html, route) {
   const meta = ROUTE_META[route] || { title: 'mesimulateurs.fr' };
   const ogImg = ogImageForRoute(route); // chemin relatif, ex: /og-immobilier.png
   const ld = structuredDataScripts(route);
+  const seo = seoHtmlForRoute(route); // contenu crawlable injecté dans #root
   return html
     .replace(/content="\/og-image\.png"/g, `content="${ogImg}"`)
     .replace(/content="\/og-image\.svg"/g, `content="${ogImg}"`)
     .replace(/<title>[^<]*<\/title>/, `<title>${meta.title}</title>`)
-    .replace('</head>', ld ? `    ${ld}\n  </head>` : '</head>');
+    .replace('</head>', ld ? `    ${ld}\n  </head>` : '</head>')
+    .replace('<div id="root"></div>', seo ? `<div id="root">${seo}</div>` : '<div id="root"></div>');
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
