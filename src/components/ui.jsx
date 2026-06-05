@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useExporting } from "../utils/exportMode.js";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -226,6 +227,8 @@ export function ProgressBar({ label, value, total, color }) {
 export function AccordionSection({ title, subtitle, children, gold = false, defaultOpen = false }) {
   const [open, setOpen] = useState(defaultOpen);
   const [btnHovered, setBtnHovered] = useState(false);
+  const exporting = useExporting();          // ouvre la section pendant l'export PDF
+  const reallyOpen = open || exporting;
   const panelId = `acc-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`;
   return (
     <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
@@ -239,7 +242,7 @@ export function AccordionSection({ title, subtitle, children, gold = false, defa
         </div>
         <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0, transition: "transform 0.2s ease, color 0.2s", transform: open ? "rotate(0deg)" : "rotate(0deg)" }} aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
-      {open && (
+      {reallyOpen && (
         <div id={panelId} role="region" aria-label={title} style={{ padding: "0 28px 28px", animation: "slideDown 0.18s ease" }}>
           {children}
         </div>

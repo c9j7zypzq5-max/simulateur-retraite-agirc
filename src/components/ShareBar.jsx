@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
-import ReportCard from "./ReportCard.jsx";
+import { setExporting } from "../utils/exportMode.js";
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -21,21 +21,29 @@ const ShareIcon = () => (
   </svg>
 );
 
-// Mini compte-rendu texte (partage natif / presse-papier).
-function buildShareText(report) {
-  if (!report) return "";
-  const lines = [report.title];
-  if (report.highlight) lines.push(`${report.highlight.label} : ${report.highlight.value}`);
-  (report.results || []).slice(0, 4).forEach(r => lines.push(`• ${r.label} : ${r.value}`));
-  lines.push("", "Faites votre simulation gratuitement :");
-  return lines.join("\n");
+const raf = () => new Promise(r => requestAnimationFrame(r));
+
+// Nettoyage du DOM cloné avant capture : masque ce qui ne doit pas figurer dans
+// l'export et corrige le texte en dégradé (background-clip:text rendu en bloc
+// plein par html2canvas).
+function cleanClone(clonedDoc) {
+  clonedDoc
+    .querySelectorAll('nav, footer, section[aria-label="Simulateurs liés"], ins.adsbygoogle, .adsbygoogle, [data-noexport], #seo-prerender')
+    .forEach(el => { el.style.display = "none"; });
+  clonedDoc.querySelectorAll('[style*="text-fill-color"]').forEach(el => {
+    el.style.webkitTextFillColor = "#b8860b";
+    el.style.color = "#b8860b";
+    el.style.background = "none";
+    el.style.webkitBackgroundClip = "initial";
+    el.style.backgroundClip = "initial";
+  });
 }
 
-export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null }) {
+export default function ShareBar({ params, resultsRef, name, showDownload = true }) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const reportRef = useRef(null);
+  const barRef = useRef(null);
 
   useEffect(() => {
     if (!copied) return;
@@ -54,24 +62,37 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
   const hoverOut = e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; };
 
-  // Cible de capture : le compte-rendu complet si fourni, sinon la carte de résultat.
-  function captureTarget() {
-    return report ? reportRef.current : resultsRef?.current;
+  // Conteneur complet de la page (le <div> racine du simulateur, enfant de #root).
+  function pageContainer() {
+    let el = barRef.current;
+    if (!el) return resultsRef?.current || null;
+    while (el.parentElement && el.parentElement.id !== "root") el = el.parentElement;
+    return el.parentElement && el.parentElement.id === "root" ? el : (resultsRef?.current || el);
   }
 
-  async function toCanvas() {
-    const target = captureTarget();
+  async function snapshot(target, { full = false } = {}) {
     if (!target) return null;
-    return html2canvas(target, {
-      backgroundColor: report ? "#ffffff" : null,
-      scale: 2, useCORS: true, logging: false,
-    });
+    const isDark = !document.documentElement.getAttribute("data-theme") || document.documentElement.getAttribute("data-theme") === "dark";
+    if (full) {
+      // Ouvre les accordéons (tableaux/détails) le temps de la capture.
+      setExporting(true);
+      await raf(); await raf();
+    }
+    try {
+      return await html2canvas(target, {
+        backgroundColor: isDark ? "#060e1c" : "#faf6ef",
+        scale: 2, useCORS: true, logging: false, onclone: cleanClone,
+        windowWidth: target.scrollWidth, windowHeight: target.scrollHeight,
+      });
+    } finally {
+      if (full) setExporting(false);
+    }
   }
 
   async function handleDownloadPNG() {
     setMenuOpen(false); setBusy(true);
     try {
-      const canvas = await toCanvas();
+      const canvas = await snapshot(resultsRef?.current || pageContainer());
       if (!canvas) return;
       const link = document.createElement("a");
       link.download = `simulation-${name}.png`;
@@ -83,15 +104,39 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   async function handleDownloadPDF() {
     setMenuOpen(false); setBusy(true);
     try {
-      const canvas = await toCanvas();
+      const canvas = await snapshot(pageContainer(), { full: true });
       if (!canvas) return;
       const { jsPDF } = await import("jspdf");
       const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: "a4" });
       const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
       const margin = 24;
+
+      // En-tête de marque (page 1)
+      const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+      pdf.setFont("helvetica", "bold"); pdf.setFontSize(13); pdf.setTextColor(154, 111, 42);
+      pdf.text("mesimulateurs.fr", margin, margin + 6);
+      pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); pdf.setTextColor(120, 120, 120);
+      pdf.text(`Compte-rendu · ${date}`, pageW - margin, margin + 6, { align: "right" });
+      pdf.setDrawColor(184, 147, 74); pdf.setLineWidth(1);
+      pdf.line(margin, margin + 14, pageW - margin, margin + 14);
+      const headerH = margin + 24;
+
       const imgW = pageW - margin * 2;
       const imgH = (imgW * canvas.height) / canvas.width;
-      pdf.addImage(canvas.toDataURL("image/png"), "PNG", margin, margin, imgW, imgH);
+      const imgData = canvas.toDataURL("image/png");
+
+      // Page 1 sous l'en-tête, puis pages suivantes par décalage négatif (canonique).
+      let position = headerH;
+      pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
+      let heightLeft = imgH - (pageH - headerH);
+      while (heightLeft > 0) {
+        position = heightLeft - imgH;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
+        heightLeft -= pageH;
+      }
+
       pdf.save(`simulation-${name}.pdf`);
     } catch { /* ignore */ } finally { setBusy(false); }
   }
@@ -103,23 +148,20 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   async function handleShare() {
     setBusy(true);
     const url = buildShareUrl(params);
-    const title = report?.title || `Simulation — ${name}`;
-    const text = buildShareText(report);
+    const title = `Simulation — ${name} · mesimulateurs.fr`;
+    const text = "Voici ma simulation. Faites la vôtre gratuitement :";
     try {
-      const canvas = await toCanvas();
+      const canvas = await snapshot(resultsRef?.current || pageContainer());
       const blob = canvas ? await canvasToBlob(canvas) : null;
       const file = blob ? new File([blob], `simulation-${name}.png`, { type: "image/png" }) : null;
 
-      // 1) Partage natif avec l'image du compte-rendu (Web Share niveau 2).
       if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
         try { await navigator.share({ files: [file], title, text, url }); return; } catch { /* annulé */ }
       }
-      // 2) Partage natif texte + lien.
       if (navigator.share) {
-        try { await navigator.share({ title, text: text ? `${text}\n${url}` : undefined, url }); return; } catch { /* annulé */ }
+        try { await navigator.share({ title, text: `${text}\n${url}`, url }); return; } catch { /* annulé */ }
       }
-      // 3) Presse-papier (mini-CR + lien).
-      await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
+      await navigator.clipboard.writeText(`${text}\n${url}`);
       setCopied(true);
     } catch {
       try { await navigator.clipboard.writeText(url); setCopied(true); } catch { /* ignore */ }
@@ -127,7 +169,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
+    <div ref={barRef} data-noexport="true" style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
       {showDownload && (
         <div style={{ position: "relative" }}>
           <button style={btnStyle} onClick={() => setMenuOpen(o => !o)} disabled={busy}
@@ -139,15 +181,15 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
             <div role="menu" style={{
               position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 50,
               background: "var(--card-bg)", border: "1px solid var(--border-gold)",
-              borderRadius: 10, overflow: "hidden", minWidth: 150,
+              borderRadius: 10, overflow: "hidden", minWidth: 220,
               boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
             }}>
               {[
-                { label: "Image (PNG)", fn: handleDownloadPNG },
-                { label: "Document PDF", fn: handleDownloadPDF },
+                { label: "Image (carte résultat)", fn: handleDownloadPNG },
+                { label: "Document PDF complet", fn: handleDownloadPDF },
               ].map(opt => (
                 <button key={opt.label} role="menuitem" onClick={opt.fn}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "9px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
                   onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.1)"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
                   {opt.label}
@@ -175,13 +217,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           </div>
         )}
       </div>
-
-      {/* Compte-rendu rendu hors-écran, capturé pour le téléchargement/partage. */}
-      {report && (
-        <div aria-hidden="true" style={{ position: "fixed", top: 0, left: -10000, pointerEvents: "none", zIndex: -1 }}>
-          <ReportCard ref={reportRef} report={report} url={buildShareUrl(params)} />
-        </div>
-      )}
     </div>
   );
 }
