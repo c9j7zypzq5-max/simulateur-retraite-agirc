@@ -19,7 +19,7 @@ const GOLD_TINT = [248, 244, 234];
 
 // jsPDF (police helvetica / WinAnsi) ne sait pas rendre les espaces insécables
 // (séparateurs de milliers de toLocaleString('fr-FR')) → on les normalise.
-const T = s => String(s ?? "").replace(/[    ⁠ ]/g, " ");
+const T = s => String(s ?? "").replace(new RegExp("[" + String.fromCharCode(0x00A0,0x202F,0x2009,0x2007,0x2060,0x200A) + "]", "g"), " ");
 
 export async function buildReportPdf({ report, url, name, chartImage = null }) {
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
