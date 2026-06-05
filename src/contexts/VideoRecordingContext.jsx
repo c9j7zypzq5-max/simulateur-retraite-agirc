@@ -13,11 +13,24 @@ export function VideoRecordingProvider({ children }) {
   const rafRef     = useRef(null);
   const chunksRef  = useRef([]);
   const cancelRef  = useRef(false);
+  const streamRef  = useRef(null);   // flux capturé (vidéo + audio) — à libérer
+  const audioRef   = useRef(null);   // { ctx, osc } — à fermer
 
   // idle | recording | converting | processing
   const [recState, setRecState] = useState('idle');
   const [progress, setProgress] = useState(0);
   const [label,    setLabel]    = useState('');
+
+  // Libère le flux capté et l'AudioContext. SANS ça, un 2e enregistrement (sans
+  // recharger la page) reste bloqué : l'ancien track captureStream + l'AudioContext
+  // non fermé empêchent le nouveau MediaRecorder de fonctionner.
+  const releaseMedia = useCallback(() => {
+    try { streamRef.current?.getTracks().forEach(t => t.stop()); } catch { /* ignore */ }
+    streamRef.current = null;
+    try { audioRef.current?.osc?.stop(); } catch { /* ignore */ }
+    try { audioRef.current?.ctx?.close(); } catch { /* ignore */ }
+    audioRef.current = null;
+  }, []);
 
   const stop = useCallback(() => {
     cancelRef.current = true;
@@ -41,6 +54,10 @@ export function VideoRecordingProvider({ children }) {
     cancelRef.current = false;
     chunksRef.current = [];
 
+    // Défense : libère tout reliquat d'un enregistrement précédent avant d'en
+    // démarrer un nouveau (sinon le 2e reste bloqué).
+    releaseMedia();
+
     const ctx = canvas.getContext('2d');
 
     // Silent audio track — keeps TikTok / Reels pipeline happy
@@ -55,7 +72,9 @@ export function VideoRecordingProvider({ children }) {
       const osc  = audioCtx.createOscillator(); osc.connect(gain);
       const dest = audioCtx.createMediaStreamDestination(); gain.connect(dest); osc.start();
       stream = new MediaStream([...videoStream.getVideoTracks(), ...dest.stream.getAudioTracks()]);
+      audioRef.current = { ctx: audioCtx, osc };
     } catch (_) { /* video-only fallback */ }
+    streamRef.current = stream;
 
     // Safari records as fMP4 (H.264), Chrome/Firefox as WebM (VP9)
     const MIME_CANDIDATES = [
@@ -70,6 +89,9 @@ export function VideoRecordingProvider({ children }) {
     rec.ondataavailable = e => { if (e.data.size > 0) chunksRef.current.push(e.data); };
 
     rec.onstop = async () => {
+      // L'enregistrement est terminé : on libère immédiatement le flux capté et
+      // l'AudioContext (plus besoin pour la conversion/téléchargement).
+      releaseMedia();
       if (cancelRef.current) { setRecState('idle'); setProgress(0); return; }
 
       const rawBlob    = new Blob(chunksRef.current, { type: mime });
@@ -123,7 +145,7 @@ export function VideoRecordingProvider({ children }) {
       else { rafRef.current = null; rec.stop(); }
     }
     rafRef.current = requestAnimationFrame(frame);
-  }, []);
+  }, [releaseMedia]);
 
   return (
     <VideoRecordingCtx.Provider value={{ recState, progress, label, startRecording, stop }}>
