@@ -342,6 +342,16 @@ function drawFrame(ctx, {
     const targetYMin = Math.max(0, currentMin - (currentMax - currentMin) * 0.05);
     st.smoothYMax += (targetYMax - st.smoothYMax) * 0.04;
     st.smoothYMin += (targetYMin - st.smoothYMin) * 0.04;
+
+    // Garde-fou anti-débordement : sur une variation brutale, le lissage est en
+    // retard et la courbe sortirait du cadre. On force alors la borne pour
+    // englober immédiatement la donnée visible avec une petite marge (attaque
+    // rapide), tout en gardant le retour lissé quand l'échelle se resserre.
+    const guardTop = Math.max(interval * 0.3, (currentMax - currentMin) * 0.08);
+    const guardBot = Math.max(interval * 0.2, (currentMax - currentMin) * 0.05);
+    if (st.smoothYMax < currentMax + guardTop) st.smoothYMax = currentMax + guardTop;
+    if (st.smoothYMin > currentMin - guardBot) st.smoothYMin = currentMin - guardBot;
+    if (st.smoothYMin < 0) st.smoothYMin = 0;
     const yMax = st.smoothYMax, yMin = st.smoothYMin;
 
     // Pointe de la courbe épinglée juste à l'intérieur du bord droit : la fenêtre
