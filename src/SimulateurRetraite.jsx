@@ -3,6 +3,7 @@ import { track } from '@vercel/analytics';
 import Footer from "./components/Footer.jsx";
 import AdUnit from "./components/AdUnit.jsx";
 import Navbar from "./components/Navbar.jsx";
+import JsonLd from "./components/JsonLd.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import ShareBar from "./components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
@@ -429,6 +430,23 @@ export default function SimulateurRetraite() {
 
   return (
     <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur Retraite Agirc-Arrco",
+        "url": "https://www.mesimulateurs.fr/simulateurs/agirc-arrco",
+        "description": "Calculez votre retraite complémentaire Agirc-Arrco : nombre de points, valeur du point 2025, pension brute et nette estimée.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ_ITEMS.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
