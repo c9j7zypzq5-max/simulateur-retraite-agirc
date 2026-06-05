@@ -226,7 +226,7 @@ function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", h
             onChange={handleChange}
             onFocus={() => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); }}
             onBlur={handleBlur}
-            placeholder="—"
+            placeholder="0"
             style={{
               flex: 1, background: "transparent", border: "none", outline: "none",
               fontFamily: "'Cormorant Garamond', serif",

@@ -137,7 +137,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
             onChange={handleChange}
             onFocus={() => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); }}
             onBlur={handleBlur}
-            placeholder="—"
+            placeholder="0"
             style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />
           {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
         </div>

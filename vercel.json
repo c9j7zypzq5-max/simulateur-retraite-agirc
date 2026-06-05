@@ -1,4 +1,7 @@
 {
+  "crons": [
+    { "path": "/api/generate-article", "schedule": "0 8 * * 1,4" }
+  ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
     { "source": "/(.*)", "destination": "/index.html" }
