@@ -18,6 +18,7 @@ const SIMULATEURS = [
   // Immobilier
   { path: "/simulateurs/emprunt-immobilier", icon: "🏠", title: "Emprunt immobilier", desc: "Calculez vos mensualités, votre capacité d'emprunt, le coût total du crédit et votre taux d'endettement. Inclut frais de notaire, primo-accédant et tableau d'amortissement.", tag: "Immobilier", categories: ["Immobilier"], badges: ["new"], available: true },
   { path: "/simulateurs/rendement-locatif", icon: "📊", title: "Rendement locatif", desc: "Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion.", tag: "Immobilier", categories: ["Immobilier"], badges: ["new"], available: true },
+  { path: "/simulateurs/ptz", icon: "🏡", title: "Prêt à Taux Zéro (PTZ)", desc: "Estimez votre PTZ primo-accédant : éligibilité, tranche de revenus, quotité et montant finançable selon votre zone et la composition du foyer. Barème 2025.", tag: "Immobilier", categories: ["Immobilier"], badges: ["new"], available: true },
   // Impôts
   { path: "/simulateurs/impot-revenu", icon: "📋", title: "Impôt sur le revenu", desc: "Estimez votre IR net, votre tranche marginale d'imposition (TMI) et votre taux moyen selon votre situation familiale.", tag: "Impôts", categories: ["Impôts"], badges: ["new"], available: true },
   { path: "/simulateurs/plus-value-immobiliere", icon: "📈", title: "Plus-value immobilière", desc: "Calculez l'imposition de la plus-value lors de la vente d'un bien immobilier selon la durée de détention et les abattements applicables.", tag: "Impôts", categories: ["Impôts"], badges: ["new"], available: true },
@@ -26,6 +27,8 @@ const SIMULATEURS = [
   { path: "/simulateurs/salaire", icon: "💼", title: "Salaire Net/Brut & Évolution de carrière", desc: "Calculez votre salaire net, projetez son évolution sur des décennies et visualisez l'impact de l'inflation sur votre pouvoir d'achat réel.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
   { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
   { path: "/simulateurs/fire", icon: "🔥", title: "Indépendance financière (FIRE)", desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez à quel âge vous atteindrez la liberté financière. Courbe de projection incluse.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
+  { path: "/simulateurs/patrimoine", icon: "💎", title: "Patrimoine global", desc: "Consolidez l'ensemble de votre patrimoine — financier, immobilier et retraite — pour visualiser votre richesse nette et sa répartition par classe d'actifs.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
+  { path: "/simulateurs/comparateur", icon: "📊", title: "Comparateur d'actifs", desc: "Comparez la performance historique d'ETF, actions et cryptos sur la période de votre choix : volatilité, drawdown et rendement annualisé.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
   // Vie & Temps
   { path: "/simulateurs/cout-en-heures", icon: "⏰", title: "Le vrai prix en heures de vie", desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
   { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
@@ -208,12 +211,12 @@ export default function Home() {
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);
 
-  const simCount = useCountUp(16, 900, 200);
+  const simCount = useCountUp(SIMULATEURS.length, 900, 200);
   const displayedViews = useCountUp(totalViews, 1200, 600);
 
   useEffect(() => {
     document.title = "Mesimulateurs.fr — Simulateurs gratuits retraite, immobilier, finances";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite, emprunt immobilier, impôts, épargne et liberté financière. 16 simulateurs gratuits, calculs en temps réel, sans inscription.");
+    document.querySelector('meta[name="description"]')?.setAttribute("content", `Simulez votre retraite, emprunt immobilier, impôts, épargne et liberté financière. ${SIMULATEURS.length} simulateurs gratuits, calculs en temps réel, sans inscription.`);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;

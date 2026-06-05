@@ -19,6 +19,7 @@ import Msa from "./pages/simulateurs/Msa.jsx";
 // Immobilier
 import EmpruntImmobilier from "./pages/simulateurs/EmpruntImmobilier.jsx";
 import RendementLocatif from "./pages/simulateurs/RendementLocatif.jsx";
+import Ptz from "./pages/simulateurs/Ptz.jsx";
 // Impôts
 import ImpotRevenu from "./pages/simulateurs/ImpotRevenu.jsx";
 import PlusValue from "./pages/simulateurs/PlusValue.jsx";
@@ -52,6 +53,7 @@ export default function App() {
         {/* Immobilier */}
         <Route path="/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/simulateurs/ptz" element={<Ptz />} />
         {/* Impôts */}
         <Route path="/simulateurs/impot-revenu" element={<ImpotRevenu />} />
         <Route path="/simulateurs/plus-value-immobiliere" element={<PlusValue />} />

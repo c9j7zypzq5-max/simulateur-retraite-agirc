@@ -6,6 +6,7 @@ import ComparisonVideoExport from '../../components/ComparisonVideoExport.jsx';
 import Navbar from '../../components/Navbar.jsx';
 import Footer from '../../components/Footer.jsx';
 import AdUnit from '../../components/AdUnit.jsx';
+import JsonLd from '../../components/JsonLd.jsx';
 import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
 import { SimulateurHeader, fmtEur } from '../../components/ui.jsx';
 
@@ -113,13 +114,19 @@ function buildVideoChartData(computed, fromDate, toDate, periodicAmt, showInvest
 }
 
 // ── SVG multi-courbes ─────────────────────────────────────────────────────────
-function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest }) {
+function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest, displayMode = 'euros' }) {
   if (!computed || Object.keys(computed).length === 0) return null;
 
   const PAD = { top: 20, right: 70, bottom: 36, left: 68 };
   const W = 620, H = 300;
   const iW = W - PAD.left - PAD.right;
   const iH = H - PAD.top - PAD.bottom;
+
+  // En base 100, on rapporte chaque valeur à l'investissement initial (départ = 100).
+  const base100 = displayMode === 'base100';
+  const disp    = v => base100 ? (montant > 0 ? (v / montant) * 100 : 0) : v;
+  const refVal  = base100 ? 100 : montant;
+  const fmtAxis = base100 ? (v => Math.round(v)) : fmtK;
 
   // Collect all points (sorted by date)
   const allDates = [...new Set(
@@ -128,9 +135,9 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
 
   if (allDates.length < 2) return null;
 
-  const allValues = Object.values(computed).flatMap(s => s.map(p => p.value));
-  const rawMax = Math.max(...allValues, montant) * 1.06;
-  const rawMin = Math.min(...allValues, montant) * 0.94;
+  const allValues = Object.values(computed).flatMap(s => s.map(p => disp(p.value)));
+  const rawMax = Math.max(...allValues, refVal) * 1.06;
+  const rawMin = Math.min(...allValues, refVal) * 0.94;
 
   const x = idx  => PAD.left + (idx / (allDates.length - 1)) * iW;
   const y = val  => PAD.top  + iH - ((val - rawMin) / (rawMax - rawMin)) * iH;
@@ -149,14 +156,14 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         <g key={i}>
           <line x1={PAD.left} y1={y(v)} x2={W - PAD.right} y2={y(v)} stroke="var(--border)" strokeWidth="1" />
           <text x={PAD.left - 4} y={y(v) + 4} textAnchor="end" fontSize="8.5" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
-            {fmtK(v)}
+            {fmtAxis(v)}
           </text>
         </g>
       ))}
 
-      {/* Ligne de référence (montant initial) */}
+      {/* Ligne de référence (montant initial / base 100) */}
       {(() => {
-        const refY = y(montant);
+        const refY = y(refVal);
         if (refY < PAD.top || refY > H - PAD.bottom) return null;
         return (
           <line x1={PAD.left} y1={refY} x2={W - PAD.right} y2={refY}
@@ -171,7 +178,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         const pts = refSeries
           .map(p => {
             const idx = allDates.indexOf(p.date);
-            return idx >= 0 ? `${x(idx).toFixed(1)},${y(p.invested ?? montant).toFixed(1)}` : null;
+            return idx >= 0 ? `${x(idx).toFixed(1)},${y(disp(p.invested ?? montant)).toFixed(1)}` : null;
           })
           .filter(Boolean)
           .join(' ');
@@ -189,7 +196,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         const pts = series.map(p => {
           const idx = allDates.indexOf(p.date);
           if (idx < 0) return null;
-          return { x: x(idx), yTop: y(p.value), yBot: y(p.value - (p.interest ?? 0)) };
+          return { x: x(idx), yTop: y(disp(p.value)), yBot: y(disp(p.value - (p.interest ?? 0))) };
         }).filter(Boolean);
         if (pts.length < 2) return null;
         const top   = pts.map(p => `${p.x.toFixed(1)},${p.yTop.toFixed(1)}`).join(' ');
@@ -210,7 +217,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         const polyPts = series
           .map(p => {
             const idx = allDates.indexOf(p.date);
-            return idx >= 0 ? `${x(idx).toFixed(1)},${y(p.value).toFixed(1)}` : null;
+            return idx >= 0 ? `${x(idx).toFixed(1)},${y(disp(p.value)).toFixed(1)}` : null;
           })
           .filter(Boolean)
           .join(' ');
@@ -218,7 +225,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         const lastPt = series[series.length - 1];
         const lastIdx = allDates.indexOf(lastPt?.date ?? '');
         const lx = lastIdx >= 0 ? x(lastIdx) : null;
-        const ly = lastPt ? y(lastPt.value) : null;
+        const ly = lastPt ? y(disp(lastPt.value)) : null;
 
         return (
           <g key={asset.ticker}>
@@ -501,6 +508,11 @@ export default function Comparateur() {
   const [reinvestDivs,  setReinvestDivs]  = useState(true);
   const [showInterest,  setShowInterest]  = useState(false);
 
+  // Mode d'affichage du graphique : 'euros' (valeur du portefeuille) ou
+  // 'base100' (indice base 100 — plus lisible pour comparer des actifs de prix
+  // très différents).
+  const [displayMode, setDisplayMode] = useState('euros');
+
   const [rawData,  setRawData]  = useState({});
   const [loading,  setLoading]  = useState(false);
   const [errors,   setErrors]   = useState({});
@@ -603,6 +615,16 @@ export default function Comparateur() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Comparateur d'actifs — ETF, actions, crypto",
+        "url": "https://www.mesimulateurs.fr/simulateurs/comparateur",
+        "description": "Comparez la performance historique d'ETF, actions et cryptomonnaies sur n'importe quelle période : retour total, CAGR, base 100. Données Yahoo Finance.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
@@ -789,9 +811,32 @@ export default function Comparateur() {
             ref={resultsRef}
             style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '28px 28px', marginBottom: 20, boxShadow: 'var(--card-shadow)' }}
           >
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
-              Performance — {fromLabel} → {toLabel} ({totalYears.toFixed(1)} ans)
-            </h2>
+            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 20 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', margin: 0, fontWeight: 400 }}>
+                Performance — {fromLabel} → {toLabel} ({totalYears.toFixed(1)} ans)
+              </h2>
+              {/* Sélecteur d'échelle : euros absolus vs base 100 */}
+              <div role="group" aria-label="Échelle du graphique" style={{ display: 'flex', background: 'var(--input-bg)', borderRadius: 9, padding: 3, gap: 2 }}>
+                {[
+                  { id: 'euros',   label: '€ valeur' },
+                  { id: 'base100', label: 'Base 100' },
+                ].map(opt => {
+                  const active = displayMode === opt.id;
+                  return (
+                    <button key={opt.id} onClick={() => setDisplayMode(opt.id)}
+                      aria-pressed={active}
+                      style={{
+                        padding: '6px 14px', borderRadius: 7, border: 'none', cursor: 'pointer',
+                        background: active ? 'rgba(184,147,74,0.25)' : 'transparent',
+                        color: active ? 'var(--gold)' : 'var(--text-secondary)',
+                        fontSize: 12, fontFamily: "'DM Sans', sans-serif", transition: 'all 0.2s',
+                      }}>
+                      {opt.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* Graphique */}
             <div style={{ marginBottom: 24 }}>
@@ -801,7 +846,13 @@ export default function Comparateur() {
                 montant={montant}
                 showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
                 showInterest={showInterest && reinvestDivs}
+                displayMode={displayMode}
               />
+              {displayMode === 'base100' && (
+                <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
+                  Base 100 : chaque actif part de 100 au début de la période. Une valeur de 150 = +50 %.
+                </p>
+              )}
             </div>
 
             {/* Tableau métriques */}

@@ -75,6 +75,7 @@ const NAV_GROUPS = [
   { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
     { path: "/simulateurs/emprunt-immobilier",  icon: "🏠", title: "Emprunt immobilier",  subtitle: "Mensualités & capacité" },
     { path: "/simulateurs/rendement-locatif",   icon: "📊", title: "Rendement locatif",   subtitle: "Rentabilité brute & nette" },
+    { path: "/simulateurs/ptz",                 icon: "🏡", title: "Prêt à Taux Zéro",     subtitle: "PTZ primo-accédant" },
   ] },
   { id: "impots", icon: "📋", label: "Impôts", items: [
     { path: "/simulateurs/impot-revenu",             icon: "📋", title: "Impôt sur le revenu",    subtitle: "TMI & taux moyen" },
