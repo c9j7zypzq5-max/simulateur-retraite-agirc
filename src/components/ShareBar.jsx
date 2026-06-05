@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
+import ReportCard from "./ReportCard.jsx";
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -20,9 +21,21 @@ const ShareIcon = () => (
   </svg>
 );
 
-export default function ShareBar({ params, resultsRef, name, showDownload = true }) {
-  const [downloading, setDownloading] = useState(false);
+// Mini compte-rendu texte (partage natif / presse-papier).
+function buildShareText(report) {
+  if (!report) return "";
+  const lines = [report.title];
+  if (report.highlight) lines.push(`${report.highlight.label} : ${report.highlight.value}`);
+  (report.results || []).slice(0, 4).forEach(r => lines.push(`• ${r.label} : ${r.value}`));
+  lines.push("", "Faites votre simulation gratuitement :");
+  return lines.join("\n");
+}
+
+export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null }) {
+  const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const reportRef = useRef(null);
 
   useEffect(() => {
     if (!copied) return;
@@ -31,128 +44,144 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   }, [copied]);
 
   const btnStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-    padding: "7px 14px",
-    background: "var(--card-bg)",
-    border: "1px solid var(--border)",
-    borderRadius: 10,
-    color: "var(--text-secondary)",
-    fontSize: 12,
-    fontFamily: "'DM Sans', sans-serif",
-    cursor: "pointer",
+    display: "inline-flex", alignItems: "center", gap: 6,
+    padding: "7px 14px", background: "var(--card-bg)",
+    border: "1px solid var(--border)", borderRadius: 10,
+    color: "var(--text-secondary)", fontSize: 12,
+    fontFamily: "'DM Sans', sans-serif", cursor: "pointer",
     transition: "border-color 0.2s, color 0.2s",
   };
+  const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
+  const hoverOut = e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; };
 
-  async function handleDownload() {
-    if (!resultsRef?.current) return;
-    setDownloading(true);
+  // Cible de capture : le compte-rendu complet si fourni, sinon la carte de résultat.
+  function captureTarget() {
+    return report ? reportRef.current : resultsRef?.current;
+  }
+
+  async function toCanvas() {
+    const target = captureTarget();
+    if (!target) return null;
+    return html2canvas(target, {
+      backgroundColor: report ? "#ffffff" : null,
+      scale: 2, useCORS: true, logging: false,
+    });
+  }
+
+  async function handleDownloadPNG() {
+    setMenuOpen(false); setBusy(true);
     try {
-      const canvas = await html2canvas(resultsRef.current, {
-        backgroundColor: null,
-        scale: 2,
-        useCORS: true,
-        logging: false,
-      });
+      const canvas = await toCanvas();
+      if (!canvas) return;
       const link = document.createElement("a");
       link.download = `simulation-${name}.png`;
       link.href = canvas.toDataURL("image/png");
       link.click();
-    } catch {
-      // Fallback: simple canvas with params text
-      const fallback = document.createElement("canvas");
-      fallback.width = 600;
-      fallback.height = 400;
-      const ctx = fallback.getContext("2d");
-      ctx.fillStyle = "#1a1a1a";
-      ctx.fillRect(0, 0, 600, 400);
-      ctx.fillStyle = "#b8934a";
-      ctx.font = "bold 18px DM Sans, sans-serif";
-      ctx.fillText(`Simulation — ${name}`, 30, 50);
-      ctx.fillStyle = "#aaa";
-      ctx.font = "14px DM Sans, sans-serif";
-      Object.entries(params).forEach(([k, v], i) => {
-        if (v !== null && v !== undefined) {
-          ctx.fillText(`${k}: ${v}`, 30, 90 + i * 26);
-        }
-      });
-      const link = document.createElement("a");
-      link.download = `simulation-${name}.png`;
-      link.href = fallback.toDataURL("image/png");
-      link.click();
-    } finally {
-      setDownloading(false);
-    }
+    } catch { /* ignore */ } finally { setBusy(false); }
+  }
+
+  async function handleDownloadPDF() {
+    setMenuOpen(false); setBusy(true);
+    try {
+      const canvas = await toCanvas();
+      if (!canvas) return;
+      const { jsPDF } = await import("jspdf");
+      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: "a4" });
+      const pageW = pdf.internal.pageSize.getWidth();
+      const margin = 24;
+      const imgW = pageW - margin * 2;
+      const imgH = (imgW * canvas.height) / canvas.width;
+      pdf.addImage(canvas.toDataURL("image/png"), "PNG", margin, margin, imgW, imgH);
+      pdf.save(`simulation-${name}.pdf`);
+    } catch { /* ignore */ } finally { setBusy(false); }
+  }
+
+  function canvasToBlob(canvas) {
+    return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
   }
 
   async function handleShare() {
+    setBusy(true);
     const url = buildShareUrl(params);
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: `Simulation — ${name}`, url });
-      } catch { /* user cancelled */ }
-    } else {
-      try {
-        await navigator.clipboard.writeText(url);
-        setCopied(true);
-      } catch {
-        // fallback: select text
-        const el = document.createElement("textarea");
-        el.value = url;
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand("copy");
-        document.body.removeChild(el);
-        setCopied(true);
+    const title = report?.title || `Simulation — ${name}`;
+    const text = buildShareText(report);
+    try {
+      const canvas = await toCanvas();
+      const blob = canvas ? await canvasToBlob(canvas) : null;
+      const file = blob ? new File([blob], `simulation-${name}.png`, { type: "image/png" }) : null;
+
+      // 1) Partage natif avec l'image du compte-rendu (Web Share niveau 2).
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], title, text, url }); return; } catch { /* annulé */ }
       }
-    }
+      // 2) Partage natif texte + lien.
+      if (navigator.share) {
+        try { await navigator.share({ title, text: text ? `${text}\n${url}` : undefined, url }); return; } catch { /* annulé */ }
+      }
+      // 3) Presse-papier (mini-CR + lien).
+      await navigator.clipboard.writeText(text ? `${text}\n${url}` : url);
+      setCopied(true);
+    } catch {
+      try { await navigator.clipboard.writeText(url); setCopied(true); } catch { /* ignore */ }
+    } finally { setBusy(false); }
   }
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
       {showDownload && (
-        <button
-          style={btnStyle}
-          onClick={handleDownload}
-          disabled={downloading}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
-        >
-          <DownloadIcon />
-          <span className="btn-text">{downloading ? "…" : "Télécharger"}</span>
-        </button>
+        <div style={{ position: "relative" }}>
+          <button style={btnStyle} onClick={() => setMenuOpen(o => !o)} disabled={busy}
+            onMouseEnter={hoverIn} onMouseLeave={hoverOut} aria-haspopup="true" aria-expanded={menuOpen}>
+            <DownloadIcon />
+            <span className="btn-text">{busy ? "…" : "Télécharger"}</span>
+          </button>
+          {menuOpen && (
+            <div role="menu" style={{
+              position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 50,
+              background: "var(--card-bg)", border: "1px solid var(--border-gold)",
+              borderRadius: 10, overflow: "hidden", minWidth: 150,
+              boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
+            }}>
+              {[
+                { label: "Image (PNG)", fn: handleDownloadPNG },
+                { label: "Document PDF", fn: handleDownloadPDF },
+              ].map(opt => (
+                <button key={opt.label} role="menuitem" onClick={opt.fn}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "9px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.1)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       )}
+
       <div style={{ position: "relative" }}>
-        <button
-          style={btnStyle}
-          onClick={handleShare}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
-        >
+        <button style={btnStyle} onClick={handleShare} disabled={busy}
+          onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
           <ShareIcon />
           <span className="btn-text">Partager</span>
         </button>
         {copied && (
           <div style={{
-            position: "absolute",
-            bottom: "calc(100% + 6px)",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "var(--gold)",
-            color: "#1a1a1a",
-            fontSize: 11,
-            fontWeight: 600,
-            padding: "4px 10px",
-            borderRadius: 6,
-            whiteSpace: "nowrap",
-            pointerEvents: "none",
-            animation: "fadeIn 0.15s ease",
+            position: "absolute", bottom: "calc(100% + 6px)", left: "50%",
+            transform: "translateX(-50%)", background: "var(--gold)", color: "#1a1a1a",
+            fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 6,
+            whiteSpace: "nowrap", pointerEvents: "none", animation: "fadeIn 0.15s ease",
           }}>
-            Lien copié !
+            Copié !
           </div>
         )}
       </div>
+
+      {/* Compte-rendu rendu hors-écran, capturé pour le téléchargement/partage. */}
+      {report && (
+        <div aria-hidden="true" style={{ position: "fixed", top: 0, left: -10000, pointerEvents: "none", zIndex: -1 }}>
+          <ReportCard ref={reportRef} report={report} url={buildShareUrl(params)} />
+        </div>
+      )}
     </div>
   );
 }

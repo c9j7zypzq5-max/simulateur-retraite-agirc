@@ -197,6 +197,26 @@ export default function Ptz() {
   const animMontant = useAnimatedNumber(montantPtz);
   const animEvites = useAnimatedNumber(interetsEvites);
 
+  // Compte-rendu pour le téléchargement / partage (image + PDF).
+  const report = {
+    title: "Simulateur PTZ — Prêt à Taux Zéro",
+    highlight: { label: "Montant PTZ estimé", value: eligible ? fmtEur(montantPtz) : "Non éligible" },
+    params: [
+      { label: "Zone", value: `Zone ${ZONES.find(z => z.id === zone)?.label || zone}` },
+      { label: "Type de logement", value: neuf ? "Neuf" : "Ancien" },
+      { label: "Personnes au foyer", value: String(personnes) },
+      { label: "Coût de l'opération", value: cout ? fmtEur(cout) : "—" },
+      { label: "Revenu fiscal de référence", value: rfr ? fmtEur(rfr) : "—" },
+    ],
+    results: eligible ? [
+      { label: "Tranche de revenus", value: `Tranche ${tIdx + 1}` },
+      { label: "Quotité", value: `${Math.round(quotite * 100)} %` },
+      { label: "Coût retenu (plafonné)", value: fmtEur(coutRetenu) },
+      { label: "Montant PTZ", value: fmtEur(montantPtz), strong: true },
+      { label: "Reste à financer", value: fmtEur(Math.max(0, (cout ?? 0) - montantPtz)) },
+    ] : [],
+  };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
@@ -334,6 +354,7 @@ export default function Ptz() {
               <ShareBar
                 params={{ zone, neuf, personnes, rfr, cout, duree, taux }}
                 resultsRef={resultsRef}
+                report={report}
                 name="ptz"
               />
             </div>
