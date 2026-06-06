@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { track } from "@vercel/analytics";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 
@@ -93,6 +94,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
   async function handleDownloadPNG() {
     setMenuOpen(false); setBusy(true);
+    track("export", { format: "png", simulateur: name });
     try {
       const canvas = await snapshot(resultsRef?.current || pageContainer());
       if (!canvas) return;
@@ -105,6 +107,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
   async function handleDownloadPDF() {
     setMenuOpen(false); setBusy(true);
+    track("export", { format: "pdf", simulateur: name });
     try {
       // Compte-rendu PDF natif (document propre) si le simulateur fournit ses
       // données structurées ; sinon, repli sur une capture pleine page.

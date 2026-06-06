@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useExporting } from "../utils/exportMode.js";
+import { ROUTE_META } from "../../api/_routes.js";
 import AutoLinkText from "./AutoLinkText.jsx";
+import JsonLd from "./JsonLd.jsx";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -255,7 +258,7 @@ export function AccordionSection({ title, subtitle, children, gold = false, defa
 // ─── ResultCard ───────────────────────────────────────────────────────────────
 export function ResultCard({ label, pension, subLabel, empty }) {
   return (
-    <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
+    <div role="status" aria-live="polite" style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
       <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{label}</div>
       {empty ? (
         <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>
@@ -315,8 +318,17 @@ export function FaqItem({ q, a }) {
 }
 
 export function FaqSection({ title = "Questions fréquentes", items }) {
+  // Données structurées FAQPage (schema.org) → éligibilité aux rich results.
+  const faqLd = {
+    "@context": "https://schema.org", "@type": "FAQPage",
+    mainEntity: (items || []).map(({ q, a }) => ({
+      "@type": "Question", name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+      {items?.length > 0 && <JsonLd data={faqLd} />}
       <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
         {title}
       </h2>
@@ -325,10 +337,24 @@ export function FaqSection({ title = "Questions fréquentes", items }) {
   );
 }
 
+// Fil d'Ariane visible (en plus du BreadcrumbList JSON-LD statique).
+function HeaderBreadcrumb() {
+  const { pathname } = useLocation();
+  const meta = ROUTE_META[pathname];
+  return (
+    <nav aria-label="Fil d'Ariane" style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 14 }}>
+      <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
+      {meta?.cat && <>{" · "}<span>{meta.cat}</span></>}
+      {meta?.title && <>{" · "}<span style={{ color: "var(--text)" }}>{meta.title}</span></>}
+    </nav>
+  );
+}
+
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
 export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
   return (
-    <div style={{ padding: "40px 0 28px", animation: "fadeUp .5s ease both" }}>
+    <div style={{ padding: "28px 0 28px", animation: "fadeUp .5s ease both" }}>
+      <HeaderBreadcrumb />
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
         <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
         <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>{badge}</span>
