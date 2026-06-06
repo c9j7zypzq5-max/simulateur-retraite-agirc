@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
+import { GLOSSARY } from "../data/glossaire.js";
 
 // Sélectionne jusqu'à 6 simulateurs liés : d'abord ceux de la même catégorie que
 // la page courante, complétés par d'autres si besoin. Améliore le maillage interne
@@ -49,11 +50,53 @@ function RelatedSimulators() {
   );
 }
 
+// Termes du lexique pertinents pour la page simulateur courante : déduits du
+// champ `sims` de chaque entrée du glossaire. Améliore la pédagogie et le SEO
+// (maillage interne vers le lexique) sans toucher à chaque page.
+function RelatedTerms() {
+  const { pathname } = useLocation();
+  if (!pathname.startsWith("/simulateurs/")) return null;
+  const terms = GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
+  if (terms.length === 0) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Définitions utiles">
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+        Définitions utiles
+        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+        {terms.map(t => (
+          <Link key={t.slug} to={`/lexique/${t.slug}`} title={t.short} style={{
+            display: "inline-flex", alignItems: "center", gap: 6,
+            padding: "8px 14px", borderRadius: 20, textDecoration: "none",
+            background: "var(--card-bg)", border: "1px solid var(--border)",
+            color: "var(--text)", fontSize: 13, transition: "border-color 0.2s, color 0.2s",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-gold)"; e.currentTarget.style.color = "var(--gold)"; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}
+          >
+            {t.term}
+          </Link>
+        ))}
+        <Link to="/lexique" style={{
+          display: "inline-flex", alignItems: "center",
+          padding: "8px 14px", borderRadius: 20, textDecoration: "none",
+          background: "transparent", border: "1px dashed var(--border-gold)",
+          color: "var(--gold)", fontSize: 13,
+        }}>
+          Tout le lexique →
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default function Footer() {
   return (
     <>
     <SideAds />
     <RelatedSimulators />
+    <RelatedTerms />
     <footer style={{
       borderTop: "1px solid var(--border)",
       padding: "28px 24px 40px",

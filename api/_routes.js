@@ -4,7 +4,7 @@
 //
 // Préfixe « _ » : Vercel ne traite pas ce fichier comme une route serverless.
 
-import { GLOSSARY } from '../src/data/glossaire.js';
+import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 
 export const BASE = 'https://www.mesimulateurs.fr';
 
@@ -72,20 +72,55 @@ export function ogImageForRoute(route) {
   return (meta && OG_IMAGE_BY_CAT[meta.cat]) || OG_IMAGE_DEFAULT;
 }
 
+// Fil d'Ariane schema.org à partir d'une liste [nom, url].
+function breadcrumb(items) {
+  return {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: items.map(([name, item], i) => ({ '@type': 'ListItem', position: i + 1, name, item })),
+  };
+}
+
 // Données structurées schema.org injectées EN DUR dans le <head> du HTML statique
 // au build (fiables sans exécution JS, contrairement aux blocs <JsonLd> rendus par
-// React). BreadcrumbList pour toutes les pages + WebApplication pour les simulateurs.
-export function structuredData(route) {
+// React). BreadcrumbList partout + WebApplication (simulateurs), DefinedTerm
+// (lexique) et Article (blog). `extra` porte les métadonnées blog (titre, intro…).
+export function structuredData(route, extra = {}) {
+  const url = `${BASE}${route}`;
+
+  // Fiche du lexique → DefinedTerm
+  if (route.startsWith('/lexique/')) {
+    const t = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)];
+    if (!t) return [];
+    return [
+      breadcrumb([['Accueil', `${BASE}/`], ['Lexique', `${BASE}/lexique`], [t.term, url]]),
+      {
+        '@context': 'https://schema.org', '@type': 'DefinedTerm',
+        name: t.term, alternateName: t.full, description: t.short, url,
+        inDefinedTermSet: `${BASE}/lexique`,
+      },
+    ];
+  }
+
+  // Article de blog → Article
+  if (route.startsWith('/blog/')) {
+    if (!extra.title) return [];
+    const article = {
+      '@context': 'https://schema.org', '@type': 'Article',
+      headline: extra.title, description: extra.description || '', url, mainEntityOfPage: url,
+      author: { '@type': 'Organization', name: 'mesimulateurs.fr', url: BASE },
+      publisher: { '@type': 'Organization', name: 'mesimulateurs.fr', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+    };
+    if (extra.publishedAt) article.datePublished = extra.publishedAt;
+    if (extra.image) article.image = extra.image;
+    return [
+      breadcrumb([['Accueil', `${BASE}/`], ['Blog', `${BASE}/blog`], [extra.title, url]]),
+      article,
+    ];
+  }
+
   const meta = ROUTE_META[route];
   if (!meta || route === '/') return [];
-  const url = `${BASE}${route}`;
-  const out = [{
-    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${BASE}/` },
-      { '@type': 'ListItem', position: 2, name: meta.title, item: url },
-    ],
-  }];
+  const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
   if (route.startsWith('/simulateurs/')) {
     out.push({
       '@context': 'https://schema.org', '@type': 'WebApplication',
@@ -98,8 +133,8 @@ export function structuredData(route) {
   return out;
 }
 
-export function structuredDataScripts(route) {
-  return structuredData(route)
+export function structuredDataScripts(route, extra = {}) {
+  return structuredData(route, extra)
     .map(d => `<script type="application/ld+json">${JSON.stringify(d)}</script>`)
     .join('\n    ');
 }

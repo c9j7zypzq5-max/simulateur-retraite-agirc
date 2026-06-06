@@ -35,7 +35,7 @@ function seoForRoute(route, extra = {}) {
 function patchHtml(html, route, extra) {
   const { title, description } = seoForRoute(route, extra);
   const ogImg = ogImageForRoute(route); // chemin relatif, ex: /og-immobilier.png
-  const ld = structuredDataScripts(route);
+  const ld = structuredDataScripts(route, extra);
   const seo = seoHtmlForRoute(route); // contenu crawlable injecté dans #root
   const url = `${BASE}${route}`;
   let out = html
@@ -79,13 +79,13 @@ async function blogEntries() {
     const entries = [];
     for (const slug of slugs) {
       const route = slug.startsWith('/blog/') ? slug : `/blog/${slug}`;
-      let title, description;
+      let title, description, publishedAt, image;
       try {
         const raw = await redis.get(`blog:article:${slug.replace(/^\/blog\//, '')}`);
         const a = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-        title = a?.title; description = a?.intro;
+        title = a?.title; description = a?.intro; publishedAt = a?.publishedAt; image = a?.image;
       } catch { /* titre par défaut */ }
-      entries.push({ route, title, description });
+      entries.push({ route, title, description, publishedAt, image });
     }
     return entries;
   } catch {
@@ -106,10 +106,10 @@ const routes = [
   ...blog,
 ];
 
-for (const { route, title, description } of routes) {
-  const dir = path.join(distDir, route);
+for (const entry of routes) {
+  const dir = path.join(distDir, entry.route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { title, description }));
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, entry.route, entry));
 }
 
 // NB : le sitemap.xml n'est plus généré ici. Il est servi dynamiquement par
