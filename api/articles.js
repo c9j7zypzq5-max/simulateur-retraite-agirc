@@ -30,6 +30,7 @@ export default async function handler(req, res) {
           category: a.category,
           readTime: a.readTime,
           publishedAt: a.publishedAt,
+          image: a.image,
         };
       })
     );

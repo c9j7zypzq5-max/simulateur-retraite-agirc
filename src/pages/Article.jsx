@@ -171,6 +171,23 @@ export default function Article() {
               </p>
             </div>
 
+            {/* Image d'illustration (libre de droits) */}
+            {article.image && (
+              <figure style={{ margin: "0 0 32px" }}>
+                <img
+                  src={article.image}
+                  alt={article.imageAlt || article.title}
+                  loading="lazy"
+                  style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 16, display: "block", border: "1px solid var(--border)" }}
+                />
+                {article.imageCredit && (
+                  <figcaption style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 6, textAlign: "right" }}>
+                    {article.imageCredit}
+                  </figcaption>
+                )}
+              </figure>
+            )}
+
             {/* Contenu */}
             <div
               className="article-prose"

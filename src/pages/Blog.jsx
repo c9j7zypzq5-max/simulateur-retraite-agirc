@@ -47,6 +47,14 @@ function ArticleCard({ article }) {
         transform: hovered ? "translateY(-2px)" : "none",
       }}
     >
+      {article.image && (
+        <img
+          src={article.image}
+          alt=""
+          loading="lazy"
+          style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 10, marginBottom: 16, display: "block" }}
+        />
+      )}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12, gap: 10 }}>
         <CategoryBadge category={article.category} />
         <span style={{ fontSize: 11, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
