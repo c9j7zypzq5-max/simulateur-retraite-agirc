@@ -1,7 +1,29 @@
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { GLOSSARY } from "../data/glossaire.js";
+import { ROUTE_META } from "../../api/_routes.js";
+
+// Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
+const BLOG_CATS_FOR_SIM = {
+  Retraite: ["Retraite"], Immobilier: ["Immobilier"], "Impôts": ["Fiscalité"],
+  Finances: ["Finances", "Épargne", "FIRE", "Budget"], FIRE: ["FIRE"], Budget: ["Budget"],
+};
+
+// Cache module : on ne récupère les articles qu'une fois par session de navigation.
+let _articlesCache = null;
+let _articlesPromise = null;
+function loadArticles() {
+  if (_articlesCache) return Promise.resolve(_articlesCache);
+  if (!_articlesPromise) {
+    _articlesPromise = fetch("/api/articles")
+      .then(r => r.json())
+      .then(d => { _articlesCache = Array.isArray(d) ? d : []; return _articlesCache; })
+      .catch(() => { _articlesCache = []; return _articlesCache; });
+  }
+  return _articlesPromise;
+}
 
 // Sélectionne jusqu'à 6 simulateurs liés : d'abord ceux de la même catégorie que
 // la page courante, complétés par d'autres si besoin. Améliore le maillage interne
@@ -91,12 +113,55 @@ function RelatedTerms() {
   );
 }
 
+// Articles de blog liés à la thématique de la page simulateur courante.
+function RelatedArticles() {
+  const { pathname } = useLocation();
+  const [articles, setArticles] = useState([]);
+  const onSim = pathname.startsWith("/simulateurs/");
+  const cat = ROUTE_META[pathname]?.cat;
+  const blogCats = BLOG_CATS_FOR_SIM[cat] || [];
+
+  useEffect(() => {
+    if (!onSim || blogCats.length === 0) { setArticles([]); return; }
+    let alive = true;
+    loadArticles().then(list => {
+      if (alive) setArticles(list.filter(a => blogCats.includes(a.category)).slice(0, 3));
+    });
+    return () => { alive = false; };
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!onSim || articles.length === 0) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Articles liés">
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+        À lire sur le blog
+        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
+        {articles.map(a => (
+          <Link key={a.slug} to={`/blog/${a.slug}`} style={{
+            display: "block", padding: "14px 16px", borderRadius: 12, textDecoration: "none",
+            background: "var(--card-bg)", border: "1px solid var(--border)", transition: "border-color 0.2s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+          >
+            <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 600, color: "var(--text)", lineHeight: 1.3 }}>{a.title}</div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function Footer() {
   return (
     <>
     <SideAds />
     <RelatedSimulators />
     <RelatedTerms />
+    <RelatedArticles />
     <footer style={{
       borderTop: "1px solid var(--border)",
       padding: "28px 24px 40px",
