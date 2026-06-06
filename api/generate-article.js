@@ -1,4 +1,5 @@
 import { Redis } from '@upstash/redis';
+import { pexelsImage } from './_pexels.js';
 
 // Sujets en rotation — 1 article généré par appel cron
 const TOPICS = [
@@ -120,29 +121,16 @@ Contraintes pour le champ content :
     article.category = article.category || topic.category;
     article.readTime = article.readTime || 5;
 
-    // Image d'illustration libre de droits (Pexels) selon la catégorie.
+    // Image d'illustration libre de droits (Pexels) selon la catégorie. L'index
+    // (compteur global d'articles) fait tourner le choix dans le pool pour éviter
+    // d'avoir toujours la même photo sur une catégorie.
     if (process.env.PEXELS_API_KEY) {
-      try {
-        const QUERIES = {
-          'Épargne': 'savings money coins', 'Retraite': 'retirement senior couple',
-          'Immobilier': 'real estate house keys', 'FIRE': 'financial freedom travel',
-          'Budget': 'budget planning calculator', 'Fiscalité': 'tax documents calculator',
-          'Finances': 'finance investing chart',
-        };
-        const q = QUERIES[article.category] || 'personal finance';
-        const pr = await fetch(
-          `https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&per_page=1&orientation=landscape&size=medium`,
-          { headers: { Authorization: process.env.PEXELS_API_KEY } }
-        );
-        if (pr.ok) {
-          const photo = (await pr.json()).photos?.[0];
-          if (photo) {
-            article.image = photo.src?.large || photo.src?.medium;
-            article.imageAlt = photo.alt || article.title;
-            article.imageCredit = photo.photographer ? `Photo : ${photo.photographer} / Pexels` : 'Pexels';
-          }
-        }
-      } catch { /* article publié sans image */ }
+      const pic = await pexelsImage(article.category, count - 1);
+      if (pic) {
+        article.image = pic.image;
+        article.imageAlt = pic.imageAlt || article.title;
+        article.imageCredit = pic.imageCredit;
+      }
     }
 
     // Stockage Redis
