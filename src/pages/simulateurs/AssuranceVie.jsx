@@ -4,6 +4,7 @@ import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
+import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -334,7 +335,7 @@ export default function AssuranceVie() {
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une enveloppe souple et fiscalement avantageuse</h3>
             <p style={{ marginBottom: 16 }}>L'assurance-vie reste le placement préféré des Français. Elle combine souplesse (versements et rachats libres), diversité des supports (fonds en euros sécurisés, unités de compte plus dynamiques) et une fiscalité avantageuse qui se renforce avec le temps. La fiscalité ne porte que sur les gains : le capital que vous avez versé n'est jamais taxé lors d'un rachat.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'avantage des 8 ans</h3>
-            <p style={{ marginBottom: 16 }}>Avant 8 ans, les gains rachetés sont soumis au prélèvement forfaitaire unique de 30 % (12,8 % d'impôt + 17,2 % de prélèvements sociaux). À partir de 8 ans de détention, vous profitez chaque année d'un abattement de 4 600 € (personne seule) ou 9 200 € (couple) sur les gains rachetés, et la part issue de primes ≤ 150 000 € n'est taxée qu'à 7,5 % d'impôt. C'est pourquoi il est conseillé de « prendre date » le plus tôt possible.</p>
+            <p style={{ marginBottom: 16 }}>Avant 8 ans, les gains rachetés sont soumis au <Terme slug="pfu">prélèvement forfaitaire unique</Terme> de 30 % (12,8 % d'impôt + 17,2 % de <Terme slug="prelevements-sociaux">prélèvements sociaux</Terme>). À partir de 8 ans de détention, vous profitez chaque année d'un <Terme slug="abattement">abattement</Terme> de 4 600 € (personne seule) ou 9 200 € (couple) sur les gains rachetés, et la part issue de primes ≤ 150 000 € n'est taxée qu'à 7,5 % d'impôt. C'est pourquoi il est conseillé de « prendre date » le plus tôt possible.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Transmission et succession</h3>
             <p>L'assurance-vie est aussi un outil de transmission. Pour les primes versées avant 70 ans, chaque bénéficiaire désigné bénéficie d'un abattement de {fmtEur(ABATTEMENT_SUCCESSION)} sur les capitaux transmis, hors succession. Cette enveloppe permet ainsi d'organiser la transmission de son patrimoine dans un cadre fiscal favorable, en désignant librement les bénéficiaires via la clause bénéficiaire.</p>
           </div>

@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
+import { autolinkTermsHtml } from "../utils/autolinkTerms.js";
 
 const CATEGORY_COLORS = {
   "FIRE":        { bg: "rgba(239,68,68,0.1)",   color: "#ef4444",   border: "rgba(239,68,68,0.25)" },
@@ -56,6 +57,15 @@ const PROSE_CSS = `
     color: var(--text);
     font-style: italic;
   }
+  .article-prose a.term-link {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--border-gold);
+    cursor: pointer;
+  }
+  .article-prose a.term-link:hover {
+    border-bottom-style: solid;
+  }
 `;
 
 export default function Article() {
@@ -92,6 +102,21 @@ export default function Article() {
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;
   const relatedSim = article ? CATEGORY_SIMULATEURS[article.category] : null;
+
+  // Contenu enrichi : les termes connus (TAEG, PER, FIRE…) sont auto-liés vers le lexique.
+  const contentHtml = useMemo(() => autolinkTermsHtml(article?.content || ""), [article?.content]);
+
+  // Les liens injectés (/lexique/…, /simulateurs/…) sont de simples <a> : on
+  // intercepte le clic pour naviguer en SPA plutôt que recharger toute la page.
+  const onContentClick = (e) => {
+    const a = e.target.closest?.("a");
+    if (!a) return;
+    const href = a.getAttribute("href");
+    if (href && href.startsWith("/")) {
+      e.preventDefault();
+      navigate(href);
+    }
+  };
 
   const date = article?.publishedAt
     ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
@@ -191,7 +216,8 @@ export default function Article() {
             {/* Contenu */}
             <div
               className="article-prose"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              onClick={onContentClick}
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
 
             {/* Ad */}
