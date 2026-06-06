@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useExporting } from "../utils/exportMode.js";
+import AutoLinkText from "./AutoLinkText.jsx";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -306,7 +307,7 @@ export function FaqItem({ q, a }) {
       </button>
       {open && (
         <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8, animation: "slideDown 0.18s ease" }}>
-          {a}
+          <AutoLinkText>{a}</AutoLinkText>
         </p>
       )}
     </div>
@@ -336,8 +337,8 @@ export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
         <span style={{ fontSize: 36 }} aria-hidden="true">{icon}</span>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
       </div>
-      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 10 }}>{subtitle}</p>}
-      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}>{desc}</p>}
+      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 10 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
+      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}><AutoLinkText>{desc}</AutoLinkText></p>}
     </div>
   );
 }

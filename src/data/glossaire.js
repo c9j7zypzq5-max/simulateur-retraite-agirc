@@ -456,6 +456,278 @@ export const GLOSSARY = [
     sims: ['/simulateurs/budget', '/simulateurs/fire', '/simulateurs/epargne'],
     related: ['fire', 'interets-composes'],
   },
+
+  // ── Épargne réglementée & supports ──────────────────────────────────────────
+  {
+    slug: 'livret-a', term: 'Livret A', full: 'Livret A',
+    aliases: ['Livret A'], category: 'Finances',
+    short: "Livret d'épargne réglementé, sans risque, défiscalisé et disponible à tout moment.",
+    long: [
+      "Le Livret A est l'épargne de précaution par excellence : capital garanti, intérêts exonérés d'impôt et de prélèvements sociaux, retraits libres. Son taux est fixé par l'État.",
+      "Son plafond est de 22 950 €. Idéal pour l'épargne de précaution (3 à 6 mois de dépenses), mais son rendement couvre rarement l'inflation sur le long terme.",
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/budget'],
+    related: ['ldds', 'inflation', 'taux-epargne'],
+  },
+  {
+    slug: 'ldds', term: 'LDDS', full: 'Livret de Développement Durable et Solidaire',
+    aliases: ['LDDS'], category: 'Finances',
+    short: "Livret réglementé proche du Livret A, défiscalisé, plafonné à 12 000 €.",
+    long: [
+      "Le LDDS fonctionne comme le Livret A (capital garanti, intérêts nets d'impôt, retraits libres) avec un plafond de 12 000 €. Il finance l'économie sociale et la transition écologique.",
+      "On le cumule souvent avec le Livret A pour augmenter sa réserve d'épargne défiscalisée.",
+    ],
+    sims: ['/simulateurs/epargne'],
+    related: ['livret-a', 'taux-epargne'],
+  },
+  {
+    slug: 'pel', term: 'PEL', full: "Plan d'Épargne Logement",
+    aliases: ['PEL'], category: 'Immobilier',
+    short: "Épargne bloquée rémunérée ouvrant droit à un prêt immobilier à taux fixé à l'ouverture.",
+    long: [
+      "Le PEL est un produit d'épargne destiné à préparer un achat immobilier. Il offre un taux de rémunération garanti et, après une phase d'épargne, un droit à prêt à un taux connu d'avance.",
+      "Les intérêts des PEL récents sont fiscalisés (PFU). Son intérêt dépend fortement du contexte de taux au moment de l'ouverture.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/epargne'],
+    related: ['apport', 'pfu'],
+  },
+  {
+    slug: 'fonds-euros', term: 'Fonds en euros', full: 'Fonds en euros',
+    aliases: ['fonds en euros', 'fonds euros'], category: 'Finances',
+    short: "Support d'assurance-vie à capital garanti, sécurisé mais peu rémunérateur.",
+    long: [
+      "Le fonds en euros est le compartiment sécurisé de l'assurance-vie : le capital est garanti et les intérêts acquis le sont définitivement (effet cliquet).",
+      "En contrepartie de cette sécurité, son rendement est modeste. Il se combine souvent avec des unités de compte pour viser plus de performance.",
+    ],
+    sims: ['/simulateurs/assurance-vie'],
+    related: ['assurance-vie', 'unites-de-compte'],
+  },
+  {
+    slug: 'unites-de-compte', term: 'Unités de compte', full: 'Unités de compte (UC)',
+    aliases: ['unités de compte', 'unité de compte'], category: 'Finances',
+    short: "Supports d'assurance-vie investis en actions, fonds ou immobilier : plus de potentiel, mais risque de perte.",
+    long: [
+      "Les unités de compte (UC) sont les supports non garantis de l'assurance-vie : ETF, fonds actions, SCPI… Leur valeur fluctue avec les marchés.",
+      "Elles offrent un meilleur potentiel de rendement que le fonds en euros sur le long terme, au prix d'un risque de perte en capital.",
+    ],
+    sims: ['/simulateurs/assurance-vie', '/simulateurs/comparateur'],
+    related: ['fonds-euros', 'etf', 'scpi', 'volatilite'],
+  },
+  {
+    slug: 'scpi', term: 'SCPI', full: 'Société Civile de Placement Immobilier',
+    aliases: ['SCPI'], category: 'Immobilier',
+    short: "« Pierre-papier » : on achète des parts d'un parc immobilier géré, pour toucher des loyers sans gestion directe.",
+    long: [
+      "Une SCPI collecte l'épargne de nombreux investisseurs pour acheter et gérer un patrimoine immobilier (bureaux, commerces, santé…). Les associés perçoivent des revenus proportionnels à leurs parts.",
+      "Avantages : mutualisation, accessibilité, aucune gestion. Inconvénients : frais d'entrée élevés, liquidité limitée et fiscalité des revenus fonciers.",
+    ],
+    sims: ['/simulateurs/rendement-locatif', '/simulateurs/patrimoine'],
+    related: ['rendement-locatif', 'unites-de-compte', 'deficit-foncier'],
+  },
+  {
+    slug: 'dca', term: 'DCA', full: 'Dollar Cost Averaging (investissement programmé)',
+    aliases: ['DCA'], category: 'Finances',
+    short: "Investir une somme fixe à intervalles réguliers pour lisser le prix d'achat et réduire le risque de timing.",
+    long: [
+      "Le DCA (investissement programmé) consiste à placer un montant constant à intervalle régulier, quelles que soient les conditions de marché. On achète ainsi plus de parts quand les prix baissent, moins quand ils montent.",
+      "Cette discipline lisse le prix de revient moyen et évite de tout investir au mauvais moment. C'est une stratégie courante pour les ETF.",
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/comparateur'],
+    related: ['etf', 'volatilite', 'interets-composes'],
+  },
+  {
+    slug: 'diversification', term: 'Diversification', full: 'Diversification',
+    aliases: ['diversification'], category: 'Finances',
+    short: "Répartir ses placements (classes d'actifs, zones, secteurs) pour réduire le risque global.",
+    long: [
+      "La diversification consiste à ne pas concentrer son patrimoine sur un seul actif. En combinant des placements peu corrélés, on réduit l'impact d'une mauvaise performance isolée.",
+      "C'est l'un des rares « repas gratuits » en finance : moins de risque pour un rendement attendu comparable.",
+    ],
+    sims: ['/simulateurs/patrimoine', '/simulateurs/comparateur'],
+    related: ['volatilite', 'etf', 'unites-de-compte'],
+  },
+  {
+    slug: 'volatilite', term: 'Volatilité', full: 'Volatilité',
+    aliases: ['volatilité'], category: 'Finances',
+    short: "Mesure de l'ampleur des variations d'un placement : plus elle est élevée, plus le risque est grand.",
+    long: [
+      "La volatilité quantifie l'amplitude des fluctuations de la valeur d'un actif. Une forte volatilité signifie des hausses et des baisses marquées, donc un risque plus élevé à court terme.",
+      "Les actions sont plus volatiles que les fonds en euros. Sur le long terme, la diversification et la durée atténuent son impact.",
+    ],
+    sims: ['/simulateurs/comparateur'],
+    related: ['diversification', 'etf', 'fire'],
+  },
+  {
+    slug: 'inflation', term: 'Inflation', full: 'Inflation',
+    aliases: ['inflation'], category: 'Finances',
+    short: "Hausse générale des prix qui érode le pouvoir d'achat de l'épargne au fil du temps.",
+    long: [
+      "L'inflation correspond à l'augmentation moyenne des prix. Elle réduit la valeur réelle de l'argent : 1 000 € aujourd'hui achèteront moins de biens dans 10 ans.",
+      "Pour préserver son pouvoir d'achat, il faut viser un rendement supérieur à l'inflation (rendement réel positif).",
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/salaire'],
+    related: ['rendement-reel', 'livret-a', 'interets-composes'],
+  },
+  {
+    slug: 'rendement-reel', term: 'Rendement réel', full: 'Rendement réel',
+    aliases: ['rendement réel'], category: 'Finances',
+    short: "Rendement d'un placement après déduction de l'inflation : le vrai gain de pouvoir d'achat.",
+    long: [
+      "Le rendement réel = rendement nominal − inflation. C'est lui qui mesure l'enrichissement véritable : un livret à 3 % avec 2 % d'inflation ne rapporte réellement qu'environ 1 %.",
+      "Un rendement réel négatif signifie une perte de pouvoir d'achat, même si le capital nominal augmente.",
+    ],
+    sims: ['/simulateurs/epargne'],
+    related: ['inflation', 'interets-composes'],
+  },
+  {
+    slug: 'effet-levier', term: 'Effet de levier', full: 'Effet de levier du crédit',
+    aliases: ['effet de levier'], category: 'Immobilier',
+    short: "Utiliser l'emprunt pour investir plus que son apport et amplifier la rentabilité des fonds propres.",
+    long: [
+      "L'effet de levier consiste à financer un investissement (souvent immobilier) par l'emprunt. Si la rentabilité du bien dépasse le coût du crédit, le rendement de votre apport est démultiplié.",
+      "Le levier amplifie les gains mais aussi les pertes : c'est un outil puissant à manier avec prudence.",
+    ],
+    sims: ['/simulateurs/rendement-locatif', '/simulateurs/emprunt-immobilier'],
+    related: ['rendement-locatif', 'taeg'],
+  },
+
+  // ── Fiscalité & patrimoine ──────────────────────────────────────────────────
+  {
+    slug: 'ifi', term: 'IFI', full: 'Impôt sur la Fortune Immobilière',
+    aliases: ['IFI'], category: 'Impôts',
+    short: "Impôt annuel sur le patrimoine immobilier net supérieur à 1,3 million d'euros.",
+    long: [
+      "L'IFI a remplacé l'ISF en 2018. Il ne porte que sur le patrimoine immobilier net (hors actifs financiers) lorsque sa valeur dépasse 1,3 million d'euros au 1er janvier.",
+      "Le barème est progressif et la résidence principale bénéficie d'un abattement de 30 %.",
+    ],
+    sims: ['/simulateurs/patrimoine'],
+    related: ['abattement', 'rfr'],
+  },
+  {
+    slug: 'rfr', term: 'RFR', full: 'Revenu Fiscal de Référence',
+    aliases: ['revenu fiscal de référence'], category: 'Impôts',
+    short: "Indicateur global de vos revenus utilisé pour l'accès à de nombreux dispositifs et plafonds.",
+    long: [
+      "Le revenu fiscal de référence (RFR) figure sur votre avis d'imposition. Il agrège vos revenus nets imposables et certains revenus exonérés, donnant une mesure large de vos ressources.",
+      "Il conditionne l'éligibilité au PTZ, à certaines aides, exonérations locales et barèmes (dont le PTZ et l'IFI).",
+    ],
+    sims: ['/simulateurs/impot-revenu', '/simulateurs/ptz'],
+    related: ['ir', 'ptz'],
+  },
+  {
+    slug: 'prelevement-source', term: 'Prélèvement à la source', full: 'Prélèvement à la source (PAS)',
+    aliases: ['prélèvement à la source'], category: 'Impôts',
+    short: "Collecte de l'impôt sur le revenu directement sur le salaire ou la pension, en temps réel.",
+    long: [
+      "Depuis 2019, l'impôt sur le revenu est prélevé à la source : l'employeur (ou la caisse de retraite) retient l'impôt chaque mois selon un taux transmis par l'administration.",
+      "Une régularisation a lieu l'année suivante après la déclaration, pour tenir compte des revenus et réductions réels.",
+    ],
+    sims: ['/simulateurs/impot-revenu', '/simulateurs/salaire'],
+    related: ['ir', 'tmi'],
+  },
+  {
+    slug: 'deficit-foncier', term: 'Déficit foncier', full: 'Déficit foncier',
+    aliases: ['déficit foncier'], category: 'Immobilier',
+    short: "Excédent de charges sur les loyers, déductible du revenu global et reportable, pour réduire l'impôt.",
+    long: [
+      "En location nue au régime réel, quand les charges déductibles (travaux, intérêts…) dépassent les loyers, on crée un déficit foncier. Il s'impute sur le revenu global dans une certaine limite annuelle, le surplus étant reportable.",
+      "C'est un levier d'optimisation pour les propriétaires réalisant des travaux.",
+    ],
+    sims: ['/simulateurs/rendement-locatif'],
+    related: ['rendement-locatif', 'abattement'],
+  },
+  {
+    slug: 'usufruit', term: 'Usufruit', full: 'Usufruit',
+    aliases: ['usufruit'], category: 'Impôts',
+    short: "Droit d'utiliser un bien et d'en percevoir les revenus, sans en être pleinement propriétaire.",
+    long: [
+      "L'usufruit confère le droit d'usage d'un bien et de ses fruits (loyers, dividendes). Il s'oppose à la nue-propriété : ensemble, ils forment la pleine propriété (démembrement).",
+      "Le démembrement est très utilisé en transmission : donner la nue-propriété en conservant l'usufruit réduit les droits de donation.",
+    ],
+    sims: ['/simulateurs/patrimoine'],
+    related: ['nue-propriete', 'assurance-vie'],
+  },
+  {
+    slug: 'nue-propriete', term: 'Nue-propriété', full: 'Nue-propriété',
+    aliases: ['nue-propriété'], category: 'Impôts',
+    short: "Propriété d'un bien sans le droit d'en jouir : le nu-propriétaire récupère la pleine propriété au décès de l'usufruitier.",
+    long: [
+      "Le nu-propriétaire détient le bien mais n'en a ni l'usage ni les revenus tant que dure l'usufruit. À l'extinction de l'usufruit, il reconstitue la pleine propriété sans fiscalité supplémentaire.",
+      "Acheter en nue-propriété permet d'investir avec une décote, en vue d'une transmission ou d'une revalorisation à terme.",
+    ],
+    sims: ['/simulateurs/patrimoine'],
+    related: ['usufruit'],
+  },
+
+  // ── Retraite (compléments) ──────────────────────────────────────────────────
+  {
+    slug: 'reversion', term: 'Pension de réversion', full: 'Pension de réversion',
+    aliases: ['pension de réversion', 'réversion'], category: 'Retraite',
+    short: "Part de la retraite d'un défunt versée au conjoint survivant, sous conditions.",
+    long: [
+      "La pension de réversion permet au conjoint (ou ex-conjoint) survivant de percevoir une fraction de la retraite du défunt. Les conditions (âge, ressources, mariage) et le taux varient selon les régimes.",
+      "Au régime général, elle représente 54 % de la pension de base, sous condition de ressources.",
+    ],
+    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'],
+    related: ['cnav', 'agirc-arrco'],
+  },
+  {
+    slug: 'aspa', term: 'ASPA', full: "Allocation de Solidarité aux Personnes Âgées",
+    aliases: ['ASPA'], category: 'Retraite',
+    short: "« Minimum vieillesse » : revenu minimal garanti aux retraités les plus modestes.",
+    long: [
+      "L'ASPA garantit un niveau de ressources minimal aux personnes âgées de 65 ans et plus disposant de faibles revenus. Elle complète les pensions pour atteindre un plancher fixé par l'État.",
+      "Elle est récupérable sur la succession au-delà d'un certain montant d'actif net.",
+    ],
+    sims: ['/simulateurs/cnav'],
+    related: ['cnav', 'minimum-contributif'],
+  },
+  {
+    slug: 'minimum-contributif', term: 'Minimum contributif', full: 'Minimum contributif (Mico)',
+    aliases: ['minimum contributif'], category: 'Retraite',
+    short: "Pension de base minimale pour les salariés ayant cotisé à taux plein avec de faibles revenus.",
+    long: [
+      "Le minimum contributif (Mico) relève la pension de base des assurés qui partent au taux plein mais ont eu de faibles salaires. Son montant est majoré selon la durée cotisée.",
+      "Il diffère de l'ASPA : il récompense la cotisation, sans condition de ressources aussi stricte.",
+    ],
+    sims: ['/simulateurs/cnav'],
+    related: ['taux-plein', 'aspa'],
+  },
+  {
+    slug: 'cumul-emploi-retraite', term: 'Cumul emploi-retraite', full: 'Cumul emploi-retraite',
+    aliases: ['cumul emploi-retraite'], category: 'Retraite',
+    short: "Possibilité de reprendre une activité rémunérée tout en percevant sa retraite.",
+    long: [
+      "Le cumul emploi-retraite autorise un retraité à travailler en touchant sa pension. En cumul intégral (taux plein et tous régimes liquidés), il n'y a aucun plafond de revenus.",
+      "Depuis 2023, cette reprise peut générer de nouveaux droits à une seconde pension, sous conditions.",
+    ],
+    sims: ['/simulateurs/cnav', '/simulateurs/retraite-progressive'],
+    related: ['taux-plein', 'surcote'],
+  },
+
+  // ── Crédit (compléments) ────────────────────────────────────────────────────
+  {
+    slug: 'taux-usure', term: "Taux d'usure", full: "Taux d'usure",
+    aliases: ["taux d'usure"], category: 'Immobilier',
+    short: "TAEG maximum légal qu'un prêteur peut appliquer, révisé chaque trimestre par la Banque de France.",
+    long: [
+      "Le taux d'usure est le plafond légal du TAEG. Tout crédit proposé au-dessus est considéré comme usuraire, donc illégal. Il protège les emprunteurs des conditions abusives.",
+      "Il est révisé périodiquement et varie selon le type, le montant et la durée du crédit.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/credit-conso'],
+    related: ['taeg', 'taux-nominal'],
+  },
+  {
+    slug: 'taux-nominal', term: 'Taux nominal', full: 'Taux nominal (taux débiteur)',
+    aliases: ['taux nominal', 'taux débiteur'], category: 'Immobilier',
+    short: "Taux d'intérêt « brut » d'un crédit, hors assurance et frais. À ne pas confondre avec le TAEG.",
+    long: [
+      "Le taux nominal (ou taux débiteur) ne couvre que les intérêts du prêt. Il sert à calculer les mensualités, mais ne reflète pas le coût total.",
+      "Pour comparer des offres, c'est le TAEG — qui ajoute assurance et frais — qu'il faut regarder.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/credit-conso'],
+    related: ['taeg', 'taux-usure'],
+  },
 ];
 
 // ── Index dérivés ────────────────────────────────────────────────────────────
