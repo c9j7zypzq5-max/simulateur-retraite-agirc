@@ -158,7 +158,7 @@ export function Toggle({ options, checked, onChange }) {
       {opts.map((opt, i) => (
         <button key={opt} onClick={() => onChange(i === 1)}
           aria-pressed={String((i === 1) === checked)}
-          style={{ padding: "7px 16px", borderRadius: 8, border: "none",
+          style={{ padding: "9px 16px", minHeight: 40, borderRadius: 8, border: "none",
             background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
             color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
             fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif" }}>

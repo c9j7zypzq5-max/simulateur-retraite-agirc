@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { NAV_GROUPS } from "./Navbar.jsx";
+import SideAds from "./SideAds.jsx";
 
 // Sélectionne jusqu'à 6 simulateurs liés : d'abord ceux de la même catégorie que
 // la page courante, complétés par d'autres si besoin. Améliore le maillage interne
@@ -51,6 +52,7 @@ function RelatedSimulators() {
 export default function Footer() {
   return (
     <>
+    <SideAds />
     <RelatedSimulators />
     <footer style={{
       borderTop: "1px solid var(--border)",

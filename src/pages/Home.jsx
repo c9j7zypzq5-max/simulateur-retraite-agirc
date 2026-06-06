@@ -195,7 +195,7 @@ function FilterBar({ activeFilter, setActiveFilter }) {
               background: isMobile && isActive ? "rgba(184,147,74,0.1)" : "transparent",
               border: `1px solid ${isActive ? (isMobile ? "var(--border-gold)" : "transparent") : "var(--border)"}`,
               color: isActive ? "var(--gold)" : "var(--text-secondary)",
-              padding: "7px 16px", borderRadius: 20, fontSize: "0.8rem",
+              padding: "9px 16px", minHeight: 40, borderRadius: 20, fontSize: "0.8rem",
               cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
               transition: "color 0.2s, border-color 0.2s, background 0.2s",
               position: "relative", zIndex: 1,
@@ -309,17 +309,17 @@ export default function Home() {
       `}</style>
 
       {/* ── AdSense ── */}
-      <div style={{ maxWidth: 1100, margin: "0 auto 24px", padding: "0 24px" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
         <AdUnit slot="auto" format="auto" />
       </div>
 
       {/* ── Filter bar ── */}
-      <div className="filter-bar" style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }}>
+      <div className="filter-bar" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
         <FilterBar activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
       </div>
 
       {/* ── Grid ── */}
-      <section style={{ maxWidth: 1100, margin: "0 auto 0", padding: "0 24px 64px" }}>
+      <section style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
         <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 600, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
           Simulateurs disponibles
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
