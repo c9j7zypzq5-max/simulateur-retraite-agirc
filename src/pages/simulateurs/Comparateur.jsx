@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { track } from '@vercel/analytics';
 import ShareBar from '../../components/ShareBar.jsx';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { useTheme } from '../../hooks/useTheme.js';
 import ComparisonVideoExport from '../../components/ComparisonVideoExport.jsx';
 import Navbar from '../../components/Navbar.jsx';
@@ -968,7 +969,7 @@ export default function Comparateur() {
             </div>
 
             {/* Graphique */}
-            <div ref={chartRef} style={{ marginBottom: 24 }}>
+            <ZoomableChart innerRef={chartRef} style={{ marginBottom: 24 }}>
               <ComparisonChart
                 computed={computed}
                 assets={assetsWithColors}
@@ -982,7 +983,7 @@ export default function Comparateur() {
                   Base 100 : chaque actif part de 100 au début de la période. Une valeur de 150 = +50 %.
                 </p>
               )}
-            </div>
+            </ZoomableChart>
 
             {/* Tableau métriques */}
             <MetricsTable metrics={metrics} montant={montant} />

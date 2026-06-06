@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -506,9 +507,9 @@ export default function Patrimoine() {
                   <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 8 }}>
                     Projection annuelle
                   </div>
-                  <div ref={chartRef}>
+                  <ZoomableChart innerRef={chartRef}>
                     <StackedChart projectionData={res.projectionData} immoActive={immoActive} />
-                  </div>
+                  </ZoomableChart>
                 </div>
               )}
 

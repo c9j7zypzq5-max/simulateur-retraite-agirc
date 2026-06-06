@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -376,7 +377,7 @@ export default function Budget() {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Répartition du budget
             </div>
-            <div ref={chartRef} style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
+            <ZoomableChart innerRef={chartRef} style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
               <DonutChart
                 besoins={res?.besoinsReel ?? 0}
                 envies={res?.enviesReel ?? 0}
@@ -401,7 +402,7 @@ export default function Budget() {
                   </div>
                 ))}
               </div>
-            </div>
+            </ZoomableChart>
           </div>
 
           {/* Jauges */}

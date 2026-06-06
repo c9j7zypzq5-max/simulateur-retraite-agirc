@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -581,9 +582,9 @@ export default function Salaire() {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
               Courbe de carrière
             </div>
-            <div ref={chartRef}>
+            <ZoomableChart innerRef={chartRef}>
               <CareerCurve years={res.years} net={res.net} pouvAchat={res.pouvAchat} />
-            </div>
+            </ZoomableChart>
           </div>
 
           {/* Timeline jalons */}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import { useProfile } from "../../hooks/useProfile.js";
@@ -871,9 +872,9 @@ export default function Fire() {
                   <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                     Courbe de croissance du patrimoine
                   </div>
-                  <div ref={chartRef}>
+                  <ZoomableChart innerRef={chartRef}>
                     <GrowthCurve projectionData={res.projectionData} patrimoineCible={res.patrimoineCible} />
-                  </div>
+                  </ZoomableChart>
                 </div>
               )}
 
