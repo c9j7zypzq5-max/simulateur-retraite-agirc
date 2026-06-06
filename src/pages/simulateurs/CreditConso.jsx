@@ -4,6 +4,7 @@ import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
+import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -321,7 +322,7 @@ export default function CreditConso() {
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La mensualité d'un crédit amortissable</h3>
             <p style={{ marginBottom: 16 }}>La mensualité d'un crédit à la consommation classique est calculée par la formule d'amortissement constant : M = C × r × (1+r)ⁿ / ((1+r)ⁿ − 1), où C est le montant emprunté, r le taux mensuel (TAEG ÷ 12) et n le nombre de mensualités. La mensualité reste fixe : au début, elle contient surtout des intérêts, puis la part de capital remboursé augmente progressivement, comme le montre le tableau d'amortissement.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>TAEG et taux d'usure</h3>
-            <p style={{ marginBottom: 16 }}>Le TAEG est l'indicateur de référence pour comparer les offres : il agrège les intérêts et tous les frais obligatoires. La loi encadre son niveau via le taux d'usure, plafond légal révisé chaque trimestre par la Banque de France selon le montant et la durée du crédit. Un TAEG supérieur à ce seuil rend le prêt usuraire et illégal.</p>
+            <p style={{ marginBottom: 16 }}>Le <Terme slug="taeg">TAEG</Terme> est l'indicateur de référence pour comparer les offres : il agrège les intérêts et tous les frais obligatoires. La loi encadre son niveau via le taux d'usure, plafond légal révisé chaque trimestre par la Banque de France selon le montant et la durée du crédit. Un TAEG supérieur à ce seuil rend le prêt usuraire et illégal.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Durée, assurance et coût total</h3>
             <p>Le coût du crédit dépend fortement de la durée : plus elle est longue, plus la mensualité baisse mais plus les intérêts s'accumulent. L'assurance emprunteur, facultative pour un crédit conso, augmente la mensualité tout en sécurisant le remboursement. Le coût total du crédit correspond à la somme des intérêts et de l'assurance, soit l'écart entre le total remboursé et le montant emprunté.</p>
           </div>

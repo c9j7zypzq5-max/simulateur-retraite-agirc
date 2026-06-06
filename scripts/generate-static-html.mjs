@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { ROUTE_META, BLOG_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
+import { ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
 import { seoHtmlForRoute } from '../api/_seo.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROUTES = [
   ...Object.keys(ROUTE_META).filter(r => r !== '/'),
   ...BLOG_SLUGS,
+  ...LEXIQUE_SLUGS,
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────

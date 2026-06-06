@@ -4,6 +4,8 @@
 //
 // Préfixe « _ » : Vercel ne traite pas ce fichier comme une route serverless.
 
+import { GLOSSARY } from '../src/data/glossaire.js';
+
 export const BASE = 'https://www.mesimulateurs.fr';
 
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
@@ -35,6 +37,7 @@ export const ROUTE_META = {
   '/simulateurs/cout-en-heures':          { title: 'Simulateur Prix en heures de vie',           emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur Ma vie en semaines',              emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/blog':                                { title: 'Blog — Finances personnelles',               emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
+  '/lexique':                             { title: 'Lexique financier — définitions',            emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
   '/a-propos':                            { title: 'À propos — mesimulateurs.fr',                emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
   '/mentions-legales':                    { title: 'Mentions légales',                           emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
   '/politique-de-confidentialite':        { title: 'Politique de confidentialité',               emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
@@ -47,6 +50,9 @@ export const BLOG_SLUGS = [
   '/blog/fire-france-independance-financiere',
   '/blog/simuler-emprunt-immobilier',
 ];
+
+// Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
+export const LEXIQUE_SLUGS = GLOSSARY.map(t => `/lexique/${t.slug}`);
 
 // og:image par catégorie (différenciation des aperçus de partage social).
 // PNG (pas SVG) : c'est le format réellement rendu par Facebook/LinkedIn/X.

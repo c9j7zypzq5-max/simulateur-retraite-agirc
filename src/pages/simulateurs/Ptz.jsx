@@ -4,6 +4,7 @@ import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
+import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -416,7 +417,7 @@ export default function Ptz() {
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un prêt sans intérêts pour les primo-accédants</h3>
             <p style={{ marginBottom: 16 }}>Le Prêt à Taux Zéro (PTZ) finance une partie de l'achat de la résidence principale des ménages qui n'ont pas été propriétaires de leur logement au cours des deux années précédentes. Il ne comporte ni intérêts ni frais de dossier et vient en complément d'un prêt principal. Depuis le décret n° 2025-299 du 29 mars 2025, il a été rouvert à tous les logements neufs (appartements comme maisons) sur l'ensemble du territoire.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Tranches de revenus et quotité</h3>
-            <p style={{ marginBottom: 16 }}>Le montant du PTZ dépend d'une quotité (part finançable du coût de l'opération) déterminée par votre tranche de revenus : 50 % pour les ménages les plus modestes, 40 % pour les tranches intermédiaires et 20 % pour la tranche la plus haute. La tranche se calcule en divisant le revenu fiscal de référence (ou le coût total ÷ 9 s'il est supérieur) par un coefficient familial qui croît avec le nombre d'occupants.</p>
+            <p style={{ marginBottom: 16 }}>Le montant du <Terme slug="ptz">PTZ</Terme> dépend d'une quotité (part finançable du coût de l'opération) déterminée par votre tranche de revenus : 50 % pour les ménages les plus modestes, 40 % pour les tranches intermédiaires et 20 % pour la tranche la plus haute. La tranche se calcule en divisant le revenu fiscal de référence (ou le coût total ÷ 9 s'il est supérieur) par un coefficient familial qui croît avec le nombre d'occupants.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Différé et durée de remboursement</h3>
             <p>Le PTZ se rembourse sur une durée totale comprise entre 20 et 25 ans, incluant une période de différé pendant laquelle aucun remboursement n'est dû sur le PTZ. Plus les revenus sont modestes, plus le différé est long, ce qui allège l'effort des premières années. Le coût de l'opération retenu est plafonné selon la zone et la taille du foyer.</p>
           </div>

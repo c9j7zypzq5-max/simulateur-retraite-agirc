@@ -14,6 +14,8 @@ const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentia
 const APropos                 = lazy(() => import("./pages/APropos.jsx"));
 const Blog                    = lazy(() => import("./pages/Blog.jsx"));
 const Article                 = lazy(() => import("./pages/Article.jsx"));
+const Lexique                 = lazy(() => import("./pages/Lexique.jsx"));
+const LexiqueTerme            = lazy(() => import("./pages/LexiqueTerme.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -94,6 +96,9 @@ export default function App() {
         {/* Blog */}
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Article />} />
+        {/* Lexique */}
+        <Route path="/lexique" element={<Lexique />} />
+        <Route path="/lexique/:slug" element={<LexiqueTerme />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

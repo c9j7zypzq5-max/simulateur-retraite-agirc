@@ -78,6 +78,9 @@ export default function Footer() {
           <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             Blog
           </Link>
+          <Link to="/lexique" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            Lexique
+          </Link>
           <Link to="/a-propos" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             À propos
           </Link>
