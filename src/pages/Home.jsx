@@ -195,7 +195,7 @@ function FilterBar({ activeFilter, setActiveFilter }) {
               background: isMobile && isActive ? "rgba(184,147,74,0.1)" : "transparent",
               border: `1px solid ${isActive ? (isMobile ? "var(--border-gold)" : "transparent") : "var(--border)"}`,
               color: isActive ? "var(--gold)" : "var(--text-secondary)",
-              padding: "9px 16px", minHeight: 40, borderRadius: 20, fontSize: "0.8rem",
+              padding: "9px 16px", borderRadius: 20, fontSize: "0.8rem",
               cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
               transition: "color 0.2s, border-color 0.2s, background 0.2s",
               position: "relative", zIndex: 1,

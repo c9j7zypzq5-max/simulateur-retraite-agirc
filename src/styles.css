@@ -24,9 +24,9 @@
   --bg: #faf6ef;
   --card-bg: #ffffff;
   --text: #1c1208;
-  --text-secondary: #6b5c3e;
-  --gold: #9a6f2a;
-  --gold-mid: #7a5520;
+  --text-secondary: #645634;
+  --gold: #8a6322;
+  --gold-mid: #6f4e1b;
   --border: rgba(0,0,0,0.07);
   --border-gold: rgba(184,147,74,0.35);
   --input-bg: #ffffff;
@@ -155,3 +155,7 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   .hero-stats { gap: 20px !important; }
   .filter-bar { padding: 0 16px 0 !important; }
 }
+
+/* Barre de catégories : desktop uniquement */
+.desktop-catbar { display: none; }
+@media (min-width: 900px) { .desktop-catbar { display: block; } }

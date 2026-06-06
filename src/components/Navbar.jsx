@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
@@ -112,6 +112,9 @@ export default function Navbar({ theme, setTheme }) {
     return init;
   });
 
+  const [openCat, setOpenCat] = useState(null);   // barre catégories desktop
+  const catBarRef = useRef(null);
+
   const onSim = pathname.startsWith("/simulateurs/");
   const current = ALL_ITEMS.find(i => i.path === pathname);
 
@@ -125,7 +128,18 @@ export default function Navbar({ theme, setTheme }) {
     const next = {};
     NAV_GROUPS.forEach(g => { next[g.id] = g.items.some(i => i.path === pathname); });
     setOpenGroups(next);
+    setOpenCat(null);
   }, [pathname]);
+
+  // Ferme le menu de catégories desktop au clic extérieur / Échap.
+  useEffect(() => {
+    if (!openCat) return;
+    const onDown = e => { if (catBarRef.current && !catBarRef.current.contains(e.target)) setOpenCat(null); };
+    const onKey = e => { if (e.key === "Escape") setOpenCat(null); };
+    document.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); window.removeEventListener("keydown", onKey); };
+  }, [openCat]);
 
   useEffect(() => {
     if (drawerOpen) setHistory(getHistory());
@@ -219,6 +233,74 @@ export default function Navbar({ theme, setTheme }) {
           <IosToggle theme={theme} setTheme={setTheme} compact />
         </div>
       </nav>
+
+      {/* ── Barre de catégories — desktop uniquement ── */}
+      <div ref={catBarRef} className="desktop-catbar" style={{
+        position: "sticky", top: 56, zIndex: 90,
+        background: theme === "dark" ? "rgba(6,14,28,0.92)" : "rgba(250,246,239,0.94)",
+        backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)",
+      }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "center", gap: 2 }}>
+          {NAV_GROUPS.map(group => {
+            const GI = GROUP_ICONS[group.id];
+            const active = openCat === group.id;
+            const hasCurrent = group.items.some(i => i.path === pathname);
+            return (
+              <div key={group.id} style={{ position: "relative" }}>
+                <button
+                  onClick={() => setOpenCat(active ? null : group.id)}
+                  aria-expanded={active} aria-haspopup="true"
+                  style={{
+                    display: "flex", alignItems: "center", gap: 7,
+                    padding: "11px 14px", background: "transparent", border: "none", cursor: "pointer",
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 13,
+                    color: active || hasCurrent ? "var(--gold)" : "var(--text-secondary)",
+                    borderBottom: `2px solid ${active || hasCurrent ? "var(--gold)" : "transparent"}`,
+                    transition: "color 0.2s, border-color 0.2s",
+                  }}
+                  onMouseEnter={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text)"; }}
+                  onMouseLeave={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text-secondary)"; }}
+                >
+                  {GI && <GI size={15} />}
+                  {group.label}
+                  <span style={{ fontSize: 9, opacity: 0.6, transform: active ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
+                </button>
+                {active && (
+                  <div role="menu" style={{
+                    position: "absolute", top: "100%", left: 0, marginTop: 1, zIndex: 95,
+                    background: "var(--card-bg)", border: "1px solid var(--border-gold)",
+                    borderRadius: 12, padding: 8, minWidth: 280,
+                    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+                  }}>
+                    {group.items.map(item => {
+                      const isCurrent = pathname === item.path;
+                      return (
+                        <Link key={item.path} to={item.path} role="menuitem" onClick={() => setOpenCat(null)}
+                          style={{
+                            display: "flex", alignItems: "center", gap: 10, padding: "9px 10px",
+                            borderRadius: 9, textDecoration: "none",
+                            background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
+                          }}
+                          onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
+                          onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
+                        >
+                          <span style={{ width: 22, display: "flex", flexShrink: 0, color: isCurrent ? "var(--gold)" : "var(--text-secondary)" }}>
+                            <SimIcon path={item.path} size={18} />
+                          </span>
+                          <span style={{ minWidth: 0 }}>
+                            <span style={{ display: "block", fontSize: 13, fontWeight: isCurrent ? 500 : 400, color: isCurrent ? "var(--gold)" : "var(--text)" }}>{item.title}</span>
+                            <span style={{ display: "block", fontSize: 11, color: "var(--text-secondary)" }}>{item.subtitle}</span>
+                          </span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* ── Overlay ── */}
       <div
