@@ -112,6 +112,14 @@ for (const entry of routes) {
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, entry.route, entry));
 }
 
+// Versionne le cache du service worker à chaque build : le nom de cache change,
+// donc l'ancien cache (anciens JS/CSS) est purgé à l'activation du nouveau SW.
+try {
+  const swPath = path.join(distDir, 'sw.js');
+  const sw = fs.readFileSync(swPath, 'utf-8');
+  fs.writeFileSync(swPath, sw.replace(/mesim-v1/g, `mesim-${Date.now()}`));
+} catch { /* sw.js absent : on ignore */ }
+
 // NB : le sitemap.xml n'est plus généré ici. Il est servi dynamiquement par
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.

@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
+import { GLOSSARY } from "../data/glossaire.js";
 import { Search, X } from "lucide-react";
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -218,6 +219,7 @@ export default function Home() {
   const [scores, setScores] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);
+  const [articles, setArticles] = useState([]);
 
   const simCount = useCountUp(SIMULATEURS.length, 900, 200);
   const displayedViews = useCountUp(totalViews, 1200, 600);
@@ -245,6 +247,12 @@ export default function Home() {
       })
       .catch(() => {});
 
+    // Articles du blog (pour la recherche globale).
+    fetch('/api/articles')
+      .then(r => r.json())
+      .then(data => setArticles(Array.isArray(data) ? data : []))
+      .catch(() => {});
+
     // Trigger card cascade after a short delay
     const t = setTimeout(() => setCardsVisible(true), 100);
     return () => clearTimeout(t);
@@ -264,6 +272,14 @@ export default function Home() {
   );
 
   const allCards = [featured, ...regular].filter(Boolean);
+
+  // Recherche globale : termes du lexique + articles de blog correspondants.
+  const lexMatches = nq
+    ? GLOSSARY.filter(t => norm(`${t.term} ${t.full} ${t.short} ${(t.aliases || []).join(" ")}`).includes(nq)).slice(0, 8)
+    : [];
+  const artMatches = nq
+    ? articles.filter(a => norm(`${a.title} ${a.intro || ""} ${a.category || ""}`).includes(nq)).slice(0, 6)
+    : [];
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
@@ -375,6 +391,49 @@ export default function Home() {
           <p style={{ textAlign: "center", color: "var(--text-secondary)", padding: "40px 0", fontSize: 15 }}>
             {nq ? `Aucun simulateur ne correspond à « ${query.trim()} ».` : "Aucun simulateur dans cette catégorie pour l'instant."}
           </p>
+        )}
+
+        {/* Résultats lexique (recherche globale) */}
+        {nq && lexMatches.length > 0 && (
+          <div style={{ marginTop: 40 }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+              Dans le lexique
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              {lexMatches.map(t => (
+                <Link key={t.slug} to={`/lexique/${t.slug}`} title={t.short} style={{
+                  padding: "8px 14px", borderRadius: 20, textDecoration: "none",
+                  background: "var(--card-bg)", border: "1px solid var(--border)",
+                  color: "var(--text)", fontSize: 13,
+                }}>
+                  {t.term}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Résultats blog (recherche globale) */}
+        {nq && artMatches.length > 0 && (
+          <div style={{ marginTop: 40 }}>
+            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+              Dans le blog
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
+              {artMatches.map(a => (
+                <Link key={a.slug} to={`/blog/${a.slug}`} style={{
+                  display: "block", textDecoration: "none",
+                  background: "var(--card-bg)", border: "1px solid var(--border)",
+                  borderRadius: 14, padding: "16px 18px", color: "var(--text)",
+                }}>
+                  <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>
+                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, lineHeight: 1.3 }}>{a.title}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
         )}
       </section>
 
