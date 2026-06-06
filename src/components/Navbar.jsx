@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSimHistory } from "../hooks/useSimHistory.js";
+import SimIcon from "../data/simIcons.jsx";
 
 function relativeDate(iso) {
   const ms = Date.now() - new Date(iso).getTime();
@@ -278,7 +279,7 @@ export default function Navbar({ theme, setTheme }) {
               Page actuelle
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontSize: "1.3rem" }}>{current.icon}</span>
+              <span style={{ color: "var(--gold)", display: "flex" }}><SimIcon path={current.path} size={22} /></span>
               <div>
                 <div style={{ fontSize: "0.88rem", fontWeight: 500, color: "var(--gold)" }}>{current.title}</div>
                 <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)" }}>{current.subtitle}</div>
@@ -410,7 +411,7 @@ export default function Navbar({ theme, setTheme }) {
                         onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
                         onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
                       >
-                        <span style={{ fontSize: "1.05rem", width: 24, textAlign: "center", flexShrink: 0 }}>{item.icon}</span>
+                        <span style={{ width: 24, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: isCurrent ? "var(--gold)" : "var(--text-secondary)" }}><SimIcon path={item.path} size={18} /></span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{
                             fontSize: "0.86rem", fontWeight: isCurrent ? 500 : 400,

@@ -189,6 +189,9 @@ function buildMetricsRows(metrics) {
 
 // ── SVG multi-courbes ─────────────────────────────────────────────────────────
 function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest, displayMode = 'euros' }) {
+  const svgRef = useRef(null);
+  const [hoverIdx, setHoverIdx] = useState(null);
+
   if (!computed || Object.keys(computed).length === 0) return null;
 
   const PAD = { top: 20, right: 70, bottom: 36, left: 68 };
@@ -219,11 +222,48 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
   const yTicks = [0.2, 0.4, 0.6, 0.8, 1.0].map(f => rawMin + (rawMax - rawMin) * f);
   const xStep  = Math.max(1, Math.ceil(allDates.length / 6));
 
+  // ── Survol : index le plus proche de la position du curseur ──────────────────
+  const idxFromClientX = (clientX) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return null;
+    const svgX = (clientX - rect.left) / rect.width * W;
+    const clamped = Math.max(PAD.left, Math.min(W - PAD.right, svgX));
+    const frac = (clamped - PAD.left) / iW;
+    return Math.max(0, Math.min(allDates.length - 1, Math.round(frac * (allDates.length - 1))));
+  };
+  const handleMouseMove = (e) => setHoverIdx(idxFromClientX(e.clientX));
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    if (t) setHoverIdx(idxFromClientX(t.clientX));
+  };
+
+  // Données du survol (date + valeur par actif)
+  let hoverData = null;
+  if (hoverIdx != null) {
+    const hDate = allDates[hoverIdx];
+    const [hYr, hMo] = (hDate || '').split('-');
+    const dateLabel = hMo ? `${MONTHS_FR[parseInt(hMo) - 1]} ${hYr}` : hDate;
+    const rows = assets.map(asset => {
+      const series = computed[asset.ticker];
+      if (!series) return null;
+      const p = series.find(pt => pt.date === hDate);
+      if (!p) return null;
+      return { asset, dispVal: disp(p.value), cy: y(disp(p.value)) };
+    }).filter(Boolean);
+    if (rows.length) hoverData = { hx: x(hoverIdx), dateLabel, rows };
+  }
+
   return (
     <svg
+      ref={svgRef}
       viewBox={`0 0 ${W} ${H}`}
-      style={{ width: '100%', height: 'min(280px, 52vw)', display: 'block', overflow: 'visible' }}
+      style={{ width: '100%', height: 'min(280px, 52vw)', display: 'block', overflow: 'visible', touchAction: 'none' }}
       aria-label="Graphique de comparaison des actifs"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setHoverIdx(null)}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => setHoverIdx(null)}
     >
       {/* Grille Y */}
       {yTicks.map((v, i) => (
@@ -336,6 +376,40 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
             </text>
           ) : null;
         })}
+
+      {/* Survol : crosshair + points + tooltip */}
+      {hoverData && (() => {
+        const { hx, dateLabel, rows } = hoverData;
+        const lineH = 13;
+        const boxW = 132;
+        const boxH = 18 + rows.length * lineH + 6;
+        const flip = hx > W / 2;
+        let boxX = flip ? hx - boxW - 10 : hx + 10;
+        boxX = Math.max(PAD.left, Math.min(W - PAD.right - boxW, boxX));
+        const boxY = Math.max(PAD.top, Math.min(H - PAD.bottom - boxH, PAD.top + 4));
+        return (
+          <g pointerEvents="none">
+            <line x1={hx} y1={PAD.top} x2={hx} y2={H - PAD.bottom}
+              stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+            {rows.map(r => (
+              <circle key={r.asset.ticker} cx={hx} cy={r.cy} r="3.5"
+                fill={r.asset.color} stroke="var(--card-bg)" strokeWidth="1" />
+            ))}
+            <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
+              fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
+            <text x={boxX + 8} y={boxY + 14} fontSize="9" fontWeight="600"
+              fill="var(--text)" fontFamily="DM Sans, sans-serif">
+              {dateLabel}
+            </text>
+            {rows.map((r, i) => (
+              <text key={r.asset.ticker} x={boxX + 8} y={boxY + 14 + (i + 1) * lineH}
+                fontSize="8.5" fill={r.asset.color} fontFamily="DM Sans, sans-serif">
+                {r.asset.emoji} {r.asset.label || r.asset.ticker}: {base100 ? Math.round(r.dispVal) : fmtK(r.dispVal)}
+              </text>
+            ))}
+          </g>
+        );
+      })()}
     </svg>
   );
 }

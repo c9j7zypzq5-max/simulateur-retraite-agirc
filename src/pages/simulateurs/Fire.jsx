@@ -99,6 +99,8 @@ function calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel,
 
 // ─── Courbe SVG ──────────────────────────────────────────────────────────────
 function GrowthCurve({ projectionData, patrimoineCible }) {
+  const svgRef = useRef(null);
+  const [hoverIdx, setHoverIdx] = useState(null);
   const animKey = useMemo(() => {
     if (!projectionData || !projectionData.length) return "empty";
     const last = projectionData[projectionData.length - 1];
@@ -132,6 +134,30 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
 
   const fillPts = `${x(0).toFixed(1)},${(H - PAD.bottom).toFixed(1)} ${pts} ${x(maxA).toFixed(1)},${(H - PAD.bottom).toFixed(1)}`;
 
+  // ── Survol : index le plus proche de la position du curseur ──────────────────
+  const idxFromClientX = (clientX) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect || rect.width === 0) return null;
+    const svgX = (clientX - rect.left) / rect.width * W;
+    const clamped = Math.max(PAD.left, Math.min(W - PAD.right, svgX));
+    const annee = ((clamped - PAD.left) / iW) * maxA;
+    // Point dont l'année est la plus proche
+    let best = 0, bestD = Infinity;
+    projectionData.forEach((d, i) => {
+      const dist = Math.abs(d.annee - annee);
+      if (dist < bestD) { bestD = dist; best = i; }
+    });
+    return best;
+  };
+  const handleMouseMove = (e) => setHoverIdx(idxFromClientX(e.clientX));
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    if (t) setHoverIdx(idxFromClientX(t.clientX));
+  };
+
+  const hoverPt = hoverIdx != null ? projectionData[hoverIdx] : null;
+
   const css = `
     @keyframes drawLine_${animKey} {
       from { stroke-dashoffset: 1000; }
@@ -155,9 +181,14 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
   return (
     <svg
       key={animKey}
+      ref={svgRef}
       viewBox={`0 0 ${W} ${H}`}
-      style={{ width: "100%", height: "min(300px, 55vw)", display: "block", overflow: "visible" }}
+      style={{ width: "100%", height: "min(300px, 55vw)", display: "block", overflow: "visible", touchAction: "none" }}
       aria-label="Courbe de croissance du patrimoine"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setHoverIdx(null)}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={() => setHoverIdx(null)}
     >
       <defs><style>{css}</style></defs>
 
@@ -235,6 +266,35 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
         stroke="var(--border)" strokeWidth="1" />
       <line x1={PAD.left} y1={PAD.top} x2={PAD.left} y2={H - PAD.bottom}
         stroke="var(--border)" strokeWidth="1" />
+
+      {/* Survol : crosshair + point + tooltip */}
+      {hoverPt && (() => {
+        const hx = x(hoverPt.annee);
+        const hy = y(hoverPt.patrimoine);
+        const boxW = 116;
+        const boxH = 36;
+        const flip = hx > W / 2;
+        let boxX = flip ? hx - boxW - 10 : hx + 10;
+        boxX = Math.max(PAD.left, Math.min(W - PAD.right - boxW, boxX));
+        const boxY = Math.max(PAD.top, Math.min(H - PAD.bottom - boxH, hy - boxH - 8));
+        return (
+          <g pointerEvents="none">
+            <line x1={hx} y1={PAD.top} x2={hx} y2={H - PAD.bottom}
+              stroke="rgba(255,255,255,0.25)" strokeWidth="1" />
+            <circle cx={hx} cy={hy} r="4" fill="var(--gold)" stroke="var(--card-bg)" strokeWidth="1" />
+            <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
+              fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
+            <text x={boxX + 8} y={boxY + 15} fontSize="9.5" fontWeight="600"
+              fill="var(--text)" fontFamily="DM Sans, sans-serif">
+              {hoverPt.age} ans
+            </text>
+            <text x={boxX + 8} y={boxY + 28} fontSize="9.5"
+              fill="var(--gold)" fontFamily="DM Sans, sans-serif">
+              {fmtEur(Math.round(hoverPt.patrimoine))}
+            </text>
+          </g>
+        );
+      })()}
     </svg>
   );
 }
