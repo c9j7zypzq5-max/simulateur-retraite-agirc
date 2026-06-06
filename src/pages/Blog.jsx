@@ -99,6 +99,7 @@ export default function Blog() {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [activeCat, setActiveCat] = useState("Tous");
 
   useEffect(() => {
     document.title = "Blog — Finances personnelles | mesimulateurs.fr";
@@ -115,6 +116,11 @@ export default function Blog() {
       .then(data => { setArticles(Array.isArray(data) ? data : []); setLoading(false); })
       .catch(() => { setError("Impossible de charger les articles."); setLoading(false); });
   }, []);
+
+  // Tri par date décroissante (le plus récent d'abord), indépendamment de la catégorie.
+  const sorted = [...articles].sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+  const cats = ["Tous", ...Array.from(new Set(sorted.map(a => a.category).filter(Boolean)))];
+  const shown = activeCat === "Tous" ? sorted : sorted.filter(a => a.category === activeCat);
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
@@ -141,6 +147,32 @@ export default function Blog() {
           </p>
         </div>
 
+        {/* Filtre par catégorie (tri par date conservé à l'intérieur) */}
+        {!loading && !error && articles.length > 0 && cats.length > 2 && (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }} role="tablist" aria-label="Filtrer par catégorie">
+            {cats.map(c => {
+              const active = activeCat === c;
+              return (
+                <button
+                  key={c}
+                  onClick={() => setActiveCat(c)}
+                  aria-pressed={active}
+                  style={{
+                    padding: "7px 16px", borderRadius: 20, fontSize: 13, cursor: "pointer",
+                    fontFamily: "'DM Sans', sans-serif",
+                    background: active ? "rgba(184,147,74,0.15)" : "var(--card-bg)",
+                    color: active ? "var(--gold)" : "var(--text-secondary)",
+                    border: `1px solid ${active ? "var(--border-gold)" : "var(--border)"}`,
+                    transition: "border-color 0.2s, color 0.2s, background 0.2s",
+                  }}
+                >
+                  {c}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
         {/* Contenu */}
         {loading ? (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 20 }}>
@@ -165,7 +197,7 @@ export default function Blog() {
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(290px,1fr))", gap: 20 }}>
-            {articles.map(a => <ArticleCard key={a.slug} article={a} />)}
+            {shown.map(a => <ArticleCard key={a.slug} article={a} />)}
           </div>
         )}
       </div>

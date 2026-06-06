@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
@@ -20,10 +20,30 @@ function simLabel(path) {
   return (ROUTE_META[path]?.title || path.replace("/simulateurs/", "").replace(/-/g, " "));
 }
 
+// Catégories du blog correspondant à une catégorie du lexique (pour les articles liés).
+const BLOG_CATS_FOR = {
+  Retraite: ["Retraite"], Immobilier: ["Immobilier"], "Impôts": ["Fiscalité"],
+  Finances: ["Finances", "Épargne"], FIRE: ["FIRE"], Budget: ["Budget"],
+};
+
 export default function LexiqueTerme() {
   const [theme, setTheme] = useTheme();
   const { slug } = useParams();
   const entry = GLOSSARY_BY_SLUG[slug];
+  const [relatedArticles, setRelatedArticles] = useState([]);
+
+  // Articles de blog liés (même thématique que le terme).
+  useEffect(() => {
+    if (!entry) { setRelatedArticles([]); return; }
+    const cats = BLOG_CATS_FOR[entry.category] || [];
+    fetch('/api/articles')
+      .then(r => r.json())
+      .then(data => {
+        const list = Array.isArray(data) ? data.filter(a => cats.includes(a.category)).slice(0, 3) : [];
+        setRelatedArticles(list);
+      })
+      .catch(() => setRelatedArticles([]));
+  }, [entry]);
 
   useEffect(() => {
     if (!entry) { document.title = "Terme introuvable | mesimulateurs.fr"; return; }
@@ -140,6 +160,25 @@ export default function LexiqueTerme() {
                       border: "1px solid var(--border)", textDecoration: "none",
                     }}>
                       {r.term}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Articles liés */}
+            {relatedArticles.length > 0 && (
+              <div style={{ marginBottom: 32 }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+                  À lire sur le blog
+                </div>
+                <div style={{ display: "grid", gap: 10 }}>
+                  {relatedArticles.map(a => (
+                    <Link key={a.slug} to={`/blog/${a.slug}`} style={{
+                      display: "block", padding: "12px 16px", borderRadius: 12, textDecoration: "none",
+                      background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)",
+                    }}>
+                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 600 }}>{a.title}</span>
                     </Link>
                   ))}
                 </div>

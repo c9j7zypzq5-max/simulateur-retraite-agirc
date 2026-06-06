@@ -552,7 +552,7 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
           ref={inputRef}
           value={query}
           onChange={e => { setQuery(e.target.value); setOpen(true); }}
-          onFocus={() => setOpen(true)}
+          onFocus={e => { setOpen(true); e.target.select(); }}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={e => { if (e.key === 'Enter') { commitQuery(); inputRef.current?.blur(); } }}
           placeholder="Ticker ou nom (ex: AAPL, MSCI World…)"
