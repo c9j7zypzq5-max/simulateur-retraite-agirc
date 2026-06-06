@@ -4,6 +4,7 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
+import SimIcon from "../data/simIcons.jsx";
 
 const SIMULATEURS = [
   // Retraite
@@ -374,7 +375,7 @@ function FeaturedCard({ sim, index, visible }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.7rem", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}>{sim.icon}</div>
+      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}><SimIcon path={sim.path} size={28} /></div>
       <div style={{ flex: 1 }}>
         <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
           {sim.badges.map(b => <BadgePill key={b} type={b} />)}
@@ -422,7 +423,7 @@ function SimCard({ sim, index, visible }) {
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.4rem", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}>{sim.icon}</div>
+        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}><SimIcon path={sim.path} size={24} /></div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {sim.badges.map(b => <BadgePill key={b} type={b} />)}
         </div>
