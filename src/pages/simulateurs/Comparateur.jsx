@@ -107,7 +107,9 @@ function calcPerf(rawData, assets, montant, periodicAmt, periodicFreq, reinvestD
         value,
         invested,
         interest:  Math.max(0, value - valueNoReinv),  // gain lié aux dividendes réinvestis
-        pct:       ((value / montant) - 1) * 100,
+        // % relatif au capital initial ; si investissement initial = 0 (DCA pur),
+        // on rapporte au capital investi à cet instant pour éviter une division par 0.
+        pct:       montant > 0 ? ((value / montant) - 1) * 100 : (invested > 0 ? ((value / invested) - 1) * 100 : 0),
       };
     });
   }
@@ -122,8 +124,8 @@ function calcMetrics(computed, assets, montant) {
       const last      = pts[pts.length - 1];
       const totalInv  = last.invested ?? montant;
       const years     = pts.length / 12;
-      const tot       = ((last.value / totalInv) - 1) * 100;
-      const cagr      = years > 0.5 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
+      const tot       = totalInv > 0 ? ((last.value / totalInv) - 1) * 100 : 0;
+      const cagr      = totalInv > 0 && years > 0.5 ? (Math.pow(last.value / totalInv, 1 / years) - 1) * 100 : tot;
       return { ...asset, totalReturn: tot, cagr, finalValue: last.value, totalInvested: totalInv, nPts: pts.length };
     })
     .filter(Boolean)
@@ -201,8 +203,10 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
   const iH = H - PAD.top - PAD.bottom;
 
   // En base 100, on rapporte chaque valeur à l'investissement initial (départ = 100).
-  const base100 = displayMode === 'base100';
-  const disp    = v => base100 ? (montant > 0 ? (v / montant) * 100 : 0) : v;
+  // Sans investissement initial (DCA pur), la base 100 n'a pas de référence : on
+  // bascule alors automatiquement sur l'affichage en euros pour rester lisible.
+  const base100 = displayMode === 'base100' && montant > 0;
+  const disp    = v => base100 ? (v / montant) * 100 : v;
   const refVal  = base100 ? 100 : montant;
   const fmtAxis = base100 ? (v => Math.round(v)) : fmtK;
 
@@ -214,8 +218,11 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
   if (allDates.length < 2) return null;
 
   const allValues = Object.values(computed).flatMap(s => s.map(p => disp(p.value)));
-  const rawMax = Math.max(...allValues, refVal) * 1.06;
-  const rawMin = Math.min(...allValues, refVal) * 0.94;
+  let rawMax = Math.max(...allValues, refVal) * 1.06;
+  let rawMin = Math.min(...allValues, refVal) * 0.94;
+  // Garde-fou : si toutes les valeurs sont identiques (ex. 0 initial + 0 versement),
+  // on élargit la plage pour éviter une division par zéro dans l'échelle.
+  if (!(rawMax > rawMin)) { rawMin = Math.min(0, rawMax); rawMax = rawMax + 1; }
 
   const x = idx  => PAD.left + (idx / (allDates.length - 1)) * iW;
   const y = val  => PAD.top  + iH - ((val - rawMin) / (rawMax - rawMin)) * iH;
@@ -788,7 +795,7 @@ export default function Comparateur() {
       value: best ? `${best.label || best.ticker} · ${fmtPct(best.totalReturn)}` : "—",
     },
     params: [
-      { label: "Montant investi", value: montant ? fmtEur(montant) : "—" },
+      { label: "Montant investi", value: fmtEur(montant) },
       { label: "Période", value: `${fromLabel} → ${toLabel}` },
       { label: "Durée", value: `${totalYears.toFixed(1)} ans` },
       ...(periodicAmt > 0 ? [{ label: "Versement périodique", value: `${fmtEur(periodicAmt)} (${periodicFreq === 'monthly' ? 'mensuel' : periodicFreq})` }] : []),
@@ -897,11 +904,11 @@ export default function Comparateur() {
             <input
               type="number"
               value={montant}
-              min={100}
+              min={0}
               max={10_000_000}
               placeholder="0"
               onFocus={e => e.target.select()}
-              onChange={e => setMontant(Math.max(1, parseFloat(e.target.value) || 0))}
+              onChange={e => setMontant(Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -1056,9 +1063,14 @@ export default function Comparateur() {
                 showInterest={showInterest && reinvestDivs}
                 displayMode={displayMode}
               />
-              {displayMode === 'base100' && (
+              {displayMode === 'base100' && montant > 0 && (
                 <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
                   Base 100 : chaque actif part de 100 au début de la période. Une valeur de 150 = +50 %.
+                </p>
+              )}
+              {displayMode === 'base100' && montant === 0 && (
+                <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
+                  Base 100 indisponible sans investissement initial : affichage en euros (valeur du portefeuille issu des versements).
                 </p>
               )}
             </ZoomableChart>
