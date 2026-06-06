@@ -5,6 +5,9 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
+import { Search, X } from "lucide-react";
+
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 const SIMULATEURS = [
   // Retraite
@@ -211,6 +214,7 @@ function FilterBar({ activeFilter, setActiveFilter }) {
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
+  const [query, setQuery] = useState("");
   const [scores, setScores] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);
@@ -246,12 +250,16 @@ export default function Home() {
     return () => clearTimeout(t);
   }, []);
 
-  const filtered = activeFilter === "Tous"
-    ? SIMULATEURS
-    : SIMULATEURS.filter(s => s.categories.includes(activeFilter));
+  const nq = norm(query.trim());
+  const matchesQuery = s => !nq || norm(`${s.title} ${s.tag} ${s.desc} ${s.categories.join(" ")}`).includes(nq);
 
-  const featured = filtered.find(s => s.featured);
-  const regular = [...filtered.filter(s => !s.featured)].sort(
+  const filtered = SIMULATEURS.filter(s =>
+    (activeFilter === "Tous" || s.categories.includes(activeFilter)) && matchesQuery(s)
+  );
+
+  // Pas de carte « à la une » pendant une recherche → résultats homogènes.
+  const featured = nq ? null : filtered.find(s => s.featured);
+  const regular = [...filtered.filter(s => s !== featured)].sort(
     (a, b) => (scores[b.path.split('/').pop()] || 0) - (scores[a.path.split('/').pop()] || 0)
   );
 
@@ -313,6 +321,36 @@ export default function Home() {
         <AdUnit slot="auto" format="auto" />
       </div>
 
+      {/* ── Recherche ── */}
+      <div style={{ maxWidth: 1280, margin: "0 auto 18px", padding: "0 24px" }}>
+        <div style={{ position: "relative", maxWidth: 540, margin: "0 auto" }}>
+          <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "var(--text-secondary)", display: "flex", pointerEvents: "none" }}>
+            <Search size={18} />
+          </span>
+          <input
+            type="search"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Rechercher un simulateur (retraite, PTZ, impôt, FIRE…)"
+            aria-label="Rechercher un simulateur"
+            style={{
+              width: "100%", padding: "13px 44px", borderRadius: 14,
+              background: "var(--input-bg)", border: "1px solid var(--border)",
+              color: "var(--text)", fontSize: 15, fontFamily: "'DM Sans', sans-serif",
+              boxShadow: "var(--input-shadow)", outline: "none",
+            }}
+            onFocus={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
+            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; }}
+          />
+          {query && (
+            <button onClick={() => setQuery("")} aria-label="Effacer la recherche"
+              style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "var(--text-secondary)", display: "flex", alignItems: "center", padding: 8, minHeight: 0 }}>
+              <X size={16} />
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* ── Filter bar ── */}
       <div className="filter-bar" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
         <FilterBar activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
@@ -335,7 +373,7 @@ export default function Home() {
 
         {filtered.length === 0 && (
           <p style={{ textAlign: "center", color: "var(--text-secondary)", padding: "40px 0", fontSize: 15 }}>
-            Aucun simulateur dans cette catégorie pour l'instant.
+            {nq ? `Aucun simulateur ne correspond à « ${query.trim()} ».` : "Aucun simulateur dans cette catégorie pour l'instant."}
           </p>
         )}
       </section>
