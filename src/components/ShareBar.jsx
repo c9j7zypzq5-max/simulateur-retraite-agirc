@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import html2canvas from "html2canvas";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 
@@ -79,6 +78,9 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       await raf(); await raf();
     }
     try {
+      // Chargé à la demande : html2canvas (~200 Ko) n'est ainsi pas dans le
+      // bundle initial des simulateurs, seulement au moment d'un export.
+      const html2canvas = (await import("html2canvas")).default;
       return await html2canvas(target, {
         backgroundColor: isDark ? "#060e1c" : "#faf6ef",
         scale: 2, useCORS: true, logging: false, onclone: cleanClone,
