@@ -67,7 +67,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           aria-describedby={hintId}
           value={focused ? raw : (value === null || value === undefined ? "" : Number(value).toLocaleString("fr-FR"))}
           onChange={handleChange}
-          onFocus={() => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); }}
+          onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
           onBlur={handleBlur}
           placeholder={unit ? `0 ${unit}` : "0"}
           style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
@@ -136,7 +136,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
           <input type="text" inputMode="decimal"
             value={focused ? raw : (value === null || value === undefined ? "" : String(value))}
             onChange={handleChange}
-            onFocus={() => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); }}
+            onFocus={e => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
             onBlur={handleBlur}
             placeholder="0"
             style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />

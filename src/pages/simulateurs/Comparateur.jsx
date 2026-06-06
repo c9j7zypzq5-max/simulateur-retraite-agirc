@@ -899,6 +899,8 @@ export default function Comparateur() {
               value={montant}
               min={100}
               max={10_000_000}
+              placeholder="0"
+              onFocus={e => e.target.select()}
               onChange={e => setMontant(Math.max(1, parseFloat(e.target.value) || 0))}
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
@@ -922,6 +924,7 @@ export default function Comparateur() {
               min={0}
               max={1_000_000}
               placeholder="0"
+              onFocus={e => e.target.select()}
               onChange={e => setPeriodicAmt(Math.max(0, parseFloat(e.target.value) || 0))}
               style={{
                 width: 110, padding: '8px 12px', borderRadius: 9,
