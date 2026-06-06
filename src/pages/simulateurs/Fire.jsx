@@ -199,7 +199,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
       {/* Ligne cible pointillée */}
       <line x1={PAD.left} y1={cibleY} x2={W - PAD.right} y2={cibleY}
         stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="5,4" opacity="0.5" />
-      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="10" fill="var(--gold)" opacity="0.75" fontFamily="DM Sans, sans-serif">
+      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="13.5" fill="var(--gold)" opacity="0.75" fontFamily="DM Sans, sans-serif">
         {fmtK(patrimoineCible)}
       </text>
 
@@ -208,7 +208,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
         <>
           <line x1={fireX} y1={PAD.top} x2={fireX} y2={H - PAD.bottom}
             stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="4,3" opacity="0.55" />
-          <text x={fireX + 5} y={PAD.top + 13} fontSize="9" fill="var(--gold)"
+          <text x={fireX + 5} y={PAD.top + 13} fontSize="13" fill="var(--gold)"
             fontFamily="DM Sans, sans-serif" opacity="0.9">
             Liberté financière
           </text>
@@ -248,7 +248,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
 
       {/* Labels âge (axe X) */}
       {ages.map(d => (
-        <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="9"
+        <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
           fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
           {d.age} ans
         </text>
@@ -256,7 +256,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
 
       {/* Labels patrimoine (axe Y) */}
       {yTicks.map((t, i) => (
-        <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="9"
+        <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
           fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
           {fmtK(t.val)}
         </text>
@@ -272,8 +272,8 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
       {hoverPt && (() => {
         const hx = x(hoverPt.annee);
         const hy = y(hoverPt.patrimoine);
-        const boxW = 116;
-        const boxH = 36;
+        const boxW = 134;
+        const boxH = 46;
         const flip = hx > W / 2;
         let boxX = flip ? hx - boxW - 10 : hx + 10;
         boxX = Math.max(PAD.left, Math.min(W - PAD.right - boxW, boxX));
@@ -285,11 +285,11 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
             <circle cx={hx} cy={hy} r="4" fill="var(--gold)" stroke="var(--card-bg)" strokeWidth="1" />
             <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
               fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
-            <text x={boxX + 8} y={boxY + 15} fontSize="9.5" fontWeight="600"
+            <text x={boxX + 8} y={boxY + 18} fontSize="13" fontWeight="600"
               fill="var(--text)" fontFamily="DM Sans, sans-serif">
               {hoverPt.age} ans
             </text>
-            <text x={boxX + 8} y={boxY + 28} fontSize="9.5"
+            <text x={boxX + 8} y={boxY + 35} fontSize="13"
               fill="var(--gold)" fontFamily="DM Sans, sans-serif">
               {fmtEur(Math.round(hoverPt.patrimoine))}
             </text>

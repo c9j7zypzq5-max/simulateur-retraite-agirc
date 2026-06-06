@@ -270,7 +270,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       {yTicks.map((v, i) => (
         <g key={i}>
           <line x1={PAD.left} y1={y(v)} x2={W - PAD.right} y2={y(v)} stroke="var(--border)" strokeWidth="1" />
-          <text x={PAD.left - 4} y={y(v) + 4} textAnchor="end" fontSize="8.5" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          <text x={PAD.left - 4} y={y(v) + 4} textAnchor="end" fontSize="12.5" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
             {fmtAxis(v)}
           </text>
         </g>
@@ -349,7 +349,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
             {lx != null && ly != null && (
               <>
                 <circle cx={lx} cy={ly} r="4" fill={color} />
-                <text x={W - PAD.right + 4} y={ly + 4} fontSize="9" fill={color}
+                <text x={W - PAD.right + 4} y={ly + 4} fontSize="13" fill={color}
                   fontFamily="DM Sans, sans-serif">
                   {asset.emoji} {fmtPct(lastPt.pct)}
                 </text>
@@ -371,7 +371,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
           const [yr, mo] = date.split('-');
           const label = mo === '01' ? yr : (idx === 0 || idx === allDates.length - 1 ? `${MONTHS_FR[parseInt(mo)-1]} ${yr}` : '');
           return label ? (
-            <text key={date} x={x(idx)} y={H - 4} textAnchor="middle" fontSize="8.5"
+            <text key={date} x={x(idx)} y={H - 4} textAnchor="middle" fontSize="12.5"
               fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
               {label}
             </text>
@@ -381,9 +381,9 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       {/* Survol : crosshair + points + tooltip */}
       {hoverData && (() => {
         const { hx, dateLabel, rows } = hoverData;
-        const lineH = 13;
-        const boxW = 132;
-        const boxH = 18 + rows.length * lineH + 6;
+        const lineH = 16;
+        const boxW = 172;
+        const boxH = 22 + rows.length * lineH + 6;
         const flip = hx > W / 2;
         let boxX = flip ? hx - boxW - 10 : hx + 10;
         boxX = Math.max(PAD.left, Math.min(W - PAD.right - boxW, boxX));
@@ -398,13 +398,13 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
             ))}
             <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
               fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
-            <text x={boxX + 8} y={boxY + 14} fontSize="9" fontWeight="600"
+            <text x={boxX + 8} y={boxY + 17} fontSize="13" fontWeight="600"
               fill="var(--text)" fontFamily="DM Sans, sans-serif">
               {dateLabel}
             </text>
             {rows.map((r, i) => (
-              <text key={r.asset.ticker} x={boxX + 8} y={boxY + 14 + (i + 1) * lineH}
-                fontSize="8.5" fill={r.asset.color} fontFamily="DM Sans, sans-serif">
+              <text key={r.asset.ticker} x={boxX + 8} y={boxY + 17 + (i + 1) * lineH}
+                fontSize="12.5" fill={r.asset.color} fontFamily="DM Sans, sans-serif">
                 {r.asset.emoji} {r.asset.label || r.asset.ticker}: {base100 ? Math.round(r.dispVal) : fmtK(r.dispVal)}
               </text>
             ))}

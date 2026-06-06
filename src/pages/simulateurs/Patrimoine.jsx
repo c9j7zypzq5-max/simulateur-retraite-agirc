@@ -177,7 +177,7 @@ function StackedChart({ projectionData, immoActive }) {
 
       {/* Labels âge */}
       {ages.map(d => (
-        <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="9"
+        <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
           fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
           {d.age} ans
         </text>
@@ -185,7 +185,7 @@ function StackedChart({ projectionData, immoActive }) {
 
       {/* Labels Y */}
       {yTicks.map((t, i) => (
-        <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="9"
+        <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
           fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
           {fmtK(t.val)}
         </text>
@@ -193,11 +193,11 @@ function StackedChart({ projectionData, immoActive }) {
 
       {/* Légende */}
       <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--gold)" />
-      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="9" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Financier</text>
+      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Financier</text>
       {immoActive && (
         <>
           <circle cx={PAD.left + 70} cy={PAD.top - 8} r="4" fill="#a855f7" opacity="0.8" />
-          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="9" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Immobilier</text>
+          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Immobilier</text>
         </>
       )}
     </svg>
