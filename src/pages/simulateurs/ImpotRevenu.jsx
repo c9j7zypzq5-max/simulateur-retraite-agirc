@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -180,7 +181,7 @@ export default function ImpotRevenu() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="📋"
+          icon={<SimIcon path="/simulateurs/impot-revenu" size={34} />}
           badge="Impôts · Simulation 2025"
           title="Impôt sur le revenu"
           desc="Estimez votre impôt net, votre tranche marginale d'imposition (TMI) et votre taux moyen selon votre situation familiale."

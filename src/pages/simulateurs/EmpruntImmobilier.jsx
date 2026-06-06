@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 
 function useIsMobile(breakpoint = 680) {
@@ -281,7 +282,7 @@ export default function EmpruntImmobilier() {
       <Navbar theme={theme} setTheme={setTheme} />
       <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
         <SimulateurHeader
-          icon="🏠"
+          icon={<SimIcon path="/simulateurs/emprunt-immobilier" size={34} />}
           badge="Immobilier · Simulation 2026"
           title="Simulateur d'emprunt immobilier"
           subtitle="Mensualités · Capacité · Coût total"

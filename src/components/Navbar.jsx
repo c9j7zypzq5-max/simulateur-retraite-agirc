@@ -2,6 +2,10 @@ import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
+import { Landmark, House, Receipt, Wallet, Clock, Newspaper } from "lucide-react";
+
+// Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
+const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock };
 
 function relativeDate(iso) {
   const ms = Date.now() - new Date(iso).getTime();
@@ -305,7 +309,7 @@ export default function Navbar({ theme, setTheme }) {
             onMouseEnter={e => { if (pathname !== "/") e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
             onMouseLeave={e => { if (pathname !== "/") e.currentTarget.style.background = "transparent"; }}
           >
-            <span style={{ fontSize: "1.1rem", width: 26, textAlign: "center", flexShrink: 0 }}>🏠</span>
+            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname === "/" ? "var(--gold)" : "var(--text-secondary)" }}><House size={18} /></span>
             <div>
               <div style={{ fontSize: "0.88rem", fontWeight: pathname === "/" ? 500 : 400, color: pathname === "/" ? "var(--gold)" : "var(--text)" }}>Accueil</div>
               <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Tous les simulateurs</div>
@@ -327,7 +331,7 @@ export default function Navbar({ theme, setTheme }) {
             onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
             onMouseLeave={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "transparent"; }}
           >
-            <span style={{ fontSize: "1.1rem", width: 26, textAlign: "center", flexShrink: 0 }}>📰</span>
+            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text-secondary)" }}><Newspaper size={18} /></span>
             <div>
               <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text)" }}>Blog</div>
               <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Articles & guides financiers</div>
@@ -354,7 +358,7 @@ export default function Navbar({ theme, setTheme }) {
                   onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                    <span style={{ fontSize: "0.95rem" }}>{group.icon}</span>
+                    <span style={{ display: "flex", alignItems: "center", color: isOpen ? "var(--gold)" : "var(--text-secondary)" }}>{(() => { const GI = GROUP_ICONS[group.id]; return GI ? <GI size={16} /> : group.icon; })()}</span>
                     <span style={{
                       fontSize: 10, fontWeight: 600, letterSpacing: "0.07em",
                       textTransform: "uppercase",

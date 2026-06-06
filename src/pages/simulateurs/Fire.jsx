@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -814,7 +815,7 @@ export default function Fire() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="🔥"
+          icon={<SimIcon path="/simulateurs/fire" size={34} />}
           badge="Finances · Simulation 2026"
           title="Indépendance financière (FIRE)"
           desc="À quel âge pourrez-vous vivre de vos investissements ? Capital cible, Coast FIRE, paliers Lean / Barista / Fat et trajectoire année par année."

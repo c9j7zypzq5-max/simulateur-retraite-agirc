@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -148,7 +149,7 @@ export default function FonctionPublique() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="⚖️"
+          icon={<SimIcon path="/simulateurs/fonction-publique" size={34} />}
           badge="Fonctionnaires · Données 2026"
           title="Simulateur Retraite Fonction publique"
           subtitle="Estimation en 30 secondes · Données officielles 2026"

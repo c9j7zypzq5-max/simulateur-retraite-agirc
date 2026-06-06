@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
@@ -190,7 +191,7 @@ export default function Epargne() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="💰"
+          icon={<SimIcon path="/simulateurs/epargne" size={34} />}
           badge="Finances · Simulation 2026"
           title="Épargne & intérêts composés"
           desc="Projetez la croissance de votre épargne sur le long terme grâce à la puissance des intérêts composés et des versements réguliers."

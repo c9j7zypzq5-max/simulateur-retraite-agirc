@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -200,7 +201,7 @@ export default function AssuranceVie() {
       <Navbar theme={theme} setTheme={setTheme} />
       <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
         <SimulateurHeader
-          icon="🛡️"
+          icon={<SimIcon path="/simulateurs/assurance-vie" size={34} />}
           badge="Finances · Simulation 2025"
           title="Simulateur Assurance-Vie"
           subtitle="Capital projeté · Fiscalité des gains"

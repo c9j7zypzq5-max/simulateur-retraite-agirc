@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -373,7 +374,7 @@ export default function Patrimoine() {
 
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
         <SimulateurHeader
-          icon="💎"
+          icon={<SimIcon path="/simulateurs/patrimoine" size={34} />}
           badge="Finances · Simulation 2026"
           title="Patrimoine global"
           desc="Projetez votre fortune nette à l'âge cible : portefeuille financier, immobilier et retraite réunis dans une vision consolidée."

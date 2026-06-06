@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from '../../components/ShareBar.jsx';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -833,7 +834,7 @@ export default function Comparateur() {
 
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
         <SimulateurHeader
-          icon="📊"
+          icon={<SimIcon path="/simulateurs/comparateur" size={34} />}
           badge="Finances · Données réelles"
           title="Comparateur d'actifs"
           desc="Comparez la performance historique d'actions, ETF et cryptomonnaies sur n'importe quelle période. Données réelles, résultats instantanés."

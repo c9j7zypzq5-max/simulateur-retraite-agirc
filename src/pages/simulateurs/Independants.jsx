@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -169,7 +170,7 @@ export default function Independants() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="💼"
+          icon={<SimIcon path="/simulateurs/independants" size={34} />}
           badge="Indépendants & TNS · Données 2026"
           title="Simulateur Retraite Indépendants"
           subtitle="Régime SSI + complémentaire RCI · Données 2026"

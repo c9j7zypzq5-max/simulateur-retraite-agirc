@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -165,7 +166,7 @@ export default function RendementLocatif() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="📊"
+          icon={<SimIcon path="/simulateurs/rendement-locatif" size={34} />}
           badge="Immobilier · Simulation 2026"
           title="Rendement locatif"
           desc="Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion."

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -152,7 +153,7 @@ export default function CoutEnHeures() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="⏰"
+          icon={<SimIcon path="/simulateurs/cout-en-heures" size={34} />}
           badge="Vie & Temps · 2026"
           title="Le vrai prix en heures de vie"
           desc="Combien d'heures de travail vous coûte vraiment cet achat ? Convertissez n'importe quel prix en temps de vie réel."

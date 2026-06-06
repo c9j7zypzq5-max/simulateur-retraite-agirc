@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -189,7 +190,7 @@ export default function VieEnSemaines() {
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
-          icon="📅"
+          icon={<SimIcon path="/simulateurs/vie-en-semaines" size={34} />}
           badge="Vie & Temps · 2026"
           title="Ma vie en semaines"
           desc="Visualisez l'intégralité de votre vie sous forme de grille. Chaque case représente une semaine. En or : les semaines vécues. En gris : les semaines à venir."
