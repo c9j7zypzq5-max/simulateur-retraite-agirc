@@ -34,6 +34,7 @@ function seoForRoute(route, extra = {}) {
   }
   if (route === '/lexique') return { title: ROUTE_META[route]?.title, description: DESC_LEXIQUE };
   if (route === '/guides')  return { title: ROUTE_META[route]?.title, description: DESC_GUIDES };
+  if (route === '/methodologie') return { title: ROUTE_META[route]?.title, description: "Comment mesimulateurs.fr calcule ses estimations : formules, barèmes officiels, sources et limites." };
   if (route === '/blog')    return { title: ROUTE_META[route]?.title, description: DESC_BLOG };
   const meta = ROUTE_META[route];
   return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };
