@@ -89,6 +89,13 @@ export default function Epargne() {
   const [tauxAnnuel, setTauxAnnuel]           = useState(5);
   const [duree, setDuree]                     = useState(20);
 
+  // Comparaison d'un second scénario (B) côte à côte.
+  const [compareOn, setCompareOn]   = useState(false);
+  const [bCapital, setBCapital]     = useState(null);
+  const [bVersement, setBVersement] = useState(null);
+  const [bTaux, setBTaux]           = useState(5);
+  const [bDuree, setBDuree]         = useState(20);
+
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
@@ -127,6 +134,18 @@ export default function Epargne() {
   const capitalFinalAnim = useAnimatedNumber(res.capitalFinal);
 
   const hasResult = duree > 0 && ((capitalInitial ?? 0) > 0 || (versement ?? 0) > 0);
+
+  // Scénario B (comparaison)
+  const resB = calcEpargne({ capitalInitial: bCapital, versement: bVersement, tauxAnnuel: bTaux, duree: bDuree });
+  const hasB = bDuree > 0 && ((bCapital ?? 0) > 0 || (bVersement ?? 0) > 0);
+  const deltaFinal = resB.capitalFinal - res.capitalFinal;
+
+  function startCompare() {
+    // Initialise B à partir de A pour ne modifier qu'un paramètre.
+    setBCapital(capitalInitial); setBVersement(versement); setBTaux(tauxAnnuel); setBDuree(duree);
+    setCompareOn(true);
+    track('compare_open', { name: 'epargne' });
+  }
 
   const epargneChartData = useMemo(() => {
     if (!hasResult) return [];
@@ -273,6 +292,69 @@ export default function Epargne() {
                 name="epargne"
               />
             </div>
+          </div>
+        )}
+
+        {/* Comparaison de 2 scénarios */}
+        {hasResult && !compareOn && (
+          <button
+            onClick={startCompare}
+            style={{
+              width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer",
+              background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)",
+              fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+            }}
+          >
+            ⚖️ Comparer un 2ᵉ scénario
+          </button>
+        )}
+
+        {hasResult && compareOn && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h2>
+              <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+              {/* Scénario A (référence, valeurs actuelles) */}
+              <div>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Scénario A (actuel)</div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
+                  <li>Capital initial : <strong style={{ color: "var(--text)" }}>{fmtEur(capitalInitial ?? 0)}</strong></li>
+                  <li>Versement : <strong style={{ color: "var(--text)" }}>{versement ? fmtEur(versement) + "/mois" : "—"}</strong></li>
+                  <li>Taux : <strong style={{ color: "var(--text)" }}>{tauxAnnuel} %</strong></li>
+                  <li>Durée : <strong style={{ color: "var(--text)" }}>{duree} ans</strong></li>
+                </ul>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Capital final</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{fmtEur(Math.round(res.capitalFinal))}</div>
+              </div>
+
+              {/* Scénario B (éditable) */}
+              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>Scénario B</div>
+                <NumInput id="b-capital" label="Capital initial" value={bCapital} onChange={setBCapital} unit="€" min={0} max={1000000} />
+                <NumInput id="b-versement" label="Versement mensuel" value={bVersement} onChange={setBVersement} unit="€/mois" min={0} max={100000} />
+                <StepperInput label="Taux annuel" value={bTaux} onChange={setBTaux} min={0} max={20} step={0.1} unit="%" />
+                <StepperInput label="Durée" value={bDuree} onChange={setBDuree} min={1} max={40} step={1} unit=" ans" />
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Capital final</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? fmtEur(Math.round(resB.capitalFinal)) : "—"}</div>
+              </div>
+            </div>
+
+            {/* Écart */}
+            {hasB && (
+              <div style={{
+                marginTop: 18, padding: "14px 18px", borderRadius: 12, textAlign: "center",
+                background: deltaFinal >= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
+                border: `1px solid ${deltaFinal >= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}`,
+              }}>
+                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Écart B − A : </span>
+                <strong style={{ fontSize: 18, color: deltaFinal >= 0 ? "#22c55e" : "#ef4444" }}>
+                  {deltaFinal >= 0 ? "+" : "−"}{fmtEur(Math.abs(Math.round(deltaFinal)))}
+                </strong>
+              </div>
+            )}
           </div>
         )}
 
