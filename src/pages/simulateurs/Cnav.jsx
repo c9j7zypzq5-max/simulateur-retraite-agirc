@@ -91,6 +91,11 @@ export default function Cnav() {
   const [anneesRestantes, setAnneesRest]  = useState(null);
   const [ageDépart, setAgeDépart]         = useState(null);
 
+  // Comparaison d'un 2e scénario (âge de départ / années restantes).
+  const [compareOn, setCompareOn]   = useState(false);
+  const [bAge, setBAge]             = useState(null);
+  const [bAnneesRest, setBAnneesRest] = useState(null);
+
   const resultsRef = useRef(null);
 
 
@@ -127,6 +132,15 @@ export default function Cnav() {
   const dureeRequise = getDureeRequise(anneeNaissance);
 
   const hasResult = res.pensionNette > 0;
+
+  // Scénario B : on fait varier l'âge de départ et les années restantes.
+  const resB = calcCnav({ salaire, anneesFaites, anneesRestantes: bAnneesRest, ageDépart: bAge, anneeNaissance });
+  const deltaPension = resB.pensionNette - res.pensionNette;
+  function startCompare() {
+    setBAge(ageDépart ?? 64); setBAnneesRest(anneesRestantes);
+    setCompareOn(true);
+    track('compare_open', { name: 'cnav' });
+  }
 
   const report = {
     title: "Simulateur Retraite CNAV — Régime général",
@@ -288,6 +302,51 @@ export default function Cnav() {
         </div>
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="cnav" />
+
+        {/* Comparaison de 2 scénarios (âge de départ / années restantes) */}
+        {hasResult && !compareOn && (
+          <button
+            onClick={startCompare}
+            style={{ width: "100%", marginTop: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+          >
+            ⚖️ Comparer un 2ᵉ scénario de départ
+          </button>
+        )}
+
+        {hasResult && compareOn && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
+              <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+              <div>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
+                  <li>Âge de départ : <strong style={{ color: "var(--text)" }}>{ageDépart ?? 64} ans</strong></li>
+                  <li>Années restantes : <strong style={{ color: "var(--text)" }}>{anneesRestantes ?? 0} ans</strong></li>
+                </ul>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Pension nette</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.pensionNette)}<span style={{ fontSize: 13 }}>/mois</span></div>
+              </div>
+              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
+                <StepperInput label="Âge de départ" value={bAge} onChange={setBAge} min={62} max={70} unit=" ans" />
+                <NumInput id="b-annees-rest" label="Années restantes" value={bAnneesRest} onChange={setBAnneesRest} unit="ans" min={0} max={50} />
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Pension nette</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{resB.pensionNette > 0 ? fmtEur(resB.pensionNette) : "—"}<span style={{ fontSize: 13 }}>/mois</span></div>
+              </div>
+            </div>
+            {resB.pensionNette > 0 && (
+              <div style={{ marginTop: 18, padding: "14px 18px", borderRadius: 12, textAlign: "center", background: deltaPension >= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${deltaPension >= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
+                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Écart B − A : </span>
+                <strong style={{ fontSize: 18, color: deltaPension >= 0 ? "#22c55e" : "#ef4444" }}>
+                  {deltaPension >= 0 ? "+" : "−"}{fmtEur(Math.abs(Math.round(deltaPension)))}/mois
+                </strong>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

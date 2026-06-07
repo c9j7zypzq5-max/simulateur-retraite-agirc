@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
@@ -49,6 +49,13 @@ const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"))
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
 const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
 
+// Remonte en haut de page à chaque changement de route (navigation interne).
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
 // Fallback affiché le temps de charger le chunk d'une route.
 function RouteFallback() {
   return (
@@ -62,6 +69,7 @@ export default function App() {
   return (
     <VideoRecordingProvider>
     <BrowserRouter>
+      <ScrollToTop />
       <VideoRecordingToast />
       <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>

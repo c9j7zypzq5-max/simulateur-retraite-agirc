@@ -162,6 +162,10 @@ export default function EmpruntImmobilier() {
   const [duree, setDuree]             = useState(20);
   const [taux, setTaux]               = useState(3.5);
   const [primo, setPrimo]             = useState(false);
+  // Comparaison d'un 2e scénario (durée / taux), capital constant.
+  const [compareOn, setCompareOn]     = useState(false);
+  const [bDuree, setBDuree]           = useState(20);
+  const [bTaux, setBTaux]             = useState(3.5);
   const [salaire, setSalaire]         = useState(null);
   const [coEmp, setCoEmp]             = useState(false);
   const [salaireCoEmp, setSalaireCoEmp] = useState(null);
@@ -229,6 +233,16 @@ export default function EmpruntImmobilier() {
   const animReste = useAnimatedNumber(resteAVivre);
 
   const hasResult = prix && prix > 0;
+
+  // Scénario B : on ne fait varier que la durée et le taux (capital identique).
+  const mTotalB = mensualite(capitalPrincipal, bTaux, bDuree) + mensualite(primoCapital, primoTaux, bDuree);
+  const coutTotalB = mTotalB * bDuree * 12;
+  const deltaMensu = mTotalB - mTotal;
+  const deltaCout = coutTotalB - coutTotal;
+  function startCompare() {
+    setBDuree(duree); setBTaux(taux); setCompareOn(true);
+    track('compare_open', { name: 'emprunt-immobilier' });
+  }
 
   const report = {
     title: "Simulateur Emprunt Immobilier",
@@ -477,6 +491,55 @@ export default function EmpruntImmobilier() {
                   </div>
                 ))}
               </AccordionSection>
+            )}
+
+            {/* Comparaison de 2 scénarios (durée / taux) */}
+            {hasResult && capitalEmprunte > 0 && !compareOn && (
+              <button
+                onClick={startCompare}
+                style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+              >
+                ⚖️ Comparer durée / taux (2ᵉ scénario)
+              </button>
+            )}
+
+            {hasResult && capitalEmprunte > 0 && compareOn && (
+              <div style={card}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
+                  <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+                  <div>
+                    <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
+                    <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
+                      <li>Durée : <strong style={{ color: "var(--text)" }}>{duree} ans</strong></li>
+                      <li>Taux : <strong style={{ color: "var(--text)" }}>{taux} %</strong></li>
+                    </ul>
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Mensualité</div>
+                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(Math.round(mTotal))}<span style={{ fontSize: 13 }}>/mois</span></div>
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Coût total</div>
+                    <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(coutTotal))}</div>
+                  </div>
+                  <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+                    <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
+                    <StepperInput label="Durée" value={bDuree} onChange={v => setBDuree(Math.round(v))} min={1} max={30} step={1} unit="ans" />
+                    <StepperInput label="Taux annuel" value={bTaux} onChange={setBTaux} min={0.1} max={15} step={0.1} unit="%" />
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Mensualité</div>
+                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(mTotalB))}<span style={{ fontSize: 13 }}>/mois</span></div>
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Coût total</div>
+                    <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(coutTotalB))}</div>
+                  </div>
+                </div>
+                <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  {[{ label: "Écart mensualité", d: deltaMensu, suffix: "/mois" }, { label: "Écart coût total", d: deltaCout, suffix: "" }].map(({ label, d, suffix }) => (
+                    <div key={label} style={{ padding: "12px 14px", borderRadius: 12, textAlign: "center", background: d <= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${d <= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
+                      <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{label} (B − A)</div>
+                      <strong style={{ fontSize: 16, color: d <= 0 ? "#22c55e" : "#ef4444" }}>{d <= 0 ? "−" : "+"}{fmtEur(Math.abs(Math.round(d)))}{suffix}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
 
             {/* Tableau d'amortissement */}
