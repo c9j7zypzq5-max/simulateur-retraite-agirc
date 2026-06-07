@@ -53,7 +53,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
         <button onClick={() => setOpen(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+      <div className="cmp-grid">
         {/* Scénario A */}
         <div>
           <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
@@ -71,7 +71,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
         </div>
 
         {/* Scénario B */}
-        <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+        <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
           <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
           {fields.map(f => (
             f.type === "step"

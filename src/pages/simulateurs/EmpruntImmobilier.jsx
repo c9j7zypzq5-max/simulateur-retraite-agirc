@@ -509,7 +509,7 @@ export default function EmpruntImmobilier() {
                   <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
                   <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+                <div className="cmp-grid">
                   <div>
                     <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
                     <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
@@ -521,7 +521,7 @@ export default function EmpruntImmobilier() {
                     <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Coût total</div>
                     <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(coutTotal))}</div>
                   </div>
-                  <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+                  <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                     <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
                     <StepperInput label="Durée" value={bDuree} onChange={v => setBDuree(Math.round(v))} min={1} max={30} step={1} unit="ans" />
                     <StepperInput label="Taux annuel" value={bTaux} onChange={setBTaux} min={0.1} max={15} step={0.1} unit="%" />
