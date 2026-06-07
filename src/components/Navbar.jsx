@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
-import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen } from "lucide-react";
+import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library } from "lucide-react";
 
 // Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock };
@@ -397,6 +397,28 @@ export default function Navbar({ theme, setTheme }) {
               <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Tous les simulateurs</div>
             </div>
             {pathname === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+          </Link>
+
+          {/* Guides */}
+          <Link
+            to="/guides"
+            onClick={close}
+            style={{
+              display: "flex", alignItems: "center", gap: 10,
+              padding: "9px 10px", borderRadius: 9,
+              textDecoration: "none", marginBottom: 6,
+              background: pathname.startsWith("/guides") ? "rgba(184,147,74,0.1)" : "transparent",
+              border: `1px solid ${pathname.startsWith("/guides") ? "var(--border-gold)" : "transparent"}`,
+            }}
+            onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseLeave={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "transparent"; }}
+          >
+            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text-secondary)" }}><Library size={18} /></span>
+            <div>
+              <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text)" }}>Guides</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Parcours par thématique</div>
+            </div>
+            {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
           </Link>
 
           {/* Blog */}

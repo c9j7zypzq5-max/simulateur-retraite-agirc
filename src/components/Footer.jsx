@@ -183,6 +183,9 @@ export default function Footer() {
           </span>
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+          <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            Guides
+          </Link>
           <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             Blog
           </Link>

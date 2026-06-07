@@ -16,6 +16,8 @@ const Blog                    = lazy(() => import("./pages/Blog.jsx"));
 const Article                 = lazy(() => import("./pages/Article.jsx"));
 const Lexique                 = lazy(() => import("./pages/Lexique.jsx"));
 const LexiqueTerme            = lazy(() => import("./pages/LexiqueTerme.jsx"));
+const Guides                  = lazy(() => import("./pages/Guides.jsx"));
+const Guide                   = lazy(() => import("./pages/Guide.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -99,6 +101,9 @@ export default function App() {
         {/* Lexique */}
         <Route path="/lexique" element={<Lexique />} />
         <Route path="/lexique/:slug" element={<LexiqueTerme />} />
+        {/* Guides */}
+        <Route path="/guides" element={<Guides />} />
+        <Route path="/guides/:slug" element={<Guide />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
