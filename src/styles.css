@@ -76,6 +76,14 @@ body {
 /* ── Placeholder contraste ── */
 input::placeholder { color: #7a8fa6; }
 
+/* ── Comparaison de scénarios : 2 colonnes, empilées sur mobile ── */
+.cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 560px) {
+  .cmp-grid { grid-template-columns: 1fr; gap: 20px; }
+  /* En une colonne, la bordure latérale du scénario B passe en bordure haute. */
+  .cmp-grid > .cmp-colB { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 16px; }
+}
+
 /* ── Zones tactiles min 44px ── */
 button, a, select { min-height: 44px; }
 

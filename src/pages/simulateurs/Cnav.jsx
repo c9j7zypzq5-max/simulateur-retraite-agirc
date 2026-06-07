@@ -319,7 +319,7 @@ export default function Cnav() {
               <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div className="cmp-grid">
               <div>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
                 <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
@@ -329,7 +329,7 @@ export default function Cnav() {
                 <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Pension nette</div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.pensionNette)}<span style={{ fontSize: 13 }}>/mois</span></div>
               </div>
-              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+              <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
                 <StepperInput label="Âge de départ" value={bAge} onChange={setBAge} min={62} max={70} unit=" ans" />
                 <NumInput id="b-annees-rest" label="Années restantes" value={bAnneesRest} onChange={setBAnneesRest} unit="ans" min={0} max={50} />

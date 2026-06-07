@@ -316,7 +316,7 @@ export default function Epargne() {
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div className="cmp-grid">
               {/* Scénario A (référence, valeurs actuelles) */}
               <div>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Scénario A (actuel)</div>
@@ -331,7 +331,7 @@ export default function Epargne() {
               </div>
 
               {/* Scénario B (éditable) */}
-              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+              <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>Scénario B</div>
                 <NumInput id="b-capital" label="Capital initial" value={bCapital} onChange={setBCapital} unit="€" min={0} max={1000000} />
                 <NumInput id="b-versement" label="Versement mensuel" value={bVersement} onChange={setBVersement} unit="€/mois" min={0} max={100000} />

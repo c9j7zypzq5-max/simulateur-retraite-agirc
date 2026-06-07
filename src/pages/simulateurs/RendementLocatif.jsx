@@ -286,7 +286,7 @@ export default function RendementLocatif() {
               <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+            <div className="cmp-grid">
               <div>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
                 <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
@@ -298,7 +298,7 @@ export default function RendementLocatif() {
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Cash-flow</div>
                 <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(res.cashflowMensuel))}/mois</div>
               </div>
-              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+              <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
                 <NumInput id="b-prix" label="Prix d'achat" value={bPrix} onChange={setBPrix} unit="€" min={0} max={5000000} />
                 <NumInput id="b-loyer" label="Loyer mensuel" value={bLoyer} onChange={setBLoyer} unit="€" min={0} max={50000} />
