@@ -21,6 +21,10 @@ const Guide                   = lazy(() => import("./pages/Guide.jsx"));
 const MesSimulations          = lazy(() => import("./pages/MesSimulations.jsx"));
 const Methodologie            = lazy(() => import("./pages/Methodologie.jsx"));
 const EmbedEpargne            = lazy(() => import("./pages/embed/EmbedEpargne.jsx"));
+const EmbedEmprunt            = lazy(() => import("./pages/embed/EmbedEmprunt.jsx"));
+const EmbedFire               = lazy(() => import("./pages/embed/EmbedFire.jsx"));
+const Widgets                 = lazy(() => import("./pages/Widgets.jsx"));
+const NotFound                = lazy(() => import("./pages/NotFound.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -117,6 +121,9 @@ export default function App() {
         <Route path="/guides/:slug" element={<Guide />} />
         {/* Widget embarquable (iframe) */}
         <Route path="/embed/epargne" element={<EmbedEpargne />} />
+        <Route path="/embed/emprunt" element={<EmbedEmprunt />} />
+        <Route path="/embed/fire" element={<EmbedFire />} />
+        <Route path="/widgets" element={<Widgets />} />
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
         <Route path="/methodologie" element={<Methodologie />} />
@@ -124,6 +131,8 @@ export default function App() {
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         <Route path="/a-propos" element={<APropos />} />
+        {/* 404 — attrape-tout */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
       </Suspense>
       </ErrorBoundary>
