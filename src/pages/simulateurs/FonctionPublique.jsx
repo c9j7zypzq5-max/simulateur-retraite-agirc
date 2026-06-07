@@ -12,6 +12,7 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres Fonction Publique 2026 ───────────────────────────────────────
@@ -280,6 +281,19 @@ export default function FonctionPublique() {
         </div>
 
         <ShareBar params={{ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }} resultsRef={resultsRef} report={report} name="fonction-publique" />
+
+        {hasResult && (
+          <ScenarioCompare
+            name="fonction-publique"
+            base={{ ageDépart, anneesRestantes }}
+            fields={[
+              { key: "ageDépart", label: "Âge de départ", type: "step", min: 60, max: 70, step: 1, unit: "ans" },
+              { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
+            ]}
+            compute={(v) => calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants, ...v })}
+            metrics={[{ label: "Pension nette", get: r => r.pensionNette, fmt: fmtEur, higherBetter: true }]}
+          />
+        )}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

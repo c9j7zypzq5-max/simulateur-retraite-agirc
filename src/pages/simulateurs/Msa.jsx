@@ -12,6 +12,7 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
@@ -447,6 +448,21 @@ export default function Msa() {
         </div>
 
         <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="msa" />
+
+        {hasResult && (
+          <ScenarioCompare
+            name="msa"
+            base={{ ageDépart, anneesRestantes }}
+            fields={[
+              { key: "ageDépart", label: "Âge de départ", type: "step", min: 62, max: 70, step: 1, unit: "ans" },
+              { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
+            ]}
+            compute={(v) => isExploitant
+              ? calcMsaExploitant({ revenu: revenuSalaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, ...v })
+              : calcMsaSalarie({ salaire: revenuSalaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, ...v })}
+            metrics={[{ label: "Pension nette / mois", get: r => isExploitant ? r.pensionTotale : r.pensionBaseNette, fmt: fmtEur, higherBetter: true }]}
+          />
+        )}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

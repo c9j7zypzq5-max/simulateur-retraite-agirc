@@ -12,6 +12,7 @@ import {
   fmt, fmtEur, signFmt, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Calcul Retraite Progressive ─────────────────────────────────────────────
@@ -277,6 +278,19 @@ export default function RetraiteProgressive() {
         </div>
 
         <ShareBar params={{ pensionPleineTaux, salaire, quotite, duree }} resultsRef={resultsRef} report={report} name="retraite-progressive" />
+
+        {res.revenuTotal > 0 && (
+          <ScenarioCompare
+            name="retraite-progressive"
+            base={{ quotite, duree }}
+            fields={[
+              { key: "quotite", label: "Quotité de travail", type: "step", min: 40, max: 80, step: 10, unit: "%" },
+              { key: "duree", label: "Durée", type: "step", min: 1, max: 10, step: 1, unit: "ans" },
+            ]}
+            compute={(v) => calcRP({ pensionPleineTaux, salaire, quotite, duree, ...v })}
+            metrics={[{ label: "Revenu total / mois", get: r => r.revenuTotal, fmt: fmtEur, higherBetter: true }]}
+          />
+        )}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
