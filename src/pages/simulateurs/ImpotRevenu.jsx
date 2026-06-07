@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -326,6 +327,17 @@ export default function ImpotRevenu() {
                 resultsRef={resultsRef}
                 report={report}
                 name="impot-revenu"
+              />
+
+              <ScenarioCompare
+                name="impot-revenu"
+                base={{ revenuBrut, nbEnfants }}
+                fields={[
+                  { key: "revenuBrut", label: "Revenu annuel", type: "num", unit: "€", min: 0, max: 1000000, kind: "eur" },
+                  { key: "nbEnfants", label: "Nombre d'enfants", type: "step", min: 0, max: 12, step: 1, unit: "" },
+                ]}
+                compute={(v) => calcIR(v.revenuBrut, situation, v.nbEnfants)}
+                metrics={[{ label: "Impôt net annuel", get: r => r.irNet, fmt: fmtEur, higherBetter: false }]}
               />
             </>
           )}

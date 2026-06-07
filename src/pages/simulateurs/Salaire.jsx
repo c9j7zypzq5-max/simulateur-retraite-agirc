@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -543,6 +544,19 @@ export default function Salaire() {
               report={report}
               name="salaire"
             />
+
+            <div style={{ marginTop: 16 }}>
+              <ScenarioCompare
+                name="salaire"
+                base={{ brut, evolution }}
+                fields={[
+                  { key: "brut", label: "Salaire brut mensuel", type: "num", unit: "€", min: 0, max: 100000, kind: "eur" },
+                  { key: "evolution", label: "Évolution annuelle", type: "step", min: 0, max: 10, step: 0.5, unit: "%" },
+                ]}
+                compute={(v) => calcSalaire({ brut, statut, age, evolution, horizon, ...v })}
+                metrics={[{ label: `Net mensuel à ${horizon} ans`, get: r => r.last.netY, fmt: fmtEur, higherBetter: true }]}
+              />
+            </div>
           </div>
 
           {/* Inputs */}

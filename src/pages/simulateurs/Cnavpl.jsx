@@ -12,6 +12,7 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
@@ -620,6 +621,19 @@ export default function Cnavpl() {
         </div>
 
         <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} report={report} name="cnavpl" />
+
+        {res.pensionTotale > 0 && (
+          <ScenarioCompare
+            name="cnavpl"
+            base={{ ageDépart, anneesRestantes }}
+            fields={[
+              { key: "ageDépart", label: "Âge de départ", type: "step", min: 62, max: 70, step: 1, unit: "ans" },
+              { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
+            ]}
+            compute={(v) => calcCnavpl({ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart, ...v })}
+            metrics={[{ label: "Pension totale / mois", get: r => r.pensionTotale, fmt: fmtEur, higherBetter: true }]}
+          />
+        )}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>

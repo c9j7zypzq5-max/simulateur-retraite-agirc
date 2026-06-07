@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -392,6 +393,20 @@ export default function PlusValue() {
                 resultsRef={resultsRef}
                 report={report}
                 name="plus-value-immobiliere"
+              />
+
+              <ScenarioCompare
+                name="plus-value-immobiliere"
+                base={{ anneeVente, prixVente }}
+                fields={[
+                  { key: "anneeVente", label: "Année de vente", type: "num", unit: "", min: 1990, max: 2100 },
+                  { key: "prixVente", label: "Prix de vente", type: "num", unit: "€", min: 0, max: 10000000, kind: "eur" },
+                ]}
+                compute={(v) => calcPlusValue({ prixAchat, anneeAchat, anneeVente, travaux, inclureFrais, prixVente, ...v })}
+                metrics={[
+                  { label: "Impôt total", get: r => r.totalImpot, fmt: fmtEur, higherBetter: false },
+                  { label: "Gain net", get: r => r.gainNet, fmt: fmtEur, higherBetter: true },
+                ]}
               />
             </>
           )}
