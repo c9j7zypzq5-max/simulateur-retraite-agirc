@@ -40,15 +40,26 @@ function seoForRoute(route, extra = {}) {
   return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };
 }
 
+// og:image dynamique (brandé) pour les pages de contenu, via /api/og.
+function ogImageUrl(route, extra) {
+  let t = "", c = "";
+  if (route.startsWith('/lexique/')) { const x = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)]; if (x) { t = x.term; c = x.category; } }
+  else if (route.startsWith('/guides/')) { const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)]; if (g) { t = g.title; c = g.category; } }
+  else if (route.startsWith('/blog/')) { t = extra.title || ''; }
+  else if (ROUTE_META[route]) { t = ROUTE_META[route].title; c = ROUTE_META[route].cat || ''; }
+  if (t) return `${BASE}/api/og?${new URLSearchParams({ t, c }).toString()}`;
+  return `${BASE}${ogImageForRoute(route)}`;
+}
+
 function patchHtml(html, route, extra) {
   const { title, description } = seoForRoute(route, extra);
-  const ogImg = ogImageForRoute(route); // chemin relatif, ex: /og-immobilier.png
+  const ogImg = ogImageUrl(route, extra);
   const ld = structuredDataScripts(route, extra);
   const seo = seoHtmlForRoute(route); // contenu crawlable injecté dans #root
   const url = `${BASE}${route}`;
   let out = html
-    .replace(/content="\/og-image\.png"/g, `content="${ogImg}"`)
-    .replace(/content="\/og-image\.svg"/g, `content="${ogImg}"`)
+    .replace(/content="\/og-image\.png"/g, `content="${escapeAttr(ogImg)}"`)
+    .replace(/content="\/og-image\.svg"/g, `content="${escapeAttr(ogImg)}"`)
     .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${escapeAttr(url)}"`);
 
   if (title) {
