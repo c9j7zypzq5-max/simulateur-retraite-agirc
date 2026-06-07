@@ -1,14 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
+import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
 import { SEO_CONTENT, seoHtmlForRoute } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
+import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const DESC_LEXIQUE = "Lexique des termes de finances personnelles : TAEG, PTZ, PER, TMI, FIRE, assurance-vie… Des définitions simples, reliées à nos simulateurs gratuits.";
 const DESC_BLOG    = "Articles et guides sur l'épargne, le FIRE, la retraite, l'immobilier et la fiscalité en France, pour prendre de meilleures décisions financières.";
+const DESC_GUIDES  = "Guides pratiques pour préparer sa retraite, acheter un logement, construire son épargne et viser l'indépendance financière : simulateurs, définitions et articles réunis.";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function escapeAttr(s) {
@@ -23,10 +25,15 @@ function seoForRoute(route, extra = {}) {
     const t = GLOSSARY_BY_SLUG[slug];
     if (t) return { title: `${t.term} : définition (${t.full}) | mesimulateurs.fr`, description: t.short };
   }
+  if (route.startsWith('/guides/')) {
+    const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
+    if (g) return { title: `${g.title} — guide complet | mesimulateurs.fr`, description: g.intro };
+  }
   if (route.startsWith('/blog/')) {
     return { title: extra.title ? `${extra.title} | mesimulateurs.fr` : null, description: extra.description || null };
   }
   if (route === '/lexique') return { title: ROUTE_META[route]?.title, description: DESC_LEXIQUE };
+  if (route === '/guides')  return { title: ROUTE_META[route]?.title, description: DESC_GUIDES };
   if (route === '/blog')    return { title: ROUTE_META[route]?.title, description: DESC_BLOG };
   const meta = ROUTE_META[route];
   return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };
@@ -103,6 +110,7 @@ const blog = await blogEntries();
 const routes = [
   ...Object.keys(ROUTE_META).filter(r => r !== '/').map(route => ({ route })),
   ...LEXIQUE_SLUGS.map(route => ({ route })),
+  ...GUIDES_SLUGS.map(route => ({ route })),
   ...blog,
 ];
 
