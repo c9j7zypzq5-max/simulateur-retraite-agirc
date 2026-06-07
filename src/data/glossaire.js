@@ -728,6 +728,164 @@ export const GLOSSARY = [
     sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/credit-conso'],
     related: ['taeg', 'taux-usure'],
   },
+
+  // ── FIRE (variantes) ────────────────────────────────────────────────────────
+  {
+    slug: 'lean-fire', term: 'Lean FIRE', full: 'Lean FIRE',
+    aliases: ['Lean FIRE'], category: 'FIRE',
+    short: "Variante du FIRE visant l'indépendance avec un budget modeste, donc un capital cible plus faible.",
+    long: [
+      "Le Lean FIRE consiste à atteindre l'indépendance financière en optimisant fortement ses dépenses : un train de vie sobre abaisse le capital nécessaire (toujours environ 25 fois les dépenses annuelles).",
+      "Il s'atteint plus vite, au prix d'un budget serré et d'une marge de sécurité réduite.",
+    ],
+    sims: ['/simulateurs/fire'], related: ['fire', 'fat-fire', 'taux-epargne'],
+  },
+  {
+    slug: 'fat-fire', term: 'Fat FIRE', full: 'Fat FIRE',
+    aliases: ['Fat FIRE'], category: 'FIRE',
+    short: "Indépendance financière avec un niveau de vie confortable, donc un capital cible élevé.",
+    long: [
+      "Le Fat FIRE vise à vivre de ses placements sans réduire son niveau de vie. Le capital cible est élevé (souvent plus de 1,5 M€) car les dépenses annuelles le sont aussi.",
+      "Il demande plus de temps ou de revenus, mais offre un confort et une sécurité supérieurs.",
+    ],
+    sims: ['/simulateurs/fire'], related: ['fire', 'lean-fire'],
+  },
+  {
+    slug: 'coast-fire', term: 'Coast FIRE', full: 'Coast FIRE',
+    aliases: ['Coast FIRE'], category: 'FIRE',
+    short: "Avoir déjà assez investi pour que les intérêts composés financent seuls votre retraite, sans nouvel apport.",
+    long: [
+      "En Coast FIRE, vous avez accumulé un capital suffisant pour qu'il croisse seul jusqu'à la retraite grâce aux intérêts composés. Vous n'avez plus besoin d'épargner pour la retraite.",
+      "Vous pouvez alors travailler juste assez pour couvrir vos dépenses courantes et lever le pied.",
+    ],
+    sims: ['/simulateurs/fire', '/simulateurs/epargne'], related: ['fire', 'interets-composes'],
+  },
+  {
+    slug: 'barista-fire', term: 'Barista FIRE', full: 'Barista FIRE',
+    aliases: ['Barista FIRE'], category: 'FIRE',
+    short: "Semi-retraite : un petit emploi couvre une partie des dépenses (et la mutuelle), le reste venant des placements.",
+    long: [
+      "Le Barista FIRE combine un travail à temps partiel et des retraits modérés du portefeuille. Le job d'appoint apporte un complément de revenu et, souvent, une couverture santé.",
+      "C'est un compromis entre liberté et sécurité, accessible plus tôt que le FIRE complet.",
+    ],
+    sims: ['/simulateurs/fire'], related: ['fire', 'coast-fire'],
+  },
+
+  // ── Placements & marchés ─────────────────────────────────────────────────────
+  {
+    slug: 'obligation', term: 'Obligation', full: 'Obligation',
+    aliases: ['obligation'], category: 'Finances',
+    short: "Titre de dette : en prêtant à un État ou une entreprise, vous percevez des intérêts (coupons).",
+    long: [
+      "Une obligation est un emprunt émis par un État ou une entreprise. L'investisseur prête une somme et reçoit des intérêts réguliers (coupons), puis le remboursement à l'échéance.",
+      "Moins volatiles que les actions, les obligations apportent un revenu et de la stabilité à un portefeuille diversifié.",
+    ],
+    sims: ['/simulateurs/comparateur', '/simulateurs/patrimoine'], related: ['diversification', 'etf'],
+  },
+  {
+    slug: 'dividende', term: 'Dividende', full: 'Dividende',
+    aliases: ['dividende'], category: 'Finances',
+    short: "Part des bénéfices d'une entreprise versée à ses actionnaires.",
+    long: [
+      "Le dividende est la rémunération versée aux actionnaires lorsqu'une société distribue une partie de ses profits. Toutes les entreprises n'en versent pas (certaines réinvestissent).",
+      "Réinvestir ses dividendes amplifie l'effet des intérêts composés sur le long terme.",
+    ],
+    sims: ['/simulateurs/comparateur'], related: ['action', 'capitalisation', 'pfu'],
+  },
+  {
+    slug: 'action', term: 'Action', full: 'Action (titre de propriété)',
+    aliases: ['action en bourse'], category: 'Finances',
+    short: "Part de propriété d'une entreprise cotée ; potentiel de gain élevé mais volatilité importante.",
+    long: [
+      "Détenir une action, c'est posséder une fraction d'une entreprise. On peut gagner via la hausse du cours et les dividendes — ou perdre si le cours baisse.",
+      "Sur le long terme, les actions ont historiquement offert le meilleur rendement, au prix d'une volatilité élevée. La diversification (ETF) réduit le risque.",
+    ],
+    sims: ['/simulateurs/comparateur', '/simulateurs/epargne'], related: ['etf', 'dividende', 'volatilite'],
+  },
+  {
+    slug: 'ter', term: 'TER', full: 'Total Expense Ratio (frais de gestion)',
+    aliases: ['TER'], category: 'Finances',
+    short: "Frais de gestion annuels d'un fonds ou ETF, exprimés en %. Plus ils sont bas, mieux c'est.",
+    long: [
+      "Le TER mesure le coût annuel de détention d'un fonds (ETF, OPCVM) en pourcentage des sommes investies. Il est prélevé automatiquement, réduisant la performance.",
+      "Les ETF indiciels affichent des TER très bas (souvent 0,05 à 0,30 %), bien inférieurs aux fonds actifs — un avantage décisif sur le long terme.",
+    ],
+    sims: ['/simulateurs/comparateur'], related: ['etf', 'opcvm'],
+  },
+  {
+    slug: 'opcvm', term: 'OPCVM', full: 'Organisme de Placement Collectif en Valeurs Mobilières',
+    aliases: ['OPCVM'], category: 'Finances',
+    short: "Fonds d'investissement (SICAV, FCP) regroupant l'argent de plusieurs épargnants, géré par des professionnels.",
+    long: [
+      "Un OPCVM (SICAV ou FCP) mutualise l'épargne pour investir en actions, obligations ou autres. Il permet de diversifier facilement avec un faible montant.",
+      "Attention aux frais : les fonds gérés activement ont des frais plus élevés que les ETF, et battent rarement leur indice sur la durée.",
+    ],
+    sims: ['/simulateurs/comparateur'], related: ['etf', 'ter', 'diversification'],
+  },
+
+  // ── Épargne réglementée & immobilier (compléments) ──────────────────────────
+  {
+    slug: 'cel', term: 'CEL', full: "Compte Épargne Logement",
+    aliases: ['CEL'], category: 'Immobilier',
+    short: "Épargne réglementée souple ouvrant droit à un prêt immobilier, complément du PEL.",
+    long: [
+      "Le Compte Épargne Logement (CEL) est plus souple que le PEL : retraits libres, plafond plus bas, et droit à un prêt immobilier à taux réglementé.",
+      "Il peut se cumuler avec un PEL pour préparer un achat immobilier.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/epargne'], related: ['pel', 'livret-a'],
+  },
+  {
+    slug: 'lep', term: 'LEP', full: "Livret d'Épargne Populaire",
+    aliases: ['LEP'], category: 'Finances',
+    short: "Livret réglementé réservé aux revenus modestes, au taux supérieur au Livret A et défiscalisé.",
+    long: [
+      "Le LEP est destiné aux contribuables sous un plafond de revenu fiscal de référence. Son taux est plus élevé que celui du Livret A et ses intérêts sont exonérés.",
+      "C'est le placement sans risque le plus rémunérateur pour les foyers éligibles.",
+    ],
+    sims: ['/simulateurs/epargne'], related: ['livret-a', 'rfr'],
+  },
+  {
+    slug: 'micro-foncier', term: 'Micro-foncier', full: 'Régime micro-foncier',
+    aliases: ['micro-foncier'], category: 'Immobilier',
+    short: "Régime fiscal simplifié des loyers (location nue) avec un abattement forfaitaire de 30 %.",
+    long: [
+      "Le micro-foncier s'applique automatiquement sous un plafond de revenus fonciers : un abattement de 30 % couvre forfaitairement les charges, et le reste est imposé.",
+      "Au-delà, ou si vos charges réelles dépassent 30 %, le régime réel (avec déduction des charges et déficit foncier) est plus avantageux.",
+    ],
+    sims: ['/simulateurs/rendement-locatif'], related: ['deficit-foncier', 'abattement', 'lmnp'],
+  },
+  {
+    slug: 'assurance-emprunteur', term: 'Assurance emprunteur', full: 'Assurance emprunteur',
+    aliases: ['assurance emprunteur'], category: 'Immobilier',
+    short: "Assurance couvrant le remboursement du prêt en cas de décès, invalidité ou incapacité.",
+    long: [
+      "Exigée par les banques pour un crédit immobilier, l'assurance emprunteur garantit le remboursement en cas d'accident de la vie. Elle représente une part importante du coût total (voir TAEA).",
+      "Depuis la loi Lemoine, on peut en changer à tout moment : comparer les offres permet d'économiser plusieurs milliers d'euros.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier'], related: ['taea', 'taeg'],
+  },
+
+  // ── Impôts & budget (compléments) ───────────────────────────────────────────
+  {
+    slug: 'credit-impot', term: "Crédit d'impôt", full: "Crédit d'impôt",
+    aliases: ["crédit d'impôt"], category: 'Impôts',
+    short: "Avantage fiscal remboursé même si vous n'êtes pas imposable (contrairement à la réduction d'impôt).",
+    long: [
+      "Un crédit d'impôt vient en déduction de votre impôt ; s'il dépasse l'impôt dû, l'excédent vous est remboursé par l'administration (emploi à domicile, garde d'enfants…).",
+      "Il diffère de la réduction d'impôt, qui ne peut pas générer de remboursement.",
+    ],
+    sims: ['/simulateurs/impot-revenu'], related: ['ir', 'tmi'],
+  },
+  {
+    slug: 'reste-a-vivre', term: 'Reste à vivre', full: 'Reste à vivre',
+    aliases: ['reste à vivre'], category: 'Budget',
+    short: "Ce qu'il reste chaque mois une fois les charges fixes et crédits payés.",
+    long: [
+      "Le reste à vivre = revenus − charges fixes (loyer/crédit, énergie, assurances…). Les banques l'examinent autant que le taux d'endettement pour accorder un prêt.",
+      "Un reste à vivre confortable sécurise votre budget et votre capacité d'épargne.",
+    ],
+    sims: ['/simulateurs/budget', '/simulateurs/emprunt-immobilier'], related: ['taux-endettement', 'taux-epargne'],
+  },
 ];
 
 // ── Index dérivés ────────────────────────────────────────────────────────────

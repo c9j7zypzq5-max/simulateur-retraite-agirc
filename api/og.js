@@ -31,9 +31,16 @@ export default function handler(req) {
   if (c) header.push(el({ marginTop: 16, fontSize: 24, fontWeight: 600, color, display: 'flex' }, c));
 
   const middle = [];
-  if (t) middle.push(el({ fontSize: 44, fontWeight: 700, marginBottom: 6, display: 'flex' }, t));
-  middle.push(el({ fontSize: 112, fontWeight: 800, color: '#e8c06a', display: 'flex' }, v || ' '));
-  if (s) middle.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 8, display: 'flex' }, s));
+  if (v) {
+    // Carte de résultat : titre moyen + valeur en grand.
+    if (t) middle.push(el({ fontSize: 44, fontWeight: 700, marginBottom: 6, display: 'flex' }, t));
+    middle.push(el({ fontSize: 112, fontWeight: 800, color: '#e8c06a', display: 'flex' }, v));
+    if (s) middle.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 8, display: 'flex' }, s));
+  } else {
+    // Carte de page : titre en grand.
+    if (t) middle.push(el({ fontSize: 64, fontWeight: 800, lineHeight: 1.1, display: 'flex', color: '#f4f1ea' }, t));
+    if (s) middle.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 12, display: 'flex' }, s));
+  }
 
   const tree = el(
     {

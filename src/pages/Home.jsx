@@ -215,7 +215,9 @@ function FilterBar({ activeFilter, setActiveFilter }) {
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const [activeFilter, setActiveFilter] = useState("Tous");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(() => {
+    try { return new URLSearchParams(window.location.search).get("q") || ""; } catch { return ""; }
+  });
   const [scores, setScores] = useState({});
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);

@@ -105,6 +105,32 @@ export const GUIDES = [
     terms: ['fire', 'swr', 'taux-epargne', 'interets-composes', 'diversification'],
     blogCats: ['FIRE'],
   },
+  {
+    slug: 'reduire-ses-impots',
+    title: 'Réduire ses impôts légalement',
+    emoji: '🧾',
+    category: 'Impôts',
+    intro: "Comprendre comment fonctionne l'impôt et activer les bons leviers : déductions, enveloppes et dispositifs pour payer moins, en toute légalité.",
+    sections: [
+      {
+        h2: 'Comprendre avant d\'optimiser',
+        body: [
+          "Avant de chercher à réduire son impôt, il faut connaître sa tranche marginale d'imposition (TMI) : c'est elle qui détermine le gain réel d'une déduction. Plus votre TMI est élevée, plus une déduction rapporte.",
+          "Distinguez aussi déduction (sur le revenu), réduction d'impôt et crédit d'impôt (remboursable) : leurs effets ne sont pas les mêmes.",
+        ],
+      },
+      {
+        h2: 'Les principaux leviers',
+        body: [
+          "Le PER déduit vos versements du revenu imposable, dans un plafond — d'autant plus efficace que votre TMI est haute. L'assurance-vie offre une fiscalité douce après 8 ans.",
+          "Côté immobilier, le déficit foncier et le régime réel peuvent effacer une partie de vos revenus fonciers. Pensez aussi aux crédits d'impôt (emploi à domicile, garde d'enfants).",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/impot-revenu', '/simulateurs/per', '/simulateurs/plus-value-immobiliere', '/simulateurs/assurance-vie', '/simulateurs/rendement-locatif'],
+    terms: ['tmi', 'ir', 'per', 'pfu', 'abattement', 'deficit-foncier', 'credit-impot', 'micro-foncier'],
+    blogCats: ['Fiscalité'],
+  },
 ];
 
 export const GUIDES_BY_SLUG = Object.fromEntries(GUIDES.map(g => [g.slug, g]));
