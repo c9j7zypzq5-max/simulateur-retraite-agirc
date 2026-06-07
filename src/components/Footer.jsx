@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { GLOSSARY } from "../data/glossaire.js";
+import { GUIDES } from "../data/guides.js";
 import { ROUTE_META } from "../../api/_routes.js";
 
 // Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
@@ -113,6 +114,36 @@ function RelatedTerms() {
   );
 }
 
+// Guides thématiques incluant la page simulateur courante.
+function RelatedGuides() {
+  const { pathname } = useLocation();
+  if (!pathname.startsWith("/simulateurs/")) return null;
+  const guides = GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
+  if (guides.length === 0) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Guides liés">
+      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+        Guides liés
+        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
+        {guides.map(g => (
+          <Link key={g.slug} to={`/guides/${g.slug}`} style={{
+            display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 12, textDecoration: "none",
+            background: "var(--card-bg)", border: "1px solid var(--border)", transition: "border-color 0.2s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+          >
+            <span style={{ fontSize: "1.4rem", flexShrink: 0 }} aria-hidden="true">{g.emoji}</span>
+            <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}>{g.title}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // Articles de blog liés à la thématique de la page simulateur courante.
 function RelatedArticles() {
   const { pathname } = useLocation();
@@ -160,6 +191,7 @@ export default function Footer() {
     <>
     <SideAds />
     <RelatedSimulators />
+    <RelatedGuides />
     <RelatedTerms />
     <RelatedArticles />
     <footer style={{
@@ -197,6 +229,9 @@ export default function Footer() {
           </Link>
           <Link to="/methodologie" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             Méthodologie
+          </Link>
+          <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            Widgets
           </Link>
           <Link to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             Mentions légales

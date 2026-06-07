@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
+import { prefetchRoute } from "../utils/prefetch.js";
 import { GLOSSARY } from "../data/glossaire.js";
 import { Search, X } from "lucide-react";
 
@@ -471,7 +472,7 @@ function FeaturedCard({ sim, index, visible }) {
         ? "0 12px 40px rgba(184,147,74,0.2), 0 4px 12px rgba(0,0,0,0.15)"
         : "none",
     }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}><SimIcon path={sim.path} size={28} /></div>
@@ -518,7 +519,7 @@ function SimCard({ sim, index, visible }) {
         ? "0 12px 40px rgba(184,147,74,0.15), 0 4px 12px rgba(0,0,0,0.12)"
         : "none",
     }}
-      onMouseEnter={() => setHovered(true)}
+      onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
