@@ -76,6 +76,11 @@ export default function RendementLocatif() {
   const [taxeFonciere, setTaxeFonciere] = useState(0);
   const [gestionLocative, setGestionLocative] = useState(false);
 
+  // Comparaison d'un 2e scénario (prix négocié / loyer différent).
+  const [compareOn, setCompareOn] = useState(false);
+  const [bPrix, setBPrix]   = useState(null);
+  const [bLoyer, setBLoyer] = useState(null);
+
   const resultsRef = useRef(null);
 
   useEffect(() => {
@@ -117,6 +122,16 @@ export default function RendementLocatif() {
   const cashflowAnim = useAnimatedNumber(res.cashflowMensuel);
 
   const hasResult = prix > 0 && loyer > 0;
+
+  // Scénario B : prix et loyer différents, autres paramètres identiques.
+  const resB = calcRendement({ prix: bPrix, neuf, travaux, apport, loyer: bLoyer, chargesCopro, taxeFonciere, gestionLocative });
+  const hasB = bPrix > 0 && bLoyer > 0;
+  const deltaNet = resB.rendementNet - res.rendementNet;
+  const deltaCash = resB.cashflowMensuel - res.cashflowMensuel;
+  function startCompare() {
+    setBPrix(prix); setBLoyer(loyer); setCompareOn(true);
+    track('compare_open', { name: 'rendement-locatif' });
+  }
 
   const report = {
     title: "Simulateur Rendement Locatif",
@@ -252,6 +267,57 @@ export default function RendementLocatif() {
               report={report}
               name="rendement-locatif"
             />
+          </div>
+        )}
+
+        {/* Comparaison de 2 scénarios (prix / loyer) */}
+        {hasResult && !compareOn && (
+          <button
+            onClick={startCompare}
+            style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+          >
+            ⚖️ Comparer un 2ᵉ scénario (prix / loyer)
+          </button>
+        )}
+
+        {hasResult && compareOn && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
+              <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+              <div>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
+                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
+                  <li>Prix : <strong style={{ color: "var(--text)" }}>{fmtEur(prix)}</strong></li>
+                  <li>Loyer : <strong style={{ color: "var(--text)" }}>{fmtEur(loyer)}/mois</strong></li>
+                </ul>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Rendement net</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{res.rendementNet.toFixed(2)} %</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Cash-flow</div>
+                <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(res.cashflowMensuel))}/mois</div>
+              </div>
+              <div style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
+                <NumInput id="b-prix" label="Prix d'achat" value={bPrix} onChange={setBPrix} unit="€" min={0} max={5000000} />
+                <NumInput id="b-loyer" label="Loyer mensuel" value={bLoyer} onChange={setBLoyer} unit="€" min={0} max={50000} />
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Rendement net</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{hasB ? `${resB.rendementNet.toFixed(2)} %` : "—"}</div>
+                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Cash-flow</div>
+                <div style={{ fontSize: 15, color: "var(--text)" }}>{hasB ? `${fmtEur(Math.round(resB.cashflowMensuel))}/mois` : "—"}</div>
+              </div>
+            </div>
+            {hasB && (
+              <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                {[{ label: "Écart rendement net", v: `${deltaNet >= 0 ? "+" : "−"}${Math.abs(deltaNet).toFixed(2)} pts`, good: deltaNet >= 0 }, { label: "Écart cash-flow", v: `${deltaCash >= 0 ? "+" : "−"}${fmtEur(Math.abs(Math.round(deltaCash)))}/mois`, good: deltaCash >= 0 }].map(({ label, v, good }) => (
+                  <div key={label} style={{ padding: "12px 14px", borderRadius: 12, textAlign: "center", background: good ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${good ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{label} (B − A)</div>
+                    <strong style={{ fontSize: 16, color: good ? "#22c55e" : "#ef4444" }}>{v}</strong>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
