@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { track } from "@vercel/analytics";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
-import { ROUTE_META } from "../../api/_routes.js";
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -169,21 +168,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
   async function handleShare() {
     setBusy(true);
-    const stateUrl = buildShareUrl(params);
-    // Lien à aperçu social riche (image de résultat via /api/og) si un résultat
-    // est disponible ; sinon lien direct vers la simulation.
-    let url = stateUrl;
-    if (report?.highlight) {
-      const cat = ROUTE_META[window.location.pathname]?.cat || "";
-      const qs = new URLSearchParams({
-        to: stateUrl,
-        t: report.title || name || "",
-        v: report.highlight.value || "",
-        s: report.highlight.label || "",
-        c: cat,
-      });
-      url = `${window.location.origin}/api/share?${qs.toString()}`;
-    }
+    const url = buildShareUrl(params);
     const title = `Simulation — ${name} · mesimulateurs.fr`;
     const text = "Voici ma simulation. Faites la vôtre gratuitement :";
     try {
