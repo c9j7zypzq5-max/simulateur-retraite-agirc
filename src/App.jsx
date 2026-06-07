@@ -18,6 +18,8 @@ const Lexique                 = lazy(() => import("./pages/Lexique.jsx"));
 const LexiqueTerme            = lazy(() => import("./pages/LexiqueTerme.jsx"));
 const Guides                  = lazy(() => import("./pages/Guides.jsx"));
 const Guide                   = lazy(() => import("./pages/Guide.jsx"));
+const MesSimulations          = lazy(() => import("./pages/MesSimulations.jsx"));
+const Methodologie            = lazy(() => import("./pages/Methodologie.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -104,6 +106,9 @@ export default function App() {
         {/* Guides */}
         <Route path="/guides" element={<Guides />} />
         <Route path="/guides/:slug" element={<Guide />} />
+        {/* Pages utilitaires */}
+        <Route path="/mes-simulations" element={<MesSimulations />} />
+        <Route path="/methodologie" element={<Methodologie />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

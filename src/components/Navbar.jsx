@@ -603,6 +603,9 @@ export default function Navbar({ theme, setTheme }) {
                 >✕</button>
               </div>
             ))}
+            <Link to="/mes-simulations" onClick={close} style={{ display: "block", textAlign: "center", fontSize: 11, color: "var(--gold)", textDecoration: "none", padding: "8px 0 4px" }}>
+              Tout voir →
+            </Link>
           </div>
         )}
 

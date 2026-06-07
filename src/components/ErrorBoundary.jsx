@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { track } from "@vercel/analytics";
 
 // Détecte les erreurs de chargement de module/chunk (fréquentes quand un onglet
 // ouvert avant un déploiement demande un ancien chunk au nom de fichier disparu).
@@ -23,7 +24,16 @@ export default class ErrorBoundary extends Component {
     if (isChunkLoadError(error) && !sessionStorage.getItem('chunk_reloaded')) {
       sessionStorage.setItem('chunk_reloaded', '1');
       window.location.reload();
+      return;
     }
+    // Remontée légère des erreurs réelles (monitoring) via Vercel Analytics.
+    try {
+      track('client_error', {
+        message: String(error?.message || error).slice(0, 200),
+        name: String(error?.name || '').slice(0, 60),
+        path: typeof window !== 'undefined' ? window.location.pathname : '',
+      });
+    } catch { /* analytics indisponible */ }
   }
 
   render() {
