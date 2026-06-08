@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { pexelsImage } from './_pexels.js';
+import { submitToIndexNow } from './_indexnow.js';
 
 // Sujets en rotation — 1 article généré par appel cron
 const TOPICS = [
@@ -137,7 +138,14 @@ Contraintes pour le champ content :
     await redis.set(`blog:article:${article.slug}`, JSON.stringify(article));
     await redis.zadd('blog:slugs', { score: Date.now(), member: article.slug });
 
-    res.status(200).json({ ok: true, slug: article.slug, title: article.title });
+    // Notifie Bing/Yandex/… (IndexNow) pour une indexation quasi immédiate du
+    // nouvel article et de la page liste /blog.
+    const indexnow = await submitToIndexNow([
+      `https://www.mesimulateurs.fr/blog/${article.slug}`,
+      'https://www.mesimulateurs.fr/blog',
+    ]);
+
+    res.status(200).json({ ok: true, slug: article.slug, title: article.title, indexnow });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

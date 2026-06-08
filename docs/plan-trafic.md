@@ -1,16 +1,19 @@
 # Plan d'acquisition de trafic — mesimulateurs.fr
 
-État : les fondations techniques SEO sont déjà solides (sitemap dynamique,
-schema.org BreadcrumbList + WebApplication + FAQPage, prérendu H1/intro,
-maillage interne « simulateurs liés », bundle code-splitté rapide, og:image
-PNG, 24 simulateurs). Le travail restant est surtout **éditorial, off-site et
-analytique**.
+État : les fondations techniques SEO sont déjà solides (sitemap dynamique avec
+lastmod réels, IndexNow auto à chaque publication, schema.org BreadcrumbList +
+WebApplication + FAQPage, prérendu H1/intro, maillage interne « simulateurs
+liés », bundle code-splitté rapide, og:image PNG, 24 simulateurs). Le travail
+restant est surtout **éditorial, off-site et analytique**.
 
 ## 0. Indispensable (à faire en premier, gratuit)
 - [ ] **Google Search Console** : ajouter et valider `www.mesimulateurs.fr`,
       soumettre `https://www.mesimulateurs.fr/sitemap.xml`. C'est le tableau de
       bord n°1 pour suivre l'indexation, les requêtes et les positions.
-- [ ] **Bing Webmaster Tools** (5 min, trafic d'appoint).
+- [ ] **Bing Webmaster Tools** (5 min, trafic d'appoint) : ajouter le site et
+      soumettre le même `sitemap.xml`. NB : IndexNow notifie déjà Bing/Yandex
+      automatiquement à chaque publication d'article (clé exposée à
+      `/0ee431ac70411af837b9a6b59f670007.txt`, cf. `api/_indexnow.js`).
 - [ ] Vérifier l'indexation : `site:mesimulateurs.fr` sur Google.
 - [ ] **Plausible / Matomo** ou garder Vercel Analytics : suivre les pages
       d'entrée et le taux de rebond par simulateur.

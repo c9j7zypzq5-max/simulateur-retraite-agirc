@@ -9,6 +9,12 @@ import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 
 export const BASE = 'https://www.mesimulateurs.fr';
 
+// Date de dernière modification de référence pour les pages « statiques »
+// (simulateurs, guides, lexique, accueil) dans le sitemap. Les articles de blog
+// utilisent leur vraie date de publication (cf. api/sitemap.js). À bumper lors
+// d'une mise à jour de contenu significative pour signaler la fraîcheur au crawl.
+export const SITE_LASTMOD = '2026-06-08';
+
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
 // prio / freq (sitemap).
 export const ROUTE_META = {

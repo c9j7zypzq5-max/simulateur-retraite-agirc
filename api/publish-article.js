@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { pexelsImage } from './_pexels.js';
+import { submitToIndexNow } from './_indexnow.js';
 
 // Publie un article fourni (JSON) dans le blog (Redis). Sert pour les articles
 // « actualité » rédigés à la main, en complément du cron auto (generate-article).
@@ -72,7 +73,12 @@ export default async function handler(req, res) {
     await redis.set(`blog:article:${article.slug}`, JSON.stringify(article));
     await redis.zadd('blog:slugs', { score: Date.now(), member: article.slug });
 
-    res.status(200).json({ ok: true, slug: article.slug, url: `https://www.mesimulateurs.fr/blog/${article.slug}` });
+    const url = `https://www.mesimulateurs.fr/blog/${article.slug}`;
+    // Notifie Bing/Yandex/… (IndexNow) pour une indexation quasi immédiate.
+    // Inclut aussi /blog pour signaler la mise à jour de la liste.
+    const indexnow = await submitToIndexNow([url, 'https://www.mesimulateurs.fr/blog']);
+
+    res.status(200).json({ ok: true, slug: article.slug, url, indexnow });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
