@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /embed/
+Disallow: /mes-simulations
+Disallow: /api/share
 
 Sitemap: https://www.mesimulateurs.fr/sitemap.xml
