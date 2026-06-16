@@ -164,9 +164,9 @@ export const GLOSSARY = [
   {
     slug: 'pfu', term: 'PFU', full: 'Prélèvement Forfaitaire Unique (flat tax)',
     aliases: ['PFU', 'flat tax'], category: 'Impôts',
-    short: "Imposition forfaitaire de 30 % sur les revenus du capital (12,8 % d'impôt + 17,2 % de prélèvements sociaux).",
+    short: "Imposition forfaitaire de 31,4 % sur les revenus du capital (12,8 % d'impôt + 18,6 % de prélèvements sociaux depuis 2026).",
     long: [
-      "Le Prélèvement Forfaitaire Unique, ou « flat tax », taxe la plupart des revenus du capital (dividendes, intérêts, plus-values mobilières) à 30 % : 12,8 % au titre de l'impôt et 17,2 % de prélèvements sociaux.",
+      "Le Prélèvement Forfaitaire Unique, ou « flat tax », taxe la plupart des revenus du capital (dividendes, intérêts, plus-values mobilières) à 31,4 % depuis 2026 : 12,8 % au titre de l'impôt et 18,6 % de prélèvements sociaux (contre 30 % au total avant la hausse de la CSG votée en loi de financement de la Sécurité sociale pour 2026).",
       "On peut renoncer au PFU pour opter pour le barème progressif si c'est plus avantageux (faible TMI).",
     ],
     sims: ['/simulateurs/assurance-vie', '/simulateurs/comparateur'],
@@ -175,10 +175,11 @@ export const GLOSSARY = [
   {
     slug: 'prelevements-sociaux', term: 'Prélèvements sociaux', full: 'Prélèvements sociaux',
     aliases: ['prélèvements sociaux'], category: 'Impôts',
-    short: "Contributions de 17,2 % (CSG, CRDS…) prélevées sur les revenus du capital.",
+    short: "Contributions (CSG, CRDS…) prélevées sur les revenus du capital : 18,6 % pour la plupart, 17,2 % pour quelques exceptions.",
     long: [
-      "Les prélèvements sociaux s'élèvent à 17,2 % et frappent les revenus du patrimoine et de placement : intérêts, dividendes, plus-values, loyers, gains d'assurance-vie.",
-      "Ils s'ajoutent à l'impôt sur le revenu (ou sont inclus dans le PFU de 30 %).",
+      "Depuis 2026, le taux des prélèvements sociaux sur les revenus du capital est passé de 17,2 % à 18,6 % (hausse de la CSG votée en loi de financement de la Sécurité sociale pour 2026) : intérêts, dividendes, plus-values mobilières, PEA.",
+      "Quelques revenus restent exceptionnellement taxés à l'ancien taux de 17,2 % : les gains d'assurance-vie, les plus-values immobilières et les intérêts de Livret d'épargne (CEL/PEL).",
+      "Ils s'ajoutent à l'impôt sur le revenu (ou sont inclus dans le PFU, désormais à 31,4 % au total pour les revenus concernés par la hausse).",
     ],
     sims: ['/simulateurs/assurance-vie', '/simulateurs/plus-value-immobiliere'],
     related: ['csg', 'pfu'],
@@ -362,7 +363,7 @@ export const GLOSSARY = [
     aliases: ['PEA'], category: 'Finances',
     short: "Enveloppe pour investir en actions européennes, exonérée d'impôt sur les gains après 5 ans.",
     long: [
-      "Le PEA permet d'investir en actions et fonds européens. Après 5 ans de détention, les gains sont exonérés d'impôt sur le revenu (restent dus les 17,2 % de prélèvements sociaux).",
+      "Le PEA permet d'investir en actions et fonds européens. Après 5 ans de détention, les gains sont exonérés d'impôt sur le revenu (restent dus les prélèvements sociaux, passés à 18,6 % en 2026).",
       "Le plafond de versement est de 150 000 €. C'est une enveloppe privilégiée pour l'investissement long terme en ETF européens.",
     ],
     sims: ['/simulateurs/comparateur', '/simulateurs/epargne'],

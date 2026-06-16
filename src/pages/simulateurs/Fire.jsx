@@ -592,7 +592,7 @@ const FAQ = [
   { q: "Barista, Lean, Fat FIRE : quelles différences ?", a: "Lean FIRE vise un train de vie frugal (capital moindre, grande discipline). Fat FIRE vise le confort sans contrainte (capital nettement plus élevé). Barista FIRE est hybride : un emploi à temps partiel couvre une partie des dépenses, ce qui réduit le capital nécessaire et laisse le portefeuille croître." },
   { q: "Quel est le taux de retrait sécurisé ?", a: "L'étude Trinity (1998) a conclu que 4 % est historiquement sûr sur 30 ans (probabilité de succès ~95 % avec un portefeuille actions/obligations). Pour une retraite anticipée longue (40+ ans), 3,25 à 3,5 % est plus prudent — c'est le « risque de séquence des rendements » : de mauvaises années en début de retraite font plus de dégâts." },
   { q: "Le rendement est-il avant ou après inflation ?", a: "Ce simulateur raisonne en rendement réel (après inflation) et en euros d'aujourd'hui. Un portefeuille d'actions diversifié a historiquement rapporté ~7 % nominal ; en retirant ~2 % d'inflation, on obtient ~5 % réel. Vos dépenses cibles restent donc exprimées en pouvoir d'achat actuel." },
-  { q: "Et les impôts sur les revenus de placement ?", a: "Activez l'option fiscalité pour majorer le capital cible. En France, le PFU (« flat tax ») est de 30 % sur les gains, mais comme seule la part de plus-value d'un retrait est taxée, le taux effectif sur un retrait est souvent de l'ordre de 10 à 17 %. Les enveloppes PEA et assurance-vie (après 8 ans) réduisent fortement cette charge." },
+  { q: "Et les impôts sur les revenus de placement ?", a: "Activez l'option fiscalité pour majorer le capital cible. En France, le PFU (« flat tax ») est de 31,4 % sur les gains depuis 2026 (12,8 % d'impôt + 18,6 % de prélèvements sociaux), mais comme seule la part de plus-value d'un retrait est taxée, le taux effectif sur un retrait est souvent de l'ordre de 10 à 18 %. Les enveloppes PEA et assurance-vie (après 8 ans) réduisent fortement cette charge." },
   { q: "Dois-je compter ma résidence principale ?", a: "Si elle n'est pas louée, elle ne génère pas de revenus passifs et ne devrait pas entrer dans le capital FIRE. En revanche, le fait d'être propriétaire réduit vos dépenses annuelles cibles (pas de loyer), ce qui abaisse mécaniquement le capital nécessaire." },
 ];
 
@@ -864,7 +864,7 @@ export default function Fire() {
               <Toggle checked={fiscaliteOn} onChange={setFiscaliteOn} />
             </div>
             {fiscaliteOn && (
-              <StepperInput label="Imposition effective sur les retraits" value={tauxImpot} onChange={setTauxImpot} min={0} max={30} step={1} unit="%"
+              <StepperInput label="Imposition effective sur les retraits" value={tauxImpot} onChange={setTauxImpot} min={0} max={32} step={1} unit="%"
                 hint="PFU 30 % sur les gains → souvent ~10–17 % en effectif (PEA/assurance-vie réduisent ce taux)" tooltip="Seule la part de plus-value d'un retrait est taxée, pas le capital." />
             )}
           </div>
