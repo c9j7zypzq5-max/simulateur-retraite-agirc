@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "../lib/router.js";
 import { useExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import AutoLinkText from "./AutoLinkText.jsx";
