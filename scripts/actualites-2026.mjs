@@ -144,4 +144,71 @@ export const ACTUALITES = [
 <p>Pour savoir combien vous pouvez emprunter et estimer votre PTZ, combinez nos deux outils gratuits : le simulateur de PTZ chiffre le montant auquel vous pourriez prétendre, et le simulateur d'emprunt immobilier calcule votre mensualité, votre capacité d'emprunt et le coût total du crédit.</p>
 `.trim(),
   },
+
+  {
+    slug: 'assurance-vie-2026-fonds-euros-fiscalite',
+    title: 'Assurance-vie 2026 : fonds euros en hausse, fiscalité préservée',
+    category: 'Épargne',
+    readTime: 6,
+    intro:
+      "Bonne nouvelle pour les épargnants : en 2026, l'assurance-vie échappe à la hausse des prélèvements sociaux et ses fonds en euros retrouvent des couleurs. Le point sur les rendements et la fiscalité, toujours aussi avantageuse après 8 ans.",
+    content: `
+<h2>Des fonds en euros qui redeviennent attractifs</h2>
+<p>Après des années de rendements famélifiques, le <strong>fonds en euros</strong> — la poche garantie de l'assurance-vie — a repris des couleurs. En 2025, son rendement moyen s'est établi autour de <strong>2,65 % nets de frais de gestion</strong>, et les projections pour 2026 tablent sur une moyenne comprise entre 2,5 % et 2,8 %. Les meilleurs contrats du marché dépassent même 3 %, parfois 4 % avec des conditions (part d'unités de compte minimale, bonus de rendement).</p>
+<p>L'intérêt du fonds en euros reste sa <strong>garantie en capital</strong> : votre épargne ne peut pas baisser. C'est le complément naturel d'un Livret A déjà rempli, pour une épargne sécurisée mais légèrement plus rémunératrice sur la durée.</p>
+
+<h2>La fiscalité épargnée par la hausse de 2026</h2>
+<p>La loi de finances pour 2026 a relevé les <strong>prélèvements sociaux</strong> sur les revenus du capital, de 17,2 % à 18,6 %. Mais l'assurance-vie fait partie des <strong>exceptions</strong> : les gains des contrats restent soumis au taux de <strong>17,2 %</strong>. C'est un avantage à souligner, qui renforce encore l'attrait de l'enveloppe par rapport à d'autres placements.</p>
+
+<h2>L'avantage des 8 ans, toujours là</h2>
+<p>La règle d'or de l'assurance-vie n'a pas changé : la fiscalité s'allège fortement <strong>après 8 ans</strong> de détention du contrat. Au moment d'un rachat (retrait), seuls les <em>gains</em> sont imposés, jamais le capital versé. Et après 8 ans, ces gains profitent d'un <strong>abattement annuel</strong> :</p>
+<ul>
+<li><strong>4 600 €</strong> de gains exonérés par an pour une personne seule ;</li>
+<li><strong>9 200 €</strong> pour un couple soumis à imposition commune.</li>
+</ul>
+<p>Au-delà de l'abattement, les gains issus de versements inférieurs à 150 000 € sont taxés à seulement <strong>7,5 %</strong> d'impôt (au lieu de 12,8 %), auxquels s'ajoutent les 17,2 % de prélèvements sociaux. Avant 8 ans, c'est le <strong>PFU</strong> (« flat tax ») de 30 % qui s'applique aux gains rachetés.</p>
+
+<h2>Fonds euros ou unités de compte ?</h2>
+<p>Pour viser un rendement supérieur sur le long terme, les <strong>unités de compte</strong> (actions, ETF, immobilier) prennent le relais du fonds en euros — au prix d'un risque de perte en capital. La bonne répartition dépend de votre horizon et de votre tolérance au risque : plus l'échéance est lointaine, plus la part d'unités de compte peut être élevée.</p>
+
+<h2>Un outil de transmission</h2>
+<p>Au-delà de l'épargne, l'assurance-vie reste un pilier de la <strong>transmission de patrimoine</strong> : les sommes versées avant 70 ans bénéficient d'un abattement de 152 500 € par bénéficiaire, hors succession. Pensez à rédiger soigneusement votre clause bénéficiaire.</p>
+
+<h2>Projetez la valeur de votre contrat</h2>
+<p>Pour estimer la croissance de votre assurance-vie et la fiscalité de vos gains au rachat (avant ou après 8 ans), testez notre simulateur dédié : il applique l'abattement, le PFU et les prélèvements sociaux pour vous donner une estimation nette, gratuitement et sans inscription.</p>
+`.trim(),
+  },
+
+  {
+    slug: 'per-2026-plafonds-deduction-nouveautes',
+    title: 'PER 2026 : plafonds relevés, déduction après 70 ans supprimée',
+    category: 'Fiscalité',
+    readTime: 6,
+    intro:
+      "La loi de finances pour 2026 rebat les cartes du Plan d'Épargne Retraite : plafonds de déduction en hausse grâce au nouveau PASS, mais fin de l'avantage fiscal sur les versements après 70 ans. Voici ce qui change pour votre épargne retraite.",
+    content: `
+<h2>Le principe du PER : déduire aujourd'hui, être imposé demain</h2>
+<p>Le <strong>PER</strong> (Plan d'Épargne Retraite) permet de déduire vos versements de votre revenu imposable, dans la limite d'un plafond. L'économie d'impôt dépend directement de votre <strong>tranche marginale d'imposition</strong> : un versement de 1 000 € fait économiser 300 € à un contribuable dans la tranche à 30 %, mais 410 € dans celle à 41 %. En contrepartie, le capital sera imposé à la sortie, à la retraite — un moment où votre tranche est souvent plus basse.</p>
+
+<h2>Des plafonds de déduction revalorisés en 2026</h2>
+<p>Le plafond de déduction est indexé sur le <strong>PASS</strong> (plafond annuel de la Sécurité sociale), porté à <strong>48 060 €</strong> au 1er janvier 2026 (+2 %). Mécaniquement, l'espace de déduction augmente pour tout le monde. Pour un salarié, le plafond 2026 correspond au plus avantageux des deux calculs suivants :</p>
+<ul>
+<li><strong>10 % de vos revenus professionnels 2025</strong>, dans la limite d'environ 37 680 € ;</li>
+<li>ou un <strong>plancher forfaitaire d'environ 4 806 €</strong> (10 % du PASS 2026), même avec de faibles revenus.</li>
+</ul>
+<p>Pour un travailleur non salarié, le plafond peut grimper bien plus haut (jusqu'à près de 88 911 € en 2026). Bon à savoir : les plafonds <strong>non utilisés</strong> des trois dernières années sont reportables, et un couple peut mutualiser ses plafonds.</p>
+
+<h2>Nouveauté 2026 : plus de déduction après 70 ans</h2>
+<p>C'est le grand changement de la loi de finances pour 2026 : les <strong>versements effectués après votre 70e anniversaire ne sont plus déductibles</strong>, quel que soit votre statut (salarié, indépendant ou retraité). Si vous comptiez sur le PER comme outil d'optimisation fiscale tardive, cette fenêtre se referme. Anticiper ses versements avant 70 ans devient un vrai sujet de planification.</p>
+
+<h2>Attention aux prélèvements sociaux relevés</h2>
+<p>En parallèle, la loi de finances 2026 a relevé les <strong>prélèvements sociaux</strong> sur les revenus du capital de 17,2 % à <strong>18,6 %</strong>. Cette hausse concerne notamment les gains imposés à la sortie du PER en capital. Un paramètre à intégrer dans le calcul de rentabilité, même s'il ne remet pas en cause l'intérêt de la déduction à l'entrée pour les contribuables fortement imposés.</p>
+
+<h2>Le PER est-il intéressant pour vous ?</h2>
+<p>La règle simple : le PER est d'autant plus avantageux que votre tranche marginale est élevée <em>aujourd'hui</em> et qu'elle sera plus basse <em>à la retraite</em>. Pour les tranches à 30 %, 41 % ou 45 %, l'effet de levier fiscal est réel. Pour une tranche à 0 % ou 11 %, l'intérêt est plus limité.</p>
+
+<h2>Calculez votre économie d'impôt</h2>
+<p>Avant d'ouvrir ou d'alimenter un PER, commencez par déterminer votre tranche marginale : notre simulateur d'impôt sur le revenu l'affiche gratuitement à partir de vos revenus, ce qui vous permet d'estimer immédiatement l'économie d'impôt d'un versement.</p>
+`.trim(),
+  },
 ];

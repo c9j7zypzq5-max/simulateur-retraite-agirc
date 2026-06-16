@@ -57,6 +57,8 @@ export const BLOG_SLUGS = [
   '/blog/bareme-impot-revenu-2026',
   '/blog/epargne-reglementee-2026-livret-a-lep',
   '/blog/ptz-2026-elargi-tout-le-territoire',
+  '/blog/assurance-vie-2026-fonds-euros-fiscalite',
+  '/blog/per-2026-plafonds-deduction-nouveautes',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
