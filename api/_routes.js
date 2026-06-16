@@ -53,6 +53,10 @@ export const BLOG_SLUGS = [
   '/blog/comment-calculer-retraite-2025',
   '/blog/fire-france-independance-financiere',
   '/blog/simuler-emprunt-immobilier',
+  '/blog/reforme-retraites-suspension-2026',
+  '/blog/bareme-impot-revenu-2026',
+  '/blog/epargne-reglementee-2026-livret-a-lep',
+  '/blog/ptz-2026-elargi-tout-le-territoire',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
