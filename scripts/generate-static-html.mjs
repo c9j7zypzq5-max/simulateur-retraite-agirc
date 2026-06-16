@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
-import { SEO_CONTENT, seoHtmlForRoute } from '../api/_seo.js';
+import { SEO_CONTENT, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 
@@ -55,7 +55,9 @@ function patchHtml(html, route, extra) {
   const { title, description } = seoForRoute(route, extra);
   const ogImg = ogImageUrl(route, extra);
   const ld = structuredDataScripts(route, extra);
-  const seo = seoHtmlForRoute(route); // contenu crawlable injecté dans #root
+  // Contenu crawlable injecté dans #root : corps complet pour les articles de blog,
+  // H1 + intro pour les simulateurs.
+  const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route);
   const url = `${BASE}${route}`;
   let out = html
     .replace(/content="\/og-image\.png"/g, `content="${escapeAttr(ogImg)}"`)
@@ -98,13 +100,13 @@ async function blogEntries() {
     const entries = [];
     for (const slug of slugs) {
       const route = slug.startsWith('/blog/') ? slug : `/blog/${slug}`;
-      let title, description, publishedAt, image;
+      let title, description, publishedAt, image, content;
       try {
         const raw = await redis.get(`blog:article:${slug.replace(/^\/blog\//, '')}`);
         const a = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-        title = a?.title; description = a?.intro; publishedAt = a?.publishedAt; image = a?.image;
+        title = a?.title; description = a?.intro; publishedAt = a?.publishedAt; image = a?.image; content = a?.content;
       } catch { /* titre par défaut */ }
-      entries.push({ route, title, description, publishedAt, image });
+      entries.push({ route, title, description, publishedAt, image, content });
     }
     return entries;
   } catch {

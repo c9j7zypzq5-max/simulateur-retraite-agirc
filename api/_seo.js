@@ -119,3 +119,27 @@ export function seoHtmlForRoute(route) {
   if (!c) return '';
   return `<div id="seo-prerender" style="${SR_ONLY}"><h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p></div>`;
 }
+
+// Nettoyage défensif du HTML d'article avant injection statique. Les articles ne
+// contiennent normalement que h2/p/ul/li/strong/em, mais le contenu vient de Redis
+// (endpoints publish-article / generate-article) : on retire tout élément actif et
+// tout gestionnaire d'événement par précaution.
+function sanitizeArticleHtml(html) {
+  return String(html)
+    .replace(/<\/?(?:script|style|iframe|object|embed|link|meta)\b[^>]*>/gi, '')
+    .replace(/\son\w+\s*=\s*"[^"]*"/gi, '')
+    .replace(/\son\w+\s*=\s*'[^']*'/gi, '')
+    .replace(/\son\w+\s*=\s*[^\s>]+/gi, '')
+    .replace(/javascript:/gi, '');
+}
+
+// Bloc SEO pré-rendu pour un article de blog : titre + intro + corps complet,
+// injecté dans #root au build pour que le contenu soit crawlable sans exécuter le
+// JS (React le remplace au montage). `extra` provient de Redis (title, intro,
+// content). Renvoie '' si le corps n'est pas disponible (repli sans Redis).
+export function seoHtmlForArticle(extra) {
+  if (!extra || !extra.content) return '';
+  const h1 = extra.title ? `<h1>${escapeHtml(extra.title)}</h1>` : '';
+  const intro = extra.description ? `<p>${escapeHtml(extra.description)}</p>` : '';
+  return `<div id="seo-prerender" style="${SR_ONLY}">${h1}${intro}${sanitizeArticleHtml(extra.content)}</div>`;
+}

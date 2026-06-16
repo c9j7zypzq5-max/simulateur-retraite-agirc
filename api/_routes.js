@@ -138,8 +138,9 @@ export function structuredData(route, extra = {}) {
       author: { '@type': 'Organization', name: 'mesimulateurs.fr', url: BASE },
       publisher: { '@type': 'Organization', name: 'mesimulateurs.fr', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
     };
-    if (extra.publishedAt) article.datePublished = extra.publishedAt;
+    if (extra.publishedAt) { article.datePublished = extra.publishedAt; article.dateModified = extra.dateModified || extra.publishedAt; }
     if (extra.image) article.image = extra.image;
+    if (extra.content) article.articleBody = String(extra.content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     return [
       breadcrumb([['Accueil', `${BASE}/`], ['Blog', `${BASE}/blog`], [extra.title, url]]),
       article,
