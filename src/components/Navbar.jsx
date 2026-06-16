@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "../lib/router.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library } from "lucide-react";
