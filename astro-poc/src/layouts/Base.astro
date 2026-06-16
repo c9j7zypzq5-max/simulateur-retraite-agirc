@@ -1,0 +1,24 @@
+---
+const { title, description, canonical } = Astro.props;
+const url = canonical || new URL(Astro.url.pathname, Astro.site).href;
+---
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={url} />
+    <style is:global>
+      body { font-family: system-ui, sans-serif; color: #1a1a1a; background: #faf6ef; margin: 0; line-height: 1.7; }
+      main { max-width: 720px; margin: 0 auto; padding: 24px; }
+      h1 { font-size: 2rem; line-height: 1.2; }
+      h2 { margin-top: 1.6em; }
+      a { color: #b8934a; }
+    </style>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

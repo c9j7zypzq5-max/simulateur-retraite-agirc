@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import ThemeToggle from '../../components/ThemeToggle.jsx';
+import { ACTUALITES } from '../../../../scripts/actualites-2026.mjs';
+
+// SSG : une page statique par article, générée au build.
+export function getStaticPaths() {
+  return ACTUALITES.map((a) => ({ params: { slug: a.slug }, props: { article: a } }));
+}
+
+const { article } = Astro.props;
+const canonical = `https://www.mesimulateurs.fr/blog/${article.slug}`;
+---
+<Base title={`${article.title} | mesimulateurs.fr`} description={article.intro} canonical={canonical}>
+  <main>
+    <p><a href="/blog">← Blog</a></p>
+    <p style="color:#666;font-size:14px;">{article.category} · {article.readTime} min de lecture</p>
+    <h1>{article.title}</h1>
+    <p style="border-left:3px solid #b8934a;padding-left:16px;"><em>{article.intro}</em></p>
+
+    <!-- Island React interactive embarquée dans le contenu statique -->
+    <ThemeToggle client:load />
+
+    <!-- Corps de l'article : rendu en HTML statique (crawlable sans JS) -->
+    <article set:html={article.content}></article>
+
+    <!-- JSON-LD Article, comme en prod -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: article.title,
+      description: article.intro,
+      url: canonical,
+      articleBody: article.content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
+    })}></script>
+  </main>
+</Base>

@@ -1,0 +1,19 @@
+---
+import Base from '../../layouts/Base.astro';
+// Contenu RÉEL des articles d'actualité, réutilisé tel quel depuis le repo.
+import { ACTUALITES } from '../../../../scripts/actualites-2026.mjs';
+const articles = ACTUALITES;
+---
+<Base title="Blog — PoC Astro" description="Preuve de concept : blog rendu en HTML statique par Astro.">
+  <main>
+    <h1>Blog — preuve de concept Astro</h1>
+    <p>Liste rendue en HTML statique au build (aucun JS requis pour le contenu).</p>
+    <ul>
+      {articles.map((a) => (
+        <li>
+          <a href={`/blog/${a.slug}`}>{a.title}</a> — {a.category}, {a.readTime} min
+        </li>
+      ))}
+    </ul>
+  </main>
+</Base>
