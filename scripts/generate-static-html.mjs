@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts } from '../api/_routes.js';
+import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -79,9 +79,11 @@ function patchHtml(html, route, extra) {
       .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${d}$2`);
   }
 
-  // <link rel="canonical"> + JSON-LD + contenu SEO injecté.
+  // <link rel="canonical"> + hreflang (dormant si une seule langue) + JSON-LD +
+  // contenu SEO injecté.
+  const hreflang = hreflangLinks(route);
   out = out
-    .replace('</head>', `    <link rel="canonical" href="${escapeAttr(url)}" />\n${ld ? `    ${ld}\n` : ''}  </head>`)
+    .replace('</head>', `    <link rel="canonical" href="${escapeAttr(url)}" />\n${hreflang ? `    ${hreflang}\n` : ''}${ld ? `    ${ld}\n` : ''}  </head>`)
     .replace('<div id="root"></div>', seo ? `<div id="root">${seo}</div>` : '<div id="root"></div>');
   return out;
 }

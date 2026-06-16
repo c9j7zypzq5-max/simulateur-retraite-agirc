@@ -5,6 +5,7 @@ import SideAds from "./SideAds.jsx";
 import { GLOSSARY } from "../data/glossaire.js";
 import { GUIDES } from "../data/guides.js";
 import { ROUTE_META } from "../../api/_routes.js";
+import { useTranslation } from "../i18n/index.js";
 
 // Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
 const BLOG_CATS_FOR_SIM = {
@@ -41,13 +42,14 @@ function relatedSimulators(pathname) {
 
 function RelatedSimulators() {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   if (!pathname.startsWith("/simulateurs/")) return null;
   const related = relatedSimulators(pathname);
   if (related.length === 0) return null;
   return (
-    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Simulateurs liés">
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedSimulators")}>
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
-        Simulateurs liés
+        {t("sections.relatedSimulators")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
@@ -78,13 +80,14 @@ function RelatedSimulators() {
 // (maillage interne vers le lexique) sans toucher à chaque page.
 function RelatedTerms() {
   const { pathname } = useLocation();
+  const { t: tr } = useTranslation();
   if (!pathname.startsWith("/simulateurs/")) return null;
   const terms = GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
   if (terms.length === 0) return null;
   return (
-    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Définitions utiles">
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={tr("sections.usefulDefinitions")}>
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
-        Définitions utiles
+        {tr("sections.usefulDefinitions")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
@@ -107,7 +110,7 @@ function RelatedTerms() {
           background: "transparent", border: "1px dashed var(--border-gold)",
           color: "var(--gold)", fontSize: 13,
         }}>
-          Tout le lexique →
+          {tr("sections.allLexique")}
         </Link>
       </div>
     </section>
@@ -117,13 +120,14 @@ function RelatedTerms() {
 // Guides thématiques incluant la page simulateur courante.
 function RelatedGuides() {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
   if (!pathname.startsWith("/simulateurs/")) return null;
   const guides = GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
   if (guides.length === 0) return null;
   return (
-    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Guides liés">
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedGuides")}>
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
-        Guides liés
+        {t("sections.relatedGuides")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
@@ -161,11 +165,12 @@ function RelatedArticles() {
     return () => { alive = false; };
   }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const { t } = useTranslation();
   if (!onSim || articles.length === 0) return null;
   return (
-    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Articles liés">
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.readOnBlog")}>
       <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
-        À lire sur le blog
+        {t("sections.readOnBlog")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
@@ -187,6 +192,7 @@ function RelatedArticles() {
 }
 
 export default function Footer() {
+  const { t } = useTranslation();
   return (
     <>
     <SideAds />
@@ -216,35 +222,35 @@ export default function Footer() {
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
           <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Guides
+            {t("nav.guides")}
           </Link>
           <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Blog
+            {t("nav.blog")}
           </Link>
           <Link to="/lexique" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Lexique
+            {t("nav.lexique")}
           </Link>
           <Link to="/a-propos" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            À propos
+            {t("nav.apropos")}
           </Link>
           <Link to="/methodologie" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Méthodologie
+            {t("nav.methodologie")}
           </Link>
           <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Widgets
+            {t("nav.widgets")}
           </Link>
           <Link to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Mentions légales
+            {t("nav.mentionsLegales")}
           </Link>
           <Link to="/politique-de-confidentialite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Politique de confidentialité
+            {t("nav.confidentialite")}
           </Link>
           <a href="mailto:contact@mesimulateurs.fr" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            Contact
+            {t("nav.contact")}
           </a>
         </nav>
         <p style={{ fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
-          © 2026 mesimulateurs.fr — Simulation non contractuelle
+          {t("footer.rights")}
         </p>
       </div>
     </footer>

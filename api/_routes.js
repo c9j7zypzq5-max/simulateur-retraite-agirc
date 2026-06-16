@@ -9,6 +9,25 @@ import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 
 export const BASE = 'https://www.mesimulateurs.fr';
 
+// Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
+// la locale par défaut (servie à la racine) ; les autres langues seraient
+// préfixées (/en/...).
+export const I18N = { defaultLocale: 'fr', locales: ['fr'] };
+
+// Liens hreflang d'une route, pour le HTML statique. DORMANT tant qu'une seule
+// langue est active (renvoie '') : aucun effet sur le site actuel. Dès qu'une 2e
+// locale est ajoutée à I18N.locales, les balises <link rel="alternate"> sont
+// émises automatiquement (une par locale + x-default).
+export function hreflangLinks(route) {
+  if (I18N.locales.length < 2) return '';
+  const href = (loc) => `${BASE}${loc === I18N.defaultLocale ? '' : '/' + loc}${route}`;
+  const tags = I18N.locales.map(
+    (loc) => `<link rel="alternate" hreflang="${loc}" href="${href(loc)}" />`
+  );
+  tags.push(`<link rel="alternate" hreflang="x-default" href="${href(I18N.defaultLocale)}" />`);
+  return tags.join('\n    ');
+}
+
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
 // prio / freq (sitemap).
 export const ROUTE_META = {
