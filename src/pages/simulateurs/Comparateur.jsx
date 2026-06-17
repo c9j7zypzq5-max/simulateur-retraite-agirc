@@ -14,8 +14,169 @@ import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
 import { SimulateurHeader } from '../../components/ui.jsx';
 import { useMoney } from '../../i18n/CurrencyContext.jsx';
 import { fmtCur, activeSymbol } from '../../i18n/currency.js';
+import { useTranslation } from "../../i18n/index.js";
+
+const TXT = {
+  fr: {
+    docTitle: "Comparateur d'actifs 2025 — ETF, actions, crypto — simfinly.com",
+    metaDesc: "Comparez la performance historique d'ETF, actions et cryptos sur n'importe quelle période. Données réelles Yahoo Finance. Gratuit, sans inscription.",
+    canonical: "https://www.simfinly.com/simulateurs/comparateur",
+    jsonLdName: "Comparateur d'actifs — ETF, actions, crypto",
+    jsonLdDesc: "Comparez la performance historique d'ETF, actions et cryptomonnaies sur n'importe quelle période : retour total, CAGR, base 100. Données Yahoo Finance.",
+    badge: "Finances · Données réelles",
+    headerTitle: "Comparateur d'actifs",
+    headerDesc: "Comparez la performance historique d'actions, ETF et cryptomonnaies sur n'importe quelle période. Données réelles, résultats instantanés.",
+    features: [
+      "✓ Jusqu'à 5 actifs simultanés",
+      "✓ Données Yahoo Finance",
+      "✓ Investissement normalisé",
+      "✓ CAGR & retour total",
+    ],
+    assetsTitle: "Actifs à comparer",
+    addAsset: "+ Ajouter un actif",
+    periodTitle: "Période",
+    dateStart: "Date de début",
+    dateEnd: "Date de fin",
+    initialInvestTitle: "Investissement initial",
+    initialInvestSuffix: "investis au départ (normalisé pour tous les actifs)",
+    dcaTitle: "Versements périodiques (DCA)",
+    showInvestedInChart: "Afficher le capital investi dans le graphique",
+    dividendsTitle: "Dividendes & intérêts",
+    reinvestDivs: "Réinvestir les dividendes",
+    reinvestDivsNote: "(prix ajustés — adjClose)",
+    showInterest: "Afficher les intérêts/dividendes générés",
+    showInterestNote: "(zone colorée sur le graphique)",
+    freqMonthly: "chaque mois",
+    freqQuarterly: "chaque trimestre",
+    freqSemi: "chaque semestre",
+    freqAnnual: "chaque année",
+    loadingTitle: "Chargement des données…",
+    loadingSubtitle: "Yahoo Finance · données historiques mensuelles",
+    perfTitle: "Performance",
+    scaleValue: "valeur",
+    base100Label: "Base 100",
+    base100Note: "Base 100 : chaque actif part de 100 au début de la période. Une valeur de 150 = +50 %.",
+    base100NoInvest: "Base 100 indisponible sans investissement initial : affichage en euros (valeur du portefeuille issu des versements).",
+    historicalNote: "⚠️ Données historiques. Les performances passées ne garantissent pas les performances futures. Données Yahoo Finance (prix ajustés). Calculs hors fiscalité, frais de gestion et inflation.",
+    exportLabel: "Exporter les données :",
+    exportExcel: "↓ Excel",
+    emptyTitle: "Sélectionnez vos actifs et validez votre période",
+    emptySubtitle: "Les données Yahoo Finance seront chargées automatiquement",
+    aboutTitle: "À propos de ce comparateur",
+    aboutH3_1: "Comment lire les résultats ?",
+    aboutP1: "Tous les actifs sont normalisés : peu importe leur prix réel, chaque actif part de votre montant initial au même moment. Cela permet une comparaison équitable. Si vous investissez 10 000 € et que le S&P 500 affiche +150 %, cela signifie que vos 10 000 € seraient devenus 25 000 €.",
+    aboutH3_2: "Qu'est-ce que le CAGR ?",
+    aboutP2: "Le CAGR (Compound Annual Growth Rate) est le taux de croissance annuel composé. C'est la métrique la plus pertinente pour comparer des actifs sur des durées différentes. Un CAGR de 10 % signifie que votre investissement a crû de 10 % par an en moyenne sur toute la période, effets composés inclus.",
+    aboutH3_3: "Attention au biais du rétrospectif",
+    aboutP3: "Choisir une période favorable à un actif (ex: Bitcoin de 2020 à 2021) peut créer une illusion de performance. Préférez des périodes longues (10+ ans) et incluez des marchés baissiers pour avoir une image réaliste du risque.",
+    tableAsset: "Actif",
+    tableTotalReturn: "Retour total",
+    tableCAGR: "CAGR/an",
+    tableInvested: "Capital investi",
+    tableFinalValue: "Valeur finale",
+    bestPerf: "Meilleure performance",
+    removeAsset: "Supprimer cet actif",
+    assetPlaceholder: "Ticker ou nom (ex: AAPL, MSCI World…)",
+    assetAriaLabel: "Actif",
+    reportTitle: "Comparateur de placements",
+    reportHighlight: "Meilleure performance",
+    reportMontant: "Montant investi",
+    reportPeriod: "Période",
+    reportDuration: "Durée",
+    reportDurationUnit: "ans",
+    reportPeriodicLabel: "Versement périodique",
+    freqLabelMonthly: "mensuel",
+    exportSheetValues: "Valeurs",
+    exportSheetMetrics: "Métriques",
+    metricsRowAsset: "Actif",
+    metricsRowTicker: "Ticker",
+    metricsRowTotalReturn: "Retour total (%)",
+    metricsRowCAGR: "CAGR (%/an)",
+    metricsRowInvested: "Capital investi",
+    metricsRowFinalValue: "Valeur finale",
+  },
+  en: {
+    docTitle: "Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly",
+    metaDesc: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period from real data. Total return, CAGR, regular contributions and base-100 index.",
+    canonical: "https://www.simfinly.com/en/simulateurs/comparateur",
+    jsonLdName: "Asset Comparison Tool — ETFs, Stocks, Crypto",
+    jsonLdDesc: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period: total return, CAGR, base-100 index. Yahoo Finance data.",
+    badge: "Finance · Real data",
+    headerTitle: "Asset Comparison Tool",
+    headerDesc: "Compare the historical performance of stocks, ETFs and cryptocurrencies over any period. Real data, instant results.",
+    features: [
+      "✓ Up to 5 assets at once",
+      "✓ Yahoo Finance data",
+      "✓ Normalised investment",
+      "✓ CAGR & total return",
+    ],
+    assetsTitle: "Assets to compare",
+    addAsset: "+ Add an asset",
+    periodTitle: "Period",
+    dateStart: "Start date",
+    dateEnd: "End date",
+    initialInvestTitle: "Initial investment",
+    initialInvestSuffix: "invested at the start (normalised across all assets)",
+    dcaTitle: "Regular contributions (DCA)",
+    showInvestedInChart: "Show invested capital on the chart",
+    dividendsTitle: "Dividends & interest",
+    reinvestDivs: "Reinvest dividends",
+    reinvestDivsNote: "(adjusted prices — adjClose)",
+    showInterest: "Show interest/dividends generated",
+    showInterestNote: "(coloured area on the chart)",
+    freqMonthly: "every month",
+    freqQuarterly: "every quarter",
+    freqSemi: "every six months",
+    freqAnnual: "every year",
+    loadingTitle: "Loading data…",
+    loadingSubtitle: "Yahoo Finance · monthly historical data",
+    perfTitle: "Performance",
+    scaleValue: "value",
+    base100Label: "Base-100",
+    base100Note: "Base-100 index: each asset starts at 100 at the beginning of the period. A value of 150 = +50 %.",
+    base100NoInvest: "Base-100 not available without an initial investment: showing portfolio value from contributions.",
+    historicalNote: "⚠️ Historical data. Past performance does not guarantee future results. Yahoo Finance data (adjusted prices). Calculations exclude taxes, management fees and inflation.",
+    exportLabel: "Export data:",
+    exportExcel: "↓ Excel",
+    emptyTitle: "Select your assets and confirm your period",
+    emptySubtitle: "Yahoo Finance data will be loaded automatically",
+    aboutTitle: "About this comparison tool",
+    aboutH3_1: "How to read the results?",
+    aboutP1: "All assets are normalised: regardless of their actual price, each asset starts from your initial amount at the same point in time. This enables a fair comparison. If you invest £10,000 and the S&P 500 shows +150%, that means your £10,000 would have become £25,000.",
+    aboutH3_2: "What is CAGR?",
+    aboutP2: "CAGR (Compound Annual Growth Rate) is the compounded annual growth rate. It is the most relevant metric for comparing assets over different timeframes. A CAGR of 10% means your investment grew at an average rate of 10% per year over the entire period, including compounding effects.",
+    aboutH3_3: "Beware of hindsight bias",
+    aboutP3: "Choosing a period that is favourable to an asset (e.g. Bitcoin from 2020 to 2021) can create an illusion of performance. Prefer long periods (10+ years) and include bear markets for a realistic picture of risk.",
+    tableAsset: "Asset",
+    tableTotalReturn: "Total return",
+    tableCAGR: "CAGR/yr",
+    tableInvested: "Invested capital",
+    tableFinalValue: "Final value",
+    bestPerf: "Best performance",
+    removeAsset: "Remove this asset",
+    assetPlaceholder: "Ticker or name (e.g. AAPL, MSCI World…)",
+    assetAriaLabel: "Asset",
+    reportTitle: "Asset Comparison",
+    reportHighlight: "Best performance",
+    reportMontant: "Amount invested",
+    reportPeriod: "Period",
+    reportDuration: "Duration",
+    reportDurationUnit: "yrs",
+    reportPeriodicLabel: "Regular contribution",
+    freqLabelMonthly: "monthly",
+    exportSheetValues: "Values",
+    exportSheetMetrics: "Metrics",
+    metricsRowAsset: "Asset",
+    metricsRowTicker: "Ticker",
+    metricsRowTotalReturn: "Total return (%)",
+    metricsRowCAGR: "CAGR (%/yr)",
+    metricsRowInvested: "Invested capital",
+    metricsRowFinalValue: "Final value",
+  },
+};
 
 const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const CURRENT_YEAR = 2025;
 const MIN_YEAR = 1990;
 
@@ -181,21 +342,22 @@ function buildSeriesRows(computed, assets) {
   });
 }
 
-function buildMetricsRows(metrics) {
+function buildMetricsRows(metrics, txt) {
   return (metrics || []).map(m => ({
-    Actif: m.label || m.ticker,
-    Ticker: m.ticker,
-    'Retour total (%)': Number(m.totalReturn.toFixed(1)),
-    'CAGR (%/an)': Number(m.cagr.toFixed(1)),
-    [`Capital investi (${activeSymbol()})`]: Math.round(m.totalInvested),
-    [`Valeur finale (${activeSymbol()})`]: Math.round(m.finalValue),
+    [txt.metricsRowAsset]: m.label || m.ticker,
+    [txt.metricsRowTicker]: m.ticker,
+    [`${txt.metricsRowTotalReturn}`]: Number(m.totalReturn.toFixed(1)),
+    [`${txt.metricsRowCAGR}`]: Number(m.cagr.toFixed(1)),
+    [`${txt.metricsRowInvested} (${activeSymbol()})`]: Math.round(m.totalInvested),
+    [`${txt.metricsRowFinalValue} (${activeSymbol()})`]: Math.round(m.finalValue),
   }));
 }
 
 // ── SVG multi-courbes ─────────────────────────────────────────────────────────
-function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest, displayMode = 'euros' }) {
+function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showInterest, displayMode = 'euros', locale = 'fr' }) {
   const svgRef = useRef(null);
   const [hoverIdx, setHoverIdx] = useState(null);
+  const MONTHS = locale === 'en' ? MONTHS_EN : MONTHS_FR;
 
   if (!computed || Object.keys(computed).length === 0) return null;
 
@@ -253,7 +415,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
   if (hoverIdx != null) {
     const hDate = allDates[hoverIdx];
     const [hYr, hMo] = (hDate || '').split('-');
-    const dateLabel = hMo ? `${MONTHS_FR[parseInt(hMo) - 1]} ${hYr}` : hDate;
+    const dateLabel = hMo ? `${MONTHS[parseInt(hMo) - 1]} ${hYr}` : hDate;
     const rows = assets.map(asset => {
       const series = computed[asset.ticker];
       if (!series) return null;
@@ -269,7 +431,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       ref={svgRef}
       viewBox={`0 0 ${W} ${H}`}
       style={{ width: '100%', height: 'min(280px, 52vw)', display: 'block', overflow: 'visible', touchAction: 'none' }}
-      aria-label="Graphique de comparaison des actifs"
+      aria-label={locale === 'en' ? "Asset comparison chart" : "Graphique de comparaison des actifs"}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => setHoverIdx(null)}
       onTouchMove={handleTouchMove}
@@ -378,7 +540,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
         .map(date => {
           const idx = allDates.indexOf(date);
           const [yr, mo] = date.split('-');
-          const label = mo === '01' ? yr : (idx === 0 || idx === allDates.length - 1 ? `${MONTHS_FR[parseInt(mo)-1]} ${yr}` : '');
+          const label = mo === '01' ? yr : (idx === 0 || idx === allDates.length - 1 ? `${MONTHS[parseInt(mo)-1]} ${yr}` : '');
           return label ? (
             <text key={date} x={x(idx)} y={H - 4} textAnchor="middle" fontSize="12.5"
               fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
@@ -425,7 +587,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
 }
 
 // ── Tableau de comparaison ────────────────────────────────────────────────────
-function MetricsTable({ metrics, montant }) {
+function MetricsTable({ metrics, montant, txt }) {
   if (!metrics || metrics.length === 0) return null;
   const hasDCA = metrics.some(m => m.totalInvested > montant + 0.01);
   return (
@@ -433,11 +595,11 @@ function MetricsTable({ metrics, montant }) {
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
         <thead>
           <tr style={{ borderBottom: '1px solid var(--border)' }}>
-            <th style={{ textAlign: 'left',  padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Actif</th>
-            <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Retour total</th>
-            <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>CAGR/an</th>
-            {hasDCA && <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Capital investi</th>}
-            <th style={{ textAlign: 'right', padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>Valeur finale</th>
+            <th style={{ textAlign: 'left',  padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableAsset}</th>
+            <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableTotalReturn}</th>
+            <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableCAGR}</th>
+            {hasDCA && <th style={{ textAlign: 'right', padding: '10px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableInvested}</th>}
+            <th style={{ textAlign: 'right', padding: '10px 0',  color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableFinalValue}</th>
           </tr>
         </thead>
         <tbody>
@@ -479,7 +641,7 @@ function MetricsTable({ metrics, montant }) {
         </tbody>
       </table>
       <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 10, lineHeight: 1.6 }}>
-        {metrics[0] ? `🏆 Meilleure performance : ${metrics[0].emoji} ${metrics[0].label || metrics[0].ticker} (+${metrics[0].totalReturn.toFixed(1)} %)` : ''}
+        {metrics[0] ? `🏆 ${txt.bestPerf} : ${metrics[0].emoji} ${metrics[0].label || metrics[0].ticker} (+${metrics[0].totalReturn.toFixed(1)} %)` : ''}
       </p>
     </div>
   );
@@ -493,7 +655,7 @@ function hexToRgbSafe(hex) {
 }
 
 // ── Sélecteur d'actifs ────────────────────────────────────────────────────────
-function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
+function AssetRow({ asset, idx, onChange, onRemove, canRemove, txt }) {
   const [query,      setQuery]      = useState(asset.ticker);
   const [open,       setOpen]       = useState(false);
   const [apiResults, setApiResults] = useState([]);
@@ -557,8 +719,8 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
           onFocus={e => { setOpen(true); e.target.select(); }}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           onKeyDown={e => { if (e.key === 'Enter') { commitQuery(); inputRef.current?.blur(); } }}
-          placeholder="Ticker ou nom (ex: AAPL, MSCI World…)"
-          aria-label={`Actif ${idx + 1} : ticker ou nom`}
+          placeholder={txt.assetPlaceholder}
+          aria-label={`${txt.assetAriaLabel} ${idx + 1}`}
           style={{
             width: '100%', padding: '8px 12px', borderRadius: 9,
             background: 'var(--input-bg)', border: '1px solid var(--border)',
@@ -598,12 +760,12 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
         )}
       </div>
 
-      {/* Supprimer */}
+      {/* Supprimer / Remove */}
       {canRemove && (
         <button
           onClick={onRemove}
-          title="Supprimer cet actif"
-          aria-label="Supprimer cet actif"
+          title={txt.removeAsset}
+          aria-label={txt.removeAsset}
           style={{
             width: 28, height: 28, borderRadius: '50%',
             background: 'var(--card-bg)', border: '1px solid var(--border)',
@@ -618,7 +780,8 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove }) {
 }
 
 // ── Sélecteur de date ─────────────────────────────────────────────────────────
-function DateSelect({ label, value, onChange }) {
+function DateSelect({ label, value, onChange, locale = 'fr' }) {
+  const MONTHS = locale === 'en' ? MONTHS_EN : MONTHS_FR;
   const years  = [];
   for (let y = CURRENT_YEAR; y >= MIN_YEAR; y--) years.push(y);
 
@@ -636,7 +799,7 @@ function DateSelect({ label, value, onChange }) {
       </div>
       <div style={{ display: 'flex', gap: 6 }}>
         <select value={value.month} onChange={e => onChange({ ...value, month: parseInt(e.target.value) })} style={selStyle}>
-          {MONTHS_FR.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
+          {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
         </select>
         <select value={value.year} onChange={e => onChange({ ...value, year: parseInt(e.target.value) })} style={selStyle}>
           {years.map(y => <option key={y} value={y}>{y}</option>)}
@@ -650,6 +813,10 @@ function DateSelect({ label, value, onChange }) {
 export default function Comparateur() {
   const [theme, setTheme] = useTheme();
   useMoney(); // abonnement aux changements de devise
+  const { locale } = useTranslation();
+  const txt = TXT[locale] ?? TXT.fr;
+
+  const MONTHS = locale === 'en' ? MONTHS_EN : MONTHS_FR;
 
   const [assets, setAssets] = useState([
     { id: 0, ticker: '^GSPC',   label: 'S&P 500',          emoji: '🇺🇸', color: ASSET_COLORS[0] },
@@ -682,18 +849,17 @@ export default function Comparateur() {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    document.title = 'Comparateur d\'actifs 2025 — ETF, actions, crypto — simfinly.com';
-    document.querySelector('meta[name="description"]')?.setAttribute('content',
-      'Comparez la performance historique d\'ETF, actions et cryptos sur n\'importe quelle période. Données réelles Yahoo Finance. Gratuit, sans inscription.');
+    document.title = txt.docTitle;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.simfinly.com/simulateurs/comparateur';
+    link.href = txt.canonical;
     track('simulator_view', { name: 'comparateur' });
     if (!sessionStorage.getItem('tracked_comparateur')) {
       sessionStorage.setItem('tracked_comparateur', '1');
       fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: 'comparateur' }) }).catch(() => {});
     }
-  }, []);
+  }, [txt]);
 
   // Fetch avec debounce + cache
   useEffect(() => {
@@ -767,8 +933,8 @@ export default function Comparateur() {
 
   const hasResult  = Object.keys(computed).length >= 1;
   const totalYears = toDate.year - fromDate.year + (toDate.month - fromDate.month) / 12;
-  const fromLabel  = `${MONTHS_FR[fromDate.month - 1]} ${fromDate.year}`;
-  const toLabel    = `${MONTHS_FR[toDate.month - 1]} ${toDate.year}`;
+  const fromLabel  = `${MONTHS[fromDate.month - 1]} ${fromDate.year}`;
+  const toLabel    = `${MONTHS[toDate.month - 1]} ${toDate.year}`;
 
   const addAsset = useCallback(() => {
     if (assets.length >= 5) return;
@@ -792,16 +958,16 @@ export default function Comparateur() {
 
   const best = metrics && metrics.length > 0 ? metrics[0] : null;
   const report = {
-    title: "Comparateur de placements",
+    title: txt.reportTitle,
     highlight: {
-      label: "Meilleure performance",
+      label: txt.reportHighlight,
       value: best ? `${best.label || best.ticker} · ${fmtPct(best.totalReturn)}` : "—",
     },
     params: [
-      { label: "Montant investi", value: fmtCur(montant) },
-      { label: "Période", value: `${fromLabel} → ${toLabel}` },
-      { label: "Durée", value: `${totalYears.toFixed(1)} ans` },
-      ...(periodicAmt > 0 ? [{ label: "Versement périodique", value: `${fmtCur(periodicAmt)} (${periodicFreq === 'monthly' ? 'mensuel' : periodicFreq})` }] : []),
+      { label: txt.reportMontant, value: fmtCur(montant) },
+      { label: txt.reportPeriod, value: `${fromLabel} → ${toLabel}` },
+      { label: txt.reportDuration, value: `${totalYears.toFixed(1)} ${txt.reportDurationUnit}` },
+      ...(periodicAmt > 0 ? [{ label: txt.reportPeriodicLabel, value: `${fmtCur(periodicAmt)} (${periodicFreq === 'monthly' ? txt.freqLabelMonthly : periodicFreq})` }] : []),
     ],
     results: best ? metrics.slice(0, 5).map((m, i) => ({
       label: `${i + 1}. ${m.label || m.ticker}`,
@@ -809,7 +975,9 @@ export default function Comparateur() {
       strong: i === 0,
     })) : [],
     notes: best ? [
-      `Sur la période, ${best.label || best.ticker} affiche la meilleure performance (${fmtPct(best.totalReturn)}, soit ${fmtPct(best.cagr)}/an).`,
+      locale === 'en'
+        ? `Over the period, ${best.label || best.ticker} shows the best performance (${fmtPct(best.totalReturn)}, i.e. ${fmtPct(best.cagr)}/yr).`
+        : `Sur la période, ${best.label || best.ticker} affiche la meilleure performance (${fmtPct(best.totalReturn)}, soit ${fmtPct(best.cagr)}/an).`,
     ] : undefined,
   };
 
@@ -821,38 +989,38 @@ export default function Comparateur() {
 
   const handleExportXLSX = useCallback(() => {
     const sheets = [
-      { name: `Valeurs (${activeSymbol()})`, rows: buildSeriesRows(computed, assetsWithColors) },
-      { name: 'Métriques',   rows: buildMetricsRows(metrics) },
+      { name: `${txt.exportSheetValues} (${activeSymbol()})`, rows: buildSeriesRows(computed, assetsWithColors) },
+      { name: txt.exportSheetMetrics, rows: buildMetricsRows(metrics, txt) },
     ];
     downloadXLSX(sheets, `${exportBaseName}.xlsx`);
     track('comparateur_export', { format: 'xlsx' });
-  }, [computed, assetsWithColors, metrics, exportBaseName]);
+  }, [computed, assetsWithColors, metrics, exportBaseName, txt]);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Comparateur d'actifs — ETF, actions, crypto",
-        "url": "https://www.simfinly.com/simulateurs/comparateur",
-        "description": "Comparez la performance historique d'ETF, actions et cryptomonnaies sur n'importe quelle période : retour total, CAGR, base 100. Données Yahoo Finance.",
+        "name": txt.jsonLdName,
+        "url": txt.canonical,
+        "description": txt.jsonLdDesc,
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "inLanguage": "fr-FR",
+        "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/comparateur" size={34} />}
-          badge="Finances · Données réelles"
-          title="Comparateur d'actifs"
-          desc="Comparez la performance historique d'actions, ETF et cryptomonnaies sur n'importe quelle période. Données réelles, résultats instantanés."
+          badge={txt.badge}
+          title={txt.headerTitle}
+          desc={txt.headerDesc}
         />
 
         {/* Bandeau features */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
-          {['✓ Jusqu\'à 5 actifs simultanés', '✓ Données Yahoo Finance', '✓ Investissement normalisé', '✓ CAGR & retour total'].map((t, i) => (
+          {txt.features.map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
@@ -860,7 +1028,7 @@ export default function Comparateur() {
         {/* Formulaire */}
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '28px 28px', boxShadow: 'var(--card-shadow)', marginBottom: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
-            Actifs à comparer
+            {txt.assetsTitle}
           </h2>
 
           {assets.map((asset, idx) => (
@@ -871,6 +1039,7 @@ export default function Comparateur() {
               onChange={upd => updateAsset(asset.id, upd)}
               onRemove={() => removeAsset(asset.id)}
               canRemove={assets.length > 1}
+              txt={txt}
             />
           ))}
 
@@ -885,23 +1054,23 @@ export default function Comparateur() {
                 color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
                 fontFamily: "'DM Sans', sans-serif", marginBottom: 8,
               }}
-            >+ Ajouter un actif ({assets.length}/5)</button>
+            >{txt.addAsset} ({assets.length}/5)</button>
           )}
 
           <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }} />
 
           {/* Période */}
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
-            Période
+            {txt.periodTitle}
           </h2>
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 20 }}>
-            <DateSelect label="Date de début" value={fromDate} onChange={setFromDate} />
-            <DateSelect label="Date de fin"   value={toDate}   onChange={setToDate}   />
+            <DateSelect label={txt.dateStart} value={fromDate} onChange={setFromDate} locale={locale} />
+            <DateSelect label={txt.dateEnd}   value={toDate}   onChange={setToDate}   locale={locale} />
           </div>
 
           {/* Montant */}
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
-            Investissement initial
+            {txt.initialInvestTitle}
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <input
@@ -918,14 +1087,14 @@ export default function Comparateur() {
                 color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
               }}
             />
-            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()} investis au départ (normalisé pour tous les actifs)</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()} {txt.initialInvestSuffix}</span>
           </div>
 
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 20px' }} />
 
           {/* DCA */}
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
-            Versements périodiques (DCA)
+            {txt.dcaTitle}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
             <input
@@ -955,10 +1124,10 @@ export default function Comparateur() {
                 opacity: periodicAmt === 0 ? 0.5 : 1,
               }}
             >
-              <option value="monthly">chaque mois</option>
-              <option value="quarterly">chaque trimestre</option>
-              <option value="semi">chaque semestre</option>
-              <option value="annual">chaque année</option>
+              <option value="monthly">{txt.freqMonthly}</option>
+              <option value="quarterly">{txt.freqQuarterly}</option>
+              <option value="semi">{txt.freqSemi}</option>
+              <option value="annual">{txt.freqAnnual}</option>
             </select>
           </div>
           {periodicAmt > 0 && (
@@ -969,7 +1138,7 @@ export default function Comparateur() {
                 onChange={e => setShowPeriodicInChart(e.target.checked)}
                 style={{ accentColor: 'var(--gold)', width: 14, height: 14 }}
               />
-              Afficher le capital investi dans le graphique
+              {txt.showInvestedInChart}
             </label>
           )}
 
@@ -977,7 +1146,7 @@ export default function Comparateur() {
 
           {/* Réinvestissement & intérêts */}
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 14, fontWeight: 400 }}>
-            Dividendes & intérêts
+            {txt.dividendsTitle}
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', cursor: 'pointer' }}>
@@ -987,7 +1156,7 @@ export default function Comparateur() {
                 onChange={e => setReinvestDivs(e.target.checked)}
                 style={{ accentColor: 'var(--gold)', width: 14, height: 14 }}
               />
-              <span>Réinvestir les dividendes <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>(prix ajustés — adjClose)</span></span>
+              <span>{txt.reinvestDivs} <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{txt.reinvestDivsNote}</span></span>
             </label>
             <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--text)', cursor: 'pointer' }}>
               <input
@@ -997,7 +1166,7 @@ export default function Comparateur() {
                 disabled={!reinvestDivs}
                 style={{ accentColor: 'var(--gold)', width: 14, height: 14, cursor: !reinvestDivs ? 'not-allowed' : 'pointer' }}
               />
-              <span style={{ opacity: !reinvestDivs ? 0.45 : 1 }}>Afficher les intérêts/dividendes générés <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>(zone colorée sur le graphique)</span></span>
+              <span style={{ opacity: !reinvestDivs ? 0.45 : 1 }}>{txt.showInterest} <span style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{txt.showInterestNote}</span></span>
             </label>
           </div>
         </div>
@@ -1018,8 +1187,8 @@ export default function Comparateur() {
         {loading && (
           <div style={{ textAlign: 'center', padding: '32px 0', color: 'var(--text-secondary)' }}>
             <div style={{ fontSize: 24, marginBottom: 12 }}>⏳</div>
-            <p style={{ fontSize: 14 }}>Chargement des données…</p>
-            <p style={{ fontSize: 12, opacity: 0.6 }}>Yahoo Finance · données historiques mensuelles</p>
+            <p style={{ fontSize: 14 }}>{txt.loadingTitle}</p>
+            <p style={{ fontSize: 12, opacity: 0.6 }}>{txt.loadingSubtitle}</p>
           </div>
         )}
 
@@ -1031,13 +1200,13 @@ export default function Comparateur() {
           >
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 20 }}>
               <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', margin: 0, fontWeight: 400 }}>
-                Performance — {fromLabel} → {toLabel} ({totalYears.toFixed(1)} ans)
+                {txt.perfTitle} — {fromLabel} → {toLabel} ({totalYears.toFixed(1)} {txt.reportDurationUnit})
               </h2>
               {/* Sélecteur d'échelle : euros absolus vs base 100 */}
-              <div role="group" aria-label="Échelle du graphique" style={{ display: 'flex', background: 'var(--input-bg)', borderRadius: 9, padding: 3, gap: 2 }}>
+              <div role="group" aria-label={locale === 'en' ? "Chart scale" : "Échelle du graphique"} style={{ display: 'flex', background: 'var(--input-bg)', borderRadius: 9, padding: 3, gap: 2 }}>
                 {[
-                  { id: 'euros',   label: `${activeSymbol()} valeur` },
-                  { id: 'base100', label: 'Base 100' },
+                  { id: 'euros',   label: `${activeSymbol()} ${txt.scaleValue}` },
+                  { id: 'base100', label: txt.base100Label },
                 ].map(opt => {
                   const active = displayMode === opt.id;
                   return (
@@ -1065,33 +1234,34 @@ export default function Comparateur() {
                 showPeriodicInChart={periodicAmt > 0 && showPeriodicInChart}
                 showInterest={showInterest && reinvestDivs}
                 displayMode={displayMode}
+                locale={locale}
               />
               {displayMode === 'base100' && montant > 0 && (
                 <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
-                  Base 100 : chaque actif part de 100 au début de la période. Une valeur de 150 = +50 %.
+                  {txt.base100Note}
                 </p>
               )}
               {displayMode === 'base100' && montant === 0 && (
                 <p style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
-                  Base 100 indisponible sans investissement initial : affichage en euros (valeur du portefeuille issu des versements).
+                  {txt.base100NoInvest}
                 </p>
               )}
             </ZoomableChart>
 
             {/* Tableau métriques */}
-            <MetricsTable metrics={metrics} montant={montant} />
+            <MetricsTable metrics={metrics} montant={montant} txt={txt} />
 
             {/* Note */}
             <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6, marginTop: 16 }}>
-              ⚠️ <strong>Données historiques.</strong> Les performances passées ne garantissent pas les performances futures. Données Yahoo Finance (prix ajustés). Calculs hors fiscalité, frais de gestion et inflation.
+              {txt.historicalNote}
             </div>
 
             {/* Export des données */}
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 10, marginTop: 16 }}>
-              <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>Exporter les données :</span>
+              <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{txt.exportLabel}</span>
               {[
-                { label: '↓ CSV',  onClick: handleExportCSV },
-                { label: '↓ Excel', onClick: handleExportXLSX },
+                { label: '↓ CSV',          onClick: handleExportCSV },
+                { label: txt.exportExcel,  onClick: handleExportXLSX },
               ].map(btn => (
                 <button key={btn.label} onClick={btn.onClick}
                   style={{
@@ -1144,25 +1314,25 @@ export default function Comparateur() {
         {!loading && !hasResult && Object.keys(errors).length === 0 && (
           <div style={{ textAlign: 'center', padding: '40px 28px', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--text-secondary)' }}>
             <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
-            <p style={{ fontSize: 14, marginBottom: 6 }}>Sélectionnez vos actifs et validez votre période</p>
-            <p style={{ fontSize: 12, opacity: 0.7 }}>Les données Yahoo Finance seront chargées automatiquement</p>
+            <p style={{ fontSize: 14, marginBottom: 6 }}>{txt.emptyTitle}</p>
+            <p style={{ fontSize: 12, opacity: 0.7 }}>{txt.emptySubtitle}</p>
           </div>
         )}
 
         <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
 
-        {/* À propos */}
+        {/* À propos / About */}
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 24 }}>
-            À propos de ce comparateur
+            {txt.aboutTitle}
           </h2>
           <div style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginBottom: 10 }}>Comment lire les résultats ?</h3>
-            <p style={{ marginBottom: 16 }}>Tous les actifs sont <strong>normalisés</strong> : peu importe leur prix réel, chaque actif part de votre montant initial au même moment. Cela permet une comparaison équitable. Si vous investissez 10 000 € et que le S&P 500 affiche +150 %, cela signifie que vos 10 000 € seraient devenus 25 000 €.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>Qu'est-ce que le CAGR ?</h3>
-            <p style={{ marginBottom: 16 }}>Le <strong>CAGR</strong> (Compound Annual Growth Rate) est le taux de croissance annuel composé. C'est la métrique la plus pertinente pour comparer des actifs sur des durées différentes. Un CAGR de 10 % signifie que votre investissement a crû de 10 % par an en moyenne sur toute la période, effets composés inclus.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>Attention au biais du rétrospectif</h3>
-            <p>Choisir une période favorable à un actif (ex: Bitcoin de 2020 à 2021) peut créer une illusion de performance. Préférez des périodes longues (10+ ans) et incluez des marchés baissiers pour avoir une image réaliste du risque.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginBottom: 10 }}>{txt.aboutH3_1}</h3>
+            <p style={{ marginBottom: 16 }}>{txt.aboutP1}</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_2}</h3>
+            <p style={{ marginBottom: 16 }}>{txt.aboutP2}</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_3}</h3>
+            <p>{txt.aboutP3}</p>
           </div>
         </div>
 

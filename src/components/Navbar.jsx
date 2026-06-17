@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, LocaleLink, useLocation, useLocale } from "../lib/router.js";
+import { Link, LocaleLink, useLocation, useLocale } from "../lib/router.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
@@ -305,7 +305,7 @@ export default function Navbar({ theme, setTheme }) {
                             <span style={{ display: "block", fontSize: 13, fontWeight: isCurrent ? 500 : 400, color: isCurrent ? "var(--gold)" : "var(--text)" }}>{item.title}</span>
                             <span style={{ display: "block", fontSize: 11, color: "var(--text-secondary)" }}>{item.subtitle}</span>
                           </span>
-                        </Link>
+                        </LocaleLink>
                       );
                     })}
                   </div>
@@ -567,7 +567,7 @@ export default function Navbar({ theme, setTheme }) {
                           <div style={{ fontSize: "0.71rem", color: "var(--text-secondary)" }}>{item.subtitle}</div>
                         </div>
                         {isCurrent && <span style={{ fontSize: 8, color: "var(--gold)", flexShrink: 0 }}>●</span>}
-                      </Link>
+                      </LocaleLink>
                     );
                   })}
                 </div>

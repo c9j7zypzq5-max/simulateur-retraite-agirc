@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "../lib/router.js";
+import { Link, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { GLOSSARY } from "../data/glossaire.js";

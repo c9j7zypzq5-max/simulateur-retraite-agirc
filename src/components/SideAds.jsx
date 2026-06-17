@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "../lib/router.js";
+import { useLocation } from "../lib/router.jsx";
 import AdUnit from "./AdUnit.jsx";
 
 // Bannières verticales (skyscrapers) fixées dans les marges, uniquement sur les
