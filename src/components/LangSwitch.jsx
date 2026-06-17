@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "../lib/router.js";
+import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath } from "../i18n/config.js";
 import { alternatePath } from "../i18n/paths.js";
 

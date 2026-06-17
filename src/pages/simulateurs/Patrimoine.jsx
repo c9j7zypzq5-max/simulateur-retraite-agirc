@@ -20,6 +20,199 @@ import {
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
+import { useTranslation } from "../../i18n/index.js";
+
+// ─── Translations ──────────────────────────────────────────────────────────────
+const TXT = {
+  fr: {
+    docTitle: "Simulateur Patrimoine Global 2026 — simfinly.com",
+    metaDesc: "Projetez votre patrimoine global à l'âge cible : capital financier, immobilier et retraite réunis dans un seul simulateur. Gratuit, sans inscription.",
+    badge: "Finances · Simulation 2026",
+    pageTitle: "Patrimoine global",
+    pageDesc: "Projetez votre fortune nette à l'âge cible : portefeuille financier, immobilier et retraite réunis dans une vision consolidée.",
+    featureCapFinancier: "✓ Capital financier (PEA, AV, ETF…)",
+    featureImmo: "✓ Immobilier locatif",
+    featureRetraite: "✓ Retraite légale",
+    featureLocal: "✓ 100 % local",
+    sectionHorizon: "Horizon de projection",
+    labelAgeActuel: "Âge actuel",
+    labelAgeCible: "Âge cible",
+    hintAgeCible: "Âge auquel projeter votre patrimoine",
+    hintAgeCibleProjection: (n) => `Projection sur ${n} ans`,
+    sectionEpargne: "Épargne & investissements",
+    labelCapFinancier: "Capital financier actuel",
+    hintCapFinancier: "PEA, assurance-vie, livrets, ETF… (hors résidence principale)",
+    labelVersement: "Versement mensuel",
+    hintVersementDefault: "Montant régulièrement investi chaque mois",
+    hintVersementValue: (v) => `soit ${v} / an`,
+    labelRendement: "Rendement annuel espéré",
+    hintRendement: "Rendement réel après inflation (portefeuille actions diversifié ~5 %)",
+    sectionImmo: "Immobilier locatif",
+    optionnel: "(optionnel)",
+    toggleImmo: "Inclure un bien immobilier locatif",
+    labelValeurImmo: "Valeur actuelle du bien",
+    labelLoyerNet: "Loyer net mensuel",
+    hintLoyerNet: "Loyer après charges, taxe foncière, assurances",
+    labelAppreciation: "Appréciation annuelle",
+    hintAppreciation: "2 % en France en tendance longue (réel après inflation)",
+    sectionRetraite: "Retraite légale",
+    toggleRetraite: "Inclure une retraite légale estimée",
+    labelPension: "Pension mensuelle estimée",
+    hintPension: "Retraite brute mensuelle estimée (CNAV + complémentaire)",
+    labelAgeRetraite: "Âge de départ en retraite",
+    resultsTitle: (age) => `Votre patrimoine à ${age} ans`,
+    resultsEmpty: "Renseignez votre capital ou votre versement mensuel pour démarrer.",
+    heroLabel: "Patrimoine total projeté",
+    heroSub: (v) => `dont ${v} / mois de revenus passifs`,
+    chipCapFinancier: "Capital financier",
+    chipValImmo: "Valeur immobilier",
+    chipRevFinancier: "Revenu financier/mois",
+    chipLoyer: "Loyer net/mois",
+    chipRetraite: "Retraite/mois",
+    chipRevTotal: "Revenu total/mois",
+    compositionTitle: "Composition du patrimoine",
+    financier: "Financier",
+    immobilier: "Immobilier",
+    projectionTitle: "Projection annuelle",
+    disclaimer: "⚠️ <strong>Simulation indicative.</strong> Les rendements passés ne garantissent pas les rendements futurs. Calculs en euros constants (rendement réel après inflation).",
+    btnSave: "Sauvegarder",
+    btnSaved: "Sauvegardée",
+    accordionTitle: "Détail année par année",
+    accordionSubtitle: "Évolution de chaque composante du patrimoine",
+    tableAge: "Âge",
+    tableCapFinancier: "Capital financier",
+    tableImmo: "Immobilier",
+    tableTotal: "Total",
+    ageSuffix: "ans",
+    csvAge: "Âge",
+    csvCapFinancier: "Capital financier (€)",
+    csvImmo: "Immobilier (€)",
+    csvTotal: "Patrimoine total (€)",
+    aboutTitle: "À propos de ce simulateur",
+    aboutP1: "Ce simulateur calcule la valeur projetée de votre patrimoine global à un âge cible en combinant trois sources de richesse : votre épargne financière (PEA, assurance-vie, ETF…), votre patrimoine immobilier locatif, et votre future pension de retraite.",
+    aboutP2Fr: "Le",
+    aboutP2CapFinancier: "capital financier",
+    aboutP2Mid: "est projeté via les intérêts composés mensuels. La",
+    aboutP2ValImmo: "valeur immobilière",
+    aboutP2Mid2: "est projetée en appliquant un taux d'appréciation annuel à la valeur actuelle du bien. La",
+    aboutP2Retraite: "retraite légale",
+    aboutP2End: "s'ajoute comme revenu mensuel à partir de l'âge de départ renseigné.",
+    aboutP3Pre: "Le revenu passif financier est estimé à",
+    aboutP3Rule: "4 % du capital financier final par an",
+    aboutP3Post: "(règle des 4 %, étude Trinity). Les loyers sont ceux actuels, non projetés à l'inflation. Tous les calculs sont en euros constants (rendement réel).",
+    reportTitle: "Simulateur Patrimoine — Projection",
+    reportHighlightLabel: "Patrimoine total projeté",
+    reportParamAge: "Âge actuel",
+    reportParamAgeCible: "Âge cible",
+    reportParamCap: "Capital financier actuel",
+    reportParamVers: "Versement mensuel",
+    reportParamRend: "Rendement du portefeuille",
+    reportPatTotal: "Patrimoine total projeté",
+    reportCapFin: "Capital financier final",
+    reportImmoFin: "Valeur immobilier final",
+    reportRevTotal: "Revenu passif mensuel total",
+    reportRevFin: "Revenu financier mensuel",
+    reportNotes: "Calculs en euros constants (rendement réel après inflation).",
+    historyLabel: (v, age) => `Patrimoine ${v} à ${age} ans`,
+    chartAria: "Projection du patrimoine global",
+    jsonLdName: "Simulateur de patrimoine global",
+    jsonLdDesc: "Projetez votre patrimoine global : capital financier, immobilier et retraite réunis. Gratuit.",
+  },
+  en: {
+    docTitle: "Net Worth Calculator — Track Your Wealth | Simfinly",
+    metaDesc: "Consolidate your financial, real-estate and retirement assets to see your net worth and how it breaks down by asset class.",
+    badge: "Finance · 2026 Simulation",
+    pageTitle: "Net Worth Calculator",
+    pageDesc: "Project your net worth at your target age: financial portfolio, real estate and retirement combined in one consolidated view.",
+    featureCapFinancier: "✓ Financial capital (stocks, ETFs…)",
+    featureImmo: "✓ Rental real estate",
+    featureRetraite: "✓ State pension",
+    featureLocal: "✓ 100 % local",
+    sectionHorizon: "Projection horizon",
+    labelAgeActuel: "Current age",
+    labelAgeCible: "Target age",
+    hintAgeCible: "Age at which to project your net worth",
+    hintAgeCibleProjection: (n) => `Projection over ${n} years`,
+    sectionEpargne: "Savings & investments",
+    labelCapFinancier: "Current financial capital",
+    hintCapFinancier: "Stocks, ETFs, savings accounts… (excluding primary residence)",
+    labelVersement: "Monthly contribution",
+    hintVersementDefault: "Amount regularly invested each month",
+    hintVersementValue: (v) => `i.e. ${v} / year`,
+    labelRendement: "Expected annual return",
+    hintRendement: "Real return after inflation (diversified equity portfolio ~5 %)",
+    sectionImmo: "Rental real estate",
+    optionnel: "(optional)",
+    toggleImmo: "Include a rental property",
+    labelValeurImmo: "Current property value",
+    labelLoyerNet: "Net monthly rent",
+    hintLoyerNet: "Rent after expenses, property tax, insurance",
+    labelAppreciation: "Annual appreciation",
+    hintAppreciation: "Long-term trend ~2 % (real after inflation)",
+    sectionRetraite: "State pension",
+    toggleRetraite: "Include an estimated state pension",
+    labelPension: "Estimated monthly pension",
+    hintPension: "Estimated gross monthly pension (state + supplementary)",
+    labelAgeRetraite: "Retirement age",
+    resultsTitle: (age) => `Your net worth at age ${age}`,
+    resultsEmpty: "Enter your capital or monthly contribution to get started.",
+    heroLabel: "Projected total net worth",
+    heroSub: (v) => `including ${v} / month in passive income`,
+    chipCapFinancier: "Financial capital",
+    chipValImmo: "Real estate value",
+    chipRevFinancier: "Financial income/month",
+    chipLoyer: "Net rent/month",
+    chipRetraite: "Pension/month",
+    chipRevTotal: "Total income/month",
+    compositionTitle: "Net worth breakdown",
+    financier: "Financial",
+    immobilier: "Real estate",
+    projectionTitle: "Annual projection",
+    disclaimer: "⚠️ <strong>Indicative simulation.</strong> Past returns do not guarantee future returns. Figures in constant currency (real return after inflation).",
+    btnSave: "Save",
+    btnSaved: "Saved",
+    accordionTitle: "Year-by-year detail",
+    accordionSubtitle: "Evolution of each component of your net worth",
+    tableAge: "Age",
+    tableCapFinancier: "Financial capital",
+    tableImmo: "Real estate",
+    tableTotal: "Total",
+    ageSuffix: "",
+    csvAge: "Age",
+    csvCapFinancier: "Financial capital (€)",
+    csvImmo: "Real estate (€)",
+    csvTotal: "Total net worth (€)",
+    aboutTitle: "About this calculator",
+    aboutP1: "This calculator projects the value of your total net worth at a target age by combining three sources of wealth: your financial savings (stocks, ETFs, savings accounts…), your rental real estate, and your future state pension.",
+    aboutP2Fr: "Your",
+    aboutP2CapFinancier: "financial capital",
+    aboutP2Mid: "is projected using monthly compound interest. The",
+    aboutP2ValImmo: "real-estate value",
+    aboutP2Mid2: "is projected by applying an annual appreciation rate to the current property value. The",
+    aboutP2Retraite: "state pension",
+    aboutP2End: "is added as monthly income from the stated retirement age.",
+    aboutP3Pre: "Passive financial income is estimated at",
+    aboutP3Rule: "4 % of the final financial capital per year",
+    aboutP3Post: "(the 4 % rule, Trinity study). Rents are current figures, not projected for inflation. All calculations are in constant currency (real return).",
+    reportTitle: "Net Worth Calculator — Projection",
+    reportHighlightLabel: "Projected total net worth",
+    reportParamAge: "Current age",
+    reportParamAgeCible: "Target age",
+    reportParamCap: "Current financial capital",
+    reportParamVers: "Monthly contribution",
+    reportParamRend: "Portfolio return",
+    reportPatTotal: "Projected total net worth",
+    reportCapFin: "Final financial capital",
+    reportImmoFin: "Final real estate value",
+    reportRevTotal: "Total monthly passive income",
+    reportRevFin: "Monthly financial income",
+    reportNotes: "Figures in constant currency (real return after inflation).",
+    historyLabel: (v, age) => `Net worth ${v} at age ${age}`,
+    chartAria: "Net worth projection",
+    jsonLdName: "Net Worth Calculator",
+    jsonLdDesc: "Project your total net worth: financial capital, real estate and retirement combined. Free.",
+  },
+};
 
 // ─── Calcul principal ──────────────────────────────────────────────────────────
 function calcPatrimoine({
@@ -106,7 +299,7 @@ function calcPatrimoine({
 }
 
 // ─── Graphique empilé ─────────────────────────────────────────────────────────
-function StackedChart({ projectionData, immoActive }) {
+function StackedChart({ projectionData, immoActive, txt }) {
   if (!projectionData || projectionData.length < 2) return null;
 
   const PAD = { top: 24, right: 48, bottom: 36, left: 62 };
@@ -141,7 +334,7 @@ function StackedChart({ projectionData, immoActive }) {
     <svg
       viewBox={`0 0 ${W} ${H}`}
       style={{ width: '100%', height: 'min(280px, 52vw)', display: 'block', overflow: 'visible' }}
-      aria-label="Projection du patrimoine global"
+      aria-label={txt.chartAria}
     >
       {/* Immo area */}
       {immoActive && (
@@ -181,7 +374,7 @@ function StackedChart({ projectionData, immoActive }) {
       {ages.map(d => (
         <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
           fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
-          {d.age} ans
+          {txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}
         </text>
       ))}
 
@@ -195,11 +388,11 @@ function StackedChart({ projectionData, immoActive }) {
 
       {/* Légende */}
       <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--gold)" />
-      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Financier</text>
+      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.financier}</text>
       {immoActive && (
         <>
           <circle cx={PAD.left + 70} cy={PAD.top - 8} r="4" fill="#a855f7" opacity="0.8" />
-          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">Immobilier</text>
+          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.immobilier}</text>
         </>
       )}
     </svg>
@@ -207,23 +400,23 @@ function StackedChart({ projectionData, immoActive }) {
 }
 
 // ─── Table annuelle ───────────────────────────────────────────────────────────
-function YearTable({ projectionData, immoActive }) {
+function YearTable({ projectionData, immoActive, txt }) {
   if (!projectionData || projectionData.length < 2) return null;
   return (
     <div style={{ overflowX: 'auto' }}>
       <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
         <thead>
           <tr style={{ borderBottom: '1px solid var(--border)' }}>
-            <th style={{ textAlign: 'left', padding: '9px 0', color: 'var(--text-secondary)', fontWeight: 600 }}>Âge</th>
-            <th style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Capital financier</th>
-            {immoActive && <th style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>Immobilier</th>}
-            <th style={{ textAlign: 'right', padding: '9px 0', color: 'var(--text-secondary)', fontWeight: 600 }}>Total</th>
+            <th style={{ textAlign: 'left', padding: '9px 0', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableAge}</th>
+            <th style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableCapFinancier}</th>
+            {immoActive && <th style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableImmo}</th>}
+            <th style={{ textAlign: 'right', padding: '9px 0', color: 'var(--text-secondary)', fontWeight: 600 }}>{txt.tableTotal}</th>
           </tr>
         </thead>
         <tbody>
           {projectionData.slice(1).map(d => (
             <tr key={d.annee} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '9px 0', color: 'var(--text)' }}>{d.age} ans</td>
+              <td style={{ padding: '9px 0', color: 'var(--text)' }}>{txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}</td>
               <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--gold)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
               {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
               <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.patrimoine))}</td>
@@ -239,6 +432,8 @@ function YearTable({ projectionData, immoActive }) {
 export default function Patrimoine() {
   const [theme, setTheme] = useTheme();
   useMoney(); // abonnement aux changements de devise
+  const { locale } = useTranslation();
+  const txt = TXT[locale] ?? TXT.fr;
 
   const [ageActuel, setAge]               = useState(null);
   const [ageCible, setAgeCible]           = useState(65);
@@ -262,18 +457,19 @@ export default function Patrimoine() {
   const { saveEntry } = useSimHistory();
 
   useEffect(() => {
-    document.title = "Simulateur Patrimoine Global 2026 — simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Projetez votre patrimoine global à l'âge cible : capital financier, immobilier et retraite réunis dans un seul simulateur. Gratuit, sans inscription.");
+    document.title = txt.docTitle;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.simfinly.com/simulateurs/patrimoine';
+    link.href = locale === 'en'
+      ? 'https://www.simfinly.com/en/simulateurs/patrimoine'
+      : 'https://www.simfinly.com/simulateurs/patrimoine';
     track('simulator_view', { name: 'patrimoine' });
     if (!sessionStorage.getItem('tracked_patrimoine')) {
       sessionStorage.setItem('tracked_patrimoine', '1');
       fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: 'patrimoine' }) }).catch(() => {});
     }
-  }, []);
+  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const shared = readShareParams();
@@ -332,45 +528,45 @@ export default function Patrimoine() {
   const pctImmo = res.patrimoineFinal > 0 ? (res.valeurImmoFinal / res.patrimoineFinal) * 100 : 0;
 
   const report = {
-    title: "Simulateur Patrimoine — Projection",
-    highlight: { label: "Patrimoine total projeté", value: hasResult ? fmtCur(Math.round(res.patrimoineFinal)) : "—" },
+    title: txt.reportTitle,
+    highlight: { label: txt.reportHighlightLabel, value: hasResult ? fmtCur(Math.round(res.patrimoineFinal)) : "—" },
     params: [
-      { label: "Âge actuel", value: ageActuel ? `${ageActuel} ans` : "—" },
-      { label: "Âge cible", value: ageCible ? `${ageCible} ans` : "—" },
-      { label: "Capital financier actuel", value: fmtCur(capitalFinancier ?? 0) },
-      { label: "Versement mensuel", value: versementMensuel ? fmtCur(versementMensuel) : "—" },
-      { label: "Rendement du portefeuille", value: `${rendementPortefeuille} %` },
+      { label: txt.reportParamAge, value: ageActuel ? `${ageActuel} ${txt.ageSuffix || 'ans'}` : "—" },
+      { label: txt.reportParamAgeCible, value: ageCible ? `${ageCible} ${txt.ageSuffix || 'ans'}` : "—" },
+      { label: txt.reportParamCap, value: fmtCur(capitalFinancier ?? 0) },
+      { label: txt.reportParamVers, value: versementMensuel ? fmtCur(versementMensuel) : "—" },
+      { label: txt.reportParamRend, value: `${rendementPortefeuille} %` },
     ],
     results: hasResult ? [
-      { label: "Patrimoine total projeté", value: fmtCur(Math.round(res.patrimoineFinal)), strong: true },
-      { label: "Capital financier final", value: fmtCur(Math.round(res.capitalFinancierFinal)) },
-      ...(immoActive ? [{ label: "Valeur immobilier final", value: fmtCur(Math.round(res.valeurImmoFinal)) }] : []),
-      { label: "Revenu passif mensuel total", value: fmtCur(Math.round(res.revenuMensuelTotal)) },
-      { label: "Revenu financier mensuel", value: fmtCur(Math.round(res.revenuMensuelFinancier)) },
+      { label: txt.reportPatTotal, value: fmtCur(Math.round(res.patrimoineFinal)), strong: true },
+      { label: txt.reportCapFin, value: fmtCur(Math.round(res.capitalFinancierFinal)) },
+      ...(immoActive ? [{ label: txt.reportImmoFin, value: fmtCur(Math.round(res.valeurImmoFinal)) }] : []),
+      { label: txt.reportRevTotal, value: fmtCur(Math.round(res.revenuMensuelTotal)) },
+      { label: txt.reportRevFin, value: fmtCur(Math.round(res.revenuMensuelFinancier)) },
     ] : [],
-    notes: hasResult ? [
-      "Calculs en euros constants (rendement réel après inflation).",
-    ] : undefined,
+    notes: hasResult ? [txt.reportNotes] : undefined,
   };
 
   const handleSaveHistory = useCallback(() => {
-    const label = `Patrimoine ${fmtCur(Math.round(res.patrimoineFinal))} à ${ageCible || 65} ans`;
+    const label = txt.historyLabel(fmtCur(Math.round(res.patrimoineFinal)), ageCible || 65);
     saveEntry({ simulator: 'patrimoine', label, shareUrl: window.location.pathname + window.location.search });
     setHistorySaved(true);
     setTimeout(() => setHistorySaved(false), 2500);
-  }, [res, ageCible, saveEntry]);
+  }, [res, ageCible, saveEntry, txt]);
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur de patrimoine global",
-        "url": "https://www.simfinly.com/simulateurs/patrimoine",
-        "description": "Projetez votre patrimoine global : capital financier, immobilier et retraite réunis. Gratuit.",
+        "name": txt.jsonLdName,
+        "url": locale === 'en'
+          ? "https://www.simfinly.com/en/simulateurs/patrimoine"
+          : "https://www.simfinly.com/simulateurs/patrimoine",
+        "description": txt.jsonLdDesc,
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "inLanguage": "fr-FR",
+        "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
 
       <Navbar theme={theme} setTheme={setTheme} />
@@ -378,13 +574,13 @@ export default function Patrimoine() {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/patrimoine" size={34} />}
-          badge="Finances · Simulation 2026"
-          title="Patrimoine global"
-          desc="Projetez votre fortune nette à l'âge cible : portefeuille financier, immobilier et retraite réunis dans une vision consolidée."
+          badge={txt.badge}
+          title={txt.pageTitle}
+          desc={txt.pageDesc}
         />
 
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
-          {['✓ Capital financier (PEA, AV, ETF…)', '✓ Immobilier locatif', '✓ Retraite légale', '✓ 100 % local'].map((t, i) => (
+          {[txt.featureCapFinancier, txt.featureImmo, txt.featureRetraite, txt.featureLocal].map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
@@ -393,54 +589,54 @@ export default function Patrimoine() {
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '32px 28px', boxShadow: 'var(--card-shadow)' }}>
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
-            Horizon de projection
+            {txt.sectionHorizon}
           </h2>
-          <NumInput id="age-actuel" label="Âge actuel" value={ageActuel} onChange={setAge} unit="ans" min={15} max={80} />
-          <StepperInput label="Âge cible" value={ageCible} onChange={setAgeCible} min={(ageActuel || 35) + 1} max={85} step={1} unit="ans"
-            hint={ageActuel ? `Projection sur ${(ageCible || 65) - ageActuel} ans` : 'Âge auquel projeter votre patrimoine'} />
+          <NumInput id="age-actuel" label={txt.labelAgeActuel} value={ageActuel} onChange={setAge} unit={txt.ageSuffix || "ans"} min={15} max={80} />
+          <StepperInput label={txt.labelAgeCible} value={ageCible} onChange={setAgeCible} min={(ageActuel || 35) + 1} max={85} step={1} unit={txt.ageSuffix || "ans"}
+            hint={ageActuel ? txt.hintAgeCibleProjection((ageCible || 65) - ageActuel) : txt.hintAgeCible} />
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
-            Épargne & investissements
+            {txt.sectionEpargne}
           </h2>
-          <NumInput id="capital-financier" label="Capital financier actuel" value={capitalFinancier} onChange={setCapFin} unit={activeSymbol()} min={0} max={10000000}
-            hint="PEA, assurance-vie, livrets, ETF… (hors résidence principale)" />
-          <NumInput id="versement-mensuel" label="Versement mensuel" value={versementMensuel} onChange={setVers} unit={`${activeSymbol()}/mois`} min={0} max={50000}
-            hint={versementMensuel ? `soit ${fmtCur((versementMensuel || 0) * 12)} / an` : 'Montant régulièrement investi chaque mois'} />
-          <StepperInput label="Rendement annuel espéré" value={rendementPortefeuille} onChange={setRend} min={0} max={15} step={0.5} unit="%"
-            hint="Rendement réel après inflation (portefeuille actions diversifié ~5 %)" />
+          <NumInput id="capital-financier" label={txt.labelCapFinancier} value={capitalFinancier} onChange={setCapFin} unit={activeSymbol()} min={0} max={10000000}
+            hint={txt.hintCapFinancier} />
+          <NumInput id="versement-mensuel" label={txt.labelVersement} value={versementMensuel} onChange={setVers} unit={`${activeSymbol()}/mois`} min={0} max={50000}
+            hint={versementMensuel ? txt.hintVersementValue(fmtCur((versementMensuel || 0) * 12)) : txt.hintVersementDefault} />
+          <StepperInput label={txt.labelRendement} value={rendementPortefeuille} onChange={setRend} min={0} max={15} step={0.5} unit="%"
+            hint={txt.hintRendement} />
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
             <HistoricalReturnPicker duration={(ageCible || 65) - (ageActuel || 35)} onSelect={setRend} />
           </div>
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            Immobilier locatif <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>(optionnel)</span>
+            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: immoActive ? 20 : 0 }}>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Inclure un bien immobilier locatif</span>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleImmo}</span>
             <Toggle checked={immoActive} onChange={setImmoActive} />
           </div>
           {immoActive && (
             <>
-              <NumInput id="valeur-immo" label="Valeur actuelle du bien" value={valeurImmo} onChange={setValImmo} unit={activeSymbol()} min={0} max={5000000} />
-              <NumInput id="loyer-net" label="Loyer net mensuel" value={loyerNet} onChange={setLoyer} unit={`${activeSymbol()}/mois`} min={0} max={20000}
-                hint="Loyer après charges, taxe foncière, assurances" />
-              <StepperInput label="Appréciation annuelle" value={appreciationImmo} onChange={setApprecImmo} min={0} max={10} step={0.5} unit="%"
-                hint="2 % en France en tendance longue (réel après inflation)" />
+              <NumInput id="valeur-immo" label={txt.labelValeurImmo} value={valeurImmo} onChange={setValImmo} unit={activeSymbol()} min={0} max={5000000} />
+              <NumInput id="loyer-net" label={txt.labelLoyerNet} value={loyerNet} onChange={setLoyer} unit={`${activeSymbol()}/mois`} min={0} max={20000}
+                hint={txt.hintLoyerNet} />
+              <StepperInput label={txt.labelAppreciation} value={appreciationImmo} onChange={setApprecImmo} min={0} max={10} step={0.5} unit="%"
+                hint={txt.hintAppreciation} />
             </>
           )}
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            Retraite légale <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>(optionnel)</span>
+            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: retraiteActive ? 20 : 0 }}>
-            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>Inclure une retraite légale estimée</span>
+            <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleRetraite}</span>
             <Toggle checked={retraiteActive} onChange={setRetraiteActive} />
           </div>
           {retraiteActive && (
             <>
-              <NumInput id="retraite-mensuelle" label="Pension mensuelle estimée" value={retraiteMensuelle} onChange={setRetraiteRev} unit={`${activeSymbol()}/mois`} min={0} max={20000}
-                hint="Retraite brute mensuelle estimée (CNAV + complémentaire)" />
-              <StepperInput label="Âge de départ en retraite" value={ageRetraite} onChange={setAgeRetraite} min={60} max={70} step={1} unit="ans" />
+              <NumInput id="retraite-mensuelle" label={txt.labelPension} value={retraiteMensuelle} onChange={setRetraiteRev} unit={`${activeSymbol()}/mois`} min={0} max={20000}
+                hint={txt.hintPension} />
+              <StepperInput label={txt.labelAgeRetraite} value={ageRetraite} onChange={setAgeRetraite} min={60} max={70} step={1} unit={txt.ageSuffix || "ans"} />
             </>
           )}
         </div>
@@ -448,43 +644,43 @@ export default function Patrimoine() {
         {/* Résultats */}
         <div style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '32px 28px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
-            Votre patrimoine à {ageCible || 65} ans
+            {txt.resultsTitle(ageCible || 65)}
           </h2>
 
           {!hasResult ? (
             <p style={{ color: 'var(--text-secondary)', fontSize: 14, padding: '16px 0' }}>
-              Renseignez votre capital ou votre versement mensuel pour démarrer.
+              {txt.resultsEmpty}
             </p>
           ) : (
             <>
               {/* Héro */}
               <div style={{ textAlign: 'center', padding: '16px 0 24px', borderBottom: '1px solid var(--border)', marginBottom: 20 }}>
                 <div style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 10 }}>
-                  Patrimoine total projeté
+                  {txt.heroLabel}
                 </div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
-                  dont {fmtCur(Math.round(res.revenuMensuelTotal))} / mois de revenus passifs
+                  {txt.heroSub(fmtCur(Math.round(res.revenuMensuelTotal)))}
                 </div>
               </div>
 
               {/* Chips */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 12, marginBottom: 20 }}>
-                <Chip label="Capital financier" value={fmtCur(Math.round(res.capitalFinancierFinal))} accent />
-                {immoActive && <Chip label="Valeur immobilier" value={fmtCur(Math.round(res.valeurImmoFinal))} />}
-                <Chip label="Revenu financier/mois" value={fmtCur(Math.round(res.revenuMensuelFinancier))} accent />
-                {immoActive && res.revenuMensuelLocatif > 0 && <Chip label="Loyer net/mois" value={fmtCur(Math.round(res.revenuMensuelLocatif))} />}
-                {retraiteActive && res.revenuMensuelRetraite > 0 && <Chip label="Retraite/mois" value={fmtCur(Math.round(res.revenuMensuelRetraite))} />}
-                <Chip label="Revenu total/mois" value={fmtCur(Math.round(res.revenuMensuelTotal))} accent />
+                <Chip label={txt.chipCapFinancier} value={fmtCur(Math.round(res.capitalFinancierFinal))} accent />
+                {immoActive && <Chip label={txt.chipValImmo} value={fmtCur(Math.round(res.valeurImmoFinal))} />}
+                <Chip label={txt.chipRevFinancier} value={fmtCur(Math.round(res.revenuMensuelFinancier))} accent />
+                {immoActive && res.revenuMensuelLocatif > 0 && <Chip label={txt.chipLoyer} value={fmtCur(Math.round(res.revenuMensuelLocatif))} />}
+                {retraiteActive && res.revenuMensuelRetraite > 0 && <Chip label={txt.chipRetraite} value={fmtCur(Math.round(res.revenuMensuelRetraite))} />}
+                <Chip label={txt.chipRevTotal} value={fmtCur(Math.round(res.revenuMensuelTotal))} accent />
               </div>
 
               {/* Composition */}
               {res.patrimoineFinal > 0 && (
                 <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 20px', marginBottom: 20 }}>
                   <div style={{ fontSize: 11, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 14 }}>
-                    Composition du patrimoine
+                    {txt.compositionTitle}
                   </div>
                   <div style={{ display: 'flex', gap: 4, height: 10, borderRadius: 5, overflow: 'hidden', marginBottom: 12 }}>
                     <div style={{ width: `${pctFinancier}%`, background: 'var(--gold)', borderRadius: '5px 0 0 5px', transition: 'width 0.6s' }} />
@@ -493,12 +689,12 @@ export default function Patrimoine() {
                   <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: 'var(--text-secondary)' }}>
                       <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--gold)', flexShrink: 0 }} />
-                      Financier — {Math.round(pctFinancier)} %
+                      {txt.financier} — {Math.round(pctFinancier)} %
                     </div>
                     {immoActive && res.valeurImmoFinal > 0 && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: 'var(--text-secondary)' }}>
                         <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#a855f7', flexShrink: 0 }} />
-                        Immobilier — {Math.round(pctImmo)} %
+                        {txt.immobilier} — {Math.round(pctImmo)} %
                       </div>
                     )}
                   </div>
@@ -509,17 +705,17 @@ export default function Patrimoine() {
               {res.projectionData.length >= 2 && (
                 <div style={{ marginBottom: 20 }}>
                   <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 8 }}>
-                    Projection annuelle
+                    {txt.projectionTitle}
                   </div>
                   <ZoomableChart innerRef={chartRef}>
-                    <StackedChart projectionData={res.projectionData} immoActive={immoActive} />
+                    <StackedChart projectionData={res.projectionData} immoActive={immoActive} txt={txt} />
                   </ZoomableChart>
                 </div>
               )}
 
-              <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-                ⚠️ <strong>Simulation indicative.</strong> Les rendements passés ne garantissent pas les rendements futurs. Calculs en euros constants (rendement réel après inflation).
-              </div>
+              <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}
+                dangerouslySetInnerHTML={{ __html: txt.disclaimer }}
+              />
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '12px 0 4px' }}>
                 <button
@@ -533,7 +729,7 @@ export default function Patrimoine() {
                     fontSize: 12, cursor: 'pointer', transition: 'all 0.2s',
                   }}
                 >
-                  {historySaved ? '✓' : '💾'}<span className="btn-text"> {historySaved ? 'Sauvegardée' : 'Sauvegarder'}</span>
+                  {historySaved ? '✓' : '💾'}<span className="btn-text"> {historySaved ? txt.btnSaved : txt.btnSave}</span>
                 </button>
               </div>
 
@@ -555,15 +751,15 @@ export default function Patrimoine() {
         </div>
 
         {hasResult && (
-          <AccordionSection title="Détail année par année" subtitle="Évolution de chaque composante du patrimoine">
+          <AccordionSection title={txt.accordionTitle} subtitle={txt.accordionSubtitle}>
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
               <button
                 onClick={() => downloadCSV(
                   res.projectionData.slice(1).map(d => ({
-                    'Âge': d.age,
-                    'Capital financier (€)': Math.round(d.capitalFinancier),
-                    'Immobilier (€)': Math.round(d.valeurImmo),
-                    'Patrimoine total (€)': Math.round(d.patrimoine),
+                    [txt.csvAge]: d.age,
+                    [txt.csvCapFinancier]: Math.round(d.capitalFinancier),
+                    [txt.csvImmo]: Math.round(d.valeurImmo),
+                    [txt.csvTotal]: Math.round(d.patrimoine),
                   })),
                   'patrimoine-global.csv'
                 )}
@@ -575,28 +771,22 @@ export default function Patrimoine() {
                 ↓ CSV
               </button>
             </div>
-            <YearTable projectionData={res.projectionData} immoActive={immoActive} />
+            <YearTable projectionData={res.projectionData} immoActive={immoActive} txt={txt} />
           </AccordionSection>
         )}
 
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
-            À propos de ce simulateur
+            {txt.aboutTitle}
           </h2>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 14 }}>
-            Ce simulateur calcule la valeur projetée de votre patrimoine global à un âge cible en combinant trois
-            sources de richesse : votre épargne financière (PEA, assurance-vie, ETF…), votre patrimoine immobilier
-            locatif, et votre future pension de retraite.
+            {txt.aboutP1}
           </p>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 14 }}>
-            Le <strong>capital financier</strong> est projeté via les intérêts composés mensuels. La <strong>valeur
-            immobilière</strong> est projetée en appliquant un taux d'appréciation annuel à la valeur actuelle du bien.
-            La <strong>retraite légale</strong> s'ajoute comme revenu mensuel à partir de l'âge de départ renseigné.
+            {txt.aboutP2Fr} <strong>{txt.aboutP2CapFinancier}</strong> {txt.aboutP2Mid} <strong>{txt.aboutP2ValImmo}</strong> {txt.aboutP2Mid2} <strong>{txt.aboutP2Retraite}</strong> {txt.aboutP2End}
           </p>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-            Le revenu passif financier est estimé à <strong>4 % du capital financier final par an</strong> (règle des 4 %,
-            étude Trinity). Les loyers sont ceux actuels, non projetés à l'inflation. Tous les calculs sont en
-            euros constants (rendement réel).
+            {txt.aboutP3Pre} <strong>{txt.aboutP3Rule}</strong> {txt.aboutP3Post}
           </p>
         </div>
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLocation } from '../lib/router.js';
+import { useLocation } from "../lib/router.jsx";
 import { DEFAULT_LOCALE, localeFromPath } from './config.js';
 import fr from './fr.js';
 import en from './en.js';

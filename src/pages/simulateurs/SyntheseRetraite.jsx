@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
-import { Link } from "../../lib/router.js";
+import { Link } from "../../lib/router.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";

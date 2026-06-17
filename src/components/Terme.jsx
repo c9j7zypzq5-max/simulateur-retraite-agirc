@@ -1,5 +1,5 @@
 import { useState, useId } from "react";
-import { Link } from "../lib/router.js";
+import { Link } from "../lib/router.jsx";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 
 // Lien vers une fiche du lexique (/lexique/:slug) avec une infobulle au survol /
