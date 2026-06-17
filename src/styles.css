@@ -84,6 +84,12 @@ input::placeholder { color: #7a8fa6; }
   .cmp-grid > .cmp-colB { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 16px; }
 }
 
+/* ── Générateur QR : paramètres + aperçu, empilés sur mobile/tablette ── */
+@media (max-width: 820px) {
+  .qr-layout { grid-template-columns: 1fr !important; }
+  .qr-layout > div:last-child { position: static !important; }
+}
+
 /* ── Zones tactiles min 44px ── */
 button, a, select { min-height: 44px; }
 

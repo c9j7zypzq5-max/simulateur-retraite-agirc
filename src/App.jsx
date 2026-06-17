@@ -55,6 +55,8 @@ const CreditConso  = lazy(() => import("./pages/simulateurs/CreditConso.jsx"));
 const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"));
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
 const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
+// Outils
+const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
@@ -114,6 +116,8 @@ export default function App() {
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
         {/* Comparateur */}
         <Route path="/simulateurs/comparateur" element={<Comparateur />} />
+        {/* Outils */}
+        <Route path="/outils/qr-code" element={<QrCode />} />
         {/* Blog */}
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Article />} />

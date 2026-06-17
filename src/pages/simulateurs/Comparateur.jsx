@@ -11,7 +11,9 @@ import AdUnit from '../../components/AdUnit.jsx';
 import JsonLd from '../../components/JsonLd.jsx';
 import { downloadCSV, downloadXLSX } from '../../utils/export.js';
 import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
-import { SimulateurHeader, fmtEur } from '../../components/ui.jsx';
+import { SimulateurHeader } from '../../components/ui.jsx';
+import { useMoney } from '../../i18n/CurrencyContext.jsx';
+import { fmtCur, activeSymbol } from '../../i18n/currency.js';
 
 const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
 const CURRENT_YEAR = 2025;
@@ -19,9 +21,9 @@ const MIN_YEAR = 1990;
 
 function fmtPct(v) { return `${v >= 0 ? '+' : ''}${v.toFixed(1)} %`; }
 function fmtK(v) {
-  if (v >= 1_000_000) return `${(v/1_000_000).toFixed(2).replace('.',',')} M€`;
-  if (v >= 1_000)     return `${(v/1_000).toFixed(1).replace('.',',')} k€`;
-  return `${Math.round(v)} €`;
+  if (v >= 1_000_000) return `${(v/1_000_000).toFixed(2).replace('.',',')} M${activeSymbol()}`;
+  if (v >= 1_000)     return `${(v/1_000).toFixed(1).replace('.',',')} k${activeSymbol()}`;
+  return `${Math.round(v)} ${activeSymbol()}`;
 }
 
 const FREQ_MONTHS = { monthly: 1, quarterly: 3, semi: 6, annual: 12 };
@@ -173,7 +175,7 @@ function buildSeriesRows(computed, assets) {
     for (const a of assets) {
       if (!byTicker[a.ticker]) continue;
       const v = byTicker[a.ticker][date];
-      row[`${a.label || a.ticker} (€)`] = v != null ? Math.round(v) : '';
+      row[`${a.label || a.ticker} (${activeSymbol()})`] = v != null ? Math.round(v) : '';
     }
     return row;
   });
@@ -185,8 +187,8 @@ function buildMetricsRows(metrics) {
     Ticker: m.ticker,
     'Retour total (%)': Number(m.totalReturn.toFixed(1)),
     'CAGR (%/an)': Number(m.cagr.toFixed(1)),
-    'Capital investi (€)': Math.round(m.totalInvested),
-    'Valeur finale (€)': Math.round(m.finalValue),
+    [`Capital investi (${activeSymbol()})`]: Math.round(m.totalInvested),
+    [`Valeur finale (${activeSymbol()})`]: Math.round(m.finalValue),
   }));
 }
 
@@ -647,6 +649,7 @@ function DateSelect({ label, value, onChange }) {
 // ── Composant principal ────────────────────────────────────────────────────────
 export default function Comparateur() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
 
   const [assets, setAssets] = useState([
     { id: 0, ticker: '^GSPC',   label: 'S&P 500',          emoji: '🇺🇸', color: ASSET_COLORS[0] },
@@ -795,14 +798,14 @@ export default function Comparateur() {
       value: best ? `${best.label || best.ticker} · ${fmtPct(best.totalReturn)}` : "—",
     },
     params: [
-      { label: "Montant investi", value: fmtEur(montant) },
+      { label: "Montant investi", value: fmtCur(montant) },
       { label: "Période", value: `${fromLabel} → ${toLabel}` },
       { label: "Durée", value: `${totalYears.toFixed(1)} ans` },
-      ...(periodicAmt > 0 ? [{ label: "Versement périodique", value: `${fmtEur(periodicAmt)} (${periodicFreq === 'monthly' ? 'mensuel' : periodicFreq})` }] : []),
+      ...(periodicAmt > 0 ? [{ label: "Versement périodique", value: `${fmtCur(periodicAmt)} (${periodicFreq === 'monthly' ? 'mensuel' : periodicFreq})` }] : []),
     ],
     results: best ? metrics.slice(0, 5).map((m, i) => ({
       label: `${i + 1}. ${m.label || m.ticker}`,
-      value: `${fmtPct(m.totalReturn)} · ${fmtEur(Math.round(m.finalValue))}`,
+      value: `${fmtPct(m.totalReturn)} · ${fmtCur(Math.round(m.finalValue))}`,
       strong: i === 0,
     })) : [],
     notes: best ? [
@@ -818,7 +821,7 @@ export default function Comparateur() {
 
   const handleExportXLSX = useCallback(() => {
     const sheets = [
-      { name: 'Valeurs (€)', rows: buildSeriesRows(computed, assetsWithColors) },
+      { name: `Valeurs (${activeSymbol()})`, rows: buildSeriesRows(computed, assetsWithColors) },
       { name: 'Métriques',   rows: buildMetricsRows(metrics) },
     ];
     downloadXLSX(sheets, `${exportBaseName}.xlsx`);
@@ -915,7 +918,7 @@ export default function Comparateur() {
                 color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
               }}
             />
-            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>€ investis au départ (normalisé pour tous les actifs)</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()} investis au départ (normalisé pour tous les actifs)</span>
           </div>
 
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 20px' }} />
@@ -939,7 +942,7 @@ export default function Comparateur() {
                 color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
               }}
             />
-            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>€</span>
+            <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()}</span>
             <select
               value={periodicFreq}
               onChange={e => setPeriodicFreq(e.target.value)}
@@ -1033,7 +1036,7 @@ export default function Comparateur() {
               {/* Sélecteur d'échelle : euros absolus vs base 100 */}
               <div role="group" aria-label="Échelle du graphique" style={{ display: 'flex', background: 'var(--input-bg)', borderRadius: 9, padding: 3, gap: 2 }}>
                 {[
-                  { id: 'euros',   label: '€ valeur' },
+                  { id: 'euros',   label: `${activeSymbol()} valeur` },
                   { id: 'base100', label: 'Base 100' },
                 ].map(opt => {
                   const active = displayMode === opt.id;

@@ -5,7 +5,7 @@ import {
   Trophy, Landmark, Scale, Briefcase, Building, Building2, CalendarClock,
   Stethoscope, Wheat, Coins, KeyRound, Receipt, TrendingUp, PieChart, Wallet,
   PiggyBank, Flame, Gem, BarChart3, Clock, CalendarDays, Shield, CreditCard,
-  Calculator,
+  Calculator, QrCode,
 } from "lucide-react";
 
 const MAP = {
@@ -33,6 +33,7 @@ const MAP = {
   "/simulateurs/vie-en-semaines": CalendarDays,
   "/simulateurs/assurance-vie": Shield,
   "/simulateurs/credit-conso": CreditCard,
+  "/outils/qr-code": QrCode,
 };
 
 export default function SimIcon({ path, size = 22, strokeWidth = 1.6 }) {

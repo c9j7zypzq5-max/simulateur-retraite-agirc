@@ -10,6 +10,7 @@ export const CURRENCY_AWARE_ROUTES = new Set([
   '/simulateurs/patrimoine',
   '/simulateurs/cout-en-heures',
   '/simulateurs/credit-conso',
+  '/simulateurs/comparateur',
 ]);
 
 export function isCurrencyAware(pathname) {
