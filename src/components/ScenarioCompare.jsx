@@ -13,13 +13,15 @@ import { NumInput, StepperInput, fmtEur } from "./ui.jsx";
 //   title    titre du panneau (optionnel)
 //   cta      libellé du bouton (optionnel)
 
-function fieldDisplay(f, v) {
+function fieldDisplay(f, v, moneyFmt) {
   if (v === null || v === undefined || v === "") return "—";
-  if (f.kind === "eur") return fmtEur(v);
+  if (f.kind === "eur") return moneyFmt(v);
   return `${v}${f.unit ? " " + f.unit : ""}`;
 }
 
-export default function ScenarioCompare({ name, fields, base, compute, metrics, title = "Comparaison de scénarios", cta = "⚖️ Comparer un 2ᵉ scénario" }) {
+// `moneyFmt` formate les champs `kind:'eur'`. Par défaut en euros (simulateurs
+// français) ; les simulateurs universels passent un formateur multi-devise.
+export default function ScenarioCompare({ name, fields, base, compute, metrics, moneyFmt = fmtEur, title = "Comparaison de scénarios", cta = "⚖️ Comparer un 2ᵉ scénario" }) {
   const [open, setOpen] = useState(false);
   const [b, setB] = useState(null);
 
@@ -59,7 +61,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
           <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
           <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
             {fields.map(f => (
-              <li key={f.key}>{f.label} : <strong style={{ color: "var(--text)" }}>{fieldDisplay(f, base[f.key])}</strong></li>
+              <li key={f.key}>{f.label} : <strong style={{ color: "var(--text)" }}>{fieldDisplay(f, base[f.key], moneyFmt)}</strong></li>
             ))}
           </ul>
           {metrics.map(m => (
