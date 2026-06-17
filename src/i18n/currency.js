@@ -48,6 +48,46 @@ export function currencyForCountry(country) {
   return COUNTRY_TO_CURRENCY[String(country || '').toUpperCase()] || DEFAULT_CURRENCY;
 }
 
+// Fuseaux horaires → pays (ISO) pour les zones les plus courantes. Sert de repli
+// quand la langue du navigateur ne précise pas la région (ex. « en » sans pays).
+const TZ_TO_COUNTRY = {
+  'Europe/Paris': 'FR', 'Europe/Brussels': 'BE', 'Europe/Berlin': 'DE',
+  'Europe/Madrid': 'ES', 'Europe/Rome': 'IT', 'Europe/Lisbon': 'PT',
+  'Europe/Amsterdam': 'NL', 'Europe/Luxembourg': 'LU', 'Europe/Dublin': 'IE',
+  'Europe/Vienna': 'AT', 'Europe/Helsinki': 'FI', 'Europe/Athens': 'GR',
+  'Europe/London': 'GB', 'Europe/Zurich': 'CH', 'Europe/Stockholm': 'SE',
+  'Europe/Oslo': 'NO', 'Europe/Copenhagen': 'DK', 'Europe/Warsaw': 'PL',
+  'Europe/Prague': 'CZ',
+  'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US',
+  'America/Los_Angeles': 'US', 'America/Phoenix': 'US', 'America/Anchorage': 'US',
+  'America/Toronto': 'CA', 'America/Vancouver': 'CA', 'America/Edmonton': 'CA',
+  'America/Sao_Paulo': 'BR', 'America/Mexico_City': 'MX',
+  'Asia/Tokyo': 'JP', 'Asia/Singapore': 'SG', 'Asia/Hong_Kong': 'HK',
+  'Asia/Kolkata': 'IN', 'Asia/Dubai': 'AE',
+  'Australia/Sydney': 'AU', 'Australia/Melbourne': 'AU', 'Australia/Perth': 'AU',
+  'Pacific/Auckland': 'NZ', 'Africa/Johannesburg': 'ZA',
+};
+
+// Devise probable du visiteur, déduite côté navigateur SANS appel réseau :
+//  1. région de la/les langue(s) (ex. « en-US » → US) ;
+//  2. sinon, fuseau horaire (ex. « America/New_York » → US) ;
+//  3. sinon, euro.
+export function guessCurrencyFromBrowser() {
+  try {
+    const langs = (typeof navigator !== 'undefined' && (navigator.languages || [navigator.language])) || [];
+    for (const l of langs) {
+      const region = String(l || '').split('-')[1];
+      if (region && COUNTRY_TO_CURRENCY[region.toUpperCase()]) {
+        return COUNTRY_TO_CURRENCY[region.toUpperCase()];
+      }
+    }
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const cc = TZ_TO_COUNTRY[tz];
+    if (cc && COUNTRY_TO_CURRENCY[cc]) return COUNTRY_TO_CURRENCY[cc];
+  } catch { /* environnement sans navigator/Intl : repli euro */ }
+  return DEFAULT_CURRENCY;
+}
+
 // Formate un montant dans la devise donnée. `decimals` force le nombre de
 // décimales (par défaut : 0, sauf devises sans subdivision comme le yen).
 export function formatMoney(n, currencyCode = DEFAULT_CURRENCY, decimals) {
