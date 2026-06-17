@@ -275,7 +275,7 @@ export default function Budget() {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Simulateur Budget 50/30/20 — Mesimulateurs.fr";
+    document.title = "Simulateur Budget 50/30/20 — Simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Répartissez votre budget mensuel selon la règle 50/30/20. Donut chart animé, jauges en temps réel, conseils personnalisés.");
   }, []);
 

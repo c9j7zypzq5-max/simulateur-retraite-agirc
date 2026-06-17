@@ -447,7 +447,7 @@ export default function Salaire() {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Mesimulateurs.fr";
+    document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
   }, []);
 

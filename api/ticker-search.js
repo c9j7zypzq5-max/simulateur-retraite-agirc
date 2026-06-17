@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       `?q=${encodeURIComponent(q)}&lang=fr-FR&region=FR&quotesCount=8&newsCount=0&enableFuzzyQuery=true`;
 
     const resp = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; mesimulateurs/1.0)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; simfinly/1.0)' },
     });
 
     if (!resp.ok) return res.json([]);

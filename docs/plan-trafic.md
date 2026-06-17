@@ -1,4 +1,4 @@
-# Plan d'acquisition de trafic — mesimulateurs.fr
+# Plan d'acquisition de trafic — simfinly.com
 
 État : les fondations techniques SEO sont déjà solides (sitemap dynamique,
 schema.org BreadcrumbList + WebApplication + FAQPage, prérendu H1/intro,
@@ -7,11 +7,11 @@ PNG, 24 simulateurs). Le travail restant est surtout **éditorial, off-site et
 analytique**.
 
 ## 0. Indispensable (à faire en premier, gratuit)
-- [ ] **Google Search Console** : ajouter et valider `www.mesimulateurs.fr`,
-      soumettre `https://www.mesimulateurs.fr/sitemap.xml`. C'est le tableau de
+- [ ] **Google Search Console** : ajouter et valider `www.simfinly.com`,
+      soumettre `https://www.simfinly.com/sitemap.xml`. C'est le tableau de
       bord n°1 pour suivre l'indexation, les requêtes et les positions.
 - [ ] **Bing Webmaster Tools** (5 min, trafic d'appoint).
-- [ ] Vérifier l'indexation : `site:mesimulateurs.fr` sur Google.
+- [ ] Vérifier l'indexation : `site:simfinly.com` sur Google.
 - [ ] **Plausible / Matomo** ou garder Vercel Analytics : suivre les pages
       d'entrée et le taux de rebond par simulateur.
 
