@@ -17,6 +17,12 @@ const PRESETS = [
   { label: "Corail",    fg: "#7c2d12", bg: "#fff4ed" },
 ];
 
+const DOT_STYLES = [
+  { value: "square",  label: "Carré" },
+  { value: "rounded", label: "Arrondi" },
+  { value: "dots",    label: "Ronds" },
+];
+
 const FAQ = [
   { q: "Le QR code est-il gratuit et sans expiration ?", a: "Oui. Le QR code est généré localement dans votre navigateur, il est statique (il pointe directement vers votre texte ou lien) et ne dépend d'aucun serveur. Il fonctionnera indéfiniment, sans abonnement ni suivi." },
   { q: "Puis-je mettre mon logo au centre ?", a: "Oui. Ajoutez une image (PNG, JPG, SVG) ou un emoji au centre. Le générateur active automatiquement le niveau de correction d'erreurs le plus élevé (H) pour que le QR code reste lisible malgré le logo, qui peut masquer jusqu'à environ 30 % du code." },
@@ -24,6 +30,74 @@ const FAQ = [
   { q: "Quel format de téléchargement choisir ?", a: "Le PNG convient pour le web, les réseaux sociaux et la plupart des impressions. Choisissez une taille élevée (1000 px ou plus) pour une impression nette en grand format." },
   { q: "Pourquoi mon QR code ne se scanne pas ?", a: "Vérifiez le contraste : la couleur du motif doit être nettement plus sombre que le fond. Évitez un logo trop grand, et gardez une marge blanche autour du code. Testez toujours avec l'appareil photo de votre téléphone avant de l'imprimer." },
 ];
+
+// Dessine le QR code manuellement depuis la matrice qrcode.create(),
+// ce qui permet des formes de modules personnalisées (carré, arrondi, ronds).
+function drawQR({ canvas, value, size, margin, fg, bg, dotStyle, hasLogo, logoType, logoPct, emoji, imgEl }) {
+  let qr;
+  try {
+    qr = QRCode.create(value, { errorCorrectionLevel: hasLogo ? "H" : "M" });
+  } catch {
+    return false;
+  }
+
+  canvas.width  = size;
+  canvas.height = size;
+  const ctx = canvas.getContext("2d");
+
+  const n = qr.modules.size;
+  const ppm = size / (n + 2 * margin); // pixels per module
+  const off = margin * ppm;
+
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, size, size);
+
+  ctx.fillStyle = fg;
+  const data = qr.modules.data;
+  for (let row = 0; row < n; row++) {
+    for (let col = 0; col < n; col++) {
+      if (!data[row * n + col]) continue;
+      const x = off + col * ppm;
+      const y = off + row * ppm;
+      if (dotStyle === "dots") {
+        ctx.beginPath();
+        ctx.arc(x + ppm / 2, y + ppm / 2, ppm * 0.42, 0, Math.PI * 2);
+        ctx.fill();
+      } else if (dotStyle === "rounded") {
+        roundRect(ctx, x, y, ppm, ppm, ppm * 0.35);
+        ctx.fill();
+      } else {
+        ctx.fillRect(x, y, ppm, ppm);
+      }
+    }
+  }
+
+  if (hasLogo) {
+    const box = Math.round(size * (logoPct / 100));
+    const cx = size / 2, cy = size / 2;
+    const pad = Math.round(box * 0.07); // marge réduite autour du logo
+    const r   = (box + pad * 2) / 2;
+
+    ctx.save();
+    ctx.fillStyle = bg;
+    roundRect(ctx, cx - r, cy - r, r * 2, r * 2, Math.round(r * 0.28));
+    ctx.fill();
+    ctx.restore();
+
+    if (logoType === "image" && imgEl) {
+      const ratio = Math.min(box / imgEl.width, box / imgEl.height);
+      const w = imgEl.width * ratio, h = imgEl.height * ratio;
+      ctx.drawImage(imgEl, cx - w / 2, cy - h / 2, w, h);
+    } else if (logoType === "emoji" && emoji) {
+      ctx.font = `${box}px serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(emoji, cx, cy + box * 0.06);
+    }
+  }
+
+  return true;
+}
 
 export default function QrCode() {
   const [theme, setTheme] = useTheme();
@@ -33,6 +107,7 @@ export default function QrCode() {
   const [bg, setBg]           = useState("#ffffff");
   const [size, setSize]       = useState(1000);
   const [margin, setMargin]   = useState(2);
+  const [dotStyle, setDotStyle] = useState("square");
   const [logoType, setLogoType] = useState("none");   // none | emoji | image
   const [emoji, setEmoji]     = useState("⭐");
   const [logoPct, setLogoPct] = useState(22);
@@ -51,7 +126,6 @@ export default function QrCode() {
     track('simulator_view', { name: 'qr-code' });
   }, []);
 
-  // Charge l'image téléversée dans un élément <img> réutilisable.
   const onPickImage = useCallback((file) => {
     if (!file) return;
     const reader = new FileReader();
@@ -63,7 +137,6 @@ export default function QrCode() {
     reader.readAsDataURL(file);
   }, []);
 
-  // (Re)dessine le QR code + le logo central à chaque changement de paramètre.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -71,42 +144,13 @@ export default function QrCode() {
     if (!value) { setError("Saisissez un texte ou un lien."); return; }
 
     const hasLogo = (logoType === "emoji" && emoji) || (logoType === "image" && imgElRef.current);
-    QRCode.toCanvas(canvas, value, {
-      width: size,
-      margin,
-      color: { dark: fg, light: bg },
-      errorCorrectionLevel: hasLogo ? "H" : "M",
-    }, (err) => {
-      if (err) { setError("Texte trop long pour un QR code. Raccourcissez-le."); return; }
-      setError("");
-      if (!hasLogo) return;
-
-      const ctx = canvas.getContext("2d");
-      const box = Math.round(size * (logoPct / 100));
-      const cx = size / 2, cy = size / 2;
-      const pad = Math.round(box * 0.16);
-      const r = (box + pad * 2) / 2;
-
-      // Pastille de fond (couleur du fond du QR) derrière le logo, coins arrondis.
-      ctx.save();
-      ctx.fillStyle = bg;
-      roundRect(ctx, cx - r, cy - r, r * 2, r * 2, Math.round(r * 0.28));
-      ctx.fill();
-      ctx.restore();
-
-      if (logoType === "image" && imgElRef.current) {
-        const img = imgElRef.current;
-        const ratio = Math.min(box / img.width, box / img.height);
-        const w = img.width * ratio, h = img.height * ratio;
-        ctx.drawImage(img, cx - w / 2, cy - h / 2, w, h);
-      } else if (logoType === "emoji" && emoji) {
-        ctx.font = `${box}px serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(emoji, cx, cy + box * 0.06);
-      }
+    const ok = drawQR({
+      canvas, value, size, margin, fg, bg, dotStyle,
+      hasLogo, logoType, logoPct, emoji, imgEl: imgElRef.current,
     });
-  }, [text, fg, bg, size, margin, logoType, emoji, logoPct, imgSrc]);
+    if (!ok) setError("Texte trop long pour un QR code. Raccourcissez-le.");
+    else setError("");
+  }, [text, fg, bg, size, margin, dotStyle, logoType, emoji, logoPct, imgSrc]);
 
   const download = useCallback(() => {
     const canvas = canvasRef.current;
@@ -171,7 +215,7 @@ export default function QrCode() {
                 </div>
               </div>
 
-              <div style={{ display: "flex", gap: 16, marginBottom: 4 }}>
+              <div style={{ display: "flex", gap: 16, marginBottom: 18 }}>
                 <div style={{ flex: 1 }}>
                   <label style={labelStyle} htmlFor="qr-fg">Couleur du motif</label>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -185,6 +229,21 @@ export default function QrCode() {
                     <input id="qr-bg" type="color" value={bg} onChange={e => setBg(e.target.value)} style={{ width: 42, height: 38, border: "1px solid var(--border)", borderRadius: 8, background: "none", cursor: "pointer", padding: 2 }} />
                     <input value={bg} onChange={e => setBg(e.target.value)} style={{ ...field, fontFamily: "monospace" }} />
                   </div>
+                </div>
+              </div>
+
+              <div>
+                <span style={labelStyle}>Forme des modules</span>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {DOT_STYLES.map(({ value: v, label }) => (
+                    <button key={v} onClick={() => setDotStyle(v)}
+                      style={{ flex: 1, padding: "9px 8px", borderRadius: 9, cursor: "pointer", fontSize: 13,
+                        background: dotStyle === v ? "rgba(184,147,74,0.12)" : "var(--input-bg)",
+                        border: `1px solid ${dotStyle === v ? "var(--border-gold)" : "var(--border)"}`,
+                        color: dotStyle === v ? "var(--gold)" : "var(--text)" }}>
+                      {label}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -248,8 +307,8 @@ export default function QrCode() {
           <div style={{ position: "sticky", top: 72 }}>
             <div style={{ ...card, textAlign: "center" }}>
               <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 14 }}>Aperçu</div>
-              <div style={{ display: "inline-block", padding: 12, borderRadius: 14, background: "var(--input-bg)", border: "1px solid var(--border)" }}>
-                <canvas ref={canvasRef} style={{ width: "100%", maxWidth: 260, height: "auto", display: "block", borderRadius: 6 }} />
+              <div style={{ display: "inline-block", padding: 12, borderRadius: 14, background: "var(--input-bg)", border: "1px solid var(--border)", width: "100%", maxWidth: 284, boxSizing: "border-box" }}>
+                <canvas ref={canvasRef} style={{ width: "100%", aspectRatio: "1 / 1", display: "block", borderRadius: 6 }} />
               </div>
               {error && <div style={{ marginTop: 12, fontSize: 12, color: "#ef4444" }}>{error}</div>}
               <button onClick={download} disabled={!!error}
