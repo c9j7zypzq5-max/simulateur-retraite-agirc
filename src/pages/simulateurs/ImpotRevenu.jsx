@@ -14,13 +14,13 @@ import {
   Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 
-// ─── Barème IR 2025 (applicable 2026) ─────────────────────────────────────────
+// ─── Barème IR 2026 (revenus 2025, revalorisé +0,9 %) ─────────────────────────
 const BAREME = [
-  { min: 0,       max: 11_497,  taux: 0    },
-  { min: 11_497,  max: 29_315,  taux: 0.11 },
-  { min: 29_315,  max: 83_823,  taux: 0.30 },
-  { min: 83_823,  max: 180_294, taux: 0.41 },
-  { min: 180_294, max: Infinity, taux: 0.45 },
+  { min: 0,       max: 11_600,  taux: 0    },
+  { min: 11_600,  max: 29_579,  taux: 0.11 },
+  { min: 29_579,  max: 84_577,  taux: 0.30 },
+  { min: 84_577,  max: 181_917, taux: 0.41 },
+  { min: 181_917, max: Infinity, taux: 0.45 },
 ];
 
 function calcParts(situation, nbEnfants) {
@@ -33,8 +33,8 @@ function calcParts(situation, nbEnfants) {
 }
 
 function calcIR(revenuBrut, situation, nbEnfants) {
-  // Abattement 10% sur salaires (min 495€, max 14 171€)
-  const abattement = Math.min(Math.max(revenuBrut * 0.10, 495), 14_171);
+  // Abattement 10% sur salaires (min 509€, max 14 555€)
+  const abattement = Math.min(Math.max(revenuBrut * 0.10, 509), 14_555);
   const revenuImposable = Math.max(0, revenuBrut - abattement);
 
   const nbParts = calcParts(situation, nbEnfants);
@@ -49,9 +49,9 @@ function calcIR(revenuBrut, situation, nbEnfants) {
 
   const irBrut = irQuotient * nbParts;
 
-  // Décote (2025): IR < 1 929€ (célibataire) ou < 3 191€ (couple)
-  const seuilDecote = situation === "marie" ? 3_191 : 1_929;
-  const decoteMax = situation === "marie" ? 1_444 : 873;
+  // Décote (2026): IR < 1 982€ (célibataire) ou < 3 277€ (couple)
+  const seuilDecote = situation === "marie" ? 3_277 : 1_982;
+  const decoteMax = situation === "marie" ? 1_483 : 897;
   let decote = 0;
   if (irBrut < seuilDecote) {
     decote = Math.max(0, decoteMax - 0.4525 * irBrut);
@@ -76,7 +76,7 @@ function calcIR(revenuBrut, situation, nbEnfants) {
 const FAQ = [
   {
     q: "Quelle est la différence entre TMI et taux moyen ?",
-    a: "La TMI (Taux Marginal d'Imposition) est le taux appliqué à votre dernier euro de revenu imposable. Le taux moyen est votre impôt total divisé par votre revenu imposable. Par exemple, avec un revenu imposable de 50 000 €, votre TMI pourrait être 30 % (tranche) mais votre taux moyen 15 % (car vous payez 0 % jusqu'à 11 497 €, puis 11 %, puis 30 %)."
+    a: "La TMI (Taux Marginal d'Imposition) est le taux appliqué à votre dernier euro de revenu imposable. Le taux moyen est votre impôt total divisé par votre revenu imposable. Par exemple, avec un revenu imposable de 50 000 €, votre TMI pourrait être 30 % (tranche) mais votre taux moyen 15 % (car vous payez 0 % jusqu'à 11 600 €, puis 11 %, puis 30 %)."
   },
   {
     q: "Comment fonctionnent les parts fiscales ?",
@@ -84,11 +84,11 @@ const FAQ = [
   },
   {
     q: "Qu'est-ce que la décote ?",
-    a: "La décote est une réduction d'impôt pour les contribuables dont l'imposition reste faible. En 2025, elle s'applique si votre impôt brut est inférieur à 1 929 € (célibataire) ou 3 191 € (couple). Vous bénéficiez d'une décote égale à 873 € (ou 1 444 €) moins 45,25 % de votre IR brut. À partir d'un certain revenu, la décote disparaît progressivement."
+    a: "La décote est une réduction d'impôt pour les contribuables dont l'imposition reste faible. En 2026, elle s'applique si votre impôt brut est inférieur à 1 982 € (célibataire) ou 3 277 € (couple). Vous bénéficiez d'une décote égale à 897 € (ou 1 483 €) moins 45,25 % de votre IR brut. À partir d'un certain revenu, la décote disparaît progressivement."
   },
   {
     q: "Pourquoi y a-t-il un abattement sur les salaires ?",
-    a: "L'abattement de 10 % représente une estimation des frais professionnels (frais de déplacement, vêtements, outils, etc.). Il s'applique automatiquement à tous les salaires. Le minimum garanti est 495 € et le maximum 14 171 € pour 2025. Si vous avez des frais réels supérieurs, vous pouvez opter pour la déclaration au réel."
+    a: "L'abattement de 10 % représente une estimation des frais professionnels (frais de déplacement, vêtements, outils, etc.). Il s'applique automatiquement à tous les salaires. Le minimum garanti est 509 € et le maximum 14 555 € pour 2026. Si vous avez des frais réels supérieurs, vous pouvez opter pour la déclaration au réel."
   },
 ];
 
@@ -102,8 +102,8 @@ export default function ImpotRevenu() {
   const resultsRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Simulateur Impôt sur le Revenu 2025 — Calcul IR barème officiel";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2025 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
+    document.title = "Simulateur Impôt sur le Revenu 2026 — Calcul IR barème officiel";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
@@ -165,7 +165,7 @@ export default function ImpotRevenu() {
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Impôt sur le revenu",
         "url": "https://www.mesimulateurs.fr/simulateurs/impot-revenu",
-        "description": "Estimez votre impôt sur le revenu 2025 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.",
+        "description": "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -183,14 +183,14 @@ export default function ImpotRevenu() {
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/impot-revenu" size={34} />}
-          badge="Impôts · Simulation 2025"
+          badge="Impôts · Simulation 2026"
           title="Impôt sur le revenu"
           desc="Estimez votre impôt net, votre tranche marginale d'imposition (TMI) et votre taux moyen selon votre situation familiale."
         />
 
         {/* Réassurance */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
-          {["✓ Barème 2025 à jour", "✓ Décote incluse", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
+          {["✓ Barème 2026 à jour", "✓ Décote incluse", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
@@ -205,7 +205,7 @@ export default function ImpotRevenu() {
             unit="€/an"
             min={0}
             max={1_000_000}
-            hint={revenuBrut ? `Abattement 10 % : ${fmtEur(Math.min(Math.max(revenuBrut * 0.10, 495), 14_171))}` : "Salaire, pension, revenus d'activité, etc."}
+            hint={revenuBrut ? `Abattement 10 % : ${fmtEur(Math.min(Math.max(revenuBrut * 0.10, 509), 14_555))}` : "Salaire, pension, revenus d'activité, etc."}
           />
 
           <div style={{ marginBottom: 24 }}>
@@ -350,10 +350,10 @@ export default function ImpotRevenu() {
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le barème progressif 2025</h3>
-            <p style={{ marginBottom: 16 }}>L'impôt sur le revenu français est calculé selon un barème progressif par tranches. Pour les revenus 2025 (déclarés en 2026), les taux sont : 0 % jusqu'à 11 497 €, 11 % de 11 497 € à 29 315 €, 30 % de 29 315 € à 83 823 €, 41 % de 83 823 € à 180 294 €, et 45 % au-delà. Ces tranches s'appliquent sur le revenu net imposable par part de quotient familial — pas sur le revenu brut.</p>
+            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le barème progressif 2026</h3>
+            <p style={{ marginBottom: 16 }}>L'impôt sur le revenu français est calculé selon un barème progressif par tranches. Pour les revenus 2025 (déclarés en 2026), les taux sont : 0 % jusqu'à 11 600 €, 11 % de 11 600 € à 29 579 €, 30 % de 29 579 € à 84 577 €, 41 % de 84 577 € à 181 917 €, et 45 % au-delà. Ces tranches s'appliquent sur le revenu net imposable par part de quotient familial — pas sur le revenu brut.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Quotient familial et décote</h3>
-            <p style={{ marginBottom: 16 }}>Le quotient familial réduit l'impôt des familles avec enfants : le revenu imposable est divisé par le nombre de parts (2 pour un couple, +0,5 par enfant en règle générale), l'impôt est calculé puis multiplié par ce nombre de parts. La décote efface partiellement la cotisation des foyers modestes : elle s'applique lorsque l'impôt brut est inférieur à 1 929 € (célibataire) ou 3 191 € (couple) en 2025.</p>
+            <p style={{ marginBottom: 16 }}>Le quotient familial réduit l'impôt des familles avec enfants : le revenu imposable est divisé par le nombre de parts (2 pour un couple, +0,5 par enfant en règle générale), l'impôt est calculé puis multiplié par ce nombre de parts. La décote efface partiellement la cotisation des foyers modestes : elle s'applique lorsque l'impôt brut est inférieur à 1 982 € (célibataire) ou 3 277 € (couple) en 2026.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>TMI et taux moyen : deux notions essentielles</h3>
             <p>Le Taux Marginal d'Imposition (TMI) est le taux de la tranche la plus haute dans laquelle vous cotisez. C'est lui qui détermine l'impact fiscal d'un revenu supplémentaire. Le taux moyen rapporte l'impôt total payé à l'ensemble du revenu imposable — il est toujours inférieur au TMI. Un contribuable avec un TMI à 30 % peut avoir un taux moyen de 12 %, ce qui signifie qu'il ne subit pas 30 % d'imposition sur l'ensemble de ses revenus.</p>
           </div>
