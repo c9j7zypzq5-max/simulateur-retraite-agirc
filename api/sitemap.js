@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS } from './_routes.js';
+import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS } from './_routes.js';
 
 // Sitemap dynamique : routes statiques (source unique _routes.js) + slugs des
 // articles de blog lus depuis Redis, afin que les nouveaux articles publiés
@@ -34,7 +34,14 @@ export default async function handler(req, res) {
   const lexiqueUrls = LEXIQUE_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.6' }));
   const guideUrls = GUIDES_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.8' }));
 
-  const urls = [...staticUrls, ...blogUrls, ...lexiqueUrls, ...guideUrls].map(u => `  <url>
+  // Pages EN (routes universelles disponibles en anglais)
+  const enUrls = Array.from(EN_ROUTES).map(route => ({
+    loc: route === '/' ? '/en' : `/en${route}`,
+    freq: 'monthly',
+    prio: ROUTE_META_EN[route] ? '0.8' : '0.7',
+  }));
+
+  const urls = [...staticUrls, ...blogUrls, ...lexiqueUrls, ...guideUrls, ...enUrls].map(u => `  <url>
     <loc>${BASE}${u.loc}</loc>
     <lastmod>${today}</lastmod>
     <changefreq>${u.freq}</changefreq>

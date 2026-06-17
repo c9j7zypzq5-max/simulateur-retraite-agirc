@@ -1,9 +1,5 @@
 // Dictionnaire français (locale par défaut). Source de vérité des libellés UI
 // partagés. Les autres langues répliquent cette structure (mêmes clés).
-//
-// Convention de clés : regroupées par zone (nav, footer, sections…), en
-// camelCase. On migre progressivement les chaînes en dur des composants vers ce
-// fichier — le Footer sert de pilote.
 export default {
   nav: {
     guides: 'Guides',
@@ -15,6 +11,20 @@ export default {
     mentionsLegales: 'Mentions légales',
     confidentialite: 'Politique de confidentialité',
     contact: 'Contact',
+    home: 'Accueil',
+    allSimulators: 'Tous les simulateurs',
+    currentPage: 'Page actuelle',
+    openNav: 'Ouvrir la navigation',
+    closeNav: 'Fermer la navigation',
+    savedSims: 'Simulations sauvegardées',
+    clearHistory: 'Effacer',
+    viewAll: 'Tout voir →',
+    darkMode: 'Mode sombre',
+    lightMode: 'Mode clair',
+    currency: 'Devise',
+    backToAll: '← Tous les simulateurs',
+    officialData: 'Données officielles 2026',
+    navigation: 'Navigation',
   },
   footer: {
     rights: '© 2026 simfinly.com — Simulation non contractuelle',
@@ -25,5 +35,45 @@ export default {
     relatedGuides: 'Guides liés',
     readOnBlog: 'À lire sur le blog',
     allLexique: 'Tout le lexique →',
+  },
+  home: {
+    badge: 'Gratuit · Sans inscription',
+    title: 'Simulateurs financiers',
+    subtitle: 'Simples, instantanés, gratuits.',
+    desc: 'Simulateurs en ligne pour préparer votre retraite, acheter un bien, optimiser votre budget et viser l\'indépendance financière. Aucun compte requis.',
+    search: 'Rechercher un simulateur…',
+    categories: {
+      all: 'Tous',
+      outils: 'Outils',
+    },
+    stats: {
+      simulators: 'simulateurs',
+      free: '100% gratuit',
+      noSignup: 'Sans inscription',
+    },
+  },
+  common: {
+    download: 'Télécharger',
+    downloadPng: '⬇ Télécharger en PNG',
+    preview: 'Aperçu',
+    result: 'Résultat',
+    year: 'an',
+    years: 'ans',
+    month: 'mois',
+    months: 'mois',
+    perYear: '/ an',
+    perMonth: '/ mois',
+    total: 'Total',
+    reset: 'Réinitialiser',
+    share: 'Partager',
+    copy: 'Copier',
+    copied: 'Copié !',
+    seeDetails: 'Voir le détail',
+    hideDetails: 'Masquer le détail',
+    faq: 'Questions fréquentes',
+    about: 'À propos de ce simulateur',
+    methodology: 'Méthodologie',
+    noData: 'Aucune donnée',
+    generatedInBrowser: 'Généré dans votre navigateur · aucune donnée envoyée',
   },
 };

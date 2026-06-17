@@ -85,6 +85,16 @@ export default function App() {
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* ── English versions (universal simulators only) ── */}
+        <Route path="/en" element={<Home />} />
+        <Route path="/en/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/en/simulateurs/fire" element={<Fire />} />
+        <Route path="/en/simulateurs/budget" element={<Budget />} />
+        <Route path="/en/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/en/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/en/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/en/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/en/outils/qr-code" element={<QrCode />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />

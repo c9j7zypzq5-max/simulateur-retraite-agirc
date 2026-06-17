@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, useLocation } from "../lib/router.js";
+import { Link, LocaleLink, useLocation, useLocale } from "../lib/router.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
+import LangSwitch from "./LangSwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
+import { EN_ROUTES } from "../i18n/paths.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
 
 // Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
@@ -121,8 +123,11 @@ export default function Navbar({ theme, setTheme }) {
   const [openCat, setOpenCat] = useState(null);   // barre catégories desktop
   const catBarRef = useRef(null);
 
-  const onSim = pathname.startsWith("/simulateurs/");
-  const showCurrency = CURRENCY_AWARE_ROUTES.has(pathname);
+  const locale = useLocale();
+  // Strip /en prefix for canonical path checks
+  const canonPath = pathname.startsWith('/en/') ? pathname.slice(3) : pathname === '/en' ? '/' : pathname;
+  const onSim = canonPath.startsWith("/simulateurs/");
+  const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
   const current = ALL_ITEMS.find(i => i.path === pathname);
 
   const [history, setHistory] = useState([]);
@@ -201,7 +206,7 @@ export default function Navbar({ theme, setTheme }) {
           {/* Breadcrumb — desktop uniquement (masqué sur mobile via .nav-center) */}
           <div className="nav-center">
             {onSim ? (
-              <Link to="/" style={{
+              <LocaleLink to="/" style={{
                 fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
                 display: "flex", alignItems: "center", gap: 6,
                 padding: "5px 12px", borderRadius: 20,
@@ -210,8 +215,8 @@ export default function Navbar({ theme, setTheme }) {
                 onMouseEnter={e => { e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
                 onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
               >
-                ← Tous les simulateurs
-              </Link>
+                {locale === 'en' ? '← All calculators' : '← Tous les simulateurs'}
+              </LocaleLink>
             ) : (
               <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
                 Données officielles 2026
@@ -221,7 +226,7 @@ export default function Navbar({ theme, setTheme }) {
         </div>
 
         {/* Centre : logo toujours centré (position absolute) */}
-        <Link to="/" style={{
+        <LocaleLink to="/" style={{
           position: "absolute", left: "50%", transform: "translateX(-50%)",
           display: "flex", alignItems: "center", gap: 8,
           textDecoration: "none", zIndex: 0,
@@ -233,10 +238,11 @@ export default function Navbar({ theme, setTheme }) {
             color: "var(--gold)",
             letterSpacing: "0.02em", whiteSpace: "nowrap",
           }}>simfinly.com</span>
-        </Link>
+        </LocaleLink>
 
-        {/* Droite : sélecteur devise (simulateurs universels) + toggle thème */}
-        <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 10 }}>
+        {/* Droite : switcher langue + sélecteur devise + toggle thème */}
+        <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 8 }}>
+          <LangSwitch compact />
           {showCurrency && <CurrencySelect compact />}
           <IosToggle theme={theme} setTheme={setTheme} compact />
         </div>
@@ -281,9 +287,9 @@ export default function Navbar({ theme, setTheme }) {
                     boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
                   }}>
                     {group.items.map(item => {
-                      const isCurrent = pathname === item.path;
+                      const isCurrent = canonPath === item.path;
                       return (
-                        <Link key={item.path} to={item.path} role="menuitem" onClick={() => setOpenCat(null)}
+                        <LocaleLink key={item.path} to={item.path} role="menuitem" onClick={() => setOpenCat(null)}
                           style={{
                             display: "flex", alignItems: "center", gap: 10, padding: "9px 10px",
                             borderRadius: 9, textDecoration: "none",
@@ -386,26 +392,26 @@ export default function Navbar({ theme, setTheme }) {
         <nav style={{ padding: "8px 10px", flex: 1 }} aria-label="Simulateurs disponibles">
 
           {/* Lien Accueil */}
-          <Link
+          <LocaleLink
             to="/"
             onClick={close}
             style={{
               display: "flex", alignItems: "center", gap: 10,
               padding: "9px 10px", borderRadius: 9,
               textDecoration: "none", marginBottom: 6,
-              background: pathname === "/" ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${pathname === "/" ? "var(--border-gold)" : "transparent"}`,
+              background: canonPath === "/" ? "rgba(184,147,74,0.1)" : "transparent",
+              border: `1px solid ${canonPath === "/" ? "var(--border-gold)" : "transparent"}`,
             }}
-            onMouseEnter={e => { if (pathname !== "/") e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { if (pathname !== "/") e.currentTarget.style.background = "transparent"; }}
+            onMouseEnter={e => { if (canonPath !== "/") e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseLeave={e => { if (canonPath !== "/") e.currentTarget.style.background = "transparent"; }}
           >
-            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname === "/" ? "var(--gold)" : "var(--text-secondary)" }}><House size={18} /></span>
+            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: canonPath === "/" ? "var(--gold)" : "var(--text-secondary)" }}><House size={18} /></span>
             <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: pathname === "/" ? 500 : 400, color: pathname === "/" ? "var(--gold)" : "var(--text)" }}>Accueil</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Tous les simulateurs</div>
+              <div style={{ fontSize: "0.88rem", fontWeight: canonPath === "/" ? 500 : 400, color: canonPath === "/" ? "var(--gold)" : "var(--text)" }}>{locale === 'en' ? 'Home' : 'Accueil'}</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{locale === 'en' ? 'All calculators' : 'Tous les simulateurs'}</div>
             </div>
-            {pathname === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
-          </Link>
+            {canonPath === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+          </LocaleLink>
 
           {/* Guides */}
           <Link
@@ -533,9 +539,9 @@ export default function Navbar({ theme, setTheme }) {
                   transition: "max-height 0.28s ease",
                 }}>
                   {group.items.map(item => {
-                    const isCurrent = pathname === item.path;
+                    const isCurrent = canonPath === item.path;
                     return (
-                      <Link
+                      <LocaleLink
                         key={item.path}
                         to={item.path}
                         onClick={close}
