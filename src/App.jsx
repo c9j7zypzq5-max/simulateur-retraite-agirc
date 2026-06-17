@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
+import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Home from "./pages/Home.jsx";
@@ -74,6 +75,7 @@ function RouteFallback() {
 export default function App() {
   return (
     <VideoRecordingProvider>
+    <CurrencyProvider>
     <BrowserRouter>
       <ScrollToTop />
       <VideoRecordingToast />
@@ -139,6 +141,7 @@ export default function App() {
       </Suspense>
       </ErrorBoundary>
     </BrowserRouter>
+    </CurrencyProvider>
     </VideoRecordingProvider>
   );
 }

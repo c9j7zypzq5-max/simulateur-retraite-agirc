@@ -13,8 +13,9 @@ import EmbedSnippet from "../../components/EmbedSnippet.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  SimulateurHeader,
 } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
 
 // ─── Logique de calcul intérêts composés ──────────────────────────────────────
 function calcEpargne({ capitalInitial, versement, tauxAnnuel, duree }) {
@@ -84,6 +85,7 @@ const FAQ = [
 
 export default function Epargne() {
   const [theme, setTheme] = useTheme();
+  const money = useMoney();
 
   const [capitalInitial, setCapitalInitial]   = useState(null);
   const [versement, setVersement]             = useState(null);
@@ -169,17 +171,17 @@ export default function Epargne() {
 
   const report = {
     title: "Simulateur Épargne — Intérêts composés",
-    highlight: { label: "Capital final estimé", value: hasResult ? fmtEur(Math.round(res.capitalFinal)) : "—" },
+    highlight: { label: "Capital final estimé", value: hasResult ? money.fmt(Math.round(res.capitalFinal)) : "—" },
     params: [
-      { label: "Capital initial", value: fmtEur(capitalInitial ?? 0) },
-      { label: "Versement mensuel", value: versement ? fmtEur(versement) : "—" },
+      { label: "Capital initial", value: money.fmt(capitalInitial ?? 0) },
+      { label: "Versement mensuel", value: versement ? money.fmt(versement) : "—" },
       { label: "Taux de rendement annuel", value: `${tauxAnnuel} %` },
       { label: "Durée de l'épargne", value: `${duree} ans` },
     ],
     results: hasResult ? [
-      { label: "Capital final", value: fmtEur(Math.round(res.capitalFinal)), strong: true },
-      { label: "Total versé", value: fmtEur(Math.round(res.totalVerse)) },
-      { label: "Intérêts générés", value: fmtEur(Math.round(res.totalInterets)) },
+      { label: "Capital final", value: money.fmt(Math.round(res.capitalFinal)), strong: true },
+      { label: "Total versé", value: money.fmt(Math.round(res.totalVerse)) },
+      { label: "Intérêts générés", value: money.fmt(Math.round(res.totalInterets)) },
       { label: "Multiplicateur", value: `×${res.multiplicateur.toFixed(2)}` },
       { label: "Gain", value: `+${((res.multiplicateur - 1) * 100).toFixed(1)} %` },
     ] : [],
@@ -221,12 +223,12 @@ export default function Epargne() {
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Paramètres</h2>
 
-          <NumInput id="capital-initial" label="Capital initial" value={capitalInitial} onChange={setCapitalInitial} unit="€" min={0} max={1000000}
+          <NumInput id="capital-initial" label="Capital initial" value={capitalInitial} onChange={setCapitalInitial} unit={money.symbol} min={0} max={1000000}
             hint={capitalInitial ? "Montant de départ (peut être 0)" : "Votre épargne actuelle"}
           />
 
-          <NumInput id="versement" label="Versement mensuel" value={versement} onChange={setVersement} unit="€/mois" min={0} max={100000}
-            hint={versement ? `Annualisé : ${fmtEur(versement * 12)}/an` : "Apport régulier chaque mois"}
+          <NumInput id="versement" label="Versement mensuel" value={versement} onChange={setVersement} unit={`${money.symbol}/mois`} min={0} max={100000}
+            hint={versement ? `Annualisé : ${money.fmt(versement * 12)}/an` : "Apport régulier chaque mois"}
           />
 
           <StepperInput
@@ -255,7 +257,7 @@ export default function Epargne() {
             <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
               <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Capital final estimé</div>
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                {capitalFinalAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
+                {money.fmt(Math.round(capitalFinalAnim))}
               </div>
               <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
                 après {duree} {duree > 1 ? "années" : "année"} à {tauxAnnuel} % annuels
@@ -264,8 +266,8 @@ export default function Epargne() {
 
             {/* Chips */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginBottom: 20 }}>
-              <Chip label="Total versé" value={fmtEur(res.totalVerse)} />
-              <Chip label="Intérêts générés" value={fmtEur(Math.round(res.totalInterets * 100) / 100)} accent />
+              <Chip label="Total versé" value={money.fmt(res.totalVerse)} />
+              <Chip label="Intérêts générés" value={money.fmt(Math.round(res.totalInterets * 100) / 100)} accent />
               <Chip label="Multiplicateur" value={`×${res.multiplicateur.toFixed(2)}`} small />
               <Chip label="Gain %" value={`+${((res.multiplicateur - 1) * 100).toFixed(1)} %`} accent small />
             </div>
@@ -322,24 +324,24 @@ export default function Epargne() {
               <div>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Scénario A (actuel)</div>
                 <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
-                  <li>Capital initial : <strong style={{ color: "var(--text)" }}>{fmtEur(capitalInitial ?? 0)}</strong></li>
-                  <li>Versement : <strong style={{ color: "var(--text)" }}>{versement ? fmtEur(versement) + "/mois" : "—"}</strong></li>
+                  <li>Capital initial : <strong style={{ color: "var(--text)" }}>{money.fmt(capitalInitial ?? 0)}</strong></li>
+                  <li>Versement : <strong style={{ color: "var(--text)" }}>{versement ? money.fmt(versement) + "/mois" : "—"}</strong></li>
                   <li>Taux : <strong style={{ color: "var(--text)" }}>{tauxAnnuel} %</strong></li>
                   <li>Durée : <strong style={{ color: "var(--text)" }}>{duree} ans</strong></li>
                 </ul>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Capital final</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{fmtEur(Math.round(res.capitalFinal))}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{money.fmt(Math.round(res.capitalFinal))}</div>
               </div>
 
               {/* Scénario B (éditable) */}
               <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>Scénario B</div>
-                <NumInput id="b-capital" label="Capital initial" value={bCapital} onChange={setBCapital} unit="€" min={0} max={1000000} />
-                <NumInput id="b-versement" label="Versement mensuel" value={bVersement} onChange={setBVersement} unit="€/mois" min={0} max={100000} />
+                <NumInput id="b-capital" label="Capital initial" value={bCapital} onChange={setBCapital} unit={money.symbol} min={0} max={1000000} />
+                <NumInput id="b-versement" label="Versement mensuel" value={bVersement} onChange={setBVersement} unit={`${money.symbol}/mois`} min={0} max={100000} />
                 <StepperInput label="Taux annuel" value={bTaux} onChange={setBTaux} min={0} max={20} step={0.1} unit="%" />
                 <StepperInput label="Durée" value={bDuree} onChange={setBDuree} min={1} max={40} step={1} unit=" ans" />
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Capital final</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? fmtEur(Math.round(resB.capitalFinal)) : "—"}</div>
+                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? money.fmt(Math.round(resB.capitalFinal)) : "—"}</div>
               </div>
             </div>
 
@@ -352,7 +354,7 @@ export default function Epargne() {
               }}>
                 <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Écart B − A : </span>
                 <strong style={{ fontSize: 18, color: deltaFinal >= 0 ? "#22c55e" : "#ef4444" }}>
-                  {deltaFinal >= 0 ? "+" : "−"}{fmtEur(Math.abs(Math.round(deltaFinal)))}
+                  {deltaFinal >= 0 ? "+" : "−"}{money.fmt(Math.abs(Math.round(deltaFinal)))}
                 </strong>
               </div>
             )}
@@ -383,13 +385,13 @@ export default function Epargne() {
                     <tr key={idx} style={{ borderBottom: "1px solid var(--border)", background: row.annee % 2 === 0 ? "var(--input-bg)" : "transparent" }}>
                       <td style={{ padding: "10px 8px", textAlign: "left" }}>Année {row.annee}</td>
                       <td style={{ padding: "10px 8px", textAlign: "right", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, color: "var(--gold)" }}>
-                        {fmt(row.capital)}€
+                        {money.fmt(row.capital)}
                       </td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--text-secondary)" }}>
-                        {fmt(row.versementsCum)}€
+                        {money.fmt(row.versementsCum)}
                       </td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--gold-mid)", fontWeight: 500 }}>
-                        {fmt(row.interstsCum)}€
+                        {money.fmt(row.interstsCum)}
                       </td>
                     </tr>
                   ))}

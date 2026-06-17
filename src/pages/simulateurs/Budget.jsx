@@ -6,7 +6,9 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
-import { NumInput, useAnimatedNumber, fmt, fmtEur } from "../../components/ui.jsx";
+import { NumInput, useAnimatedNumber } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
+import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 
 function useIsMobile(breakpoint = 680) {
   const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
@@ -167,7 +169,7 @@ function Gauge({ label, value, total, color, icon }) {
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: "0.85rem" }}>
         <span style={{ color: "var(--text)", fontWeight: 500 }}>{icon} {label}</span>
-        <span style={{ color, fontWeight: 600 }}>{fmtEur(Math.round(value))}</span>
+        <span style={{ color, fontWeight: 600 }}>{fmtCur(Math.round(value))}</span>
       </div>
       <div style={{ height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
         <div style={{
@@ -266,6 +268,7 @@ function MotivationMessage({ tauxEpargne }) {
 // ─── Composant principal ───────────────────────────────────────────────────────
 export default function Budget() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
   const [revenus,   setRevenus]   = useState(3000);
   const [fixe,      setFixe]      = useState(1200);
   const [variable,  setVariable]  = useState(600);
@@ -304,17 +307,17 @@ export default function Budget() {
 
   const report = {
     title: "Simulateur Budget 50/30/20",
-    highlight: { label: "Solde mensuel disponible", value: res ? `${res.epargneReel >= 0 ? "+" : ""}${fmtEur(Math.round(res.epargneReel))}` : "—" },
+    highlight: { label: "Solde mensuel disponible", value: res ? `${res.epargneReel >= 0 ? "+" : ""}${fmtCur(Math.round(res.epargneReel))}` : "—" },
     params: [
-      { label: "Revenus nets mensuels", value: revenus ? fmtEur(revenus) : "—" },
-      { label: "Dépenses fixes", value: fmtEur(fixe ?? 0) },
-      { label: "Dépenses variables", value: fmtEur(variable ?? 0) },
-      { label: "Épargne actuelle", value: fmtEur(epargneActuelle ?? 0) },
+      { label: "Revenus nets mensuels", value: revenus ? fmtCur(revenus) : "—" },
+      { label: "Dépenses fixes", value: fmtCur(fixe ?? 0) },
+      { label: "Dépenses variables", value: fmtCur(variable ?? 0) },
+      { label: "Épargne actuelle", value: fmtCur(epargneActuelle ?? 0) },
     ],
     results: res ? [
-      { label: "Épargne mensuelle", value: fmtEur(Math.round(res.epargneReel)), strong: true },
-      { label: "Besoins (fixes)", value: `${fmtEur(Math.round(res.besoinsReel))} · ${res.tauxBesoins.toFixed(1)} %` },
-      { label: "Envies (variables)", value: `${fmtEur(Math.round(res.enviesReel))} · ${res.tauxEnvies.toFixed(1)} %` },
+      { label: "Épargne mensuelle", value: fmtCur(Math.round(res.epargneReel)), strong: true },
+      { label: "Besoins (fixes)", value: `${fmtCur(Math.round(res.besoinsReel))} · ${res.tauxBesoins.toFixed(1)} %` },
+      { label: "Envies (variables)", value: `${fmtCur(Math.round(res.enviesReel))} · ${res.tauxEnvies.toFixed(1)} %` },
       { label: "Taux d'épargne", value: `${res.tauxEpargne.toFixed(1)} %` },
     ] : [],
     notes: res ? [
@@ -359,10 +362,10 @@ export default function Budget() {
             <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Vos revenus & dépenses
             </div>
-            <NumInput label="Revenus nets mensuels" value={revenus} onChange={setRevenus} unit="€/mois" min={0} max={50000} />
-            <NumInput label="Dépenses fixes" value={fixe} onChange={setFixe} unit="€/mois" hint="Loyer, charges, abonnements..." min={0} max={20000} />
-            <NumInput label="Dépenses variables" value={variable} onChange={setVariable} unit="€/mois" hint="Courses, loisirs, restaurants..." min={0} max={20000} />
-            <NumInput label="Épargne actuelle" value={epargneActuelle} onChange={setEpargneActuelle} unit="€" hint="Patrimoine déjà constitué" min={0} max={9999999} />
+            <NumInput label="Revenus nets mensuels" value={revenus} onChange={setRevenus} unit={`${activeSymbol()}/mois`} min={0} max={50000} />
+            <NumInput label="Dépenses fixes" value={fixe} onChange={setFixe} unit={`${activeSymbol()}/mois`} hint="Loyer, charges, abonnements..." min={0} max={20000} />
+            <NumInput label="Dépenses variables" value={variable} onChange={setVariable} unit={`${activeSymbol()}/mois`} hint="Courses, loisirs, restaurants..." min={0} max={20000} />
+            <NumInput label="Épargne actuelle" value={epargneActuelle} onChange={setEpargneActuelle} unit={activeSymbol()} hint="Patrimoine déjà constitué" min={0} max={9999999} />
           </div>
 
           <MonthProgress />
@@ -395,7 +398,7 @@ export default function Budget() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.82rem" }}>
                         <span style={{ color: "var(--text)", fontWeight: 500 }}>{s.label}</span>
-                        <span style={{ color: s.color, fontWeight: 600 }}>{fmtEur(Math.round(s.value))}</span>
+                        <span style={{ color: s.color, fontWeight: 600 }}>{fmtCur(Math.round(s.value))}</span>
                       </div>
                       <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)" }}>{s.pct.toFixed(1)}%</div>
                     </div>
@@ -417,7 +420,7 @@ export default function Budget() {
             <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)" }}>
               <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 4 }}>Solde mensuel disponible</div>
               <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
-                {res ? (res.epargneReel >= 0 ? "+" : "") + fmtEur(Math.round(animEpargne)) : "—"}
+                {res ? (res.epargneReel >= 0 ? "+" : "") + fmtCur(Math.round(animEpargne)) : "—"}
               </div>
             </div>
 

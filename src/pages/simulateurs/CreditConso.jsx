@@ -13,8 +13,10 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
-  fmtEur, SimulateurHeader, FaqSection,
+  SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
+import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 
 function useIsMobile(breakpoint = 680) {
   const [mob, setMob] = useState(() =>
@@ -82,8 +84,8 @@ function TableauAmortissement({ montant, taegPct, dureeMois }) {
           {rows.map((row, i) => (
             <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{row.annee}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(m))}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: row.capitalRestant <= 0 ? "var(--gold)" : "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(row.capitalRestant))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtCur(Math.round(m))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: row.capitalRestant <= 0 ? "var(--gold)" : "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtCur(Math.round(row.capitalRestant))}</td>
             </tr>
           ))}
         </tbody>
@@ -124,6 +126,7 @@ const FAQ = [
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function CreditConso() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
   const isMobile = useIsMobile();
 
   const card = {
@@ -186,19 +189,19 @@ export default function CreditConso() {
 
   const report = {
     title: "Simulateur Crédit Conso",
-    highlight: { label: "Mensualité totale", value: hasInput ? `${fmtEur(Math.round(mensualiteTotale))}/mois` : "—" },
+    highlight: { label: "Mensualité totale", value: hasInput ? `${fmtCur(Math.round(mensualiteTotale))}/mois` : "—" },
     params: [
-      { label: "Montant emprunté", value: montant ? fmtEur(montant) : "—" },
+      { label: "Montant emprunté", value: montant ? fmtCur(montant) : "—" },
       { label: "TAEG annuel", value: `${taeg} %` },
       { label: "Durée", value: `${duree} mois (${(duree / 12).toFixed(1)} an(s))` },
-      { label: "Assurance optionnelle", value: (assurance ?? 0) > 0 ? `${fmtEur(assurance)}/mois` : "—" },
+      { label: "Assurance optionnelle", value: (assurance ?? 0) > 0 ? `${fmtCur(assurance)}/mois` : "—" },
     ],
     results: hasInput ? [
-      { label: "Mensualité totale", value: `${fmtEur(Math.round(mensualiteTotale))}/mois`, strong: true },
-      { label: "Mensualité (hors assurance)", value: fmtEur(Math.round(m)) },
-      { label: "Total des intérêts", value: fmtEur(Math.round(totalInterets)) },
-      { label: "Coût total du crédit", value: fmtEur(Math.round(coutCredit)) },
-      { label: "Total remboursé", value: fmtEur(Math.round(coutTotal)) },
+      { label: "Mensualité totale", value: `${fmtCur(Math.round(mensualiteTotale))}/mois`, strong: true },
+      { label: "Mensualité (hors assurance)", value: fmtCur(Math.round(m)) },
+      { label: "Total des intérêts", value: fmtCur(Math.round(totalInterets)) },
+      { label: "Coût total du crédit", value: fmtCur(Math.round(coutCredit)) },
+      { label: "Total remboursé", value: fmtCur(Math.round(coutTotal)) },
     ] : [],
     notes: hasInput ? [
       "Le TAEG accordé doit respecter le taux d'usure en vigueur publié par la Banque de France.",
@@ -240,13 +243,13 @@ export default function CreditConso() {
           <div style={{ order: isMobile ? 2 : 1 }}>
             <div style={card}>
               <h2 style={sectionTitle}>Votre crédit</h2>
-              <NumInput label="Montant emprunté" value={montant} onChange={setMontant} unit="€" min={200} max={100000} />
+              <NumInput label="Montant emprunté" value={montant} onChange={setMontant} unit={activeSymbol()} min={200} max={100000} />
               <StepperInput label="TAEG annuel" value={taeg} onChange={setTaeg} min={0.1} max={25} step={0.1} unit="%"
                 tooltip="Taux Annuel Effectif Global : inclut intérêts et frais obligatoires. Doit rester sous le taux d'usure." />
               <StepperInput label="Durée" value={duree} onChange={v => setDuree(Math.round(v))} min={3} max={120} step={1} unit="mois"
                 hint={duree > 0 ? `soit ${(duree / 12).toFixed(1)} an(s)` : undefined} />
-              <StepperInput label="Assurance optionnelle" value={assurance} onChange={setAssurance} min={0} max={200} step={1} unit="€/mois"
-                hint={(assurance ?? 0) > 0 ? `Total assurance : ${fmtEur(totalAssurance)} sur ${duree} mois` : "Facultative pour un crédit conso"} />
+              <StepperInput label="Assurance optionnelle" value={assurance} onChange={setAssurance} min={0} max={200} step={1} unit={`${activeSymbol()}/mois`}
+                hint={(assurance ?? 0) > 0 ? `Total assurance : ${fmtCur(totalAssurance)} sur ${duree} mois` : "Facultative pour un crédit conso"} />
             </div>
           </div>
 
@@ -263,14 +266,14 @@ export default function CreditConso() {
               ) : (
                 <>
                   <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    {fmtEur(Math.round(animMensualite))}
+                    {fmtCur(Math.round(animMensualite))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
                     /mois · sur {duree} mois ({(duree / 12).toFixed(1)} an{duree >= 24 ? "s" : ""})
                   </div>
                   <div style={{ marginTop: 14, display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" }}>
                     <StatusBadge status="gold" label={`TAEG ${taeg} %`} />
-                    {(assurance ?? 0) > 0 && <StatusBadge status="info" label={`+ ${fmtEur(assurance)}/mois assurance`} />}
+                    {(assurance ?? 0) > 0 && <StatusBadge status="info" label={`+ ${fmtCur(assurance)}/mois assurance`} />}
                   </div>
                 </>
               )}
@@ -285,9 +288,9 @@ export default function CreditConso() {
 
             {hasInput && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-                <Chip label="Coût total du crédit" value={fmtEur(Math.round(animCout))} accent small />
-                <Chip label="Total des intérêts" value={fmtEur(Math.round(totalInterets))} small />
-                <Chip label="Montant emprunté" value={fmtEur(montantEmprunte)} small />
+                <Chip label="Coût total du crédit" value={fmtCur(Math.round(animCout))} accent small />
+                <Chip label="Total des intérêts" value={fmtCur(Math.round(totalInterets))} small />
+                <Chip label="Montant emprunté" value={fmtCur(montantEmprunte)} small />
                 <Chip label="Durée" value={`${duree} mois`} small />
               </div>
             )}
@@ -295,14 +298,14 @@ export default function CreditConso() {
             {hasInput && (
               <AccordionSection title="Détail du calcul" defaultOpen>
                 {[
-                  { label: "Montant emprunté", value: fmtEur(montantEmprunte) },
-                  { label: "Mensualité (hors assurance)", value: fmtEur(Math.round(m)) },
-                  { label: "Assurance mensuelle", value: fmtEur(assurance ?? 0) },
-                  { label: "Mensualité totale", value: fmtEur(Math.round(mensualiteTotale)), accent: true },
-                  { label: "Total des intérêts", value: fmtEur(Math.round(totalInterets)) },
-                  { label: "Total assurance", value: fmtEur(Math.round(totalAssurance)) },
-                  { label: "Coût total du crédit", value: fmtEur(Math.round(coutCredit)), accent: true },
-                  { label: "Total remboursé", value: fmtEur(Math.round(coutTotal)), accent: true },
+                  { label: "Montant emprunté", value: fmtCur(montantEmprunte) },
+                  { label: "Mensualité (hors assurance)", value: fmtCur(Math.round(m)) },
+                  { label: "Assurance mensuelle", value: fmtCur(assurance ?? 0) },
+                  { label: "Mensualité totale", value: fmtCur(Math.round(mensualiteTotale)), accent: true },
+                  { label: "Total des intérêts", value: fmtCur(Math.round(totalInterets)) },
+                  { label: "Total assurance", value: fmtCur(Math.round(totalAssurance)) },
+                  { label: "Coût total du crédit", value: fmtCur(Math.round(coutCredit)), accent: true },
+                  { label: "Total remboursé", value: fmtCur(Math.round(coutTotal)), accent: true },
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
@@ -326,15 +329,16 @@ export default function CreditConso() {
             name="credit-conso"
             base={{ montant: montantEmprunte, taeg, duree, assurance: assurance ?? 0 }}
             compute={computeCredit}
+            moneyFmt={fmtCur}
             fields={[
-              { key: "montant", label: "Montant emprunté", unit: "€", kind: "eur", type: "num", min: 0, max: 100000 },
+              { key: "montant", label: "Montant emprunté", unit: activeSymbol(), kind: "eur", type: "num", min: 0, max: 100000 },
               { key: "taeg", label: "TAEG", unit: "%", type: "step", min: 0, max: 25, step: 0.1 },
               { key: "duree", label: "Durée", unit: "mois", type: "step", min: 6, max: 120, step: 6 },
-              { key: "assurance", label: "Assurance / mois", unit: "€", kind: "eur", type: "num", min: 0, max: 200 },
+              { key: "assurance", label: "Assurance / mois", unit: activeSymbol(), kind: "eur", type: "num", min: 0, max: 200 },
             ]}
             metrics={[
-              { label: "Mensualité", get: r => r.mensualiteTotale, fmt: n => fmtEur(Math.round(n)), higherBetter: false },
-              { label: "Coût du crédit", get: r => r.coutCredit, fmt: n => fmtEur(Math.round(n)), higherBetter: false },
+              { label: "Mensualité", get: r => r.mensualiteTotale, fmt: n => fmtCur(Math.round(n)), higherBetter: false },
+              { label: "Coût du crédit", get: r => r.coutCredit, fmt: n => fmtCur(Math.round(n)), higherBetter: false },
             ]}
           />
         )}

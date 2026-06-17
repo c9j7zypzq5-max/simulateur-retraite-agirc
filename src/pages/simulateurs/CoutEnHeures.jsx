@@ -11,8 +11,10 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
+  Chip, useAnimatedNumber, fmt, SimulateurHeader,
 } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
+import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 const HEURES_SEMAINE_DEFAUT = 35;
@@ -68,6 +70,7 @@ function FaqItem({ q, a }) {
 // ─── Composant ────────────────────────────────────────────────────────────────
 export default function CoutEnHeures() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
 
   const [prix, setPrix]             = useState(null);
   const [salaire, setSalaire]       = useState(null);
@@ -113,8 +116,8 @@ export default function CoutEnHeures() {
     title: "Simulateur Coût en Heures de Vie",
     highlight: { label: "Coût en heures de vie", value: hasResult ? formatHeures(res.heures) : "—" },
     params: [
-      { label: "Prix de l'article", value: prix ? fmtEur(prix) : "—" },
-      { label: "Salaire net mensuel", value: salaire ? fmtEur(salaire) : "—" },
+      { label: "Prix de l'article", value: prix ? fmtCur(prix) : "—" },
+      { label: "Salaire net mensuel", value: salaire ? fmtCur(salaire) : "—" },
       { label: "Heures travaillées/semaine", value: `${heuresSemaine} h` },
       { label: "Mois de salaire par an", value: `${moisParAn} mois` },
     ],
@@ -123,7 +126,7 @@ export default function CoutEnHeures() {
       { label: "Jours ouvrés", value: res.joursOuvres.toFixed(1).replace(".", ",") },
       { label: "Semaines", value: res.semaines.toFixed(1).replace(".", ",") },
       { label: "% du salaire mensuel", value: `${res.pctMois.toFixed(1).replace(".", ",")} %` },
-      { label: "Taux horaire net", value: `${res.tauxHoraire.toFixed(2).replace(".", ",")} €/h` },
+      { label: "Taux horaire net", value: `${res.tauxHoraire.toFixed(2).replace(".", ",")} ${activeSymbol()}/h` },
     ] : [],
     notes: hasResult ? [
       "L'argent est du temps de vie transformé : évaluez chaque achat en heures de travail.",
@@ -195,7 +198,7 @@ export default function CoutEnHeures() {
 
               {/* Taux horaire */}
               <div style={{ marginTop: 16, padding: "10px 16px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, fontSize: 13, color: "var(--text-secondary)" }}>
-                Votre taux horaire net : <strong style={{ color: "var(--gold)" }}>{res.tauxHoraire.toFixed(2).replace(".", ",")} €/h</strong>
+                Votre taux horaire net : <strong style={{ color: "var(--gold)" }}>{res.tauxHoraire.toFixed(2).replace(".", ",")} {activeSymbol()}/h</strong>
               </div>
             </>
           )}
@@ -214,10 +217,10 @@ export default function CoutEnHeures() {
             label="Prix de l'article"
             value={prix}
             onChange={setPrix}
-            unit="€"
+            unit={activeSymbol()}
             min={0}
             max={1000000}
-            hint={hasResult ? `soit ${fmtEur(prix)} pour ${formatHeures(res.heures)} de travail` : "Entrez le prix TTC de l'article ou service"}
+            hint={hasResult ? `soit ${fmtCur(prix)} pour ${formatHeures(res.heures)} de travail` : "Entrez le prix TTC de l'article ou service"}
           />
 
           <NumInput
@@ -225,10 +228,10 @@ export default function CoutEnHeures() {
             label="Salaire net mensuel"
             value={salaire}
             onChange={setSalaire}
-            unit="€/mois"
+            unit={`${activeSymbol()}/mois`}
             min={0}
             max={100000}
-            hint={hasResult ? `Taux horaire : ${res.tauxHoraire.toFixed(2).replace(".", ",")} €/h` : "Votre salaire net (après impôts et charges)"}
+            hint={hasResult ? `Taux horaire : ${res.tauxHoraire.toFixed(2).replace(".", ",")} ${activeSymbol()}/h` : "Votre salaire net (après impôts et charges)"}
           />
 
           <StepperInput

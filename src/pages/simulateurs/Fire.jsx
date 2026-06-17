@@ -16,8 +16,10 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, ProgressBar, StatusBadge, useAnimatedNumber,
-  fmtEur, SimulateurHeader,
+  SimulateurHeader,
 } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
+import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 const RENDEMENT_DEFAUT = 5;
@@ -131,7 +133,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
   const ages = projectionData.filter((_, i) => i % Math.ceil(projectionData.length / 5) === 0 || i === projectionData.length - 1);
   const yTicks = [0.25, 0.5, 0.75, 1].map(f => ({ val: maxP * f, yv: y(maxP * f) }));
 
-  const fmtK = v => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(".", ",")}M€` : `${Math.round(v / 1000)}k€`;
+  const fmtK = v => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1).replace(".", ",")}M${activeSymbol()}` : `${Math.round(v / 1000)}k${activeSymbol()}`;
 
   const fillPts = `${x(0).toFixed(1)},${(H - PAD.bottom).toFixed(1)} ${pts} ${x(maxA).toFixed(1)},${(H - PAD.bottom).toFixed(1)}`;
 
@@ -291,7 +293,7 @@ function GrowthCurve({ projectionData, patrimoineCible }) {
             </text>
             <text x={boxX + 8} y={boxY + 35} fontSize="13"
               fill="var(--gold)" fontFamily="DM Sans, sans-serif">
-              {fmtEur(Math.round(hoverPt.patrimoine))}
+              {fmtCur(Math.round(hoverPt.patrimoine))}
             </text>
           </g>
         );
@@ -326,7 +328,7 @@ function MilestonesTable({ milestones }) {
                   </div>
                 </div>
               </td>
-              <td style={{ textAlign: "right", padding: "12px 0", color: "var(--text)", whiteSpace: "nowrap" }}>{fmtEur(Math.round(m.target))}</td>
+              <td style={{ textAlign: "right", padding: "12px 0", color: "var(--text)", whiteSpace: "nowrap" }}>{fmtCur(Math.round(m.target))}</td>
               <td style={{ textAlign: "right", padding: "12px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
                 {m.reached ? "—" : m.age != null ? `${m.age} ans` : "> 80 ans"}
               </td>
@@ -363,9 +365,9 @@ function YearTable({ projectionData }) {
           {projectionData.slice(1).map(d => (
             <tr key={d.annee} style={{ borderBottom: "1px solid var(--border)" }}>
               <td style={{ padding: "9px 0", color: "var(--text)" }}>{d.age} ans</td>
-              <td style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>+{fmtEur(Math.round(d.versements))}</td>
-              <td style={{ textAlign: "right", padding: "9px 8px", color: "#22c55e", whiteSpace: "nowrap" }}>+{fmtEur(Math.round(d.interets))}</td>
-              <td style={{ textAlign: "right", padding: "9px 0", color: "var(--text)", fontWeight: 500, whiteSpace: "nowrap" }}>{fmtEur(Math.round(d.patrimoine))}</td>
+              <td style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>+{fmtCur(Math.round(d.versements))}</td>
+              <td style={{ textAlign: "right", padding: "9px 8px", color: "#22c55e", whiteSpace: "nowrap" }}>+{fmtCur(Math.round(d.interets))}</td>
+              <td style={{ textAlign: "right", padding: "9px 0", color: "var(--text)", fontWeight: 500, whiteSpace: "nowrap" }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
           ))}
         </tbody>
@@ -396,9 +398,9 @@ function SensibiliteTable({ depensesBrutes, tauxRetrait }) {
             return (
               <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(184,147,74,0.08)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{t} %</td>
-                <td style={{ textAlign: "right", padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{fmtEur(target)}</td>
+                <td style={{ textAlign: "right", padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{fmtCur(target)}</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: diff >= 0 ? "#22c55e" : "#ef4444", fontSize: 11 }}>
-                  {diff >= 0 ? "−" : "+"}{fmtEur(Math.abs(diff))}
+                  {diff >= 0 ? "−" : "+"}{fmtCur(Math.abs(diff))}
                 </td>
               </tr>
             );
@@ -515,17 +517,17 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
     },
     {
       label: 'Capital cible',
-      a: fmtEur(Math.round(resA.patrimoineCible)),
+      a: fmtCur(Math.round(resA.patrimoineCible)),
       av: resA.patrimoineCible,
-      b: fmtEur(Math.round(resB.patrimoineCible)),
+      b: fmtCur(Math.round(resB.patrimoineCible)),
       bv: resB.patrimoineCible,
       invert: false, unit: '€',
     },
     {
       label: 'Revenu passif / mois',
-      a: fmtEur(Math.round(resA.revenuPassifMensuel)),
+      a: fmtCur(Math.round(resA.revenuPassifMensuel)),
       av: resA.revenuPassifMensuel,
-      b: fmtEur(Math.round(resB.revenuPassifMensuel)),
+      b: fmtCur(Math.round(resB.revenuPassifMensuel)),
       bv: resB.revenuPassifMensuel,
       invert: false, unit: '€',
     },
@@ -539,8 +541,8 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
           Scénario B — paramètres modifiés
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12, marginBottom: 20 }}>
-          <NumInput id="cmp-epargne"  label="Épargne mensuelle"      value={compEpargne}   onChange={setCompEpargne}   unit="€/mois" min={0}    max={50000}  />
-          <NumInput id="cmp-depenses" label="Dépenses annuelles"     value={compDepenses}  onChange={setCompDepenses}  unit="€/an"   min={1000} max={500000} />
+          <NumInput id="cmp-epargne"  label="Épargne mensuelle"      value={compEpargne}   onChange={setCompEpargne}   unit={`${activeSymbol()}/mois`} min={0}    max={50000}  />
+          <NumInput id="cmp-depenses" label="Dépenses annuelles"     value={compDepenses}  onChange={setCompDepenses}  unit={`${activeSymbol()}/an`}   min={1000} max={500000} />
           <StepperInput               label="Rendement"              value={compRendement} onChange={setCompRendement} unit="%"      min={0}    max={15} step={0.5} />
         </div>
       </div>
@@ -561,7 +563,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
               const diff = row.bv != null && row.av != null ? row.bv - row.av : null;
               const better = diff !== null && diff !== 0 ? (row.invert ? diff < 0 : diff > 0) : null;
               const diffLabel = diff !== null && diff !== 0
-                ? (diff > 0 ? '+' : '') + (row.unit === '€' ? fmtEur(Math.abs(Math.round(diff))) : Math.round(Math.abs(diff)) + ' ' + row.unit)
+                ? (diff > 0 ? '+' : '') + (row.unit === '€' ? fmtCur(Math.abs(Math.round(diff))) : Math.round(Math.abs(diff)) + ' ' + row.unit)
                 : '—';
               return (
                 <tr key={row.label} style={{ borderBottom: '1px solid var(--border)' }}>
@@ -613,6 +615,7 @@ function FaqItem({ q, a }) {
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function Fire() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
 
   const [ageActuel, setAge]               = useState(null);
   const [capitalActuel, setCapital]       = useState(null);
@@ -729,8 +732,8 @@ export default function Fire() {
     const label = isAlreadyFire
       ? 'FIRE déjà atteint 🎉'
       : res.ageAtteinte
-        ? `FIRE à ${res.ageAtteinte} ans · ${fmtEur(Math.round(res.patrimoineCible))}`
-        : `Cible ${fmtEur(Math.round(res.patrimoineCible))}`;
+        ? `FIRE à ${res.ageAtteinte} ans · ${fmtCur(Math.round(res.patrimoineCible))}`
+        : `Cible ${fmtCur(Math.round(res.patrimoineCible))}`;
     saveEntry({ simulator: 'fire', label, shareUrl: window.location.pathname + window.location.search });
     setHistorySaved(true);
     setTimeout(() => setHistorySaved(false), 2500);
@@ -768,21 +771,21 @@ export default function Fire() {
     title: "Simulateur FIRE — Indépendance financière",
     highlight: {
       label: isAlreadyFire ? "Statut FIRE" : "Patrimoine cible (indépendance)",
-      value: !hasResult ? "—" : isAlreadyFire ? "FIRE déjà atteint" : fmtEur(Math.round(res.patrimoineCible)),
+      value: !hasResult ? "—" : isAlreadyFire ? "FIRE déjà atteint" : fmtCur(Math.round(res.patrimoineCible)),
     },
     params: [
       { label: "Âge actuel", value: ageActuel ? `${ageActuel} ans` : "—" },
-      { label: "Capital actuel", value: fmtEur(capitalActuel ?? 0) },
-      { label: "Épargne mensuelle", value: epargneMensuelle ? fmtEur(epargneMensuelle) : "—" },
-      { label: "Dépenses annuelles visées", value: depensesAnnuelles ? fmtEur(depensesAnnuelles) : "—" },
+      { label: "Capital actuel", value: fmtCur(capitalActuel ?? 0) },
+      { label: "Épargne mensuelle", value: epargneMensuelle ? fmtCur(epargneMensuelle) : "—" },
+      { label: "Dépenses annuelles visées", value: depensesAnnuelles ? fmtCur(depensesAnnuelles) : "—" },
       { label: "Rendement annuel réel", value: `${rendementAnnuel} %` },
       { label: "Taux de retrait (SWR)", value: `${tauxRetrait} %` },
     ],
     results: hasResult ? [
-      { label: "Patrimoine cible", value: fmtEur(Math.round(res.patrimoineCible)), strong: true },
+      { label: "Patrimoine cible", value: fmtCur(Math.round(res.patrimoineCible)), strong: true },
       ...(res.ageAtteinte ? [{ label: "Âge d'atteinte FIRE", value: `${res.ageAtteinte} ans` }] : []),
       ...(res.anneesRestantes ? [{ label: "Années restantes", value: `${Math.ceil(res.anneesRestantes)}` }] : []),
-      { label: "Revenu passif mensuel", value: fmtEur(Math.round(res.revenuPassifMensuel)) },
+      { label: "Revenu passif mensuel", value: fmtCur(Math.round(res.revenuPassifMensuel)) },
       ...(savingsRate != null ? [{ label: "Taux d'épargne", value: `${Math.round(savingsRate)} %` }] : []),
     ] : [],
     notes: hasResult ? [
@@ -835,18 +838,18 @@ export default function Fire() {
           </h2>
 
           <NumInput id="age-actuel" label="Âge actuel" value={ageActuel} onChange={setAge} unit="ans" min={15} max={79} hint="Votre âge pour estimer l'âge d'atteinte FIRE" />
-          <NumInput id="capital-actuel" label="Capital actuel" value={capitalActuel} onChange={setCapital} unit="€" min={0} max={10000000} hint="Épargne + investissements (hors résidence principale)" />
-          <NumInput id="epargne-mensuelle" label="Épargne mensuelle" value={epargneMensuelle} onChange={setEpargne} unit="€/mois" min={0} max={50000}
-            hint={epargneMensuelle ? `${fmtEur(epargneMensuelle * 12)} / an épargnés` : "Montant réellement mis de côté chaque mois"} />
-          <NumInput id="revenu-mensuel" label="Revenu net mensuel (optionnel)" value={revenuMensuel} onChange={setRevenu} unit="€/mois" min={0} max={100000}
+          <NumInput id="capital-actuel" label="Capital actuel" value={capitalActuel} onChange={setCapital} unit={activeSymbol()} min={0} max={10000000} hint="Épargne + investissements (hors résidence principale)" />
+          <NumInput id="epargne-mensuelle" label="Épargne mensuelle" value={epargneMensuelle} onChange={setEpargne} unit={`${activeSymbol()}/mois`} min={0} max={50000}
+            hint={epargneMensuelle ? `${fmtCur(epargneMensuelle * 12)} / an épargnés` : "Montant réellement mis de côté chaque mois"} />
+          <NumInput id="revenu-mensuel" label="Revenu net mensuel (optionnel)" value={revenuMensuel} onChange={setRevenu} unit={`${activeSymbol()}/mois`} min={0} max={100000}
             hint={savingsRate != null ? `Taux d'épargne : ${Math.round(savingsRate)} % de vos revenus` : "Pour calculer votre taux d'épargne"} />
 
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             Objectif FIRE
           </h2>
 
-          <NumInput id="depenses-annuelles" label="Dépenses annuelles cibles" value={depensesAnnuelles} onChange={setDepenses} unit="€/an" min={1000} max={500000}
-            hint={depensesAnnuelles ? `soit ${fmtEur(Math.round(depensesAnnuelles / 12))} / mois (euros d'aujourd'hui)` : "Vos dépenses estimées une fois à la retraite"} />
+          <NumInput id="depenses-annuelles" label="Dépenses annuelles cibles" value={depensesAnnuelles} onChange={setDepenses} unit={`${activeSymbol()}/an`} min={1000} max={500000}
+            hint={depensesAnnuelles ? `soit ${fmtCur(Math.round(depensesAnnuelles / 12))} / mois (euros d'aujourd'hui)` : "Vos dépenses estimées une fois à la retraite"} />
           <StepperInput label="Rendement annuel espéré" value={rendementAnnuel} onChange={setRendement} min={0} max={15} step={0.5} unit="%" hint="Rendement réel après inflation (portefeuille actions ~5 %)" tooltip="5 % réel = ~7 % nominal − 2 % inflation" />
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
             <HistoricalReturnPicker duration={Math.ceil(res.anneesRestantes) || 30} onSelect={setRendement} />
@@ -895,7 +898,7 @@ export default function Fire() {
               <>
                 <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Patrimoine cible</div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  {fmtEur(Math.round(patrimoineAnim))}
+                  {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "#e08030" }}>
                   Non atteint avant {AGE_MAX} ans avec ces paramètres. Augmentez l'épargne ou réduisez les dépenses cibles.
@@ -911,7 +914,7 @@ export default function Fire() {
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
                   {ageActuel ? `dans ${Math.ceil(res.anneesRestantes)} ans` : ""}{fireDateLabel ? ` · vers ${fireDateLabel}` : ""} · patrimoine cible{" "}
-                  <strong style={{ color: "var(--text)" }}>{fmtEur(Math.round(res.patrimoineCible))}</strong>
+                  <strong style={{ color: "var(--text)" }}>{fmtCur(Math.round(res.patrimoineCible))}</strong>
                 </div>
               </>
             )}
@@ -943,12 +946,12 @@ export default function Fire() {
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginBottom: 20 }}>
                 {res.ageAtteinte && <Chip label="Âge FIRE" value={`${res.ageAtteinte} ans`} accent />}
                 {res.anneesRestantes && <Chip label="Années restantes" value={`${Math.ceil(res.anneesRestantes)}`} />}
-                <Chip label="Revenu passif mensuel" value={fmtEur(Math.round(res.revenuPassifMensuel))} accent />
-                <Chip label="Capital cible" value={fmtEur(Math.round(res.patrimoineCible))} />
+                <Chip label="Revenu passif mensuel" value={fmtCur(Math.round(res.revenuPassifMensuel))} accent />
+                <Chip label="Capital cible" value={fmtCur(Math.round(res.patrimoineCible))} />
                 {savingsRate != null && <Chip label="Taux d'épargne" value={`${Math.round(savingsRate)} %`} accent />}
-                {totalEpargne > 0 && <Chip label="Total épargné" value={fmtEur(Math.round(totalEpargne))} />}
-                {interetsGeneres > 0 && <Chip label="Intérêts générés" value={fmtEur(Math.round(interetsGeneres))} accent />}
-                {tauxImpotEff > 0 && <Chip label="Retrait brut visé" value={fmtEur(Math.round(res.revenuPassifBrutMensuel))} />}
+                {totalEpargne > 0 && <Chip label="Total épargné" value={fmtCur(Math.round(totalEpargne))} />}
+                {interetsGeneres > 0 && <Chip label="Intérêts générés" value={fmtCur(Math.round(interetsGeneres))} accent />}
+                {tauxImpotEff > 0 && <Chip label="Retrait brut visé" value={fmtCur(Math.round(res.revenuPassifBrutMensuel))} />}
               </div>
 
               {/* Coast FIRE */}
@@ -963,8 +966,8 @@ export default function Fire() {
                   </div>
                   <p style={{ fontSize: 12.5, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 12 }}>
                     {coastReached
-                      ? <>Avec <strong style={{ color: "var(--text)" }}>{fmtEur(capitalActuel || 0)}</strong> déjà investis, vous pouvez cesser d'épargner pour la retraite : la seule capitalisation atteindra votre objectif vers {ageCoast} ans.</>
-                      : <>Il vous faut <strong style={{ color: "var(--gold)" }}>{fmtEur(Math.round(coastNumber))}</strong> investis aujourd'hui pour atteindre votre objectif à {ageCoast} ans <em>sans plus rien épargner</em>. Au-delà de ce palier, votre capital « roule en roue libre ».</>}
+                      ? <>Avec <strong style={{ color: "var(--text)" }}>{fmtCur(capitalActuel || 0)}</strong> déjà investis, vous pouvez cesser d'épargner pour la retraite : la seule capitalisation atteindra votre objectif vers {ageCoast} ans.</>
+                      : <>Il vous faut <strong style={{ color: "var(--gold)" }}>{fmtCur(Math.round(coastNumber))}</strong> investis aujourd'hui pour atteindre votre objectif à {ageCoast} ans <em>sans plus rien épargner</em>. Au-delà de ce palier, votre capital « roule en roue libre ».</>}
                   </p>
                   <ProgressBar label="Vers le Coast FIRE" value={capitalActuel || 0} total={coastNumber} />
                 </div>
@@ -1072,7 +1075,7 @@ export default function Fire() {
             <AccordionSection title="Comprendre la règle des 25x" subtitle="Math du taux de retrait sécurisé">
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.8 }}>
                 <p style={{ marginBottom: 14 }}>La <strong>règle des 25x</strong> : votre patrimoine doit être égal à 25 fois vos dépenses annuelles pour soutenir un taux de retrait de 4 % à perpétuité.</p>
-                <p style={{ marginBottom: 14 }}><strong>Exemple :</strong> {fmtEur(depensesAnnuelles || 30000)} / an × 25 = <strong>{fmtEur((depensesAnnuelles || 30000) * 25)}</strong> de patrimoine cible.</p>
+                <p style={{ marginBottom: 14 }}><strong>Exemple :</strong> {fmtCur(depensesAnnuelles || 30000)} / an × 25 = <strong>{fmtCur((depensesAnnuelles || 30000) * 25)}</strong> de patrimoine cible.</p>
                 <p>Cette règle repose sur l'<strong>étude Trinity (1998)</strong>, qui a analysé les marchés depuis 1926 et établi qu'un taux de 4 % résiste à 95 % des scénarios sur 30 ans.</p>
               </div>
             </AccordionSection>

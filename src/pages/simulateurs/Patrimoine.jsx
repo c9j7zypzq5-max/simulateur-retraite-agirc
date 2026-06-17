@@ -16,8 +16,10 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, useAnimatedNumber,
-  fmtEur, SimulateurHeader,
+  SimulateurHeader,
 } from "../../components/ui.jsx";
+import { useMoney } from "../../i18n/CurrencyContext.jsx";
+import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 
 // ─── Calcul principal ──────────────────────────────────────────────────────────
 function calcPatrimoine({
@@ -119,8 +121,8 @@ function StackedChart({ projectionData, immoActive }) {
   const y = p => PAD.top + iH - (p / maxP) * iH;
 
   const fmtK = v => v >= 1_000_000
-    ? `${(v / 1_000_000).toFixed(1).replace('.', ',')}M€`
-    : `${Math.round(v / 1000)}k€`;
+    ? `${(v / 1_000_000).toFixed(1).replace('.', ',')}M${activeSymbol()}`
+    : `${Math.round(v / 1000)}k${activeSymbol()}`;
 
   const ages = projectionData.filter((_, i) => i % Math.ceil(projectionData.length / 5) === 0 || i === projectionData.length - 1);
   const yTicks = [0.25, 0.5, 0.75, 1].map(f => ({ val: maxP * f, yv: y(maxP * f) }));
@@ -222,9 +224,9 @@ function YearTable({ projectionData, immoActive }) {
           {projectionData.slice(1).map(d => (
             <tr key={d.annee} style={{ borderBottom: '1px solid var(--border)' }}>
               <td style={{ padding: '9px 0', color: 'var(--text)' }}>{d.age} ans</td>
-              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--gold)', whiteSpace: 'nowrap' }}>{fmtEur(Math.round(d.capitalFinancier))}</td>
-              {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtEur(Math.round(d.valeurImmo))}</td>}
-              <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtEur(Math.round(d.patrimoine))}</td>
+              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--gold)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
+              {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
+              <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
           ))}
         </tbody>
@@ -236,6 +238,7 @@ function YearTable({ projectionData, immoActive }) {
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function Patrimoine() {
   const [theme, setTheme] = useTheme();
+  useMoney(); // abonnement aux changements de devise
 
   const [ageActuel, setAge]               = useState(null);
   const [ageCible, setAgeCible]           = useState(65);
@@ -330,20 +333,20 @@ export default function Patrimoine() {
 
   const report = {
     title: "Simulateur Patrimoine — Projection",
-    highlight: { label: "Patrimoine total projeté", value: hasResult ? fmtEur(Math.round(res.patrimoineFinal)) : "—" },
+    highlight: { label: "Patrimoine total projeté", value: hasResult ? fmtCur(Math.round(res.patrimoineFinal)) : "—" },
     params: [
       { label: "Âge actuel", value: ageActuel ? `${ageActuel} ans` : "—" },
       { label: "Âge cible", value: ageCible ? `${ageCible} ans` : "—" },
-      { label: "Capital financier actuel", value: fmtEur(capitalFinancier ?? 0) },
-      { label: "Versement mensuel", value: versementMensuel ? fmtEur(versementMensuel) : "—" },
+      { label: "Capital financier actuel", value: fmtCur(capitalFinancier ?? 0) },
+      { label: "Versement mensuel", value: versementMensuel ? fmtCur(versementMensuel) : "—" },
       { label: "Rendement du portefeuille", value: `${rendementPortefeuille} %` },
     ],
     results: hasResult ? [
-      { label: "Patrimoine total projeté", value: fmtEur(Math.round(res.patrimoineFinal)), strong: true },
-      { label: "Capital financier final", value: fmtEur(Math.round(res.capitalFinancierFinal)) },
-      ...(immoActive ? [{ label: "Valeur immobilier final", value: fmtEur(Math.round(res.valeurImmoFinal)) }] : []),
-      { label: "Revenu passif mensuel total", value: fmtEur(Math.round(res.revenuMensuelTotal)) },
-      { label: "Revenu financier mensuel", value: fmtEur(Math.round(res.revenuMensuelFinancier)) },
+      { label: "Patrimoine total projeté", value: fmtCur(Math.round(res.patrimoineFinal)), strong: true },
+      { label: "Capital financier final", value: fmtCur(Math.round(res.capitalFinancierFinal)) },
+      ...(immoActive ? [{ label: "Valeur immobilier final", value: fmtCur(Math.round(res.valeurImmoFinal)) }] : []),
+      { label: "Revenu passif mensuel total", value: fmtCur(Math.round(res.revenuMensuelTotal)) },
+      { label: "Revenu financier mensuel", value: fmtCur(Math.round(res.revenuMensuelFinancier)) },
     ] : [],
     notes: hasResult ? [
       "Calculs en euros constants (rendement réel après inflation).",
@@ -351,7 +354,7 @@ export default function Patrimoine() {
   };
 
   const handleSaveHistory = useCallback(() => {
-    const label = `Patrimoine ${fmtEur(Math.round(res.patrimoineFinal))} à ${ageCible || 65} ans`;
+    const label = `Patrimoine ${fmtCur(Math.round(res.patrimoineFinal))} à ${ageCible || 65} ans`;
     saveEntry({ simulator: 'patrimoine', label, shareUrl: window.location.pathname + window.location.search });
     setHistorySaved(true);
     setTimeout(() => setHistorySaved(false), 2500);
@@ -399,10 +402,10 @@ export default function Patrimoine() {
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             Épargne & investissements
           </h2>
-          <NumInput id="capital-financier" label="Capital financier actuel" value={capitalFinancier} onChange={setCapFin} unit="€" min={0} max={10000000}
+          <NumInput id="capital-financier" label="Capital financier actuel" value={capitalFinancier} onChange={setCapFin} unit={activeSymbol()} min={0} max={10000000}
             hint="PEA, assurance-vie, livrets, ETF… (hors résidence principale)" />
-          <NumInput id="versement-mensuel" label="Versement mensuel" value={versementMensuel} onChange={setVers} unit="€/mois" min={0} max={50000}
-            hint={versementMensuel ? `soit ${fmtEur((versementMensuel || 0) * 12)} / an` : 'Montant régulièrement investi chaque mois'} />
+          <NumInput id="versement-mensuel" label="Versement mensuel" value={versementMensuel} onChange={setVers} unit={`${activeSymbol()}/mois`} min={0} max={50000}
+            hint={versementMensuel ? `soit ${fmtCur((versementMensuel || 0) * 12)} / an` : 'Montant régulièrement investi chaque mois'} />
           <StepperInput label="Rendement annuel espéré" value={rendementPortefeuille} onChange={setRend} min={0} max={15} step={0.5} unit="%"
             hint="Rendement réel après inflation (portefeuille actions diversifié ~5 %)" />
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: -10, marginBottom: 16 }}>
@@ -418,8 +421,8 @@ export default function Patrimoine() {
           </div>
           {immoActive && (
             <>
-              <NumInput id="valeur-immo" label="Valeur actuelle du bien" value={valeurImmo} onChange={setValImmo} unit="€" min={0} max={5000000} />
-              <NumInput id="loyer-net" label="Loyer net mensuel" value={loyerNet} onChange={setLoyer} unit="€/mois" min={0} max={20000}
+              <NumInput id="valeur-immo" label="Valeur actuelle du bien" value={valeurImmo} onChange={setValImmo} unit={activeSymbol()} min={0} max={5000000} />
+              <NumInput id="loyer-net" label="Loyer net mensuel" value={loyerNet} onChange={setLoyer} unit={`${activeSymbol()}/mois`} min={0} max={20000}
                 hint="Loyer après charges, taxe foncière, assurances" />
               <StepperInput label="Appréciation annuelle" value={appreciationImmo} onChange={setApprecImmo} min={0} max={10} step={0.5} unit="%"
                 hint="2 % en France en tendance longue (réel après inflation)" />
@@ -435,7 +438,7 @@ export default function Patrimoine() {
           </div>
           {retraiteActive && (
             <>
-              <NumInput id="retraite-mensuelle" label="Pension mensuelle estimée" value={retraiteMensuelle} onChange={setRetraiteRev} unit="€/mois" min={0} max={20000}
+              <NumInput id="retraite-mensuelle" label="Pension mensuelle estimée" value={retraiteMensuelle} onChange={setRetraiteRev} unit={`${activeSymbol()}/mois`} min={0} max={20000}
                 hint="Retraite brute mensuelle estimée (CNAV + complémentaire)" />
               <StepperInput label="Âge de départ en retraite" value={ageRetraite} onChange={setAgeRetraite} min={60} max={70} step={1} unit="ans" />
             </>
@@ -460,21 +463,21 @@ export default function Patrimoine() {
                   Patrimoine total projeté
                 </div>
                 <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  {fmtEur(Math.round(patrimoineAnim))}
+                  {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
-                  dont {fmtEur(Math.round(res.revenuMensuelTotal))} / mois de revenus passifs
+                  dont {fmtCur(Math.round(res.revenuMensuelTotal))} / mois de revenus passifs
                 </div>
               </div>
 
               {/* Chips */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 12, marginBottom: 20 }}>
-                <Chip label="Capital financier" value={fmtEur(Math.round(res.capitalFinancierFinal))} accent />
-                {immoActive && <Chip label="Valeur immobilier" value={fmtEur(Math.round(res.valeurImmoFinal))} />}
-                <Chip label="Revenu financier/mois" value={fmtEur(Math.round(res.revenuMensuelFinancier))} accent />
-                {immoActive && res.revenuMensuelLocatif > 0 && <Chip label="Loyer net/mois" value={fmtEur(Math.round(res.revenuMensuelLocatif))} />}
-                {retraiteActive && res.revenuMensuelRetraite > 0 && <Chip label="Retraite/mois" value={fmtEur(Math.round(res.revenuMensuelRetraite))} />}
-                <Chip label="Revenu total/mois" value={fmtEur(Math.round(res.revenuMensuelTotal))} accent />
+                <Chip label="Capital financier" value={fmtCur(Math.round(res.capitalFinancierFinal))} accent />
+                {immoActive && <Chip label="Valeur immobilier" value={fmtCur(Math.round(res.valeurImmoFinal))} />}
+                <Chip label="Revenu financier/mois" value={fmtCur(Math.round(res.revenuMensuelFinancier))} accent />
+                {immoActive && res.revenuMensuelLocatif > 0 && <Chip label="Loyer net/mois" value={fmtCur(Math.round(res.revenuMensuelLocatif))} />}
+                {retraiteActive && res.revenuMensuelRetraite > 0 && <Chip label="Retraite/mois" value={fmtCur(Math.round(res.revenuMensuelRetraite))} />}
+                <Chip label="Revenu total/mois" value={fmtCur(Math.round(res.revenuMensuelTotal))} accent />
               </div>
 
               {/* Composition */}

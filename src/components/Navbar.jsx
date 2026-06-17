@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, useLocation } from "../lib/router.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
+import CurrencySelect from "./CurrencySelect.jsx";
+import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library } from "lucide-react";
 
 // Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
@@ -117,6 +119,7 @@ export default function Navbar({ theme, setTheme }) {
   const catBarRef = useRef(null);
 
   const onSim = pathname.startsWith("/simulateurs/");
+  const showCurrency = CURRENCY_AWARE_ROUTES.has(pathname);
   const current = ALL_ITEMS.find(i => i.path === pathname);
 
   const [history, setHistory] = useState([]);
@@ -229,8 +232,9 @@ export default function Navbar({ theme, setTheme }) {
           }}>simfinly.com</span>
         </Link>
 
-        {/* Droite : toggle thème */}
-        <div style={{ zIndex: 1 }}>
+        {/* Droite : sélecteur devise (simulateurs universels) + toggle thème */}
+        <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 10 }}>
+          {showCurrency && <CurrencySelect compact />}
           <IosToggle theme={theme} setTheme={setTheme} compact />
         </div>
       </nav>
@@ -610,8 +614,14 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Footer : toggle thème */}
-        <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0 }}>
+        {/* Footer : devise (si simulateur universel) + toggle thème */}
+        <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
+          {showCurrency && (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>Devise</span>
+              <CurrencySelect compact />
+            </div>
+          )}
           <IosToggle theme={theme} setTheme={setTheme} />
         </div>
       </aside>
