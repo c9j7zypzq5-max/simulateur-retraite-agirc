@@ -31,7 +31,7 @@ export function hreflangLinks(route) {
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
 // prio / freq (sitemap).
 export const ROUTE_META = {
-  '/':                                    { title: 'mesimulateurs.fr — 24 simulateurs gratuits', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
+  '/':                                    { title: 'mesimulateurs.fr — 25 simulateurs gratuits', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
   '/simulateurs/agirc-arrco':             { title: 'Simulateur Agirc-Arrco 2026',                emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/cnav':                    { title: 'Simulateur CNAV — Régime général',            emoji: '🏛', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/fonction-publique':       { title: 'Simulateur Retraite Fonction publique',       emoji: '⚖️', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
@@ -41,6 +41,7 @@ export const ROUTE_META = {
   '/simulateurs/cnavpl':                  { title: 'Simulateur Professions libérales',            emoji: '👨‍⚕️', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
   '/simulateurs/msa':                     { title: 'Simulateur Retraite agricole MSA',            emoji: '🌾', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/per':                     { title: 'Simulateur PER 2025 — Plan Épargne Retraite', emoji: '💼', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/synthese-retraite':       { title: 'Synthèse retraite tous régimes — pension totale', emoji: '🧮', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/emprunt-immobilier':      { title: 'Simulateur Emprunt immobilier',              emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/simulateurs/rendement-locatif':       { title: 'Simulateur Rendement locatif',               emoji: '📊', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/simulateurs/ptz':                     { title: 'Simulateur PTZ 2025 — Prêt à Taux Zéro',     emoji: '🏡', cat: 'Immobilier', prio: '0.8', freq: 'monthly' },

@@ -34,6 +34,7 @@ const RetraiteProgressive = lazy(() => import("./pages/simulateurs/RetraiteProgr
 const Cnavpl              = lazy(() => import("./pages/simulateurs/Cnavpl.jsx"));
 const Msa                 = lazy(() => import("./pages/simulateurs/Msa.jsx"));
 const Per                 = lazy(() => import("./pages/simulateurs/Per.jsx"));
+const SyntheseRetraite    = lazy(() => import("./pages/simulateurs/SyntheseRetraite.jsx"));
 // Immobilier
 const EmpruntImmobilier = lazy(() => import("./pages/simulateurs/EmpruntImmobilier.jsx"));
 const RendementLocatif  = lazy(() => import("./pages/simulateurs/RendementLocatif.jsx"));
@@ -90,6 +91,7 @@ export default function App() {
         <Route path="/simulateurs/cnavpl" element={<Cnavpl />} />
         <Route path="/simulateurs/msa" element={<Msa />} />
         <Route path="/simulateurs/per" element={<Per />} />
+        <Route path="/simulateurs/synthese-retraite" element={<SyntheseRetraite />} />
         {/* Immobilier */}
         <Route path="/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/simulateurs/rendement-locatif" element={<RendementLocatif />} />

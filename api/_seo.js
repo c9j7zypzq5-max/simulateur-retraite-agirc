@@ -78,6 +78,10 @@ export const SEO_CONTENT = {
     h1: "Simulateur PER — Plan d'Épargne Retraite",
     intro: "Estimez l'économie d'impôt liée à vos versements sur un PER et le capital projeté à la retraite. Le calcul applique le plafond de déduction (10 % des revenus, PASS 2025) selon votre tranche marginale d'imposition et votre horizon de placement.",
   },
+  '/simulateurs/synthese-retraite': {
+    h1: "Synthèse retraite tous régimes — votre pension totale",
+    intro: "Additionnez les pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale. Idéal pour les polypensionnés : pension brute et nette mensuelle, total annuel et taux de remplacement par rapport à votre dernier salaire.",
+  },
   '/simulateurs/patrimoine': {
     h1: "Simulateur de patrimoine global",
     intro: "Consolidez l'ensemble de votre patrimoine — financier, immobilier et retraite — pour visualiser votre richesse nette et sa répartition par classe d'actifs. Une vue d'ensemble claire de votre situation patrimoniale.",
