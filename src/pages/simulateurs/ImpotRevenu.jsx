@@ -106,7 +106,7 @@ export default function ImpotRevenu() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'impot-revenu' });
     if (!sessionStorage.getItem('tracked_impot-revenu')) {
       sessionStorage.setItem('tracked_impot-revenu', '1');
@@ -164,7 +164,7 @@ export default function ImpotRevenu() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Impôt sur le revenu",
-        "url": "https://www.mesimulateurs.fr/simulateurs/impot-revenu",
+        "url": "https://www.simfinly.com/simulateurs/impot-revenu",
         "description": "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

@@ -5,11 +5,11 @@
 //
 // Usage :
 //   CRON_SECRET=xxx node scripts/seed-articles.mjs
-//   PUBLISH_BASE_URL=https://www.mesimulateurs.fr CRON_SECRET=xxx node scripts/seed-articles.mjs
+//   PUBLISH_BASE_URL=https://www.simfinly.com CRON_SECRET=xxx node scripts/seed-articles.mjs
 //
 // Idempotent : republier écrase l'article de même slug (pas de doublon).
 
-const BASE = process.env.PUBLISH_BASE_URL || process.env.BASE_URL || "https://www.mesimulateurs.fr";
+const BASE = process.env.PUBLISH_BASE_URL || process.env.BASE_URL || "https://www.simfinly.com";
 const SECRET = process.env.CRON_SECRET || process.env.PUBLISH_SECRET || "";
 
 const ARTICLES = [
@@ -32,7 +32,7 @@ const ARTICLES = [
 <h2>Attention à l'inflation</h2>
 <p>Un rendement nominal n'a de sens qu'après déduction de l'inflation. Visez un <em>rendement réel</em> positif : un placement à 3 % avec 2 % d'inflation ne vous enrichit réellement que de 1 %. Les supports investis en actions (via un ETF, par exemple) ont historiquement mieux protégé le pouvoir d'achat sur le long terme que les livrets, au prix d'une volatilité plus élevée.</p>
 <h2>Passez à la pratique</h2>
-<p>Le plus instructif reste de tester avec vos propres chiffres. Faites varier la durée, le montant mensuel et le rendement dans le simulateur d'épargne de mesimulateurs.fr pour visualiser l'impact des intérêts composés sur votre projet.</p>`,
+<p>Le plus instructif reste de tester avec vos propres chiffres. Faites varier la durée, le montant mensuel et le rendement dans le simulateur d'épargne de simfinly.com pour visualiser l'impact des intérêts composés sur votre projet.</p>`,
   },
   {
     title: "Crédit immobilier : comprendre le TAEG et le taux d'endettement",
@@ -53,7 +53,7 @@ const ARTICLES = [
 <h2>N'oubliez pas les frais annexes</h2>
 <p>Les <em>frais de notaire</em> représentent environ 7 à 8 % du prix dans l'ancien et 2 à 3 % dans le neuf. Pensez aussi au PTZ si vous êtes primo-accédant : ce prêt sans intérêt peut compléter votre financement sous conditions de ressources.</p>
 <h2>Simulez votre projet</h2>
-<p>Estimez votre mensualité, votre capacité d'emprunt et le coût total avec le simulateur d'emprunt immobilier de mesimulateurs.fr, puis vérifiez votre éligibilité au PTZ.</p>`,
+<p>Estimez votre mensualité, votre capacité d'emprunt et le coût total avec le simulateur d'emprunt immobilier de simfinly.com, puis vérifiez votre éligibilité au PTZ.</p>`,
   },
   {
     title: "PER ou assurance-vie : où placer pour préparer sa retraite ?",
@@ -73,7 +73,7 @@ const ARTICLES = [
 <h2>Le bon réflexe : les combiner</h2>
 <p>Beaucoup d'épargnants utilisent le PER pour défiscaliser une partie de leurs revenus et l'assurance-vie pour la liquidité et la transmission. Au sein de chaque enveloppe, on dose <em>fonds en euros</em> (sécurité) et <em>unités de compte</em> (potentiel de rendement) selon son horizon et sa tolérance au risque.</p>
 <h2>Estimez l'impact</h2>
-<p>Calculez l'économie d'impôt et le capital projeté de vos versements avec le simulateur PER de mesimulateurs.fr, et comparez avec une projection en assurance-vie.</p>`,
+<p>Calculez l'économie d'impôt et le capital projeté de vos versements avec le simulateur PER de simfinly.com, et comparez avec une projection en assurance-vie.</p>`,
   },
   {
     title: "FIRE en France : la règle des 4 % à l'épreuve du réel",
@@ -93,7 +93,7 @@ const ARTICLES = [
 <h2>Le levier décisif : le taux d'épargne</h2>
 <p>Plus que le rendement, c'est votre <strong>taux d'épargne</strong> qui détermine la vitesse vers l'indépendance. Épargner 50 % de ses revenus permet, en théorie, d'atteindre la liberté financière en une quinzaine d'années. Les <em>intérêts composés</em> et la <em>diversification</em> (via des ETF, par exemple) font le reste.</p>
 <h2>Tracez votre trajectoire</h2>
-<p>Estimez l'âge auquel vous atteindrez votre objectif et l'effort d'épargne nécessaire avec le simulateur FIRE de mesimulateurs.fr.</p>`,
+<p>Estimez l'âge auquel vous atteindrez votre objectif et l'effort d'épargne nécessaire avec le simulateur FIRE de simfinly.com.</p>`,
   },
 ];
 

@@ -76,7 +76,7 @@ export default function FonctionPublique() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'fonction-publique' });
     if (!sessionStorage.getItem('tracked_fonction-publique')) {
       sessionStorage.setItem('tracked_fonction-publique', '1');
@@ -132,7 +132,7 @@ export default function FonctionPublique() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Fonction publique",
-        "url": "https://www.mesimulateurs.fr/simulateurs/fonction-publique",
+        "url": "https://www.simfinly.com/simulateurs/fonction-publique",
         "description": "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

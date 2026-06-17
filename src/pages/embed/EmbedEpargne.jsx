@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 // Mini-simulateur d'épargne autonome, destiné à être intégré en <iframe> sur des
 // sites tiers. Pas de navbar/footer/pub, styles fixes (indépendants du thème) et
-// lien retour vers mesimulateurs.fr (backlink).
+// lien retour vers simfinly.com (backlink).
 
 function calc(capital, versement, taux, duree) {
   const r = taux / 100 / 12;
@@ -23,7 +23,7 @@ export default function EmbedEpargne() {
   const [duree, setDuree] = useState(20);
 
   useEffect(() => {
-    document.title = "Mini-simulateur d'épargne — mesimulateurs.fr";
+    document.title = "Mini-simulateur d'épargne — simfinly.com";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
@@ -56,8 +56,8 @@ export default function EmbedEpargne() {
           </div>
 
           <div style={{ textAlign: "center", marginTop: 12 }}>
-            <a href="https://www.mesimulateurs.fr/simulateurs/epargne" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>
-              Version complète sur mesimulateurs.fr →
+            <a href="https://www.simfinly.com/simulateurs/epargne" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>
+              Version complète sur simfinly.com →
             </a>
           </div>
         </div>

@@ -28,7 +28,7 @@ export default function EmbedFire() {
   const [rendement, setRendement] = useState(6);
 
   useEffect(() => {
-    document.title = "Mini-simulateur FIRE — mesimulateurs.fr";
+    document.title = "Mini-simulateur FIRE — simfinly.com";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
@@ -59,7 +59,7 @@ export default function EmbedFire() {
             </div>
           </div>
           <div style={{ textAlign: "center", marginTop: 12 }}>
-            <a href="https://www.mesimulateurs.fr/simulateurs/fire" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>Version complète sur mesimulateurs.fr →</a>
+            <a href="https://www.simfinly.com/simulateurs/fire" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>Version complète sur simfinly.com →</a>
           </div>
         </div>
       </div>

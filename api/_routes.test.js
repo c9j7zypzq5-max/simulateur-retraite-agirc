@@ -10,7 +10,7 @@ describe("structuredData", () => {
     expect(types(data)).toContain("BreadcrumbList");
     const term = data.find(d => d["@type"] === "DefinedTerm");
     expect(term.name).toBe("TAEG");
-    expect(term.url).toBe("https://www.mesimulateurs.fr/lexique/taeg");
+    expect(term.url).toBe("https://www.simfinly.com/lexique/taeg");
   });
 
   it("renvoie [] pour un slug de lexique inconnu", () => {

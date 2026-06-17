@@ -144,7 +144,7 @@ export default function CreditConso() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la mensualité de votre crédit à la consommation, le coût total et le total des intérêts selon le montant, le TAEG et la durée. Tableau d'amortissement inclus.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'credit-conso' });
     if (!sessionStorage.getItem('tracked_credit-conso')) {
       sessionStorage.setItem('tracked_credit-conso', '1');
@@ -210,7 +210,7 @@ export default function CreditConso() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Crédit à la consommation 2025",
-        "url": "https://www.mesimulateurs.fr/simulateurs/credit-conso",
+        "url": "https://www.simfinly.com/simulateurs/credit-conso",
         "description": "Calculez la mensualité de votre crédit à la consommation, le coût total et le total des intérêts selon le montant, le TAEG et la durée.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

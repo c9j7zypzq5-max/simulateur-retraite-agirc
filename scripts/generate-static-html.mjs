@@ -23,18 +23,18 @@ function seoForRoute(route, extra = {}) {
   if (route.startsWith('/lexique/')) {
     const slug = route.slice('/lexique/'.length);
     const t = GLOSSARY_BY_SLUG[slug];
-    if (t) return { title: `${t.term} : définition (${t.full}) | mesimulateurs.fr`, description: t.short };
+    if (t) return { title: `${t.term} : définition (${t.full}) | simfinly.com`, description: t.short };
   }
   if (route.startsWith('/guides/')) {
     const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
-    if (g) return { title: `${g.title} — guide complet | mesimulateurs.fr`, description: g.intro };
+    if (g) return { title: `${g.title} — guide complet | simfinly.com`, description: g.intro };
   }
   if (route.startsWith('/blog/')) {
-    return { title: extra.title ? `${extra.title} | mesimulateurs.fr` : null, description: extra.description || null };
+    return { title: extra.title ? `${extra.title} | simfinly.com` : null, description: extra.description || null };
   }
   if (route === '/lexique') return { title: ROUTE_META[route]?.title, description: DESC_LEXIQUE };
   if (route === '/guides')  return { title: ROUTE_META[route]?.title, description: DESC_GUIDES };
-  if (route === '/methodologie') return { title: ROUTE_META[route]?.title, description: "Comment mesimulateurs.fr calcule ses estimations : formules, barèmes officiels, sources et limites." };
+  if (route === '/methodologie') return { title: ROUTE_META[route]?.title, description: "Comment simfinly.com calcule ses estimations : formules, barèmes officiels, sources et limites." };
   if (route === '/blog')    return { title: ROUTE_META[route]?.title, description: DESC_BLOG };
   const meta = ROUTE_META[route];
   return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };

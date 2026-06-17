@@ -77,7 +77,7 @@ function drawFrame(ctx, {
   ctx.fillText('Ma simulation', W / 2, 240);
   ctx.font = 'bold 50px DM Sans, sans-serif';
   ctx.fillStyle = color;
-  ctx.fillText('mesimulateurs.fr', W / 2, 306);
+  ctx.fillText('simfinly.com', W / 2, 306);
 
   ctx.globalAlpha = 1;
 
@@ -255,7 +255,7 @@ function drawFrame(ctx, {
   ctx.fillStyle = color;
   ctx.font = 'bold 28px DM Sans, sans-serif';
   ctx.textAlign = 'center';
-  ctx.fillText('mesimulateurs.fr', W / 2, H - 80);
+  ctx.fillText('simfinly.com', W / 2, H - 80);
   ctx.fillStyle = 'rgba(255,255,255,0.3)';
   ctx.font = '16px DM Sans, sans-serif';
   ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, H - 50);

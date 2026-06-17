@@ -3,10 +3,10 @@
 // une image libre de droits (Pexels) selon la catégorie.
 //
 // Usage :
-//   SITE_URL=https://www.mesimulateurs.fr CRON_SECRET=xxxx node scripts/seed-actualites.mjs
+//   SITE_URL=https://www.simfinly.com CRON_SECRET=xxxx node scripts/seed-actualites.mjs
 //
 // Variables d'environnement :
-//   SITE_URL     URL de base du site déployé (défaut : https://www.mesimulateurs.fr)
+//   SITE_URL     URL de base du site déployé (défaut : https://www.simfinly.com)
 //   CRON_SECRET  (ou PUBLISH_SECRET) Bearer attendu par /api/publish-article si défini côté serveur
 //
 // Idempotent : republier un même slug écrase l'article existant (set Redis) sans
@@ -14,7 +14,7 @@
 
 import { ACTUALITES } from './actualites-2026.mjs';
 
-const SITE_URL = (process.env.SITE_URL || 'https://www.mesimulateurs.fr').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://www.simfinly.com').replace(/\/$/, '');
 const SECRET = process.env.CRON_SECRET || process.env.PUBLISH_SECRET || '';
 const ENDPOINT = `${SITE_URL}/api/publish-article`;
 

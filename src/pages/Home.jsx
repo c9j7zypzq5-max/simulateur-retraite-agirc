@@ -233,7 +233,7 @@ export default function Home() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", `Simulez votre retraite, emprunt immobilier, impôts, épargne et liberté financière. ${SIMULATEURS.length} simulateurs gratuits, calculs en temps réel, sans inscription.`);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
 
     const cached = getCachedScores();
     if (cached) {

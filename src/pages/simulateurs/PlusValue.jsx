@@ -104,7 +104,7 @@ export default function PlusValue() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'plus-value-immobiliere' });
     if (!sessionStorage.getItem('tracked_plus-value-immobiliere')) {
       sessionStorage.setItem('tracked_plus-value-immobiliere', '1');
@@ -165,7 +165,7 @@ export default function PlusValue() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Plus-value immobilière",
-        "url": "https://www.mesimulateurs.fr/simulateurs/plus-value-immobiliere",
+        "url": "https://www.simfinly.com/simulateurs/plus-value-immobiliere",
         "description": "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

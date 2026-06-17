@@ -104,7 +104,7 @@ export default function Cnav() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'cnav' });
     if (!sessionStorage.getItem('tracked_cnav')) {
       sessionStorage.setItem('tracked_cnav', '1');
@@ -172,7 +172,7 @@ export default function Cnav() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite CNAV — Régime général",
-        "url": "https://www.mesimulateurs.fr/simulateurs/cnav",
+        "url": "https://www.simfinly.com/simulateurs/cnav",
         "description": "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

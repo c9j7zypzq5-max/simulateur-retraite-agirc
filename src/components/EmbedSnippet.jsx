@@ -3,7 +3,7 @@ import { useState } from "react";
 // Encart « Intégrer ce simulateur » : affiche le code <iframe> et un bouton copier.
 export default function EmbedSnippet({ path = "/embed/epargne", height = 520, label = "ce simulateur" }) {
   const [copied, setCopied] = useState(false);
-  const code = `<iframe src="https://www.mesimulateurs.fr${path}" width="100%" height="${height}" style="border:1px solid #e5e7eb;border-radius:12px;max-width:560px" title="Simulateur — mesimulateurs.fr" loading="lazy"></iframe>`;
+  const code = `<iframe src="https://www.simfinly.com${path}" width="100%" height="${height}" style="border:1px solid #e5e7eb;border-radius:12px;max-width:560px" title="Simulateur — simfinly.com" loading="lazy"></iframe>`;
 
   function copy() {
     navigator.clipboard?.writeText(code).then(() => {
@@ -24,7 +24,7 @@ export default function EmbedSnippet({ path = "/embed/epargne", height = 520, la
         </button>
       </div>
       <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 12 }}>
-        Gratuit et libre : collez ce code HTML dans votre article ou page web. Un lien vers mesimulateurs.fr est inclus.
+        Gratuit et libre : collez ce code HTML dans votre article ou page web. Un lien vers simfinly.com est inclus.
       </p>
       <pre style={{ margin: 0, overflowX: "auto", background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 14px", fontSize: 12, color: "var(--text-secondary)", whiteSpace: "pre-wrap", wordBreak: "break-all", fontFamily: "ui-monospace, monospace" }}>{code}</pre>
     </div>

@@ -124,7 +124,7 @@ export default function AssuranceVie() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'assurance-vie' });
     if (!sessionStorage.getItem('tracked_assurance-vie')) {
       sessionStorage.setItem('tracked_assurance-vie', '1');
@@ -203,7 +203,7 @@ export default function AssuranceVie() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Assurance-Vie 2025",
-        "url": "https://www.mesimulateurs.fr/simulateurs/assurance-vie",
+        "url": "https://www.simfinly.com/simulateurs/assurance-vie",
         "description": "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

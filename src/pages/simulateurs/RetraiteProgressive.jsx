@@ -73,7 +73,7 @@ export default function RetraiteProgressive() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'retraite-progressive' });
     if (!sessionStorage.getItem('tracked_retraite-progressive')) {
       sessionStorage.setItem('tracked_retraite-progressive', '1');
@@ -126,7 +126,7 @@ export default function RetraiteProgressive() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite progressive",
-        "url": "https://www.mesimulateurs.fr/simulateurs/retraite-progressive",
+        "url": "https://www.simfinly.com/simulateurs/retraite-progressive",
         "description": "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

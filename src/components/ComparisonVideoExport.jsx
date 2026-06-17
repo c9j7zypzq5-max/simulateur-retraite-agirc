@@ -124,7 +124,7 @@ function drawLogoInCircle(ctx, img, cx, cy, r, color, letter) {
   }
 }
 
-// Marque mesimulateurs.fr dessinée au canvas (carré navy + barres or + courbe)
+// Marque simfinly.com dessinée au canvas (carré navy + barres or + courbe)
 function drawBrandMark(ctx, x, y, s) {
   // s = côté du carré ; (x,y) = coin haut-gauche
   const r = s * 0.22;
@@ -523,7 +523,7 @@ function drawFrame(ctx, {
     ctx.beginPath(); ctx.moveTo(40, H - BH); ctx.lineTo(W - 40, H - BH); ctx.stroke();
     // Marque + wordmark, centrés ensemble
     ctx.font = 'bold 24px DM Sans, sans-serif';
-    const txt = 'mesimulateurs.fr';
+    const txt = 'simfinly.com';
     const tw = ctx.measureText(txt).width;
     const markS = 32, gap = 10;
     const groupW = markS + gap + tw;
@@ -592,7 +592,7 @@ function drawFrame(ctx, {
     ctx.beginPath(); ctx.moveTo(40, brandY); ctx.lineTo(W - 40, brandY); ctx.stroke();
     // Marque + wordmark, centrés ensemble
     ctx.font = 'bold 36px DM Sans, sans-serif';
-    const oTxt = 'mesimulateurs.fr';
+    const oTxt = 'simfinly.com';
     const oTw = ctx.measureText(oTxt).width;
     const oMarkS = 44, oGap = 13;
     const oGroupW = oMarkS + oGap + oTw;

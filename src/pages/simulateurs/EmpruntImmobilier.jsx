@@ -180,7 +180,7 @@ export default function EmpruntImmobilier() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'emprunt-immobilier' });
     if (!sessionStorage.getItem('tracked_emprunt-immobilier')) {
       sessionStorage.setItem('tracked_emprunt-immobilier', '1');
@@ -280,7 +280,7 @@ export default function EmpruntImmobilier() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur d'emprunt immobilier",
-        "url": "https://www.mesimulateurs.fr/simulateurs/emprunt-immobilier",
+        "url": "https://www.simfinly.com/simulateurs/emprunt-immobilier",
         "description": "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

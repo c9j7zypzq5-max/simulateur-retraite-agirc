@@ -15,12 +15,12 @@ export default function Widgets() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Widgets gratuits à intégrer | mesimulateurs.fr";
+    document.title = "Widgets gratuits à intégrer | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
       "Intégrez gratuitement nos simulateurs financiers (épargne, emprunt, FIRE) sur votre site ou blog via un simple code iframe.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/widgets';
+    link.href = 'https://www.simfinly.com/widgets';
   }, []);
 
   return (
@@ -41,7 +41,7 @@ export default function Widgets() {
             </h1>
           </div>
           <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>
-            Ajoutez gratuitement un simulateur interactif sur votre site, blog ou article. Copiez le code, collez-le dans votre page : c'est tout. Un lien vers mesimulateurs.fr est inclus.
+            Ajoutez gratuitement un simulateur interactif sur votre site, blog ou article. Copiez le code, collez-le dans votre page : c'est tout. Un lien vers simfinly.com est inclus.
           </p>
         </div>
 

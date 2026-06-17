@@ -212,7 +212,7 @@ export default function Cnavpl() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'cnavpl' });
     if (!sessionStorage.getItem('tracked_cnavpl')) {
       sessionStorage.setItem('tracked_cnavpl', '1');
@@ -288,7 +288,7 @@ export default function Cnavpl() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Professions libérales (CIPAV)",
-        "url": "https://www.mesimulateurs.fr/simulateurs/cnavpl",
+        "url": "https://www.simfinly.com/simulateurs/cnavpl",
         "description": "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

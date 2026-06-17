@@ -259,12 +259,12 @@ export default function Patrimoine() {
   const { saveEntry } = useSimHistory();
 
   useEffect(() => {
-    document.title = "Simulateur Patrimoine Global 2026 — mesimulateurs.fr";
+    document.title = "Simulateur Patrimoine Global 2026 — simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
       "Projetez votre patrimoine global à l'âge cible : capital financier, immobilier et retraite réunis dans un seul simulateur. Gratuit, sans inscription.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/simulateurs/patrimoine';
+    link.href = 'https://www.simfinly.com/simulateurs/patrimoine';
     track('simulator_view', { name: 'patrimoine' });
     if (!sessionStorage.getItem('tracked_patrimoine')) {
       sessionStorage.setItem('tracked_patrimoine', '1');
@@ -362,7 +362,7 @@ export default function Patrimoine() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur de patrimoine global",
-        "url": "https://www.mesimulateurs.fr/simulateurs/patrimoine",
+        "url": "https://www.simfinly.com/simulateurs/patrimoine",
         "description": "Projetez votre patrimoine global : capital financier, immobilier et retraite réunis. Gratuit.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

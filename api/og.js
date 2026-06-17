@@ -27,7 +27,7 @@ export default function handler(req) {
   const c = clip(searchParams.get('c'), 20);
   const color = CAT_COLOR[c] || '#b8934a';
 
-  const header = [el({ fontSize: 30, fontWeight: 700, color: '#e8c06a', display: 'flex' }, 'mesimulateurs.fr')];
+  const header = [el({ fontSize: 30, fontWeight: 700, color: '#e8c06a', display: 'flex' }, 'simfinly.com')];
   if (c) header.push(el({ marginTop: 16, fontSize: 24, fontWeight: 600, color, display: 'flex' }, c));
 
   const middle = [];
@@ -51,7 +51,7 @@ export default function handler(req) {
     [
       el({ display: 'flex', flexDirection: 'column' }, header),
       el({ display: 'flex', flexDirection: 'column' }, middle),
-      el({ fontSize: 22, color: '#6b7280', display: 'flex' }, 'Simulez gratuitement sur mesimulateurs.fr'),
+      el({ fontSize: 22, color: '#6b7280', display: 'flex' }, 'Simulez gratuitement sur simfinly.com'),
     ]
   );
 

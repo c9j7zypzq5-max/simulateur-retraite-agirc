@@ -17,7 +17,7 @@ export default {
     contact: 'Contact',
   },
   footer: {
-    rights: '© 2026 mesimulateurs.fr — Simulation non contractuelle',
+    rights: '© 2026 simfinly.com — Simulation non contractuelle',
   },
   sections: {
     relatedSimulators: 'Simulateurs liés',

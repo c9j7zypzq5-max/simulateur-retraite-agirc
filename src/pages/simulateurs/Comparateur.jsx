@@ -679,12 +679,12 @@ export default function Comparateur() {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    document.title = 'Comparateur d\'actifs 2025 — ETF, actions, crypto — mesimulateurs.fr';
+    document.title = 'Comparateur d\'actifs 2025 — ETF, actions, crypto — simfinly.com';
     document.querySelector('meta[name="description"]')?.setAttribute('content',
       'Comparez la performance historique d\'ETF, actions et cryptos sur n\'importe quelle période. Données réelles Yahoo Finance. Gratuit, sans inscription.');
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/simulateurs/comparateur';
+    link.href = 'https://www.simfinly.com/simulateurs/comparateur';
     track('simulator_view', { name: 'comparateur' });
     if (!sessionStorage.getItem('tracked_comparateur')) {
       sessionStorage.setItem('tracked_comparateur', '1');
@@ -830,7 +830,7 @@ export default function Comparateur() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Comparateur d'actifs — ETF, actions, crypto",
-        "url": "https://www.mesimulateurs.fr/simulateurs/comparateur",
+        "url": "https://www.simfinly.com/simulateurs/comparateur",
         "description": "Comparez la performance historique d'ETF, actions et cryptomonnaies sur n'importe quelle période : retour total, CAGR, base 100. Données Yahoo Finance.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
