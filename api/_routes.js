@@ -57,6 +57,7 @@ export const ROUTE_META = {
   '/simulateurs/credit-conso':           { title: 'Simulateur Crédit à la consommation',         emoji: '💳', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/cout-en-heures':          { title: 'Simulateur Prix en heures de vie',           emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur Ma vie en semaines',              emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/outils/qr-code':                      { title: 'Générateur de QR code personnalisé (couleur, logo)', emoji: '🔳', cat: '', prio: '0.7', freq: 'monthly' },
   '/blog':                                { title: 'Blog — Finances personnelles',               emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions',            emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
   '/guides':                              { title: 'Guides finances personnelles',               emoji: '📚', cat: '',          prio: '0.8', freq: 'monthly' },

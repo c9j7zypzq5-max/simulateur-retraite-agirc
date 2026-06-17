@@ -106,6 +106,10 @@ export const SEO_CONTENT = {
     h1: "Simulateur : ma vie en semaines",
     intro: "Visualisez l'intégralité de votre vie sous forme de grille, une case par semaine. Combien de semaines avez-vous vécues, combien vous en reste-t-il ? Une perspective marquante sur le temps qui passe.",
   },
+  '/outils/qr-code': {
+    h1: "Générateur de QR code personnalisé gratuit",
+    intro: "Créez un QR code sur mesure : choisissez les couleurs, saisissez le texte ou le lien de votre choix et ajoutez votre logo ou un emoji au centre. Le code est généré dans votre navigateur — aucune donnée envoyée — et téléchargeable en PNG haute résolution, gratuitement et sans inscription.",
+  },
 };
 
 // Bloc HTML SEO (sans dépendance, échappé) pour une route donnée.

@@ -42,9 +42,12 @@ const SIMULATEURS = [
   // Vie & Temps
   { path: "/simulateurs/cout-en-heures", icon: "⏰", title: "Le vrai prix en heures de vie", desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
   { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
+
+  // Outils
+  { path: "/outils/qr-code", icon: "🔳", title: "Générateur de QR code", desc: "Créez un QR code personnalisé : vos couleurs, le texte ou lien de votre choix, et votre logo ou un emoji au centre. Téléchargement PNG haute résolution, sans inscription.", tag: "Outils", categories: ["Outils"], badges: ["new"], available: true },
 ];
 
-const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps"];
+const FILTERS = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Outils"];
 
 // ── Animated counter via requestAnimationFrame ────────────────────────────────
 function useCountUp(target, duration = 1200, delay = 0) {

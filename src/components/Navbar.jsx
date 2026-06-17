@@ -4,10 +4,10 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
-import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library } from "lucide-react";
+import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
 
 // Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
-const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock };
+const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
 
 function relativeDate(iso) {
   const ms = Date.now() - new Date(iso).getTime();
@@ -103,6 +103,9 @@ export const NAV_GROUPS = [
   { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
     { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
     { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
+  ] },
+  { id: "outils", icon: "🔧", label: "Outils", items: [
+    { path: "/outils/qr-code", icon: "🔳", title: "Générateur de QR code", subtitle: "Couleur, logo, texte libre" },
   ] },
 ];
 
