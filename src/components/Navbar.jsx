@@ -5,25 +5,138 @@ import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
 import LangSwitch from "./LangSwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
-import { EN_ROUTES } from "../i18n/paths.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
 
-// Icône Lucide par catégorie de navigation (cohérence avec les icônes simulateurs).
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
 
-function relativeDate(iso) {
+const TXT_NAV = {
+  fr: {
+    openNav: "Ouvrir la navigation",
+    closeNav: "Fermer la navigation",
+    officialData: "Données officielles 2026",
+    drawerTitle: "Navigation",
+    navAriaLabel: "Navigation principale",
+    simNavAriaLabel: "Simulateurs disponibles",
+    currentPage: "Page actuelle",
+    home: "Accueil",
+    homeSubtitle: "Tous les simulateurs",
+    backToAll: "← Tous les simulateurs",
+    guidesSubtitle: "Parcours par thématique",
+    blogSubtitle: "Articles & guides financiers",
+    lexiqueSubtitle: "Définitions des termes financiers",
+    savedSims: "Simulations sauvegardées",
+    clearHistory: "Effacer",
+    viewAll: "Tout voir →",
+    currency: "Devise",
+    comingSoon: "Bientôt",
+    darkMode: "Mode sombre",
+    lightMode: "Mode clair",
+    switchToDark: "Passer en mode sombre",
+    switchToLight: "Passer en mode clair",
+    deleteEntry: "Supprimer",
+    relDate: (d, h, m) => d > 0 ? `il y a ${d}j` : h > 0 ? `il y a ${h}h` : m > 0 ? `il y a ${m} min` : "à l'instant",
+  },
+  en: {
+    openNav: "Open navigation",
+    closeNav: "Close navigation",
+    officialData: "",
+    drawerTitle: "Menu",
+    navAriaLabel: "Main navigation",
+    simNavAriaLabel: "Available calculators",
+    currentPage: "Current page",
+    home: "Home",
+    homeSubtitle: "All calculators",
+    backToAll: "← All calculators",
+    guidesSubtitle: null,
+    blogSubtitle: null,
+    lexiqueSubtitle: null,
+    savedSims: "Saved calculations",
+    clearHistory: "Clear",
+    viewAll: "See all →",
+    currency: "Currency",
+    comingSoon: "Soon",
+    darkMode: "Dark mode",
+    lightMode: "Light mode",
+    switchToDark: "Switch to dark mode",
+    switchToLight: "Switch to light mode",
+    deleteEntry: "Remove",
+    relDate: (d, h, m) => d > 0 ? `${d}d ago` : h > 0 ? `${h}h ago` : m > 0 ? `${m}min ago` : "just now",
+  },
+};
+
+function relativeDate(iso, locale) {
   const ms = Date.now() - new Date(iso).getTime();
   const d = Math.floor(ms / 86400000);
   const h = Math.floor(ms / 3600000);
   const m = Math.floor(ms / 60000);
-  if (d > 0) return `il y a ${d}j`;
-  if (h > 0) return `il y a ${h}h`;
-  if (m > 0) return `il y a ${m} min`;
-  return "à l'instant";
+  return (TXT_NAV[locale] ?? TXT_NAV.fr).relDate(d, h, m);
 }
 
-/* ── iOS toggle (réutilisé dans la barre et le drawer) ── */
-function IosToggle({ theme, setTheme, compact = false }) {
+/* ── Données de navigation FR ── */
+const ALL_ITEMS_FR = [
+  { path: "/simulateurs/synthese-retraite",    title: "Synthèse retraite",      subtitle: "Tous régimes cumulés" },
+  { path: "/simulateurs/agirc-arrco",          title: "Agirc-Arrco",            subtitle: "Retraite complémentaire" },
+  { path: "/simulateurs/cnav",                 title: "CNAV",                   subtitle: "Régime général" },
+  { path: "/simulateurs/fonction-publique",    title: "Fonction publique",       subtitle: "Retraite statutaire" },
+  { path: "/simulateurs/independants",         title: "Indépendants / TNS",      subtitle: "SSI + RCI" },
+  { path: "/simulateurs/ircantec",             title: "IRCANTEC",                subtitle: "Agents non-titulaires" },
+  { path: "/simulateurs/retraite-progressive", title: "Retraite progressive",    subtitle: "Mi-temps + pension" },
+  { path: "/simulateurs/cnavpl",               title: "Professions libérales",   subtitle: "CIPAV / base SSI" },
+  { path: "/simulateurs/msa",                  title: "Retraite agricole MSA",   subtitle: "Exploitants & salariés" },
+  { path: "/simulateurs/per",                  title: "Plan Épargne Retraite",   subtitle: "PER — déduction fiscale" },
+];
+
+export const NAV_GROUPS = [
+  { id: "retraite",   icon: "🏦", label: "Retraite",    items: ALL_ITEMS_FR },
+  { id: "immobilier", icon: "🏡", label: "Immobilier",  items: [
+    { path: "/simulateurs/emprunt-immobilier",  title: "Emprunt immobilier",    subtitle: "Mensualités & capacité" },
+    { path: "/simulateurs/rendement-locatif",   title: "Rendement locatif",     subtitle: "Rentabilité brute & nette" },
+    { path: "/simulateurs/ptz",                 title: "Prêt à Taux Zéro",      subtitle: "PTZ primo-accédant" },
+  ]},
+  { id: "impots",     icon: "📋", label: "Impôts",      items: [
+    { path: "/simulateurs/impot-revenu",           title: "Impôt sur le revenu",    subtitle: "TMI & taux moyen" },
+    { path: "/simulateurs/plus-value-immobiliere", title: "Plus-value immobilière", subtitle: "IR + prélèvements sociaux" },
+  ]},
+  { id: "finances",   icon: "💰", label: "Finances",    items: [
+    { path: "/simulateurs/budget",       title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
+    { path: "/simulateurs/epargne",      title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
+    { path: "/simulateurs/fire",         title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
+    { path: "/simulateurs/salaire",      title: "Salaire Net/Brut & Carrière", subtitle: "Projection & pouvoir d'achat" },
+    { path: "/simulateurs/patrimoine",   title: "Patrimoine global",           subtitle: "Financier + immo + retraite" },
+    { path: "/simulateurs/comparateur",  title: "Comparateur d'actifs",        subtitle: "ETF, actions, crypto…" },
+    { path: "/simulateurs/assurance-vie",title: "Assurance-vie",               subtitle: "Rendement & fiscalité" },
+    { path: "/simulateurs/credit-conso", title: "Crédit conso",                subtitle: "Mensualité & coût total" },
+  ]},
+  { id: "vie-temps",  icon: "⏳", label: "Vie & Temps", items: [
+    { path: "/simulateurs/cout-en-heures",  title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+    { path: "/simulateurs/vie-en-semaines", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
+  ]},
+  { id: "outils",     icon: "🔧", label: "Outils",      items: [
+    { path: "/outils/qr-code", title: "Générateur de QR code", subtitle: "Couleur, logo, texte libre" },
+  ]},
+];
+
+/* ── Données de navigation EN (universal simulators only) ── */
+const EN_NAV_GROUPS = [
+  { id: "finances", icon: "💰", label: "Finance", items: [
+    { path: "/simulateurs/fire",         title: "FIRE Calculator",       subtitle: "Financial independence" },
+    { path: "/simulateurs/epargne",      title: "Compound Interest",     subtitle: "Savings growth" },
+    { path: "/simulateurs/budget",       title: "50/30/20 Budget",       subtitle: "Needs, wants, savings" },
+    { path: "/simulateurs/patrimoine",   title: "Net Worth",             subtitle: "Wealth tracker" },
+    { path: "/simulateurs/comparateur",  title: "Asset Comparison",      subtitle: "ETFs, stocks, crypto" },
+    { path: "/simulateurs/credit-conso", title: "Personal Loan",         subtitle: "Monthly payment & cost" },
+    { path: "/simulateurs/cout-en-heures",title: "Cost in Work Hours",   subtitle: "True cost of things" },
+  ]},
+  { id: "outils", icon: "🔧", label: "Tools", items: [
+    { path: "/outils/qr-code", title: "QR Code Generator", subtitle: "Color, logo, free text" },
+  ]},
+];
+
+// ALL_ITEMS used for "current page" display (FR paths only, EN pages use canonical path)
+const ALL_ITEMS = ALL_ITEMS_FR;
+
+/* ── iOS toggle ── */
+function IosToggle({ theme, setTheme, compact = false, txt }) {
   const isDark = theme === "dark";
   const track = {
     width: 54, height: 28, minHeight: 28, borderRadius: 14, padding: 0, border: "none",
@@ -46,7 +159,7 @@ function IosToggle({ theme, setTheme, compact = false }) {
   const btn = (
     <button
       onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-      aria-label={isDark ? "Passer en mode clair" : "Passer en mode sombre"}
+      aria-label={isDark ? txt.switchToLight : txt.switchToDark}
       role="switch" aria-checked={isDark}
       style={track}
     >
@@ -57,78 +170,33 @@ function IosToggle({ theme, setTheme, compact = false }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0" }}>
       <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>
-        {isDark ? "Mode sombre" : "Mode clair"}
+        {isDark ? txt.darkMode : txt.lightMode}
       </span>
       {btn}
     </div>
   );
 }
 
-/* ── Données de navigation regroupées par catégorie ── */
-const ALL_ITEMS = [
-  { path: "/simulateurs/synthese-retraite",    icon: "🧮", title: "Synthèse retraite",      subtitle: "Tous régimes cumulés" },
-  { path: "/simulateurs/agirc-arrco",          icon: "🏆", title: "Agirc-Arrco",           subtitle: "Retraite complémentaire" },
-  { path: "/simulateurs/cnav",                 icon: "🏛",  title: "CNAV",                  subtitle: "Régime général" },
-  { path: "/simulateurs/fonction-publique",    icon: "⚖️", title: "Fonction publique",      subtitle: "Retraite statutaire" },
-  { path: "/simulateurs/independants",         icon: "💼", title: "Indépendants / TNS",     subtitle: "SSI + RCI" },
-  { path: "/simulateurs/ircantec",             icon: "🏢", title: "IRCANTEC",               subtitle: "Agents non-titulaires" },
-  { path: "/simulateurs/retraite-progressive", icon: "📅", title: "Retraite progressive",   subtitle: "Mi-temps + pension" },
-  { path: "/simulateurs/cnavpl",               icon: "👨‍⚕️", title: "Professions libérales", subtitle: "CIPAV / base SSI" },
-  { path: "/simulateurs/msa",                  icon: "🌾", title: "Retraite agricole MSA",  subtitle: "Exploitants & salariés" },
-  { path: "/simulateurs/per",                  icon: "💼", title: "Plan Épargne Retraite",  subtitle: "PER — déduction fiscale" },
-];
-
-export const NAV_GROUPS = [
-  {
-    id: "retraite", icon: "🏦", label: "Retraite",
-    items: ALL_ITEMS,
-  },
-  { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
-    { path: "/simulateurs/emprunt-immobilier",  icon: "🏠", title: "Emprunt immobilier",  subtitle: "Mensualités & capacité" },
-    { path: "/simulateurs/rendement-locatif",   icon: "📊", title: "Rendement locatif",   subtitle: "Rentabilité brute & nette" },
-    { path: "/simulateurs/ptz",                 icon: "🏡", title: "Prêt à Taux Zéro",     subtitle: "PTZ primo-accédant" },
-  ] },
-  { id: "impots", icon: "📋", label: "Impôts", items: [
-    { path: "/simulateurs/impot-revenu",             icon: "📋", title: "Impôt sur le revenu",    subtitle: "TMI & taux moyen" },
-    { path: "/simulateurs/plus-value-immobiliere",   icon: "📈", title: "Plus-value immobilière", subtitle: "IR + prélèvements sociaux" },
-  ] },
-  { id: "finances", icon: "💰", label: "Finances", items: [
-    { path: "/simulateurs/budget",  icon: "📊", title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
-    { path: "/simulateurs/epargne", icon: "💰", title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
-    { path: "/simulateurs/fire",    icon: "🔥", title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
-    { path: "/simulateurs/salaire",     icon: "💼", title: "Salaire Net/Brut & Carrière", subtitle: "Projection & pouvoir d'achat" },
-    { path: "/simulateurs/patrimoine",  icon: "💎", title: "Patrimoine global",            subtitle: "Financier + immo + retraite" },
-    { path: "/simulateurs/comparateur", icon: "📊", title: "Comparateur d'actifs",          subtitle: "ETF, actions, crypto…" },
-    { path: "/simulateurs/assurance-vie", icon: "🛡️", title: "Assurance-vie",               subtitle: "Rendement & fiscalité" },
-    { path: "/simulateurs/credit-conso",  icon: "💳", title: "Crédit conso",                 subtitle: "Mensualité & coût total" },
-  ] },
-  { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
-    { path: "/simulateurs/cout-en-heures",  icon: "⏰", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
-    { path: "/simulateurs/vie-en-semaines", icon: "📅", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
-  ] },
-  { id: "outils", icon: "🔧", label: "Outils", items: [
-    { path: "/outils/qr-code", icon: "🔳", title: "Générateur de QR code", subtitle: "Couleur, logo, texte libre" },
-  ] },
-];
-
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
+  const locale = useLocale();
+  const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
+  const navGroups = locale === 'en' ? EN_NAV_GROUPS : NAV_GROUPS;
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState(() => {
     const init = {};
-    NAV_GROUPS.forEach(g => { init[g.id] = g.items.some(i => i.path === pathname); });
+    navGroups.forEach(g => { init[g.id] = g.items.some(i => i.path === pathname); });
     return init;
   });
 
-  const [openCat, setOpenCat] = useState(null);   // barre catégories desktop
+  const [openCat, setOpenCat] = useState(null);
   const catBarRef = useRef(null);
 
-  const locale = useLocale();
-  // Strip /en prefix for canonical path checks
   const canonPath = pathname.startsWith('/en/') ? pathname.slice(3) : pathname === '/en' ? '/' : pathname;
   const onSim = canonPath.startsWith("/simulateurs/");
   const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
-  const current = ALL_ITEMS.find(i => i.path === pathname);
+  const current = ALL_ITEMS.find(i => i.path === canonPath);
 
   const [history, setHistory] = useState([]);
   const { getHistory, removeEntry, clearHistory } = useSimHistory();
@@ -138,12 +206,11 @@ export default function Navbar({ theme, setTheme }) {
 
   useEffect(() => {
     const next = {};
-    NAV_GROUPS.forEach(g => { next[g.id] = g.items.some(i => i.path === pathname); });
+    navGroups.forEach(g => { next[g.id] = g.items.some(i => i.path === canonPath); });
     setOpenGroups(next);
     setOpenCat(null);
   }, [pathname]);
 
-  // Ferme le menu de catégories desktop au clic extérieur / Échap.
   useEffect(() => {
     if (!openCat) return;
     const onDown = e => { if (catBarRef.current && !catBarRef.current.contains(e.target)) setOpenCat(null); };
@@ -178,7 +245,6 @@ export default function Navbar({ theme, setTheme }) {
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid var(--border)",
         height: 56,
-        /* 3 zones : gauche / centre absolu / droite */
         display: "flex", alignItems: "center",
         justifyContent: "space-between",
         padding: "0 12px 0 4px",
@@ -187,7 +253,7 @@ export default function Navbar({ theme, setTheme }) {
         <div style={{ display: "flex", alignItems: "center", gap: 4, zIndex: 1 }}>
           <button
             onClick={() => setDrawerOpen(true)}
-            aria-label="Ouvrir la navigation"
+            aria-label={txt.openNav}
             aria-expanded={drawerOpen}
             style={{
               background: "transparent", border: "none",
@@ -203,7 +269,6 @@ export default function Navbar({ theme, setTheme }) {
             <span style={{ display: "block", width: 20, height: 2, background: "currentColor", borderRadius: 2 }} />
           </button>
 
-          {/* Breadcrumb — desktop uniquement (masqué sur mobile via .nav-center) */}
           <div className="nav-center">
             {onSim ? (
               <LocaleLink to="/" style={{
@@ -215,17 +280,19 @@ export default function Navbar({ theme, setTheme }) {
                 onMouseEnter={e => { e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
                 onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
               >
-                {locale === 'en' ? '← All calculators' : '← Tous les simulateurs'}
+                {txt.backToAll}
               </LocaleLink>
             ) : (
-              <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
-                Données officielles 2026
-              </span>
+              txt.officialData ? (
+                <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
+                  {txt.officialData}
+                </span>
+              ) : null
             )}
           </div>
         </div>
 
-        {/* Centre : logo toujours centré (position absolute) */}
+        {/* Centre : logo */}
         <LocaleLink to="/" style={{
           position: "absolute", left: "50%", transform: "translateX(-50%)",
           display: "flex", alignItems: "center", gap: 8,
@@ -244,7 +311,7 @@ export default function Navbar({ theme, setTheme }) {
         <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 8 }}>
           <LangSwitch compact />
           {showCurrency && <CurrencySelect compact />}
-          <IosToggle theme={theme} setTheme={setTheme} compact />
+          <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />
         </div>
       </nav>
 
@@ -255,10 +322,10 @@ export default function Navbar({ theme, setTheme }) {
         backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)",
       }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "center", gap: 2 }}>
-          {NAV_GROUPS.map(group => {
+          {navGroups.map(group => {
             const GI = GROUP_ICONS[group.id];
             const active = openCat === group.id;
-            const hasCurrent = group.items.some(i => i.path === pathname);
+            const hasCurrent = group.items.some(i => i.path === canonPath);
             return (
               <div key={group.id} style={{ position: "relative" }}>
                 <button
@@ -333,7 +400,7 @@ export default function Navbar({ theme, setTheme }) {
       {/* ── Drawer ── */}
       <aside
         className="nav-drawer"
-        aria-label="Navigation principale"
+        aria-label={txt.navAriaLabel}
         aria-hidden={!drawerOpen}
         style={{
           position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 300,
@@ -352,11 +419,11 @@ export default function Navbar({ theme, setTheme }) {
           borderBottom: "1px solid var(--border)",
         }}>
           <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
-            Navigation
+            {txt.drawerTitle}
           </span>
           <button
             onClick={close}
-            aria-label="Fermer la navigation"
+            aria-label={txt.closeNav}
             style={{
               background: "transparent", border: "none",
               color: "var(--text-secondary)", fontSize: "1.1rem",
@@ -367,8 +434,8 @@ export default function Navbar({ theme, setTheme }) {
           >✕</button>
         </div>
 
-        {/* Indicateur de page actuelle */}
-        {current && (
+        {/* Indicateur de page actuelle (FR paths only) */}
+        {current && locale === 'fr' && (
           <div style={{
             padding: "10px 20px 12px",
             borderBottom: "1px solid var(--border)",
@@ -376,7 +443,7 @@ export default function Navbar({ theme, setTheme }) {
             flexShrink: 0,
           }}>
             <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 7 }}>
-              Page actuelle
+              {txt.currentPage}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <span style={{ color: "var(--gold)", display: "flex" }}><SimIcon path={current.path} size={22} /></span>
@@ -388,8 +455,8 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Navigation groupée */}
-        <nav style={{ padding: "8px 10px", flex: 1 }} aria-label="Simulateurs disponibles">
+        {/* Navigation */}
+        <nav style={{ padding: "8px 10px", flex: 1 }} aria-label={txt.simNavAriaLabel}>
 
           {/* Lien Accueil */}
           <LocaleLink
@@ -407,84 +474,86 @@ export default function Navbar({ theme, setTheme }) {
           >
             <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: canonPath === "/" ? "var(--gold)" : "var(--text-secondary)" }}><House size={18} /></span>
             <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: canonPath === "/" ? 500 : 400, color: canonPath === "/" ? "var(--gold)" : "var(--text)" }}>{locale === 'en' ? 'Home' : 'Accueil'}</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{locale === 'en' ? 'All calculators' : 'Tous les simulateurs'}</div>
+              <div style={{ fontSize: "0.88rem", fontWeight: canonPath === "/" ? 500 : 400, color: canonPath === "/" ? "var(--gold)" : "var(--text)" }}>{txt.home}</div>
+              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.homeSubtitle}</div>
             </div>
             {canonPath === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
           </LocaleLink>
 
-          {/* Guides */}
-          <Link
-            to="/guides"
-            onClick={close}
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              padding: "9px 10px", borderRadius: 9,
-              textDecoration: "none", marginBottom: 6,
-              background: pathname.startsWith("/guides") ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${pathname.startsWith("/guides") ? "var(--border-gold)" : "transparent"}`,
-            }}
-            onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "transparent"; }}
-          >
-            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text-secondary)" }}><Library size={18} /></span>
-            <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text)" }}>Guides</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Parcours par thématique</div>
-            </div>
-            {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
-          </Link>
+          {/* Guides (FR only) */}
+          {txt.guidesSubtitle !== null && (
+            <Link
+              to="/guides" onClick={close}
+              style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "9px 10px", borderRadius: 9,
+                textDecoration: "none", marginBottom: 6,
+                background: pathname.startsWith("/guides") ? "rgba(184,147,74,0.1)" : "transparent",
+                border: `1px solid ${pathname.startsWith("/guides") ? "var(--border-gold)" : "transparent"}`,
+              }}
+              onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseLeave={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "transparent"; }}
+            >
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text-secondary)" }}><Library size={18} /></span>
+              <div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text)" }}>Guides</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.guidesSubtitle}</div>
+              </div>
+              {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+            </Link>
+          )}
 
-          {/* Blog */}
-          <Link
-            to="/blog"
-            onClick={close}
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              padding: "9px 10px", borderRadius: 9,
-              textDecoration: "none", marginBottom: 6,
-              background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--border-gold)" : "transparent"}`,
-            }}
-            onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "transparent"; }}
-          >
-            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text-secondary)" }}><Newspaper size={18} /></span>
-            <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text)" }}>Blog</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Articles & guides financiers</div>
-            </div>
-            {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
-          </Link>
+          {/* Blog (FR only) */}
+          {txt.blogSubtitle !== null && (
+            <Link
+              to="/blog" onClick={close}
+              style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "9px 10px", borderRadius: 9,
+                textDecoration: "none", marginBottom: 6,
+                background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(184,147,74,0.1)" : "transparent",
+                border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--border-gold)" : "transparent"}`,
+              }}
+              onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseLeave={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "transparent"; }}
+            >
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text-secondary)" }}><Newspaper size={18} /></span>
+              <div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text)" }}>Blog</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.blogSubtitle}</div>
+              </div>
+              {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+            </Link>
+          )}
 
-          {/* Lexique */}
-          <Link
-            to="/lexique"
-            onClick={close}
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              padding: "9px 10px", borderRadius: 9,
-              textDecoration: "none", marginBottom: 6,
-              background: pathname.startsWith("/lexique") ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${pathname.startsWith("/lexique") ? "var(--border-gold)" : "transparent"}`,
-            }}
-            onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-            onMouseLeave={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "transparent"; }}
-          >
-            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
-            <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/lexique") ? 500 : 400, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text)" }}>Lexique</div>
-              <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Définitions des termes financiers</div>
-            </div>
-            {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
-          </Link>
+          {/* Lexique (FR only) */}
+          {txt.lexiqueSubtitle !== null && (
+            <Link
+              to="/lexique" onClick={close}
+              style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "9px 10px", borderRadius: 9,
+                textDecoration: "none", marginBottom: 6,
+                background: pathname.startsWith("/lexique") ? "rgba(184,147,74,0.1)" : "transparent",
+                border: `1px solid ${pathname.startsWith("/lexique") ? "var(--border-gold)" : "transparent"}`,
+              }}
+              onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseLeave={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "transparent"; }}
+            >
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
+              <div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/lexique") ? 500 : 400, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text)" }}>Lexique</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.lexiqueSubtitle}</div>
+              </div>
+              {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+            </Link>
+          )}
 
           {/* Groupes de catégories */}
-          {NAV_GROUPS.map(group => {
+          {navGroups.map(group => {
             const isOpen = openGroups[group.id];
             return (
               <div key={group.id} style={{ marginBottom: 6 }}>
-                {/* En-tête de catégorie — cliquable */}
                 <button
                   onClick={() => toggleGroup(group.id)}
                   style={{
@@ -498,7 +567,9 @@ export default function Navbar({ theme, setTheme }) {
                   onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                    <span style={{ display: "flex", alignItems: "center", color: isOpen ? "var(--gold)" : "var(--text-secondary)" }}>{(() => { const GI = GROUP_ICONS[group.id]; return GI ? <GI size={16} /> : group.icon; })()}</span>
+                    <span style={{ display: "flex", alignItems: "center", color: isOpen ? "var(--gold)" : "var(--text-secondary)" }}>
+                      {(() => { const GI = GROUP_ICONS[group.id]; return GI ? <GI size={16} /> : group.icon; })()}
+                    </span>
                     <span style={{
                       fontSize: 10, fontWeight: 600, letterSpacing: "0.07em",
                       textTransform: "uppercase",
@@ -517,7 +588,7 @@ export default function Navbar({ theme, setTheme }) {
                         border: "1px solid var(--border)",
                         letterSpacing: "0.05em", textTransform: "uppercase",
                       }}>
-                        Bientôt
+                        {txt.comingSoon}
                       </span>
                     )}
                     <span style={{
@@ -526,13 +597,10 @@ export default function Navbar({ theme, setTheme }) {
                       transform: isOpen ? "rotate(90deg)" : "rotate(0deg)",
                       transition: "transform 0.25s ease",
                       lineHeight: 1,
-                    }}>
-                      ›
-                    </span>
+                    }}>›</span>
                   </div>
                 </button>
 
-                {/* Items avec animation max-height */}
                 <div style={{
                   overflow: "hidden",
                   maxHeight: isOpen ? "520px" : "0",
@@ -581,13 +649,13 @@ export default function Navbar({ theme, setTheme }) {
           <div style={{ borderTop: "1px solid var(--border)", padding: "10px 10px 4px", flexShrink: 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, padding: "0 2px" }}>
               <span style={{ fontSize: 9.5, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
-                Simulations sauvegardées
+                {txt.savedSims}
               </span>
               <button
                 onClick={() => { clearHistory(); setHistory([]); }}
                 style={{ fontSize: 10, color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", padding: "2px 4px" }}
               >
-                Effacer
+                {txt.clearHistory}
               </button>
             </div>
             {history.slice(0, 4).map(entry => (
@@ -607,31 +675,31 @@ export default function Navbar({ theme, setTheme }) {
                     {entry.label}
                   </span>
                   <span style={{ fontSize: 10, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 6 }}>
-                    {relativeDate(entry.savedAt)}
+                    {relativeDate(entry.savedAt, locale)}
                   </span>
                 </Link>
                 <button
                   onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
                   style={{ fontSize: 11, color: "var(--text-secondary)", background: "none", border: "none", cursor: "pointer", padding: "4px", flexShrink: 0 }}
-                  aria-label="Supprimer"
+                  aria-label={txt.deleteEntry}
                 >✕</button>
               </div>
             ))}
             <Link to="/mes-simulations" onClick={close} style={{ display: "block", textAlign: "center", fontSize: 11, color: "var(--gold)", textDecoration: "none", padding: "8px 0 4px" }}>
-              Tout voir →
+              {txt.viewAll}
             </Link>
           </div>
         )}
 
-        {/* Footer : devise (si simulateur universel) + toggle thème */}
+        {/* Footer : devise + toggle thème */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>Devise</span>
+              <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{txt.currency}</span>
               <CurrencySelect compact />
             </div>
           )}
-          <IosToggle theme={theme} setTheme={setTheme} />
+          <IosToggle theme={theme} setTheme={setTheme} txt={txt} />
         </div>
       </aside>
     </>
