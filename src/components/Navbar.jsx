@@ -226,7 +226,7 @@ export default function Navbar({ theme, setTheme }) {
             fontSize: "1.15rem", fontWeight: 700,
             color: "var(--gold)",
             letterSpacing: "0.02em", whiteSpace: "nowrap",
-          }}>mesimulateurs.fr</span>
+          }}>simfinly.com</span>
         </Link>
 
         {/* Droite : toggle thème */}

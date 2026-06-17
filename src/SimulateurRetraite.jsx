@@ -370,7 +370,7 @@ export default function SimulateurRetraite() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite complémentaire Agirc-Arrco : nombre de points, valeur du point 2025, pension brute et nette estimée.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/simulateurs/agirc-arrco';
+    link.href = 'https://www.simfinly.com/simulateurs/agirc-arrco';
     track('simulator_view', { name: 'agirc-arrco' });
     fetch('/api/track', {
       method: 'POST',
@@ -457,7 +457,7 @@ export default function SimulateurRetraite() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Agirc-Arrco",
-        "url": "https://www.mesimulateurs.fr/simulateurs/agirc-arrco",
+        "url": "https://www.simfinly.com/simulateurs/agirc-arrco",
         "description": "Calculez votre retraite complémentaire Agirc-Arrco : nombre de points, valeur du point 2025, pension brute et nette estimée.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

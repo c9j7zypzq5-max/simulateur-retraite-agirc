@@ -19,12 +19,12 @@ export default function MentionsLegales() {
     const prevTitle = document.title;
     const prevDesc  = document.querySelector('meta[name="description"]')?.getAttribute("content");
     const robotsMeta = document.querySelector('meta[name="robots"]');
-    document.title = "Mentions légales — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Mentions légales du site mesimulateurs.fr : éditeur, hébergeur, propriété intellectuelle et responsabilité.");
+    document.title = "Mentions légales — simfinly.com";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Mentions légales du site simfinly.com : éditeur, hébergeur, propriété intellectuelle et responsabilité.");
     if (robotsMeta) robotsMeta.setAttribute("content", "noindex, follow");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     return () => {
       document.title = prevTitle;
       if (prevDesc) document.querySelector('meta[name="description"]')?.setAttribute("content", prevDesc);

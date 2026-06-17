@@ -91,11 +91,11 @@ export default function Article() {
         setArticle(data);
         setLoading(false);
         // SEO
-        document.title = `${data.title} | mesimulateurs.fr`;
+        document.title = `${data.title} | simfinly.com`;
         document.querySelector('meta[name="description"]')?.setAttribute("content", data.intro || "");
         let link = document.querySelector('link[rel="canonical"]');
         if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-        link.href = `https://www.mesimulateurs.fr/blog/${slug}`;
+        link.href = `https://www.simfinly.com/blog/${slug}`;
       })
       .catch(() => { setNotFound(true); setLoading(false); });
   }, [slug]);

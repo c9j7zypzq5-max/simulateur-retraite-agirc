@@ -36,7 +36,7 @@ export async function buildReportPdf({ report, url, name, chartImage = null }) {
 
   // ── En-tête de marque ──
   doc.setFont("helvetica", "bold").setFontSize(15).setTextColor(...GOLD_DARK);
-  text("mesimulateurs.fr", M, y + 4);
+  text("simfinly.com", M, y + 4);
   const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
   doc.setFont("helvetica", "normal").setFontSize(9).setTextColor(...SOFT);
   text(`Compte-rendu · ${date}`, pageW - M, y + 4, { align: "right" });
@@ -136,7 +136,7 @@ export async function buildReportPdf({ report, url, name, chartImage = null }) {
   for (let p = 1; p <= total; p++) {
     doc.setPage(p);
     doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...SOFT);
-    text("Simulation indicative et non contractuelle · mesimulateurs.fr", M, pageH - 20);
+    text("Simulation indicative et non contractuelle · simfinly.com", M, pageH - 20);
     text(`${p} / ${total}`, pageW - M, pageH - 20, { align: "right" });
   }
 

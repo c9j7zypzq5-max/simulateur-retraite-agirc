@@ -46,12 +46,12 @@ export default function LexiqueTerme() {
   }, [entry]);
 
   useEffect(() => {
-    if (!entry) { document.title = "Terme introuvable | mesimulateurs.fr"; return; }
-    document.title = `${entry.term} : définition (${entry.full}) | mesimulateurs.fr`;
+    if (!entry) { document.title = "Terme introuvable | simfinly.com"; return; }
+    document.title = `${entry.term} : définition (${entry.full}) | simfinly.com`;
     document.querySelector('meta[name="description"]')?.setAttribute("content", entry.short);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = `https://www.mesimulateurs.fr/lexique/${slug}`;
+    link.href = `https://www.simfinly.com/lexique/${slug}`;
   }, [entry, slug]);
 
   const cat = entry ? (CATEGORY_COLORS[entry.category] || CATEGORY_COLORS["Finances"]) : null;

@@ -100,7 +100,7 @@ export default function Independants() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'independants' });
     if (!sessionStorage.getItem('tracked_independants')) {
       sessionStorage.setItem('tracked_independants', '1');
@@ -153,7 +153,7 @@ export default function Independants() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Indépendants / TNS",
-        "url": "https://www.mesimulateurs.fr/simulateurs/independants",
+        "url": "https://www.simfinly.com/simulateurs/independants",
         "description": "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

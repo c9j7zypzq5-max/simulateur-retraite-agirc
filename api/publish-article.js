@@ -72,7 +72,7 @@ export default async function handler(req, res) {
     await redis.set(`blog:article:${article.slug}`, JSON.stringify(article));
     await redis.zadd('blog:slugs', { score: Date.now(), member: article.slug });
 
-    res.status(200).json({ ok: true, slug: article.slug, url: `https://www.mesimulateurs.fr/blog/${article.slug}` });
+    res.status(200).json({ ok: true, slug: article.slug, url: `https://www.simfinly.com/blog/${article.slug}` });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

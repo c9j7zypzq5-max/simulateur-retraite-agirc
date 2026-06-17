@@ -8,7 +8,7 @@ const SECTIONS = [
   {
     h2: "Notre objectif",
     body: [
-      "mesimulateurs.fr propose des estimations claires et instantanées sur des sujets de finances personnelles : retraite, immobilier, impôts, épargne et indépendance financière. Tous les calculs sont effectués localement dans votre navigateur : aucune donnée saisie n'est envoyée sur nos serveurs.",
+      "simfinly.com propose des estimations claires et instantanées sur des sujets de finances personnelles : retraite, immobilier, impôts, épargne et indépendance financière. Tous les calculs sont effectués localement dans votre navigateur : aucune donnée saisie n'est envoyée sur nos serveurs.",
     ],
   },
   {
@@ -42,12 +42,12 @@ export default function Methodologie() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Méthodologie & sources | mesimulateurs.fr";
+    document.title = "Méthodologie & sources | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Comment mesimulateurs.fr calcule ses estimations : formules, barèmes officiels, sources (service-public, URSSAF, Agirc-Arrco, DGFiP…), mises à jour et limites.");
+      "Comment simfinly.com calcule ses estimations : formules, barèmes officiels, sources (service-public, URSSAF, Agirc-Arrco, DGFiP…), mises à jour et limites.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/methodologie';
+    link.href = 'https://www.simfinly.com/methodologie';
   }, []);
 
   const today = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(new Date());

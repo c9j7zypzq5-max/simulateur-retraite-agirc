@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
     const prompt = `Tu es un rédacteur financier français expert. Rédige un article de blog informatif sur le thème suivant : "${topic.title}".
 
-L'article est destiné au site mesimulateurs.fr qui propose des simulateurs financiers gratuits (retraite Agirc-Arrco, CNAV, épargne, FIRE, immobilier, impôts, budget).
+L'article est destiné au site simfinly.com qui propose des simulateurs financiers gratuits (retraite Agirc-Arrco, CNAV, épargne, FIRE, immobilier, impôts, budget).
 
 Retourne UNIQUEMENT un objet JSON valide, sans texte avant ni après, avec cette structure exacte :
 {
@@ -79,7 +79,7 @@ Contraintes pour le champ content :
 - Ton : accessible, bienveillant, pratique, concret
 - Contexte 100 % français (fiscalité, institutions et lois françaises)
 - Aucune balise h1, script, style, a, img
-- Terminer par un court paragraphe invitant à tester les simulateurs de mesimulateurs.fr`;
+- Terminer par un court paragraphe invitant à tester les simulateurs de simfinly.com`;
 
     const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',

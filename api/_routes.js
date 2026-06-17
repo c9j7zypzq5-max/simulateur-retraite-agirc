@@ -7,7 +7,7 @@
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 
-export const BASE = 'https://www.mesimulateurs.fr';
+export const BASE = 'https://www.simfinly.com';
 
 // Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
 // la locale par défaut (servie à la racine) ; les autres langues seraient
@@ -31,7 +31,7 @@ export function hreflangLinks(route) {
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
 // prio / freq (sitemap).
 export const ROUTE_META = {
-  '/':                                    { title: 'mesimulateurs.fr — 25 simulateurs gratuits', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
+  '/':                                    { title: 'simfinly.com — 25 simulateurs gratuits', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
   '/simulateurs/agirc-arrco':             { title: 'Simulateur Agirc-Arrco 2026',                emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/cnav':                    { title: 'Simulateur CNAV — Régime général',            emoji: '🏛', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/fonction-publique':       { title: 'Simulateur Retraite Fonction publique',       emoji: '⚖️', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
@@ -62,7 +62,7 @@ export const ROUTE_META = {
   '/guides':                              { title: 'Guides finances personnelles',               emoji: '📚', cat: '',          prio: '0.8', freq: 'monthly' },
   '/methodologie':                        { title: 'Méthodologie & sources',                     emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
   '/widgets':                             { title: 'Widgets gratuits à intégrer',                emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
-  '/a-propos':                            { title: 'À propos — mesimulateurs.fr',                emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
+  '/a-propos':                            { title: 'À propos — simfinly.com',                emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
   '/mentions-legales':                    { title: 'Mentions légales',                           emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
   '/politique-de-confidentialite':        { title: 'Politique de confidentialité',               emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
 };
@@ -143,8 +143,8 @@ export function structuredData(route, extra = {}) {
       {
         '@context': 'https://schema.org', '@type': 'Article',
         headline: g.title, description: g.intro, url, mainEntityOfPage: url,
-        author: { '@type': 'Organization', name: 'mesimulateurs.fr', url: BASE },
-        publisher: { '@type': 'Organization', name: 'mesimulateurs.fr', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+        author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
+        publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
       },
     ];
   }
@@ -155,8 +155,8 @@ export function structuredData(route, extra = {}) {
     const article = {
       '@context': 'https://schema.org', '@type': 'Article',
       headline: extra.title, description: extra.description || '', url, mainEntityOfPage: url,
-      author: { '@type': 'Organization', name: 'mesimulateurs.fr', url: BASE },
-      publisher: { '@type': 'Organization', name: 'mesimulateurs.fr', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+      author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
+      publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
     };
     if (extra.publishedAt) { article.datePublished = extra.publishedAt; article.dateModified = extra.dateModified || extra.publishedAt; }
     if (extra.image) article.image = extra.image;

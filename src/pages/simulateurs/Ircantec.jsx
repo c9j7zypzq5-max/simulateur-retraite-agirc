@@ -100,7 +100,7 @@ export default function Ircantec() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'ircantec' });
     if (!sessionStorage.getItem('tracked_ircantec')) {
       sessionStorage.setItem('tracked_ircantec', '1');
@@ -154,7 +154,7 @@ export default function Ircantec() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite IRCANTEC",
-        "url": "https://www.mesimulateurs.fr/simulateurs/ircantec",
+        "url": "https://www.simfinly.com/simulateurs/ircantec",
         "description": "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

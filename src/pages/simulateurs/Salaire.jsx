@@ -501,7 +501,7 @@ export default function Salaire() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Salaire Net/Brut & carrière",
-        "url": "https://www.mesimulateurs.fr/simulateurs/salaire",
+        "url": "https://www.simfinly.com/simulateurs/salaire",
         "description": "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

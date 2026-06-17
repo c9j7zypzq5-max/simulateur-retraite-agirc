@@ -4,4 +4,4 @@ Disallow: /embed/
 Disallow: /mes-simulations
 Disallow: /api/share
 
-Sitemap: https://www.mesimulateurs.fr/sitemap.xml
+Sitemap: https://www.simfinly.com/sitemap.xml

@@ -3,7 +3,19 @@
     {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "mesimulateurs.fr" }],
-      "destination": "https://www.mesimulateurs.fr/:path*",
+      "destination": "https://www.simfinly.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.mesimulateurs.fr" }],
+      "destination": "https://www.simfinly.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "simfinly.com" }],
+      "destination": "https://www.simfinly.com/:path*",
       "permanent": true
     }
   ],

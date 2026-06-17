@@ -88,7 +88,7 @@ export default function RendementLocatif() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'rendement-locatif' });
     if (!sessionStorage.getItem('tracked_rendement-locatif')) {
       sessionStorage.setItem('tracked_rendement-locatif', '1');
@@ -163,7 +163,7 @@ export default function RendementLocatif() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur de rendement locatif",
-        "url": "https://www.mesimulateurs.fr/simulateurs/rendement-locatif",
+        "url": "https://www.simfinly.com/simulateurs/rendement-locatif",
         "description": "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

@@ -327,7 +327,7 @@ export default function Budget() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Budget 50/30/20",
-        "url": "https://www.mesimulateurs.fr/simulateurs/budget",
+        "url": "https://www.simfinly.com/simulateurs/budget",
         "description": "Répartissez votre budget mensuel selon la règle 50/30/20. Donut chart animé, jauges en temps réel, conseils personnalisés.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

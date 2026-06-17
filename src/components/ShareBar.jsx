@@ -137,7 +137,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       // En-tête de marque (page 1)
       const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
       pdf.setFont("helvetica", "bold"); pdf.setFontSize(13); pdf.setTextColor(154, 111, 42);
-      pdf.text("mesimulateurs.fr", margin, margin + 6);
+      pdf.text("simfinly.com", margin, margin + 6);
       pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); pdf.setTextColor(120, 120, 120);
       pdf.text(`Compte-rendu · ${date}`, pageW - margin, margin + 6, { align: "right" });
       pdf.setDrawColor(184, 147, 74); pdf.setLineWidth(1);
@@ -184,7 +184,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       });
       url = `${window.location.origin}/api/share?${qs.toString()}`;
     }
-    const title = `Simulation — ${name} · mesimulateurs.fr`;
+    const title = `Simulation — ${name} · simfinly.com`;
     const text = "Voici ma simulation. Faites la vôtre gratuitement :";
     try {
       const canvas = await snapshot(resultsRef?.current || pageContainer());

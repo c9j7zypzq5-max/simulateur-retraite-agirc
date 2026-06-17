@@ -82,7 +82,7 @@ export default function CoutEnHeures() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Convertissez n'importe quel prix en heures de travail réel : combien de jours, semaines ou % de votre salaire représente cet achat ?");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'cout-en-heures' });
     if (!sessionStorage.getItem('tracked_cout-en-heures')) {
       sessionStorage.setItem('tracked_cout-en-heures', '1');
@@ -135,7 +135,7 @@ export default function CoutEnHeures() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Prix en heures de vie",
-        "url": "https://www.mesimulateurs.fr/simulateurs/cout-en-heures",
+        "url": "https://www.simfinly.com/simulateurs/cout-en-heures",
         "description": "Convertissez n'importe quel prix en heures de travail réel : combien de jours, semaines ou % de votre salaire représente cet achat ?",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

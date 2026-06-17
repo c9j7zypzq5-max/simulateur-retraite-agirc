@@ -41,12 +41,12 @@ export default function Guides() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Guides finances personnelles — retraite, immobilier, épargne | mesimulateurs.fr";
+    document.title = "Guides finances personnelles — retraite, immobilier, épargne | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
       "Guides pratiques pour préparer sa retraite, acheter un logement, construire son épargne et atteindre l'indépendance financière. Simulateurs, définitions et articles réunis.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/guides';
+    link.href = 'https://www.simfinly.com/guides';
   }, []);
 
   return (

@@ -117,7 +117,7 @@ export default function VieEnSemaines() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'vie-en-semaines' });
     if (!sessionStorage.getItem('tracked_vie-en-semaines')) {
       sessionStorage.setItem('tracked_vie-en-semaines', '1');
@@ -172,7 +172,7 @@ export default function VieEnSemaines() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Ma vie en semaines",
-        "url": "https://www.mesimulateurs.fr/simulateurs/vie-en-semaines",
+        "url": "https://www.simfinly.com/simulateurs/vie-en-semaines",
         "description": "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

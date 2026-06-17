@@ -47,11 +47,11 @@ export default function SyntheseRetraite() {
   const resultsRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Synthèse retraite tous régimes — pension totale (polypensionné) | mesimulateurs.fr";
+    document.title = "Synthèse retraite tous régimes — pension totale (polypensionné) | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Additionnez vos pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute et nette.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'synthese-retraite' });
     if (!sessionStorage.getItem('tracked_synthese-retraite')) {
       sessionStorage.setItem('tracked_synthese-retraite', '1');
@@ -104,7 +104,7 @@ export default function SyntheseRetraite() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Synthèse retraite tous régimes",
-        "url": "https://www.mesimulateurs.fr/simulateurs/synthese-retraite",
+        "url": "https://www.simfinly.com/simulateurs/synthese-retraite",
         "description": "Additionnez vos pensions de tous vos régimes de retraite pour estimer votre retraite totale brute et nette.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

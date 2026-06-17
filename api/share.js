@@ -5,7 +5,7 @@
 //
 // GET /api/share?to=<chemin simulateur+params>&t=<titre>&v=<valeur>&s=<sous-titre>&c=<catégorie>
 
-const BASE = 'https://www.mesimulateurs.fr';
+const BASE = 'https://www.simfinly.com';
 
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -24,15 +24,15 @@ export default function handler(req, res) {
 
   const q = new URLSearchParams({ t, v, s, c }).toString();
   const ogImg = `${BASE}/api/og?${q}`;
-  const title = `${t}${v ? ` : ${v}` : ''} · mesimulateurs.fr`;
-  const desc = s || 'Simulation réalisée sur mesimulateurs.fr — faites la vôtre gratuitement.';
+  const title = `${t}${v ? ` : ${v}` : ''} · simfinly.com`;
+  const desc = s || 'Simulation réalisée sur simfinly.com — faites la vôtre gratuitement.';
 
   const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)}</title>
 <meta name="robots" content="noindex">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="mesimulateurs.fr">
+<meta property="og:site_name" content="simfinly.com">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(ogImg)}">

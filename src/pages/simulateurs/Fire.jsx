@@ -637,7 +637,7 @@ export default function Fire() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'fire' });
     if (!sessionStorage.getItem('tracked_fire')) {
       sessionStorage.setItem('tracked_fire', '1');
@@ -797,7 +797,7 @@ export default function Fire() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur FIRE — Indépendance financière",
-        "url": "https://www.mesimulateurs.fr/simulateurs/fire",
+        "url": "https://www.simfinly.com/simulateurs/fire",
         "description": "Calculez à quel âge vous atteindrez l'indépendance financière avec la règle des 4 %. Coast FIRE, paliers Lean/Fat/Barista, projection année par année.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // Mini-simulateur d'emprunt immobilier autonome (iframe). Styles fixes,
-// indépendants du thème, avec lien retour vers mesimulateurs.fr.
+// indépendants du thème, avec lien retour vers simfinly.com.
 
 function mensualite(capital, taux, duree) {
   if (capital <= 0 || duree <= 0) return 0;
@@ -20,7 +20,7 @@ export default function EmbedEmprunt() {
   const [duree, setDuree] = useState(20);
 
   useEffect(() => {
-    document.title = "Mini-simulateur d'emprunt — mesimulateurs.fr";
+    document.title = "Mini-simulateur d'emprunt — simfinly.com";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
@@ -48,7 +48,7 @@ export default function EmbedEmprunt() {
             <div style={{ fontSize: 12, color: "#5b6675", marginTop: 4 }}>Coût total {eur(coutTotal)} · dont {eur(interets)} d'intérêts</div>
           </div>
           <div style={{ textAlign: "center", marginTop: 12 }}>
-            <a href="https://www.mesimulateurs.fr/simulateurs/emprunt-immobilier" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>Version complète sur mesimulateurs.fr →</a>
+            <a href="https://www.simfinly.com/simulateurs/emprunt-immobilier" target="_blank" rel="noopener" style={{ fontSize: 12, color: "#8a6322", textDecoration: "none" }}>Version complète sur simfinly.com →</a>
           </div>
         </div>
       </div>

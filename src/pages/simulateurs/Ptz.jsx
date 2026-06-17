@@ -138,7 +138,7 @@ export default function Ptz() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre Prêt à Taux Zéro 2025 : éligibilité, tranche de revenus, quotité et montant finançable selon votre zone et la composition de votre foyer. Barème décret n° 2025-299.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'ptz' });
     if (!sessionStorage.getItem('tracked_ptz')) {
       sessionStorage.setItem('tracked_ptz', '1');
@@ -224,7 +224,7 @@ export default function Ptz() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur PTZ — Prêt à Taux Zéro 2025",
-        "url": "https://www.mesimulateurs.fr/simulateurs/ptz",
+        "url": "https://www.simfinly.com/simulateurs/ptz",
         "description": "Estimez votre Prêt à Taux Zéro : éligibilité, tranche de revenus, quotité et montant finançable selon la zone et la composition du foyer.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

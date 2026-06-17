@@ -1,5 +1,5 @@
 {
-  "name": "mesimulateurs.fr",
+  "name": "simfinly.com",
   "short_name": "Simulateurs",
   "description": "25 simulateurs financiers gratuits : retraite, épargne, FIRE, immobilier, impôts",
   "start_url": "/",
@@ -28,7 +28,7 @@
     {
       "src": "/og-image.svg",
       "type": "image/svg+xml",
-      "label": "mesimulateurs.fr — accueil"
+      "label": "simfinly.com — accueil"
     }
   ]
 }

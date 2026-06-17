@@ -19,12 +19,12 @@ export default function Guide() {
   const [articles, setArticles] = useState([]);
 
   useEffect(() => {
-    if (!guide) { document.title = "Guide introuvable | mesimulateurs.fr"; return; }
-    document.title = `${guide.title} — guide complet | mesimulateurs.fr`;
+    if (!guide) { document.title = "Guide introuvable | simfinly.com"; return; }
+    document.title = `${guide.title} — guide complet | simfinly.com`;
     document.querySelector('meta[name="description"]')?.setAttribute("content", guide.intro);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = `https://www.mesimulateurs.fr/guides/${slug}`;
+    link.href = `https://www.simfinly.com/guides/${slug}`;
   }, [guide, slug]);
 
   useEffect(() => {

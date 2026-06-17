@@ -16,7 +16,7 @@ export default function NotFound() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Page introuvable (404) | mesimulateurs.fr";
+    document.title = "Page introuvable (404) | simfinly.com";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');

@@ -124,7 +124,7 @@ export default function Per() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'per' });
     if (!sessionStorage.getItem('tracked_per')) {
       sessionStorage.setItem('tracked_per', '1');
@@ -200,7 +200,7 @@ export default function Per() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur PER — Plan d'Épargne Retraite 2026",
-        "url": "https://www.mesimulateurs.fr/simulateurs/per",
+        "url": "https://www.simfinly.com/simulateurs/per",
         "description": "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

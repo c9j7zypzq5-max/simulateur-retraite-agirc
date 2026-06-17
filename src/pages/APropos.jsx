@@ -16,11 +16,11 @@ export default function APropos() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "À propos — mesimulateurs.fr";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Découvrez mesimulateurs.fr : des outils de simulation financière gratuits, transparents et sans inscription pour vos décisions retraite, immobilier et fiscalité.");
+    document.title = "À propos — simfinly.com";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Découvrez simfinly.com : des outils de simulation financière gratuits, transparents et sans inscription pour vos décisions retraite, immobilier et fiscalité.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/a-propos';
+    link.href = 'https://www.simfinly.com/a-propos';
   }, []);
 
   return (
@@ -29,11 +29,11 @@ export default function APropos() {
 
       <main style={{ maxWidth: 760, margin: "0 auto", padding: "64px 24px 80px" }}>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, lineHeight: 1.2, color: "var(--text)", marginBottom: 48 }}>
-          À propos de <em style={{ fontStyle: "italic", color: "var(--gold)" }}>mesimulateurs.fr</em>
+          À propos de <em style={{ fontStyle: "italic", color: "var(--gold)" }}>simfinly.com</em>
         </h1>
 
         <Section title="Notre mission">
-          <p>mesimulateurs.fr propose des outils de simulation financière <strong style={{ color: "var(--text)" }}>gratuits, transparents et sans inscription</strong>. Pas de création de compte, pas de collecte de données personnelles.</p>
+          <p>simfinly.com propose des outils de simulation financière <strong style={{ color: "var(--text)" }}>gratuits, transparents et sans inscription</strong>. Pas de création de compte, pas de collecte de données personnelles.</p>
           <p style={{ marginTop: 12 }}>Tous les calculs s'effectuent directement dans votre navigateur. Aucune donnée n'est transmise à nos serveurs : vos informations restent sur votre appareil.</p>
         </Section>
 
@@ -62,8 +62,8 @@ export default function APropos() {
 
         <Section title="Contact">
           <p>Pour toute question, suggestion ou signalement d'erreur :</p>
-          <a href="mailto:contact@mesimulateurs.fr" style={{ color: "var(--gold)", fontWeight: 500, textDecoration: "none", display: "inline-block", marginTop: 8 }}>
-            contact@mesimulateurs.fr
+          <a href="mailto:contact@simfinly.com" style={{ color: "var(--gold)", fontWeight: 500, textDecoration: "none", display: "inline-block", marginTop: 8 }}>
+            contact@simfinly.com
           </a>
         </Section>
 

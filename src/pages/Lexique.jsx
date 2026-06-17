@@ -63,12 +63,12 @@ export default function Lexique() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    document.title = "Lexique financier — définitions claires | mesimulateurs.fr";
+    document.title = "Lexique financier — définitions claires | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
       "Lexique des termes de finances personnelles : TAEG, PTZ, PER, TMI, FIRE, assurance-vie, Agirc-Arrco… Des définitions simples, reliées à nos simulateurs gratuits.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/lexique';
+    link.href = 'https://www.simfinly.com/lexique';
   }, []);
 
   const q = query.trim().toLowerCase();

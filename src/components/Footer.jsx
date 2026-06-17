@@ -217,7 +217,7 @@ export default function Footer() {
         <Link to="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
           <img src="/logo-mark.svg" alt="" width={24} height={24} style={{ display: "block", flexShrink: 0 }} />
           <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
-            mesimulateurs.fr
+            simfinly.com
           </span>
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
@@ -245,7 +245,7 @@ export default function Footer() {
           <Link to="/politique-de-confidentialite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.confidentialite")}
           </Link>
-          <a href="mailto:contact@mesimulateurs.fr" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+          <a href="mailto:contact@simfinly.com" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.contact")}
           </a>
         </nav>

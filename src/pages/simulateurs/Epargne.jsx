@@ -105,7 +105,7 @@ export default function Epargne() {
     document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr' + window.location.pathname;
+    link.href = 'https://www.simfinly.com' + window.location.pathname;
     track('simulator_view', { name: 'epargne' });
     if (!sessionStorage.getItem('tracked_epargne')) {
       sessionStorage.setItem('tracked_epargne', '1');
@@ -193,7 +193,7 @@ export default function Epargne() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Épargne & intérêts composés",
-        "url": "https://www.mesimulateurs.fr/simulateurs/epargne",
+        "url": "https://www.simfinly.com/simulateurs/epargne",
         "description": "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.",
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

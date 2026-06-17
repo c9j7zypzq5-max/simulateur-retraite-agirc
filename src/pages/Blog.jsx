@@ -102,12 +102,12 @@ export default function Blog() {
   const [activeCat, setActiveCat] = useState("Tous");
 
   useEffect(() => {
-    document.title = "Blog — Finances personnelles | mesimulateurs.fr";
+    document.title = "Blog — Finances personnelles | simfinly.com";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
       "Articles et guides sur l'épargne, le FIRE, la retraite, l'immobilier et la fiscalité en France. Rédigés pour vous aider à prendre de meilleures décisions financières.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.mesimulateurs.fr/blog';
+    link.href = 'https://www.simfinly.com/blog';
   }, []);
 
   useEffect(() => {

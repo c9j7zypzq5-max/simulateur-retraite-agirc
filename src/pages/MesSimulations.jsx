@@ -20,7 +20,7 @@ export default function MesSimulations() {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    document.title = "Mes simulations sauvegardées | mesimulateurs.fr";
+    document.title = "Mes simulations sauvegardées | simfinly.com";
     // Page personnelle (localStorage) → on évite l'indexation.
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
