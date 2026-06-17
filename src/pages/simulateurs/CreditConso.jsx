@@ -9,6 +9,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
@@ -43,6 +44,15 @@ function mensualite(montant, taegPct, dureeMois) {
   const n = dureeMois;
   if (r === 0) return montant / n;
   return (montant * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+}
+
+// Compute pur (mêmes formules que le rendu) réutilisé par la comparaison de 2 scénarios.
+function computeCredit({ montant, taeg, duree, assurance }) {
+  const m = mensualite(montant ?? 0, taeg ?? 0, duree ?? 0);
+  const mensualiteTotale = m + (assurance ?? 0);
+  const coutTotal = mensualiteTotale * (duree ?? 0);
+  const coutCredit = coutTotal - (montant ?? 0);
+  return { mensualiteTotale, coutCredit };
 }
 
 // ─── Tableau d'amortissement (lignes annuelles) ──────────────────────────────
@@ -309,6 +319,25 @@ export default function CreditConso() {
             )}
           </div>
         </div>
+
+        {/* Comparaison de 2 scénarios */}
+        {hasInput && (
+          <ScenarioCompare
+            name="credit-conso"
+            base={{ montant: montantEmprunte, taeg, duree, assurance: assurance ?? 0 }}
+            compute={computeCredit}
+            fields={[
+              { key: "montant", label: "Montant emprunté", unit: "€", kind: "eur", type: "num", min: 0, max: 100000 },
+              { key: "taeg", label: "TAEG", unit: "%", type: "step", min: 0, max: 25, step: 0.1 },
+              { key: "duree", label: "Durée", unit: "mois", type: "step", min: 6, max: 120, step: 6 },
+              { key: "assurance", label: "Assurance / mois", unit: "€", kind: "eur", type: "num", min: 0, max: 200 },
+            ]}
+            metrics={[
+              { label: "Mensualité", get: r => r.mensualiteTotale, fmt: n => fmtEur(Math.round(n)), higherBetter: false },
+              { label: "Coût du crédit", get: r => r.coutCredit, fmt: n => fmtEur(Math.round(n)), higherBetter: false },
+            ]}
+          />
+        )}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

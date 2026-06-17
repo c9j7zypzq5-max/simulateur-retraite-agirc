@@ -8,6 +8,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
@@ -55,6 +56,18 @@ function capitalProjete(versement, tauxPct, annees) {
   const r = tauxPct / 100;
   if (r === 0) return versement * annees;
   return versement * ((Math.pow(1 + r, annees) - 1) / r);
+}
+
+// Compute pur (mêmes formules que le rendu) réutilisé par la comparaison de 2
+// scénarios. versement = versement ANNUEL.
+function computePer({ versement, revenu, tmi, ageActuel, ageDepart, rendement }) {
+  const plafond = plafondDeduction(revenu ?? 0);
+  const versementAnnuel = versement ?? 0;
+  const versementDeductible = Math.min(versementAnnuel, plafond);
+  const economieAnnuelle = versementDeductible * ((tmi ?? 0) / 100);
+  const annees = Math.max(0, (ageDepart ?? 0) - (ageActuel ?? 0));
+  const capital = capitalProjete(versementAnnuel, rendement ?? 0, annees);
+  return { economieAnnuelle, capital };
 }
 
 const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
@@ -349,6 +362,25 @@ export default function Per() {
             )}
           </div>
         </div>
+
+        {/* Comparaison de 2 scénarios */}
+        {hasInput && (
+          <ScenarioCompare
+            name="per"
+            base={{ versement, revenu, tmi, ageActuel, ageDepart, rendement }}
+            compute={computePer}
+            fields={[
+              { key: "versement", label: "Versement annuel", unit: "€", kind: "eur", type: "num", min: 0, max: 50000 },
+              { key: "tmi", label: "TMI", unit: "%", type: "step", min: 0, max: 45, step: 1 },
+              { key: "rendement", label: "Rendement", unit: "%", type: "step", min: 0, max: 10, step: 0.5 },
+              { key: "ageDepart", label: "Âge de départ", type: "step", min: 55, max: 70, step: 1 },
+            ]}
+            metrics={[
+              { label: "Économie d'impôt / an", get: r => r.economieAnnuelle, fmt: n => fmtEur(Math.round(n)), higherBetter: true },
+              { label: "Capital à la retraite", get: r => r.capital, fmt: n => fmtEur(Math.round(n)), higherBetter: true },
+            ]}
+          />
+        )}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
