@@ -264,7 +264,7 @@ export const GLOSSARY = [
   {
     slug: 'pass', term: 'PASS', full: 'Plafond Annuel de la Sécurité Sociale',
     aliases: ['PASS'], category: 'Retraite',
-    short: "Montant de référence (47 100 € en 2025) servant au calcul de nombreuses cotisations et plafonds.",
+    short: "Montant de référence (48 060 € en 2026) servant au calcul de nombreuses cotisations et plafonds.",
     long: [
       "Le PASS est revalorisé chaque année. Il sert de référence à de multiples calculs : plafond de déduction du PER, tranches de cotisations retraite, calcul des indemnités, etc.",
       "On parle souvent en multiples du PASS (1 PASS, 8 PASS…).",

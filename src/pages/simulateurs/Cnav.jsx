@@ -15,7 +15,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
-const PASS = 47_100;
+const PASS = 48_060;
 const TAUX_PLEIN = 0.50;
 
 function getDureeRequise(anneeNaissance) {
@@ -199,7 +199,7 @@ export default function Cnav() {
 
         {/* Réassurance */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
-          {["✓ Plafonnement PASS 2026 : 47 100 €", "✓ Taux plein : 50 %", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
+          {["✓ Plafonnement PASS 2026 : 48 060 €", "✓ Taux plein : 50 %", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}

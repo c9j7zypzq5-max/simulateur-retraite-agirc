@@ -16,7 +16,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
-const PASS = 47_100;
+const PASS = 48_060;
 
 // Tranche A (≤ PASS) : taux global salarié+patronal
 const TAUX_TA_SAL = 0.0224;
@@ -189,7 +189,7 @@ export default function Ircantec() {
           <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
 
           <NumInput id="salaire" label="Salaire brut mensuel" value={salaire} onChange={setSalaire} unit="€" min={500} max={40000}
-            hint={salaire ? `PASS 2026 : 3 925 €/mois · ${salaire * 12 > PASS ? "Tranche B activée" : "Tranche A uniquement"}` : "Salaire brut mensuel servant au calcul des cotisations IRCANTEC"}
+            hint={salaire ? `PASS 2026 : 4 005 €/mois · ${salaire * 12 > PASS ? "Tranche B activée" : "Tranche A uniquement"}` : "Salaire brut mensuel servant au calcul des cotisations IRCANTEC"}
           />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <NumInput id="annees-faites" label="Années déjà cotisées" value={anneesFaites} onChange={setAnneesFaites} unit="ans" min={0} max={50}

@@ -27,18 +27,18 @@ function useIsMobile(breakpoint = 680) {
 }
 
 // ─── Barème PER ────────────────────────────────────────────────────────────────
-// Plan d'Épargne Retraite (PER individuel). Constantes 2025.
+// Plan d'Épargne Retraite (PER individuel). Constantes 2026.
 //
 // ⚠ Valeurs INDICATIVES, isolées volontairement dans ce bloc pour être corrigées
-// facilement. Le PASS (Plafond Annuel de la Sécurité Sociale) 2025 = 47 100 €.
+// facilement. Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 = 48 060 €.
 // Le plafond de déduction des versements volontaires d'un salarié pour une année N
 // est, par défaut : max(10 % × min(revenu net professionnel, 8×PASS) ; 10 % × PASS).
-// → plancher = 10 % × PASS = 4 710 € ; plafond = 10 % × 8 × PASS = 37 680 €.
-// Les figures projetées sont des estimations (2025/2026), hors plafonds non
+// → plancher = 10 % × PASS = 4 806 € ; plafond = 10 % × 8 × PASS = 38 448 €.
+// Les figures projetées sont des estimations (2026), hors plafonds non
 // utilisés des années antérieures et hors mutualisation entre conjoints.
-const PASS = 47100;
-const PLAFOND_PLANCHER = Math.round(0.10 * PASS);        // 4 710 € (= 10 % × PASS)
-// Plafond max = 10 % × 8 × PASS = 37 680 € (appliqué dans plafondDeduction).
+const PASS = 48060;
+const PLAFOND_PLANCHER = Math.round(0.10 * PASS);        // 4 806 € (= 10 % × PASS)
+// Plafond max = 10 % × 8 × PASS = 38 448 € (appliqué dans plafondDeduction).
 
 // Taux marginal d'imposition proposés (tranches du barème IR).
 const TMI_OPTIONS = [0, 11, 30, 41, 45];
@@ -66,7 +66,7 @@ const FAQ = [
   },
   {
     q: "Comment fonctionne le plafond de déduction des versements ?",
-    a: "Les versements volontaires sont déductibles du revenu imposable dans la limite d'un plafond annuel : 10 % de vos revenus professionnels nets de l'année précédente (dans la limite de 8 PASS, soit 37 680 € en 2025), ou 10 % du PASS (4 710 €) si ce montant est plus favorable. Les plafonds non utilisés des trois années précédentes peuvent être reportés et un couple peut mutualiser ses plafonds.",
+    a: "Les versements volontaires sont déductibles du revenu imposable dans la limite d'un plafond annuel : 10 % de vos revenus professionnels nets de l'année précédente (dans la limite de 8 PASS, soit 38 448 € en 2026), ou 10 % du PASS (4 806 €) si ce montant est plus favorable. Les plafonds non utilisés des trois années précédentes peuvent être reportés et un couple peut mutualiser ses plafonds.",
   },
   {
     q: "Comment sont imposées les sommes à la sortie ?",
@@ -82,7 +82,7 @@ const FAQ = [
   },
   {
     q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur les paramètres 2025 (PASS, plafonds de déduction). L'économie d'impôt réelle dépend de votre taux marginal exact et le capital projeté suppose un rendement constant, ce qui n'est jamais garanti sur les marchés. Rapprochez-vous d'un conseiller pour une étude personnalisée.",
+    a: "Non. Il s'agit d'une estimation indicative basée sur les paramètres 2026 (PASS, plafonds de déduction). L'économie d'impôt réelle dépend de votre taux marginal exact et le capital projeté suppose un rendement constant, ce qui n'est jamais garanti sur les marchés. Rapprochez-vous d'un conseiller pour une étude personnalisée.",
   },
 ];
 
@@ -186,7 +186,7 @@ export default function Per() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur PER — Plan d'Épargne Retraite 2025",
+        "name": "Simulateur PER — Plan d'Épargne Retraite 2026",
         "url": "https://www.mesimulateurs.fr/simulateurs/per",
         "description": "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite.",
         "applicationCategory": "FinanceApplication",
@@ -205,10 +205,10 @@ export default function Per() {
       <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/per" size={34} />}
-          badge="Retraite · Simulation 2025"
+          badge="Retraite · Simulation 2026"
           title="Simulateur PER"
           subtitle="Plan d'Épargne Retraite · Avantage fiscal"
-          desc="Estimez l'économie d'impôt de vos versements selon votre tranche marginale, votre plafond de déduction et le capital projeté à votre départ en retraite. Paramètres 2025."
+          desc="Estimez l'économie d'impôt de vos versements selon votre tranche marginale, votre plafond de déduction et le capital projeté à votre départ en retraite. Paramètres 2026."
         />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
@@ -362,7 +362,7 @@ export default function Per() {
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un produit d'épargne retraite défiscalisant</h3>
             <p style={{ marginBottom: 16 }}>Le Plan d'Épargne Retraite (PER), issu de la loi PACTE de 2019, permet de se constituer un complément de revenu pour la retraite tout en réduisant son impôt. Les versements volontaires sont déductibles du revenu imposable, ce qui génère une économie d'impôt proportionnelle à votre tranche marginale d'imposition (TMI) : plus celle-ci est élevée, plus l'avantage est important. L'épargne reste investie et bloquée jusqu'au départ en retraite.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le plafond de déduction</h3>
-            <p style={{ marginBottom: 16 }}>La déduction des versements est plafonnée : pour un salarié, elle correspond à 10 % des revenus professionnels nets de l'année précédente, dans la limite de 8 PASS (soit 37 680 € en 2025 avec un PASS à 47 100 €), avec un plancher de 10 % du PASS (4 710 €). Les plafonds non utilisés des trois dernières années sont reportables et les conjoints peuvent les mutualiser, ce qui peut considérablement augmenter la capacité de déduction.</p>
+            <p style={{ marginBottom: 16 }}>La déduction des versements est plafonnée : pour un salarié, elle correspond à 10 % des revenus professionnels nets de l'année précédente, dans la limite de 8 PASS (soit 38 448 € en 2026 avec un PASS à 48 060 €), avec un plancher de 10 % du PASS (4 806 €). Les plafonds non utilisés des trois dernières années sont reportables et les conjoints peuvent les mutualiser, ce qui peut considérablement augmenter la capacité de déduction.</p>
             <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La fiscalité à la sortie</h3>
             <p>L'avantage fiscal à l'entrée se « paie » en partie à la sortie. En sortie en capital, la fraction correspondant aux versements déduits est soumise au barème de l'impôt sur le revenu, et les plus-values au prélèvement forfaitaire unique de 30 %. En rente viagère, les sommes sont imposées comme une pension. L'intérêt du PER est donc maximal lorsque la TMI est plus élevée pendant la vie active qu'à la retraite.</p>
           </div>
@@ -372,7 +372,7 @@ export default function Per() {
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
-          Simulation indicative basée sur les paramètres 2025 (PASS 47 100 €) · Le rendement n'est pas garanti · Ne constitue pas un conseil en investissement
+          Simulation indicative basée sur les paramètres 2026 (PASS 48 060 €) · Le rendement n'est pas garanti · Ne constitue pas un conseil en investissement
         </p>
 
         {/* AdSense bas */}

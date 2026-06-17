@@ -17,7 +17,7 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
-const PASS = 47_100;
+const PASS = 48_060;
 const TAUX_PLEIN = 0.50;
 const DUREE_REQUISE_BASE = 172; // trimestres (nés 1965+)
 
