@@ -1,7 +1,7 @@
 {
   "name": "mesimulateurs.fr",
   "short_name": "Simulateurs",
-  "description": "24 simulateurs financiers gratuits : retraite, épargne, FIRE, immobilier, impôts",
+  "description": "25 simulateurs financiers gratuits : retraite, épargne, FIRE, immobilier, impôts",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

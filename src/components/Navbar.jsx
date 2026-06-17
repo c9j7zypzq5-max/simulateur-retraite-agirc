@@ -62,6 +62,7 @@ function IosToggle({ theme, setTheme, compact = false }) {
 
 /* ── Données de navigation regroupées par catégorie ── */
 const ALL_ITEMS = [
+  { path: "/simulateurs/synthese-retraite",    icon: "🧮", title: "Synthèse retraite",      subtitle: "Tous régimes cumulés" },
   { path: "/simulateurs/agirc-arrco",          icon: "🏆", title: "Agirc-Arrco",           subtitle: "Retraite complémentaire" },
   { path: "/simulateurs/cnav",                 icon: "🏛",  title: "CNAV",                  subtitle: "Régime général" },
   { path: "/simulateurs/fonction-publique",    icon: "⚖️", title: "Fonction publique",      subtitle: "Retraite statutaire" },

@@ -33,7 +33,7 @@ export default function NotFound() {
           Cette page n'existe pas
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, marginBottom: 28, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
-          Le lien est peut-être erroné ou la page a été déplacée. Retrouvez votre chemin parmi nos 24 simulateurs gratuits.
+          Le lien est peut-être erroné ou la page a été déplacée. Retrouvez votre chemin parmi nos 25 simulateurs gratuits.
         </p>
 
         <Link to="/" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 12, background: "rgba(184,147,74,0.15)", color: "var(--gold)", border: "1px solid var(--border-gold)", textDecoration: "none", fontSize: 15, fontWeight: 500 }}>

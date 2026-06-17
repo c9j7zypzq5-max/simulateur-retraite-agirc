@@ -13,6 +13,7 @@ const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 const SIMULATEURS = [
   // Retraite
+  { path: "/simulateurs/synthese-retraite", icon: "🧮", title: "Synthèse retraite tous régimes", desc: "Additionnez les pensions de tous vos régimes (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute, nette et votre taux de remplacement.", tag: "Retraite · Polypensionnés", categories: ["Retraite"], badges: ["new"], available: true },
   { path: "/simulateurs/agirc-arrco", icon: "🏆", title: "Retraite complémentaire Agirc-Arrco", desc: "Calculez vos points et estimez votre pension nette mensuelle. Intègre bonus-malus, GMP cadres, revalorisation projetée et comparateur de scénarios.", tag: "Retraite · Salariés privés", categories: ["Retraite"], badges: ["popular", "updated"], featured: true, available: true },
   { path: "/simulateurs/cnav", icon: "🏛", title: "Régime général CNAV", desc: "Estimez votre pension de base en fonction de vos trimestres validés, de votre salaire annuel moyen et de votre âge de départ.", tag: "Retraite · Salariés", categories: ["Retraite"], badges: [], available: true },
   { path: "/simulateurs/fonction-publique", icon: "⚖️", title: "Retraite Fonction publique", desc: "Calculez votre pension selon votre indice majoré, votre durée de service, vos bonifications et votre catégorie (sédentaire ou active).", tag: "Retraite · Fonctionnaires", categories: ["Retraite"], badges: [], available: true },
