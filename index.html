@@ -3,6 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Thème appliqué AVANT le premier rendu : clair par défaut (nouveaux
+         visiteurs), sinon préférence enregistrée. Évite tout flash sombre. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem("theme") || "light";
+          if (t === "light") document.documentElement.setAttribute("data-theme", "light");
+        } catch (e) {
+          document.documentElement.setAttribute("data-theme", "light");
+        }
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
