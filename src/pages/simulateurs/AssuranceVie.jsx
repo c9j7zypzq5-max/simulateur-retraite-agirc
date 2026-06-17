@@ -9,6 +9,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, StatusBadge, useAnimatedNumber,
@@ -43,6 +44,23 @@ const ABATTEMENT_COUPLE = 9200; // Abattement annuel sur les gains, couple
 const ABATTEMENT_SUCCESSION = 152500; // Abattement par bénéficiaire (primes avant 70 ans)
 
 // Valeur future : versement initial capitalisé + versements mensuels (annuités).
+// Compute pur (mêmes formules + fiscalité que le rendu) réutilisé par la
+// comparaison de 2 scénarios. couple reste identique entre A et B.
+function computeAV({ initial, mensuel, rendement, duree, couple }) {
+  const vi = initial ?? 0, vm = mensuel ?? 0;
+  const capital = capitalFinal(vi, vm, rendement ?? 0, duree ?? 0);
+  const totalVerse = vi + vm * 12 * (duree ?? 0);
+  const plusValue = Math.max(0, capital - totalVerse);
+  let impot;
+  if ((duree ?? 0) < 8) {
+    impot = plusValue * PFU;
+  } else {
+    const abattement = couple ? ABATTEMENT_COUPLE : ABATTEMENT_SEUL;
+    impot = Math.max(0, plusValue - abattement) * (PFL_APRES_8ANS + PS);
+  }
+  return { capitalNet: capital - impot, plusValue };
+}
+
 function capitalFinal(initial, mensuel, tauxPct, annees) {
   const r = tauxPct / 100;
   const versementAnnuel = mensuel * 12;
@@ -322,6 +340,25 @@ export default function AssuranceVie() {
             )}
           </div>
         </div>
+
+        {/* Comparaison de 2 scénarios */}
+        {hasInput && (
+          <ScenarioCompare
+            name="assurance-vie"
+            base={{ initial, mensuel, rendement, duree, couple }}
+            compute={computeAV}
+            fields={[
+              { key: "initial", label: "Versement initial", unit: "€", kind: "eur", type: "num", min: 0, max: 500000 },
+              { key: "mensuel", label: "Versement mensuel", unit: "€", kind: "eur", type: "num", min: 0, max: 10000 },
+              { key: "rendement", label: "Rendement", unit: "%", type: "step", min: 0, max: 10, step: 0.5 },
+              { key: "duree", label: "Durée", unit: "ans", type: "step", min: 1, max: 40, step: 1 },
+            ]}
+            metrics={[
+              { label: "Capital net", get: r => r.capitalNet, fmt: n => fmtEur(Math.round(n)), higherBetter: true },
+              { label: "Plus-value", get: r => r.plusValue, fmt: n => fmtEur(Math.round(n)), higherBetter: true },
+            ]}
+          />
+        )}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
