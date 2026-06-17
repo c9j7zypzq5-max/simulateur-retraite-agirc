@@ -23,7 +23,7 @@ export default async function handler(req, res) {
         `?interval=1mo&period1=${period1}&period2=${period2}&includeAdjustedClose=true`;
 
       const resp = await fetch(url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; mesimulateurs/1.0)' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; simfinly/1.0)' },
       });
 
       if (!resp.ok) {

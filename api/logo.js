@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       const timer = setTimeout(() => ctrl.abort(), 2800);
       const resp = await fetch(url, {
         signal: ctrl.signal,
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; mesimulateurs/1.0)' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; simfinly/1.0)' },
       });
       clearTimeout(timer);
 
