@@ -10,22 +10,58 @@ import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 export const BASE = 'https://www.simfinly.com';
 
 // Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
-// la locale par défaut (servie à la racine) ; les autres langues seraient
-// préfixées (/en/...).
-export const I18N = { defaultLocale: 'fr', locales: ['fr'] };
+// la locale par défaut (servie à la racine) ; l'anglais est préfixé (/en/...).
+export const I18N = { defaultLocale: 'fr', locales: ['fr', 'en'] };
 
-// Liens hreflang d'une route, pour le HTML statique. DORMANT tant qu'une seule
-// langue est active (renvoie '') : aucun effet sur le site actuel. Dès qu'une 2e
-// locale est ajoutée à I18N.locales, les balises <link rel="alternate"> sont
-// émises automatiquement (une par locale + x-default).
+// Routes disposant d'une version anglaise (/en/...). Seuls les outils
+// « universels » (non spécifiques à la France) sont traduits : les simulateurs
+// de retraite, d'impôt, PER, etc. restent en français uniquement. Source unique
+// de vérité partagée par le routing React (src/i18n/paths.js), le switcher de
+// langue, le prérendu statique, le sitemap et les liens hreflang.
+export const EN_ROUTES = [
+  '/',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/comparateur',
+  '/outils/qr-code',
+];
+
+// Méta anglaises (title + description) par route, pour le HTML statique /en/...
+export const ROUTE_META_EN = {
+  '/':                            { title: 'Free Financial Calculators — Savings, FIRE, Budget | Simfinly', description: 'Free online financial calculators: compound interest, FIRE & financial independence, 50/30/20 budget, net worth and more. Instant results, no sign-up.' },
+  '/simulateurs/epargne':         { title: 'Compound Interest Calculator — Savings Growth | Simfinly',       description: 'Project how your savings grow over time with compound interest and regular contributions. See the final balance for any rate, duration and monthly deposit.' },
+  '/simulateurs/fire':            { title: 'FIRE Calculator — Financial Independence, Retire Early | Simfinly', description: 'Calculate the net worth you need to live off your investments and the age you reach financial independence. Based on the 4% rule, with Lean/Coast/Fat FIRE milestones.' },
+  '/simulateurs/budget':          { title: '50/30/20 Budget Calculator — Needs, Wants, Savings | Simfinly',  description: 'Split your monthly budget with the 50/30/20 rule: needs, wants and savings. See your balance and savings rate in real time, with tailored tips.' },
+  '/simulateurs/patrimoine':      { title: 'Net Worth Calculator — Track Your Wealth | Simfinly',            description: 'Consolidate your financial, real-estate and retirement assets to see your net worth and how it breaks down by asset class.' },
+  '/simulateurs/cout-en-heures':  { title: 'Cost in Hours of Work Calculator — True Price | Simfinly',       description: 'Turn any purchase into real hours of work. Based on your salary, discover what a product or subscription truly costs in life-time rather than money.' },
+  '/simulateurs/credit-conso':    { title: 'Personal Loan Calculator — Monthly Payment & Cost | Simfinly',   description: 'Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes optional insurance and an amortization schedule.' },
+  '/simulateurs/comparateur':     { title: 'Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly',        description: 'Compare the historical performance of ETFs, stocks and cryptocurrencies over any period, from real data. Total return, CAGR, recurring contributions and base-100 index.' },
+  '/outils/qr-code':              { title: 'Free Custom QR Code Generator — Color, Logo | Simfinly',         description: 'Create a custom QR code for free: pick the colors, enter any text or link and add your logo or an emoji in the center. High-resolution PNG, no sign-up.' },
+};
+
+// Méta d'une route pour une locale donnée (EN si dispo, sinon repli FR).
+export function routeMeta(route, locale = 'fr') {
+  if (locale === 'en' && ROUTE_META_EN[route]) return ROUTE_META_EN[route];
+  return ROUTE_META[route];
+}
+
+// Liens hreflang d'une route, pour le HTML statique. N'émet des balises que pour
+// les routes réellement disponibles en anglais (EN_ROUTES) : Google découvre
+// ainsi la version /en correspondante, sans alternate trompeur sur les pages
+// françaises uniquement.
 export function hreflangLinks(route) {
-  if (I18N.locales.length < 2) return '';
-  const href = (loc) => `${BASE}${loc === I18N.defaultLocale ? '' : '/' + loc}${route}`;
-  const tags = I18N.locales.map(
-    (loc) => `<link rel="alternate" hreflang="${loc}" href="${href(loc)}" />`
-  );
-  tags.push(`<link rel="alternate" hreflang="x-default" href="${href(I18N.defaultLocale)}" />`);
-  return tags.join('\n    ');
+  if (I18N.locales.length < 2 || !EN_ROUTES.includes(route)) return '';
+  const fr = `${BASE}${route === '/' ? '/' : route}`;
+  const en = `${BASE}/en${route === '/' ? '' : route}`;
+  return [
+    `<link rel="alternate" hreflang="fr" href="${fr}" />`,
+    `<link rel="alternate" hreflang="en" href="${en}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${fr}" />`,
+  ].join('\n    ');
 }
 
 // Méta par route : title (HTML statique), cat (og:image par catégorie),

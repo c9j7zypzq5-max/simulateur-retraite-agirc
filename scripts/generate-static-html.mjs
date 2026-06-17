@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
-import { SEO_CONTENT, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, EN_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 
@@ -19,7 +19,12 @@ function escapeAttr(s) {
 
 // Titre + description spécifiques à une route (sinon null → on garde la valeur
 // par défaut de index.html). `extra` porte les métadonnées blog issues de Redis.
-function seoForRoute(route, extra = {}) {
+function seoForRoute(route, extra = {}, locale = 'fr') {
+  if (locale === 'en') {
+    const meta = ROUTE_META_EN[route];
+    if (meta) return { title: meta.title, description: meta.description };
+    return { title: null, description: SEO_CONTENT_EN[route]?.intro || null };
+  }
   if (route.startsWith('/lexique/')) {
     const slug = route.slice('/lexique/'.length);
     const t = GLOSSARY_BY_SLUG[slug];
@@ -51,18 +56,23 @@ function ogImageUrl(route, extra) {
   return `${BASE}${ogImageForRoute(route)}`;
 }
 
-function patchHtml(html, route, extra) {
-  const { title, description } = seoForRoute(route, extra);
+function patchHtml(html, route, extra, locale = 'fr') {
+  const { title, description } = seoForRoute(route, extra, locale);
   const ogImg = ogImageUrl(route, extra);
   const ld = structuredDataScripts(route, extra);
-  // Contenu crawlable injecté dans #root : corps complet pour les articles de blog,
-  // H1 + intro pour les simulateurs.
-  const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route);
-  const url = `${BASE}${route}`;
+  const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale);
+  const urlPath = locale === 'en' ? `/en${route === '/' ? '' : route}` : route;
+  const url = `${BASE}${urlPath}`;
   let out = html
     .replace(/content="\/og-image\.png"/g, `content="${escapeAttr(ogImg)}"`)
     .replace(/content="\/og-image\.svg"/g, `content="${escapeAttr(ogImg)}"`)
-    .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${escapeAttr(url)}"`);
+    .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${escapeAttr(url)}"`)
+    .replace(/<html lang="[^"]*"/, `<html lang="${locale === 'en' ? 'en' : 'fr'}"`);
+
+  if (locale === 'en') {
+    out = out
+      .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="en_US"');
+  }
 
   if (title) {
     const t = escapeAttr(title);
@@ -79,8 +89,6 @@ function patchHtml(html, route, extra) {
       .replace(/(<meta name="twitter:description" content=")[^"]*(")/, `$1${d}$2`);
   }
 
-  // <link rel="canonical"> + hreflang (dormant si une seule langue) + JSON-LD +
-  // contenu SEO injecté.
   const hreflang = hreflangLinks(route);
   out = out
     .replace('</head>', `    <link rel="canonical" href="${escapeAttr(url)}" />\n${hreflang ? `    ${hreflang}\n` : ''}${ld ? `    ${ld}\n` : ''}  </head>`)
@@ -133,7 +141,16 @@ const routes = [
 for (const entry of routes) {
   const dir = path.join(distDir, entry.route);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, entry.route, entry));
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, entry.route, entry, 'fr'));
+}
+
+// ── Pages EN (routes universelles disponibles en anglais) ──────────────────────
+const EN_ARRAY = Array.from(EN_ROUTES);
+for (const route of EN_ARRAY) {
+  const urlPath = route === '/' ? '/en' : `/en${route}`;
+  const dir = path.join(distDir, urlPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'en'));
 }
 
 // Versionne le cache du service worker à chaque build : le nom de cache change,
@@ -148,4 +165,4 @@ try {
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.
 
-console.log(`✓ Généré ${routes.length} fichiers HTML statiques (titres, descriptions & og:image par route)`);
+console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} fichiers EN`);

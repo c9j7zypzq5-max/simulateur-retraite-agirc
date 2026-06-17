@@ -112,6 +112,46 @@ export const SEO_CONTENT = {
   },
 };
 
+// Contenu SEO en anglais (H1 + intro) pour les pages /en/...
+export const SEO_CONTENT_EN = {
+  '/': {
+    h1: "Free Financial Calculators",
+    intro: "Online financial calculators to plan your savings, reach financial independence, optimise your budget and more. Instant results, no sign-up required.",
+  },
+  '/simulateurs/epargne': {
+    h1: "Compound Interest Calculator",
+    intro: "Project how your savings grow over time with compound interest and regular monthly contributions. See the final balance for any interest rate, duration and savings effort.",
+  },
+  '/simulateurs/fire': {
+    h1: "FIRE Calculator — Financial Independence, Retire Early",
+    intro: "Calculate the net worth you need to live off your investments and the age at which you reach financial independence. Based on the 4% rule, with Lean FIRE, Coast FIRE and Fat FIRE milestones plotted year by year.",
+  },
+  '/simulateurs/budget': {
+    h1: "50/30/20 Budget Calculator",
+    intro: "Split your monthly income with the 50/30/20 rule: 50% needs, 30% wants, 20% savings. See your budget balance and savings rate in real time, with personalised tips for each category.",
+  },
+  '/simulateurs/patrimoine': {
+    h1: "Net Worth Calculator",
+    intro: "Consolidate your financial assets, real estate and retirement savings to see your total net worth and how it breaks down by asset class. A clear overview of your overall financial position.",
+  },
+  '/simulateurs/cout-en-heures': {
+    h1: "Cost in Hours of Work Calculator",
+    intro: "Turn any purchase into real hours of your life. Based on your salary, discover the true cost of a product or subscription expressed in time rather than money.",
+  },
+  '/simulateurs/credit-conso': {
+    h1: "Personal Loan Calculator",
+    intro: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount borrowed, the APR and the term. Includes optional insurance and a full amortization schedule.",
+  },
+  '/simulateurs/comparateur': {
+    h1: "Asset Comparison Tool — ETFs, Stocks, Crypto",
+    intro: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period from real data. Total return, annualised CAGR, recurring contributions and a base-100 index for clean side-by-side comparisons.",
+  },
+  '/outils/qr-code': {
+    h1: "Free Custom QR Code Generator",
+    intro: "Create a custom QR code: choose the colors, enter any text or URL and add your logo or an emoji in the center. Generated in your browser — no data sent — and downloadable as high-resolution PNG, completely free with no sign-up.",
+  },
+};
+
 // Bloc HTML SEO (sans dépendance, échappé) pour une route donnée.
 function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -122,8 +162,9 @@ function escapeHtml(s) {
 // dans le HTML brut pour les crawlers et le rendu sans JS.
 const SR_ONLY = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
 
-export function seoHtmlForRoute(route) {
-  const c = SEO_CONTENT[route];
+export function seoHtmlForRoute(route, locale = 'fr') {
+  const dict = locale === 'en' ? SEO_CONTENT_EN : SEO_CONTENT;
+  const c = dict[route];
   if (!c) return '';
   return `<div id="seo-prerender" style="${SR_ONLY}"><h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p></div>`;
 }

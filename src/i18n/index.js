@@ -2,10 +2,9 @@ import { useMemo } from 'react';
 import { useLocation } from '../lib/router.js';
 import { DEFAULT_LOCALE, localeFromPath } from './config.js';
 import fr from './fr.js';
+import en from './en.js';
 
-// Registre des dictionnaires. Ajouter une langue : importer son fichier et
-// l'enregistrer ici (ex. en: enDict).
-const DICTIONARIES = { fr };
+const DICTIONARIES = { fr, en };
 
 // Résout une clé pointée ("nav.blog") dans un objet imbriqué.
 function resolve(dict, key) {
@@ -13,7 +12,7 @@ function resolve(dict, key) {
 }
 
 // Traduit une clé pour une locale donnée. Replis successifs : locale demandée →
-// français → clé brute (jamais d'écran vide en cas de clé manquante).
+// français → clé brute.
 export function translate(locale, key) {
   const v = resolve(DICTIONARIES[locale] || DICTIONARIES[DEFAULT_LOCALE], key);
   if (v != null) return v;
@@ -21,8 +20,7 @@ export function translate(locale, key) {
   return fb != null ? fb : key;
 }
 
-// Hook de traduction. La locale courante est déduite de l'URL (sous-chemin),
-// avec le français par défaut. Usage : const { t } = useTranslation(); t('nav.blog').
+// Hook de traduction. Locale déduite de l'URL, français par défaut.
 export function useTranslation() {
   const { pathname } = useLocation();
   const locale = localeFromPath(pathname);
