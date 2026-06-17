@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
 import {
-  CURRENCIES, DEFAULT_CURRENCY, currencyForCountry, formatMoney, signMoney,
+  CURRENCIES, DEFAULT_CURRENCY, guessCurrencyFromBrowser, formatMoney, signMoney,
   setActiveCurrency,
 } from './currency.js';
 
@@ -9,7 +9,7 @@ const CurrencyCtx = createContext(null);
 
 // Fournit la devise active aux simulateurs universels :
 //  1. préférence enregistrée (localStorage) si présente ;
-//  2. sinon détection automatique du pays via /api/geo (en-tête géo Vercel) ;
+//  2. sinon détection côté navigateur (langue + fuseau horaire, sans réseau) ;
 //  3. sinon EUR par défaut.
 // Le choix manuel de l'utilisateur est toujours prioritaire et persistant.
 export function CurrencyProvider({ children }) {
@@ -29,16 +29,8 @@ export function CurrencyProvider({ children }) {
 
   useEffect(() => {
     if (userPicked) return; // ne pas écraser un choix manuel / déjà enregistré
-    let cancelled = false;
-    fetch('/api/geo')
-      .then(r => (r.ok ? r.json() : null))
-      .then(data => {
-        if (cancelled || !data || !data.country) return;
-        const detected = currencyForCountry(data.country);
-        if (CURRENCIES[detected]) setCurrencyState(detected);
-      })
-      .catch(() => { /* hors ligne ou endpoint indisponible : on garde EUR */ });
-    return () => { cancelled = true; };
+    const detected = guessCurrencyFromBrowser();
+    if (CURRENCIES[detected]) setCurrencyState(detected);
   }, [userPicked]);
 
   // Met à jour l'état module AVANT le rendu des enfants : les helpers
