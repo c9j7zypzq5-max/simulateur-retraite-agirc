@@ -184,7 +184,7 @@ export default function Navbar({ theme, setTheme }) {
   const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
   const navGroups = locale === 'en' ? EN_NAV_GROUPS : NAV_GROUPS;
 
-  const { isPro } = useAuth();
+  const { isPro, user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState(() => {
     const init = {};
@@ -693,8 +693,20 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Footer : Pro status + devise + toggle thème */}
+        {/* Footer : compte + Pro status + devise + toggle thème */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
+          {locale === 'fr' && (
+            <Link to={user ? "/compte" : "/connexion"} onClick={close} style={{
+              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
+              padding: "6px 10px", borderRadius: 8, color: "var(--text-secondary)",
+            }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+            >
+              <span style={{ fontSize: 14 }}>{user ? "👤" : "→"}</span>
+              <span style={{ fontSize: 12 }}>{user ? "Mon compte" : "Connexion / inscription"}</span>
+            </Link>
+          )}
           {locale === 'fr' && (
             isPro ? (
               <Link to="/pro" onClick={close} style={{

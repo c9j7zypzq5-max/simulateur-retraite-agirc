@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
+import { AuthProvider } from "./context/AuthProvider.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import Home from "./pages/Home.jsx";
@@ -29,6 +30,8 @@ const NotFound                = lazy(() => import("./pages/NotFound.jsx"));
 const Pro                     = lazy(() => import("./pages/Pro.jsx"));
 const Merci                   = lazy(() => import("./pages/Merci.jsx"));
 const MerciPro                = lazy(() => import("./pages/MerciPro.jsx"));
+const Connexion               = lazy(() => import("./pages/Connexion.jsx"));
+const Compte                  = lazy(() => import("./pages/Compte.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -79,6 +82,7 @@ function RouteFallback() {
 
 export default function App() {
   return (
+    <AuthProvider>
     <VideoRecordingProvider>
     <CurrencyProvider>
     <BrowserRouter>
@@ -154,6 +158,9 @@ export default function App() {
         <Route path="/pro" element={<Pro />} />
         <Route path="/merci" element={<Merci />} />
         <Route path="/merci-pro" element={<MerciPro />} />
+        {/* Comptes */}
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/compte" element={<Compte />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
@@ -166,5 +173,6 @@ export default function App() {
     </BrowserRouter>
     </CurrencyProvider>
     </VideoRecordingProvider>
+    </AuthProvider>
   );
 }

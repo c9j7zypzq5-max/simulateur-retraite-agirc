@@ -15,7 +15,7 @@ export default function MerciPro() {
   const [theme, setTheme] = useTheme();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id") || "";
-  const { activatePro } = useAuth();
+  const { refreshProfile } = useAuth();
 
   const [status, setStatus] = useState("verifying"); // verifying | ok | error
   const [activatedEmail, setActivatedEmail] = useState("");
@@ -35,7 +35,9 @@ export default function MerciPro() {
       .then(r => r.json())
       .then(data => {
         if (data.active) {
-          activatePro(data.email || "");
+          // Le statut Pro a été écrit côté serveur (verify-subscription) ;
+          // on rafraîchit le profil pour le refléter dans l'app.
+          refreshProfile();
           setActivatedEmail(data.email || "");
           setStatus("ok");
         } else {
@@ -70,7 +72,7 @@ export default function MerciPro() {
               <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 16 }}>{activatedEmail}</p>
             )}
             <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
-              Votre abonnement est actif. Les fonctionnalités suivantes sont débloquées sur cet appareil :
+              Votre abonnement est actif. Les fonctionnalités suivantes sont débloquées sur votre compte :
             </p>
 
             <div style={{
@@ -103,8 +105,8 @@ export default function MerciPro() {
             </div>
 
             <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 32, lineHeight: 1.6 }}>
-              Pour accéder à vos fonctionnalités Pro sur un autre appareil, ouvrez l'email de confirmation Stripe
-              et cliquez sur le lien de cette page.
+              Votre abonnement est lié à votre compte : connectez-vous sur n'importe quel appareil
+              pour retrouver vos fonctionnalités Pro.
             </p>
           </>
         )}
