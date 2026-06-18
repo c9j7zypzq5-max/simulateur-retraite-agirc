@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, LocaleLink, useLocation, useLocale } from "../lib/router.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
+import { useAuth } from "../hooks/useAuth.js";
 import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
 import LangSwitch from "./LangSwitch.jsx";
@@ -183,6 +184,7 @@ export default function Navbar({ theme, setTheme }) {
   const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
   const navGroups = locale === 'en' ? EN_NAV_GROUPS : NAV_GROUPS;
 
+  const { isPro } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState(() => {
     const init = {};
@@ -691,8 +693,31 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Footer : devise + toggle thème */}
+        {/* Footer : Pro status + devise + toggle thème */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
+          {locale === 'fr' && (
+            isPro ? (
+              <Link to="/pro" onClick={close} style={{
+                display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
+                padding: "6px 10px", borderRadius: 8, background: "rgba(184,147,74,0.1)",
+                border: "1px solid var(--border-gold)",
+              }}>
+                <span style={{ color: "var(--gold)", fontSize: 14 }}>★</span>
+                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>Pro actif</span>
+              </Link>
+            ) : (
+              <Link to="/pro" onClick={close} style={{
+                display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
+                padding: "6px 10px", borderRadius: 8,
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+              >
+                <span style={{ color: "var(--text-secondary)", fontSize: 14 }}>★</span>
+                <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>Passer à Pro — 2,99 €/mois</span>
+              </Link>
+            )
+          )}
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{txt.currency}</span>

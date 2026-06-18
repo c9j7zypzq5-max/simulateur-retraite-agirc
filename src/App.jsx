@@ -26,6 +26,9 @@ const EmbedEmprunt            = lazy(() => import("./pages/embed/EmbedEmprunt.js
 const EmbedFire               = lazy(() => import("./pages/embed/EmbedFire.jsx"));
 const Widgets                 = lazy(() => import("./pages/Widgets.jsx"));
 const NotFound                = lazy(() => import("./pages/NotFound.jsx"));
+const Pro                     = lazy(() => import("./pages/Pro.jsx"));
+const Merci                   = lazy(() => import("./pages/Merci.jsx"));
+const MerciPro                = lazy(() => import("./pages/MerciPro.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -147,6 +150,10 @@ export default function App() {
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
         <Route path="/methodologie" element={<Methodologie />} />
+        {/* Pro / Paiements */}
+        <Route path="/pro" element={<Pro />} />
+        <Route path="/merci" element={<Merci />} />
+        <Route path="/merci-pro" element={<MerciPro />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
