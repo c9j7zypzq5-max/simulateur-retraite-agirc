@@ -192,7 +192,8 @@ function RelatedArticles() {
 }
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
+  const isEn = locale === "en";
   return (
     <>
     <SideAds />
@@ -221,24 +222,28 @@ export default function Footer() {
           </span>
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-          <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.guides")}
-          </Link>
-          <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.blog")}
-          </Link>
-          <Link to="/lexique" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.lexique")}
-          </Link>
-          <Link to="/a-propos" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.apropos")}
-          </Link>
-          <Link to="/methodologie" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.methodologie")}
-          </Link>
-          <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
-            {t("nav.widgets")}
-          </Link>
+          {!isEn && (
+            <>
+              <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.guides")}
+              </Link>
+              <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.blog")}
+              </Link>
+              <Link to="/lexique" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.lexique")}
+              </Link>
+              <Link to="/a-propos" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.apropos")}
+              </Link>
+              <Link to="/methodologie" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.methodologie")}
+              </Link>
+              <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.widgets")}
+              </Link>
+            </>
+          )}
           <Link to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.mentionsLegales")}
           </Link>
