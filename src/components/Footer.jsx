@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "../lib/router.jsx";
+import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { GLOSSARY } from "../data/glossaire.js";
@@ -244,12 +244,12 @@ export default function Footer() {
               </Link>
             </>
           )}
-          <Link to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+          <LocaleLink to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.mentionsLegales")}
-          </Link>
-          <Link to="/politique-de-confidentialite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+          </LocaleLink>
+          <LocaleLink to="/politique-de-confidentialite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.confidentialite")}
-          </Link>
+          </LocaleLink>
           <a href="mailto:contact@simfinly.com" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.contact")}
           </a>

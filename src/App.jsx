@@ -95,6 +95,8 @@ export default function App() {
         <Route path="/en/simulateurs/credit-conso" element={<CreditConso />} />
         <Route path="/en/simulateurs/comparateur" element={<Comparateur />} />
         <Route path="/en/outils/qr-code" element={<QrCode />} />
+        <Route path="/en/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/en/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />

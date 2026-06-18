@@ -28,6 +28,8 @@ export const EN_ROUTES = [
   '/simulateurs/credit-conso',
   '/simulateurs/comparateur',
   '/outils/qr-code',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
 ];
 
 // Méta anglaises (title + description) par route, pour le HTML statique /en/...
@@ -41,6 +43,8 @@ export const ROUTE_META_EN = {
   '/simulateurs/credit-conso':    { title: 'Personal Loan Calculator — Monthly Payment & Cost | Simfinly',   description: 'Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes optional insurance and an amortization schedule.' },
   '/simulateurs/comparateur':     { title: 'Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly',        description: 'Compare the historical performance of ETFs, stocks and cryptocurrencies over any period, from real data. Total return, CAGR, recurring contributions and base-100 index.' },
   '/outils/qr-code':              { title: 'Free Custom QR Code Generator — Color, Logo | Simfinly',         description: 'Create a custom QR code for free: pick the colors, enter any text or link and add your logo or an emoji in the center. High-resolution PNG, no sign-up.' },
+  '/mentions-legales':            { title: 'Legal notice — Simfinly',                                        description: 'Legal notice for simfinly.com: publisher, host, intellectual property and liability.' },
+  '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
 };
 
 // Méta d'une route pour une locale donnée (EN si dispo, sinon repli FR).

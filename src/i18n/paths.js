@@ -12,6 +12,8 @@ export const EN_ROUTES = new Set([
   '/simulateurs/credit-conso',
   '/simulateurs/comparateur',
   '/outils/qr-code',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
 ]);
 
 // Retourne le chemin localisé pour une route canonique (en FR) et une locale.
