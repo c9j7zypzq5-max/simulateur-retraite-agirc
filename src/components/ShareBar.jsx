@@ -198,7 +198,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
       const path = window.location.pathname;
       const s = params ? encodeParams(params) : "";
-      const res = await fetch("/api/create-checkout", {
+      const res = await fetch("/api/stripe?action=create-checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ origin: window.location.origin, path, s }),

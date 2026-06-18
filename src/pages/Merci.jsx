@@ -33,7 +33,7 @@ export default function Merci() {
       if (raw) pendingRef.current = JSON.parse(raw);
     } catch { /* ignore */ }
 
-    fetch(`/api/verify-payment?session_id=${encodeURIComponent(sessionId)}`)
+    fetch(`/api/stripe?action=verify-payment&session_id=${encodeURIComponent(sessionId)}`)
       .then(r => r.json())
       .then(data => {
         if (data.paid) {

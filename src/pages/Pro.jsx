@@ -40,7 +40,7 @@ export default function Pro() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/create-subscription", {
+      const res = await fetch("/api/stripe?action=create-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ origin: window.location.origin, email }),

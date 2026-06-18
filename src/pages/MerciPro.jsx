@@ -31,7 +31,7 @@ export default function MerciPro() {
   useEffect(() => {
     if (!sessionId) { setStatus("error"); return; }
 
-    fetch(`/api/verify-subscription?session_id=${encodeURIComponent(sessionId)}`)
+    fetch(`/api/stripe?action=verify-subscription&session_id=${encodeURIComponent(sessionId)}`)
       .then(r => r.json())
       .then(data => {
         if (data.active) {
