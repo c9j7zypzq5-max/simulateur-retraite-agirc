@@ -5,6 +5,7 @@ import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -381,6 +382,9 @@ export default function Per() {
             ]}
           />
         )}
+
+        {/* Affiliation */}
+        {hasInput && <AffiliateCTA type="per" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

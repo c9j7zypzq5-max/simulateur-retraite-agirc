@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -12,6 +12,7 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
@@ -132,6 +133,16 @@ export default function Cnav() {
   const dureeRequise = getDureeRequise(anneeNaissance);
 
   const hasResult = res.pensionNette > 0;
+
+  // Pension par âge de départ pour l'optimiseur
+  const ageComparisons = useMemo(() => {
+    if (!hasResult) return [];
+    return [62, 63, 64, 65, 66, 67, 68, 69, 70].map(age => ({
+      age,
+      pension: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).pensionNette,
+      tauxPlein: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).decote === 0,
+    }));
+  }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
 
   // Scénario B : on fait varier l'âge de départ et les années restantes.
   const resB = calcCnav({ salaire, anneesFaites, anneesRestantes: bAnneesRest, ageDépart: bAge, anneeNaissance });
@@ -347,6 +358,53 @@ export default function Cnav() {
             )}
           </div>
         )}
+
+        {/* Optimiseur d'âge de départ */}
+        {hasResult && ageComparisons.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 16, padding: "20px 24px", marginTop: 20 }}>
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginBottom: 3 }}>
+                Pension selon l'âge de départ
+              </div>
+              <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>
+                Cliquez sur un âge pour mettre à jour la simulation
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))", gap: 8 }}>
+              {ageComparisons.map(({ age, pension, tauxPlein }) => {
+                const isActive = (ageDépart ?? 64) === age;
+                return (
+                  <button
+                    key={age}
+                    onClick={() => setAgeDépart(age)}
+                    style={{
+                      padding: "10px 6px",
+                      borderRadius: 10,
+                      border: `2px solid ${isActive ? "var(--gold)" : tauxPlein ? "rgba(34,197,94,0.35)" : "var(--border)"}`,
+                      background: isActive ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                      cursor: "pointer",
+                      textAlign: "center",
+                      transition: "border-color 0.15s",
+                    }}
+                  >
+                    <div style={{ fontSize: 12, fontWeight: 600, color: isActive ? "var(--gold)" : "var(--text-secondary)", marginBottom: 4 }}>
+                      {age} ans
+                    </div>
+                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, fontWeight: 700, color: isActive ? "var(--gold)" : "var(--text)" }}>
+                      {pension > 0 ? Math.round(pension).toLocaleString("fr-FR") + " €" : "—"}
+                    </div>
+                    {tauxPlein && (
+                      <div style={{ fontSize: 9, color: "#4ade80", marginTop: 3, letterSpacing: "0.04em" }}>taux plein</div>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Affiliation */}
+        {hasResult && <AffiliateCTA type="retraite" />}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

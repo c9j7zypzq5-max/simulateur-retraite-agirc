@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -1373,6 +1374,9 @@ export default function Fire() {
             />
           </div>
         </div>
+
+        {/* Affiliation */}
+        {hasResult && <AffiliateCTA type="epargne" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

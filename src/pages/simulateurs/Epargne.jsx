@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -458,6 +459,8 @@ export default function Epargne() {
             </div>
           </AccordionSection>
         )}
+
+        {hasResult && <AffiliateCTA type="epargne" />}
 
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 

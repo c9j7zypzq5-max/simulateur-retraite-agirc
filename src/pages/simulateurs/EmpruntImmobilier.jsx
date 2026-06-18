@@ -19,6 +19,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
@@ -553,6 +554,9 @@ export default function EmpruntImmobilier() {
             )}
           </div>
         </div>
+
+        {/* Affiliation */}
+        {hasResult && <AffiliateCTA type="emprunt" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
