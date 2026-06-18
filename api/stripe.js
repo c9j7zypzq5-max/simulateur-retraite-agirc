@@ -28,6 +28,8 @@ async function handleCreateCheckout(req, res, stripe) {
 
   const session = await stripe.checkout.sessions.create({
     mode: 'payment',
+    // locale 'auto' : Stripe affiche le checkout dans la langue du navigateur.
+    locale: 'auto',
     line_items: [{
       price_data: {
         currency: 'eur',
@@ -57,6 +59,8 @@ async function handleCreateSubscription(req, res, stripe) {
 
   const params = {
     mode: 'subscription',
+    // locale 'auto' : checkout traduit selon la langue du client.
+    locale: 'auto',
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${origin}/merci-pro?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/pro`,
