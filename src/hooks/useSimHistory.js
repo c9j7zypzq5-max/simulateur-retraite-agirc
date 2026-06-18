@@ -1,7 +1,11 @@
+import { useAuth } from "./useAuth.js";
+
 const KEY = 'mesim_history_v1';
-const MAX = 8;
 
 export function useSimHistory() {
+  const { isPro } = useAuth();
+  const MAX = isPro ? 50 : 8;
+
   function getHistory() {
     try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
     catch { return []; }
