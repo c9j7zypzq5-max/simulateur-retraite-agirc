@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import Navbar from "../components/Navbar.jsx";
@@ -22,10 +22,11 @@ const FEATURES_PRO = [
 
 export default function Pro() {
   const [theme, setTheme] = useTheme();
-  const { isPro, email: proEmail, deactivatePro } = useAuth();
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const { isPro, user, email: proEmail, getAccessToken } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [portalBusy, setPortalBusy] = useState(false);
 
   useEffect(() => {
     document.title = "Simfinly Pro — 2,99 €/mois | simfinly.com";
@@ -35,15 +36,17 @@ export default function Pro() {
     return () => robots?.setAttribute('content', 'index, follow');
   }, []);
 
-  async function handleSubscribe(e) {
-    e.preventDefault();
+  async function handleSubscribe() {
+    // Un compte est requis pour lier l'abonnement et permettre sa gestion.
+    if (!user) { navigate("/connexion?next=/pro"); return; }
     setLoading(true);
     setError("");
     try {
+      const token = await getAccessToken();
       const res = await fetch("/api/stripe?action=create-subscription", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ origin: window.location.origin, email }),
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ origin: window.location.origin }),
       });
       const data = await res.json();
       if (data.url) {
@@ -55,6 +58,25 @@ export default function Pro() {
       setError("Impossible de contacter le serveur. Vérifiez votre connexion.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleManageSubscription() {
+    setPortalBusy(true); setError("");
+    try {
+      const token = await getAccessToken();
+      const res = await fetch("/api/stripe?action=portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ origin: window.location.origin }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else setError(data.error || "Impossible d'ouvrir le portail de gestion.");
+    } catch {
+      setError("Impossible de contacter le serveur.");
+    } finally {
+      setPortalBusy(false);
     }
   }
 
@@ -118,10 +140,11 @@ export default function Pro() {
                 Retour aux simulateurs
               </Link>
               <button
-                onClick={deactivatePro}
-                style={{ padding: "9px 18px", background: "none", border: "1px solid var(--border)", borderRadius: 10, fontSize: 13, color: "var(--text-secondary)", cursor: "pointer" }}
+                onClick={handleManageSubscription}
+                disabled={portalBusy}
+                style={{ padding: "9px 18px", background: "none", border: "1px solid var(--border)", borderRadius: 10, fontSize: 13, color: "var(--text-secondary)", cursor: portalBusy ? "not-allowed" : "pointer" }}
               >
-                Déconnecter cet appareil
+                {portalBusy ? "Ouverture…" : "Gérer mon abonnement"}
               </button>
             </div>
           </div>
@@ -148,35 +171,26 @@ export default function Pro() {
               <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 20 }}>par mois · sans engagement</div>
               <div style={{ marginBottom: 20 }}>{FEATURES_PRO.map(f => checkItem(f, true))}</div>
 
-              <form onSubmit={handleSubscribe}>
-                <input
-                  type="email"
-                  placeholder="votre@email.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  style={{
-                    width: "100%", padding: "10px 12px", borderRadius: 10,
-                    border: "1px solid var(--border)", background: "var(--bg)",
-                    color: "var(--text)", fontSize: 13, marginBottom: 10,
-                    fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box",
-                  }}
-                />
-                <button
-                  type="submit"
-                  disabled={loading}
-                  style={{
-                    width: "100%", padding: "12px", borderRadius: 10,
-                    background: loading ? "var(--border)" : "var(--gold)",
-                    color: loading ? "var(--text-secondary)" : "#1a1000",
-                    border: "none", fontSize: 14, fontWeight: 700,
-                    cursor: loading ? "not-allowed" : "pointer",
-                    fontFamily: "'DM Sans', sans-serif",
-                  }}
-                >
-                  {loading ? "Redirection…" : "S'abonner — 2,99 €/mois"}
-                </button>
-                {error && <p style={{ fontSize: 12, color: "#c0392b", marginTop: 8 }}>{error}</p>}
-              </form>
+              <button
+                onClick={handleSubscribe}
+                disabled={loading}
+                style={{
+                  width: "100%", padding: "12px", borderRadius: 10,
+                  background: loading ? "var(--border)" : "var(--gold)",
+                  color: loading ? "var(--text-secondary)" : "#1a1000",
+                  border: "none", fontSize: 14, fontWeight: 700,
+                  cursor: loading ? "not-allowed" : "pointer",
+                  fontFamily: "'DM Sans', sans-serif",
+                }}
+              >
+                {loading ? "Redirection…" : user ? "S'abonner — 2,99 €/mois" : "Se connecter pour s'abonner"}
+              </button>
+              {!user && (
+                <p style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8, textAlign: "center" }}>
+                  Un compte permet de gérer et résilier votre abonnement à tout moment.
+                </p>
+              )}
+              {error && <p style={{ fontSize: 12, color: "#c0392b", marginTop: 8 }}>{error}</p>}
             </div>
           </div>
         )}
@@ -188,7 +202,7 @@ export default function Pro() {
           </h2>
           {[
             ["Comment l'abonnement fonctionne-t-il ?", "Paiement mensuel par carte bancaire via Stripe. Sans engagement, résiliable à tout moment depuis le portail Stripe. Aucune donnée de carte n'est stockée sur nos serveurs."],
-            ["L'accès Pro est-il lié à mon appareil ?", "Oui. Le statut Pro est enregistré localement sur cet appareil. Si vous changez d'appareil, rouvrez la page /merci-pro depuis l'email de confirmation Stripe pour réactiver."],
+            ["L'accès Pro fonctionne-t-il sur plusieurs appareils ?", "Oui. Votre abonnement est lié à votre compte : connectez-vous sur n'importe quel appareil pour retrouver vos fonctionnalités Pro."],
             ["Le rapport PDF Pro est-il différent du gratuit ?", "Oui : il inclut une page de couverture, des tableaux alternés, le graphique intégré, une section \"À retenir\" enrichie, et un pied de page professionnel sur chaque page."],
             ["Puis-je annuler à tout moment ?", "Oui, sans frais. L'accès Pro reste actif jusqu'à la fin de la période payée."],
           ].map(([q, a]) => (
