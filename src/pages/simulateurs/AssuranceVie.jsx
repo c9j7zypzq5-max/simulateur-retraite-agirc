@@ -9,6 +9,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
@@ -120,9 +121,9 @@ export default function AssuranceVie() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Assurance-Vie 2025 — Capital, gains et fiscalité", "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.");
+
   useEffect(() => {
-    document.title = "Simulateur Assurance-Vie 2025 — Capital, gains et fiscalité";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

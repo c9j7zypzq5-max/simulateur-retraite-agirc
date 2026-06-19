@@ -8,6 +8,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import {
@@ -120,9 +121,9 @@ export default function Per() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur PER 2025 — Économie d'impôt et capital retraite", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
+
   useEffect(() => {
-    document.title = "Simulateur PER 2025 — Économie d'impôt et capital retraite";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

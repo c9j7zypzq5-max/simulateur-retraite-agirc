@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Calcul Retraite Progressive ─────────────────────────────────────────────
 function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
@@ -67,10 +68,9 @@ export default function RetraiteProgressive() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite Progressive 2025", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Progressive 2025";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
@@ -207,9 +208,9 @@ export default function Cnavpl() {
   const [anneeNaissance, setAnneeNaissance] = useState(null);
   const [ageDépart, setAgeDépart] = useState(65);
 
+  usePageMeta("Simulateur Retraite CIPAV 2025 — Professions libérales", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
+
   useEffect(() => {
-    document.title = "Simulateur Retraite CIPAV 2025 — Professions libérales";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

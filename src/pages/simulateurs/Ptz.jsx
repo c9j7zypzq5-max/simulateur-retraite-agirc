@@ -8,6 +8,7 @@ import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { mensualite } from "../../utils/finance.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
@@ -133,9 +134,9 @@ export default function Ptz() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur PTZ 2025 — Montant du Prêt à Taux Zéro", "Estimez votre Prêt à Taux Zéro 2025 : éligibilité, tranche de revenus, quotité et montant finançable selon votre zone et la composition de votre foyer. Barème décret n° 2025-299.");
+
   useEffect(() => {
-    document.title = "Simulateur PTZ 2025 — Montant du Prêt à Taux Zéro";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre Prêt à Taux Zéro 2025 : éligibilité, tranche de revenus, quotité et montant finançable selon votre zone et la composition de votre foyer. Barème décret n° 2025-299.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

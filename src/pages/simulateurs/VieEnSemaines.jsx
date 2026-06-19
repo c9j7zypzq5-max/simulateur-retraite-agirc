@@ -3,6 +3,7 @@ import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -112,9 +113,9 @@ export default function VieEnSemaines() {
     }
   }, [genre, esperanceModifiee]);
 
+  usePageMeta("Simulateur Ma Vie en Semaines — Visualisez votre temps de vie", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
+
   useEffect(() => {
-    document.title = "Simulateur Ma Vie en Semaines — Visualisez votre temps de vie";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

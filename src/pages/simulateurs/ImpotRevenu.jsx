@@ -4,6 +4,7 @@ import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -101,9 +102,9 @@ export default function ImpotRevenu() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Impôt sur le Revenu 2026 — Calcul IR barème officiel", "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
+
   useEffect(() => {
-    document.title = "Simulateur Impôt sur le Revenu 2026 — Calcul IR barème officiel";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre impôt sur le revenu 2026 : barème progressif, quotient familial, décote, TMI et taux moyen d'imposition.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

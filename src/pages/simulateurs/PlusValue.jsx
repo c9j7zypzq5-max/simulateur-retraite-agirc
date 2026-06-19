@@ -4,6 +4,7 @@ import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -99,9 +100,9 @@ export default function PlusValue() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
+
   useEffect(() => {
-    document.title = "Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

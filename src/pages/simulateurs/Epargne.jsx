@@ -18,6 +18,7 @@ import {
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
@@ -231,9 +232,9 @@ export default function Epargne() {
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
+  usePageMeta(txt.docTitle, txt.docDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.docDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

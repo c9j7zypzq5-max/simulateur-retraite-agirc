@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres Fonction Publique 2026 ───────────────────────────────────────
 const DUREE_REQUISE = 172; // trimestres (post-réforme 2023, nés 1965+)
@@ -70,10 +71,9 @@ export default function FonctionPublique() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite Fonction Publique 2025", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Fonction Publique 2025";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

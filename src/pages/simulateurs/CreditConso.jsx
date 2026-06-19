@@ -18,6 +18,7 @@ import {
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -325,9 +326,9 @@ export default function CreditConso() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta(txt.docTitle, txt.metaDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

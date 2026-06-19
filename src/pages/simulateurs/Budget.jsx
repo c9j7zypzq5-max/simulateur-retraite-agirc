@@ -10,6 +10,7 @@ import { NumInput } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
@@ -365,10 +366,7 @@ export default function Budget() {
   const resultsRef = useRef(null);
   const chartRef   = useRef(null);
 
-  useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
-  }, [txt.docTitle, txt.metaDesc]);
+  usePageMeta(txt.docTitle, txt.metaDesc);
 
   useEffect(() => {
     const shared = readShareParams();

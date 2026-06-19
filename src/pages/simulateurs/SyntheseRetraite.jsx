@@ -13,6 +13,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Régimes de retraite agrégés ──────────────────────────────────────────────
 // Chaque ligne renvoie vers le simulateur dédié pour chiffrer la pension brute.
@@ -46,9 +47,9 @@ export default function SyntheseRetraite() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Synthèse retraite tous régimes — pension totale (polypensionné) | simfinly.com", "Additionnez vos pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute et nette.");
+
   useEffect(() => {
-    document.title = "Synthèse retraite tous régimes — pension totale (polypensionné) | simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Additionnez vos pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute et nette.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

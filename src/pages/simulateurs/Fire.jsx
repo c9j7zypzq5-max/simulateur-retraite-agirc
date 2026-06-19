@@ -22,6 +22,7 @@ import {
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -984,16 +985,16 @@ export default function Fire() {
   const { getProfile, updateProfile } = useProfile();
   const { saveEntry } = useSimHistory();
 
-  useEffect(() => {
-    document.title = locale === 'en'
+  usePageMeta(
+    locale === 'en'
       ? "FIRE Calculator — Financial Independence, Retire Early | Simfinly"
-      : "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      locale === 'en'
-        ? "Calculate the net worth you need to live off your investments and the age you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones."
-        : "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année."
-    );
+      : "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE",
+    locale === 'en'
+      ? "Calculate the net worth you need to live off your investments and the age you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones."
+      : "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année."
+  );
+
+  useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

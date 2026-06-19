@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
 const PASS = 48_060;
@@ -178,9 +179,9 @@ export default function Msa() {
   const [anneesRestantes, setAnneesRest] = useState(null);
   const [ageDépart, setAgeDépart] = useState(null);
 
+  usePageMeta("Simulateur Retraite MSA 2025 — Agriculteurs", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
+
   useEffect(() => {
-    document.title = "Simulateur Retraite MSA 2025 — Agriculteurs";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

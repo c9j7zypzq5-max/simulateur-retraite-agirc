@@ -3,6 +3,7 @@ import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -83,9 +84,9 @@ export default function RendementLocatif() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Rendement Locatif 2025 — Rentabilité investissement immobilier", "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.");
+
   useEffect(() => {
-    document.title = "Simulateur Rendement Locatif 2025 — Rentabilité investissement immobilier";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

@@ -4,6 +4,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -446,9 +447,9 @@ export default function Salaire() {
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
+  usePageMeta("Simulateur Salaire Net/Brut & Évolution de carrière — Simfinly.com", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
+
   useEffect(() => {
-    document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
   }, []);
 
   useEffect(() => {

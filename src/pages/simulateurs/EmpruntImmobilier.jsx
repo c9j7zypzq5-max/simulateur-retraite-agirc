@@ -21,6 +21,7 @@ import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
@@ -176,9 +177,9 @@ export default function EmpruntImmobilier() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
+
   useEffect(() => {
-    document.title = "Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

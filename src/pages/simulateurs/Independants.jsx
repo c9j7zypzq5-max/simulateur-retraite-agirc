@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
@@ -94,10 +95,9 @@ export default function Independants() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite Indépendants TNS 2025 — SSI", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Indépendants TNS 2025 — SSI";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

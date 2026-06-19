@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
 const PASS = 48_060;
@@ -94,10 +95,9 @@ export default function Ircantec() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;

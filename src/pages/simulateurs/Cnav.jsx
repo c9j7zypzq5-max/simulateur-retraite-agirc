@@ -14,6 +14,7 @@ import {
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
 const PASS = 48_060;
@@ -99,10 +100,9 @@ export default function Cnav() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite CNAV 2025 — Régime général salariés", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite CNAV 2025 — Régime général salariés";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
