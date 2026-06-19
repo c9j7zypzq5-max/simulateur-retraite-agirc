@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -7,6 +7,8 @@ import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
@@ -88,6 +90,9 @@ const TXT = {
     reportCoutCredit: "Coût total du crédit",
     reportTotalRembourse: "Total remboursé",
     reportNote: "Le TAEG accordé doit respecter le taux d'usure en vigueur publié par la Banque de France.",
+    chartTitre: "Courbe d'amortissement",
+    chartCapitalRestant: "Capital restant dû",
+    chartAns: (n) => `Année ${n}`,
     compareFieldMontant: "Montant emprunté",
     compareFieldTaeg: "TAEG",
     compareFieldDuree: "Durée",
@@ -189,6 +194,9 @@ const TXT = {
     reportCoutCredit: "Total cost of credit",
     reportTotalRembourse: "Total repaid",
     reportNote: "The APR granted must comply with the applicable usury rate.",
+    chartTitre: "Amortization curve",
+    chartCapitalRestant: "Outstanding balance",
+    chartAns: (n) => `Year ${n}`,
     compareFieldMontant: "Loan amount",
     compareFieldTaeg: "APR",
     compareFieldDuree: "Term",
@@ -370,6 +378,20 @@ export default function CreditConso() {
   const animMensualite = useAnimatedNumber(mensualiteTotale);
   const animCout = useAnimatedNumber(coutCredit);
 
+  const amortChartData = useMemo(() => {
+    if (!hasInput) return [];
+    const r = taeg / 100 / 12;
+    const mVal = mensualite(montantEmprunte, taeg, duree);
+    let restant = montantEmprunte;
+    const pts = [{ x: 0, y: montantEmprunte }];
+    for (let i = 1; i <= duree; i++) {
+      const interet = restant * r;
+      restant = Math.max(0, restant - (mVal - interet));
+      if (i % 12 === 0 || i === duree) pts.push({ x: Math.ceil(i / 12), y: Math.round(restant) });
+    }
+    return pts;
+  }, [montantEmprunte, taeg, duree, hasInput]);
+
   const report = {
     title: txt.reportTitle,
     highlight: { label: txt.reportHighlightLabel, value: hasInput ? txt.reportHighlightVal(fmtCur(Math.round(mensualiteTotale))) : "—" },
@@ -473,6 +495,28 @@ export default function CreditConso() {
                 <Chip label={txt.chipInterets} value={fmtCur(Math.round(totalInterets))} small />
                 <Chip label={txt.chipMontant} value={fmtCur(montantEmprunte)} small />
                 <Chip label={txt.chipDuree} value={txt.chipDureeVal(duree)} small />
+              </div>
+            )}
+
+            {hasInput && amortChartData.length > 1 && (
+              <div style={card}>
+                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+                  {txt.chartTitre}
+                </div>
+                <ZoomableChart caption={txt.chartTitre}>
+                  <LineAreaChart
+                    series={[{
+                      id: "capital",
+                      label: txt.chartCapitalRestant,
+                      points: amortChartData,
+                      color: "#b8934a",
+                      fillColor: "rgba(184,147,74,0.15)",
+                    }]}
+                    xFmt={txt.chartAns}
+                    yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M${activeSymbol()}` : `${Math.round(v / 1000)}k${activeSymbol()}`}
+                    aria={txt.chartTitre}
+                  />
+                </ZoomableChart>
               </div>
             )}
 
