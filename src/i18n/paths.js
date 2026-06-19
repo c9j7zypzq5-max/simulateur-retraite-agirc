@@ -14,6 +14,11 @@ export const EN_ROUTES = new Set([
   '/outils/qr-code',
   '/mentions-legales',
   '/politique-de-confidentialite',
+  '/connexion',
+  '/compte',
+  '/pro',
+  '/merci',
+  '/merci-pro',
 ]);
 
 // Retourne le chemin localisé pour une route canonique (en FR) et une locale.

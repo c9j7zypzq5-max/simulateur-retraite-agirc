@@ -156,11 +156,16 @@ export default function App() {
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Pro / Paiements */}
         <Route path="/pro" element={<Pro />} />
+        <Route path="/en/pro" element={<Pro />} />
         <Route path="/merci" element={<Merci />} />
+        <Route path="/en/merci" element={<Merci />} />
         <Route path="/merci-pro" element={<MerciPro />} />
+        <Route path="/en/merci-pro" element={<MerciPro />} />
         {/* Comptes */}
         <Route path="/connexion" element={<Connexion />} />
+        <Route path="/en/connexion" element={<Connexion />} />
         <Route path="/compte" element={<Compte />} />
+        <Route path="/en/compte" element={<Compte />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
