@@ -1,8 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import BarChart from "../../components/charts/BarChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -123,6 +125,18 @@ export default function RendementLocatif() {
   const cashflowAnim = useAnimatedNumber(res.cashflowMensuel);
 
   const hasResult = prix > 0 && loyer > 0;
+
+  const rendChart = useMemo(() => {
+    if (!hasResult || res.rendementBrut <= 0) return [];
+    const bars = [
+      { label: "Brut", segments: [{ value: +res.rendementBrut.toFixed(2), color: "#b8934a", label: "Rendement brut" }] },
+      { label: "Net", segments: [{ value: +res.rendementNet.toFixed(2), color: "#6eb5d4", label: "Rendement net" }] },
+    ];
+    if (apport > 0 && res.rendementFondsPropres > 0) {
+      bars.push({ label: "Fonds propres", segments: [{ value: +res.rendementFondsPropres.toFixed(2), color: "#4ade80", label: "Rendement fonds propres" }] });
+    }
+    return bars;
+  }, [hasResult, res, apport]);
 
   // Scénario B : prix et loyer différents, autres paramètres identiques.
   const resB = calcRendement({ prix: bPrix, neuf, travaux, apport, loyer: bLoyer, chargesCopro, taxeFonciere, gestionLocative });
@@ -269,6 +283,22 @@ export default function RendementLocatif() {
               name="rendement-locatif"
             />
             <AffiliateCTA type="emprunt" />
+          </div>
+        )}
+
+        {/* Graphique rendements */}
+        {hasResult && rendChart.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Comparaison des rendements
+            </div>
+            <ZoomableChart caption="Comparaison des rendements">
+              <BarChart
+                bars={rendChart}
+                yFmt={(v) => `${v} %`}
+                aria="Comparaison rendement brut, net et sur fonds propres"
+              />
+            </ZoomableChart>
           </div>
         )}
 
