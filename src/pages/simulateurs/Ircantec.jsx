@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -126,6 +128,17 @@ export default function Ircantec() {
   const res = calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval });
   const pensionAnim = useAnimatedNumber(res.pensionMensuelle);
   const hasResult = res.pensionMensuelle > 0;
+
+  const currentTotal = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
+  const ircantecChart = useMemo(() => {
+    if (!salaire) return [];
+    const maxAns = Math.max(40, currentTotal);
+    return Array.from({ length: maxAns }, (_, i) => {
+      const n = i + 1;
+      const r = calcIrcantec({ salaire, anneesFaites: n, anneesRestantes: 0, ageDépart, tauxReval });
+      return { x: n, y: r.pensionMensuelle };
+    });
+  }, [salaire, ageDépart, tauxReval, currentTotal]);
 
   const report = {
     title: "Simulateur Retraite IRCANTEC",
@@ -259,6 +272,23 @@ export default function Ircantec() {
 
               <ProgressBar label="Points Tranche A" value={res.pointsTA} total={res.totalPoints} color="var(--progress-acquired)" />
               <ProgressBar label="Points Tranche B" value={res.pointsTB} total={res.totalPoints} color="linear-gradient(90deg,var(--gold-mid),var(--gold))" />
+
+              {ircantecChart.length > 1 && (
+                <div style={{ marginTop: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
+                    Pension selon la durée de cotisation totale
+                  </div>
+                  <ZoomableChart caption="Pension nette mensuelle IRCANTEC selon le total d'années cotisées">
+                    <LineAreaChart
+                      series={[{ id: "pension", label: "Pension nette / mois", points: ircantecChart, color: "#b8934a" }]}
+                      xFmt={v => `${v} ans`}
+                      yFmt={v => `${Math.round(v)} €`}
+                      annotations={currentTotal > 0 ? [{ x: currentTotal }] : []}
+                      aria="Pension IRCANTEC selon les années de cotisation"
+                    />
+                  </ZoomableChart>
+                </div>
+              )}
 
               {/* Cotisations */}
               <AccordionSection title="Détail des cotisations" subtitle="Répartition salarié / employeur sur toute la carrière">

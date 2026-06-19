@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import BarChart from "../../components/charts/BarChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -99,6 +100,20 @@ export default function RetraiteProgressive() {
   const res = calcRP({ pensionPleineTaux, salaire, quotite, duree });
   const pensionAnim = useAnimatedNumber(res.revenuTotal);
   const hasResult = res.revenuTotal > 0;
+
+  const quotitesBars = useMemo(() => {
+    if (!pensionPleineTaux || !salaire) return [];
+    return QUOTITES.map(q => {
+      const r = calcRP({ pensionPleineTaux, salaire, quotite: q, duree });
+      return {
+        label: `${q} %`,
+        segments: [
+          { value: Math.round(r.pensionPartielle), color: "#b8934a", label: "Pension" },
+          { value: Math.round(r.revenuTravail), color: "#6eb5d4", label: "Salaire" },
+        ],
+      };
+    });
+  }, [pensionPleineTaux, salaire, duree]);
 
   const report = {
     title: "Simulateur Retraite progressive",
@@ -267,6 +282,19 @@ export default function RetraiteProgressive() {
 
               <ProgressBar label="Pension partielle" value={res.pensionPartielle} total={res.revenuTotal} color="var(--progress-acquired)" />
               <ProgressBar label="Revenu d'activité" value={res.revenuTravail} total={res.revenuTotal} color="linear-gradient(90deg,var(--gold-mid),var(--gold))" />
+
+              {quotitesBars.length > 0 && (
+                <div style={{ marginTop: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
+                    Revenu total selon la quotité de travail
+                  </div>
+                  <BarChart
+                    bars={quotitesBars}
+                    yFmt={v => `${Math.round(v)} €`}
+                    aria="Comparaison pension + salaire par quotité de travail"
+                  />
+                </div>
+              )}
 
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Simulation indicative.</strong> Conditions d'accès : 150 trimestres + âge légal − 2 ans.

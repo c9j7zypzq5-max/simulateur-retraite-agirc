@@ -9,9 +9,11 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader, FaqItem,
+  fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
@@ -143,6 +145,8 @@ export default function Cnav() {
       tauxPlein: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).decote === 0,
     }));
   }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
+
+  const pensionParAge = ageComparisons.map(c => ({ x: c.age, y: c.pension }));
 
   // Scénario B : on fait varier l'âge de départ et les années restantes.
   const resB = calcCnav({ salaire, anneesFaites, anneesRestantes: bAnneesRest, ageDépart: bAge, anneeNaissance });
@@ -314,6 +318,22 @@ export default function Cnav() {
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="cnav" />
 
+        {hasResult && pensionParAge.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Pension selon l'âge de départ
+            </div>
+            <ZoomableChart caption="Pension selon l'âge de départ">
+              <LineAreaChart
+                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" }]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
+                aria="Pension selon l'âge de départ"
+              />
+            </ZoomableChart>
+          </div>
+        )}
+
         {/* Comparaison de 2 scénarios (âge de départ / années restantes) */}
         {hasResult && !compareOn && (
           <button
@@ -435,6 +455,20 @@ export default function Cnav() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
       <Footer />
+    </div>
+  );
+}
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
+      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+      </button>
+      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>
   );
 }

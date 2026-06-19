@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -9,9 +9,11 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader, FaqItem,
+  fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
@@ -103,6 +105,14 @@ export default function FonctionPublique() {
   const pensionAnim = useAnimatedNumber(res.pensionNette);
   const hasResult = res.pensionNette > 0;
   const totalTrim = ((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4;
+
+  const pensionParAge = useMemo(() => {
+    if (!hasResult) return [];
+    return [57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67].map(age => ({
+      x: age,
+      y: calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart: age, categActive, bonus3Enfants }).pensionNette,
+    }));
+  }, [traitement, anneesFaites, anneesRestantes, categActive, bonus3Enfants, hasResult]);
 
   const report = {
     title: "Simulateur Retraite Fonction publique",
@@ -282,6 +292,22 @@ export default function FonctionPublique() {
 
         <ShareBar params={{ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }} resultsRef={resultsRef} report={report} name="fonction-publique" />
 
+        {hasResult && pensionParAge.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Pension selon l'âge de départ
+            </div>
+            <ZoomableChart caption="Pension selon l'âge de départ">
+              <LineAreaChart
+                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" }]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
+                aria="Pension selon l'âge de départ"
+              />
+            </ZoomableChart>
+          </div>
+        )}
+
         {hasResult && (
           <ScenarioCompare
             name="fonction-publique"
@@ -321,6 +347,20 @@ export default function FonctionPublique() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
       <Footer />
+    </div>
+  );
+}
+
+function FaqItem({ q, a }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ borderBottom: "1px solid var(--border)" }}>
+      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
+        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+      </button>
+      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>
   );
 }
