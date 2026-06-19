@@ -11,10 +11,12 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import EmbedSnippet from "../../components/EmbedSnippet.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  SimulateurHeader,
+  FaqItem, SimulateurHeader,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { useTranslation } from "../../i18n/index.js";
@@ -91,6 +93,8 @@ const TXT = {
     reportMulti: "Multiplicateur",
     reportGain: "Gain",
     reportNote: "Taux de rendement constant supposé. Résultats avant fiscalité et inflation.",
+    chartAria: "Courbe de croissance du capital sur la durée d'épargne",
+    chartYears: (n) => `${n} an${n > 1 ? "s" : ""}`,
     faq: [
       { q: "Comment fonctionnent les intérêts composés ?", a: "Les intérêts composés signifient que vous gagnez des intérêts sur vos intérêts. Chaque mois, le taux est appliqué à votre capital cumulé (capital initial + versements + intérêts antérieurs). Plus la durée est longue, plus cette composition joue en votre faveur (effet boule de neige)." },
       { q: "Quel taux de rendement supposer ?", a: "Cela dépend de votre placement : comptes épargne (0,5-1,5 %), fonds euros en assurance-vie (2-3 %), obligataires (3-5 %), actions/bourse (5-10 % en moyenne historique). Consultez votre conseiller pour un taux adapté à votre profil." },
@@ -168,6 +172,8 @@ const TXT = {
     reportMulti: "Multiplier",
     reportGain: "Gain",
     reportNote: "Constant return rate assumed. Results before tax and inflation.",
+    chartAria: "Savings growth curve over the investment period",
+    chartYears: (n) => `${n} yr${n !== 1 ? "s" : ""}`,
     faq: [
       { q: "How does compound interest work?", a: "Compound interest means you earn interest on your interest. Each month, the rate is applied to your accumulated capital (initial capital + contributions + previous interest). The longer the duration, the more this compounding works in your favour (snowball effect)." },
       { q: "What return rate should I use?", a: "It depends on your investment: savings accounts (0.5–1.5%), bond funds in life insurance (2–3%), bond portfolios (3–5%), equities/stock market (5–10% historical average). Consult your financial advisor for a rate suited to your risk profile." },
@@ -369,9 +375,25 @@ export default function Epargne() {
               <Chip label={txt.gain} value={`+${((res.multiplicateur - 1) * 100).toFixed(1)} %`} accent small />
             </div>
 
-            <div ref={chartRef}>
-              <ProgressBar label={txt.compo} value={res.totalInterets} total={res.capitalFinal} color="linear-gradient(90deg,rgba(184,147,74,0.5),rgba(184,147,74,0.2))" />
-            </div>
+            {epargneChartData.length > 1 && (
+              <ZoomableChart innerRef={chartRef} caption={txt.chartAria}>
+                <LineAreaChart
+                  series={[{
+                    id: "capital",
+                    label: txt.capitalFinalLabel,
+                    points: epargneChartData.map(p => ({ x: p.t, y: p.value })),
+                    color: "var(--gold)",
+                    fillColor: "rgba(184,147,74,0.15)",
+                  }]}
+                  xFmt={(v) => txt.chartYears(Math.round(v))}
+                  yFmt={(v) => {
+                    const sym = money.symbol;
+                    return v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M${sym}` : `${Math.round(v / 1000)}k${sym}`;
+                  }}
+                  aria={txt.chartAria}
+                />
+              </ZoomableChart>
+            )}
 
             <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
               {txt.disclaimer}
@@ -491,16 +513,3 @@ export default function Epargne() {
   );
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}

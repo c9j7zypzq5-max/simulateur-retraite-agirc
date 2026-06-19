@@ -1,18 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -235,6 +227,25 @@ export default function EmpruntImmobilier() {
   const animReste = useAnimatedNumber(resteAVivre);
 
   const hasResult = prix && prix > 0;
+
+  const amortChart = useMemo(() => {
+    if (!hasResult || capitalEmprunte <= 0) return [];
+    const r = taux / 100 / 12;
+    const n = duree * 12;
+    const men = r === 0 ? capitalEmprunte / n
+      : (capitalEmprunte * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    let restant = capitalEmprunte;
+    let cumulInt = 0;
+    return Array.from({ length: duree + 1 }, (_, yr) => {
+      if (yr === 0) return { x: 0, restant: capitalEmprunte, interets: 0 };
+      for (let mo = 0; mo < 12; mo++) {
+        const int = restant * r;
+        cumulInt += int;
+        restant = Math.max(0, restant - (men - int));
+      }
+      return { x: yr, restant: Math.round(restant), interets: Math.round(cumulInt) };
+    });
+  }, [hasResult, capitalEmprunte, taux, duree]);
 
   // Scénario B : on ne fait varier que la durée et le taux (capital identique).
   const mTotalB = mensualite(capitalPrincipal, bTaux, bDuree) + mensualite(primoCapital, primoTaux, bDuree);
@@ -555,6 +566,26 @@ export default function EmpruntImmobilier() {
             )}
           </div>
         </div>
+
+        {/* Graphique amortissement */}
+        {hasResult && amortChart.length > 1 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Évolution du capital et des intérêts
+            </div>
+            <ZoomableChart caption="Courbe d'amortissement">
+              <LineAreaChart
+                series={[
+                  { id: "restant", label: "Capital restant", points: amortChart.map(p => ({ x: p.x, y: p.restant })), color: "#b8934a", fillColor: "rgba(184,147,74,0.12)" },
+                  { id: "interets", label: "Intérêts cumulés", points: amortChart.map(p => ({ x: p.x, y: p.interets })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.10)", dashed: true },
+                ]}
+                xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}
+                yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
+                aria="Courbe d'amortissement"
+              />
+            </ZoomableChart>
+          </div>
+        )}
 
         {/* Affiliation */}
         {hasResult && <AffiliateCTA type="emprunt" />}

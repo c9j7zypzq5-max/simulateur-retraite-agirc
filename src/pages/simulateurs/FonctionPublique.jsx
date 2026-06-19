@@ -13,6 +13,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -281,7 +282,7 @@ export default function FonctionPublique() {
         </div>
 
         <ShareBar params={{ traitement, anneesFaites, anneesRestantes, ageDépart, categActive, bonus3Enfants }} resultsRef={resultsRef} report={report} name="fonction-publique" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="fonction-publique"

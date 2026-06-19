@@ -10,6 +10,8 @@ import { GLOSSARY } from "../data/glossaire.js";
 import { Search, X } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
+import { useAuth } from "../hooks/useAuth.js";
+import { useIsMobile } from "../hooks/useIsMobile.js";
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -211,16 +213,6 @@ function getCachedScores() {
   return null;
 }
 
-function useIsMobile(breakpoint = 480) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const handler = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", handler, { passive: true });
-    return () => window.removeEventListener("resize", handler);
-  }, [breakpoint]);
-  return mobile;
-}
-
 function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
   const refs = useRef({});
   const barRef = useRef(null);
@@ -272,6 +264,7 @@ export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
   const txt = TXT[locale] ?? TXT.fr;
+  const { isPro } = useAuth();
 
   const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : SIMULATEURS_FR;
   const FILTERS = locale === 'en' ? FILTERS_EN : FILTERS_FR;
@@ -478,6 +471,49 @@ export default function Home() {
           </div>
         )}
       </section>
+
+      {/* ── Pro CTA (caché si déjà abonné) ── */}
+      {!isPro && (
+        <section style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px 80px" }}>
+          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.09),rgba(232,192,106,0.04))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "40px 36px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 32, justifyContent: "space-between" }}>
+            <div style={{ flex: "1 1 400px", minWidth: 0 }}>
+              <div style={{ display: "inline-block", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "4px 14px", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 16 }}>
+                {locale === 'en' ? 'Simfinly Pro' : 'Simfinly Pro'}
+              </div>
+              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.3 }}>
+                {locale === 'en' ? 'Unlock the full experience' : 'Débloquez l\'expérience complète'}
+              </h2>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 8px", display: "flex", flexDirection: "column", gap: 10 }}>
+                {(locale === 'en' ? [
+                  "Export any simulation as a PDF report",
+                  "Unlimited scenario saves & history",
+                  "Advanced scenario comparisons",
+                ] : [
+                  "Exportez chaque simulation en rapport PDF",
+                  "Sauvegardez et retrouvez toutes vos simulations",
+                  "Comparaisons avancées de scénarios illimitées",
+                ]).map((item) => (
+                  <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "var(--text-secondary)" }}>
+                    <span style={{ color: "#4ade80", flexShrink: 0, marginTop: 1 }}>✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              <LocaleLink to="/pro" style={{ display: "inline-block", padding: "14px 32px", background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", color: "#1a1209", borderRadius: 12, textDecoration: "none", fontWeight: 700, fontSize: 15, fontFamily: "'DM Sans', sans-serif", boxShadow: "0 4px 16px rgba(184,147,74,0.3)", transition: "box-shadow 0.2s,transform 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(184,147,74,0.45)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(184,147,74,0.3)"; e.currentTarget.style.transform = ""; }}
+              >
+                {locale === 'en' ? 'View Pro plans →' : 'Voir les offres Pro →'}
+              </LocaleLink>
+              <p style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "var(--text-secondary)" }}>
+                {locale === 'en' ? 'From €4.90/month · Cancel anytime' : 'À partir de 4,90 €/mois · Sans engagement'}
+              </p>
+            </div>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>

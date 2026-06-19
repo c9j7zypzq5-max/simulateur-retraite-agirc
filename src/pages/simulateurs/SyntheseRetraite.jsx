@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { Link } from "../../lib/router.jsx";
+import BarChart from "../../components/charts/BarChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -12,6 +13,7 @@ import {
   fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -81,6 +83,18 @@ export default function SyntheseRetraite() {
   const tauxRemplacement = salaire > 0 ? (totalNet / salaire) * 100 : null;
   const nbRegimes = REGIMES.filter(r => (vals[r.key] ?? 0) > 0).length;
   const hasResult = totalBrut > 0;
+
+  const SHORT_LABELS = { cnav: "CNAV", agirc: "Agirc", fpub: "Fn.pub.", indep: "Indép.", ircantec: "IRCAN.", msa: "MSA", cipav: "CIPAV" };
+  const REGIME_COLORS = ["#b8934a", "#6eb5d4", "#4ade80", "#f59e0b", "#a78bfa", "#f87171", "#34d399"];
+  const regimesBars = useMemo(() => {
+    if (!hasResult) return [];
+    return REGIMES
+      .filter(r => (vals[r.key] ?? 0) > 0)
+      .map((r, i) => ({
+        label: SHORT_LABELS[r.key] ?? r.key,
+        segments: [{ value: vals[r.key], color: REGIME_COLORS[i % REGIME_COLORS.length] }],
+      }));
+  }, [vals, hasResult]);
 
   const netAnim = useAnimatedNumber(totalNet);
 
@@ -206,6 +220,16 @@ export default function SyntheseRetraite() {
                 })}
               </div>
 
+              {regimesBars.length > 1 && (
+                <div style={{ marginBottom: 20 }}>
+                  <BarChart
+                    bars={regimesBars}
+                    yFmt={v => `${Math.round(v)} €`}
+                    aria="Pension brute mensuelle par régime"
+                  />
+                </div>
+              )}
+
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Estimation indicative.</strong> Le total net applique un taux moyen de prélèvements sociaux (~10,1 %) et n'inclut pas l'impôt sur le revenu. Le taux exact dépend de votre revenu fiscal de référence.
                 Pour l'impôt, utilisez le <Link to="/simulateurs/impot-revenu" style={{ color: "var(--gold-mid)" }}>simulateur d'impôt sur le revenu</Link>.
@@ -215,7 +239,7 @@ export default function SyntheseRetraite() {
         </div>
 
         <ShareBar params={{ ...vals, salaire }} resultsRef={resultsRef} report={report} name="synthese-retraite" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 

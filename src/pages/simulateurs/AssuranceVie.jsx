@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -8,27 +8,18 @@ import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème assurance-vie ────────────────────────────────────────────────────
 // Fiscalité des rachats sur un contrat d'assurance-vie. Constantes 2025.
@@ -175,6 +166,15 @@ export default function AssuranceVie() {
 
   const animNet = useAnimatedNumber(capitalNet);
   const animPlusValue = useAnimatedNumber(plusValue);
+
+  const avProjection = useMemo(() => {
+    if (!hasInput || duree < 1) return [];
+    return Array.from({ length: duree + 1 }, (_, y) => ({
+      x: y,
+      verse: versementInitial + versementMensuel * 12 * y,
+      brut: y === 0 ? versementInitial : capitalFinal(versementInitial, versementMensuel, rendement, y),
+    }));
+  }, [versementInitial, versementMensuel, rendement, duree, hasInput]);
 
   const report = {
     title: "Simulateur Assurance-Vie",
@@ -342,6 +342,27 @@ export default function AssuranceVie() {
             )}
           </div>
         </div>
+
+        {/* Graphique projection */}
+        {hasInput && avProjection.length > 1 && (
+          <div style={{ ...card, marginBottom: 24 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Projection année par année
+            </div>
+            <ZoomableChart caption="Projection assurance-vie">
+              <LineAreaChart
+                series={[
+                  { id: "verse", label: "Total versé", points: avProjection.map(p => ({ x: p.x, y: p.verse })), color: "#8b9bb4", fillColor: "rgba(139,155,180,0.12)" },
+                  { id: "brut", label: "Capital brut", points: avProjection.map(p => ({ x: p.x, y: p.brut })), color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" },
+                ]}
+                xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}
+                yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
+                annotations={duree >= 8 ? [{ x: 8, label: "8 ans", color: "#b8934a", dashed: true }] : []}
+                aria="Projection assurance-vie"
+              />
+            </ZoomableChart>
+          </div>
+        )}
 
         {/* Comparaison de 2 scénarios */}
         {hasInput && (

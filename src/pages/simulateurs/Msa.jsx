@@ -13,6 +13,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -449,7 +450,7 @@ export default function Msa() {
         </div>
 
         <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="msa" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="msa"

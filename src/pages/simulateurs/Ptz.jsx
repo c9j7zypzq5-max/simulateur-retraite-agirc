@@ -6,28 +6,18 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { mensualite } from "../../utils/finance.js";
 import AdUnit from "../../components/AdUnit.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème PTZ ────────────────────────────────────────────────────────────────
 // Source : décret n° 2025-299 du 29 mars 2025 (JO 30/03/2025), en vigueur depuis
@@ -360,6 +350,7 @@ export default function Ptz() {
                 report={report}
                 name="ptz"
               />
+              {hasInput && <AffiliateCTA type="emprunt" />}
             </div>
 
             {eligible && (

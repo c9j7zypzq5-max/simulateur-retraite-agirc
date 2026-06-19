@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -11,23 +13,12 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème PER ────────────────────────────────────────────────────────────────
 // Plan d'Épargne Retraite (PER individuel). Constantes 2026.
@@ -168,6 +159,15 @@ export default function Per() {
 
   const hasInput = versementAnnuel > 0 && annees > 0;
   const auDelaPlafond = versementAnnuel > plafond;
+
+  const perChart = useMemo(() => {
+    if (!hasInput) return [];
+    return Array.from({ length: annees + 1 }, (_, y) => ({
+      x: ageActuel + y,
+      capital: capitalProjete(versementAnnuel, rendement, y),
+      verse: versementAnnuel * y,
+    }));
+  }, [versementAnnuel, rendement, annees, ageActuel, hasInput]);
 
   const animCapital = useAnimatedNumber(capital);
   const animEconomie = useAnimatedNumber(economieAnnuelle);
@@ -340,6 +340,25 @@ export default function Per() {
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.6 }}>
                   En déduisant {fmtEur(versementDeductible)}/an à une TMI de {tmi} %, vous économisez environ {fmtEur(Math.round(economieAnnuelle))} d'impôt chaque année.
                 </div>
+              </div>
+            )}
+
+            {hasInput && perChart.length > 1 && (
+              <div style={card}>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
+                  Projection du capital dans le temps
+                </div>
+                <ZoomableChart caption="Capital PER et total versé selon l'âge">
+                  <LineAreaChart
+                    series={[
+                      { id: "capital", label: "Capital projeté", points: perChart.map(p => ({ x: p.x, y: p.capital })), color: "#b8934a" },
+                      { id: "verse", label: "Total versé", points: perChart.map(p => ({ x: p.x, y: p.verse })), color: "#6eb5d4", strokeWidth: 1.5, dashed: true },
+                    ]}
+                    xFmt={v => `${v} ans`}
+                    yFmt={v => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M€` : v >= 1000 ? `${Math.round(v / 1000)}k€` : `${Math.round(v)} €`}
+                    aria="Projection du capital PER selon l'âge"
+                  />
+                </ZoomableChart>
               </div>
             )}
 

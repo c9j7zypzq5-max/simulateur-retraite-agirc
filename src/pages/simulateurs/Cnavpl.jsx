@@ -13,6 +13,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -622,7 +623,7 @@ export default function Cnavpl() {
         </div>
 
         <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} report={report} name="cnavpl" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {res.pensionTotale > 0 && (
           <ScenarioCompare
             name="cnavpl"

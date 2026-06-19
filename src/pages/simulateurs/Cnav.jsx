@@ -12,7 +12,10 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -93,11 +96,6 @@ export default function Cnav() {
   const [anneesRestantes, setAnneesRest]  = useState(null);
   const [ageDépart, setAgeDépart]         = useState(null);
 
-  // Comparaison d'un 2e scénario (âge de départ / années restantes).
-  const [compareOn, setCompareOn]   = useState(false);
-  const [bAge, setBAge]             = useState(null);
-  const [bAnneesRest, setBAnneesRest] = useState(null);
-
   const resultsRef = useRef(null);
 
   usePageMeta("Simulateur Retraite CNAV 2025 — Régime général salariés", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
@@ -144,14 +142,7 @@ export default function Cnav() {
     }));
   }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
 
-  // Scénario B : on fait varier l'âge de départ et les années restantes.
-  const resB = calcCnav({ salaire, anneesFaites, anneesRestantes: bAnneesRest, ageDépart: bAge, anneeNaissance });
-  const deltaPension = resB.pensionNette - res.pensionNette;
-  function startCompare() {
-    setBAge(ageDépart ?? 64); setBAnneesRest(anneesRestantes);
-    setCompareOn(true);
-    track('compare_open', { name: 'cnav' });
-  }
+  const pensionParAge = ageComparisons.map(c => ({ x: c.age, y: c.pension }));
 
   const report = {
     title: "Simulateur Retraite CNAV — Régime général",
@@ -314,48 +305,34 @@ export default function Cnav() {
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="cnav" />
 
-        {/* Comparaison de 2 scénarios (âge de départ / années restantes) */}
-        {hasResult && !compareOn && (
-          <button
-            onClick={startCompare}
-            style={{ width: "100%", marginTop: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
-          >
-            ⚖️ Comparer un 2ᵉ scénario de départ
-          </button>
+        {hasResult && pensionParAge.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Pension selon l'âge de départ
+            </div>
+            <ZoomableChart caption="Pension selon l'âge de départ">
+              <LineAreaChart
+                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" }]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
+                aria="Pension selon l'âge de départ"
+              />
+            </ZoomableChart>
+          </div>
         )}
 
-        {hasResult && compareOn && (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
-              <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
-            </div>
-            <div className="cmp-grid">
-              <div>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
-                  <li>Âge de départ : <strong style={{ color: "var(--text)" }}>{ageDépart ?? 64} ans</strong></li>
-                  <li>Années restantes : <strong style={{ color: "var(--text)" }}>{anneesRestantes ?? 0} ans</strong></li>
-                </ul>
-                <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Pension nette</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.pensionNette)}<span style={{ fontSize: 13 }}>/mois</span></div>
-              </div>
-              <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
-                <StepperInput label="Âge de départ" value={bAge} onChange={setBAge} min={62} max={70} unit=" ans" />
-                <NumInput id="b-annees-rest" label="Années restantes" value={bAnneesRest} onChange={setBAnneesRest} unit="ans" min={0} max={50} />
-                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Pension nette</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{resB.pensionNette > 0 ? fmtEur(resB.pensionNette) : "—"}<span style={{ fontSize: 13 }}>/mois</span></div>
-              </div>
-            </div>
-            {resB.pensionNette > 0 && (
-              <div style={{ marginTop: 18, padding: "14px 18px", borderRadius: 12, textAlign: "center", background: deltaPension >= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${deltaPension >= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
-                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Écart B − A : </span>
-                <strong style={{ fontSize: 18, color: deltaPension >= 0 ? "#22c55e" : "#ef4444" }}>
-                  {deltaPension >= 0 ? "+" : "−"}{fmtEur(Math.abs(Math.round(deltaPension)))}/mois
-                </strong>
-              </div>
-            )}
+        {hasResult && (
+          <div style={{ marginTop: 20 }}>
+            <ScenarioCompare
+              name="cnav"
+              base={{ ageDépart, anneesRestantes }}
+              fields={[
+                { key: "ageDépart", label: "Âge de départ", type: "step", min: 62, max: 70, step: 1, unit: "ans" },
+                { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
+              ]}
+              compute={(v) => calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, ...v })}
+              metrics={[{ label: "Pension nette", get: r => r.pensionNette, fmt: fmtEur, higherBetter: true }]}
+            />
           </div>
         )}
 

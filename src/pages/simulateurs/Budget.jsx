@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -108,16 +109,6 @@ const TXT = {
     reportNote: (taux) => `50/30/20 rule: 50% needs, 30% wants, 20% savings. Your savings rate is ${taux}%.`,
   },
 };
-
-function useIsMobile(breakpoint = 680) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const h = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", h, { passive: true });
-    return () => window.removeEventListener("resize", h);
-  }, [breakpoint]);
-  return mobile;
-}
 
 // ─── Calcul règle 50/30/20 ────────────────────────────────────────────────────
 function calcBudget({ revenus, fixe, variable }) {

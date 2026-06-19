@@ -13,6 +13,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
@@ -272,7 +273,7 @@ export default function Independants() {
         </div>
 
         <ShareBar params={{ revenu, anneesFaites, anneesRestantes, ageDépart, activite }} resultsRef={resultsRef} report={report} name="independants" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="independants"

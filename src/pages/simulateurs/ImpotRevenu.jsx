@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -14,6 +15,8 @@ import {
   NumInput, StepperInput, AccordionSection, Toggle,
   Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import BarChart from "../../components/charts/BarChart.jsx";
 
 // ─── Barème IR 2026 (revenus 2025, revalorisé +0,9 %) ─────────────────────────
 const BAREME = [
@@ -136,6 +139,19 @@ export default function ImpotRevenu() {
   const irNetAnim = useAnimatedNumber(res?.irNet || 0);
 
   const hasResult = res && res.irNet > 0;
+
+  const tranchesChart = useMemo(() => {
+    if (!res || res.irNet <= 0 || !res.nbParts) return [];
+    return BAREME
+      .filter(tranche => tranche.taux > 0 && res.quotient > tranche.min)
+      .map(tranche => {
+        const revInTranche = Math.max(0, Math.min(res.quotient, tranche.max) - tranche.min);
+        const impotTranche = Math.round(revInTranche * tranche.taux * res.nbParts);
+        const pct = Math.round(tranche.taux * 100);
+        const color = pct <= 11 ? "#4ade80" : pct <= 30 ? "#f59e0b" : pct <= 41 ? "#f87171" : "#cc5555";
+        return { label: `${pct}%`, segments: [{ value: impotTranche, color, label: `Tranche ${pct}%` }] };
+      });
+  }, [res]);
 
   const report = {
     title: "Simulateur Impôt sur le Revenu",
@@ -319,6 +335,21 @@ export default function ImpotRevenu() {
                 </div>
               </AccordionSection>
 
+              {tranchesChart.length > 1 && (
+                <div style={{ marginTop: 24, marginBottom: 16 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+                    Impôt par tranche
+                  </div>
+                  <ZoomableChart caption="Impôt par tranche du barème">
+                    <BarChart
+                      bars={tranchesChart}
+                      yFmt={(v) => v >= 1000 ? `${Math.round(v / 1000)}k€` : `${v} €`}
+                      aria="Répartition de l'impôt par tranche"
+                    />
+                  </ZoomableChart>
+                </div>
+              )}
+
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Calcul simplifié</strong>. Ce simulateur ne tient pas compte des crédits et réductions d'impôt, revenus fonciers, plus-values, cotisations Madelin, heures supplémentaires exonérées, etc. Pour un calcul exact : <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener" style={{ color: "var(--gold-mid)" }}>impots.gouv.fr</a> ou consultant un expert.
               </div>
@@ -329,7 +360,7 @@ export default function ImpotRevenu() {
                 report={report}
                 name="impot-revenu"
               />
-
+              <AffiliateCTA type="assurance-vie" />
               <ScenarioCompare
                 name="impot-revenu"
                 base={{ revenuBrut, nbEnfants }}

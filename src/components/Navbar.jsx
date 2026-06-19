@@ -248,12 +248,13 @@ export default function Navbar({ theme, setTheme }) {
         backdropFilter: "blur(12px)",
         borderBottom: "1px solid var(--border)",
         height: 56,
-        display: "flex", alignItems: "center",
-        justifyContent: "space-between",
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        alignItems: "center",
         padding: "0 12px 0 4px",
       }}>
         {/* Gauche : hamburger + breadcrumb desktop */}
-        <div style={{ display: "flex", alignItems: "center", gap: 4, zIndex: 1 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 4, minWidth: 0 }}>
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label={txt.openNav}
@@ -297,9 +298,8 @@ export default function Navbar({ theme, setTheme }) {
 
         {/* Centre : logo */}
         <LocaleLink to="/" style={{
-          position: "absolute", left: "50%", transform: "translateX(-50%)",
           display: "flex", alignItems: "center", gap: 8,
-          textDecoration: "none", zIndex: 0,
+          textDecoration: "none", justifyContent: "center",
         }}>
           <img src="/logo-mark.svg" alt="" width={26} height={26} style={{ display: "block", flexShrink: 0 }} />
           <span style={{
@@ -311,7 +311,7 @@ export default function Navbar({ theme, setTheme }) {
         </LocaleLink>
 
         {/* Droite : switcher langue + sélecteur devise + toggle thème */}
-        <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 8 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
           <LangSwitch compact />
           {showCurrency && <CurrencySelect compact />}
           <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />

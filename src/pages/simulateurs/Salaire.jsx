@@ -2,23 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { NumInput, StepperInput, Chip, fmt, fmtEur } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const h = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", h, { passive: true });
-    return () => window.removeEventListener("resize", h);
-  }, [breakpoint]);
-  return mobile;
-}
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -545,7 +537,7 @@ export default function Salaire() {
               report={report}
               name="salaire"
             />
-
+            {brut && <AffiliateCTA type="per" />}
             <div style={{ marginTop: 16 }}>
               <ScenarioCompare
                 name="salaire"
