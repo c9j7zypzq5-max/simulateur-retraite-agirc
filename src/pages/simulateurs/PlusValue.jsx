@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
@@ -14,6 +14,8 @@ import {
   NumInput, AccordionSection, Toggle,
   Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 
 // ─── Calcul abattements ────────────────────────────────────────────────────────
 function calcAbattementIR(duree) {
@@ -137,6 +139,14 @@ export default function PlusValue() {
   const totalImpotAnim = useAnimatedNumber(res?.totalImpot || 0);
 
   const hasResult = res && res.totalImpot > 0;
+
+  const abattChart = useMemo(() => {
+    return Array.from({ length: 31 }, (_, yr) => ({
+      x: yr,
+      ir: +(((1 - calcAbattementIR(yr) / 100) * 19)).toFixed(2),
+      ps: +(((1 - calcAbattementPS(yr) / 100) * 17.2)).toFixed(2),
+    }));
+  }, []);
 
   const report = {
     title: "Simulateur Plus-Value Immobilière",
@@ -389,6 +399,26 @@ export default function PlusValue() {
                 ⚠️ <strong>Résidence principale exonérée.</strong> Hors surtaxe (plus-value {">"}50 k€) et cas particuliers (propriété démembrée, droits d'enregistrement, frais de vente agence). Votre notaire établira le calcul exact à partir du compromis de vente.
               </div>
 
+        {/* Graphique abattements */}
+        {isValid && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Taux d'imposition selon la durée de détention
+            </div>
+            <ZoomableChart caption="Abattements par durée de détention">
+              <LineAreaChart
+                series={[
+                  { id: "ir", label: "IR effectif", points: abattChart.map(p => ({ x: p.x, y: p.ir })), color: "#f59e0b", fillColor: "rgba(245,158,11,0.10)" },
+                  { id: "ps", label: "Prél. sociaux effectifs", points: abattChart.map(p => ({ x: p.x, y: p.ps })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.08)", dashed: true },
+                ]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${v} %`}
+                annotations={res?.duree ? [{ x: res.duree, label: `Année ${res.duree}`, color: "#b8934a", dashed: true }] : []}
+                aria="Taux d'imposition selon la durée de détention"
+              />
+            </ZoomableChart>
+          </div>
+        )}
               <ShareBar
                 params={{ prixAchat, anneeAchat, anneeVente, travaux, prixVente }}
                 resultsRef={resultsRef}
