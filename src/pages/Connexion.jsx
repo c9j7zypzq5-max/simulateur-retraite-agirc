@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
+import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -19,8 +21,9 @@ export default function Connexion() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const { user, isConfigured, signUp, signIn, signInGoogle, resetPassword } = useAuth();
+  const { t, locale } = useTranslation();
 
-  const next = params.get("next") || "/compte";
+  const next = params.get("next") || localePath("/compte", locale);
   const [mode, setMode] = useState("signin"); // signin | signup | reset
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,14 +32,13 @@ export default function Connexion() {
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
-    document.title = "Connexion | simfinly.com";
+    document.title = t("auth.docTitle");
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement("meta"); robots.name = "robots"; document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, follow");
     return () => robots?.setAttribute("content", "index, follow");
-  }, []);
+  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Déjà connecté → on redirige.
   useEffect(() => { if (user) navigate(next, { replace: true }); }, [user, next, navigate]);
 
   async function handleSubmit(e) {
@@ -46,20 +48,20 @@ export default function Connexion() {
       if (mode === "reset") {
         const { error } = await resetPassword(email);
         if (error) setError(error.message);
-        else setNotice("Si un compte existe, un email de réinitialisation vient d'être envoyé.");
+        else setNotice(t("auth.noticeReset"));
         return;
       }
       const fn = mode === "signup" ? signUp : signIn;
       const { data, error } = await fn(email, password);
       if (error) { setError(error.message); return; }
       if (mode === "signup" && !data?.session) {
-        setNotice("Compte créé. Vérifiez votre email pour confirmer votre adresse, puis connectez-vous.");
+        setNotice(t("auth.noticeVerify"));
         setMode("signin");
         return;
       }
       navigate(next, { replace: true });
     } catch {
-      setError("Une erreur est survenue. Réessayez.");
+      setError(locale === "en" ? "An error occurred. Please try again." : "Une erreur est survenue. Réessayez.");
     } finally {
       setBusy(false);
     }
@@ -69,8 +71,9 @@ export default function Connexion() {
     setBusy(true); setError("");
     const { error } = await signInGoogle();
     if (error) { setError(error.message); setBusy(false); }
-    // Sinon : redirection vers Google.
   }
+
+  const legalPath = (path) => localePath(path, locale);
 
   const input = {
     width: "100%", padding: "11px 13px", borderRadius: 10,
@@ -79,24 +82,24 @@ export default function Connexion() {
     fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box",
   };
 
+  const title = mode === "signup" ? t("auth.titleSignup") : mode === "reset" ? t("auth.titleReset") : t("auth.titleSignin");
+  const subtitle = mode === "signup" ? t("auth.subtitleSignup") : mode === "reset" ? t("auth.subtitleReset") : t("auth.subtitleSignin");
+  const submitLabel = busy ? "…" : mode === "signup" ? t("auth.submitSignup") : mode === "reset" ? t("auth.submitReset") : t("auth.submitSignin");
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
       <div style={{ maxWidth: 420, margin: "0 auto", padding: "40px 16px 80px" }}>
         <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 34, fontWeight: 700, textAlign: "center", marginBottom: 8 }}>
-          {mode === "signup" ? "Créer un compte" : mode === "reset" ? "Mot de passe oublié" : "Connexion"}
+          {title}
         </h1>
         <p style={{ textAlign: "center", color: "var(--text-secondary)", fontSize: 14, marginBottom: 28 }}>
-          {mode === "signup"
-            ? "Sauvegardez vos simulations et gérez votre abonnement."
-            : mode === "reset"
-              ? "Entrez votre email pour recevoir un lien de réinitialisation."
-              : "Accédez à vos simulations et votre abonnement."}
+          {subtitle}
         </p>
 
         {!isConfigured && (
           <div style={{ background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.3)", borderRadius: 10, padding: "12px 14px", fontSize: 13, color: "#c0392b", marginBottom: 20 }}>
-            L'authentification n'est pas encore activée. Réessayez dans quelques minutes.
+            {t("auth.notConfigured")}
           </div>
         )}
 
@@ -114,18 +117,18 @@ export default function Connexion() {
                 fontFamily: "'DM Sans', sans-serif",
               }}
             >
-              <GoogleIcon /> Continuer avec Google
+              <GoogleIcon /> {t("auth.google")}
             </button>
             <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 18px", color: "var(--text-secondary)", fontSize: 12 }}>
-              <div style={{ flex: 1, height: 1, background: "var(--border)" }} /> ou <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+              <div style={{ flex: 1, height: 1, background: "var(--border)" }} /> {t("auth.or")} <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
           </>
         )}
 
         <form onSubmit={handleSubmit}>
-          <input type="email" placeholder="votre@email.com" value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" style={input} />
+          <input type="email" placeholder={t("auth.emailPlaceholder")} value={email} onChange={e => setEmail(e.target.value)} required autoComplete="email" style={input} />
           {mode !== "reset" && (
-            <input type="password" placeholder="Mot de passe" value={password} onChange={e => setPassword(e.target.value)} required minLength={8} autoComplete={mode === "signup" ? "new-password" : "current-password"} style={input} />
+            <input type="password" placeholder={t("auth.passwordPlaceholder")} value={password} onChange={e => setPassword(e.target.value)} required minLength={8} autoComplete={mode === "signup" ? "new-password" : "current-password"} style={input} />
           )}
           <button
             type="submit"
@@ -138,7 +141,7 @@ export default function Connexion() {
               cursor: busy ? "not-allowed" : "pointer", fontFamily: "'DM Sans', sans-serif",
             }}
           >
-            {busy ? "…" : mode === "signup" ? "Créer mon compte" : mode === "reset" ? "Envoyer le lien" : "Se connecter"}
+            {submitLabel}
           </button>
         </form>
 
@@ -148,16 +151,16 @@ export default function Connexion() {
         <div style={{ marginTop: 24, textAlign: "center", fontSize: 13, color: "var(--text-secondary)", lineHeight: 2 }}>
           {mode === "signin" && (
             <>
-              <button onClick={() => { setMode("reset"); setError(""); }} style={linkBtn}>Mot de passe oublié ?</button><br />
-              Pas encore de compte ? <button onClick={() => { setMode("signup"); setError(""); }} style={linkBtn}>Créer un compte</button>
+              <button onClick={() => { setMode("reset"); setError(""); }} style={linkBtn}>{t("auth.forgotPassword")}</button><br />
+              {t("auth.noAccount")} <button onClick={() => { setMode("signup"); setError(""); }} style={linkBtn}>{t("auth.createAccount")}</button>
             </>
           )}
-          {mode === "signup" && (<>Déjà un compte ? <button onClick={() => { setMode("signin"); setError(""); }} style={linkBtn}>Se connecter</button></>)}
-          {mode === "reset" && (<button onClick={() => { setMode("signin"); setError(""); }} style={linkBtn}>← Retour à la connexion</button>)}
+          {mode === "signup" && (<>{t("auth.hasAccount")} <button onClick={() => { setMode("signin"); setError(""); }} style={linkBtn}>{t("auth.submitSignin")}</button></>)}
+          {mode === "reset" && (<button onClick={() => { setMode("signin"); setError(""); }} style={linkBtn}>{t("auth.backToSignin")}</button>)}
         </div>
 
         <p style={{ marginTop: 28, fontSize: 11, color: "var(--text-secondary)", textAlign: "center", lineHeight: 1.6 }}>
-          En continuant, vous acceptez nos <Link to="/mentions-legales" style={{ color: "var(--gold)" }}>conditions</Link> et notre <Link to="/politique-de-confidentialite" style={{ color: "var(--gold)" }}>politique de confidentialité</Link>.
+          {t("auth.terms")} <Link to={legalPath("/mentions-legales")} style={{ color: "var(--gold)" }}>{t("auth.termsLink")}</Link> {locale === "en" ? "and our" : "et notre"} <Link to={legalPath("/politique-de-confidentialite")} style={{ color: "var(--gold)" }}>{t("auth.privacyLink")}</Link>.
         </p>
       </div>
       <Footer />

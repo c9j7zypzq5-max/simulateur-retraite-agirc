@@ -6,6 +6,7 @@ import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
 import LangSwitch from "./LangSwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
+import { canonicalPath, localePath } from "../i18n/paths.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
 
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
@@ -195,7 +196,7 @@ export default function Navbar({ theme, setTheme }) {
   const [openCat, setOpenCat] = useState(null);
   const catBarRef = useRef(null);
 
-  const canonPath = pathname.startsWith('/en/') ? pathname.slice(3) : pathname === '/en' ? '/' : pathname;
+  const canonPath = canonicalPath(pathname);
   const onSim = canonPath.startsWith("/simulateurs/");
   const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
   const current = ALL_ITEMS.find(i => i.path === canonPath);
@@ -695,40 +696,36 @@ export default function Navbar({ theme, setTheme }) {
 
         {/* Footer : compte + Pro status + devise + toggle thème */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-          {locale === 'fr' && (
-            <Link to={user ? "/compte" : "/connexion"} onClick={close} style={{
+          <Link to={localePath(user ? "/compte" : "/connexion", locale)} onClick={close} style={{
+            display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
+            padding: "6px 10px", borderRadius: 8, color: "var(--text-secondary)",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+          >
+            <span style={{ fontSize: 14 }}>{user ? "👤" : "→"}</span>
+            <span style={{ fontSize: 12 }}>{user ? (locale === 'en' ? "My account" : "Mon compte") : (locale === 'en' ? "Sign in / Sign up" : "Connexion / inscription")}</span>
+          </Link>
+          {isPro ? (
+            <Link to={localePath("/pro", locale)} onClick={close} style={{
               display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-              padding: "6px 10px", borderRadius: 8, color: "var(--text-secondary)",
+              padding: "6px 10px", borderRadius: 8, background: "rgba(184,147,74,0.1)",
+              border: "1px solid var(--border-gold)",
+            }}>
+              <span style={{ color: "var(--gold)", fontSize: 14 }}>★</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>{locale === 'en' ? "Pro active" : "Pro actif"}</span>
+            </Link>
+          ) : (
+            <Link to={localePath("/pro", locale)} onClick={close} style={{
+              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
+              padding: "6px 10px", borderRadius: 8,
             }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ fontSize: 14 }}>{user ? "👤" : "→"}</span>
-              <span style={{ fontSize: 12 }}>{user ? "Mon compte" : "Connexion / inscription"}</span>
+              <span style={{ color: "var(--text-secondary)", fontSize: 14 }}>★</span>
+              <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{locale === 'en' ? "Upgrade to Pro — €2.99/mo" : "Passer à Pro — 2,99 €/mois"}</span>
             </Link>
-          )}
-          {locale === 'fr' && (
-            isPro ? (
-              <Link to="/pro" onClick={close} style={{
-                display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-                padding: "6px 10px", borderRadius: 8, background: "rgba(184,147,74,0.1)",
-                border: "1px solid var(--border-gold)",
-              }}>
-                <span style={{ color: "var(--gold)", fontSize: 14 }}>★</span>
-                <span style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>Pro actif</span>
-              </Link>
-            ) : (
-              <Link to="/pro" onClick={close} style={{
-                display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-                padding: "6px 10px", borderRadius: 8,
-              }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
-              >
-                <span style={{ color: "var(--text-secondary)", fontSize: 14 }}>★</span>
-                <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>Passer à Pro — 2,99 €/mois</span>
-              </Link>
-            )
           )}
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
