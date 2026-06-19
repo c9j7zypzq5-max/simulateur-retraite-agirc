@@ -196,6 +196,11 @@ async function handleVerifySubscription(req, res, stripe, query) {
           subscription_status: 'active',
           current_period_end: periodEnd,
         }).eq('id', userId);
+        admin.from('analytics_events').insert({
+          event: 'subscription_converted',
+          user_id: userId,
+          properties: { plan: 'pro', amount: session.amount_total },
+        }).catch(() => {});
       }
     } catch { /* ne bloque pas le retour utilisateur */ }
   }
