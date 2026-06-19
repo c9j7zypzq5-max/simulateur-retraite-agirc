@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -62,9 +63,7 @@ export default function Pro() {
 
   async function handleSubscribe() {
     if (!user) {
-      const loginPath = locale === "en" ? "/en/connexion" : "/connexion";
-      const proPath = locale === "en" ? "/en/pro" : "/pro";
-      navigate(`${loginPath}?next=${proPath}`);
+      navigate(`${localePath("/connexion", locale)}?next=${localePath("/pro", locale)}`);
       return;
     }
     setLoading(true);
@@ -125,7 +124,7 @@ export default function Pro() {
   const faqItems = FAQ[locale] || FAQ.fr;
   const featuresFree = FEATURES_FREE[locale] || FEATURES_FREE.fr;
   const featuresPro = FEATURES_PRO[locale] || FEATURES_PRO.fr;
-  const homePath = locale === "en" ? "/en" : "/";
+  const homePath = localePath("/", locale);
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>

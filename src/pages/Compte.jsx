@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -24,8 +25,8 @@ export default function Compte() {
 
   useEffect(() => {
     if (!loading && !user) {
-      const loginPath = locale === "en" ? "/en/connexion" : "/connexion";
-      const next = locale === "en" ? "/en/compte" : "/compte";
+      const loginPath = localePath("/connexion", locale);
+      const next = localePath("/compte", locale);
       navigate(`${loginPath}?next=${next}`, { replace: true });
     }
   }, [loading, user, navigate, locale]);
@@ -67,8 +68,8 @@ export default function Compte() {
   const periodEnd = profile?.current_period_end
     ? new Date(profile.current_period_end).toLocaleDateString(dateLocale, { day: "numeric", month: "long", year: "numeric" })
     : null;
-  const proPath = locale === "en" ? "/en/pro" : "/pro";
-  const simsPath = locale === "en" ? "/en/mes-simulations" : "/mes-simulations";
+  const proPath = localePath("/pro", locale);
+  const simsPath = "/mes-simulations";
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>

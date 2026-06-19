@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -54,8 +55,8 @@ export default function MerciPro() {
       .catch(() => setStatus("error"));
   }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const homePath = locale === "en" ? "/en" : "/";
-  const proPath = locale === "en" ? "/en/pro" : "/pro";
+  const homePath = localePath("/", locale);
+  const proPath = localePath("/pro", locale);
   const unlockedItems = UNLOCKED[locale] || UNLOCKED.fr;
 
   return (

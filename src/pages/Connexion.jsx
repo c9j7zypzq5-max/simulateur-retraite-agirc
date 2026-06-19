@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -22,7 +23,7 @@ export default function Connexion() {
   const { user, isConfigured, signUp, signIn, signInGoogle, resetPassword } = useAuth();
   const { t, locale } = useTranslation();
 
-  const next = params.get("next") || (locale === "en" ? "/en/compte" : "/compte");
+  const next = params.get("next") || localePath("/compte", locale);
   const [mode, setMode] = useState("signin"); // signin | signup | reset
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,7 +73,7 @@ export default function Connexion() {
     if (error) { setError(error.message); setBusy(false); }
   }
 
-  const legalPath = (path) => locale === "en" ? `/en${path}` : path;
+  const legalPath = (path) => localePath(path, locale);
 
   const input = {
     width: "100%", padding: "11px 13px", borderRadius: 10,

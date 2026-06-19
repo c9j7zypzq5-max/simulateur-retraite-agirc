@@ -5,6 +5,7 @@ import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import HreflangTags from "./components/HreflangTags.jsx";
 import Home from "./pages/Home.jsx";
 
 // Pages chargées à la demande (code splitting) : chaque simulateur devient son
@@ -87,23 +88,24 @@ export default function App() {
     <CurrencyProvider>
     <BrowserRouter>
       <ScrollToTop />
+      <HreflangTags />
       <VideoRecordingToast />
       <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* ── English versions (universal simulators only) ── */}
+        {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
-        <Route path="/en/simulateurs/epargne" element={<Epargne />} />
-        <Route path="/en/simulateurs/fire" element={<Fire />} />
-        <Route path="/en/simulateurs/budget" element={<Budget />} />
-        <Route path="/en/simulateurs/patrimoine" element={<Patrimoine />} />
-        <Route path="/en/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
-        <Route path="/en/simulateurs/credit-conso" element={<CreditConso />} />
-        <Route path="/en/simulateurs/comparateur" element={<Comparateur />} />
-        <Route path="/en/outils/qr-code" element={<QrCode />} />
-        <Route path="/en/mentions-legales" element={<MentionsLegales />} />
-        <Route path="/en/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        <Route path="/en/simulators/savings" element={<Epargne />} />
+        <Route path="/en/simulators/fire" element={<Fire />} />
+        <Route path="/en/simulators/budget" element={<Budget />} />
+        <Route path="/en/simulators/wealth" element={<Patrimoine />} />
+        <Route path="/en/simulators/cost-in-hours" element={<CoutEnHeures />} />
+        <Route path="/en/simulators/consumer-credit" element={<CreditConso />} />
+        <Route path="/en/simulators/comparator" element={<Comparateur />} />
+        <Route path="/en/tools/qr-code" element={<QrCode />} />
+        <Route path="/en/legal-notice" element={<MentionsLegales />} />
+        <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />
@@ -158,14 +160,14 @@ export default function App() {
         <Route path="/pro" element={<Pro />} />
         <Route path="/en/pro" element={<Pro />} />
         <Route path="/merci" element={<Merci />} />
-        <Route path="/en/merci" element={<Merci />} />
+        <Route path="/en/thank-you" element={<Merci />} />
         <Route path="/merci-pro" element={<MerciPro />} />
-        <Route path="/en/merci-pro" element={<MerciPro />} />
+        <Route path="/en/thank-you-pro" element={<MerciPro />} />
         {/* Comptes */}
         <Route path="/connexion" element={<Connexion />} />
-        <Route path="/en/connexion" element={<Connexion />} />
+        <Route path="/en/login" element={<Connexion />} />
         <Route path="/compte" element={<Compte />} />
-        <Route path="/en/compte" element={<Compte />} />
+        <Route path="/en/account" element={<Compte />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
