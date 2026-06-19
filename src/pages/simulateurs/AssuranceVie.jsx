@@ -13,23 +13,12 @@ import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème assurance-vie ────────────────────────────────────────────────────
 // Fiscalité des rachats sur un contrat d'assurance-vie. Constantes 2025.

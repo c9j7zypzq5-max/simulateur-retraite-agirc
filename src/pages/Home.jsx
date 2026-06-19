@@ -11,6 +11,7 @@ import { Search, X } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
+import { useIsMobile } from "../hooks/useIsMobile.js";
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -210,16 +211,6 @@ function getCachedScores() {
     if (cached && Date.now() - cached.ts < 10 * 60 * 1000) return cached.data;
   } catch {}
   return null;
-}
-
-function useIsMobile(breakpoint = 480) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const handler = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", handler, { passive: true });
-    return () => window.removeEventListener("resize", handler);
-  }, [breakpoint]);
-  return mobile;
 }
 
 function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
