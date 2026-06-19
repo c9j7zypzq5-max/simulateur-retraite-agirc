@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -12,9 +12,8 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
-import ZoomableChart from "../../components/ZoomableChart.jsx";
-import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
@@ -223,17 +222,6 @@ export default function Msa() {
   const hasResult = (isExploitant ? res.pensionTotale : res.pensionBaseNette) > 0;
 
   const pensionTotaleMsa = isExploitant ? res.pensionTotale : res.pensionBaseNette;
-
-  const pensionParAge = useMemo(() => {
-    if (!hasResult) return [];
-    return [62, 63, 64, 65, 66, 67, 68, 69, 70].map(age => ({
-      x: age,
-      y: type === "exploitant"
-        ? calcMsaExploitant({ revenu: revenuSalaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).pensionTotale
-        : calcMsaSalarie({ salaire: revenuSalaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).pensionBaseNette,
-    }));
-  }, [type, revenuSalaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
-
   const report = {
     title: "Simulateur Retraite Agricole MSA",
     highlight: { label: isExploitant ? "Pension nette mensuelle (base + RCO)" : "Pension nette mensuelle (base MSA)", value: hasResult ? fmtEur(pensionTotaleMsa) : "—" },
@@ -461,23 +449,7 @@ export default function Msa() {
         </div>
 
         <ShareBar params={{ type, revenuSalaire, anneeNaissance, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="msa" />
-
-        {hasResult && pensionParAge.length > 0 && (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
-              Pension selon l'âge de départ
-            </div>
-            <ZoomableChart caption="Pension selon l'âge de départ">
-              <LineAreaChart
-                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" }]}
-                xFmt={(v) => `${v} ans`}
-                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
-                aria="Pension selon l'âge de départ"
-              />
-            </ZoomableChart>
-          </div>
-        )}
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="msa"

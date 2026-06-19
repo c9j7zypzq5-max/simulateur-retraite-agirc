@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -742,6 +743,7 @@ export default function Patrimoine() {
                   name="patrimoine"
                 />
               </div>
+              <AffiliateCTA type="epargne" />
             </>
           )}
         </div>

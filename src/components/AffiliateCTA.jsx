@@ -43,6 +43,15 @@ const PARTNERS = {
       { name: "Fortuneo", tagline: "Bourse + AV + livrets · tout-en-un", url: "https://www.fortuneo.fr/" },
     ],
   },
+  credit: {
+    title: "Comparez les offres de crédit conso",
+    subtitle: "Trouvez le meilleur taux pour votre crédit à la consommation",
+    partners: [
+      { name: "Younited Credit", tagline: "100 % en ligne · réponse immédiate", url: "https://www.younited-credit.com/" },
+      { name: "Cofidis", tagline: "Spécialiste crédit depuis 40 ans", url: "https://www.cofidis.fr/" },
+      { name: "Cetelem", tagline: "Crédit responsable · BNP Paribas", url: "https://www.cetelem.fr/" },
+    ],
+  },
 };
 
 export default function AffiliateCTA({ type }) {

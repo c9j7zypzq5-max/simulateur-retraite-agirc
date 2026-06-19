@@ -6,6 +6,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { mensualite } from "../../utils/finance.js";
@@ -359,6 +360,7 @@ export default function Ptz() {
                 report={report}
                 name="ptz"
               />
+              {hasInput && <AffiliateCTA type="emprunt" />}
             </div>
 
             {eligible && (

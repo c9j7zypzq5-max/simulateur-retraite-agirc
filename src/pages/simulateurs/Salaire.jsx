@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -544,7 +545,7 @@ export default function Salaire() {
               report={report}
               name="salaire"
             />
-
+            {brut && <AffiliateCTA type="per" />}
             <div style={{ marginTop: 16 }}>
               <ScenarioCompare
                 name="salaire"
