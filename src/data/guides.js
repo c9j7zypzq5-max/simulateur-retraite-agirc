@@ -224,7 +224,7 @@ export const GUIDES = [
         ],
       },
       {
-        h2: 'Le coefficient d'abattement temporaire',
+        h2: "Le coefficient d'abattement temporaire",
         body: [
           "Si vous partez dès que vous avez le taux plein (sans attendre 1 à 4 ans de plus), l'Agirc-Arrco applique un coefficient d'abattement de 10 % pendant 3 ans. Pour l'éviter, il faut différer son départ.",
           "Ce mécanisme, souvent méconnu, peut réduire significativement votre première pension complémentaire. Notre simulateur vous aide à mesurer l'impact.",
