@@ -79,7 +79,7 @@ export default function Connexion() {
     width: "100%", padding: "11px 13px", borderRadius: 10,
     border: "1px solid var(--border)", background: "var(--bg)",
     color: "var(--text)", fontSize: 14, marginBottom: 12,
-    fontFamily: "'DM Sans', sans-serif", boxSizing: "border-box",
+    fontFamily: "'Hanken Grotesk', sans-serif", boxSizing: "border-box",
   };
 
   const title = mode === "signup" ? t("auth.titleSignup") : mode === "reset" ? t("auth.titleReset") : t("auth.titleSignin");
@@ -87,10 +87,10 @@ export default function Connexion() {
   const submitLabel = busy ? "…" : mode === "signup" ? t("auth.submitSignup") : mode === "reset" ? t("auth.submitReset") : t("auth.submitSignin");
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
       <div style={{ maxWidth: 420, margin: "0 auto", padding: "40px 16px 80px" }}>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 34, fontWeight: 700, textAlign: "center", marginBottom: 8 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 34, fontWeight: 700, textAlign: "center", marginBottom: 8 }}>
           {title}
         </h1>
         <p style={{ textAlign: "center", color: "var(--text-secondary)", fontSize: 14, marginBottom: 28 }}>
@@ -114,7 +114,7 @@ export default function Connexion() {
                 color: "var(--text)", fontSize: 14, fontWeight: 500,
                 cursor: busy ? "not-allowed" : "pointer", display: "flex",
                 alignItems: "center", justifyContent: "center", gap: 10,
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Hanken Grotesk', sans-serif",
               }}
             >
               <GoogleIcon /> {t("auth.google")}
@@ -138,7 +138,7 @@ export default function Connexion() {
               background: busy ? "var(--border)" : "var(--gold)",
               color: busy ? "var(--text-secondary)" : "#1a1000",
               border: "none", fontSize: 14, fontWeight: 700,
-              cursor: busy ? "not-allowed" : "pointer", fontFamily: "'DM Sans', sans-serif",
+              cursor: busy ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif",
             }}
           >
             {submitLabel}
@@ -170,5 +170,5 @@ export default function Connexion() {
 
 const linkBtn = {
   background: "none", border: "none", color: "var(--gold)",
-  cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "'DM Sans', sans-serif",
+  cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "'Hanken Grotesk', sans-serif",
 };

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
@@ -21,6 +22,7 @@ import {
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Translations ──────────────────────────────────────────────────────────────
 const TXT = {
@@ -341,7 +343,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
         <polygon points={immoFill} fill="rgba(168,85,247,0.12)" />
       )}
       {/* Financier area */}
-      <polygon points={finFill} fill="rgba(184,147,74,0.15)" />
+      <polygon points={finFill} fill="rgba(43,92,230,0.10)" />
 
       {/* Immo line */}
       {immoActive && (
@@ -360,7 +362,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
       <polyline
         points={finPts}
         fill="none"
-        stroke="var(--gold)"
+        stroke="var(--primary)"
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -373,7 +375,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
       {/* Labels âge */}
       {ages.map(d => (
         <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}
         </text>
       ))}
@@ -381,18 +383,18 @@ function StackedChart({ projectionData, immoActive, txt }) {
       {/* Labels Y */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {fmtK(t.val)}
         </text>
       ))}
 
       {/* Légende */}
-      <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--gold)" />
-      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.financier}</text>
+      <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--primary)" />
+      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">{txt.financier}</text>
       {immoActive && (
         <>
           <circle cx={PAD.left + 70} cy={PAD.top - 8} r="4" fill="#a855f7" opacity="0.8" />
-          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.immobilier}</text>
+          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">{txt.immobilier}</text>
         </>
       )}
     </svg>
@@ -417,7 +419,7 @@ function YearTable({ projectionData, immoActive, txt }) {
           {projectionData.slice(1).map(d => (
             <tr key={d.annee} style={{ borderBottom: '1px solid var(--border)' }}>
               <td style={{ padding: '9px 0', color: 'var(--text)' }}>{txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}</td>
-              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--gold)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
+              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--primary)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
               {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
               <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
@@ -456,9 +458,9 @@ export default function Patrimoine() {
   const { getProfile, updateProfile } = useProfile();
   const { saveEntry } = useSimHistory();
 
+  usePageMeta(txt.docTitle, txt.metaDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = locale === 'en'
@@ -555,7 +557,7 @@ export default function Patrimoine() {
   }, [res, ageCible, saveEntry, txt]);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -571,7 +573,7 @@ export default function Patrimoine() {
 
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/patrimoine" size={34} />}
           badge={txt.badge}
@@ -579,23 +581,23 @@ export default function Patrimoine() {
           desc={txt.pageDesc}
         />
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
           {[txt.featureCapFinancier, txt.featureImmo, txt.featureRetraite, txt.featureLocal].map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '32px 28px', boxShadow: 'var(--card-shadow)' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', boxShadow: 'var(--card-shadow)' }}>
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
             {txt.sectionHorizon}
           </h2>
           <NumInput id="age-actuel" label={txt.labelAgeActuel} value={ageActuel} onChange={setAge} unit={txt.ageSuffix || "ans"} min={15} max={80} />
           <StepperInput label={txt.labelAgeCible} value={ageCible} onChange={setAgeCible} min={(ageActuel || 35) + 1} max={85} step={1} unit={txt.ageSuffix || "ans"}
             hint={ageActuel ? txt.hintAgeCibleProjection((ageCible || 65) - ageActuel) : txt.hintAgeCible} />
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             {txt.sectionEpargne}
           </h2>
           <NumInput id="capital-financier" label={txt.labelCapFinancier} value={capitalFinancier} onChange={setCapFin} unit={activeSymbol()} min={0} max={10000000}
@@ -608,8 +610,8 @@ export default function Patrimoine() {
             <HistoricalReturnPicker duration={(ageCible || 65) - (ageActuel || 35)} onSelect={setRend} />
           </div>
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
+            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: immoActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleImmo}</span>
@@ -625,8 +627,8 @@ export default function Patrimoine() {
             </>
           )}
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
+            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: retraiteActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleRetraite}</span>
@@ -642,8 +644,8 @@ export default function Patrimoine() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '32px 28px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
             {txt.resultsTitle(ageCible || 65)}
           </h2>
 
@@ -655,10 +657,10 @@ export default function Patrimoine() {
             <>
               {/* Héro */}
               <div style={{ textAlign: 'center', padding: '16px 0 24px', borderBottom: '1px solid var(--border)', marginBottom: 20 }}>
-                <div style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 10 }}>
+                <div style={{ fontSize: 13, color: 'var(--text-secondary)', fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                   {txt.heroLabel}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: 'var(--primary)', lineHeight: 1 }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
@@ -678,17 +680,17 @@ export default function Patrimoine() {
 
               {/* Composition */}
               {res.patrimoineFinal > 0 && (
-                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 20px', marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 14 }}>
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 20px', marginBottom: 20 }}>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text-secondary)', marginBottom: 14 }}>
                     {txt.compositionTitle}
                   </div>
                   <div style={{ display: 'flex', gap: 4, height: 10, borderRadius: 5, overflow: 'hidden', marginBottom: 12 }}>
-                    <div style={{ width: `${pctFinancier}%`, background: 'var(--gold)', borderRadius: '5px 0 0 5px', transition: 'width 0.6s' }} />
+                    <div style={{ width: `${pctFinancier}%`, background: 'var(--primary)', borderRadius: '5px 0 0 5px', transition: 'width 0.6s' }} />
                     {immoActive && <div style={{ width: `${pctImmo}%`, background: '#a855f7', transition: 'width 0.6s' }} />}
                   </div>
                   <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: 'var(--text-secondary)' }}>
-                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--gold)', flexShrink: 0 }} />
+                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--primary)', flexShrink: 0 }} />
                       {txt.financier} — {Math.round(pctFinancier)} %
                     </div>
                     {immoActive && res.valeurImmoFinal > 0 && (
@@ -704,7 +706,7 @@ export default function Patrimoine() {
               {/* Graphique */}
               {res.projectionData.length >= 2 && (
                 <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 8 }}>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text-secondary)', marginBottom: 8 }}>
                     {txt.projectionTitle}
                   </div>
                   <ZoomableChart innerRef={chartRef}>
@@ -713,7 +715,7 @@ export default function Patrimoine() {
                 </div>
               )}
 
-              <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}
+              <div role="note" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}
                 dangerouslySetInnerHTML={{ __html: txt.disclaimer }}
               />
 
@@ -742,6 +744,7 @@ export default function Patrimoine() {
                   name="patrimoine"
                 />
               </div>
+              <AffiliateCTA type="epargne" />
             </>
           )}
         </div>
@@ -775,8 +778,8 @@ export default function Patrimoine() {
           </AccordionSection>
         )}
 
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
             {txt.aboutTitle}
           </h2>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 14 }}>

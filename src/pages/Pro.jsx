@@ -127,7 +127,7 @@ export default function Pro() {
   const homePath = localePath("/", locale);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -143,7 +143,7 @@ export default function Pro() {
             borderRadius: 20, padding: "5px 14px", marginBottom: 20,
             fontSize: 12, fontWeight: 600, color: "var(--gold)", letterSpacing: "0.06em",
           }}>{t("pro.badge")}</div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(30px,6vw,48px)", fontWeight: 700, color: "var(--text)", margin: "0 0 12px" }}>
+          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(30px,6vw,48px)", fontWeight: 700, color: "var(--text)", margin: "0 0 12px" }}>
             {t("pro.title")}
           </h1>
           <p style={{ fontSize: 15, color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 520, margin: "0 auto" }}>
@@ -212,7 +212,7 @@ export default function Pro() {
                   color: loading ? "var(--text-secondary)" : "#1a1000",
                   border: "none", fontSize: 14, fontWeight: 700,
                   cursor: loading ? "not-allowed" : "pointer",
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Hanken Grotesk', sans-serif",
                 }}
               >
                 {loading ? t("pro.redirecting") : user ? t("pro.subscribeBtn") : t("pro.loginToSubscribe")}
@@ -229,7 +229,7 @@ export default function Pro() {
 
         {/* FAQ */}
         <div style={{ marginBottom: 40 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, marginBottom: 16, color: "var(--text)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, marginBottom: 16, color: "var(--text)" }}>
             {t("pro.faqTitle")}
           </h2>
           {faqItems.map(([q, a]) => (

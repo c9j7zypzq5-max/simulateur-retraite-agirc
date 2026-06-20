@@ -43,6 +43,15 @@ const PARTNERS = {
       { name: "Fortuneo", tagline: "Bourse + AV + livrets · tout-en-un", url: "https://www.fortuneo.fr/" },
     ],
   },
+  credit: {
+    title: "Comparez les offres de crédit conso",
+    subtitle: "Trouvez le meilleur taux pour votre crédit à la consommation",
+    partners: [
+      { name: "Younited Credit", tagline: "100 % en ligne · réponse immédiate", url: "https://www.younited-credit.com/" },
+      { name: "Cofidis", tagline: "Spécialiste crédit depuis 40 ans", url: "https://www.cofidis.fr/" },
+      { name: "Cetelem", tagline: "Crédit responsable · BNP Paribas", url: "https://www.cetelem.fr/" },
+    ],
+  },
 };
 
 export default function AffiliateCTA({ type }) {
@@ -51,7 +60,7 @@ export default function AffiliateCTA({ type }) {
 
   return (
     <div style={{
-      background: "rgba(184,147,74,0.05)",
+      background: "rgba(43,92,230,0.04)",
       border: "1px solid var(--border-gold)",
       borderRadius: 16,
       padding: "18px 20px",
@@ -83,7 +92,7 @@ export default function AffiliateCTA({ type }) {
             }}
             onMouseEnter={e => {
               e.currentTarget.style.borderColor = "var(--gold-mid)";
-              e.currentTarget.style.background = "rgba(184,147,74,0.06)";
+              e.currentTarget.style.background = "rgba(43,92,230,0.05)";
             }}
             onMouseLeave={e => {
               e.currentTarget.style.borderColor = "var(--border)";

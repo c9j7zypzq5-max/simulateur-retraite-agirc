@@ -7,9 +7,11 @@ import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
 import { prefetchRoute } from "../utils/prefetch.js";
 import { GLOSSARY } from "../data/glossaire.js";
-import { Search, X } from "lucide-react";
+import { Search, X, LayoutGrid, Clock, ShieldCheck } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
+import { useAuth } from "../hooks/useAuth.js";
+import { useIsMobile } from "../hooks/useIsMobile.js";
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -181,7 +183,7 @@ function Particles() {
         ))}
       </defs>
       {PARTICLES.map((p, i) => (
-        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill="rgba(184,147,74,0.55)"
+        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill="rgba(43,92,230,0.25)"
           style={{ animation: `drift-${i} ${p.dur} ease-in-out infinite`, animationDelay: `${(i * 1.3).toFixed(1)}s` }} />
       ))}
     </svg>
@@ -211,16 +213,6 @@ function getCachedScores() {
   return null;
 }
 
-function useIsMobile(breakpoint = 480) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const handler = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", handler, { passive: true });
-    return () => window.removeEventListener("resize", handler);
-  }, [breakpoint]);
-  return mobile;
-}
-
 function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
   const refs = useRef({});
   const barRef = useRef(null);
@@ -242,22 +234,22 @@ function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
       {!isMobile && (
         <div style={{
           position: "absolute", top: indicator.top, left: indicator.left, width: indicator.width, height: indicator.height,
-          background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", borderRadius: 20,
+          background: "var(--primary)", borderRadius: 20,
           transition: "left 0.3s cubic-bezier(0.4,0,0.2,1), top 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)",
           pointerEvents: "none", zIndex: 0,
         }} />
       )}
-      <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>{filterPrefix}</span>
+      <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>{filterPrefix}</span>
       {filters.map(f => {
         const isActive = activeFilter === f;
         return (
           <button key={f} ref={el => { refs.current[f] = el; }} onClick={() => setActiveFilter(f)}
             style={{
-              background: isMobile && isActive ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${isActive ? (isMobile ? "var(--border-gold)" : "transparent") : "var(--border)"}`,
-              color: isActive ? "var(--gold)" : "var(--text-secondary)",
-              padding: "9px 16px", borderRadius: 20, fontSize: "0.8rem",
-              cursor: "pointer", fontFamily: "'DM Sans', sans-serif",
+              background: isActive ? (isMobile ? "var(--primary)" : "transparent") : "var(--surface)",
+              border: `1.5px solid ${isActive ? "var(--primary)" : "var(--border)"}`,
+              color: isActive ? "#fff" : "var(--text-secondary)",
+              padding: "6px 16px", borderRadius: 20, fontSize: 13,
+              cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500,
               transition: "color 0.2s, border-color 0.2s, background 0.2s", position: "relative", zIndex: 1,
             }}>
             {f}
@@ -272,6 +264,7 @@ export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
   const txt = TXT[locale] ?? TXT.fr;
+  useAuth();
 
   const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : SIMULATEURS_FR;
   const FILTERS = locale === 'en' ? FILTERS_EN : FILTERS_FR;
@@ -347,38 +340,43 @@ export default function Home() {
     : [];
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", overflowX: "clip" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Hero ── */}
       <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto", position: "relative" }}>
         <Particles />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
+          <div style={{ display: "inline-flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: 8, maxWidth: "100%", background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.2)", color: "var(--primary)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.5, padding: "6px 14px", borderRadius: 20, marginBottom: 24 }}>
             <span style={{ opacity: 0.7 }}>✦</span> {txt.heroBadge} <span style={{ opacity: 0.7 }}>✦</span>
           </div>
-          <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2.2rem,5vw,3.4rem)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20 }}>
-            {txt.heroTitle}<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>{txt.heroEm}</em>
+          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20, letterSpacing: "-0.02em" }}>
+            {txt.heroTitle}<br /><em style={{ fontStyle: "italic", color: "var(--primary)" }}>{txt.heroEm}</em>
           </h1>
-          <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
+          <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(16px, 2vw, 18px)", color: "var(--text-secondary)", fontWeight: 400, lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
             {txt.heroDesc}
           </p>
-          <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
+          <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
             {[
-              { v: simCount, l: txt.stat1Label },
-              { v: txt.stat2, l: txt.stat2Label },
-              { v: txt.stat3, l: txt.stat3Label },
-            ].map(({ v, l }) => (
-              <div key={l} style={{ textAlign: "center" }}>
-                <strong style={{ display: "block", fontFamily: "'Cormorant Garamond', serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--gold)" }}>{v}</strong>
-                <small style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>{l}</small>
+              { v: simCount, l: txt.stat1Label, Icon: LayoutGrid },
+              { v: txt.stat2, l: txt.stat2Label, Icon: Clock },
+              { v: txt.stat3, l: txt.stat3Label, Icon: ShieldCheck },
+            ].map(({ v, l, Icon }) => (
+              <div key={l} style={{ textAlign: "center", background: "var(--surface)", borderRadius: 14, border: "1px solid var(--border)", padding: "18px 24px", boxShadow: "var(--card-shadow)", minWidth: 130 }}>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: 10, background: "var(--primary-soft)", color: "var(--primary)" }}>
+                    <Icon size={18} />
+                  </span>
+                </div>
+                <strong style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--primary)", lineHeight: 1.1 }}>{v}</strong>
+                <small style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--text-secondary)" }}>{l}</small>
               </div>
             ))}
           </div>
           {totalViews > 0 && (
-            <div style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: "var(--text-secondary)", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)", padding: "6px 16px", borderRadius: 20 }}>
+            <div style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: "var(--text-secondary)", background: "var(--surface)", border: "1px solid var(--border)", padding: "6px 16px", borderRadius: 20 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", display: "inline-block", boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
-              <span><strong style={{ color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: "1rem" }}>{txt.simCountFmt(displayedViews)}</strong> {txt.simCountLabel}</span>
+              <span><strong style={{ color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1rem" }}>{txt.simCountFmt(displayedViews)}</strong> {txt.simCountLabel}</span>
             </div>
           )}
         </div>
@@ -391,12 +389,12 @@ export default function Home() {
         }
       `}</style>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
+      <div className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
         <AdUnit slot="auto" format="auto" />
       </div>
 
       {/* ── Recherche ── */}
-      <div style={{ maxWidth: 1280, margin: "0 auto 18px", padding: "0 24px" }}>
+      <div className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 18px", padding: "0 24px" }}>
         <div style={{ position: "relative", maxWidth: 540, margin: "0 auto" }}>
           <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "var(--text-secondary)", display: "flex", pointerEvents: "none" }}>
             <Search size={18} />
@@ -404,9 +402,9 @@ export default function Home() {
           <input
             type="search" value={query} onChange={e => setQuery(e.target.value)}
             placeholder={txt.searchPlaceholder} aria-label={txt.searchAriaLabel}
-            style={{ width: "100%", padding: "13px 44px", borderRadius: 14, background: "var(--input-bg)", border: "1px solid var(--border)", color: "var(--text)", fontSize: 15, fontFamily: "'DM Sans', sans-serif", boxShadow: "var(--input-shadow)", outline: "none" }}
-            onFocus={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
-            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; }}
+            style={{ width: "100%", padding: "12px 44px", borderRadius: 12, background: "var(--surface)", border: "1.5px solid var(--border)", color: "var(--text)", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
+            onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
           />
           {query && (
             <button onClick={() => setQuery("")} aria-label={txt.clearSearch}
@@ -418,13 +416,13 @@ export default function Home() {
       </div>
 
       {/* ── Filter bar ── */}
-      <div className="filter-bar" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
+      <div className="filter-bar home-pad" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
         <FilterBar activeFilter={activeFilter} setActiveFilter={setActiveFilter} filters={FILTERS} filterPrefix={txt.filterPrefix} />
       </div>
 
       {/* ── Grid ── */}
-      <section style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
-        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.4rem", fontWeight: 600, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
+      <section className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
+        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
           {txt.gridTitle}
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
@@ -446,7 +444,7 @@ export default function Home() {
         {/* Résultats lexique (FR only) */}
         {txt.lexiqueSection && nq && lexMatches.length > 0 && (
           <div style={{ marginTop: 40 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
               {txt.lexiqueSection}
               <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
@@ -463,21 +461,23 @@ export default function Home() {
         {/* Résultats blog (FR only) */}
         {txt.blogSection && nq && artMatches.length > 0 && (
           <div style={{ marginTop: 40 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
               {txt.blogSection}
               <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,260px),1fr))", gap: 14 }}>
               {artMatches.map(a => (
                 <Link key={a.slug} to={`/blog/${a.slug}`} style={{ display: "block", textDecoration: "none", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "16px 18px", color: "var(--text)" }}>
                   <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, lineHeight: 1.3 }}>{a.title}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, lineHeight: 1.3 }}>{a.title}</div>
                 </Link>
               ))}
             </div>
           </div>
         )}
       </section>
+
+      {/* Pro CTA removed */}
 
       <Footer />
     </div>
@@ -489,30 +489,30 @@ function FeaturedCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} className="sim-featured" style={{
-      background: "linear-gradient(145deg,rgba(184,147,74,0.07),var(--card-bg))",
-      border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28,
+      background: "var(--primary-soft)",
+      border: `1px solid ${hovered ? "var(--primary)" : "var(--border-gold)"}`, borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start", textDecoration: "none",
       position: "relative", overflow: "hidden",
       transition: `transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0, translate: visible ? "0 0" : "0 24px",
       transform: hovered ? "perspective(800px) rotateY(3deg) translateY(-2px)" : "perspective(800px) rotateY(0deg) translateY(0)",
-      boxShadow: hovered ? "0 12px 40px rgba(184,147,74,0.2), 0 4px 12px rgba(0,0,0,0.15)" : "none",
+      boxShadow: hovered ? "0 4px 16px rgba(15,24,40,0.1)" : "0 1px 3px rgba(15,24,40,0.06)",
     }}
       onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
-      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}>
+      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)", background: "rgba(43,92,230,0.15)", border: "1px solid rgba(43,92,230,0.3)", flexShrink: 0 }}>
         <SimIcon path={sim.path} size={28} />
       </div>
       <div style={{ flex: 1 }}>
         <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
           {sim.badges.map(b => <BadgePill key={b} type={b} txt={txt} />)}
         </div>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
-        <p style={{ fontSize: "0.87rem", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
+        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.87rem", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
-          <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--gold)" }}>{txt.ctaFeatured}</span>
+          <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--primary)" }}>{txt.ctaFeatured}</span>
         </div>
       </div>
     </LocaleLink>
@@ -524,21 +524,21 @@ function SimCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} style={{
-      background: "var(--card-bg)",
-      border: `1px solid ${hovered ? "var(--border-gold)" : "var(--border)"}`,
-      borderRadius: 14, padding: 28,
+      background: "var(--surface)",
+      border: `1.5px solid ${hovered ? "var(--primary)" : "var(--border)"}`,
+      borderRadius: 14, padding: "20px",
       display: "flex", flexDirection: "column", gap: 16,
       textDecoration: "none", position: "relative", overflow: "hidden",
-      transition: `border-color 0.25s, transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
+      transition: `border-color 0.2s, transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0, translate: visible ? "0 0" : "0 24px",
-      transform: hovered ? "perspective(800px) rotateY(3deg) translateY(-2px)" : "perspective(800px) rotateY(0deg) translateY(0)",
-      boxShadow: hovered ? "0 12px 40px rgba(184,147,74,0.15), 0 4px 12px rgba(0,0,0,0.12)" : "none",
+      transform: hovered ? "translateY(-4px)" : "translateY(0)",
+      boxShadow: hovered ? "0 8px 28px rgba(43,92,230,0.18)" : "var(--card-shadow)",
     }}
       onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}>
+        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)", background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.15)" }}>
           <SimIcon path={sim.path} size={24} />
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -546,12 +546,12 @@ function SimCard({ sim, index, visible, txt }) {
         </div>
       </div>
       <div style={{ flex: 1 }}>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
-        <p style={{ fontSize: "0.84rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{sim.desc}</p>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
+        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{sim.desc}</p>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
-        <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--gold)" }}>{txt.ctaCard}</span>
+        <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg, var(--bg))", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
+        <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--primary)" }}>{txt.ctaCard}</span>
       </div>
     </LocaleLink>
   );

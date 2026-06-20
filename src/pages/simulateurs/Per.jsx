@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -8,25 +10,15 @@ import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème PER ────────────────────────────────────────────────────────────────
 // Plan d'Épargne Retraite (PER individuel). Constantes 2026.
@@ -71,7 +63,7 @@ function computePer({ versement, revenu, tmi, ageActuel, ageDepart, rendement })
   return { economieAnnuelle, capital };
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -106,8 +98,8 @@ export default function Per() {
   const isMobile = useIsMobile();
 
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: isMobile ? "20px 16px" : "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -120,9 +112,9 @@ export default function Per() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur PER 2025 — Économie d'impôt et capital retraite", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
+
   useEffect(() => {
-    document.title = "Simulateur PER 2025 — Économie d'impôt et capital retraite";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -168,6 +160,15 @@ export default function Per() {
   const hasInput = versementAnnuel > 0 && annees > 0;
   const auDelaPlafond = versementAnnuel > plafond;
 
+  const perChart = useMemo(() => {
+    if (!hasInput) return [];
+    return Array.from({ length: annees + 1 }, (_, y) => ({
+      x: ageActuel + y,
+      capital: capitalProjete(versementAnnuel, rendement, y),
+      verse: versementAnnuel * y,
+    }));
+  }, [versementAnnuel, rendement, annees, ageActuel, hasInput]);
+
   const animCapital = useAnimatedNumber(capital);
   const animEconomie = useAnimatedNumber(economieAnnuelle);
 
@@ -197,7 +198,7 @@ export default function Per() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur PER — Plan d'Épargne Retraite 2026",
@@ -216,7 +217,7 @@ export default function Per() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/per" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -254,10 +255,10 @@ export default function Per() {
                         aria-pressed={active}
                         style={{
                           flex: "1 1 0", minWidth: 56, padding: "10px 8px", borderRadius: 12, cursor: "pointer",
-                          background: active ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                          background: active ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
                           border: `1.5px solid ${active ? "var(--gold-mid)" : "var(--border)"}`,
                           color: active ? "var(--gold)" : "var(--text)",
-                          fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700,
+                          fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700,
                           transition: "border-color 0.2s, background 0.2s",
                         }}
                         onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
@@ -286,8 +287,8 @@ export default function Per() {
 
           {/* ── Colonne résultats ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Capital projeté à la retraite
               </div>
               {!hasInput ? (
@@ -296,7 +297,7 @@ export default function Per() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtEur(Math.round(animCapital))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -333,12 +334,31 @@ export default function Per() {
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 6 }}>
                   Économie d'impôt cumulée sur {annees} ans
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
                   ≈ {fmtEur(Math.round(totalEconomie))}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.6 }}>
                   En déduisant {fmtEur(versementDeductible)}/an à une TMI de {tmi} %, vous économisez environ {fmtEur(Math.round(economieAnnuelle))} d'impôt chaque année.
                 </div>
+              </div>
+            )}
+
+            {hasInput && perChart.length > 1 && (
+              <div style={card}>
+                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
+                  Projection du capital dans le temps
+                </div>
+                <ZoomableChart caption="Capital PER et total versé selon l'âge">
+                  <LineAreaChart
+                    series={[
+                      { id: "capital", label: "Capital projeté", points: perChart.map(p => ({ x: p.x, y: p.capital })), color: "var(--primary)" },
+                      { id: "verse", label: "Total versé", points: perChart.map(p => ({ x: p.x, y: p.verse })), color: "#6eb5d4", strokeWidth: 1.5, dashed: true },
+                    ]}
+                    xFmt={v => `${v} ans`}
+                    yFmt={v => v >= 1000000 ? `${(v / 1000000).toFixed(1)}M€` : v >= 1000 ? `${Math.round(v / 1000)}k€` : `${Math.round(v)} €`}
+                    aria="Projection du capital PER selon l'âge"
+                  />
+                </ZoomableChart>
               </div>
             )}
 
@@ -356,7 +376,7 @@ export default function Per() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -392,14 +412,14 @@ export default function Per() {
         </div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PER</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PER</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un produit d'épargne retraite défiscalisant</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un produit d'épargne retraite défiscalisant</h3>
             <p style={{ marginBottom: 16 }}>Le Plan d'Épargne Retraite (PER), issu de la loi PACTE de 2019, permet de se constituer un complément de revenu pour la retraite tout en réduisant son impôt. Les versements volontaires sont déductibles du revenu imposable, ce qui génère une économie d'impôt proportionnelle à votre tranche marginale d'imposition (TMI) : plus celle-ci est élevée, plus l'avantage est important. L'épargne reste investie et bloquée jusqu'au départ en retraite.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le plafond de déduction</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le plafond de déduction</h3>
             <p style={{ marginBottom: 16 }}>La déduction des versements est plafonnée : pour un salarié, elle correspond à 10 % des revenus professionnels nets de l'année précédente, dans la limite de 8 PASS (soit 38 448 € en 2026 avec un PASS à 48 060 €), avec un plancher de 10 % du PASS (4 806 €). Les plafonds non utilisés des trois dernières années sont reportables et les conjoints peuvent les mutualiser, ce qui peut considérablement augmenter la capacité de déduction.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La fiscalité à la sortie</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La fiscalité à la sortie</h3>
             <p>L'avantage fiscal à l'entrée se « paie » en partie à la sortie. En sortie en capital, la fraction correspondant aux versements déduits est soumise au barème de l'impôt sur le revenu, et les plus-values au prélèvement forfaitaire unique de 30 %. En rente viagère, les sommes sont imposées comme une pension. L'intérêt du PER est donc maximal lorsque la TMI est plus élevée pendant la vie active qu'à la retraite.</p>
           </div>
         </div>

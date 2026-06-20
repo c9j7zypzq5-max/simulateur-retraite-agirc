@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -8,26 +8,18 @@ import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Barème assurance-vie ────────────────────────────────────────────────────
 // Fiscalité des rachats sur un contrat d'assurance-vie. Constantes 2025.
@@ -72,7 +64,7 @@ function capitalFinal(initial, mensuel, tauxPct, annees) {
   return fvInitial + fvFlux;
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -107,8 +99,8 @@ export default function AssuranceVie() {
   const isMobile = useIsMobile();
 
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: isMobile ? "20px 16px" : "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -120,9 +112,9 @@ export default function AssuranceVie() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Assurance-Vie 2025 — Capital, gains et fiscalité", "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.");
+
   useEffect(() => {
-    document.title = "Simulateur Assurance-Vie 2025 — Capital, gains et fiscalité";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -175,6 +167,15 @@ export default function AssuranceVie() {
   const animNet = useAnimatedNumber(capitalNet);
   const animPlusValue = useAnimatedNumber(plusValue);
 
+  const avProjection = useMemo(() => {
+    if (!hasInput || duree < 1) return [];
+    return Array.from({ length: duree + 1 }, (_, y) => ({
+      x: y,
+      verse: versementInitial + versementMensuel * 12 * y,
+      brut: y === 0 ? versementInitial : capitalFinal(versementInitial, versementMensuel, rendement, y),
+    }));
+  }, [versementInitial, versementMensuel, rendement, duree, hasInput]);
+
   const report = {
     title: "Simulateur Assurance-Vie",
     highlight: { label: "Capital net à terme", value: hasInput ? fmtEur(Math.round(capitalNet)) : "—" },
@@ -200,7 +201,7 @@ export default function AssuranceVie() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Assurance-Vie 2025",
@@ -219,7 +220,7 @@ export default function AssuranceVie() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/assurance-vie" size={34} />}
           badge="Finances · Simulation 2025"
@@ -228,7 +229,7 @@ export default function AssuranceVie() {
           desc="Projetez la croissance de votre contrat et estimez l'impôt sur les gains au rachat selon l'âge du contrat (avant ou après 8 ans). Abattement, PFU et prélèvements sociaux inclus."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24 }}>
 
           {/* ── Colonne formulaire ── */}
           <div style={{ order: isMobile ? 2 : 1 }}>
@@ -260,8 +261,8 @@ export default function AssuranceVie() {
 
           {/* ── Colonne résultats ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Capital net à terme
               </div>
               {!hasInput ? (
@@ -270,7 +271,7 @@ export default function AssuranceVie() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtEur(Math.round(animNet))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -334,13 +335,34 @@ export default function AssuranceVie() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
             )}
           </div>
         </div>
+
+        {/* Graphique projection */}
+        {hasInput && avProjection.length > 1 && (
+          <div style={{ ...card, marginBottom: 24 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Projection année par année
+            </div>
+            <ZoomableChart caption="Projection assurance-vie">
+              <LineAreaChart
+                series={[
+                  { id: "verse", label: "Total versé", points: avProjection.map(p => ({ x: p.x, y: p.verse })), color: "#8b9bb4", fillColor: "rgba(139,155,180,0.12)" },
+                  { id: "brut", label: "Capital brut", points: avProjection.map(p => ({ x: p.x, y: p.brut })), color: "var(--primary)", fillColor: "rgba(43,92,230,0.12)" },
+                ]}
+                xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}
+                yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
+                annotations={duree >= 8 ? [{ x: 8, label: "8 ans", color: "var(--primary)", dashed: true }] : []}
+                aria="Projection assurance-vie"
+              />
+            </ZoomableChart>
+          </div>
+        )}
 
         {/* Comparaison de 2 scénarios */}
         {hasInput && (
@@ -370,14 +392,14 @@ export default function AssuranceVie() {
         </div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de l'assurance-vie</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de l'assurance-vie</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une enveloppe souple et fiscalement avantageuse</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une enveloppe souple et fiscalement avantageuse</h3>
             <p style={{ marginBottom: 16 }}>L'assurance-vie reste le placement préféré des Français. Elle combine souplesse (versements et rachats libres), diversité des supports (fonds en euros sécurisés, unités de compte plus dynamiques) et une fiscalité avantageuse qui se renforce avec le temps. La fiscalité ne porte que sur les gains : le capital que vous avez versé n'est jamais taxé lors d'un rachat.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'avantage des 8 ans</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'avantage des 8 ans</h3>
             <p style={{ marginBottom: 16 }}>Avant 8 ans, les gains rachetés sont soumis au <Terme slug="pfu">prélèvement forfaitaire unique</Terme> de 30 % (12,8 % d'impôt + 17,2 % de <Terme slug="prelevements-sociaux">prélèvements sociaux</Terme>). À partir de 8 ans de détention, vous profitez chaque année d'un <Terme slug="abattement">abattement</Terme> de 4 600 € (personne seule) ou 9 200 € (couple) sur les gains rachetés, et la part issue de primes ≤ 150 000 € n'est taxée qu'à 7,5 % d'impôt. C'est pourquoi il est conseillé de « prendre date » le plus tôt possible.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Transmission et succession</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Transmission et succession</h3>
             <p>L'assurance-vie est aussi un outil de transmission. Pour les primes versées avant 70 ans, chaque bénéficiaire désigné bénéficie d'un abattement de {fmtEur(ABATTEMENT_SUCCESSION)} sur les capitaux transmis, hors succession. Cette enveloppe permet ainsi d'organiser la transmission de son patrimoine dans un cadre fiscal favorable, en désignant librement les bénéficiaires via la clause bénéficiaire.</p>
           </div>
         </div>

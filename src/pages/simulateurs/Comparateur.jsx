@@ -15,6 +15,7 @@ import { SimulateurHeader } from '../../components/ui.jsx';
 import { useMoney } from '../../i18n/CurrencyContext.jsx';
 import { fmtCur, activeSymbol } from '../../i18n/currency.js';
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
@@ -441,7 +442,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
       {yTicks.map((v, i) => (
         <g key={i}>
           <line x1={PAD.left} y1={y(v)} x2={W - PAD.right} y2={y(v)} stroke="var(--border)" strokeWidth="1" />
-          <text x={PAD.left - 4} y={y(v) + 4} textAnchor="end" fontSize="12.5" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          <text x={PAD.left - 4} y={y(v) + 4} textAnchor="end" fontSize="12.5" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
             {fmtAxis(v)}
           </text>
         </g>
@@ -521,7 +522,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
               <>
                 <circle cx={lx} cy={ly} r="4" fill={color} />
                 <text x={W - PAD.right + 4} y={ly + 4} fontSize="13" fill={color}
-                  fontFamily="DM Sans, sans-serif">
+                  fontFamily="Hanken Grotesk, sans-serif">
                   {asset.emoji} {fmtPct(lastPt.pct)}
                 </text>
               </>
@@ -543,7 +544,7 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
           const label = mo === '01' ? yr : (idx === 0 || idx === allDates.length - 1 ? `${MONTHS[parseInt(mo)-1]} ${yr}` : '');
           return label ? (
             <text key={date} x={x(idx)} y={H - 4} textAnchor="middle" fontSize="12.5"
-              fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+              fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
               {label}
             </text>
           ) : null;
@@ -570,12 +571,12 @@ function ComparisonChart({ computed, assets, montant, showPeriodicInChart, showI
             <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
               fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
             <text x={boxX + 8} y={boxY + 17} fontSize="13" fontWeight="600"
-              fill="var(--text)" fontFamily="DM Sans, sans-serif">
+              fill="var(--text)" fontFamily="Hanken Grotesk, sans-serif">
               {dateLabel}
             </text>
             {rows.map((r, i) => (
               <text key={r.asset.ticker} x={boxX + 8} y={boxY + 17 + (i + 1) * lineH}
-                fontSize="12.5" fill={r.asset.color} fontFamily="DM Sans, sans-serif">
+                fontSize="12.5" fill={r.asset.color} fontFamily="Hanken Grotesk, sans-serif">
                 {r.asset.emoji} {r.asset.label || r.asset.ticker}: {base100 ? Math.round(r.dispVal) : fmtK(r.dispVal)}
               </text>
             ))}
@@ -725,7 +726,7 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove, txt }) {
             width: '100%', padding: '8px 12px', borderRadius: 9,
             background: 'var(--input-bg)', border: '1px solid var(--border)',
             color: 'var(--text)', fontSize: 13,
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             boxShadow: 'var(--input-shadow)',
           }}
         />
@@ -788,7 +789,7 @@ function DateSelect({ label, value, onChange, locale = 'fr' }) {
   const selStyle = {
     padding: '6px 8px', borderRadius: 8,
     background: 'var(--input-bg)', border: '1px solid var(--border)',
-    color: 'var(--text)', fontSize: 13, fontFamily: "'DM Sans', sans-serif",
+    color: 'var(--text)', fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif",
     cursor: 'pointer',
   };
 
@@ -848,9 +849,9 @@ export default function Comparateur() {
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
+  usePageMeta(txt.docTitle, txt.metaDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute('content', txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = txt.canonical;
@@ -997,7 +998,7 @@ export default function Comparateur() {
   }, [computed, assetsWithColors, metrics, exportBaseName, txt]);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -1010,7 +1011,7 @@ export default function Comparateur() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/comparateur" size={34} />}
           badge={txt.badge}
@@ -1019,15 +1020,15 @@ export default function Comparateur() {
         />
 
         {/* Bandeau features */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
           {txt.features.map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '28px 28px', boxShadow: 'var(--card-shadow)', marginBottom: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', boxShadow: 'var(--card-shadow)', marginBottom: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
             {txt.assetsTitle}
           </h2>
 
@@ -1050,9 +1051,9 @@ export default function Comparateur() {
                 display: 'inline-flex', alignItems: 'center', gap: 6,
                 padding: '6px 14px', borderRadius: 9,
                 border: '1px solid var(--border-gold)',
-                background: 'rgba(184,147,74,0.06)',
+                background: 'rgba(43,92,230,0.05)',
                 color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
-                fontFamily: "'DM Sans', sans-serif", marginBottom: 8,
+                fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 8,
               }}
             >{txt.addAsset} ({assets.length}/5)</button>
           )}
@@ -1060,7 +1061,7 @@ export default function Comparateur() {
           <div style={{ height: 1, background: 'var(--border)', margin: '20px 0' }} />
 
           {/* Période */}
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
             {txt.periodTitle}
           </h2>
           <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 20 }}>
@@ -1069,7 +1070,7 @@ export default function Comparateur() {
           </div>
 
           {/* Montant */}
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
             {txt.initialInvestTitle}
           </h2>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
@@ -1084,7 +1085,7 @@ export default function Comparateur() {
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
+                color: 'var(--text)', fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
               }}
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()} {txt.initialInvestSuffix}</span>
@@ -1093,7 +1094,7 @@ export default function Comparateur() {
           <div style={{ height: 1, background: 'var(--border)', margin: '4px 0 20px' }} />
 
           {/* DCA */}
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 16, fontWeight: 400 }}>
             {txt.dcaTitle}
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
@@ -1108,7 +1109,7 @@ export default function Comparateur() {
               style={{
                 width: 110, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 14, fontFamily: "'DM Sans', sans-serif",
+                color: 'var(--text)', fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
               }}
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()}</span>
@@ -1119,7 +1120,7 @@ export default function Comparateur() {
               style={{
                 padding: '8px 10px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 13, fontFamily: "'DM Sans', sans-serif",
+                color: 'var(--text)', fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif",
                 cursor: periodicAmt === 0 ? 'not-allowed' : 'pointer',
                 opacity: periodicAmt === 0 ? 0.5 : 1,
               }}
@@ -1145,7 +1146,7 @@ export default function Comparateur() {
           <div style={{ height: 1, background: 'var(--border)', margin: '16px 0' }} />
 
           {/* Réinvestissement & intérêts */}
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 14, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 14, fontWeight: 400 }}>
             {txt.dividendsTitle}
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -1196,10 +1197,10 @@ export default function Comparateur() {
         {!loading && hasResult && (
           <div
             ref={resultsRef}
-            style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '28px 28px', marginBottom: 20, boxShadow: 'var(--card-shadow)' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginBottom: 20, boxShadow: 'var(--card-shadow)' }}
           >
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 20 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', margin: 0, fontWeight: 400 }}>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', margin: 0, fontWeight: 400 }}>
                 {txt.perfTitle} — {fromLabel} → {toLabel} ({totalYears.toFixed(1)} {txt.reportDurationUnit})
               </h2>
               {/* Sélecteur d'échelle : euros absolus vs base 100 */}
@@ -1214,9 +1215,9 @@ export default function Comparateur() {
                       aria-pressed={active}
                       style={{
                         padding: '6px 14px', borderRadius: 7, border: 'none', cursor: 'pointer',
-                        background: active ? 'rgba(184,147,74,0.25)' : 'transparent',
+                        background: active ? 'rgba(43,92,230,0.18)' : 'transparent',
                         color: active ? 'var(--gold)' : 'var(--text-secondary)',
-                        fontSize: 12, fontFamily: "'DM Sans', sans-serif", transition: 'all 0.2s',
+                        fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", transition: 'all 0.2s',
                       }}>
                       {opt.label}
                     </button>
@@ -1268,12 +1269,12 @@ export default function Comparateur() {
                     display: 'inline-flex', alignItems: 'center', gap: 6,
                     padding: '6px 14px', borderRadius: 9,
                     border: '1px solid var(--border-gold)',
-                    background: 'rgba(184,147,74,0.06)',
+                    background: 'rgba(43,92,230,0.05)',
                     color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(184,147,74,0.14)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(184,147,74,0.06)'}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(43,92,230,0.1)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(43,92,230,0.05)'}
                 >{btn.label}</button>
               ))}
             </div>
@@ -1312,7 +1313,7 @@ export default function Comparateur() {
 
         {/* État vide */}
         {!loading && !hasResult && Object.keys(errors).length === 0 && (
-          <div style={{ textAlign: 'center', padding: '40px 28px', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--text-secondary)' }}>
+          <div style={{ textAlign: 'center', padding: '40px 28px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, color: 'var(--text-secondary)' }}>
             <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
             <p style={{ fontSize: 14, marginBottom: 6 }}>{txt.emptyTitle}</p>
             <p style={{ fontSize: 12, opacity: 0.7 }}>{txt.emptySubtitle}</p>
@@ -1322,16 +1323,16 @@ export default function Comparateur() {
         <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos / About */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 24 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 24 }}>
             {txt.aboutTitle}
           </h2>
           <div style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginBottom: 10 }}>{txt.aboutH3_1}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginBottom: 10 }}>{txt.aboutH3_1}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP1}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_2}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_2}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP2}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_3}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: 'var(--text)', marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_3}</h3>
             <p>{txt.aboutP3}</p>
           </div>
         </div>

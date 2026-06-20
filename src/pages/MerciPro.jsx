@@ -60,14 +60,14 @@ export default function MerciPro() {
   const unlockedItems = UNLOCKED[locale] || UNLOCKED.fr;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 560, margin: "0 auto", padding: "60px 16px 80px", textAlign: "center" }}>
         {status === "verifying" && (
           <>
             <div style={{ fontSize: 48, marginBottom: 20 }}>⏳</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, fontWeight: 600, marginBottom: 12 }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 600, marginBottom: 12 }}>
               {t("merciPro.verifyingTitle")}
             </h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 14 }}>{t("merciPro.verifyingDesc")}</p>
@@ -77,7 +77,7 @@ export default function MerciPro() {
         {status === "ok" && (
           <>
             <div style={{ fontSize: 56, marginBottom: 20 }}>★</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 36, fontWeight: 700, color: "var(--gold)", marginBottom: 12 }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 700, color: "var(--gold)", marginBottom: 12 }}>
               {t("merciPro.okTitle")}
             </h1>
             {activatedEmail && (
@@ -125,7 +125,7 @@ export default function MerciPro() {
         {status === "error" && (
           <>
             <div style={{ fontSize: 48, marginBottom: 20 }}>⚠️</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 32, fontWeight: 600, marginBottom: 12 }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 600, marginBottom: 12 }}>
               {t("merciPro.errorTitle")}
             </h1>
             <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.7, marginBottom: 28 }}>
@@ -142,7 +142,7 @@ export default function MerciPro() {
                 padding: "12px 22px", borderRadius: 10,
                 background: "var(--gold)", color: "#1a1000",
                 border: "none", fontSize: 14, fontWeight: 600,
-                cursor: "pointer", fontFamily: "'DM Sans', sans-serif", marginRight: 10,
+                cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", marginRight: 10,
               }}
             >
               {t("merciPro.retry")}

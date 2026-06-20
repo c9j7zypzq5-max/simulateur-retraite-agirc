@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -13,6 +15,8 @@ import {
   NumInput, AccordionSection, Toggle,
   Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 
 // ─── Calcul abattements ────────────────────────────────────────────────────────
 function calcAbattementIR(duree) {
@@ -99,9 +103,9 @@ export default function PlusValue() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
+
   useEffect(() => {
-    document.title = "Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -137,6 +141,14 @@ export default function PlusValue() {
 
   const hasResult = res && res.totalImpot > 0;
 
+  const abattChart = useMemo(() => {
+    return Array.from({ length: 31 }, (_, yr) => ({
+      x: yr,
+      ir: +(((1 - calcAbattementIR(yr) / 100) * 19)).toFixed(2),
+      ps: +(((1 - calcAbattementPS(yr) / 100) * 17.2)).toFixed(2),
+    }));
+  }, []);
+
   const report = {
     title: "Simulateur Plus-Value Immobilière",
     highlight: { label: "Impôt total estimé", value: res ? fmtEur(Math.round(res.totalImpot)) : "—" },
@@ -161,7 +173,7 @@ export default function PlusValue() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Plus-value immobilière",
@@ -181,7 +193,7 @@ export default function PlusValue() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/plus-value-immobiliere" size={34} />}
           badge="Impôts · Simulation 2025"
@@ -190,13 +202,13 @@ export default function PlusValue() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ IR + Prélèvements sociaux", "✓ Abattements 2025 à jour", "✓ Résidence principale exonérée"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)", marginBottom: 0 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre bien et durée de détention</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)", marginBottom: 0 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre bien et durée de détention</h2>
 
           <NumInput
             id="prix-achat"
@@ -266,14 +278,14 @@ export default function PlusValue() {
 
           {/* Barre récapitulative */}
           {res && res.pvBrute > 0 && (
-            <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
               {[
-                { l: "Plus-value brute", v: fmtEur(res.pvBrute), gold: true },
+                { l: "Plus-value brute", v: fmtEur(res.pvBrute), primary: true },
                 { l: "Durée de détention", v: `${res.duree} ans` },
               ].map((item, i) => (
                 <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
-                  <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 4 }}>{item.l}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.primary ? "var(--primary)" : "var(--text)" }}>{item.v}</div>
                 </div>
               ))}
             </div>
@@ -281,16 +293,16 @@ export default function PlusValue() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Impôt et gain net</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Impôt et gain net</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Impôt total (IR + PS)</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Impôt total (IR + PS)</div>
             {!hasResult ? (
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.totalImpot)} euros d'impôt`}>
                   {totalImpotAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -314,7 +326,7 @@ export default function PlusValue() {
               {/* Abattements par durée */}
               <AccordionSection title="Abattements pour durée de détention" subtitle={`Votre bien : ${res.duree} ans`}>
                 <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-                  <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 16, marginBottom: 16 }}>
+                  <div style={{ background: "var(--surface)", borderRadius: 10, padding: 16, marginBottom: 16 }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                       <thead>
                         <tr style={{ borderBottom: "1px solid var(--border)" }}>
@@ -338,12 +350,12 @@ export default function PlusValue() {
                           ][i + 1]?.dur || 999));
                           return (
                             <tr key={i} style={{
-                              background: highlight ? "rgba(184,147,74,0.1)" : "transparent",
-                              borderBottom: "1px solid rgba(184,147,74,0.08)"
+                              background: highlight ? "rgba(43,92,230,0.08)" : "transparent",
+                              borderBottom: "1px solid var(--border)"
                             }}>
-                              <td style={{ padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.dur}</td>
-                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.ir}</td>
-                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.ps}</td>
+                              <td style={{ padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.dur}</td>
+                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.ir}</td>
+                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.ps}</td>
                             </tr>
                           );
                         })}
@@ -352,14 +364,14 @@ export default function PlusValue() {
                   </div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-                    <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 12 }}>
-                      <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 6 }}>Votre abattement IR</div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--gold)" }}>{res.abattIR.toFixed(0)} %</div>
+                    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: 12 }}>
+                      <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 6 }}>Votre abattement IR</div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--primary)" }}>{res.abattIR.toFixed(0)} %</div>
                       <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 4 }}>Gain : {fmtEur(res.pvBrute * res.abattIR / 100)}</div>
                     </div>
-                    <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 12 }}>
-                      <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 6 }}>Votre abattement PS</div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--gold)" }}>{res.abattPS.toFixed(1)} %</div>
+                    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: 12 }}>
+                      <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 6 }}>Votre abattement PS</div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--primary)" }}>{res.abattPS.toFixed(1)} %</div>
                       <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 4 }}>Gain : {fmtEur(res.pvBrute * res.abattPS / 100)}</div>
                     </div>
                   </div>
@@ -384,17 +396,37 @@ export default function PlusValue() {
                 </div>
               </AccordionSection>
 
-              <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
+              <div role="note" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Résidence principale exonérée.</strong> Hors surtaxe (plus-value {">"}50 k€) et cas particuliers (propriété démembrée, droits d'enregistrement, frais de vente agence). Votre notaire établira le calcul exact à partir du compromis de vente.
               </div>
 
+        {/* Graphique abattements */}
+        {isValid && (
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Taux d'imposition selon la durée de détention
+            </div>
+            <ZoomableChart caption="Abattements par durée de détention">
+              <LineAreaChart
+                series={[
+                  { id: "ir", label: "IR effectif", points: abattChart.map(p => ({ x: p.x, y: p.ir })), color: "#f59e0b", fillColor: "rgba(245,158,11,0.10)" },
+                  { id: "ps", label: "Prél. sociaux effectifs", points: abattChart.map(p => ({ x: p.x, y: p.ps })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.08)", dashed: true },
+                ]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${v} %`}
+                annotations={res?.duree ? [{ x: res.duree, label: `Année ${res.duree}`, color: "var(--primary)", dashed: true }] : []}
+                aria="Taux d'imposition selon la durée de détention"
+              />
+            </ZoomableChart>
+          </div>
+        )}
               <ShareBar
                 params={{ prixAchat, anneeAchat, anneeVente, travaux, prixVente }}
                 resultsRef={resultsRef}
                 report={report}
                 name="plus-value-immobiliere"
               />
-
+              <AffiliateCTA type="assurance-vie" />
               <ScenarioCompare
                 name="plus-value-immobiliere"
                 base={{ anneeVente, prixVente }}
@@ -416,21 +448,21 @@ export default function PlusValue() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le calcul de la plus-value imposable</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le calcul de la plus-value imposable</h3>
             <p style={{ marginBottom: 16 }}>La plus-value immobilière brute est la différence entre le prix de cession (net vendeur) et le prix d'acquisition majoré des frais d'acquisition et des travaux. La plus-value nette imposable est obtenue après application des abattements pour durée de détention. Elle est soumise à l'impôt sur le revenu au taux forfaitaire de 19 % et aux prélèvements sociaux au taux de 17,2 %, soit une imposition globale de 36,2 % avant abattements.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les abattements pour durée de détention</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les abattements pour durée de détention</h3>
             <p style={{ marginBottom: 16 }}>Les abattements réduisent progressivement la plus-value imposable au-delà de la 5ème année. Pour l'impôt sur le revenu, l'abattement est de 6 % par an de la 6ème à la 21ème année, puis 4 % la 22ème — soit une exonération totale à partir de 22 ans de détention. Pour les prélèvements sociaux, l'abattement est de 1,65 % par an de la 6ème à la 21ème année, puis de 9 % par an jusqu'à la 30ème — exonération totale à 30 ans.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Résidence principale et autres exonérations</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Résidence principale et autres exonérations</h3>
             <p>La plus-value réalisée sur la cession de votre résidence principale est totalement exonérée d'impôt et de prélèvements sociaux, sans condition de durée de détention. D'autres exonérations existent : cession dont le prix est inférieur à 15 000 €, première cession d'une résidence secondaire sous conditions, expropriation, et cessions par des personnes âgées ou invalides sous conditions de revenus.</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Plus-value</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Plus-value</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
             Conseil : consultez votre notaire ou un expert fiscal pour un calcul détaillé.
@@ -451,8 +483,8 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--primary)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>

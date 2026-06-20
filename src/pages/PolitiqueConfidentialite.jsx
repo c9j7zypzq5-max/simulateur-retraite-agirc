@@ -7,7 +7,7 @@ import Footer from "../components/Footer.jsx";
 function Section({ title, children }) {
   return (
     <div style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--gold)", marginBottom: 16 }}>{title}</h2>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--gold)", marginBottom: 16 }}>{title}</h2>
       <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>{children}</div>
     </div>
   );
@@ -214,7 +214,7 @@ export default function PolitiqueConfidentialite() {
   }, [txt]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 16px 60px" }}>
@@ -222,7 +222,7 @@ export default function PolitiqueConfidentialite() {
           <div style={{ width: 28, height: 2, background: "linear-gradient(90deg, var(--gold-mid), var(--gold))" }} />
           <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>{txt.eyebrow}</span>
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, color: "var(--text)", marginBottom: 16, lineHeight: 1.1 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 600, color: "var(--text)", marginBottom: 16, lineHeight: 1.1 }}>
           {txt.h1}
         </h1>
         <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 48, letterSpacing: "0.03em" }}>

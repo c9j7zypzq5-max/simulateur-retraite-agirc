@@ -31,10 +31,6 @@ const TXT_NAV = {
     viewAll: "Tout voir →",
     currency: "Devise",
     comingSoon: "Bientôt",
-    darkMode: "Mode sombre",
-    lightMode: "Mode clair",
-    switchToDark: "Passer en mode sombre",
-    switchToLight: "Passer en mode clair",
     deleteEntry: "Supprimer",
     relDate: (d, h, m) => d > 0 ? `il y a ${d}j` : h > 0 ? `il y a ${h}h` : m > 0 ? `il y a ${m} min` : "à l'instant",
   },
@@ -57,10 +53,6 @@ const TXT_NAV = {
     viewAll: "See all →",
     currency: "Currency",
     comingSoon: "Soon",
-    darkMode: "Dark mode",
-    lightMode: "Light mode",
-    switchToDark: "Switch to dark mode",
-    switchToLight: "Switch to light mode",
     deleteEntry: "Remove",
     relDate: (d, h, m) => d > 0 ? `${d}d ago` : h > 0 ? `${h}h ago` : m > 0 ? `${m}min ago` : "just now",
   },
@@ -137,48 +129,6 @@ const EN_NAV_GROUPS = [
 // ALL_ITEMS used for "current page" display (FR paths only, EN pages use canonical path)
 const ALL_ITEMS = ALL_ITEMS_FR;
 
-/* ── iOS toggle ── */
-function IosToggle({ theme, setTheme, compact = false, txt }) {
-  const isDark = theme === "dark";
-  const track = {
-    width: 54, height: 28, minHeight: 28, borderRadius: 14, padding: 0, border: "none",
-    background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
-    cursor: "pointer", position: "relative", flexShrink: 0,
-    boxShadow: isDark
-      ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22), 0 0 12px rgba(30,80,200,0.1)"
-      : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45), 0 0 10px rgba(210,160,40,0.08)",
-    transition: "background 0.3s ease, box-shadow 0.3s ease",
-  };
-  const knob = {
-    position: "absolute", top: 3, left: isDark ? 3 : 29,
-    width: 22, height: 22, borderRadius: "50%",
-    background: isDark ? "linear-gradient(145deg,#1c2f66,#2b4396)" : "linear-gradient(145deg,#f8d050,#e89010)",
-    boxShadow: isDark ? "0 1px 6px rgba(40,80,200,0.4)" : "0 1px 6px rgba(240,160,0,0.5)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 13, userSelect: "none",
-    transition: "left 0.28s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, box-shadow 0.35s ease",
-  };
-  const btn = (
-    <button
-      onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-      aria-label={isDark ? txt.switchToLight : txt.switchToDark}
-      role="switch" aria-checked={isDark}
-      style={track}
-    >
-      <div style={knob}>{isDark ? "🌙" : "☀️"}</div>
-    </button>
-  );
-  if (compact) return btn;
-  return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0" }}>
-      <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>
-        {isDark ? txt.darkMode : txt.lightMode}
-      </span>
-      {btn}
-    </div>
-  );
-}
-
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
   const locale = useLocale();
@@ -195,6 +145,9 @@ export default function Navbar({ theme, setTheme }) {
 
   const [openCat, setOpenCat] = useState(null);
   const catBarRef = useRef(null);
+
+  const [simsOpen, setSimsOpen] = useState(false);
+  const simsRef = useRef(null);
 
   const canonPath = canonicalPath(pathname);
   const onSim = canonPath.startsWith("/simulateurs/");
@@ -224,6 +177,15 @@ export default function Navbar({ theme, setTheme }) {
   }, [openCat]);
 
   useEffect(() => {
+    if (!simsOpen) return;
+    const onDown = e => { if (simsRef.current && !simsRef.current.contains(e.target)) setSimsOpen(false); };
+    const onKey = e => { if (e.key === "Escape") setSimsOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); window.removeEventListener("keydown", onKey); };
+  }, [simsOpen]);
+
+  useEffect(() => {
     if (drawerOpen) setHistory(getHistory());
   }, [drawerOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -242,29 +204,31 @@ export default function Navbar({ theme, setTheme }) {
   return (
     <>
       {/* ── Barre de navigation ── */}
-      <nav style={{
+      <nav ref={simsRef} style={{
         position: "sticky", top: 0, zIndex: 100,
-        background: theme === "dark" ? "rgba(6,14,28,0.92)" : "rgba(250,246,239,0.94)",
-        backdropFilter: "blur(12px)",
+        background: "rgba(245,246,248,0.95)",
+        backdropFilter: "blur(16px)",
         borderBottom: "1px solid var(--border)",
-        height: 56,
-        display: "flex", alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 12px 0 4px",
       }}>
-        {/* Gauche : hamburger + breadcrumb desktop */}
-        <div style={{ display: "flex", alignItems: "center", gap: 4, zIndex: 1 }}>
+        <div style={{
+          maxWidth: 1140, margin: "0 auto",
+          padding: "0 20px",
+          height: 60,
+          display: "flex", alignItems: "center", gap: 8,
+        }}>
+          {/* Hamburger (mobile only, hidden ≥900px via CSS class) */}
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label={txt.openNav}
             aria-expanded={drawerOpen}
+            className="nav-hamburger"
             style={{
               background: "transparent", border: "none",
               color: "var(--text)", cursor: "pointer",
-              padding: "10px 12px", borderRadius: 8,
+              padding: "8px", borderRadius: 8,
               display: "flex", flexDirection: "column", gap: 5,
               alignItems: "center", justifyContent: "center",
-              flexShrink: 0, minHeight: 44,
+              flexShrink: 0, minHeight: 44, minWidth: 44,
             }}
           >
             <span style={{ display: "block", width: 20, height: 2, background: "currentColor", borderRadius: 2 }} />
@@ -272,119 +236,139 @@ export default function Navbar({ theme, setTheme }) {
             <span style={{ display: "block", width: 20, height: 2, background: "currentColor", borderRadius: 2 }} />
           </button>
 
-          <div className="nav-center">
-            {onSim ? (
-              <LocaleLink to="/" style={{
-                fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "5px 12px", borderRadius: 20,
-                border: "1px solid var(--border)", whiteSpace: "nowrap",
+          {/* Logo */}
+          <LocaleLink to="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
+            <div style={{
+              width: 30, height: 30, borderRadius: 8,
+              background: "var(--primary)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <span style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 15, lineHeight: 1 }}>S</span>
+            </div>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "var(--text)", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>simfinly</span>
+          </LocaleLink>
+
+          {/* Desktop nav items (hidden on mobile) */}
+          <div className="desktop-nav" style={{ alignItems: "center", gap: 2, marginLeft: 16 }}>
+            {/* Simulateurs dropdown button */}
+            <button
+              onClick={() => setSimsOpen(v => !v)}
+              aria-expanded={simsOpen}
+              aria-haspopup="true"
+              style={{
+                display: "flex", alignItems: "center", gap: 5,
+                padding: "8px 12px", background: "transparent", border: "none", cursor: "pointer",
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                color: simsOpen ? "var(--primary)" : "var(--text-secondary)",
+                borderRadius: 8,
+                transition: "color 0.15s",
               }}
-                onMouseEnter={e => { e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+              onMouseEnter={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+              onMouseLeave={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+            >
+              {locale === 'en' ? "Calculators" : "Simulateurs"}
+              <span style={{ fontSize: 9, opacity: 0.7, transform: simsOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s", display: "inline-block" }}>▾</span>
+            </button>
+
+            {/* Guides */}
+            <Link
+              to={locale === 'en' ? "/en/guides" : "/guides"}
+              style={{
+                padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                color: pathname.startsWith("/guides") || pathname.startsWith("/en/guides") ? "var(--primary)" : "var(--text-secondary)",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+            >
+              Guides
+            </Link>
+
+            {/* Lexique (FR only) */}
+            {locale !== 'en' && (
+              <Link
+                to="/lexique"
+                style={{
+                  padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                  color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
               >
-                {txt.backToAll}
-              </LocaleLink>
-            ) : (
-              txt.officialData ? (
-                <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
-                  {txt.officialData}
-                </span>
-              ) : null
+                Lexique
+              </Link>
             )}
+          </div>
+
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+
+          {/* Right controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
           </div>
         </div>
 
-        {/* Centre : logo */}
-        <LocaleLink to="/" style={{
-          position: "absolute", left: "50%", transform: "translateX(-50%)",
-          display: "flex", alignItems: "center", gap: 8,
-          textDecoration: "none", zIndex: 0,
-        }}>
-          <img src="/logo-mark.svg" alt="" width={26} height={26} style={{ display: "block", flexShrink: 0 }} />
-          <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: "1.15rem", fontWeight: 700,
-            color: "var(--gold)",
-            letterSpacing: "0.02em", whiteSpace: "nowrap",
-          }}>simfinly.com</span>
-        </LocaleLink>
-
-        {/* Droite : switcher langue + sélecteur devise + toggle thème */}
-        <div style={{ zIndex: 1, display: "flex", alignItems: "center", gap: 8 }}>
-          <LangSwitch compact />
-          {showCurrency && <CurrencySelect compact />}
-          <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />
-        </div>
-      </nav>
-
-      {/* ── Barre de catégories — desktop uniquement ── */}
-      <div ref={catBarRef} className="desktop-catbar" style={{
-        position: "sticky", top: 56, zIndex: 90,
-        background: theme === "dark" ? "rgba(6,14,28,0.92)" : "rgba(250,246,239,0.94)",
-        backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)",
-      }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "center", gap: 2 }}>
-          {navGroups.map(group => {
-            const GI = GROUP_ICONS[group.id];
-            const active = openCat === group.id;
-            const hasCurrent = group.items.some(i => i.path === canonPath);
-            return (
-              <div key={group.id} style={{ position: "relative" }}>
-                <button
-                  onClick={() => setOpenCat(active ? null : group.id)}
-                  aria-expanded={active} aria-haspopup="true"
-                  style={{
-                    display: "flex", alignItems: "center", gap: 7,
-                    padding: "11px 14px", background: "transparent", border: "none", cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif", fontSize: 13,
-                    color: active || hasCurrent ? "var(--gold)" : "var(--text-secondary)",
-                    borderBottom: `2px solid ${active || hasCurrent ? "var(--gold)" : "transparent"}`,
-                    transition: "color 0.2s, border-color 0.2s",
-                  }}
-                  onMouseEnter={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text)"; }}
-                  onMouseLeave={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text-secondary)"; }}
-                >
-                  {GI && <GI size={15} />}
-                  {group.label}
-                  <span style={{ fontSize: 9, opacity: 0.6, transform: active ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
-                </button>
-                {active && (
-                  <div role="menu" style={{
-                    position: "absolute", top: "100%", left: 0, marginTop: 1, zIndex: 95,
-                    background: "var(--card-bg)", border: "1px solid var(--border-gold)",
-                    borderRadius: 12, padding: 8, minWidth: 280,
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+        {/* Simulateurs dropdown panel */}
+        {simsOpen && (
+          <div role="menu" style={{
+            position: "absolute", top: "100%", left: 0, right: 0,
+            background: "var(--surface)",
+            borderTop: "1px solid var(--border)",
+            borderBottom: "1px solid var(--border)",
+            boxShadow: "0 8px 24px rgba(15,24,40,0.1)",
+          }}>
+            <div style={{
+              maxWidth: 1140, margin: "0 auto", padding: "20px",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 24,
+            }}>
+              {navGroups.map(group => (
+                <div key={group.id}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--text-secondary)",
+                    marginBottom: 8, padding: "0 8px",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                   }}>
-                    {group.items.map(item => {
-                      const isCurrent = canonPath === item.path;
-                      return (
-                        <LocaleLink key={item.path} to={item.path} role="menuitem" onClick={() => setOpenCat(null)}
-                          style={{
-                            display: "flex", alignItems: "center", gap: 10, padding: "9px 10px",
-                            borderRadius: 9, textDecoration: "none",
-                            background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
-                          }}
-                          onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-                          onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
-                        >
-                          <span style={{ width: 22, display: "flex", flexShrink: 0, color: isCurrent ? "var(--gold)" : "var(--text-secondary)" }}>
-                            <SimIcon path={item.path} size={18} />
-                          </span>
-                          <span style={{ minWidth: 0 }}>
-                            <span style={{ display: "block", fontSize: 13, fontWeight: isCurrent ? 500 : 400, color: isCurrent ? "var(--gold)" : "var(--text)" }}>{item.title}</span>
-                            <span style={{ display: "block", fontSize: 11, color: "var(--text-secondary)" }}>{item.subtitle}</span>
-                          </span>
-                        </LocaleLink>
-                      );
-                    })}
+                    {group.label}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+                  {group.items.map(item => {
+                    const isCurrent = canonPath === item.path;
+                    return (
+                      <LocaleLink
+                        key={item.path}
+                        to={item.path}
+                        role="menuitem"
+                        onClick={() => setSimsOpen(false)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 8,
+                          padding: "7px 8px", borderRadius: 8, textDecoration: "none",
+                          background: isCurrent ? "var(--primary-soft)" : "transparent",
+                        }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                        onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
+                      >
+                        <span style={{ color: isCurrent ? "var(--primary)" : "var(--text-secondary)", display: "flex", flexShrink: 0 }}>
+                          <SimIcon path={item.path} size={16} />
+                        </span>
+                        <span style={{
+                          fontSize: 13, fontWeight: isCurrent ? 600 : 400,
+                          color: isCurrent ? "var(--primary)" : "var(--text)",
+                          fontFamily: "'Hanken Grotesk', sans-serif",
+                        }}>{item.title}</span>
+                      </LocaleLink>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
 
       {/* ── Overlay ── */}
       <div
@@ -407,33 +391,42 @@ export default function Navbar({ theme, setTheme }) {
         aria-hidden={!drawerOpen}
         style={{
           position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 300,
-          width: 290,
-          background: theme === "dark" ? "#0a1628" : "#faf6ef",
+          width: 300, maxWidth: "85vw",
+          background: "var(--surface)",
           borderRight: "1px solid var(--border)",
           transform: drawerOpen ? "translateX(0)" : "translateX(-100%)",
           display: "flex", flexDirection: "column",
           overflowY: "auto",
         }}
       >
-        {/* En-tête drawer */}
+        {/* En-tête drawer : logo + fermeture */}
         <div style={{
           display: "flex", alignItems: "center", justifyContent: "space-between",
-          padding: "0 16px 0 20px", height: 56, flexShrink: 0,
+          padding: "0 12px 0 16px", height: 60, flexShrink: 0,
           borderBottom: "1px solid var(--border)",
+          position: "sticky", top: 0, background: "var(--surface)", zIndex: 2,
         }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
-            {txt.drawerTitle}
-          </span>
+          <LocaleLink to="/" onClick={close} style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none" }}>
+            <div style={{
+              width: 28, height: 28, borderRadius: 8, background: "var(--primary)",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>
+              <span style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 14, lineHeight: 1 }}>S</span>
+            </div>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.05rem", fontWeight: 700, color: "var(--text)", letterSpacing: "-0.01em" }}>simfinly</span>
+          </LocaleLink>
           <button
             onClick={close}
             aria-label={txt.closeNav}
             style={{
               background: "transparent", border: "none",
               color: "var(--text-secondary)", fontSize: "1.1rem",
-              cursor: "pointer", padding: "4px 8px", borderRadius: 6,
+              cursor: "pointer", padding: "4px 8px", borderRadius: 8,
               display: "flex", alignItems: "center", justifyContent: "center",
               minHeight: 44, minWidth: 44,
             }}
+            onMouseEnter={e => { e.currentTarget.style.background = "var(--hover-bg)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
           >✕</button>
         </div>
 
@@ -442,16 +435,16 @@ export default function Navbar({ theme, setTheme }) {
           <div style={{
             padding: "10px 20px 12px",
             borderBottom: "1px solid var(--border)",
-            background: "rgba(184,147,74,0.06)",
+            background: "rgba(43,92,230,0.05)",
             flexShrink: 0,
           }}>
             <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 7 }}>
               {txt.currentPage}
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ color: "var(--gold)", display: "flex" }}><SimIcon path={current.path} size={22} /></span>
+              <span style={{ color: "var(--primary)", display: "flex" }}><SimIcon path={current.path} size={22} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: 500, color: "var(--gold)" }}>{current.title}</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: 500, color: "var(--primary)" }}>{current.title}</div>
                 <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)" }}>{current.subtitle}</div>
               </div>
             </div>
@@ -469,20 +462,22 @@ export default function Navbar({ theme, setTheme }) {
               display: "flex", alignItems: "center", gap: 10,
               padding: "9px 10px", borderRadius: 9,
               textDecoration: "none", marginBottom: 6,
-              background: canonPath === "/" ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${canonPath === "/" ? "var(--border-gold)" : "transparent"}`,
+              background: canonPath === "/" ? "rgba(43,92,230,0.08)" : "transparent",
+              border: `1px solid ${canonPath === "/" ? "var(--primary-soft)" : "transparent"}`,
             }}
-            onMouseEnter={e => { if (canonPath !== "/") e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+            onMouseEnter={e => { if (canonPath !== "/") e.currentTarget.style.background = "var(--hover-bg)"; }}
             onMouseLeave={e => { if (canonPath !== "/") e.currentTarget.style.background = "transparent"; }}
           >
-            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: canonPath === "/" ? "var(--gold)" : "var(--text-secondary)" }}><House size={18} /></span>
+            <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: canonPath === "/" ? "var(--primary)" : "var(--text-secondary)" }}><House size={18} /></span>
             <div>
-              <div style={{ fontSize: "0.88rem", fontWeight: canonPath === "/" ? 500 : 400, color: canonPath === "/" ? "var(--gold)" : "var(--text)" }}>{txt.home}</div>
+              <div style={{ fontSize: "0.88rem", fontWeight: canonPath === "/" ? 500 : 400, color: canonPath === "/" ? "var(--primary)" : "var(--text)" }}>{txt.home}</div>
               <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.homeSubtitle}</div>
             </div>
-            {canonPath === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+            {canonPath === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
           </LocaleLink>
 
+          {/* Guides / Blog / Lexique — masqués sur mobile */}
+          <div className="drawer-secondary-links">
           {/* Guides (FR only) */}
           {txt.guidesSubtitle !== null && (
             <Link
@@ -491,18 +486,18 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/guides") ? "rgba(184,147,74,0.1)" : "transparent",
-                border: `1px solid ${pathname.startsWith("/guides") ? "var(--border-gold)" : "transparent"}`,
+                background: pathname.startsWith("/guides") ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname.startsWith("/guides") ? "var(--primary-soft)" : "transparent"}`,
               }}
-              onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "var(--hover-bg)"; }}
               onMouseLeave={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text-secondary)" }}><Library size={18} /></span>
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)" }}><Library size={18} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--gold)" : "var(--text)" }}>Guides</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text)" }}>Guides</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.guidesSubtitle}</div>
               </div>
-              {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+              {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
 
@@ -514,18 +509,18 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(184,147,74,0.1)" : "transparent",
-                border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--border-gold)" : "transparent"}`,
+                background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--primary-soft)" : "transparent"}`,
               }}
-              onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "var(--hover-bg)"; }}
               onMouseLeave={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text-secondary)" }}><Newspaper size={18} /></span>
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/blog") ? "var(--primary)" : "var(--text-secondary)" }}><Newspaper size={18} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--gold)" : "var(--text)" }}>Blog</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/blog") ? 500 : 400, color: pathname.startsWith("/blog") ? "var(--primary)" : "var(--text)" }}>Blog</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.blogSubtitle}</div>
               </div>
-              {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+              {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
 
@@ -537,20 +532,22 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/lexique") ? "rgba(184,147,74,0.1)" : "transparent",
-                border: `1px solid ${pathname.startsWith("/lexique") ? "var(--border-gold)" : "transparent"}`,
+                background: pathname.startsWith("/lexique") ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname.startsWith("/lexique") ? "var(--primary-soft)" : "transparent"}`,
               }}
-              onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+              onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "var(--hover-bg)"; }}
               onMouseLeave={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/lexique") ? 500 : 400, color: pathname.startsWith("/lexique") ? "var(--gold)" : "var(--text)" }}>Lexique</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/lexique") ? 500 : 400, color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text)" }}>Lexique</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.lexiqueSubtitle}</div>
               </div>
-              {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--gold)" }}>●</span>}
+              {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
+
+          </div>{/* /drawer-secondary-links */}
 
           {/* Groupes de catégories */}
           {navGroups.map(group => {
@@ -566,17 +563,17 @@ export default function Navbar({ theme, setTheme }) {
                     opacity: group.comingSoon ? 0.5 : 1,
                     borderRadius: 8,
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "var(--hover-bg)"; }}
                   onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                    <span style={{ display: "flex", alignItems: "center", color: isOpen ? "var(--gold)" : "var(--text-secondary)" }}>
+                    <span style={{ display: "flex", alignItems: "center", color: isOpen ? "var(--primary)" : "var(--text-secondary)" }}>
                       {(() => { const GI = GROUP_ICONS[group.id]; return GI ? <GI size={16} /> : group.icon; })()}
                     </span>
                     <span style={{
                       fontSize: 10, fontWeight: 600, letterSpacing: "0.07em",
                       textTransform: "uppercase",
-                      color: isOpen ? "var(--gold)" : "var(--text-secondary)",
+                      color: isOpen ? "var(--primary)" : "var(--text-secondary)",
                       transition: "color 0.2s ease",
                     }}>
                       {group.label}
@@ -620,24 +617,24 @@ export default function Navbar({ theme, setTheme }) {
                           display: "flex", alignItems: "center", gap: 10,
                           padding: "8px 10px 8px 14px", borderRadius: 9,
                           textDecoration: "none", marginBottom: 2,
-                          background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
-                          border: `1px solid ${isCurrent ? "var(--border-gold)" : "transparent"}`,
+                          background: isCurrent ? "rgba(43,92,230,0.08)" : "transparent",
+                          border: `1px solid ${isCurrent ? "var(--primary-soft)" : "transparent"}`,
                         }}
-                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "var(--hover-bg)"; }}
                         onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
                       >
-                        <span style={{ width: 24, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: isCurrent ? "var(--gold)" : "var(--text-secondary)" }}><SimIcon path={item.path} size={18} /></span>
+                        <span style={{ width: 24, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: isCurrent ? "var(--primary)" : "var(--text-secondary)" }}><SimIcon path={item.path} size={18} /></span>
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <div style={{
                             fontSize: "0.86rem", fontWeight: isCurrent ? 500 : 400,
-                            color: isCurrent ? "var(--gold)" : "var(--text)",
+                            color: isCurrent ? "var(--primary)" : "var(--text)",
                             whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
                           }}>
                             {item.title}
                           </div>
                           <div style={{ fontSize: "0.71rem", color: "var(--text-secondary)" }}>{item.subtitle}</div>
                         </div>
-                        {isCurrent && <span style={{ fontSize: 8, color: "var(--gold)", flexShrink: 0 }}>●</span>}
+                        {isCurrent && <span style={{ fontSize: 8, color: "var(--primary)", flexShrink: 0 }}>●</span>}
                       </LocaleLink>
                     );
                   })}
@@ -671,7 +668,7 @@ export default function Navbar({ theme, setTheme }) {
                     padding: "7px 10px", borderRadius: 8, textDecoration: "none",
                     background: "transparent", minWidth: 0,
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                  onMouseEnter={e => e.currentTarget.style.background = "var(--hover-bg)"}
                   onMouseLeave={e => e.currentTarget.style.background = "transparent"}
                 >
                   <span style={{ fontSize: "0.8rem", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", flex: 1, minWidth: 0 }}>
@@ -688,52 +685,24 @@ export default function Navbar({ theme, setTheme }) {
                 >✕</button>
               </div>
             ))}
-            <Link to="/mes-simulations" onClick={close} style={{ display: "block", textAlign: "center", fontSize: 11, color: "var(--gold)", textDecoration: "none", padding: "8px 0 4px" }}>
+            <Link to="/mes-simulations" onClick={close} style={{ display: "block", textAlign: "center", fontSize: 11, color: "var(--primary)", textDecoration: "none", padding: "8px 0 4px" }}>
               {txt.viewAll}
             </Link>
           </div>
         )}
 
-        {/* Footer : compte + Pro status + devise + toggle thème */}
+        {/* Footer du drawer : langue + devise */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-          <Link to={localePath(user ? "/compte" : "/connexion", locale)} onClick={close} style={{
-            display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-            padding: "6px 10px", borderRadius: 8, color: "var(--text-secondary)",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
-          >
-            <span style={{ fontSize: 14 }}>{user ? "👤" : "→"}</span>
-            <span style={{ fontSize: 12 }}>{user ? (locale === 'en' ? "My account" : "Mon compte") : (locale === 'en' ? "Sign in / Sign up" : "Connexion / inscription")}</span>
-          </Link>
-          {isPro ? (
-            <Link to={localePath("/pro", locale)} onClick={close} style={{
-              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-              padding: "6px 10px", borderRadius: 8, background: "rgba(184,147,74,0.1)",
-              border: "1px solid var(--border-gold)",
-            }}>
-              <span style={{ color: "var(--gold)", fontSize: 14 }}>★</span>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>{locale === 'en' ? "Pro active" : "Pro actif"}</span>
-            </Link>
-          ) : (
-            <Link to={localePath("/pro", locale)} onClick={close} style={{
-              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-              padding: "6px 10px", borderRadius: 8,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
-            >
-              <span style={{ color: "var(--text-secondary)", fontSize: 14 }}>★</span>
-              <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{locale === 'en' ? "Upgrade to Pro — €2.99/mo" : "Passer à Pro — 2,99 €/mois"}</span>
-            </Link>
-          )}
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{txt.currency}</span>
               <CurrencySelect compact />
             </div>
           )}
-          <IosToggle theme={theme} setTheme={setTheme} txt={txt} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{locale === 'en' ? "Language" : "Langue"}</span>
+            <LangSwitch compact />
+          </div>
         </div>
       </aside>
     </>

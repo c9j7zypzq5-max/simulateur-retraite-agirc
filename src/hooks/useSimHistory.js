@@ -1,11 +1,6 @@
-import { useAuth } from "./useAuth.js";
-
 const KEY = 'mesim_history_v1';
 
 export function useSimHistory() {
-  const { isPro } = useAuth();
-  const MAX = isPro ? 50 : 8;
-
   function getHistory() {
     try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
     catch { return []; }
@@ -16,7 +11,7 @@ export function useSimHistory() {
     try {
       const filtered = getHistory().filter(e => e.shareUrl !== shareUrl);
       const entry = { id: Date.now(), simulator, label, shareUrl, savedAt: new Date().toISOString() };
-      localStorage.setItem(KEY, JSON.stringify([entry, ...filtered].slice(0, MAX)));
+      localStorage.setItem(KEY, JSON.stringify([entry, ...filtered]));
       return true;
     } catch { return false; }
   }

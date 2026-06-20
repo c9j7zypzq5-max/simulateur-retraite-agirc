@@ -12,8 +12,12 @@ import {
   fmt, fmtEur, SimulateurHeader,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
 const PASS = 48_060;
@@ -92,17 +96,11 @@ export default function Cnav() {
   const [anneesRestantes, setAnneesRest]  = useState(null);
   const [ageDépart, setAgeDépart]         = useState(null);
 
-  // Comparaison d'un 2e scénario (âge de départ / années restantes).
-  const [compareOn, setCompareOn]   = useState(false);
-  const [bAge, setBAge]             = useState(null);
-  const [bAnneesRest, setBAnneesRest] = useState(null);
-
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite CNAV 2025 — Régime général salariés", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite CNAV 2025 — Régime général salariés";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -144,14 +142,7 @@ export default function Cnav() {
     }));
   }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
 
-  // Scénario B : on fait varier l'âge de départ et les années restantes.
-  const resB = calcCnav({ salaire, anneesFaites, anneesRestantes: bAnneesRest, ageDépart: bAge, anneeNaissance });
-  const deltaPension = resB.pensionNette - res.pensionNette;
-  function startCompare() {
-    setBAge(ageDépart ?? 64); setBAnneesRest(anneesRestantes);
-    setCompareOn(true);
-    track('compare_open', { name: 'cnav' });
-  }
+  const pensionParAge = ageComparisons.map(c => ({ x: c.age, y: c.pension }));
 
   const report = {
     title: "Simulateur Retraite CNAV — Régime général",
@@ -179,7 +170,7 @@ export default function Cnav() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite CNAV — Régime général",
@@ -199,7 +190,7 @@ export default function Cnav() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/cnav" size={34} />}
           badge="Régime de base · Données 2026"
@@ -209,13 +200,13 @@ export default function Cnav() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(43,92,230,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Plafonnement PASS 2026 : 48 060 €", "✓ Taux plein : 50 %", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)", marginBottom: 0 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)", marginBottom: 0 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
           <NumInput id="salaire" label="Salaire brut mensuel actuel" value={salaire} onChange={setSalaire} unit="€" min={500} max={40000}
             hint={salaire ? `SAM estimé : ${fmtEur(salaire * 12)}/an · plafonné PASS : ${fmtEur(Math.min(salaire * 12, PASS))}/an` : "Utilisé comme approximation du Salaire Annuel Moyen"}
             tooltip="Le SAM réel est la moyenne de vos 25 meilleures années (plafonnées au PASS). Ce simulateur utilise votre salaire actuel comme approximation."
@@ -233,7 +224,7 @@ export default function Cnav() {
           </div>
 
           {/* Barre récapitulative */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
             {[
               { l: "Trimestres totaux", v: `${((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4}`, gold: true },
               { l: "Durée requise", v: `${dureeRequise} trim.` },
@@ -241,7 +232,7 @@ export default function Cnav() {
             ].map((item, i) => (
               <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
                 <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
               </div>
             ))}
           </div>
@@ -258,16 +249,16 @@ export default function Cnav() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Pension nette mensuelle estimée (base CNAV)</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Pension nette mensuelle estimée (base CNAV)</div>
             {!hasResult ? (
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.pensionNette)} euros par mois`}>
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -290,7 +281,7 @@ export default function Cnav() {
                     {res.decote === 0 && res.surcote === 0 && "Taux plein — aucune décote ni surcote"}
                   </div>
                 </div>
-                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "#f87171" : res.surcote > 0 ? "#4ade80" : "var(--text-secondary)" }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "#f87171" : res.surcote > 0 ? "#4ade80" : "var(--text-secondary)" }}>
                   {(res.tauxEffectif * 100).toFixed(2)} %
                 </span>
               </div>
@@ -314,48 +305,34 @@ export default function Cnav() {
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart }} resultsRef={resultsRef} report={report} name="cnav" />
 
-        {/* Comparaison de 2 scénarios (âge de départ / années restantes) */}
-        {hasResult && !compareOn && (
-          <button
-            onClick={startCompare}
-            style={{ width: "100%", marginTop: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
-          >
-            ⚖️ Comparer un 2ᵉ scénario de départ
-          </button>
+        {hasResult && pensionParAge.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Pension selon l'âge de départ
+            </div>
+            <ZoomableChart caption="Pension selon l'âge de départ">
+              <LineAreaChart
+                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "var(--primary)", fillColor: "rgba(43,92,230,0.12)" }]}
+                xFmt={(v) => `${v} ans`}
+                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
+                aria="Pension selon l'âge de départ"
+              />
+            </ZoomableChart>
+          </div>
         )}
 
-        {hasResult && compareOn && (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
-              <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
-            </div>
-            <div className="cmp-grid">
-              <div>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
-                  <li>Âge de départ : <strong style={{ color: "var(--text)" }}>{ageDépart ?? 64} ans</strong></li>
-                  <li>Années restantes : <strong style={{ color: "var(--text)" }}>{anneesRestantes ?? 0} ans</strong></li>
-                </ul>
-                <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Pension nette</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.pensionNette)}<span style={{ fontSize: 13 }}>/mois</span></div>
-              </div>
-              <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
-                <StepperInput label="Âge de départ" value={bAge} onChange={setBAge} min={62} max={70} unit=" ans" />
-                <NumInput id="b-annees-rest" label="Années restantes" value={bAnneesRest} onChange={setBAnneesRest} unit="ans" min={0} max={50} />
-                <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Pension nette</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{resB.pensionNette > 0 ? fmtEur(resB.pensionNette) : "—"}<span style={{ fontSize: 13 }}>/mois</span></div>
-              </div>
-            </div>
-            {resB.pensionNette > 0 && (
-              <div style={{ marginTop: 18, padding: "14px 18px", borderRadius: 12, textAlign: "center", background: deltaPension >= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${deltaPension >= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
-                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Écart B − A : </span>
-                <strong style={{ fontSize: 18, color: deltaPension >= 0 ? "#22c55e" : "#ef4444" }}>
-                  {deltaPension >= 0 ? "+" : "−"}{fmtEur(Math.abs(Math.round(deltaPension)))}/mois
-                </strong>
-              </div>
-            )}
+        {hasResult && (
+          <div style={{ marginTop: 20 }}>
+            <ScenarioCompare
+              name="cnav"
+              base={{ ageDépart, anneesRestantes }}
+              fields={[
+                { key: "ageDépart", label: "Âge de départ", type: "step", min: 62, max: 70, step: 1, unit: "ans" },
+                { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
+              ]}
+              compute={(v) => calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, ...v })}
+              metrics={[{ label: "Pension nette", get: r => r.pensionNette, fmt: fmtEur, higherBetter: true }]}
+            />
           </div>
         )}
 
@@ -363,7 +340,7 @@ export default function Cnav() {
         {hasResult && ageComparisons.length > 0 && (
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 16, padding: "20px 24px", marginTop: 20 }}>
             <div style={{ marginBottom: 14 }}>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginBottom: 3 }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginBottom: 3 }}>
                 Pension selon l'âge de départ
               </div>
               <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>
@@ -381,7 +358,7 @@ export default function Cnav() {
                       padding: "10px 6px",
                       borderRadius: 10,
                       border: `2px solid ${isActive ? "var(--gold)" : tauxPlein ? "rgba(34,197,94,0.35)" : "var(--border)"}`,
-                      background: isActive ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                      background: isActive ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
                       cursor: "pointer",
                       textAlign: "center",
                       transition: "border-color 0.15s",
@@ -390,7 +367,7 @@ export default function Cnav() {
                     <div style={{ fontSize: 12, fontWeight: 600, color: isActive ? "var(--gold)" : "var(--text-secondary)", marginBottom: 4 }}>
                       {age} ans
                     </div>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 14, fontWeight: 700, color: isActive ? "var(--gold)" : "var(--text)" }}>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: isActive ? "var(--gold)" : "var(--text)" }}>
                       {pension > 0 ? Math.round(pension).toLocaleString("fr-FR") + " €" : "—"}
                     </div>
                     {tauxPlein && (
@@ -411,20 +388,20 @@ export default function Cnav() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime général de la Sécurité Sociale</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime général de la Sécurité Sociale</h3>
             <p style={{ marginBottom: 16 }}>La Caisse Nationale d'Assurance Vieillesse (CNAV) est le régime de retraite de base de tous les salariés du secteur privé. Elle verse une pension proportionnelle à vos revenus et à la durée de votre cotisation. En 2026, la pension de base est plafonnée à 50 % du Plafond Annuel de la Sécurité Sociale (PASS), soit 23 550 € brut par an au maximum.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Trimestres, SAM et taux de liquidation</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Trimestres, SAM et taux de liquidation</h3>
             <p style={{ marginBottom: 16 }}>Votre pension CNAV dépend de trois variables. Le Salaire Annuel Moyen (SAM) correspond à la moyenne de vos 25 meilleures années de salaire brut, plafonné au PASS chaque année. Le taux de liquidation est de 50 % si vous avez validé le nombre de trimestres requis (entre 167 et 172 selon votre année de naissance) ou si vous avez 67 ans. La proratisation réduit la pension si vous n'avez pas atteint la durée complète de cotisation.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Décote et surcote : partir au bon moment</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Décote et surcote : partir au bon moment</h3>
             <p>Si vous partez avant 67 ans sans avoir validé le nombre de trimestres requis, une décote de 0,625 % par trimestre manquant s'applique, jusqu'à 12,5 % maximum. À l'inverse, chaque trimestre cotisé après le taux plein génère une surcote de +1,25 %, sans plafond. L'âge légal de départ varie de 62 à 64 ans selon votre génération. À 67 ans, le taux plein est automatiquement attribué quelle que soit la durée de cotisation.</p>
           </div>
         </div>
 
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — CNAV</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — CNAV</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
             Source officielle : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
@@ -445,7 +422,7 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}

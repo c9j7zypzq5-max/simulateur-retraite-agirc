@@ -1,31 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import { GLOSSARY, LEXIQUE_CATEGORIES } from "../data/glossaire.js";
+import { GLOSSARY } from "../data/glossaire.js";
 
-const CATEGORY_COLORS = {
-  "FIRE":       { bg: "rgba(239,68,68,0.1)",   color: "#ef4444",  border: "rgba(239,68,68,0.25)" },
-  "Finances":   { bg: "rgba(34,197,94,0.1)",   color: "#22c55e",  border: "rgba(34,197,94,0.25)" },
-  "Retraite":   { bg: "rgba(99,102,241,0.1)",  color: "#818cf8",  border: "rgba(99,102,241,0.25)" },
-  "Immobilier": { bg: "rgba(168,85,247,0.1)",  color: "#a855f7",  border: "rgba(168,85,247,0.25)" },
-  "Impôts":     { bg: "rgba(249,115,22,0.1)",  color: "#f97316",  border: "rgba(249,115,22,0.25)" },
-  "Budget":     { bg: "rgba(20,184,166,0.1)",  color: "#14b8a6",  border: "rgba(20,184,166,0.25)" },
-};
-
-function Badge({ category }) {
-  const s = CATEGORY_COLORS[category] || { bg: "rgba(184,147,74,0.1)", color: "var(--gold)", border: "var(--border-gold)" };
-  return (
-    <span style={{
-      display: "inline-block", fontSize: 10, fontWeight: 600,
-      padding: "3px 10px", borderRadius: 12, letterSpacing: "0.06em",
-      background: s.bg, color: s.color, border: `1px solid ${s.border}`,
-    }}>
-      {category}
-    </span>
-  );
-}
+const ALL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 function TermCard({ entry }) {
   const [hovered, setHovered] = useState(false);
@@ -36,24 +17,20 @@ function TermCard({ entry }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         display: "block", textDecoration: "none",
-        background: "var(--card-bg)",
-        border: `1px solid ${hovered ? "var(--border-gold)" : "var(--border)"}`,
-        borderRadius: 14, padding: "16px 18px",
-        boxShadow: hovered ? "0 6px 24px rgba(184,147,74,0.12)" : "var(--card-shadow)",
+        background: "var(--surface)", border: `1px solid ${hovered ? "var(--primary)" : "var(--border)"}`,
+        borderRadius: 12, padding: "18px 20px",
+        boxShadow: hovered ? "0 6px 20px rgba(43,92,230,0.12)" : "var(--card-shadow)",
         transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
         transform: hovered ? "translateY(-2px)" : "none",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>
-          {entry.term}
-        </span>
-        <span style={{ fontSize: 12, color: "var(--gold)", flexShrink: 0 }}>Lire →</span>
+      <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 5 }}>
+        {entry.term}
       </div>
       {entry.full !== entry.term && (
-        <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 8, fontStyle: "italic" }}>{entry.full}</div>
+        <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 6, fontStyle: "italic" }}>{entry.full}</div>
       )}
-      <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{entry.short}</p>
+      <p style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--text-secondary)", margin: 0 }}>{entry.short}</p>
     </Link>
   );
 }
@@ -61,6 +38,7 @@ function TermCard({ entry }) {
 export default function Lexique() {
   const [theme, setTheme] = useTheme();
   const [query, setQuery] = useState("");
+  const [activeLetter, setActiveLetter] = useState(null);
 
   useEffect(() => {
     document.title = "Lexique financier — définitions claires | simfinly.com";
@@ -82,71 +60,108 @@ export default function Lexique() {
     );
   }, [q]);
 
-  const byCategory = useMemo(() => {
+  const byLetter = useMemo(() => {
     const groups = {};
-    for (const t of filtered) (groups[t.category] ||= []).push(t);
+    for (const t of filtered) {
+      const letter = t.term[0].toUpperCase();
+      (groups[letter] ||= []).push(t);
+    }
     return groups;
   }, [filtered]);
 
+  const presentLetters = new Set(Object.keys(byLetter));
+  const letters = ALL_LETTERS.filter(l => presentLetters.has(l));
+
+  function scrollToLetter(letter) {
+    setActiveLetter(letter);
+    const el = document.getElementById(`letter-${letter}`);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk',sans-serif", color: "var(--text)" }}>
+      <style>{`
+        .lexique-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+        @media (max-width: 600px) { .lexique-grid { grid-template-columns: 1fr; } }
+      `}</style>
+
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 80px" }}>
 
-        {/* Fil d'Ariane */}
-        <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
-          <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
-          {" · "}<span style={{ color: "var(--text)" }}>Lexique</span>
-        </div>
-
-        {/* Header */}
-        <div style={{ padding: "12px 0 24px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} />
-            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>
-              Lexique · Finances personnelles
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-            <span style={{ fontSize: 36 }}>📖</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
-              Lexique financier
-            </h1>
-          </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>
-            Tous les termes et acronymes (TAEG, PTZ, PER, TMI, FIRE…) expliqués simplement, et reliés aux simulateurs concernés.
+        {/* Hero */}
+        <div style={{ textAlign: "center", padding: "44px 0 26px", animation: "fadeUp .5s ease both" }}>
+          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(28px,5vw,36px)", fontWeight: 600, letterSpacing: "-0.02em", color: "var(--text)", margin: "0 0 12px" }}>
+            Lexique financier
+          </h1>
+          <p style={{ fontSize: 16, color: "var(--text-secondary)", margin: "0 0 22px" }}>
+            {GLOSSARY.length} termes de retraite, immobilier et fiscalité, définis clairement.
           </p>
+          {/* Search bar */}
+          <div style={{ display: "flex", alignItems: "center", background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: 13, padding: "12px 18px", maxWidth: 460, margin: "0 auto", gap: 10 }}>
+            <Search size={18} color="var(--text-secondary)" style={{ flexShrink: 0 }} />
+            <input
+              type="search"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Rechercher un terme (TMI, GMP, décote…)"
+              aria-label="Rechercher un terme"
+              style={{
+                flex: 1, border: "none", background: "transparent",
+                color: "var(--text)", fontSize: 15,
+                fontFamily: "'Hanken Grotesk',sans-serif", outline: "none",
+              }}
+            />
+          </div>
         </div>
 
-        {/* Recherche */}
-        <input
-          type="search"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          placeholder="Rechercher un terme…"
-          aria-label="Rechercher un terme"
-          style={{
-            width: "100%", boxSizing: "border-box", padding: "12px 16px", marginBottom: 28,
-            background: "var(--card-bg)", color: "var(--text)",
-            border: "1px solid var(--border)", borderRadius: 12, fontSize: 15,
-            fontFamily: "'DM Sans', sans-serif", outline: "none",
-          }}
-        />
+        {/* Alphabet pills */}
+        {!q && (
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 6, marginBottom: 32 }}>
+            {ALL_LETTERS.map(letter => {
+              const present = presentLetters.has(letter);
+              const active = activeLetter === letter;
+              return (
+                <button
+                  key={letter}
+                  onClick={() => present && scrollToLetter(letter)}
+                  disabled={!present}
+                  aria-label={`Aller à la lettre ${letter}`}
+                  style={{
+                    width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center",
+                    fontFamily: "'Space Grotesk',sans-serif", fontSize: 13,
+                    fontWeight: active ? 700 : present ? 600 : 500,
+                    borderRadius: 8, cursor: present ? "pointer" : "default",
+                    background: active ? "var(--primary)" : present ? "var(--bg)" : "var(--surface)",
+                    color: active ? "#fff" : present ? "var(--text-secondary)" : "var(--border)",
+                    border: `1px solid ${active ? "var(--primary)" : present ? "var(--border)" : "var(--border)"}`,
+                    opacity: present ? 1 : 0.45,
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {letter}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
+        {/* Results */}
         {filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "50px 20px", color: "var(--text-secondary)", fontSize: 14 }}>
             Aucun terme ne correspond à « {query} ».
           </div>
         ) : (
-          LEXIQUE_CATEGORIES.filter(cat => byCategory[cat]?.length).map(cat => (
-            <section key={cat} style={{ marginBottom: 36 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-                <Badge category={cat} />
-                <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
-                {byCategory[cat].map(entry => <TermCard key={entry.slug} entry={entry} />)}
+          letters.map(letter => (
+            <section key={letter} style={{ marginBottom: 36 }}>
+              <h2
+                id={`letter-${letter}`}
+                style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 24, fontWeight: 600, color: "var(--primary)", marginBottom: 14, scrollMarginTop: 80 }}
+              >
+                {letter}
+              </h2>
+              <div className="lexique-grid">
+                {byLetter[letter].map(entry => <TermCard key={entry.slug} entry={entry} />)}
               </div>
             </section>
           ))

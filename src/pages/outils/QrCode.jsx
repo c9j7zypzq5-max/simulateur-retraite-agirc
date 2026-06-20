@@ -248,14 +248,14 @@ export default function QrCode() {
     track('qr_download', { logo: logoType });
   }, [logoType]);
 
-  const field = { background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 10, color: "var(--text)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", padding: "10px 12px", width: "100%" };
+  const field = { background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 10, color: "var(--text)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", padding: "10px 12px", width: "100%" };
   const labelStyle = { display: "block", fontSize: 13, color: "var(--text-secondary)", marginBottom: 7, fontWeight: 500 };
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" };
 
   const logoTypeValues = ["none", "emoji", "image"];
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -402,7 +402,7 @@ export default function QrCode() {
               <button onClick={download} disabled={!!error}
                 style={{ width: "100%", marginTop: 16, padding: "13px 20px", borderRadius: 12, cursor: error ? "not-allowed" : "pointer",
                   background: error ? "var(--input-bg)" : "linear-gradient(135deg,var(--gold),var(--gold-mid))",
-                  color: error ? "var(--text-secondary)" : "#1a1206", border: "none", fontSize: 15, fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }}>
+                  color: error ? "var(--text-secondary)" : "#1a1206", border: "none", fontSize: 15, fontWeight: 600, fontFamily: "'Hanken Grotesk', sans-serif" }}>
                 {txt.downloadBtn}
               </button>
               <div style={{ marginTop: 10, fontSize: 11, color: "var(--text-secondary)" }}>{txt.privacyNote}</div>
@@ -414,19 +414,19 @@ export default function QrCode() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>{txt.aboutTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>{txt.aboutTitle}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <p style={{ marginBottom: 16 }} dangerouslySetInnerHTML={{ __html: txt.about1.replace('<strong>', '<strong style="color:var(--text)">') }} />
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.about2Title}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.about2Title}</h3>
             <p style={{ marginBottom: 16 }}>{txt.about2}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.about3Title}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.about3Title}</h3>
             <p>{txt.about3}</p>
           </div>
         </div>
 
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
           {txt.faq.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
 
@@ -453,7 +453,7 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
