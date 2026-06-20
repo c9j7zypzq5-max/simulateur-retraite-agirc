@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Home, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "../lib/router.jsx";
 import { useExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
@@ -338,10 +339,31 @@ function HeaderBreadcrumb() {
   const { pathname } = useLocation();
   const meta = ROUTE_META[pathname];
   return (
-    <nav aria-label="Fil d'Ariane" style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 14 }}>
-      <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
-      {meta?.cat && <>{" · "}<span>{meta.cat}</span></>}
-      {meta?.title && <>{" · "}<span style={{ color: "var(--text)" }}>{meta.title}</span></>}
+    <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+      <Link to="/" style={{
+        display: "inline-flex", alignItems: "center", gap: 5,
+        fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
+        background: "var(--hover-bg)", border: "1px solid var(--border)",
+        padding: "4px 10px", borderRadius: 20,
+        transition: "background 0.2s, color 0.2s",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.color = "var(--primary)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
+        onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+      >
+        <Home size={11} /> Accueil
+      </Link>
+      {meta?.cat && (
+        <>
+          <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
+          <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--hover-bg)", border: "1px solid var(--border)", padding: "4px 10px", borderRadius: 20 }}>{meta.cat}</span>
+        </>
+      )}
+      {meta?.title && (
+        <>
+          <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
+          <span style={{ fontSize: 12, color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", padding: "4px 10px", borderRadius: 20 }}>{meta.title}</span>
+        </>
+      )}
     </nav>
   );
 }
@@ -349,7 +371,7 @@ function HeaderBreadcrumb() {
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
 export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
   return (
-    <div style={{ padding: "28px 0 36px", animation: "fadeUp .5s ease both", textAlign: "center" }}>
+    <div style={{ padding: "28px 24px 36px", animation: "fadeUp .5s ease both", textAlign: "center", background: "linear-gradient(180deg, var(--primary-soft) 0%, transparent 100%)", borderRadius: 16, marginBottom: 24 }}>
       <HeaderBreadcrumb />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
         <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />

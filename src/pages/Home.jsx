@@ -7,7 +7,7 @@ import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
 import { prefetchRoute } from "../utils/prefetch.js";
 import { GLOSSARY } from "../data/glossaire.js";
-import { Search, X } from "lucide-react";
+import { Search, X, LayoutGrid, Clock, ShieldCheck } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
@@ -358,12 +358,17 @@ export default function Home() {
           </p>
           <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
             {[
-              { v: simCount, l: txt.stat1Label },
-              { v: txt.stat2, l: txt.stat2Label },
-              { v: txt.stat3, l: txt.stat3Label },
-            ].map(({ v, l }) => (
-              <div key={l} style={{ textAlign: "center", background: "var(--surface)", borderRadius: 12, border: "1px solid var(--border)", padding: "16px 20px", boxShadow: "var(--card-shadow)" }}>
-                <strong style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--primary)" }}>{v}</strong>
+              { v: simCount, l: txt.stat1Label, Icon: LayoutGrid },
+              { v: txt.stat2, l: txt.stat2Label, Icon: Clock },
+              { v: txt.stat3, l: txt.stat3Label, Icon: ShieldCheck },
+            ].map(({ v, l, Icon }) => (
+              <div key={l} style={{ textAlign: "center", background: "var(--surface)", borderRadius: 14, border: "1px solid var(--border)", padding: "18px 24px", boxShadow: "var(--card-shadow)", minWidth: 130 }}>
+                <div style={{ display: "flex", justifyContent: "center", marginBottom: 8 }}>
+                  <span style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: 10, background: "var(--primary-soft)", color: "var(--primary)" }}>
+                    <Icon size={18} />
+                  </span>
+                </div>
+                <strong style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--primary)", lineHeight: 1.1 }}>{v}</strong>
                 <small style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--text-secondary)" }}>{l}</small>
               </div>
             ))}
@@ -520,14 +525,14 @@ function SimCard({ sim, index, visible, txt }) {
   return (
     <LocaleLink to={sim.path} style={{
       background: "var(--surface)",
-      border: `1px solid ${hovered ? "var(--primary-soft, #EAF0FF)" : "var(--border)"}`,
+      border: `1.5px solid ${hovered ? "var(--primary)" : "var(--border)"}`,
       borderRadius: 14, padding: "20px",
       display: "flex", flexDirection: "column", gap: 16,
       textDecoration: "none", position: "relative", overflow: "hidden",
-      transition: `border-color 0.25s, transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
+      transition: `border-color 0.2s, transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0, translate: visible ? "0 0" : "0 24px",
-      transform: hovered ? "perspective(800px) rotateY(3deg) translateY(-2px)" : "perspective(800px) rotateY(0deg) translateY(0)",
-      boxShadow: hovered ? "0 4px 16px rgba(15,24,40,0.1)" : "0 1px 3px rgba(15,24,40,0.06)",
+      transform: hovered ? "translateY(-4px)" : "translateY(0)",
+      boxShadow: hovered ? "0 8px 28px rgba(43,92,230,0.18)" : "var(--card-shadow)",
     }}
       onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
