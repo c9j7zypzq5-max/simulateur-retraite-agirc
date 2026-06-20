@@ -183,7 +183,7 @@ function Particles() {
         ))}
       </defs>
       {PARTICLES.map((p, i) => (
-        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill="rgba(184,147,74,0.55)"
+        <circle key={i} cx={p.cx} cy={p.cy} r={p.r} fill="rgba(43,92,230,0.25)"
           style={{ animation: `drift-${i} ${p.dur} ease-in-out infinite`, animationDelay: `${(i * 1.3).toFixed(1)}s` }} />
       ))}
     </svg>
@@ -234,22 +234,22 @@ function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
       {!isMobile && (
         <div style={{
           position: "absolute", top: indicator.top, left: indicator.left, width: indicator.width, height: indicator.height,
-          background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", borderRadius: 20,
+          background: "var(--primary)", borderRadius: 20,
           transition: "left 0.3s cubic-bezier(0.4,0,0.2,1), top 0.3s cubic-bezier(0.4,0,0.2,1), width 0.3s cubic-bezier(0.4,0,0.2,1)",
           pointerEvents: "none", zIndex: 0,
         }} />
       )}
-      <span style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>{filterPrefix}</span>
+      <span style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.82rem", color: "var(--text-secondary)", marginRight: 4, position: "relative", zIndex: 1 }}>{filterPrefix}</span>
       {filters.map(f => {
         const isActive = activeFilter === f;
         return (
           <button key={f} ref={el => { refs.current[f] = el; }} onClick={() => setActiveFilter(f)}
             style={{
-              background: isMobile && isActive ? "rgba(184,147,74,0.1)" : "transparent",
-              border: `1px solid ${isActive ? (isMobile ? "var(--border-gold)" : "transparent") : "var(--border)"}`,
-              color: isActive ? "var(--gold)" : "var(--text-secondary)",
-              padding: "9px 16px", borderRadius: 20, fontSize: "0.8rem",
-              cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif",
+              background: isActive ? (isMobile ? "var(--primary)" : "transparent") : "var(--surface)",
+              border: `1.5px solid ${isActive ? "var(--primary)" : "var(--border)"}`,
+              color: isActive ? "#fff" : "var(--text-secondary)",
+              padding: "6px 16px", borderRadius: 20, fontSize: 13,
+              cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500,
               transition: "color 0.2s, border-color 0.2s, background 0.2s", position: "relative", zIndex: 1,
             }}>
             {f}
@@ -264,7 +264,7 @@ export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
   const txt = TXT[locale] ?? TXT.fr;
-  const { isPro } = useAuth();
+  useAuth();
 
   const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : SIMULATEURS_FR;
   const FILTERS = locale === 'en' ? FILTERS_EN : FILTERS_FR;
@@ -347,29 +347,29 @@ export default function Home() {
       <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto", position: "relative" }}>
         <Particles />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.2)", color: "var(--primary)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
             <span style={{ opacity: 0.7 }}>✦</span> {txt.heroBadge} <span style={{ opacity: 0.7 }}>✦</span>
           </div>
-          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(2.2rem,5vw,3.4rem)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20 }}>
-            {txt.heroTitle}<br /><em style={{ fontStyle: "italic", color: "var(--gold)" }}>{txt.heroEm}</em>
+          <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20, letterSpacing: "-0.02em" }}>
+            {txt.heroTitle}<br /><em style={{ fontStyle: "italic", color: "var(--primary)" }}>{txt.heroEm}</em>
           </h1>
-          <p style={{ fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
+          <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "clamp(16px, 2vw, 18px)", color: "var(--text-secondary)", fontWeight: 400, lineHeight: 1.7, maxWidth: 580, margin: "0 auto 40px" }}>
             {txt.heroDesc}
           </p>
-          <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 40, flexWrap: "wrap" }}>
+          <div className="hero-stats" style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
             {[
               { v: simCount, l: txt.stat1Label },
               { v: txt.stat2, l: txt.stat2Label },
               { v: txt.stat3, l: txt.stat3Label },
             ].map(({ v, l }) => (
-              <div key={l} style={{ textAlign: "center" }}>
-                <strong style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.8rem", fontWeight: 700, color: "var(--gold)" }}>{v}</strong>
-                <small style={{ fontSize: "0.78rem", color: "var(--text-secondary)" }}>{l}</small>
+              <div key={l} style={{ textAlign: "center", background: "var(--surface)", borderRadius: 12, border: "1px solid var(--border)", padding: "16px 20px", boxShadow: "var(--card-shadow)" }}>
+                <strong style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--primary)" }}>{v}</strong>
+                <small style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 12, color: "var(--text-secondary)" }}>{l}</small>
               </div>
             ))}
           </div>
           {totalViews > 0 && (
-            <div style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: "var(--text-secondary)", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)", padding: "6px 16px", borderRadius: 20 }}>
+            <div style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, fontSize: "0.8rem", color: "var(--text-secondary)", background: "var(--surface)", border: "1px solid var(--border)", padding: "6px 16px", borderRadius: 20 }}>
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", display: "inline-block", boxShadow: "0 0 6px #4ade80", animation: "pulse-dot 2s ease-in-out infinite" }} />
               <span><strong style={{ color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: "1rem" }}>{txt.simCountFmt(displayedViews)}</strong> {txt.simCountLabel}</span>
             </div>
@@ -397,9 +397,9 @@ export default function Home() {
           <input
             type="search" value={query} onChange={e => setQuery(e.target.value)}
             placeholder={txt.searchPlaceholder} aria-label={txt.searchAriaLabel}
-            style={{ width: "100%", padding: "13px 44px", borderRadius: 14, background: "var(--input-bg)", border: "1px solid var(--border)", color: "var(--text)", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", boxShadow: "var(--input-shadow)", outline: "none" }}
-            onFocus={e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
-            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; }}
+            style={{ width: "100%", padding: "12px 44px", borderRadius: 12, background: "var(--surface)", border: "1.5px solid var(--border)", color: "var(--text)", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
+            onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
           />
           {query && (
             <button onClick={() => setQuery("")} aria-label={txt.clearSearch}
@@ -417,7 +417,7 @@ export default function Home() {
 
       {/* ── Grid ── */}
       <section style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 600, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
+        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
           {txt.gridTitle}
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
         </div>
@@ -439,7 +439,7 @@ export default function Home() {
         {/* Résultats lexique (FR only) */}
         {txt.lexiqueSection && nq && lexMatches.length > 0 && (
           <div style={{ marginTop: 40 }}>
-            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
               {txt.lexiqueSection}
               <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
@@ -456,7 +456,7 @@ export default function Home() {
         {/* Résultats blog (FR only) */}
         {txt.blogSection && nq && artMatches.length > 0 && (
           <div style={{ marginTop: 40 }}>
-            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
               {txt.blogSection}
               <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
@@ -472,48 +472,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* ── Pro CTA (caché si déjà abonné) ── */}
-      {!isPro && (
-        <section style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px 80px" }}>
-          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.09),rgba(232,192,106,0.04))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "40px 36px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 32, justifyContent: "space-between" }}>
-            <div style={{ flex: "1 1 400px", minWidth: 0 }}>
-              <div style={{ display: "inline-block", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "4px 14px", fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 16 }}>
-                {locale === 'en' ? 'Simfinly Pro' : 'Simfinly Pro'}
-              </div>
-              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.3 }}>
-                {locale === 'en' ? 'Unlock the full experience' : 'Débloquez l\'expérience complète'}
-              </h2>
-              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 8px", display: "flex", flexDirection: "column", gap: 10 }}>
-                {(locale === 'en' ? [
-                  "Export any simulation as a PDF report",
-                  "Unlimited scenario saves & history",
-                  "Advanced scenario comparisons",
-                ] : [
-                  "Exportez chaque simulation en rapport PDF",
-                  "Sauvegardez et retrouvez toutes vos simulations",
-                  "Comparaisons avancées de scénarios illimitées",
-                ]).map((item) => (
-                  <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: "var(--text-secondary)" }}>
-                    <span style={{ color: "#4ade80", flexShrink: 0, marginTop: 1 }}>✓</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div style={{ flexShrink: 0 }}>
-              <LocaleLink to="/pro" style={{ display: "inline-block", padding: "14px 32px", background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", color: "#1a1209", borderRadius: 12, textDecoration: "none", fontWeight: 700, fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", boxShadow: "0 4px 16px rgba(184,147,74,0.3)", transition: "box-shadow 0.2s,transform 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(184,147,74,0.45)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
-                onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(184,147,74,0.3)"; e.currentTarget.style.transform = ""; }}
-              >
-                {locale === 'en' ? 'View Pro plans →' : 'Voir les offres Pro →'}
-              </LocaleLink>
-              <p style={{ textAlign: "center", marginTop: 10, fontSize: 12, color: "var(--text-secondary)" }}>
-                {locale === 'en' ? 'From €4.90/month · Cancel anytime' : 'À partir de 4,90 €/mois · Sans engagement'}
-              </p>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Pro CTA removed */}
 
       <Footer />
     </div>
@@ -525,30 +484,30 @@ function FeaturedCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} className="sim-featured" style={{
-      background: "linear-gradient(145deg,rgba(184,147,74,0.07),var(--card-bg))",
-      border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28,
+      background: "#0F1828",
+      border: `1px solid ${hovered ? "var(--primary-soft, #EAF0FF)" : "var(--border)"}`, borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start", textDecoration: "none",
       position: "relative", overflow: "hidden",
       transition: `transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0, translate: visible ? "0 0" : "0 24px",
       transform: hovered ? "perspective(800px) rotateY(3deg) translateY(-2px)" : "perspective(800px) rotateY(0deg) translateY(0)",
-      boxShadow: hovered ? "0 12px 40px rgba(184,147,74,0.2), 0 4px 12px rgba(0,0,0,0.15)" : "none",
+      boxShadow: hovered ? "0 4px 16px rgba(15,24,40,0.1)" : "0 1px 3px rgba(15,24,40,0.06)",
     }}
       onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
-      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.12)", border: "1px solid var(--border-gold)", flexShrink: 0 }}>
+      <div style={{ width: 54, height: 54, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)", background: "rgba(43,92,230,0.15)", border: "1px solid rgba(43,92,230,0.3)", flexShrink: 0 }}>
         <SimIcon path={sim.path} size={28} />
       </div>
       <div style={{ flex: 1 }}>
         <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
           {sim.badges.map(b => <BadgePill key={b} type={b} txt={txt} />)}
         </div>
-        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
-        <p style={{ fontSize: "0.87rem", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", fontWeight: 700, color: "#ffffff", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
+        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.87rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
-          <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--gold)" }}>{txt.ctaFeatured}</span>
+          <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
+          <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--primary)" }}>{txt.ctaFeatured}</span>
         </div>
       </div>
     </LocaleLink>
@@ -560,21 +519,21 @@ function SimCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} style={{
-      background: "var(--card-bg)",
-      border: `1px solid ${hovered ? "var(--border-gold)" : "var(--border)"}`,
-      borderRadius: 14, padding: 28,
+      background: "var(--surface)",
+      border: `1px solid ${hovered ? "var(--primary-soft, #EAF0FF)" : "var(--border)"}`,
+      borderRadius: 14, padding: "20px",
       display: "flex", flexDirection: "column", gap: 16,
       textDecoration: "none", position: "relative", overflow: "hidden",
       transition: `border-color 0.25s, transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
       opacity: visible ? 1 : 0, translate: visible ? "0 0" : "0 24px",
       transform: hovered ? "perspective(800px) rotateY(3deg) translateY(-2px)" : "perspective(800px) rotateY(0deg) translateY(0)",
-      boxShadow: hovered ? "0 12px 40px rgba(184,147,74,0.15), 0 4px 12px rgba(0,0,0,0.12)" : "none",
+      boxShadow: hovered ? "0 4px 16px rgba(15,24,40,0.1)" : "0 1px 3px rgba(15,24,40,0.06)",
     }}
       onMouseEnter={() => { setHovered(true); prefetchRoute(sim.path); }}
       onMouseLeave={() => setHovered(false)}
     >
       <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--gold)", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)" }}>
+        <div style={{ width: 46, height: 46, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--primary)", background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.15)" }}>
           <SimIcon path={sim.path} size={24} />
         </div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
@@ -582,12 +541,12 @@ function SimCard({ sim, index, visible, txt }) {
         </div>
       </div>
       <div style={{ flex: 1 }}>
-        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
-        <p style={{ fontSize: "0.84rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{sim.desc}</p>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
+        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{sim.desc}</p>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
-        <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--gold)" }}>{txt.ctaCard}</span>
+        <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg, var(--bg))", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
+        <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--primary)" }}>{txt.ctaCard}</span>
       </div>
     </LocaleLink>
   );
