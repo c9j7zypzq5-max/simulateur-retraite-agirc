@@ -484,8 +484,8 @@ function FeaturedCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} className="sim-featured" style={{
-      background: "#0F1828",
-      border: `1px solid ${hovered ? "var(--primary-soft, #EAF0FF)" : "var(--border)"}`, borderRadius: 14, padding: 28,
+      background: "var(--primary-soft)",
+      border: `1px solid ${hovered ? "var(--primary)" : "var(--border-gold)"}`, borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start", textDecoration: "none",
       position: "relative", overflow: "hidden",
       transition: `transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.5s ease ${delay}ms, translate 0.5s ease ${delay}ms`,
@@ -503,10 +503,10 @@ function FeaturedCard({ sim, index, visible, txt }) {
         <div style={{ display: "flex", gap: 8, marginBottom: 12, flexWrap: "wrap" }}>
           {sim.badges.map(b => <BadgePill key={b} type={b} txt={txt} />)}
         </div>
-        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", fontWeight: 700, color: "#ffffff", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
-        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.87rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.35rem", fontWeight: 700, color: "var(--text)", marginBottom: 8, lineHeight: 1.3 }}>{sim.title}</h3>
+        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: "0.87rem", color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 16 }}>{sim.desc}</p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.5)", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
+          <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", background: "var(--chip-bg)", border: "1px solid var(--border)", padding: "3px 10px", borderRadius: 10 }}>{sim.tag}</span>
           <span style={{ fontSize: "0.82rem", fontWeight: 500, color: "var(--primary)" }}>{txt.ctaFeatured}</span>
         </div>
       </div>

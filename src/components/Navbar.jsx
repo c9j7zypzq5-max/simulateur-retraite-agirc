@@ -308,20 +308,6 @@ export default function Navbar({ theme, setTheme }) {
           {/* Right controls */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
-            <LocaleLink
-              to={locale === 'en' ? "/en/pro" : "/pro"}
-              style={{
-                background: "#0F1828",
-                color: "#fff",
-                fontSize: 13, fontWeight: 600,
-                fontFamily: "'Hanken Grotesk', sans-serif",
-                padding: "7px 16px", borderRadius: 8,
-                textDecoration: "none", whiteSpace: "nowrap",
-                flexShrink: 0,
-              }}
-            >
-              Pro →
-            </LocaleLink>
           </div>
         </div>
 
@@ -490,6 +476,8 @@ export default function Navbar({ theme, setTheme }) {
             {canonPath === "/" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
           </LocaleLink>
 
+          {/* Guides / Blog / Lexique — masqués sur mobile */}
+          <div className="drawer-secondary-links">
           {/* Guides (FR only) */}
           {txt.guidesSubtitle !== null && (
             <Link
@@ -558,6 +546,8 @@ export default function Navbar({ theme, setTheme }) {
               {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
+
+          </div>{/* /drawer-secondary-links */}
 
           {/* Groupes de catégories */}
           {navGroups.map(group => {
