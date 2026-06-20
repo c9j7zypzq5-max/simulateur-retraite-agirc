@@ -237,7 +237,7 @@ export default function FonctionPublique() {
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.pensionNette)} euros par mois`}>
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -300,7 +300,7 @@ export default function FonctionPublique() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La formule de la pension civile</h3>
@@ -313,7 +313,7 @@ export default function FonctionPublique() {
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Fonction publique</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>

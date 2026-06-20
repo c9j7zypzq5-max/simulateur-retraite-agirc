@@ -236,7 +236,7 @@ export default function Independants() {
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.totalNette)} euros par mois`}>
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>

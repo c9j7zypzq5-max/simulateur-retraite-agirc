@@ -99,8 +99,8 @@ export default function AssuranceVie() {
   const isMobile = useIsMobile();
 
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: isMobile ? "20px 16px" : "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -220,7 +220,7 @@ export default function AssuranceVie() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/assurance-vie" size={34} />}
           badge="Finances · Simulation 2025"
@@ -229,7 +229,7 @@ export default function AssuranceVie() {
           desc="Projetez la croissance de votre contrat et estimez l'impôt sur les gains au rachat selon l'âge du contrat (avant ou après 8 ans). Abattement, PFU et prélèvements sociaux inclus."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24 }}>
 
           {/* ── Colonne formulaire ── */}
           <div style={{ order: isMobile ? 2 : 1 }}>
@@ -261,8 +261,8 @@ export default function AssuranceVie() {
 
           {/* ── Colonne résultats ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Capital net à terme
               </div>
               {!hasInput ? (
@@ -271,7 +271,7 @@ export default function AssuranceVie() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtEur(Math.round(animNet))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>

@@ -415,7 +415,7 @@ export default function Budget() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px 24px 0" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           {txt.badge}
         </div>
@@ -429,11 +429,11 @@ export default function Budget() {
       </div>
 
       {/* ── Main layout ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 16px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: isMobile ? 0 : 24, alignItems: "start" }}>
 
         {/* ── Colonne gauche : inputs ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.inputSectionTitle}
             </div>
@@ -451,7 +451,7 @@ export default function Budget() {
         {/* ── Colonne droite : visualisations ── */}
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Donut */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.donutTitle}
             </div>
