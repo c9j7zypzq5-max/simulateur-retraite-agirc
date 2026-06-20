@@ -144,8 +144,8 @@ export default function EmpruntImmobilier() {
 
   // card padding responsive : 28/32px desktop, 20/16px mobile
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -308,7 +308,7 @@ export default function EmpruntImmobilier() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ background: "var(--bg)", padding: "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/emprunt-immobilier" size={34} />}
           badge="Immobilier · Simulation 2026"
@@ -317,7 +317,7 @@ export default function EmpruntImmobilier() {
           desc="Calculez vos mensualités, votre taux d'endettement et le coût total de votre crédit. Inclut frais de notaire, primo-accédant et tableau d'amortissement."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24, alignItems: "start" }}>
 
           {/* ── Colonne formulaire — visuellement 2e sur mobile (order 2) ── */}
           <div style={{ order: isMobile ? 2 : 1 }}>
@@ -408,13 +408,13 @@ export default function EmpruntImmobilier() {
           {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
             {/* Résultat principal */}
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Mensualité crédit
               </div>
               {hasResult ? (
                 <>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtEur(Math.round(animMensualite))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
