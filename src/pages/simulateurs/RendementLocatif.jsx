@@ -195,7 +195,7 @@ export default function RendementLocatif() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/rendement-locatif" size={34} />}
           badge="Immobilier · Simulation 2026"
@@ -204,7 +204,7 @@ export default function RendementLocatif() {
         />
 
         {/* Formulaire — Bien */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Le bien immobilier</h2>
           <NumInput id="prix" label="Prix d'achat" value={prix} onChange={setPrix} unit="€" min={20000} max={5000000}
             hint={prix ? `Frais notaire estimés : ${fmtEur(prix * (neuf ? 0.025 : 0.075))}` : "Montant avant frais"}
@@ -226,7 +226,7 @@ export default function RendementLocatif() {
         </div>
 
         {/* Formulaire — Revenus */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Revenus et charges</h2>
           <NumInput id="loyer" label="Loyer mensuel" value={loyer} onChange={setLoyer} unit="€/mois" min={100} max={10000}
             hint={loyer ? `Annualisé : ${fmtEur(loyer * 12)}/an` : "Loyer hors charges"}
@@ -245,20 +245,20 @@ export default function RendementLocatif() {
 
         {/* Résultats */}
         {hasResult && (
-          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Rentabilité estimée</h2>
 
             {/* Rendement brut */}
             <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Rendement brut</div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Rendement brut</div>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                 {rendementBrutAnim.toFixed(2)} %
               </div>
             </div>
 
             {/* Rendement net */}
             <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Rendement net (après charges)</div>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Rendement net (après charges)</div>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(36px,8vw,56px)", fontWeight: 700, lineHeight: 1, color: res.rendementNet > 0 ? "var(--text)" : "rgba(239,68,68,0.8)" }}>
                 {rendementNetAnim.toFixed(2)} %
               </div>
@@ -289,8 +289,8 @@ export default function RendementLocatif() {
 
         {/* Graphique rendements */}
         {hasResult && rendChart.length > 0 && (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 12 }}>
               Comparaison des rendements
             </div>
             <ZoomableChart caption="Comparaison des rendements">
@@ -307,21 +307,21 @@ export default function RendementLocatif() {
         {hasResult && !compareOn && (
           <button
             onClick={startCompare}
-            style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}
+            style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--surface)", border: "1px dashed var(--border)", color: "var(--primary)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}
           >
             ⚖️ Comparer un 2ᵉ scénario (prix / loyer)
           </button>
         )}
 
         {hasResult && compareOn && (
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
               <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
             <div className="cmp-grid">
               <div>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
+                <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 10 }}>Scénario A (actuel)</div>
                 <ul style={{ listStyle: "none", padding: 0, margin: "0 0 12px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.9 }}>
                   <li>Prix : <strong style={{ color: "var(--text)" }}>{fmtEur(prix)}</strong></li>
                   <li>Loyer : <strong style={{ color: "var(--text)" }}>{fmtEur(loyer)}/mois</strong></li>
@@ -332,11 +332,11 @@ export default function RendementLocatif() {
                 <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(res.cashflowMensuel))}/mois</div>
               </div>
               <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
-                <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>Scénario B</div>
+                <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--primary)", marginBottom: 10 }}>Scénario B</div>
                 <NumInput id="b-prix" label="Prix d'achat" value={bPrix} onChange={setBPrix} unit="€" min={0} max={5000000} />
                 <NumInput id="b-loyer" label="Loyer mensuel" value={bLoyer} onChange={setBLoyer} unit="€" min={0} max={50000} />
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Rendement net</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{hasB ? `${resB.rendementNet.toFixed(2)} %` : "—"}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--primary)" }}>{hasB ? `${resB.rendementNet.toFixed(2)} %` : "—"}</div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Cash-flow</div>
                 <div style={{ fontSize: 15, color: "var(--text)" }}>{hasB ? `${fmtEur(Math.round(resB.cashflowMensuel))}/mois` : "—"}</div>
               </div>
@@ -355,7 +355,7 @@ export default function RendementLocatif() {
         )}
 
         {!hasResult && prix === null && loyer === null && (
-          <div style={{ textAlign: "center", padding: "40px 28px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, color: "var(--text-secondary)" }}>
+          <div style={{ textAlign: "center", padding: "40px 28px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, color: "var(--text-secondary)" }}>
             Saisissez le prix du bien et le loyer pour voir votre estimation.
           </div>
         )}
@@ -380,7 +380,7 @@ export default function RendementLocatif() {
               )}
               <div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>Total annuel</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(res.chargesAnnuelles)}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: "var(--primary)" }}>{fmtEur(res.chargesAnnuelles)}</div>
               </div>
             </div>
             <ProgressBar label="Charges / Revenus locatifs" value={res.chargesAnnuelles} total={loyer * 12} color="linear-gradient(90deg,rgba(239,68,68,0.6),rgba(239,68,68,0.3))" />
@@ -391,7 +391,7 @@ export default function RendementLocatif() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Rendement brut et rendement net</h3>
@@ -404,7 +404,7 @@ export default function RendementLocatif() {
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
@@ -424,7 +424,7 @@ function FaqItem({ q, a }) {
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
         <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--primary)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>

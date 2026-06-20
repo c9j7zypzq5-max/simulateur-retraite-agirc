@@ -343,7 +343,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
         <polygon points={immoFill} fill="rgba(168,85,247,0.12)" />
       )}
       {/* Financier area */}
-      <polygon points={finFill} fill="rgba(184,147,74,0.15)" />
+      <polygon points={finFill} fill="rgba(43,92,230,0.10)" />
 
       {/* Immo line */}
       {immoActive && (
@@ -362,7 +362,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
       <polyline
         points={finPts}
         fill="none"
-        stroke="var(--gold)"
+        stroke="var(--primary)"
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -389,7 +389,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
       ))}
 
       {/* Légende */}
-      <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--gold)" />
+      <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--primary)" />
       <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">{txt.financier}</text>
       {immoActive && (
         <>
@@ -419,7 +419,7 @@ function YearTable({ projectionData, immoActive, txt }) {
           {projectionData.slice(1).map(d => (
             <tr key={d.annee} style={{ borderBottom: '1px solid var(--border)' }}>
               <td style={{ padding: '9px 0', color: 'var(--text)' }}>{txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}</td>
-              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--gold)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
+              <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--primary)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
               {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
               <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
@@ -685,12 +685,12 @@ export default function Patrimoine() {
                     {txt.compositionTitle}
                   </div>
                   <div style={{ display: 'flex', gap: 4, height: 10, borderRadius: 5, overflow: 'hidden', marginBottom: 12 }}>
-                    <div style={{ width: `${pctFinancier}%`, background: 'var(--gold)', borderRadius: '5px 0 0 5px', transition: 'width 0.6s' }} />
+                    <div style={{ width: `${pctFinancier}%`, background: 'var(--primary)', borderRadius: '5px 0 0 5px', transition: 'width 0.6s' }} />
                     {immoActive && <div style={{ width: `${pctImmo}%`, background: '#a855f7', transition: 'width 0.6s' }} />}
                   </div>
                   <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 12, color: 'var(--text-secondary)' }}>
-                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--gold)', flexShrink: 0 }} />
+                      <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--primary)', flexShrink: 0 }} />
                       {txt.financier} — {Math.round(pctFinancier)} %
                     </div>
                     {immoActive && res.valeurImmoFinal > 0 && (
@@ -706,7 +706,7 @@ export default function Patrimoine() {
               {/* Graphique */}
               {res.projectionData.length >= 2 && (
                 <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 8 }}>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text-secondary)', marginBottom: 8 }}>
                     {txt.projectionTitle}
                   </div>
                   <ZoomableChart innerRef={chartRef}>
@@ -715,7 +715,7 @@ export default function Patrimoine() {
                 </div>
               )}
 
-              <div role="note" style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}
+              <div role="note" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 10, padding: '13px 16px', fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.6 }}
                 dangerouslySetInnerHTML={{ __html: txt.disclaimer }}
               />
 

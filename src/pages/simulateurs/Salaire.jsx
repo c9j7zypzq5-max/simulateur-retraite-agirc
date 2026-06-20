@@ -109,7 +109,7 @@ function SalaryReveal({ value }) {
   }, [value]);
 
   return (
-    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--gold)", letterSpacing: "0.02em" }}>
+    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--primary)", letterSpacing: "0.02em" }}>
       {Math.round(displayed).toLocaleString("fr-FR")} €
     </span>
   );
@@ -504,8 +504,8 @@ export default function Salaire() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "48px 24px 0" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           Finances · Nouveau
         </div>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
@@ -518,12 +518,12 @@ export default function Salaire() {
       </div>
 
       {/* ── Layout 2 colonnes ── */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "340px 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 16px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: isMobile ? 0 : 24, alignItems: "start" }}>
 
         {/* ── Colonne gauche : inputs + salary reveal — passe en second sur mobile ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
           {/* Salary reveal */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28, marginBottom: 24, textAlign: "center" }} ref={resultsRef}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24, textAlign: "center" }} ref={resultsRef}>
             <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>Salaire net mensuel</div>
             <SalaryReveal value={res.net} />
             <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: 8 }}>
@@ -553,7 +553,7 @@ export default function Salaire() {
           </div>
 
           {/* Inputs */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px" }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Paramètres
             </div>
@@ -585,7 +585,7 @@ export default function Salaire() {
         {/* ── Colonne droite : visualisations — passe en premier sur mobile ── */}
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Courbe de carrière */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
               Courbe de carrière
             </div>
@@ -595,7 +595,7 @@ export default function Salaire() {
           </div>
 
           {/* Timeline jalons */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
               Jalons de carrière
             </div>
@@ -603,7 +603,7 @@ export default function Salaire() {
           </div>
 
           {/* Comparaison barres */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Salaire actuel vs dans {horizon} ans
             </div>

@@ -175,7 +175,7 @@ export default function VieEnSemaines() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/vie-en-semaines" size={34} />}
           badge="Vie & Temps · 2026"
@@ -184,14 +184,14 @@ export default function VieEnSemaines() {
         />
 
         {/* Reassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Aucune donnée envoyée", "✓ Basé sur les données INSEE 2024", "✓ Ton factuel et bienveillant"].map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>
           ))}
         </div>
 
         {/* Grille — toujours visible en premier */}
-        <div ref={resultsRef} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--text)", margin: 0 }}>
               {hasResult
@@ -244,7 +244,7 @@ export default function VieEnSemaines() {
         )}
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
             Paramètres
           </h2>
@@ -336,7 +336,7 @@ export default function VieEnSemaines() {
         )}
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>4 160 semaines : un chiffre qui change tout</h3>
@@ -349,7 +349,7 @@ export default function VieEnSemaines() {
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
             Questions fréquentes
           </h2>

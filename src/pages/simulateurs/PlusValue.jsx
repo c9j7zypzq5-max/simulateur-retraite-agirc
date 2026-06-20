@@ -278,14 +278,14 @@ export default function PlusValue() {
 
           {/* Barre récapitulative */}
           {res && res.pvBrute > 0 && (
-            <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
               {[
-                { l: "Plus-value brute", v: fmtEur(res.pvBrute), gold: true },
+                { l: "Plus-value brute", v: fmtEur(res.pvBrute), primary: true },
                 { l: "Durée de détention", v: `${res.duree} ans` },
               ].map((item, i) => (
                 <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
-                  <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 4 }}>{item.l}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.primary ? "var(--primary)" : "var(--text)" }}>{item.v}</div>
                 </div>
               ))}
             </div>
@@ -326,7 +326,7 @@ export default function PlusValue() {
               {/* Abattements par durée */}
               <AccordionSection title="Abattements pour durée de détention" subtitle={`Votre bien : ${res.duree} ans`}>
                 <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-                  <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 16, marginBottom: 16 }}>
+                  <div style={{ background: "var(--surface)", borderRadius: 10, padding: 16, marginBottom: 16 }}>
                     <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
                       <thead>
                         <tr style={{ borderBottom: "1px solid var(--border)" }}>
@@ -350,12 +350,12 @@ export default function PlusValue() {
                           ][i + 1]?.dur || 999));
                           return (
                             <tr key={i} style={{
-                              background: highlight ? "rgba(184,147,74,0.1)" : "transparent",
-                              borderBottom: "1px solid rgba(184,147,74,0.08)"
+                              background: highlight ? "rgba(43,92,230,0.08)" : "transparent",
+                              borderBottom: "1px solid var(--border)"
                             }}>
-                              <td style={{ padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.dur}</td>
-                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.ir}</td>
-                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--gold)" : "var(--text)" }}>{row.ps}</td>
+                              <td style={{ padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.dur}</td>
+                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.ir}</td>
+                              <td style={{ textAlign: "right", padding: 8, color: highlight ? "var(--primary)" : "var(--text)" }}>{row.ps}</td>
                             </tr>
                           );
                         })}
@@ -364,14 +364,14 @@ export default function PlusValue() {
                   </div>
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
-                    <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 12 }}>
-                      <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 6 }}>Votre abattement IR</div>
-                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)" }}>{res.abattIR.toFixed(0)} %</div>
+                    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: 12 }}>
+                      <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 6 }}>Votre abattement IR</div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--primary)" }}>{res.abattIR.toFixed(0)} %</div>
                       <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 4 }}>Gain : {fmtEur(res.pvBrute * res.abattIR / 100)}</div>
                     </div>
-                    <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 12 }}>
-                      <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 6 }}>Votre abattement PS</div>
-                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)" }}>{res.abattPS.toFixed(1)} %</div>
+                    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: 12 }}>
+                      <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 6 }}>Votre abattement PS</div>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--primary)" }}>{res.abattPS.toFixed(1)} %</div>
                       <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 4 }}>Gain : {fmtEur(res.pvBrute * res.abattPS / 100)}</div>
                     </div>
                   </div>
@@ -396,14 +396,14 @@ export default function PlusValue() {
                 </div>
               </AccordionSection>
 
-              <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
+              <div role="note" style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Résidence principale exonérée.</strong> Hors surtaxe (plus-value {">"}50 k€) et cas particuliers (propriété démembrée, droits d'enregistrement, frais de vente agence). Votre notaire établira le calcul exact à partir du compromis de vente.
               </div>
 
         {/* Graphique abattements */}
         {isValid && (
           <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+            <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text-secondary)", marginBottom: 12 }}>
               Taux d'imposition selon la durée de détention
             </div>
             <ZoomableChart caption="Abattements par durée de détention">
@@ -414,7 +414,7 @@ export default function PlusValue() {
                 ]}
                 xFmt={(v) => `${v} ans`}
                 yFmt={(v) => `${v} %`}
-                annotations={res?.duree ? [{ x: res.duree, label: `Année ${res.duree}`, color: "#b8934a", dashed: true }] : []}
+                annotations={res?.duree ? [{ x: res.duree, label: `Année ${res.duree}`, color: "var(--primary)", dashed: true }] : []}
                 aria="Taux d'imposition selon la durée de détention"
               />
             </ZoomableChart>
@@ -461,7 +461,7 @@ export default function PlusValue() {
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Plus-value</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
@@ -484,7 +484,7 @@ function FaqItem({ q, a }) {
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
         <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
+        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--primary)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
     </div>
