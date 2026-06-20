@@ -1238,8 +1238,8 @@ export default function Fire() {
               </>
             ) : nonAtteint ? (
               <>
-                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.patrimoineCible}</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>{txt.patrimoineCible}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "#e08030" }}>
@@ -1248,10 +1248,10 @@ export default function Fire() {
               </>
             ) : (
               <>
-                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                   {txt.ageAtteinteFire}
                 </div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(56px,12vw,88px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                   {res.ageAtteinte} ans
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
