@@ -264,13 +264,13 @@ function CareerCurve({ years, net, pouvAchat }) {
         {/* Trait vertical tooltip */}
         {tooltip && (
           <line x1={tooltip.svgX} y1={PAD.t} x2={tooltip.svgX} y2={PAD.t + h}
-            stroke="var(--gold)" strokeWidth={1} strokeDasharray="3 3" opacity={0.85} />
+            stroke="var(--primary)" strokeWidth={1} strokeDasharray="3 3" opacity={0.85} />
         )}
 
         {/* Point surligné tooltip */}
         {tooltip && ttRow && (
           <circle cx={tooltip.svgX} cy={yOf(ttRow.netY)} r={5}
-            fill="#b8934a" stroke="var(--card-bg)" strokeWidth={2} />
+            fill="var(--primary)" stroke="var(--surface)" strokeWidth={2} />
         )}
 
         {/* Légende */}
@@ -298,8 +298,8 @@ function CareerCurve({ years, net, pouvAchat }) {
           ...(ttOnRight
             ? { left: `calc(${(tooltip.svgX / SVG_W) * 100}% + 10px)` }
             : { right: `calc(${((SVG_W - tooltip.svgX) / SVG_W) * 100}% + 10px)` }),
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-gold)",
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
           borderRadius: 8,
           padding: "8px 12px",
           fontSize: "0.77rem",
@@ -309,7 +309,7 @@ function CareerCurve({ years, net, pouvAchat }) {
           boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           whiteSpace: "nowrap",
         }}>
-          <div style={{ fontWeight: 600, color: "var(--gold)", marginBottom: 5, fontSize: "0.82rem" }}>
+          <div style={{ fontWeight: 600, color: "var(--primary)", marginBottom: 5, fontSize: "0.82rem" }}>
             {ttRow.year === 0 ? "Aujourd'hui" : `Dans ${ttRow.year} an${ttRow.year > 1 ? "s" : ""}`}
             {ttRow.year > 0 && (
               <span style={{ fontWeight: 400, color: "var(--text-secondary)", marginLeft: 6 }}>
@@ -353,7 +353,7 @@ function Milestones({ years, horizon }) {
               padding: "12px 16px",
               borderRadius: 10,
               border: "1px solid var(--border)",
-              background: "var(--card-bg)",
+              background: "var(--surface)",
               minWidth: 110,
               opacity: i < visible ? 1 : 0,
               transform: i < visible ? "translateY(0)" : "translateY(12px)",
@@ -361,7 +361,7 @@ function Milestones({ years, horizon }) {
             }}
           >
             <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", marginBottom: 4 }}>Dans {y} an{y > 1 ? "s" : ""}</div>
-            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--primary)" }}>
               {row ? fmtEur(Math.round(row.netY)) : "—"}
             </div>
             <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>net/mois</div>
@@ -510,7 +510,7 @@ export default function Salaire() {
         </div>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
           Salaire Net/Brut<br />
-          <em style={{ color: "var(--gold)", fontStyle: "italic" }}>& Évolution de carrière</em>
+          <em style={{ color: "var(--primary)", fontStyle: "italic" }}>& Évolution de carrière</em>
         </h1>
         <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 600, marginBottom: 40 }}>
           Calculez votre salaire net, projetez son évolution sur {horizon} ans et visualisez l'impact de l'inflation sur votre pouvoir d'achat réel.
