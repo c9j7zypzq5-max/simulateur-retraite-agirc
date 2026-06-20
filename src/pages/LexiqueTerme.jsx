@@ -58,7 +58,7 @@ export default function LexiqueTerme() {
   const related = (entry?.related || []).map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -74,7 +74,7 @@ export default function LexiqueTerme() {
         {!entry ? (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, marginBottom: 12 }}>Terme introuvable</h1>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>Terme introuvable</h1>
             <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>Ce terme n'existe pas (encore) dans le lexique.</p>
             <Link to="/lexique" style={{
               display: "inline-block", padding: "10px 24px", borderRadius: 10,
@@ -94,7 +94,7 @@ export default function LexiqueTerme() {
                 </span>
               </div>
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(28px,5vw,42px)",
+                fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px,5vw,42px)",
                 fontWeight: 600, lineHeight: 1.2, color: "var(--text)", marginBottom: 8,
               }}>
                 {entry.term}
@@ -178,7 +178,7 @@ export default function LexiqueTerme() {
                       display: "block", padding: "12px 16px", borderRadius: 12, textDecoration: "none",
                       background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)",
                     }}>
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 600 }}>{a.title}</span>
+                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600 }}>{a.title}</span>
                     </Link>
                   ))}
                 </div>

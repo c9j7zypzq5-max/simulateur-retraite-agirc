@@ -24,12 +24,12 @@ export default function NotFound() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "60px 16px 80px", textAlign: "center" }}>
-        <div style={{ fontSize: 64, fontFamily: "'Cormorant Garamond', serif", fontWeight: 700, color: "var(--gold)", lineHeight: 1 }}>404</div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(24px,5vw,34px)", fontWeight: 600, color: "var(--text)", margin: "12px 0 10px" }}>
+        <div style={{ fontSize: 64, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "var(--gold)", lineHeight: 1 }}>404</div>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,34px)", fontWeight: 600, color: "var(--text)", margin: "12px 0 10px" }}>
           Cette page n'existe pas
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, marginBottom: 28, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>

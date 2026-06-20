@@ -37,7 +37,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
     return (
       <button
         onClick={start}
-        style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+        style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}
       >
         {cta}
       </button>
@@ -51,7 +51,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-        <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>{title}</h3>
+        <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>{title}</h3>
         <button onClick={() => setOpen(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
       </div>
 
@@ -67,7 +67,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
           {metrics.map(m => (
             <div key={m.label} style={{ marginBottom: 6 }}>
               <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{m.label}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: "var(--text)" }}>{m.fmt(m.get(rA))}</div>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: "var(--text)" }}>{m.fmt(m.get(rA))}</div>
             </div>
           ))}
         </div>
@@ -83,7 +83,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
           {metrics.map(m => (
             <div key={m.label} style={{ marginTop: 6 }}>
               <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{m.label}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 700, color: "var(--gold)" }}>{m.fmt(m.get(rB))}</div>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: "var(--gold)" }}>{m.fmt(m.get(rB))}</div>
             </div>
           ))}
         </div>

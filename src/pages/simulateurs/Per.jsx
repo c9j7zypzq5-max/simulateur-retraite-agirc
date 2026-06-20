@@ -63,7 +63,7 @@ function computePer({ versement, revenu, tmi, ageActuel, ageDepart, rendement })
   return { economieAnnuelle, capital };
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -198,7 +198,7 @@ export default function Per() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur PER — Plan d'Épargne Retraite 2026",
@@ -258,7 +258,7 @@ export default function Per() {
                           background: active ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
                           border: `1.5px solid ${active ? "var(--gold-mid)" : "var(--border)"}`,
                           color: active ? "var(--gold)" : "var(--text)",
-                          fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700,
+                          fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700,
                           transition: "border-color 0.2s, background 0.2s",
                         }}
                         onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
@@ -297,7 +297,7 @@ export default function Per() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     {fmtEur(Math.round(animCapital))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -334,7 +334,7 @@ export default function Per() {
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 6 }}>
                   Économie d'impôt cumulée sur {annees} ans
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
                   ≈ {fmtEur(Math.round(totalEconomie))}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.6 }}>
@@ -376,7 +376,7 @@ export default function Per() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -413,13 +413,13 @@ export default function Per() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PER</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PER</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un produit d'épargne retraite défiscalisant</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un produit d'épargne retraite défiscalisant</h3>
             <p style={{ marginBottom: 16 }}>Le Plan d'Épargne Retraite (PER), issu de la loi PACTE de 2019, permet de se constituer un complément de revenu pour la retraite tout en réduisant son impôt. Les versements volontaires sont déductibles du revenu imposable, ce qui génère une économie d'impôt proportionnelle à votre tranche marginale d'imposition (TMI) : plus celle-ci est élevée, plus l'avantage est important. L'épargne reste investie et bloquée jusqu'au départ en retraite.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le plafond de déduction</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le plafond de déduction</h3>
             <p style={{ marginBottom: 16 }}>La déduction des versements est plafonnée : pour un salarié, elle correspond à 10 % des revenus professionnels nets de l'année précédente, dans la limite de 8 PASS (soit 38 448 € en 2026 avec un PASS à 48 060 €), avec un plancher de 10 % du PASS (4 806 €). Les plafonds non utilisés des trois dernières années sont reportables et les conjoints peuvent les mutualiser, ce qui peut considérablement augmenter la capacité de déduction.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La fiscalité à la sortie</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La fiscalité à la sortie</h3>
             <p>L'avantage fiscal à l'entrée se « paie » en partie à la sortie. En sortie en capital, la fraction correspondant aux versements déduits est soumise au barème de l'impôt sur le revenu, et les plus-values au prélèvement forfaitaire unique de 30 %. En rente viagère, les sommes sont imposées comme une pension. L'intérêt du PER est donc maximal lorsque la TMI est plus élevée pendant la vie active qu'à la retraite.</p>
           </div>
         </div>

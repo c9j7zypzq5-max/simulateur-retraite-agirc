@@ -73,7 +73,7 @@ function plafondOperation(zone, personnes) {
   return Math.round(PLAFOND_OPERATION[zone] * coeff(personnes) / 1000) * 1000;
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -211,7 +211,7 @@ export default function Ptz() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur PTZ — Prêt à Taux Zéro 2025",
@@ -265,7 +265,7 @@ export default function Ptz() {
                         onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = "var(--gold-mid)"; }}
                         onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = "var(--border)"; }}
                       >
-                        <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 700, color: active ? "var(--gold)" : "var(--text)" }}>Zone {z.label}</div>
+                        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: active ? "var(--gold)" : "var(--text)" }}>Zone {z.label}</div>
                         <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>{z.desc}</div>
                       </button>
                     );
@@ -331,7 +331,7 @@ export default function Ptz() {
                 </div>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     {fmtEur(Math.round(animMontant))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -367,7 +367,7 @@ export default function Ptz() {
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 6 }}>
                   Intérêts évités grâce au taux 0 %
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>
                   ≈ {fmtEur(Math.round(animEvites))}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6, lineHeight: 1.6 }}>
@@ -389,7 +389,7 @@ export default function Ptz() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -404,13 +404,13 @@ export default function Ptz() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PTZ 2025</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos du PTZ 2025</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un prêt sans intérêts pour les primo-accédants</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un prêt sans intérêts pour les primo-accédants</h3>
             <p style={{ marginBottom: 16 }}>Le Prêt à Taux Zéro (PTZ) finance une partie de l'achat de la résidence principale des ménages qui n'ont pas été propriétaires de leur logement au cours des deux années précédentes. Il ne comporte ni intérêts ni frais de dossier et vient en complément d'un prêt principal. Depuis le décret n° 2025-299 du 29 mars 2025, il a été rouvert à tous les logements neufs (appartements comme maisons) sur l'ensemble du territoire.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Tranches de revenus et quotité</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Tranches de revenus et quotité</h3>
             <p style={{ marginBottom: 16 }}>Le montant du <Terme slug="ptz">PTZ</Terme> dépend d'une quotité (part finançable du coût de l'opération) déterminée par votre tranche de revenus : 50 % pour les ménages les plus modestes, 40 % pour les tranches intermédiaires et 20 % pour la tranche la plus haute. La tranche se calcule en divisant le revenu fiscal de référence (ou le coût total ÷ 9 s'il est supérieur) par un coefficient familial qui croît avec le nombre d'occupants.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Différé et durée de remboursement</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Différé et durée de remboursement</h3>
             <p>Le PTZ se rembourse sur une durée totale comprise entre 20 et 25 ans, incluant une période de différé pendant laquelle aucun remboursement n'est dû sur le PTZ. Plus les revenus sont modestes, plus le différé est long, ce qui allège l'effort des premières années. Le coût de l'opération retenu est plafonné selon la zone et la taille du foyer.</p>
           </div>
         </div>

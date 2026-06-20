@@ -61,7 +61,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     padding: "7px 14px", background: "var(--card-bg)",
     border: "1px solid var(--border)", borderRadius: 10,
     color: "var(--text-secondary)", fontSize: 12,
-    fontFamily: "'DM Sans', sans-serif", cursor: "pointer",
+    fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer",
     transition: "border-color 0.2s, color 0.2s",
   };
   const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
@@ -180,33 +180,10 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         } catch { /* no chart */ }
       }
 
-      if (isPro) {
-        // Pro users get PDF directly — no payment needed
-        if (!report) return;
-        const cleanUrl = window.location.origin + window.location.pathname;
-        const { buildReportPdfPro } = await import("../utils/pdfReport.js");
-        await buildReportPdfPro({ report, url: cleanUrl, name, chartImage });
-        return;
-      }
-
-      // Non-Pro: save report to sessionStorage, redirect to Stripe checkout
-      if (report) {
-        try {
-          sessionStorage.setItem(SS_KEY, JSON.stringify({ report, name, chartImage }));
-        } catch { /* ignore quota errors */ }
-      }
-
-      const path = window.location.pathname;
-      const s = params ? encodeParams(params) : "";
-      const res = await fetch("/api/stripe?action=create-checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ origin: window.location.origin, path, s }),
-      });
-      const data = await res.json();
-      if (data.url) {
-        window.location.href = data.url;
-      }
+      if (!report) return;
+      const cleanUrl = window.location.origin + window.location.pathname;
+      const { buildReportPdfPro } = await import("../utils/pdfReport.js");
+      await buildReportPdfPro({ report, url: cleanUrl, name, chartImage });
     } catch { /* ignore */ } finally { setBusy(false); }
   }
 
@@ -270,10 +247,10 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
               {[
                 { label: "Image (carte résultat)", fn: handleDownloadPNG },
                 { label: "Document PDF complet", fn: handleDownloadPDF },
-                { label: isPro ? "Rapport Pro (inclus ★)" : "Rapport Pro — 1,99 €", fn: handleProPdf },
+                { label: "Rapport Pro", fn: handleProPdf },
               ].map(opt => (
                 <button key={opt.label} role="menuitem" onClick={opt.fn}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
                   onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.1)"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
                   {opt.label}

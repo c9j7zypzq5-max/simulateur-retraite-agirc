@@ -136,7 +136,7 @@ export default function LineAreaChart({
                 strokeDasharray={a.dashed !== false ? "5,4" : undefined} opacity="0.6" />
               {a.label && (
                 <text x={W - PAD.right + 4} y={cy(a.y) + 4} fontSize="11"
-                  fill={a.color || "var(--gold)"} fontFamily="DM Sans,sans-serif" opacity="0.85">
+                  fill={a.color || "var(--gold)"} fontFamily="Hanken Grotesk,sans-serif" opacity="0.85">
                   {a.label}
                 </text>
               )}
@@ -183,7 +183,7 @@ export default function LineAreaChart({
       {/* Labels axe X */}
       {xTicks.map((p, i) => (
         <text key={i} x={cx(p.x)} y={H - 6} textAnchor="middle" fontSize="12"
-          fill={textSec} fontFamily="DM Sans,sans-serif">
+          fill={textSec} fontFamily="Hanken Grotesk,sans-serif">
           {xFmt(p.x)}
         </text>
       ))}
@@ -191,7 +191,7 @@ export default function LineAreaChart({
       {/* Labels axe Y */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="12"
-          fill={textSec} fontFamily="DM Sans,sans-serif">
+          fill={textSec} fontFamily="Hanken Grotesk,sans-serif">
           {yFmt(t.val)}
         </text>
       ))}
@@ -200,7 +200,7 @@ export default function LineAreaChart({
       {series.length > 1 && series.map((s, i) => (
         <g key={`leg-${i}`} transform={`translate(${PAD.left + i * 120},${PAD.top - 11})`}>
           <circle cx="4" cy="-1" r="4" fill={s.color} opacity="0.9" />
-          <text x="13" y="3" fontSize="12" fill={textSec} fontFamily="DM Sans,sans-serif">{s.label}</text>
+          <text x="13" y="3" fontSize="12" fill={textSec} fontFamily="Hanken Grotesk,sans-serif">{s.label}</text>
         </g>
       ))}
 
@@ -234,7 +234,7 @@ export default function LineAreaChart({
             <rect x={boxX} y={boxY} width={TT_W} height={TT_H} rx="7"
               fill={cardBg} stroke={bordG} strokeWidth="1" opacity="0.97" />
             <text x={boxX + TT_PAD} y={boxY + TT_PAD + 12} fontSize="12" fontWeight="600"
-              fill={textMain} fontFamily="DM Sans,sans-serif">
+              fill={textMain} fontFamily="Hanken Grotesk,sans-serif">
               {xFmt(hoverXVal)}
             </text>
             {tooltipLines.map((l, i) => (
@@ -243,7 +243,7 @@ export default function LineAreaChart({
                   r="3" fill={l.color} />
                 <text x={boxX + TT_PAD + 14}
                   y={boxY + TT_PAD + 14 + (i + 1) * TT_LINE + 5}
-                  fontSize="12" fill={l.color} fontFamily="DM Sans,sans-serif">
+                  fontSize="12" fill={l.color} fontFamily="Hanken Grotesk,sans-serif">
                   {l.value}
                 </text>
               </g>

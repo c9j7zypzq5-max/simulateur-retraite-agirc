@@ -314,7 +314,7 @@ export default function Epargne() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": locale === 'en' ? "Compound Interest & Savings Calculator" : "Simulateur Épargne & intérêts composés",
@@ -339,7 +339,7 @@ export default function Epargne() {
         />
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.params}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.params}</h2>
 
           <NumInput id="capital-initial" label={txt.capitalInitial} value={capitalInitial} onChange={setCapitalInitial} unit={money.symbol} min={0} max={1000000}
             hint={capitalInitial ? txt.capitalHint2 : txt.capitalHint}
@@ -356,11 +356,11 @@ export default function Epargne() {
 
         {hasResult && (
           <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>{txt.projection}</h2>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>{txt.projection}</h2>
 
             <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
               <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.capitalFinalLabel}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 {money.fmt(Math.round(capitalFinalAnim))}
               </div>
               <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
@@ -406,7 +406,7 @@ export default function Epargne() {
         )}
 
         {hasResult && !compareOn && (
-          <button onClick={startCompare} style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
+          <button onClick={startCompare} style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}>
             {txt.compareBtn}
           </button>
         )}
@@ -414,7 +414,7 @@ export default function Epargne() {
         {hasResult && compareOn && (
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--text)" }}>{txt.compareTitle}</h2>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--text)" }}>{txt.compareTitle}</h2>
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
             <div className="cmp-grid">
@@ -427,7 +427,7 @@ export default function Epargne() {
                   <li>{txt.dureeLabel} : <strong style={{ color: "var(--text)" }}>{txt.reportAns(duree)}</strong></li>
                 </ul>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{txt.capitalFinalResult}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{money.fmt(Math.round(res.capitalFinal))}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{money.fmt(Math.round(res.capitalFinal))}</div>
               </div>
               <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>{txt.scenarioB}</div>
@@ -436,7 +436,7 @@ export default function Epargne() {
                 <StepperInput label={txt.tauxLabel} value={bTaux} onChange={setBTaux} min={0} max={20} step={0.1} unit="%" />
                 <StepperInput label={txt.dureeLabel} value={bDuree} onChange={setBDuree} min={1} max={40} step={1} unit={txt.dureeUnit} />
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>{txt.capitalFinalResult}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? money.fmt(Math.round(resB.capitalFinal)) : "—"}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? money.fmt(Math.round(resB.capitalFinal)) : "—"}</div>
               </div>
             </div>
             {hasB && (
@@ -472,7 +472,7 @@ export default function Epargne() {
                   {res.yearlyData.map((row, idx) => (
                     <tr key={idx} style={{ borderBottom: "1px solid var(--border)", background: row.annee % 2 === 0 ? "var(--input-bg)" : "transparent" }}>
                       <td style={{ padding: "10px 8px", textAlign: "left" }}>{txt.rowYear(row.annee)}</td>
-                      <td style={{ padding: "10px 8px", textAlign: "right", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, color: "var(--gold)" }}>{money.fmt(row.capital)}</td>
+                      <td style={{ padding: "10px 8px", textAlign: "right", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, color: "var(--gold)" }}>{money.fmt(row.capital)}</td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--text-secondary)" }}>{money.fmt(row.versementsCum)}</td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--gold-mid)", fontWeight: 500 }}>{money.fmt(row.interstsCum)}</td>
                     </tr>
@@ -488,19 +488,19 @@ export default function Epargne() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.h3Magic}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.h3Magic}</h3>
             <p style={{ marginBottom: 16 }}>{txt.pMagic}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Rule72}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Rule72}</h3>
             <p style={{ marginBottom: 16 }}>{txt.pRule72}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Duration}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Duration}</h3>
             <p>{txt.pDuration}</p>
           </div>
         </div>
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
           {txt.faq.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
 

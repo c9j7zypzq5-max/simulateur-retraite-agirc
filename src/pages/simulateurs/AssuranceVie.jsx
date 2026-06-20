@@ -64,7 +64,7 @@ function capitalFinal(initial, mensuel, tauxPct, annees) {
   return fvInitial + fvFlux;
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -201,7 +201,7 @@ export default function AssuranceVie() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Assurance-Vie 2025",
@@ -271,7 +271,7 @@ export default function AssuranceVie() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                     {fmtEur(Math.round(animNet))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -335,7 +335,7 @@ export default function AssuranceVie() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -393,13 +393,13 @@ export default function AssuranceVie() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de l'assurance-vie</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de l'assurance-vie</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une enveloppe souple et fiscalement avantageuse</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une enveloppe souple et fiscalement avantageuse</h3>
             <p style={{ marginBottom: 16 }}>L'assurance-vie reste le placement préféré des Français. Elle combine souplesse (versements et rachats libres), diversité des supports (fonds en euros sécurisés, unités de compte plus dynamiques) et une fiscalité avantageuse qui se renforce avec le temps. La fiscalité ne porte que sur les gains : le capital que vous avez versé n'est jamais taxé lors d'un rachat.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'avantage des 8 ans</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'avantage des 8 ans</h3>
             <p style={{ marginBottom: 16 }}>Avant 8 ans, les gains rachetés sont soumis au <Terme slug="pfu">prélèvement forfaitaire unique</Terme> de 30 % (12,8 % d'impôt + 17,2 % de <Terme slug="prelevements-sociaux">prélèvements sociaux</Terme>). À partir de 8 ans de détention, vous profitez chaque année d'un <Terme slug="abattement">abattement</Terme> de 4 600 € (personne seule) ou 9 200 € (couple) sur les gains rachetés, et la part issue de primes ≤ 150 000 € n'est taxée qu'à 7,5 % d'impôt. C'est pourquoi il est conseillé de « prendre date » le plus tôt possible.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Transmission et succession</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Transmission et succession</h3>
             <p>L'assurance-vie est aussi un outil de transmission. Pour les primes versées avant 70 ans, chaque bénéficiaire désigné bénéficie d'un abattement de {fmtEur(ABATTEMENT_SUCCESSION)} sur les capitaux transmis, hors succession. Cette enveloppe permet ainsi d'organiser la transmission de son patrimoine dans un cadre fiscal favorable, en désignant librement les bénéficiaires via la clause bénéficiaire.</p>
           </div>
         </div>

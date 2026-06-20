@@ -45,7 +45,7 @@ function TermCard({ entry }) {
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 10, marginBottom: 6 }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>
           {entry.term}
         </span>
         <span style={{ fontSize: 12, color: "var(--gold)", flexShrink: 0 }}>Lire →</span>
@@ -89,7 +89,7 @@ export default function Lexique() {
   }, [filtered]);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -110,7 +110,7 @@ export default function Lexique() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
             <span style={{ fontSize: 36 }}>📖</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
               Lexique financier
             </h1>
           </div>
@@ -130,7 +130,7 @@ export default function Lexique() {
             width: "100%", boxSizing: "border-box", padding: "12px 16px", marginBottom: 28,
             background: "var(--card-bg)", color: "var(--text)",
             border: "1px solid var(--border)", borderRadius: 12, fontSize: 15,
-            fontFamily: "'DM Sans', sans-serif", outline: "none",
+            fontFamily: "'Hanken Grotesk', sans-serif", outline: "none",
           }}
         />
 

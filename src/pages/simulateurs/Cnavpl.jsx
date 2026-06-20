@@ -283,7 +283,7 @@ export default function Cnavpl() {
       style={{
         minHeight: "100vh",
         background: "var(--bg)",
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Hanken Grotesk', sans-serif",
         color: "var(--text)",
       }}
     >
@@ -350,7 +350,7 @@ export default function Cnavpl() {
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 19,
               color: "var(--text-secondary)",
               marginBottom: 28,
@@ -454,7 +454,7 @@ export default function Cnavpl() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 21,
                     fontWeight: 700,
                     color: item.gold ? "var(--gold)" : "var(--text)",
@@ -481,7 +481,7 @@ export default function Cnavpl() {
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 19,
               color: "var(--text-secondary)",
               marginBottom: 24,
@@ -518,7 +518,7 @@ export default function Cnavpl() {
               <>
                 <div
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: "clamp(48px,10vw,72px)",
                     fontWeight: 700,
                     lineHeight: 1,
@@ -577,7 +577,7 @@ export default function Cnavpl() {
                 </div>
                 <span
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 24,
                     fontWeight: 700,
                     color: res.decote > 0 ? "#f87171" : "var(--text-secondary)",
@@ -692,13 +692,13 @@ export default function Cnavpl() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un régime par classes pour les professions libérales</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un régime par classes pour les professions libérales</h3>
             <p style={{ marginBottom: 16 }}>La CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) gère la retraite complémentaire d'environ 700 000 professionnels libéraux : architectes, ingénieurs, guides-conférenciers, ostéopathes, psychologues, géomètres et de nombreuses autres professions réglementées. La cotisation est déterminée non par un taux appliqué au revenu, mais par l'appartenance à l'une des 6 classes définies par tranches de revenus par rapport au PASS.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite de base CNAVPL et complémentaire CIPAV</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite de base CNAVPL et complémentaire CIPAV</h3>
             <p style={{ marginBottom: 16 }}>Les professions libérales affiliées à la CIPAV cotisent à deux régimes superposés. La retraite de base est gérée par la CNAVPL selon un mécanisme en points, similaire au régime général pour les règles de liquidation. La retraite complémentaire CIPAV fonctionne également par points, avec une valeur d'achat et une valeur de service révisées annuellement. Les points acquis s'accumulent tout au long de la carrière.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les professions concernées et les autres caisses</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les professions concernées et les autres caisses</h3>
             <p>Toutes les professions libérales ne dépendent pas de la CIPAV. Les médecins relèvent de la CARMF, les notaires de la CPRN, les experts-comptables de la CAVEC. La CIPAV regroupe principalement les « autres professions libérales » non rattachées à une caisse spécifique. Depuis 2018, les auto-entrepreneurs exerçant une activité libérale relevant de la CIPAV y cotisent également, selon les mêmes classes de cotisation.</p>
           </div>
         </div>
@@ -715,7 +715,7 @@ export default function Cnavpl() {
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: "clamp(20px,4vw,26px)",
               fontWeight: 600,
               color: "var(--text)",
@@ -769,7 +769,7 @@ function FaqItem({ q, a }) {
       >
         <span
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontSize: 16,
             fontWeight: 600,
             color: "var(--text)",

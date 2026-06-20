@@ -109,7 +109,7 @@ function SalaryReveal({ value }) {
   }, [value]);
 
   return (
-    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--gold)", letterSpacing: "0.02em" }}>
+    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--gold)", letterSpacing: "0.02em" }}>
       {Math.round(displayed).toLocaleString("fr-FR")} €
     </span>
   );
@@ -220,7 +220,7 @@ function CareerCurve({ years, net, pouvAchat }) {
               stroke="var(--border)" strokeWidth={0.5} strokeDasharray="4 4"
             />
             <text x={PAD.l - 4} y={yOf(v) + 3.5} textAnchor="end"
-              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               {Math.round(v / 1000)}k
             </text>
           </g>
@@ -234,7 +234,7 @@ function CareerCurve({ years, net, pouvAchat }) {
             <line x1={xOf(y)} y1={PAD.t + h} x2={xOf(y)} y2={PAD.t + h + 4}
               stroke="var(--border)" strokeWidth={0.5} />
             <text x={xOf(y)} y={PAD.t + h + 14} textAnchor="middle"
-              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               {y === 0 ? "Auj." : `+${y}a`}
             </text>
           </g>
@@ -278,13 +278,13 @@ function CareerCurve({ years, net, pouvAchat }) {
           <line x1={PAD.l} y1={SVG_H - 6} x2={PAD.l + 18} y2={SVG_H - 6}
             stroke="#b8934a" strokeWidth={2} />
           <text x={PAD.l + 22} y={SVG_H - 2}
-            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
             Salaire net
           </text>
           <line x1={PAD.l + 84} y1={SVG_H - 6} x2={PAD.l + 102} y2={SVG_H - 6}
             stroke="#f87171" strokeWidth={1.5} strokeDasharray="5 4" />
           <text x={PAD.l + 106} y={SVG_H - 2}
-            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
             Pouvoir d'achat réel (inflation 2%)
           </text>
         </g>
@@ -361,7 +361,7 @@ function Milestones({ years, horizon }) {
             }}
           >
             <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", marginBottom: 4 }}>Dans {y} an{y > 1 ? "s" : ""}</div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
               {row ? fmtEur(Math.round(row.netY)) : "—"}
             </div>
             <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>net/mois</div>
@@ -384,7 +384,7 @@ function CompareBar({ label, value, maxValue, color }) {
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.83rem", marginBottom: 6 }}>
         <span style={{ color: "var(--text-secondary)" }}>{label}</span>
-        <span style={{ color, fontWeight: 700, fontFamily: "'Cormorant Garamond', serif" }}>{fmtEur(Math.round(value))}</span>
+        <span style={{ color, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{fmtEur(Math.round(value))}</span>
       </div>
       <div style={{ height: 10, borderRadius: 5, background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
         <div style={{
@@ -490,7 +490,7 @@ export default function Salaire() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Salaire Net/Brut & carrière",
@@ -508,7 +508,7 @@ export default function Salaire() {
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           Finances · Nouveau
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
           Salaire Net/Brut<br />
           <em style={{ color: "var(--gold)", fontStyle: "italic" }}>& Évolution de carrière</em>
         </h1>
@@ -554,7 +554,7 @@ export default function Salaire() {
 
           {/* Inputs */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Paramètres
             </div>
             <NumInput label="Salaire brut mensuel" value={brut} onChange={setBrut} unit="€" min={500} max={50000} />
@@ -586,7 +586,7 @@ export default function Salaire() {
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Courbe de carrière */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
               Courbe de carrière
             </div>
             <ZoomableChart innerRef={chartRef}>
@@ -596,7 +596,7 @@ export default function Salaire() {
 
           {/* Timeline jalons */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
               Jalons de carrière
             </div>
             <Milestones years={res.years} horizon={horizon} />
@@ -604,7 +604,7 @@ export default function Salaire() {
 
           {/* Comparaison barres */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Salaire actuel vs dans {horizon} ans
             </div>
             <CompareBar label={`Aujourd'hui (${age} ans)`}    value={res.net}        maxValue={maxNet} color="#818cf8" />

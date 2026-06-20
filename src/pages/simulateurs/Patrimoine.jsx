@@ -375,7 +375,7 @@ function StackedChart({ projectionData, immoActive, txt }) {
       {/* Labels âge */}
       {ages.map(d => (
         <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}
         </text>
       ))}
@@ -383,18 +383,18 @@ function StackedChart({ projectionData, immoActive, txt }) {
       {/* Labels Y */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {fmtK(t.val)}
         </text>
       ))}
 
       {/* Légende */}
       <circle cx={PAD.left + 2} cy={PAD.top - 8} r="4" fill="var(--gold)" />
-      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.financier}</text>
+      <text x={PAD.left + 10} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">{txt.financier}</text>
       {immoActive && (
         <>
           <circle cx={PAD.left + 70} cy={PAD.top - 8} r="4" fill="#a855f7" opacity="0.8" />
-          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">{txt.immobilier}</text>
+          <text x={PAD.left + 78} y={PAD.top - 4} fontSize="13" fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">{txt.immobilier}</text>
         </>
       )}
     </svg>
@@ -557,7 +557,7 @@ export default function Patrimoine() {
   }, [res, ageCible, saveEntry, txt]);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'DM Sans', sans-serif", color: 'var(--text)' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text)' }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -590,14 +590,14 @@ export default function Patrimoine() {
         {/* Formulaire */}
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '32px 28px', boxShadow: 'var(--card-shadow)' }}>
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
             {txt.sectionHorizon}
           </h2>
           <NumInput id="age-actuel" label={txt.labelAgeActuel} value={ageActuel} onChange={setAge} unit={txt.ageSuffix || "ans"} min={15} max={80} />
           <StepperInput label={txt.labelAgeCible} value={ageCible} onChange={setAgeCible} min={(ageActuel || 35) + 1} max={85} step={1} unit={txt.ageSuffix || "ans"}
             hint={ageActuel ? txt.hintAgeCibleProjection((ageCible || 65) - ageActuel) : txt.hintAgeCible} />
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             {txt.sectionEpargne}
           </h2>
           <NumInput id="capital-financier" label={txt.labelCapFinancier} value={capitalFinancier} onChange={setCapFin} unit={activeSymbol()} min={0} max={10000000}
@@ -610,8 +610,8 @@ export default function Patrimoine() {
             <HistoricalReturnPicker duration={(ageCible || 65) - (ageActuel || 35)} onSelect={setRend} />
           </div>
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
+            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: immoActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleImmo}</span>
@@ -627,8 +627,8 @@ export default function Patrimoine() {
             </>
           )}
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'DM Sans', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
+            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: retraiteActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleRetraite}</span>
@@ -645,7 +645,7 @@ export default function Patrimoine() {
 
         {/* Résultats */}
         <div style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '32px 28px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
             {txt.resultsTitle(ageCible || 65)}
           </h2>
 
@@ -660,7 +660,7 @@ export default function Patrimoine() {
                 <div style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 10 }}>
                   {txt.heroLabel}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
@@ -779,7 +779,7 @@ export default function Patrimoine() {
         )}
 
         <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
             {txt.aboutTitle}
           </h2>
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, marginBottom: 14 }}>

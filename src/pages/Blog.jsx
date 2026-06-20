@@ -62,7 +62,7 @@ function ArticleCard({ article }) {
         </span>
       </div>
       <h2 style={{
-        fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(17px,2.5vw,20px)",
+        fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(17px,2.5vw,20px)",
         fontWeight: 600, color: "var(--text)", lineHeight: 1.3, marginBottom: 12,
       }}>
         {article.title}
@@ -123,7 +123,7 @@ export default function Blog() {
   const shown = activeCat === "Tous" ? sorted : sorted.filter(a => a.category === activeCat);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -138,7 +138,7 @@ export default function Blog() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
             <span style={{ fontSize: 36 }}>📰</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
               Articles & Guides
             </h1>
           </div>
@@ -159,7 +159,7 @@ export default function Blog() {
                   aria-pressed={active}
                   style={{
                     padding: "7px 16px", borderRadius: 20, fontSize: 13, cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                     background: active ? "rgba(184,147,74,0.15)" : "var(--card-bg)",
                     color: active ? "var(--gold)" : "var(--text-secondary)",
                     border: `1px solid ${active ? "var(--border-gold)" : "var(--border)"}`,
@@ -188,7 +188,7 @@ export default function Blog() {
             background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20,
           }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>✍️</div>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, color: "var(--text)", marginBottom: 12 }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, color: "var(--text)", marginBottom: 12 }}>
               Aucun article pour l'instant
             </h2>
             <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>

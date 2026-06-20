@@ -26,7 +26,7 @@ export default function LangSwitch({ compact = false }) {
         borderRadius: 8,
         color: "var(--text-secondary)",
         cursor: "pointer",
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Hanken Grotesk', sans-serif",
         fontSize: compact ? 12 : 13,
         fontWeight: 600,
         letterSpacing: "0.04em",

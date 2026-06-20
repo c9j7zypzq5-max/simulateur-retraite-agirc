@@ -26,7 +26,7 @@ const CATEGORY_SIMULATEURS = {
 
 const PROSE_CSS = `
   .article-prose h2 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(18px, 3vw, 22px);
     font-weight: 600;
     color: var(--text);
@@ -123,7 +123,7 @@ export default function Article() {
     : "";
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <style>{PROSE_CSS}</style>
       <Navbar theme={theme} setTheme={setTheme} />
 
@@ -153,7 +153,7 @@ export default function Article() {
         {!loading && notFound && (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, marginBottom: 12 }}>Article introuvable</h1>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>Article introuvable</h1>
             <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>Cet article n'existe pas ou a été supprimé.</p>
             <Link to="/blog" style={{
               display: "inline-block", padding: "10px 24px", borderRadius: 10,
@@ -181,7 +181,7 @@ export default function Article() {
               </div>
 
               <h1 style={{
-                fontFamily: "'Cormorant Garamond', serif",
+                fontFamily: "'Space Grotesk', sans-serif",
                 fontSize: "clamp(28px,5vw,42px)",
                 fontWeight: 600, lineHeight: 1.2, color: "var(--text)", marginBottom: 20,
               }}>
@@ -237,7 +237,7 @@ export default function Article() {
                   <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 6 }}>
                     Passez à la pratique
                   </div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)" }}>
                     {relatedSim.label}
                   </div>
                 </div>

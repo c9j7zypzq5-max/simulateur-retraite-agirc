@@ -150,8 +150,8 @@ function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999, i
           onFocus={() => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); }}
           onBlur={handleBlur}
           placeholder={unit ? `0 ${unit}` : "0"}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
-        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
+        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
       </div>
       {hint && <div id={hintId} style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
     </div>
@@ -229,12 +229,12 @@ function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", h
             placeholder="0"
             style={{
               flex: 1, background: "transparent", border: "none", outline: "none",
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 24, fontWeight: 600, color: "var(--text)",
               padding: "10px 0 10px 16px", width: 0, textAlign: "center",
             }}
           />
-          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
         </div>
         <button
           onClick={inc}
@@ -264,7 +264,7 @@ function Toggle({ checked, onChange }) {
           style={{ padding: "7px 16px", borderRadius: 8, border: "none",
             background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
             color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
-            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif" }}>
+            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {opt}
         </button>
       ))}
@@ -276,7 +276,7 @@ function Chip({ label, value, accent, small }) {
   return (
     <div style={{ background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)", border: `1px solid ${accent ? "rgba(184,147,74,0.4)" : "var(--border)"}`, borderRadius: 10, padding: small ? "10px 12px" : "14px 16px", boxShadow: "var(--card-shadow)" }}>
       <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 5 }}>{label}</div>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
     </div>
   );
 }
@@ -306,7 +306,7 @@ function AccordionSection({ title, subtitle, children, gold = false, defaultOpen
         aria-controls={panelId}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
           {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
         </div>
         <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0 }} aria-hidden="true">{open ? "−" : "+"}</span>
@@ -348,7 +348,7 @@ function FaqItem({ q, a }) {
         aria-expanded={open}
         aria-controls={panelId}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "20px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, width: 26, height: 26, borderRadius: "50%", background: open ? "rgba(184,147,74,0.2)" : "var(--card-bg)", border: `1px solid ${open ? "rgba(184,147,74,0.5)" : "var(--border)"}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)", marginTop: 2 }}>
           {open ? "−" : "+"}
         </span>
@@ -453,7 +453,7 @@ export default function SimulateurRetraite() {
   };
 
   return (
-    <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
+    <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Agirc-Arrco",
@@ -480,7 +480,7 @@ export default function SimulateurRetraite() {
           <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Simulation gratuite · Données 2026</span>
         </div>
 
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(30px,6vw,50px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)", marginBottom: 8 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(30px,6vw,50px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)", marginBottom: 8 }}>
           Votre retraite<br />complémentaire Agirc‑Arrco
         </h1>
         <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 12 }}>
@@ -507,7 +507,7 @@ export default function SimulateurRetraite() {
 
         {/* ── Carte saisie principale ── */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
           <NumInput
             id="salaire"
             label="Salaire brut mensuel"
@@ -538,7 +538,7 @@ export default function SimulateurRetraite() {
             ].map((item, i) => (
               <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
                 <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
               </div>
             ))}
           </div>
@@ -555,7 +555,7 @@ export default function SimulateurRetraite() {
           />
           <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 10, padding: "12px 16px", marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
             <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Coefficient : {getCoefLabel(ageDépart)}</span>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: coefClr }}>× {res.coefAge.toFixed(2)}</span>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: coefClr }}>× {res.coefAge.toFixed(2)}</span>
           </div>
 
           <StepperInput
@@ -599,7 +599,7 @@ export default function SimulateurRetraite() {
 
         {/* ── Carte résultats ── */}
         <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension estimée</h2>
 
           {/* Pension principale */}
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
@@ -610,7 +610,7 @@ export default function SimulateurRetraite() {
               </p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
                   aria-label={`${Math.round(res.pensionNette)} euros par mois`}>
                   {pensionAnimée.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -630,7 +630,7 @@ export default function SimulateurRetraite() {
                 {bonus3Enfants && <span style={{ marginLeft: 10, color: "#4ade80" }}>+ 10 % (3 enfants)</span>}
               </div>
             </div>
-            <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: coefClr }}>× {res.coefTotal.toFixed(2)}</span>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: coefClr }}>× {res.coefTotal.toFixed(2)}</span>
           </div>
 
           {/* Chips points */}
@@ -651,11 +651,11 @@ export default function SimulateurRetraite() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 10 }}>
                 <div>
                   <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 4 }}>Sans revalorisation (base 2026)</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "var(--text-secondary)" }}>{fmtEur(res.pensionNetteSansReval)}/mois</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: "var(--text-secondary)" }}>{fmtEur(res.pensionNetteSansReval)}/mois</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 4 }}>Avec {tauxReval} %/an ({anneesRestantes ?? 0} ans)</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, color: "var(--gold)" }}>{fmtEur(res.pensionNette)}/mois</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: "var(--gold)" }}>{fmtEur(res.pensionNette)}/mois</div>
                 </div>
               </div>
               <div style={{ fontSize: 12, color: "#4ade80" }}>
@@ -714,7 +714,7 @@ export default function SimulateurRetraite() {
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: isRef ? "var(--text-secondary)" : "var(--gold-mid)", marginBottom: 12 }}>{label}</div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 4 }}>{age ?? "—"} ans · {sal ? fmtEur(sal) : "—"}/mois</div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>{fmt(r.totalPoints)} pts · coef × {r.coefTotal.toFixed(2)}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,5vw,32px)", fontWeight: 700, color: isRef ? "var(--text)" : "var(--gold)" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,5vw,32px)", fontWeight: 700, color: isRef ? "var(--text)" : "var(--gold)" }}>
                   {r.pensionNette > 0 ? fmtEur(r.pensionNette) : "—"}
                 </div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>/mois net estimé</div>
@@ -727,13 +727,13 @@ export default function SimulateurRetraite() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               <div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Différence mensuelle</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
                   {signFmt(diffB)}/mois
                 </div>
               </div>
               <div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Impact sur 20 ans</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
                   {signFmt(diffB * 12 * 20)}
                 </div>
               </div>
@@ -758,13 +758,13 @@ export default function SimulateurRetraite() {
             <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
             <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>À propos</span>
           </div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 36, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 36, lineHeight: 1.2 }}>
             À propos de ce simulateur
           </h2>
           <div style={{ display: "grid", gap: 28 }}>
             {EDITORIAL.map((s, i) => (
               <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
-                <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{s.title}</h3>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{s.title}</h3>
                 <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>{s.text}</p>
               </div>
             ))}
@@ -779,7 +779,7 @@ export default function SimulateurRetraite() {
             <div style={{ width: 28, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
             <span style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)" }}>FAQ</span>
           </div>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 8, lineHeight: 1.2 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px,4vw,30px)", fontWeight: 600, color: "var(--text)", marginBottom: 8, lineHeight: 1.2 }}>
             Questions fréquentes
           </h2>
           <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 32 }}>Tout ce qu'il faut savoir sur votre retraite complémentaire Agirc-Arrco.</p>

@@ -303,7 +303,7 @@ export default function Navbar({ theme, setTheme }) {
         }}>
           <img src="/logo-mark.svg" alt="" width={26} height={26} style={{ display: "block", flexShrink: 0 }} />
           <span style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontSize: "1.15rem", fontWeight: 700,
             color: "var(--gold)",
             letterSpacing: "0.02em", whiteSpace: "nowrap",
@@ -337,7 +337,7 @@ export default function Navbar({ theme, setTheme }) {
                   style={{
                     display: "flex", alignItems: "center", gap: 7,
                     padding: "11px 14px", background: "transparent", border: "none", cursor: "pointer",
-                    fontFamily: "'DM Sans', sans-serif", fontSize: 13,
+                    fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13,
                     color: active || hasCurrent ? "var(--gold)" : "var(--text-secondary)",
                     borderBottom: `2px solid ${active || hasCurrent ? "var(--gold)" : "transparent"}`,
                     transition: "color 0.2s, border-color 0.2s",
@@ -421,7 +421,7 @@ export default function Navbar({ theme, setTheme }) {
           padding: "0 16px 0 20px", height: 56, flexShrink: 0,
           borderBottom: "1px solid var(--border)",
         }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
             {txt.drawerTitle}
           </span>
           <button

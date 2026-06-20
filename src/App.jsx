@@ -75,7 +75,7 @@ function ScrollToTop() {
 // Fallback affiché le temps de charger le chunk d'une route.
 function RouteFallback() {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <span style={{ fontSize: 14, opacity: 0.7 }}>Chargement…</span>
     </div>
   );

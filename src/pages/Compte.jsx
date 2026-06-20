@@ -57,7 +57,7 @@ export default function Compte() {
 
   if (loading || !user) {
     return (
-      <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontFamily: "'DM Sans', sans-serif" }}>
+      <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
         {t("account.loading")}
       </div>
     );
@@ -72,7 +72,7 @@ export default function Compte() {
   const simsPath = "/mes-simulations";
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
@@ -80,7 +80,7 @@ export default function Compte() {
           {" · "}<span style={{ color: "var(--text)" }}>{t("account.breadcrumb")}</span>
         </div>
 
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,40px)", fontWeight: 600, margin: "16px 0 28px" }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,40px)", fontWeight: 600, margin: "16px 0 28px" }}>
           {t("account.title")}
         </h1>
 
@@ -105,7 +105,7 @@ export default function Compte() {
               <button
                 onClick={handleManageSubscription}
                 disabled={portalBusy}
-                style={{ padding: "11px 20px", borderRadius: 10, background: "var(--gold)", color: "#1a1000", border: "none", fontSize: 14, fontWeight: 700, cursor: portalBusy ? "not-allowed" : "pointer", fontFamily: "'DM Sans', sans-serif" }}
+                style={{ padding: "11px 20px", borderRadius: 10, background: "var(--gold)", color: "#1a1000", border: "none", fontSize: 14, fontWeight: 700, cursor: portalBusy ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
               >
                 {portalBusy ? t("account.portalLoading") : t("account.manageSubscription")}
               </button>
@@ -134,7 +134,7 @@ export default function Compte() {
 
         <button
           onClick={handleSignOut}
-          style={{ padding: "11px 20px", borderRadius: 10, background: "none", border: "1px solid var(--border)", color: "var(--text-secondary)", fontSize: 14, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
+          style={{ padding: "11px 20px", borderRadius: 10, background: "none", border: "1px solid var(--border)", color: "var(--text-secondary)", fontSize: 14, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
         >
           {t("account.signOut")}
         </button>

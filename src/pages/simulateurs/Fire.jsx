@@ -560,7 +560,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       {/* Ligne cible pointillée */}
       <line x1={PAD.left} y1={cibleY} x2={W - PAD.right} y2={cibleY}
         stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="5,4" opacity="0.5" />
-      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="13.5" fill="var(--gold)" opacity="0.75" fontFamily="DM Sans, sans-serif">
+      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="13.5" fill="var(--gold)" opacity="0.75" fontFamily="Hanken Grotesk, sans-serif">
         {fmtK(patrimoineCible)}
       </text>
 
@@ -570,7 +570,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
           <line x1={fireX} y1={PAD.top} x2={fireX} y2={H - PAD.bottom}
             stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="4,3" opacity="0.55" />
           <text x={fireX + 5} y={PAD.top + 13} fontSize="13" fill="var(--gold)"
-            fontFamily="DM Sans, sans-serif" opacity="0.9">
+            fontFamily="Hanken Grotesk, sans-serif" opacity="0.9">
             {txt.liberteFinanciere}
           </text>
         </>
@@ -610,7 +610,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       {/* Labels âge (axe X) */}
       {ages.map(d => (
         <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {txt.ageAns(d.age)}
         </text>
       ))}
@@ -618,7 +618,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       {/* Labels patrimoine (axe Y) */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {fmtK(t.val)}
         </text>
       ))}
@@ -647,11 +647,11 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
             <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
               fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
             <text x={boxX + 8} y={boxY + 18} fontSize="13" fontWeight="600"
-              fill="var(--text)" fontFamily="DM Sans, sans-serif">
+              fill="var(--text)" fontFamily="Hanken Grotesk, sans-serif">
               {txt.ageAns(hoverPt.age)}
             </text>
             <text x={boxX + 8} y={boxY + 35} fontSize="13"
-              fill="var(--gold)" fontFamily="DM Sans, sans-serif">
+              fill="var(--gold)" fontFamily="Hanken Grotesk, sans-serif">
               {fmtCur(Math.round(hoverPt.patrimoine))}
             </text>
           </g>
@@ -841,7 +841,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
     border: '1px solid var(--border-gold)',
     background: 'rgba(184,147,74,0.07)',
     color: 'var(--gold)', fontSize: 13, cursor: 'pointer',
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Hanken Grotesk', sans-serif",
   };
 
   if (!active) {
@@ -1138,7 +1138,7 @@ export default function Fire() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -1175,7 +1175,7 @@ export default function Fire() {
 
         {/* Formulaire */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
             {txt.situationActuelle}
           </h2>
 
@@ -1186,7 +1186,7 @@ export default function Fire() {
           <NumInput id="revenu-mensuel" label={txt.revenuMensuel} value={revenuMensuel} onChange={setRevenu} unit={`${activeSymbol()}/mois`} min={0} max={100000}
             hint={savingsRate != null ? txt.tauxEpargneHint(Math.round(savingsRate)) : txt.revenuMensuelHint} />
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             {txt.objectifFire}
           </h2>
 
@@ -1217,7 +1217,7 @@ export default function Fire() {
 
         {/* Résultats */}
         <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>
             {txt.trajectoire}
           </h2>
 
@@ -1229,7 +1229,7 @@ export default function Fire() {
               </p>
             ) : isAlreadyFire ? (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {txt.objectifAtteint}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "var(--text-secondary)" }}>
@@ -1239,7 +1239,7 @@ export default function Fire() {
             ) : nonAtteint ? (
               <>
                 <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.patrimoineCible}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "#e08030" }}>
@@ -1251,7 +1251,7 @@ export default function Fire() {
                 <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
                   {txt.ageAtteinteFire}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(56px,12vw,88px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(56px,12vw,88px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                   {res.ageAtteinte} ans
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
@@ -1302,7 +1302,7 @@ export default function Fire() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 10 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 18 }}>🛟</span>
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>Coast FIRE</span>
+                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>Coast FIRE</span>
                     </div>
                     <StatusBadge status={coastReached ? "good" : "gold"} label={coastReached ? `${txt.milesReached} ✓` : `${Math.round(coastPct)} %`} />
                   </div>
@@ -1448,22 +1448,22 @@ export default function Fire() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aPropos}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aPropos}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH1}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH1}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP1}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH2}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH2}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP2}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP3}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH4}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH4}</h3>
             <p>{txt.aboutP4}</p>
           </div>
         </div>
 
         {/* FAQ */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
             {txt.faqTitle}
           </h2>
           {txt.faq.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}

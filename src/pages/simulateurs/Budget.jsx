@@ -231,10 +231,10 @@ function DonutChart({ besoins, envies, epargne, total, txt }) {
         );
       })}
       <circle cx={cx} cy={cy} r={48} fill="var(--card-bg)" />
-      <text x={cx} y={cy - 6} textAnchor="middle" style={{ fill: "var(--text)", fontSize: 13, fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+      <text x={cx} y={cy - 6} textAnchor="middle" style={{ fill: "var(--text)", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}>
         {total > 0 ? `${Math.round((arcs.epargne) * 100)}%` : "—"}
       </text>
-      <text x={cx} y={cy + 12} textAnchor="middle" style={{ fill: "var(--text-secondary)", fontSize: 9, fontFamily: "'DM Sans', sans-serif" }}>
+      <text x={cx} y={cy + 12} textAnchor="middle" style={{ fill: "var(--text-secondary)", fontSize: 9, fontFamily: "'Hanken Grotesk', sans-serif" }}>
         {txt.donutCenter}
       </text>
     </svg>
@@ -401,7 +401,7 @@ export default function Budget() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -419,7 +419,7 @@ export default function Budget() {
         <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           {txt.badge}
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
           {txt.title1}<br />
           <em style={{ color: "var(--gold)", fontStyle: "italic" }}>{txt.title2}</em>
         </h1>
@@ -434,7 +434,7 @@ export default function Budget() {
         {/* ── Colonne gauche : inputs ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.inputSectionTitle}
             </div>
             <NumInput label={txt.inputRevenu}   value={revenus}         onChange={setRevenus}         unit={`${activeSymbol()}/mois`} min={0} max={50000} />
@@ -452,7 +452,7 @@ export default function Budget() {
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Donut */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.donutTitle}
             </div>
             <ZoomableChart innerRef={chartRef} style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
@@ -486,7 +486,7 @@ export default function Budget() {
 
           {/* Jauges */}
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }} ref={resultsRef}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.gaugesTitle}
             </div>
             <Gauge label={txt.gaugeBesoins} value={res?.besoinsReel ?? 0} total={revenus ?? 1} color="#b8934a" icon="🏠" pctLabel={txt.pctRevenu} />
@@ -495,7 +495,7 @@ export default function Budget() {
 
             <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)" }}>
               <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 4 }}>{txt.solde}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
                 {res ? (res.epargneReel >= 0 ? "+" : "") + fmtCur(Math.round(animEpargne)) : "—"}
               </div>
             </div>

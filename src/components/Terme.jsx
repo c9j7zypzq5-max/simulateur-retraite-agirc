@@ -54,7 +54,7 @@ export default function Terme({ slug, children }) {
             border: "1px solid var(--border-gold)",
             borderRadius: 10,
             boxShadow: "0 8px 28px rgba(0,0,0,0.28)",
-            fontFamily: "'DM Sans', sans-serif",
+            fontFamily: "'Hanken Grotesk', sans-serif",
             textAlign: "left",
             whiteSpace: "normal",
             pointerEvents: "none",

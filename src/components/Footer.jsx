@@ -48,7 +48,7 @@ function RelatedSimulators() {
   if (related.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedSimulators")}>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
         {t("sections.relatedSimulators")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
@@ -86,7 +86,7 @@ function RelatedTerms() {
   if (terms.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={tr("sections.usefulDefinitions")}>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
         {tr("sections.usefulDefinitions")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
@@ -126,7 +126,7 @@ function RelatedGuides() {
   if (guides.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedGuides")}>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
         {t("sections.relatedGuides")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
@@ -169,7 +169,7 @@ function RelatedArticles() {
   if (!onSim || articles.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.readOnBlog")}>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16, display: "flex", alignItems: "center", gap: 12 }}>
         {t("sections.readOnBlog")}
         <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
       </div>
@@ -183,7 +183,7 @@ function RelatedArticles() {
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
             <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 15, fontWeight: 600, color: "var(--text)", lineHeight: 1.3 }}>{a.title}</div>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", lineHeight: 1.3 }}>{a.title}</div>
           </Link>
         ))}
       </div>
@@ -217,7 +217,7 @@ export default function Footer() {
       }}>
         <Link to="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
           <img src="/logo-mark.svg" alt="" width={24} height={24} style={{ display: "block", flexShrink: 0 }} />
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
             simfinly.com
           </span>
         </Link>

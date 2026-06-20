@@ -94,7 +94,7 @@ export default function BarChart({
       {/* Labels axe Y */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.y + 4} textAnchor="end" fontSize="11"
-          fill={textSec} fontFamily="DM Sans,sans-serif">
+          fill={textSec} fontFamily="Hanken Grotesk,sans-serif">
           {yFmt(t.val)}
         </text>
       ))}
@@ -131,7 +131,7 @@ export default function BarChart({
 
             {/* Label axe X */}
             <text x={bx + barW / 2} y={H - PAD.bottom + 15} textAnchor="middle" fontSize="12"
-              fill={isHover ? "#b8934a" : textSec} fontFamily="DM Sans,sans-serif">
+              fill={isHover ? "#b8934a" : textSec} fontFamily="Hanken Grotesk,sans-serif">
               {bar.label}
             </text>
 
@@ -150,14 +150,14 @@ export default function BarChart({
                   <rect x={boxX} y={boxY} width={TT_W} height={TT_H} rx="7"
                     fill={cardBg} stroke="#b8934a" strokeWidth="1" opacity="0.97" />
                   <text x={boxX + TT_PAD} y={boxY + TT_PAD + 12} fontSize="12" fontWeight="600"
-                    fill={textMain} fontFamily="DM Sans,sans-serif">{yFmt(total)}</text>
+                    fill={textMain} fontFamily="Hanken Grotesk,sans-serif">{yFmt(total)}</text>
                   {lines.map((l, li) => (
                     <g key={li}>
                       <circle cx={boxX + TT_PAD + 4} cy={boxY + TT_PAD + 14 + (li + 1) * TT_LINE}
                         r="3" fill={l.color} />
                       <text x={boxX + TT_PAD + 14}
                         y={boxY + TT_PAD + 14 + (li + 1) * TT_LINE + 5}
-                        fontSize="11" fill={l.color} fontFamily="DM Sans,sans-serif">
+                        fontSize="11" fill={l.color} fontFamily="Hanken Grotesk,sans-serif">
                         {l.label ? `${l.label} : ${l.value}` : l.value}
                       </text>
                     </g>
@@ -173,7 +173,7 @@ export default function BarChart({
       {legendItems.length > 1 && legendItems.map((item, i) => (
         <g key={i} transform={`translate(${PAD.left + i * 130}, ${PAD.top - 11})`}>
           <circle cx="4" cy="-1" r="4" fill={item.color} opacity="0.9" />
-          <text x="13" y="3" fontSize="12" fill={textSec} fontFamily="DM Sans,sans-serif">{item.label}</text>
+          <text x="13" y="3" fontSize="12" fill={textSec} fontFamily="Hanken Grotesk,sans-serif">{item.label}</text>
         </g>
       ))}
     </svg>

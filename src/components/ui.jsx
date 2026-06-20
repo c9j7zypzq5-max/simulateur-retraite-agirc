@@ -73,8 +73,8 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
           onBlur={handleBlur}
           placeholder={unit ? `0 ${unit}` : "0"}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
-        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
+        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
       </div>
       {hint && <div id={hintId} style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
     </div>
@@ -142,8 +142,8 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
             onFocus={e => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
             onBlur={handleBlur}
             placeholder="0"
-            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />
-          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />
+          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
         </div>
         <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}
           onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
@@ -165,7 +165,7 @@ export function Toggle({ options, checked, onChange }) {
           style={{ padding: "9px 16px", borderRadius: 8, border: "none",
             background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
             color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
-            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif" }}>
+            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {opt}
         </button>
       ))}
@@ -190,7 +190,7 @@ export function Chip({ label, value, accent, small }) {
       }}
     >
       <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 5 }}>{label}</div>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
     </div>
   );
 }
@@ -241,7 +241,7 @@ export function AccordionSection({ title, subtitle, children, gold = false, defa
         onMouseLeave={() => setBtnHovered(false)}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(184,147,74,0.04)" : "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
           {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
         </div>
         <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0, transition: "transform 0.2s ease, color 0.2s", transform: open ? "rotate(0deg)" : "rotate(0deg)" }} aria-hidden="true">{open ? "−" : "+"}</span>
@@ -266,7 +266,7 @@ export function ResultCard({ label, pension, subLabel, empty }) {
         </p>
       ) : (
         <>
-          <div key={pension} style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "scaleIn 0.3s ease" }}>
+          <div key={pension} style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "scaleIn 0.3s ease" }}>
             {pension}
           </div>
           {subLabel && <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>{subLabel}</div>}
@@ -303,7 +303,7 @@ export function FaqItem({ q, a }) {
         aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}
       >
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)", transition: "color 0.2s" }}>
           {open ? "−" : "+"}
         </span>
@@ -329,7 +329,7 @@ export function FaqSection({ title = "Questions fréquentes", items }) {
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
       {items?.length > 0 && <JsonLd data={faqLd} />}
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
         {title}
       </h2>
       {items.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
@@ -361,7 +361,7 @@ export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
         <span style={{ fontSize: 36 }} aria-hidden="true">{icon}</span>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
       </div>
       {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 10 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
       {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}><AutoLinkText>{desc}</AutoLinkText></p>}

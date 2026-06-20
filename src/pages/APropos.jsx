@@ -6,7 +6,7 @@ import Footer from "../components/Footer.jsx";
 function Section({ title, children }) {
   return (
     <div style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)", marginBottom: 40 }}>
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--gold)", marginBottom: 16 }}>{title}</h2>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--gold)", marginBottom: 16 }}>{title}</h2>
       <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>{children}</div>
     </div>
   );
@@ -24,11 +24,11 @@ export default function APropos() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <main style={{ maxWidth: 760, margin: "0 auto", padding: "64px 24px 80px" }}>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, lineHeight: 1.2, color: "var(--text)", marginBottom: 48 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, lineHeight: 1.2, color: "var(--text)", marginBottom: 48 }}>
           À propos de <em style={{ fontStyle: "italic", color: "var(--gold)" }}>simfinly.com</em>
         </h1>
 

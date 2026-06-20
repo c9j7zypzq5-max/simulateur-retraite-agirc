@@ -33,7 +33,7 @@ export default function HistoricalReturnPicker({ duration, onSelect }) {
           border: '1px solid var(--border-gold)',
           background: open ? 'rgba(184,147,74,0.12)' : 'rgba(184,147,74,0.06)',
           color: 'var(--gold-mid)', fontSize: 11,
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           cursor: 'pointer', whiteSpace: 'nowrap', minHeight: 28,
         }}
       >

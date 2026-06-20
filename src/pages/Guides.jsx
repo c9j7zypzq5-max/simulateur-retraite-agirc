@@ -24,7 +24,7 @@ function GuideCard({ guide }) {
     >
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 12 }}>
         <span style={{ fontSize: 32 }} aria-hidden="true">{guide.emoji}</span>
-        <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", lineHeight: 1.2 }}>
+        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", lineHeight: 1.2 }}>
           {guide.title}
         </h2>
       </div>
@@ -50,7 +50,7 @@ export default function Guides() {
   }, []);
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -68,7 +68,7 @@ export default function Guides() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
             <span style={{ fontSize: 36 }}>📚</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
               Guides pratiques
             </h1>
           </div>
