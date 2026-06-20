@@ -581,14 +581,14 @@ export default function Patrimoine() {
           desc={txt.pageDesc}
         />
 
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
           {[txt.featureCapFinancier, txt.featureImmo, txt.featureRetraite, txt.featureLocal].map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '32px 28px', boxShadow: 'var(--card-shadow)' }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', boxShadow: 'var(--card-shadow)' }}>
 
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 28, fontWeight: 400 }}>
             {txt.sectionHorizon}
@@ -644,7 +644,7 @@ export default function Patrimoine() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '32px 28px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20, boxShadow: 'var(--card-shadow)' }} ref={resultsRef}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 24, fontWeight: 400 }}>
             {txt.resultsTitle(ageCible || 65)}
           </h2>
@@ -657,10 +657,10 @@ export default function Patrimoine() {
             <>
               {/* Héro */}
               <div style={{ textAlign: 'center', padding: '16px 0 24px', borderBottom: '1px solid var(--border)', marginBottom: 20 }}>
-                <div style={{ fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 10 }}>
+                <div style={{ fontSize: 13, color: 'var(--text-secondary)', fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                   {txt.heroLabel}
                 </div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(44px,9vw,80px)', fontWeight: 700, lineHeight: 1, background: 'linear-gradient(135deg,var(--gold),var(--gold-mid))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: 'var(--primary)', lineHeight: 1 }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: 'var(--text-secondary)' }}>
@@ -680,8 +680,8 @@ export default function Patrimoine() {
 
               {/* Composition */}
               {res.patrimoineFinal > 0 && (
-                <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 20px', marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-secondary)', marginBottom: 14 }}>
+                <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 14, padding: '16px 20px', marginBottom: 20 }}>
+                  <div style={{ fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", color: 'var(--text-secondary)', marginBottom: 14 }}>
                     {txt.compositionTitle}
                   </div>
                   <div style={{ display: 'flex', gap: 4, height: 10, borderRadius: 5, overflow: 'hidden', marginBottom: 12 }}>
@@ -778,7 +778,7 @@ export default function Patrimoine() {
           </AccordionSection>
         )}
 
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 16 }}>
             {txt.aboutTitle}
           </h2>
