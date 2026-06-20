@@ -196,6 +196,9 @@ export default function Navbar({ theme, setTheme }) {
   const [openCat, setOpenCat] = useState(null);
   const catBarRef = useRef(null);
 
+  const [simsOpen, setSimsOpen] = useState(false);
+  const simsRef = useRef(null);
+
   const canonPath = canonicalPath(pathname);
   const onSim = canonPath.startsWith("/simulateurs/");
   const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
@@ -224,6 +227,15 @@ export default function Navbar({ theme, setTheme }) {
   }, [openCat]);
 
   useEffect(() => {
+    if (!simsOpen) return;
+    const onDown = e => { if (simsRef.current && !simsRef.current.contains(e.target)) setSimsOpen(false); };
+    const onKey = e => { if (e.key === "Escape") setSimsOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    window.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("mousedown", onDown); window.removeEventListener("keydown", onKey); };
+  }, [simsOpen]);
+
+  useEffect(() => {
     if (drawerOpen) setHistory(getHistory());
   }, [drawerOpen]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -242,30 +254,31 @@ export default function Navbar({ theme, setTheme }) {
   return (
     <>
       {/* ── Barre de navigation ── */}
-      <nav style={{
+      <nav ref={simsRef} style={{
         position: "sticky", top: 0, zIndex: 100,
-        background: theme === "dark" ? "rgba(6,14,28,0.92)" : "rgba(250,246,239,0.94)",
-        backdropFilter: "blur(12px)",
+        background: theme === "dark" ? "rgba(11,18,32,0.95)" : "rgba(245,246,248,0.95)",
+        backdropFilter: "blur(16px)",
         borderBottom: "1px solid var(--border)",
-        height: 56,
-        display: "grid",
-        gridTemplateColumns: "1fr auto 1fr",
-        alignItems: "center",
-        padding: "0 12px 0 4px",
       }}>
-        {/* Gauche : hamburger + breadcrumb desktop */}
-        <div style={{ display: "flex", alignItems: "center", gap: 4, minWidth: 0 }}>
+        <div style={{
+          maxWidth: 1140, margin: "0 auto",
+          padding: "0 20px",
+          height: 60,
+          display: "flex", alignItems: "center", gap: 8,
+        }}>
+          {/* Hamburger (mobile only, hidden ≥900px via CSS class) */}
           <button
             onClick={() => setDrawerOpen(true)}
             aria-label={txt.openNav}
             aria-expanded={drawerOpen}
+            className="nav-hamburger"
             style={{
               background: "transparent", border: "none",
               color: "var(--text)", cursor: "pointer",
-              padding: "10px 12px", borderRadius: 8,
+              padding: "8px", borderRadius: 8,
               display: "flex", flexDirection: "column", gap: 5,
               alignItems: "center", justifyContent: "center",
-              flexShrink: 0, minHeight: 44,
+              flexShrink: 0, minHeight: 44, minWidth: 44,
             }}
           >
             <span style={{ display: "block", width: 20, height: 2, background: "currentColor", borderRadius: 2 }} />
@@ -273,118 +286,157 @@ export default function Navbar({ theme, setTheme }) {
             <span style={{ display: "block", width: 20, height: 2, background: "currentColor", borderRadius: 2 }} />
           </button>
 
-          <div className="nav-center">
-            {onSim ? (
-              <LocaleLink to="/" style={{
-                fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "5px 12px", borderRadius: 20,
-                border: "1px solid var(--border)", whiteSpace: "nowrap",
+          {/* Logo */}
+          <LocaleLink to="/" style={{ display: "flex", alignItems: "center", gap: 9, textDecoration: "none", flexShrink: 0 }}>
+            <div style={{
+              width: 30, height: 30, borderRadius: 8,
+              background: "var(--primary)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              flexShrink: 0,
+            }}>
+              <span style={{ color: "#fff", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 15, lineHeight: 1 }}>S</span>
+            </div>
+            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "var(--text)", letterSpacing: "-0.01em", whiteSpace: "nowrap" }}>simfinly</span>
+          </LocaleLink>
+
+          {/* Desktop nav items (hidden on mobile) */}
+          <div className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 2, marginLeft: 16 }}>
+            {/* Simulateurs dropdown button */}
+            <button
+              onClick={() => setSimsOpen(v => !v)}
+              aria-expanded={simsOpen}
+              aria-haspopup="true"
+              style={{
+                display: "flex", alignItems: "center", gap: 5,
+                padding: "8px 12px", background: "transparent", border: "none", cursor: "pointer",
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                color: simsOpen ? "var(--primary)" : "var(--text-secondary)",
+                borderRadius: 8,
+                transition: "color 0.15s",
               }}
-                onMouseEnter={e => { e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+              onMouseEnter={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(15,24,40,0.04)"; }}
+              onMouseLeave={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+            >
+              {locale === 'en' ? "Calculators" : "Simulateurs"}
+              <span style={{ fontSize: 9, opacity: 0.7, transform: simsOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s", display: "inline-block" }}>▾</span>
+            </button>
+
+            {/* Guides */}
+            <Link
+              to={locale === 'en' ? "/en/guides" : "/guides"}
+              style={{
+                padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                color: pathname.startsWith("/guides") || pathname.startsWith("/en/guides") ? "var(--primary)" : "var(--text-secondary)",
+              }}
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(15,24,40,0.04)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+            >
+              Guides
+            </Link>
+
+            {/* Lexique (FR only) */}
+            {locale !== 'en' && (
+              <Link
+                to="/lexique"
+                style={{
+                  padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                  color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(15,24,40,0.04)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
               >
-                {txt.backToAll}
-              </LocaleLink>
-            ) : (
-              txt.officialData ? (
-                <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
-                  {txt.officialData}
-                </span>
-              ) : null
+                Lexique
+              </Link>
             )}
+          </div>
+
+          {/* Spacer */}
+          <div style={{ flex: 1 }} />
+
+          {/* Right controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <LangSwitch compact />
+            {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
+            <div className="desktop-nav">
+              <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />
+            </div>
+            <LocaleLink
+              to={locale === 'en' ? "/en/pro" : "/pro"}
+              style={{
+                background: theme === "dark" ? "#1B2A45" : "#0F1828",
+                color: "#fff",
+                fontSize: 13, fontWeight: 600,
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                padding: "7px 16px", borderRadius: 8,
+                textDecoration: "none", whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              Pro →
+            </LocaleLink>
           </div>
         </div>
 
-        {/* Centre : logo */}
-        <LocaleLink to="/" style={{
-          display: "flex", alignItems: "center", gap: 8,
-          textDecoration: "none", justifyContent: "center",
-        }}>
-          <img src="/logo-mark.svg" alt="" width={26} height={26} style={{ display: "block", flexShrink: 0 }} />
-          <span style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: "1.15rem", fontWeight: 700,
-            color: "var(--gold)",
-            letterSpacing: "0.02em", whiteSpace: "nowrap",
-          }}>simfinly.com</span>
-        </LocaleLink>
-
-        {/* Droite : switcher langue + sélecteur devise + toggle thème */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, justifyContent: "flex-end" }}>
-          <LangSwitch compact />
-          {showCurrency && <CurrencySelect compact />}
-          <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />
-        </div>
-      </nav>
-
-      {/* ── Barre de catégories — desktop uniquement ── */}
-      <div ref={catBarRef} className="desktop-catbar" style={{
-        position: "sticky", top: 56, zIndex: 90,
-        background: theme === "dark" ? "rgba(6,14,28,0.92)" : "rgba(250,246,239,0.94)",
-        backdropFilter: "blur(12px)", borderBottom: "1px solid var(--border)",
-      }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", padding: "0 16px", display: "flex", justifyContent: "center", gap: 2 }}>
-          {navGroups.map(group => {
-            const GI = GROUP_ICONS[group.id];
-            const active = openCat === group.id;
-            const hasCurrent = group.items.some(i => i.path === canonPath);
-            return (
-              <div key={group.id} style={{ position: "relative" }}>
-                <button
-                  onClick={() => setOpenCat(active ? null : group.id)}
-                  aria-expanded={active} aria-haspopup="true"
-                  style={{
-                    display: "flex", alignItems: "center", gap: 7,
-                    padding: "11px 14px", background: "transparent", border: "none", cursor: "pointer",
-                    fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13,
-                    color: active || hasCurrent ? "var(--gold)" : "var(--text-secondary)",
-                    borderBottom: `2px solid ${active || hasCurrent ? "var(--gold)" : "transparent"}`,
-                    transition: "color 0.2s, border-color 0.2s",
-                  }}
-                  onMouseEnter={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text)"; }}
-                  onMouseLeave={e => { if (!active && !hasCurrent) e.currentTarget.style.color = "var(--text-secondary)"; }}
-                >
-                  {GI && <GI size={15} />}
-                  {group.label}
-                  <span style={{ fontSize: 9, opacity: 0.6, transform: active ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
-                </button>
-                {active && (
-                  <div role="menu" style={{
-                    position: "absolute", top: "100%", left: 0, marginTop: 1, zIndex: 95,
-                    background: "var(--card-bg)", border: "1px solid var(--border-gold)",
-                    borderRadius: 12, padding: 8, minWidth: 280,
-                    boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+        {/* Simulateurs dropdown panel */}
+        {simsOpen && (
+          <div role="menu" style={{
+            position: "absolute", top: "100%", left: 0, right: 0,
+            background: "var(--surface)",
+            borderTop: "1px solid var(--border)",
+            borderBottom: "1px solid var(--border)",
+            boxShadow: "0 8px 24px rgba(15,24,40,0.1)",
+          }}>
+            <div style={{
+              maxWidth: 1140, margin: "0 auto", padding: "20px",
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: 24,
+            }}>
+              {navGroups.map(group => (
+                <div key={group.id}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                    textTransform: "uppercase", color: "var(--text-secondary)",
+                    marginBottom: 8, padding: "0 8px",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
                   }}>
-                    {group.items.map(item => {
-                      const isCurrent = canonPath === item.path;
-                      return (
-                        <LocaleLink key={item.path} to={item.path} role="menuitem" onClick={() => setOpenCat(null)}
-                          style={{
-                            display: "flex", alignItems: "center", gap: 10, padding: "9px 10px",
-                            borderRadius: 9, textDecoration: "none",
-                            background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
-                          }}
-                          onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-                          onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
-                        >
-                          <span style={{ width: 22, display: "flex", flexShrink: 0, color: isCurrent ? "var(--gold)" : "var(--text-secondary)" }}>
-                            <SimIcon path={item.path} size={18} />
-                          </span>
-                          <span style={{ minWidth: 0 }}>
-                            <span style={{ display: "block", fontSize: 13, fontWeight: isCurrent ? 500 : 400, color: isCurrent ? "var(--gold)" : "var(--text)" }}>{item.title}</span>
-                            <span style={{ display: "block", fontSize: 11, color: "var(--text-secondary)" }}>{item.subtitle}</span>
-                          </span>
-                        </LocaleLink>
-                      );
-                    })}
+                    {group.label}
                   </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+                  {group.items.map(item => {
+                    const isCurrent = canonPath === item.path;
+                    return (
+                      <LocaleLink
+                        key={item.path}
+                        to={item.path}
+                        role="menuitem"
+                        onClick={() => setSimsOpen(false)}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 8,
+                          padding: "7px 8px", borderRadius: 8, textDecoration: "none",
+                          background: isCurrent ? "var(--primary-soft)" : "transparent",
+                        }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = theme === "dark" ? "rgba(255,255,255,0.05)" : "rgba(15,24,40,0.04)"; }}
+                        onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
+                      >
+                        <span style={{ color: isCurrent ? "var(--primary)" : "var(--text-secondary)", display: "flex", flexShrink: 0 }}>
+                          <SimIcon path={item.path} size={16} />
+                        </span>
+                        <span style={{
+                          fontSize: 13, fontWeight: isCurrent ? 600 : 400,
+                          color: isCurrent ? "var(--primary)" : "var(--text)",
+                          fontFamily: "'Hanken Grotesk', sans-serif",
+                        }}>{item.title}</span>
+                      </LocaleLink>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </nav>
 
       {/* ── Overlay ── */}
       <div
@@ -694,39 +746,8 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Footer : compte + Pro status + devise + toggle thème */}
+        {/* Footer du drawer : thème + devise */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-          <Link to={localePath(user ? "/compte" : "/connexion", locale)} onClick={close} style={{
-            display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-            padding: "6px 10px", borderRadius: 8, color: "var(--text-secondary)",
-          }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
-          >
-            <span style={{ fontSize: 14 }}>{user ? "👤" : "→"}</span>
-            <span style={{ fontSize: 12 }}>{user ? (locale === 'en' ? "My account" : "Mon compte") : (locale === 'en' ? "Sign in / Sign up" : "Connexion / inscription")}</span>
-          </Link>
-          {isPro ? (
-            <Link to={localePath("/pro", locale)} onClick={close} style={{
-              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-              padding: "6px 10px", borderRadius: 8, background: "rgba(184,147,74,0.1)",
-              border: "1px solid var(--border-gold)",
-            }}>
-              <span style={{ color: "var(--gold)", fontSize: 14 }}>★</span>
-              <span style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>{locale === 'en' ? "Pro active" : "Pro actif"}</span>
-            </Link>
-          ) : (
-            <Link to={localePath("/pro", locale)} onClick={close} style={{
-              display: "flex", alignItems: "center", gap: 8, textDecoration: "none",
-              padding: "6px 10px", borderRadius: 8,
-            }}
-              onMouseEnter={e => { e.currentTarget.style.background = "rgba(184,147,74,0.06)"; }}
-              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
-            >
-              <span style={{ color: "var(--text-secondary)", fontSize: 14 }}>★</span>
-              <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{locale === 'en' ? "Upgrade to Pro — €2.99/mo" : "Passer à Pro — 2,99 €/mois"}</span>
-            </Link>
-          )}
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{txt.currency}</span>

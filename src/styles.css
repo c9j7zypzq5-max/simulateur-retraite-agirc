@@ -184,6 +184,14 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   .filter-bar { padding: 0 16px 0 !important; }
 }
 
-/* Barre de catégories : desktop uniquement */
+/* Barre de catégories : supprimée du JSX, toujours cachée */
 .desktop-catbar { display: none; }
-@media (min-width: 900px) { .desktop-catbar { display: block; } }
+
+/* Desktop nav visibility */
+.nav-hamburger { display: flex; }
+.desktop-nav { display: none; }
+
+@media (min-width: 900px) {
+  .nav-hamburger { display: none !important; }
+  .desktop-nav { display: flex !important; }
+}
