@@ -1,10 +1,18 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {
+  Clock, Home, TrendingUp, Flame, Receipt,
+  BarChart2, PiggyBank, Building2, Briefcase, CreditCard,
+} from "lucide-react";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { GUIDES } from "../data/guides.js";
+
+const GUIDE_ICONS = {
+  Clock, Home, TrendingUp, Flame, Receipt,
+  BarChart2, PiggyBank, Building2, Briefcase, CreditCard,
+};
 
 const CAT_GRADIENTS = {
   "Retraite":   "linear-gradient(135deg,#EAF0FF,#cdddfb)",
@@ -36,6 +44,12 @@ function CategoryBadge({ category }) {
       {category}
     </span>
   );
+}
+
+function GuideIcon({ guide, size = 48, color = "var(--primary)" }) {
+  const Icon = GUIDE_ICONS[guide.icon];
+  if (!Icon) return null;
+  return <Icon size={size} color={color} strokeWidth={1.5} />;
 }
 
 function FeaturedGuide({ guide }) {
@@ -72,8 +86,8 @@ function FeaturedGuide({ guide }) {
             <span style={{ marginLeft: "auto", color: "var(--primary)", fontWeight: 600 }}>Ouvrir →</span>
           </div>
         </div>
-        <div className="featured-guide-img" style={{ background: gradient, display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ fontSize: 56 }}>{guide.emoji}</span>
+        <div className="featured-guide-img" style={{ background: "linear-gradient(135deg,var(--primary),#5B8CFF)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <GuideIcon guide={guide} size={56} color="rgba(255,255,255,0.85)" />
         </div>
       </div>
     </Link>
@@ -98,7 +112,7 @@ function GuideCard({ guide }) {
       }}
     >
       <div style={{ height: 120, background: gradient, display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ fontSize: 40 }}>{guide.emoji}</span>
+        <GuideIcon guide={guide} size={40} color={CAT_COLORS[guide.category]?.color || "var(--primary)"} />
       </div>
       <div style={{ padding: "16px 18px" }}>
         <div style={{ marginBottom: 8 }}>
