@@ -4,30 +4,57 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
-const CATEGORY_COLORS = {
-  "FIRE":        { bg: "rgba(239,68,68,0.1)",    color: "#ef4444",   border: "rgba(239,68,68,0.25)" },
-  "Épargne":     { bg: "rgba(34,197,94,0.1)",    color: "#22c55e",   border: "rgba(34,197,94,0.25)" },
-  "Retraite":    { bg: "rgba(99,102,241,0.1)",   color: "#818cf8",   border: "rgba(99,102,241,0.25)" },
-  "Immobilier":  { bg: "rgba(168,85,247,0.1)",   color: "#a855f7",   border: "rgba(168,85,247,0.25)" },
-  "Fiscalité":   { bg: "rgba(249,115,22,0.1)",   color: "#f97316",   border: "rgba(249,115,22,0.25)" },
-  "Budget":      { bg: "rgba(20,184,166,0.1)",   color: "#14b8a6",   border: "rgba(20,184,166,0.25)" },
+const CAT_GRADIENTS = {
+  "Retraite":   "linear-gradient(135deg,#EAF0FF,#cdddfb)",
+  "Immobilier": "linear-gradient(135deg,#ede9fe,#ddd6fe)",
+  "Fiscalité":  "linear-gradient(135deg,#fef3c7,#fde68a)",
+  "Épargne":    "linear-gradient(135deg,#dcfce7,#bbf7d0)",
+  "FIRE":       "linear-gradient(135deg,#fee2e2,#fca5a5)",
+  "Budget":     "linear-gradient(135deg,#e0f2fe,#bae6fd)",
+};
+
+const CAT_COLORS = {
+  "Retraite":   { color: "#2B5CE6", bg: "#EAF0FF", border: "#d6e2fb" },
+  "Immobilier": { color: "#7c3aed", bg: "#ede9fe", border: "#ddd6fe" },
+  "Fiscalité":  { color: "#b45309", bg: "#fef3c7", border: "#fde68a" },
+  "Épargne":    { color: "#15803d", bg: "#dcfce7", border: "#bbf7d0" },
+  "FIRE":       { color: "#dc2626", bg: "#fee2e2", border: "#fca5a5" },
+  "Budget":     { color: "#0369a1", bg: "#e0f2fe", border: "#bae6fd" },
 };
 
 function CategoryBadge({ category }) {
-  const s = CATEGORY_COLORS[category] || { bg: "rgba(184,147,74,0.1)", color: "var(--gold)", border: "var(--border-gold)" };
+  const s = CAT_COLORS[category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
   return (
     <span style={{
-      display: "inline-block", fontSize: 10, fontWeight: 600,
-      padding: "3px 10px", borderRadius: 12, letterSpacing: "0.06em",
-      background: s.bg, color: s.color, border: `1px solid ${s.border}`,
+      display: "inline-block", fontSize: 11, fontWeight: 700,
+      letterSpacing: "0.06em", textTransform: "uppercase",
+      padding: "4px 11px", borderRadius: 20,
+      color: s.color, background: s.bg, border: `1px solid ${s.border}`,
     }}>
       {category}
     </span>
   );
 }
 
-function ArticleCard({ article }) {
+function ArticleImageHeader({ article, height = 120 }) {
+  const gradient = CAT_GRADIENTS[article?.category] || "linear-gradient(135deg,var(--primary-soft),var(--border-gold))";
+  if (article?.image) {
+    return (
+      <img
+        src={article.image}
+        alt=""
+        loading="lazy"
+        style={{ width: "100%", height, objectFit: "cover", display: "block" }}
+      />
+    );
+  }
+  return <div style={{ height, background: gradient }} />;
+}
+
+function FeaturedArticle({ article }) {
   const [hovered, setHovered] = useState(false);
+  const gradient = CAT_GRADIENTS[article.category] || "linear-gradient(135deg,var(--primary),#5B8CFF)";
+  const catStyle = CAT_COLORS[article.category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
   const date = article.publishedAt
     ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
     : "";
@@ -39,42 +66,69 @@ function ArticleCard({ article }) {
       onMouseLeave={() => setHovered(false)}
       style={{
         display: "block", textDecoration: "none",
-        background: "var(--card-bg)",
-        border: `1px solid ${hovered ? "var(--border-gold)" : "var(--border)"}`,
-        borderRadius: 16, padding: "24px",
-        boxShadow: hovered ? "0 6px 24px rgba(184,147,74,0.12)" : "var(--card-shadow)",
-        transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
-        transform: hovered ? "translateY(-2px)" : "none",
+        background: "var(--surface)", border: `1px solid ${hovered ? "var(--primary)" : "var(--border)"}`,
+        borderRadius: 16, marginBottom: 24, overflow: "hidden",
+        boxShadow: hovered ? "0 8px 32px rgba(43,92,230,0.14)" : "var(--card-shadow)",
+        transition: "border-color 0.2s, box-shadow 0.2s",
       }}
     >
-      {article.image && (
-        <img
-          src={article.image}
-          alt=""
-          loading="lazy"
-          style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 10, marginBottom: 16, display: "block" }}
-        />
-      )}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12, gap: 10 }}>
-        <CategoryBadge category={article.category} />
-        <span style={{ fontSize: 11, color: "var(--text-secondary)", whiteSpace: "nowrap" }}>
-          {article.readTime} min
-        </span>
+      {/* Mobile: image on top */}
+      <div className="featured-img-mobile">
+        <div style={{ height: 160, background: `linear-gradient(135deg,var(--primary),#5B8CFF)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {article.image
+            ? <img src={article.image} alt="" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
+            : <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" opacity="0.85"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          }
+        </div>
+        <div style={{ padding: "20px 24px" }}>
+          <span style={{ display: "inline-block", fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", color: catStyle.color, background: catStyle.bg, border: `1px solid ${catStyle.border}`, padding: "3px 9px", borderRadius: 20, marginBottom: 12 }}>
+            À la une{article.category ? ` · ${article.category}` : ""}
+          </span>
+          <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(18px,3vw,27px)", fontWeight: 600, letterSpacing: "-0.01em", color: "var(--text)", margin: "0 0 10px", lineHeight: 1.2 }}>
+            {article.title}
+          </h2>
+          {article.intro && (
+            <p style={{ fontSize: 14.5, lineHeight: 1.6, color: "var(--text-secondary)", margin: "0 0 16px" }}>{article.intro}</p>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 13, color: "var(--text-secondary)", flexWrap: "wrap" }}>
+            {date && <span>{date}</span>}
+            {date && article.readTime && <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--border)", display: "inline-block" }} />}
+            {article.readTime && <span>{article.readTime} min</span>}
+            <span style={{ marginLeft: "auto", color: "var(--primary)", fontWeight: 600 }}>Lire →</span>
+          </div>
+        </div>
       </div>
-      <h2 style={{
-        fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(17px,2.5vw,20px)",
-        fontWeight: 600, color: "var(--text)", lineHeight: 1.3, marginBottom: 12,
-      }}>
-        {article.title}
-      </h2>
-      <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 16 }}>
-        {article.intro}
-      </p>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>{date}</span>
-        <span style={{ fontSize: 12, color: "var(--gold)", fontWeight: 500 }}>
-          Lire →
-        </span>
+    </Link>
+  );
+}
+
+function ArticleCard({ article }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Link
+      to={`/blog/${article.slug}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "block", textDecoration: "none",
+        background: "var(--surface)", border: `1px solid ${hovered ? "var(--primary)" : "var(--border)"}`,
+        borderRadius: 14, overflow: "hidden",
+        boxShadow: hovered ? "0 6px 24px rgba(43,92,230,0.13)" : "var(--card-shadow)",
+        transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s",
+        transform: hovered ? "translateY(-3px)" : "none",
+      }}
+    >
+      <ArticleImageHeader article={article} height={120} />
+      <div style={{ padding: "16px 18px" }}>
+        <div style={{ marginBottom: 8 }}>
+          <CategoryBadge category={article.category} />
+        </div>
+        <h3 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(15px,2vw,16.5px)", fontWeight: 600, color: "var(--text)", margin: "0 0 8px", lineHeight: 1.3 }}>
+          {article.title}
+        </h3>
+        <div style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>
+          {article.readTime ? `${article.readTime} min de lecture` : ""}
+        </div>
       </div>
     </Link>
   );
@@ -82,14 +136,13 @@ function ArticleCard({ article }) {
 
 function SkeletonCard() {
   return (
-    <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: 24 }}>
-      {[80, 200, 140, 60].map((w, i) => (
-        <div key={i} style={{
-          height: i === 1 ? 22 : 12, width: `${w}%`.replace("%", "px"),
-          background: "var(--border)", borderRadius: 6, marginBottom: i === 1 ? 12 : 10,
-          animation: "pulse 1.5s ease-in-out infinite",
-        }} />
-      ))}
+    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 14, overflow: "hidden" }}>
+      <div style={{ height: 120, background: "var(--border)" }} />
+      <div style={{ padding: "16px 18px" }}>
+        {[60, 140, 80].map((w, i) => (
+          <div key={i} style={{ height: i === 1 ? 18 : 11, width: w, background: "var(--border)", borderRadius: 6, marginBottom: 10 }} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -117,39 +170,42 @@ export default function Blog() {
       .catch(() => { setError("Impossible de charger les articles."); setLoading(false); });
   }, []);
 
-  // Tri par date décroissante (le plus récent d'abord), indépendamment de la catégorie.
   const sorted = [...articles].sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
   const cats = ["Tous", ...Array.from(new Set(sorted.map(a => a.category).filter(Boolean)))];
   const shown = activeCat === "Tous" ? sorted : sorted.filter(a => a.category === activeCat);
+  const [featured, ...rest] = shown;
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk',sans-serif", color: "var(--text)" }}>
+      <style>{`
+        .featured-img-mobile { display: flex; flex-direction: column; }
+        @media (min-width: 680px) {
+          .featured-img-mobile { flex-direction: row; }
+          .featured-img-mobile > div:first-child { width: 280px; height: 100% !important; flex-shrink: 0; min-height: 200px; }
+          .featured-img-mobile > div:last-child { flex: 1; }
+        }
+        .blog-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; }
+        @media (max-width: 840px) { .blog-grid { grid-template-columns: repeat(2,1fr); } }
+        @media (max-width: 540px) { .blog-grid { grid-template-columns: 1fr; } }
+      `}</style>
+
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
+      <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 80px" }}>
 
-        {/* Header */}
-        <div style={{ padding: "44px 0 32px", animation: "fadeUp .5s ease both" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
-            <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} />
-            <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>
-              Blog · Finances personnelles
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-            <span style={{ fontSize: 36 }}>📰</span>
-            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, color: "var(--text)" }}>
-              Articles & Guides
-            </h1>
-          </div>
-          <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}>
-            Épargne, FIRE, retraite, immobilier, fiscalité — des articles pratiques pour progresser dans votre vie financière.
+        {/* Hero */}
+        <div style={{ textAlign: "center", padding: "44px 0 30px", animation: "fadeUp .5s ease both" }}>
+          <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(28px,5vw,38px)", fontWeight: 600, letterSpacing: "-0.02em", color: "var(--text)", margin: "0 0 12px" }}>
+            Guides &amp; conseils
+          </h1>
+          <p style={{ fontSize: 16, color: "var(--text-secondary)", margin: 0 }}>
+            Comprendre la retraite, l'immobilier et vos finances — expliqué simplement.
           </p>
         </div>
 
-        {/* Filtre par catégorie (tri par date conservé à l'intérieur) */}
-        {!loading && !error && articles.length > 0 && cats.length > 2 && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }} role="tablist" aria-label="Filtrer par catégorie">
+        {/* Category filters */}
+        {!loading && !error && cats.length > 2 && (
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 8, marginBottom: 32 }}>
             {cats.map(c => {
               const active = activeCat === c;
               return (
@@ -158,12 +214,13 @@ export default function Blog() {
                   onClick={() => setActiveCat(c)}
                   aria-pressed={active}
                   style={{
-                    padding: "7px 16px", borderRadius: 20, fontSize: 13, cursor: "pointer",
-                    fontFamily: "'Hanken Grotesk', sans-serif",
-                    background: active ? "rgba(184,147,74,0.15)" : "var(--card-bg)",
-                    color: active ? "var(--gold)" : "var(--text-secondary)",
-                    border: `1px solid ${active ? "var(--border-gold)" : "var(--border)"}`,
-                    transition: "border-color 0.2s, color 0.2s, background 0.2s",
+                    padding: active ? "8px 16px" : "7px 16px", borderRadius: 20, fontSize: 13, cursor: "pointer",
+                    fontFamily: "'Hanken Grotesk',sans-serif",
+                    background: active ? "var(--primary)" : "var(--bg)",
+                    color: active ? "#fff" : "var(--text-secondary)",
+                    border: `1px solid ${active ? "var(--primary)" : "var(--border)"}`,
+                    fontWeight: active ? 600 : 500,
+                    transition: "all 0.2s",
                   }}
                 >
                   {c}
@@ -173,32 +230,28 @@ export default function Blog() {
           </div>
         )}
 
-        {/* Contenu */}
+        {/* Content */}
         {loading ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 20 }}>
-            {[1, 2, 3, 4].map(i => <SkeletonCard key={i} />)}
+          <div className="blog-grid">
+            {[1, 2, 3, 4, 5, 6].map(i => <SkeletonCard key={i} />)}
           </div>
         ) : error ? (
-          <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-secondary)", fontSize: 14 }}>
-            {error}
-          </div>
+          <div style={{ textAlign: "center", padding: "60px 0", color: "var(--text-secondary)", fontSize: 14 }}>{error}</div>
         ) : articles.length === 0 ? (
-          <div style={{
-            textAlign: "center", padding: "60px 20px",
-            background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20,
-          }}>
+          <div style={{ textAlign: "center", padding: "60px 20px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 20 }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>✍️</div>
-            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, color: "var(--text)", marginBottom: 12 }}>
-              Aucun article pour l'instant
-            </h2>
-            <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>
-              Le premier article sera publié très prochainement.
-            </p>
+            <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 24, color: "var(--text)", marginBottom: 12 }}>Aucun article pour l'instant</h2>
+            <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>Le premier article sera publié très prochainement.</p>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(290px,1fr))", gap: 20 }}>
-            {shown.map(a => <ArticleCard key={a.slug} article={a} />)}
-          </div>
+          <>
+            {featured && <FeaturedArticle article={featured} />}
+            {rest.length > 0 && (
+              <div className="blog-grid">
+                {rest.map(a => <ArticleCard key={a.slug} article={a} />)}
+              </div>
+            )}
+          </>
         )}
       </div>
 
