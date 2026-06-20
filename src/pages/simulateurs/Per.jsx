@@ -98,8 +98,8 @@ export default function Per() {
   const isMobile = useIsMobile();
 
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: isMobile ? "20px 16px" : "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -217,7 +217,7 @@ export default function Per() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/per" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -287,8 +287,8 @@ export default function Per() {
 
           {/* ── Colonne résultats ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Capital projeté à la retraite
               </div>
               {!hasInput ? (

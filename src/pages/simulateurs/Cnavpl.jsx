@@ -306,7 +306,7 @@ export default function Cnavpl() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/cnavpl" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -321,8 +321,8 @@ export default function Cnavpl() {
             display: "flex",
             flexWrap: "wrap",
             gap: 14,
-            background: "rgba(184,147,74,0.07)",
-            border: "1px solid var(--border-gold)",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
             borderRadius: 12,
             padding: "12px 20px",
             marginBottom: 20,
@@ -340,10 +340,10 @@ export default function Cnavpl() {
         {/* Formulaire */}
         <div
           style={{
-            background: "var(--card-bg)",
+            background: "var(--surface)",
             border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "32px 28px",
+            borderRadius: 16,
+            padding: "24px 20px",
             boxShadow: "var(--card-shadow)",
             marginBottom: 0,
           }}
@@ -471,10 +471,10 @@ export default function Cnavpl() {
         <div
           ref={resultsRef}
           style={{
-            background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))",
-            border: "1px solid var(--border-gold)",
-            borderRadius: 20,
-            padding: "32px 28px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 16,
+            padding: "24px 20px",
             marginTop: 20,
             boxShadow: "var(--card-shadow)",
           }}
@@ -501,11 +501,10 @@ export default function Cnavpl() {
           >
             <div
               style={{
-                fontSize: 11,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
+                fontSize: 13,
                 color: "var(--text-secondary)",
-                marginBottom: 10,
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                marginBottom: 6,
               }}
             >
               Pension nette mensuelle estimée
@@ -519,12 +518,10 @@ export default function Cnavpl() {
                 <div
                   style={{
                     fontFamily: "'Space Grotesk', sans-serif",
-                    fontSize: "clamp(48px,10vw,72px)",
                     fontWeight: 700,
+                    fontSize: 42,
+                    color: "var(--primary)",
                     lineHeight: 1,
-                    background: "linear-gradient(135deg,var(--gold),var(--gold-mid))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
                   }}
                 >
                   {pensionTotaleAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
