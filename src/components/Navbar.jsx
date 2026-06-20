@@ -31,10 +31,6 @@ const TXT_NAV = {
     viewAll: "Tout voir →",
     currency: "Devise",
     comingSoon: "Bientôt",
-    darkMode: "Mode sombre",
-    lightMode: "Mode clair",
-    switchToDark: "Passer en mode sombre",
-    switchToLight: "Passer en mode clair",
     deleteEntry: "Supprimer",
     relDate: (d, h, m) => d > 0 ? `il y a ${d}j` : h > 0 ? `il y a ${h}h` : m > 0 ? `il y a ${m} min` : "à l'instant",
   },
@@ -57,10 +53,6 @@ const TXT_NAV = {
     viewAll: "See all →",
     currency: "Currency",
     comingSoon: "Soon",
-    darkMode: "Dark mode",
-    lightMode: "Light mode",
-    switchToDark: "Switch to dark mode",
-    switchToLight: "Switch to light mode",
     deleteEntry: "Remove",
     relDate: (d, h, m) => d > 0 ? `${d}d ago` : h > 0 ? `${h}h ago` : m > 0 ? `${m}min ago` : "just now",
   },
@@ -136,48 +128,6 @@ const EN_NAV_GROUPS = [
 
 // ALL_ITEMS used for "current page" display (FR paths only, EN pages use canonical path)
 const ALL_ITEMS = ALL_ITEMS_FR;
-
-/* ── iOS toggle ── */
-function IosToggle({ theme, setTheme, compact = false, txt }) {
-  const isDark = theme === "dark";
-  const track = {
-    width: 54, height: 28, minHeight: 28, borderRadius: 14, padding: 0, border: "none",
-    background: isDark ? "rgba(25,40,90,0.6)" : "rgba(255,210,80,0.2)",
-    cursor: "pointer", position: "relative", flexShrink: 0,
-    boxShadow: isDark
-      ? "inset 0 1px 3px rgba(0,0,50,0.5), 0 0 0 1px rgba(80,120,210,0.22), 0 0 12px rgba(30,80,200,0.1)"
-      : "inset 0 1px 3px rgba(0,0,0,0.08), 0 0 0 1px rgba(210,160,40,0.45), 0 0 10px rgba(210,160,40,0.08)",
-    transition: "background 0.3s ease, box-shadow 0.3s ease",
-  };
-  const knob = {
-    position: "absolute", top: 3, left: isDark ? 3 : 29,
-    width: 22, height: 22, borderRadius: "50%",
-    background: isDark ? "linear-gradient(145deg,#1c2f66,#2b4396)" : "linear-gradient(145deg,#f8d050,#e89010)",
-    boxShadow: isDark ? "0 1px 6px rgba(40,80,200,0.4)" : "0 1px 6px rgba(240,160,0,0.5)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontSize: 13, userSelect: "none",
-    transition: "left 0.28s cubic-bezier(0.4,0,0.2,1), background 0.35s ease, box-shadow 0.35s ease",
-  };
-  const btn = (
-    <button
-      onClick={() => setTheme(t => t === "dark" ? "light" : "dark")}
-      aria-label={isDark ? txt.switchToLight : txt.switchToDark}
-      role="switch" aria-checked={isDark}
-      style={track}
-    >
-      <div style={knob}>{isDark ? "🌙" : "☀️"}</div>
-    </button>
-  );
-  if (compact) return btn;
-  return (
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "2px 0" }}>
-      <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>
-        {isDark ? txt.darkMode : txt.lightMode}
-      </span>
-      {btn}
-    </div>
-  );
-}
 
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
@@ -256,7 +206,7 @@ export default function Navbar({ theme, setTheme }) {
       {/* ── Barre de navigation ── */}
       <nav ref={simsRef} style={{
         position: "sticky", top: 0, zIndex: 100,
-        background: theme === "dark" ? "rgba(11,18,32,0.95)" : "rgba(245,246,248,0.95)",
+        background: "rgba(245,246,248,0.95)",
         backdropFilter: "blur(16px)",
         borderBottom: "1px solid var(--border)",
       }}>
@@ -314,7 +264,7 @@ export default function Navbar({ theme, setTheme }) {
                 borderRadius: 8,
                 transition: "color 0.15s",
               }}
-              onMouseEnter={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "var(--hover-bg)" : "rgba(15,24,40,0.04)"; }}
+              onMouseEnter={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
               onMouseLeave={e => { if (!simsOpen) e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
             >
               {locale === 'en' ? "Calculators" : "Simulateurs"}
@@ -329,7 +279,7 @@ export default function Navbar({ theme, setTheme }) {
                 fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
                 color: pathname.startsWith("/guides") || pathname.startsWith("/en/guides") ? "var(--primary)" : "var(--text-secondary)",
               }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "var(--hover-bg)" : "rgba(15,24,40,0.04)"; }}
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
               onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
             >
               Guides
@@ -344,7 +294,7 @@ export default function Navbar({ theme, setTheme }) {
                   fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
                   color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)",
                 }}
-                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = theme === "dark" ? "var(--hover-bg)" : "rgba(15,24,40,0.04)"; }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
                 onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
               >
                 Lexique
@@ -357,15 +307,11 @@ export default function Navbar({ theme, setTheme }) {
 
           {/* Right controls */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <LangSwitch compact />
             {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
-            <div className="desktop-nav">
-              <IosToggle theme={theme} setTheme={setTheme} compact txt={txt} />
-            </div>
             <LocaleLink
               to={locale === 'en' ? "/en/pro" : "/pro"}
               style={{
-                background: theme === "dark" ? "#1B2A45" : "#0F1828",
+                background: "#0F1828",
                 color: "#fff",
                 fontSize: 13, fontWeight: 600,
                 fontFamily: "'Hanken Grotesk', sans-serif",
@@ -417,7 +363,7 @@ export default function Navbar({ theme, setTheme }) {
                           padding: "7px 8px", borderRadius: 8, textDecoration: "none",
                           background: isCurrent ? "var(--primary-soft)" : "transparent",
                         }}
-                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = theme === "dark" ? "var(--hover-bg)" : "rgba(15,24,40,0.04)"; }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
                         onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
                       >
                         <span style={{ color: isCurrent ? "var(--primary)" : "var(--text-secondary)", display: "flex", flexShrink: 0 }}>
@@ -755,7 +701,7 @@ export default function Navbar({ theme, setTheme }) {
           </div>
         )}
 
-        {/* Footer du drawer : thème + devise */}
+        {/* Footer du drawer : langue + devise */}
         <div style={{ padding: "14px 20px 18px", borderTop: "1px solid var(--border)", flexShrink: 0, display: "flex", flexDirection: "column", gap: 12 }}>
           {showCurrency && (
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -763,7 +709,10 @@ export default function Navbar({ theme, setTheme }) {
               <CurrencySelect compact />
             </div>
           )}
-          <IosToggle theme={theme} setTheme={setTheme} txt={txt} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{locale === 'en' ? "Language" : "Langue"}</span>
+            <LangSwitch compact />
+          </div>
         </div>
       </aside>
     </>
