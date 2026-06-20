@@ -340,14 +340,14 @@ export default function Home() {
     : [];
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", overflowX: "clip" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Hero ── */}
       <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto", position: "relative" }}>
         <Particles />
         <div style={{ position: "relative", zIndex: 1 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.2)", color: "var(--primary)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "6px 16px", borderRadius: 20, marginBottom: 28 }}>
+          <div style={{ display: "inline-flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: 8, maxWidth: "100%", background: "rgba(43,92,230,0.08)", border: "1px solid rgba(43,92,230,0.2)", color: "var(--primary)", fontSize: "0.72rem", fontWeight: 500, letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1.5, padding: "6px 14px", borderRadius: 20, marginBottom: 24 }}>
             <span style={{ opacity: 0.7 }}>✦</span> {txt.heroBadge} <span style={{ opacity: 0.7 }}>✦</span>
           </div>
           <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 700, lineHeight: 1.15, color: "var(--text)", marginBottom: 20, letterSpacing: "-0.02em" }}>
@@ -384,12 +384,12 @@ export default function Home() {
         }
       `}</style>
 
-      <div style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
+      <div className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
         <AdUnit slot="auto" format="auto" />
       </div>
 
       {/* ── Recherche ── */}
-      <div style={{ maxWidth: 1280, margin: "0 auto 18px", padding: "0 24px" }}>
+      <div className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 18px", padding: "0 24px" }}>
         <div style={{ position: "relative", maxWidth: 540, margin: "0 auto" }}>
           <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", color: "var(--text-secondary)", display: "flex", pointerEvents: "none" }}>
             <Search size={18} />
@@ -411,12 +411,12 @@ export default function Home() {
       </div>
 
       {/* ── Filter bar ── */}
-      <div className="filter-bar" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
+      <div className="filter-bar home-pad" style={{ maxWidth: 1280, margin: "0 auto 36px", padding: "0 24px" }}>
         <FilterBar activeFilter={activeFilter} setActiveFilter={setActiveFilter} filters={FILTERS} filterPrefix={txt.filterPrefix} />
       </div>
 
       {/* ── Grid ── */}
-      <section style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
+      <section className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
         <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
           {txt.gridTitle}
           <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
@@ -460,7 +460,7 @@ export default function Home() {
               {txt.blogSection}
               <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(min(100%,260px),1fr))", gap: 14 }}>
               {artMatches.map(a => (
                 <Link key={a.slug} to={`/blog/${a.slug}`} style={{ display: "block", textDecoration: "none", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "16px 18px", color: "var(--text)" }}>
                   <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>

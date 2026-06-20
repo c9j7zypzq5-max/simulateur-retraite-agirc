@@ -27,6 +27,8 @@
   --r-sm: 8px;
   --r-md: 11px;
   --r-lg: 16px;
+  --hover-bg: rgba(43,92,230,0.06);
+  --drawer-bg: #ffffff;
 }
 
 [data-theme="dark"] {
@@ -51,6 +53,8 @@
   --card-shadow: none;
   --scrollbar-thumb: #202C40;
   --chip-bg: #1B2A45;
+  --hover-bg: rgba(255,255,255,0.06);
+  --drawer-bg: #0F1828;
 }
 
 *, *::before, *::after {
@@ -61,11 +65,14 @@
   transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.2s ease;
 }
 
-body {
+html, body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
   font-family: 'Hanken Grotesk', sans-serif;
+  /* Filet de sécurité : aucun débordement horizontal sur mobile */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* ── Skip link ── */
@@ -152,15 +159,17 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   50%       { box-shadow: 0 0 18px 3px rgba(184,147,74,0.18); }
 }
 
-/* ── Responsive simulator grid ── */
+/* ── Responsive simulator grid ──
+   min(100%, 280px) empêche tout débordement sur les écrans < 300px de large. */
 .sim-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 20px;
 }
 .sim-featured { grid-column: span 2; }
 @media (max-width: 680px) {
   .sim-featured { grid-column: span 1; }
+  .sim-grid { gap: 14px; }
 }
 
 /* ── Navbar drawer & overlay ── */
@@ -179,9 +188,13 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
 
 /* ── Mobile hero ── */
 @media (max-width: 600px) {
-  .hero-section { padding: 48px 20px 36px !important; }
-  .hero-stats { gap: 20px !important; }
+  .hero-section { padding: 36px 16px 28px !important; }
+  .hero-stats { gap: 10px !important; }
+  /* Les 3 stats tiennent sur une ligne en se partageant l'espace */
+  .hero-stats > div { flex: 1 1 0 !important; min-width: 0 !important; padding: 12px 8px !important; }
   .filter-bar { padding: 0 16px 0 !important; }
+  /* Réduit le padding latéral de toutes les sections de la home sur mobile */
+  .home-pad { padding-left: 16px !important; padding-right: 16px !important; }
 }
 
 /* Barre de catégories : supprimée du JSX, toujours cachée */
