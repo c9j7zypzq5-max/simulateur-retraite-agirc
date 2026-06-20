@@ -163,6 +163,11 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   .nav-center { display: none !important; }
 }
 
+/* ── Hide secondary drawer links on mobile ── */
+@media (max-width: 899px) {
+  .drawer-secondary-links { display: none !important; }
+}
+
 /* ── Mobile hero ── */
 @media (max-width: 600px) {
   .hero-section { padding: 48px 20px 36px !important; }

@@ -489,7 +489,7 @@ function FeaturedCard({ sim, index, visible, txt }) {
   const delay = index * 80;
   return (
     <LocaleLink to={sim.path} className="sim-featured" style={{
-      background: "linear-gradient(145deg,rgba(184,147,74,0.07),var(--card-bg))",
+      background: "linear-gradient(145deg,rgba(184,147,74,0.12),var(--surface))",
       border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28,
       display: "flex", gap: 20, alignItems: "flex-start", textDecoration: "none",
       position: "relative", overflow: "hidden",
