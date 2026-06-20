@@ -329,7 +329,7 @@ export default function Msa() {
           </div>
 
           {/* Barre récapitulative */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
             {[
               { l: "Trimestres totaux", v: `${((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4}`, gold: true },
               { l: "Durée requise", v: `${dureeRequise} trim.` },

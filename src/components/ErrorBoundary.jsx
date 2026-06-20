@@ -50,7 +50,7 @@ export default class ErrorBoundary extends Component {
         </p>
         <button
           onClick={() => { sessionStorage.removeItem('chunk_reloaded'); window.location.reload(); }}
-          style={{ padding: "10px 22px", borderRadius: 10, border: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.1)", color: "var(--gold)", fontSize: 14, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+          style={{ padding: "10px 22px", borderRadius: 10, border: "1px solid var(--border-gold)", background: "rgba(43,92,230,0.08)", color: "var(--gold)", fontSize: 14, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
         >
           Recharger la page
         </button>

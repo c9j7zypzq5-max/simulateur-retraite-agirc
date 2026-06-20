@@ -494,7 +494,7 @@ export default function Navbar({ theme, setTheme }) {
           <div style={{
             padding: "10px 20px 12px",
             borderBottom: "1px solid var(--border)",
-            background: "rgba(184,147,74,0.06)",
+            background: "rgba(43,92,230,0.05)",
             flexShrink: 0,
           }}>
             <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 7 }}>
@@ -521,7 +521,7 @@ export default function Navbar({ theme, setTheme }) {
               display: "flex", alignItems: "center", gap: 10,
               padding: "9px 10px", borderRadius: 9,
               textDecoration: "none", marginBottom: 6,
-              background: canonPath === "/" ? "rgba(184,147,74,0.1)" : "transparent",
+              background: canonPath === "/" ? "rgba(43,92,230,0.08)" : "transparent",
               border: `1px solid ${canonPath === "/" ? "var(--border-gold)" : "transparent"}`,
             }}
             onMouseEnter={e => { if (canonPath !== "/") e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
@@ -543,7 +543,7 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/guides") ? "rgba(184,147,74,0.1)" : "transparent",
+                background: pathname.startsWith("/guides") ? "rgba(43,92,230,0.08)" : "transparent",
                 border: `1px solid ${pathname.startsWith("/guides") ? "var(--border-gold)" : "transparent"}`,
               }}
               onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
@@ -566,7 +566,7 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(184,147,74,0.1)" : "transparent",
+                background: pathname === "/blog" || pathname.startsWith("/blog/") ? "rgba(43,92,230,0.08)" : "transparent",
                 border: `1px solid ${pathname === "/blog" || pathname.startsWith("/blog/") ? "var(--border-gold)" : "transparent"}`,
               }}
               onMouseEnter={e => { if (!pathname.startsWith("/blog")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
@@ -589,7 +589,7 @@ export default function Navbar({ theme, setTheme }) {
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/lexique") ? "rgba(184,147,74,0.1)" : "transparent",
+                background: pathname.startsWith("/lexique") ? "rgba(43,92,230,0.08)" : "transparent",
                 border: `1px solid ${pathname.startsWith("/lexique") ? "var(--border-gold)" : "transparent"}`,
               }}
               onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
@@ -672,7 +672,7 @@ export default function Navbar({ theme, setTheme }) {
                           display: "flex", alignItems: "center", gap: 10,
                           padding: "8px 10px 8px 14px", borderRadius: 9,
                           textDecoration: "none", marginBottom: 2,
-                          background: isCurrent ? "rgba(184,147,74,0.1)" : "transparent",
+                          background: isCurrent ? "rgba(43,92,230,0.08)" : "transparent",
                           border: `1px solid ${isCurrent ? "var(--border-gold)" : "transparent"}`,
                         }}
                         onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}

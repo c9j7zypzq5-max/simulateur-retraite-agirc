@@ -206,7 +206,7 @@ export default function ImpotRevenu() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(43,92,230,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Barème 2026 à jour", "✓ Décote incluse", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
@@ -248,7 +248,7 @@ export default function ImpotRevenu() {
 
           {/* Barre récapitulative */}
           {res && (
-            <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+            <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
               {[
                 { l: "Revenu imposable", v: fmtEur(res.revenuImposable), gold: true },
                 { l: "Parts fiscales", v: res.nbParts.toFixed(1) },

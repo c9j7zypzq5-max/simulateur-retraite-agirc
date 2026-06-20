@@ -131,7 +131,7 @@ export default function BarChart({
 
             {/* Label axe X */}
             <text x={bx + barW / 2} y={H - PAD.bottom + 15} textAnchor="middle" fontSize="12"
-              fill={isHover ? "#b8934a" : textSec} fontFamily="Hanken Grotesk,sans-serif">
+              fill={isHover ? "var(--primary)" : textSec} fontFamily="Hanken Grotesk,sans-serif">
               {bar.label}
             </text>
 
@@ -148,7 +148,7 @@ export default function BarChart({
               return (
                 <g pointerEvents="none">
                   <rect x={boxX} y={boxY} width={TT_W} height={TT_H} rx="7"
-                    fill={cardBg} stroke="#b8934a" strokeWidth="1" opacity="0.97" />
+                    fill={cardBg} stroke="var(--primary)" strokeWidth="1" opacity="0.97" />
                   <text x={boxX + TT_PAD} y={boxY + TT_PAD + 12} fontSize="12" fontWeight="600"
                     fill={textMain} fontFamily="Hanken Grotesk,sans-serif">{yFmt(total)}</text>
                   {lines.map((l, li) => (

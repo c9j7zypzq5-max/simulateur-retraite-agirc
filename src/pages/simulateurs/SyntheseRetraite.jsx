@@ -85,7 +85,7 @@ export default function SyntheseRetraite() {
   const hasResult = totalBrut > 0;
 
   const SHORT_LABELS = { cnav: "CNAV", agirc: "Agirc", fpub: "Fn.pub.", indep: "Indép.", ircantec: "IRCAN.", msa: "MSA", cipav: "CIPAV" };
-  const REGIME_COLORS = ["#b8934a", "#6eb5d4", "#4ade80", "#f59e0b", "#a78bfa", "#f87171", "#34d399"];
+  const REGIME_COLORS = ["var(--primary)", "#6eb5d4", "#4ade80", "#f59e0b", "#a78bfa", "#f87171", "#34d399"];
   const regimesBars = useMemo(() => {
     if (!hasResult) return [];
     return REGIMES

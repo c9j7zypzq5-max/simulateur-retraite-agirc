@@ -255,7 +255,7 @@ export default function Per() {
                         aria-pressed={active}
                         style={{
                           flex: "1 1 0", minWidth: 56, padding: "10px 8px", borderRadius: 12, cursor: "pointer",
-                          background: active ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                          background: active ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
                           border: `1.5px solid ${active ? "var(--gold-mid)" : "var(--border)"}`,
                           color: active ? "var(--gold)" : "var(--text)",
                           fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700,
@@ -351,7 +351,7 @@ export default function Per() {
                 <ZoomableChart caption="Capital PER et total versé selon l'âge">
                   <LineAreaChart
                     series={[
-                      { id: "capital", label: "Capital projeté", points: perChart.map(p => ({ x: p.x, y: p.capital })), color: "#b8934a" },
+                      { id: "capital", label: "Capital projeté", points: perChart.map(p => ({ x: p.x, y: p.capital })), color: "var(--primary)" },
                       { id: "verse", label: "Total versé", points: perChart.map(p => ({ x: p.x, y: p.verse })), color: "#6eb5d4", strokeWidth: 1.5, dashed: true },
                     ]}
                     xFmt={v => `${v} ans`}

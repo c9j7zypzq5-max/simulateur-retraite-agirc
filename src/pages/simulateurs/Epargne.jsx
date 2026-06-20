@@ -383,7 +383,7 @@ export default function Epargne() {
                     label: txt.capitalFinalLabel,
                     points: epargneChartData.map(p => ({ x: p.t, y: p.value })),
                     color: "var(--gold)",
-                    fillColor: "rgba(184,147,74,0.15)",
+                    fillColor: "rgba(43,92,230,0.12)",
                   }]}
                   xFmt={(v) => txt.chartYears(Math.round(v))}
                   yFmt={(v) => {

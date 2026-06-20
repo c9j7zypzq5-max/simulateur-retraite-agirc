@@ -195,7 +195,7 @@ function DonutChart({ besoins, envies, epargne, total, txt }) {
 
   const gap = 0.015;
   const segments = [
-    { key: "besoins", ratio: arcs.besoins, color: "#b8934a", label: txt.segBesoins },
+    { key: "besoins", ratio: arcs.besoins, color: "var(--primary)", label: txt.segBesoins },
     { key: "envies",  ratio: arcs.envies,  color: "#818cf8", label: txt.segEnvies },
     { key: "epargne", ratio: arcs.epargne, color: "#4ade80", label: txt.segEpargne },
   ];
@@ -298,7 +298,7 @@ function MonthProgress({ txt }) {
           width: `${pct}%`,
           background: "linear-gradient(90deg, #b8934a, #f59e0b)",
           transition: "none",
-          boxShadow: "0 0 6px rgba(184,147,74,0.4)",
+          boxShadow: "0 0 6px rgba(43,92,230,0.25)",
         }} />
       </div>
       <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)", marginTop: 4 }}>{txt.monthSimNote}</div>
@@ -416,7 +416,7 @@ export default function Budget() {
 
       {/* ── Header ── */}
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(43,92,230,0.08)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           {txt.badge}
         </div>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
@@ -465,7 +465,7 @@ export default function Budget() {
               />
               <div style={{ flex: 1 }}>
                 {[
-                  { label: txt.segBesoins, value: animBesoins, pct: res?.tauxBesoins ?? 0, color: "#b8934a" },
+                  { label: txt.segBesoins, value: animBesoins, pct: res?.tauxBesoins ?? 0, color: "var(--primary)" },
                   { label: txt.segEnvies,  value: animEnvies,  pct: res?.tauxEnvies  ?? 0, color: "#818cf8" },
                   { label: txt.segEpargne, value: animEpargne, pct: animTaux,              color: "#4ade80" },
                 ].map(s => (
@@ -489,11 +489,11 @@ export default function Budget() {
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.gaugesTitle}
             </div>
-            <Gauge label={txt.gaugeBesoins} value={res?.besoinsReel ?? 0} total={revenus ?? 1} color="#b8934a" icon="🏠" pctLabel={txt.pctRevenu} />
+            <Gauge label={txt.gaugeBesoins} value={res?.besoinsReel ?? 0} total={revenus ?? 1} color="var(--primary)" icon="🏠" pctLabel={txt.pctRevenu} />
             <Gauge label={txt.gaugeEnvies}  value={res?.enviesReel  ?? 0} total={revenus ?? 1} color="#818cf8" icon="🎯" pctLabel={txt.pctRevenu} />
             <Gauge label={txt.segEpargne}   value={res?.epargneReel ?? 0} total={revenus ?? 1} color="#4ade80" icon="💚" pctLabel={txt.pctRevenu} />
 
-            <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)" }}>
+            <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(43,92,230,0.05)", border: "1px solid var(--border)" }}>
               <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 4 }}>{txt.solde}</div>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
                 {res ? (res.epargneReel >= 0 ? "+" : "") + fmtCur(Math.round(animEpargne)) : "—"}

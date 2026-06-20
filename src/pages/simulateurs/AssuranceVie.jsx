@@ -353,11 +353,11 @@ export default function AssuranceVie() {
               <LineAreaChart
                 series={[
                   { id: "verse", label: "Total versé", points: avProjection.map(p => ({ x: p.x, y: p.verse })), color: "#8b9bb4", fillColor: "rgba(139,155,180,0.12)" },
-                  { id: "brut", label: "Capital brut", points: avProjection.map(p => ({ x: p.x, y: p.brut })), color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" },
+                  { id: "brut", label: "Capital brut", points: avProjection.map(p => ({ x: p.x, y: p.brut })), color: "var(--primary)", fillColor: "rgba(43,92,230,0.12)" },
                 ]}
                 xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}
                 yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
-                annotations={duree >= 8 ? [{ x: 8, label: "8 ans", color: "#b8934a", dashed: true }] : []}
+                annotations={duree >= 8 ? [{ x: 8, label: "8 ans", color: "var(--primary)", dashed: true }] : []}
                 aria="Projection assurance-vie"
               />
             </ZoomableChart>

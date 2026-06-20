@@ -555,7 +555,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       <defs><style>{css}</style></defs>
 
       {/* Zone remplie */}
-      <polygon className={`gcArea_${animKey}`} points={fillPts} fill="rgba(184,147,74,1)" />
+      <polygon className={`gcArea_${animKey}`} points={fillPts} fill="var(--primary)" />
 
       {/* Ligne cible pointillée */}
       <line x1={PAD.left} y1={cibleY} x2={W - PAD.right} y2={cibleY}
@@ -677,7 +677,7 @@ function MilestonesTable({ milestones, txt }) {
         </thead>
         <tbody>
           {milestones.map(m => (
-            <tr key={m.key} style={{ borderBottom: "1px solid var(--border)", background: m.key === "fire" ? "rgba(184,147,74,0.08)" : "transparent" }}>
+            <tr key={m.key} style={{ borderBottom: "1px solid var(--border)", background: m.key === "fire" ? "rgba(43,92,230,0.07)" : "transparent" }}>
               <td style={{ padding: "12px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontSize: 15 }}>{m.icon}</span>
@@ -755,7 +755,7 @@ function SensibiliteTable({ depensesBrutes, tauxRetrait, txt }) {
             const target4 = depensesBrutes / 0.04;
             const diff = target4 - target;
             return (
-              <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(184,147,74,0.08)" : "transparent" }}>
+              <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(43,92,230,0.07)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{t} %</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{fmtCur(target)}</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: diff >= 0 ? "#22c55e" : "#ef4444", fontSize: 11 }}>
@@ -792,7 +792,7 @@ function SavingsRateTable({ savingsRate, txt }) {
             const next = SAVINGS_REF[i + 1];
             const active = savingsRate != null && savingsRate >= sr && (!next || savingsRate < next.sr);
             return (
-              <tr key={sr} style={{ borderBottom: "1px solid var(--border)", background: active ? "rgba(184,147,74,0.1)" : "transparent" }}>
+              <tr key={sr} style={{ borderBottom: "1px solid var(--border)", background: active ? "rgba(43,92,230,0.08)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: active ? "var(--gold)" : "var(--text)", fontWeight: active ? 600 : 400 }}>
                   {sr} %{active ? `  ${txt.savVous}` : ""}
                 </td>
@@ -839,7 +839,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
   const btnStyle = {
     padding: '7px 16px', borderRadius: 9,
     border: '1px solid var(--border-gold)',
-    background: 'rgba(184,147,74,0.07)',
+    background: 'rgba(43,92,230,0.06)',
     color: 'var(--gold)', fontSize: 13, cursor: 'pointer',
     fontFamily: "'Hanken Grotesk', sans-serif",
   };
@@ -1167,7 +1167,7 @@ export default function Fire() {
         />
 
         {/* Reassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(43,92,230,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {txt.reassurance.map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>
           ))}

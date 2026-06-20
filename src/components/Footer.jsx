@@ -60,7 +60,7 @@ function RelatedSimulators() {
             background: "var(--card-bg)", border: "1px solid var(--border)",
             transition: "border-color 0.2s",
           }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--primary)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
             <span style={{ fontSize: "1.25rem", flexShrink: 0 }} aria-hidden="true">{item.icon}</span>
@@ -98,7 +98,7 @@ function RelatedTerms() {
             background: "var(--card-bg)", border: "1px solid var(--border)",
             color: "var(--text)", fontSize: 13, transition: "border-color 0.2s, color 0.2s",
           }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--border-gold)"; e.currentTarget.style.color = "var(--gold)"; }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.color = "var(--primary)"; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}
           >
             {t.term}

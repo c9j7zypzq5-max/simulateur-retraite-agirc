@@ -207,8 +207,8 @@ function CareerCurve({ years, net, pouvAchat }) {
       >
         <defs>
           <linearGradient id="career-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#b8934a" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#b8934a" stopOpacity="0.01" />
+            <stop offset="0%"   stopColor="var(--primary)" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.01" />
           </linearGradient>
         </defs>
 
@@ -251,14 +251,14 @@ function CareerCurve({ years, net, pouvAchat }) {
 
         {/* Courbe salaire net */}
         {visYears.length >= 2 && (
-          <path d={netPath} stroke="#b8934a" strokeWidth={2.5} fill="none"
+          <path d={netPath} stroke="var(--primary)" strokeWidth={2.5} fill="none"
             strokeLinecap="round" strokeLinejoin="round" />
         )}
 
         {/* Points annuels */}
         {visYears.map((r, i) => (
           <circle key={i} cx={xOf(i)} cy={yOf(r.netY)} r={2.2}
-            fill="#b8934a" opacity={0.65} />
+            fill="var(--primary)" opacity={0.65} />
         ))}
 
         {/* Trait vertical tooltip */}
@@ -276,7 +276,7 @@ function CareerCurve({ years, net, pouvAchat }) {
         {/* Légende */}
         <g>
           <line x1={PAD.l} y1={SVG_H - 6} x2={PAD.l + 18} y2={SVG_H - 6}
-            stroke="#b8934a" strokeWidth={2} />
+            stroke="var(--primary)" strokeWidth={2} />
           <text x={PAD.l + 22} y={SVG_H - 2}
             style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
             Salaire net
@@ -565,9 +565,9 @@ export default function Salaire() {
                 {["non-cadre", "cadre"].map(s => (
                   <button key={s} onClick={() => setStatut(s)} style={{
                     flex: 1, padding: "9px 0", borderRadius: 10, fontSize: "0.82rem", fontWeight: 500, cursor: "pointer",
-                    border: `1px solid ${statut === s ? "var(--border-gold)" : "var(--border)"}`,
-                    background: statut === s ? "rgba(184,147,74,0.1)" : "transparent",
-                    color: statut === s ? "var(--gold)" : "var(--text-secondary)",
+                    border: `1px solid ${statut === s ? "var(--primary)" : "var(--border)"}`,
+                    background: statut === s ? "rgba(43,92,230,0.08)" : "transparent",
+                    color: statut === s ? "var(--primary)" : "var(--text-secondary)",
                     transition: "all 0.2s",
                   }}>
                     {s === "cadre" ? "Cadre (25%)" : "Non-cadre (23%)"}
@@ -608,10 +608,10 @@ export default function Salaire() {
               Salaire actuel vs dans {horizon} ans
             </div>
             <CompareBar label={`Aujourd'hui (${age} ans)`}    value={res.net}        maxValue={maxNet} color="#818cf8" />
-            <CompareBar label={`Dans ${horizon} ans (${age + horizon} ans)`} value={res.last.netY} maxValue={maxNet} color="#b8934a" />
+            <CompareBar label={`Dans ${horizon} ans (${age + horizon} ans)`} value={res.last.netY} maxValue={maxNet} color="var(--primary)" />
             <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
               Gain projeté : <strong style={{ color: "#4ade80" }}>+{fmtEur(Math.round(animGain))}/mois</strong>
-              {" · "}Cumulé sur {horizon} ans : <strong style={{ color: "var(--gold)" }}>{fmtEur(Math.round(res.cumNet))}</strong>
+              {" · "}Cumulé sur {horizon} ans : <strong style={{ color: "var(--primary)" }}>{fmtEur(Math.round(res.cumNet))}</strong>
             </div>
           </div>
 

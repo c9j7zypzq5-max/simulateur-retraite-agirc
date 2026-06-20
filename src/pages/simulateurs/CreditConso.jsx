@@ -281,7 +281,7 @@ function TableauAmortissement({ montant, taegPct, dureeMois, txt }) {
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
+            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(43,92,230,0.02)" : "transparent" }}>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{row.annee}</td>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtCur(Math.round(m))}</td>
               <td style={{ padding: "8px 10px", textAlign: "right", color: row.capitalRestant <= 0 ? "var(--gold)" : "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtCur(Math.round(row.capitalRestant))}</td>

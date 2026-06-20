@@ -109,7 +109,7 @@ export default function RetraiteProgressive() {
       return {
         label: `${q} %`,
         segments: [
-          { value: Math.round(r.pensionPartielle), color: "#b8934a", label: "Pension" },
+          { value: Math.round(r.pensionPartielle), color: "var(--primary)", label: "Pension" },
           { value: Math.round(r.revenuTravail), color: "#6eb5d4", label: "Salaire" },
         ],
       };
@@ -194,8 +194,8 @@ export default function RetraiteProgressive() {
                 <button key={q} onClick={() => setQuotite(q)}
                   style={{
                     padding: "12px 8px", borderRadius: 12,
-                    border: `1.5px solid ${quotite === q ? "rgba(184,147,74,0.6)" : "var(--border)"}`,
-                    background: quotite === q ? "rgba(184,147,74,0.1)" : "var(--card-bg)",
+                    border: `1.5px solid ${quotite === q ? "rgba(43,92,230,0.5)" : "var(--border)"}`,
+                    background: quotite === q ? "rgba(43,92,230,0.08)" : "var(--card-bg)",
                     color: quotite === q ? "var(--gold)" : "var(--text-secondary)",
                     fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 22, fontWeight: 700,
@@ -214,7 +214,7 @@ export default function RetraiteProgressive() {
 
           {/* Résumé */}
           {hasResult && (
-            <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+            <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
               {[
                 { l: "Pension partielle", v: fmtEur(res.pensionPartielle), gold: true },
                 { l: "Revenu travail", v: fmtEur(res.revenuTravail) },

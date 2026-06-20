@@ -62,7 +62,7 @@ function GrilleVie({ semainesVecues, semainesTotales }) {
           style={{
             aspectRatio: "1",
             borderRadius: "1px",
-            background: vecue ? "var(--gold-mid)" : "var(--border)",
+            background: vecue ? "var(--primary)" : "var(--border)",
             opacity: vecue ? 1 : 0.6,
           }}
         />
@@ -200,7 +200,7 @@ export default function VieEnSemaines() {
             </h2>
             <div style={{ display: "flex", gap: 16, fontSize: 11, color: "var(--text-secondary)" }}>
               <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 1, background: "var(--gold-mid)" }} />
+                <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 1, background: "var(--primary)" }} />
                 Vécues
               </span>
               <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
@@ -273,7 +273,7 @@ export default function VieEnSemaines() {
               {[["femme", "♀ Femme", ESPERANCE_FEMME], ["homme", "♂ Homme", ESPERANCE_HOMME]].map(([val, label, esp]) => (
                 <button key={val} onClick={() => { setGenre(val); if (!esperanceModifiee) setEsperance(esp); }}
                   aria-pressed={genre === val ? "true" : "false"}
-                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(184,147,74,0.25)" : "transparent", color: genre === val ? "var(--gold)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(43,92,230,0.12)" : "transparent", color: genre === val ? "var(--primary)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   {label}
                 </button>
               ))}
@@ -318,13 +318,13 @@ export default function VieEnSemaines() {
                 {res.pctEcoule.toFixed(0)} % de votre espérance de vie estimée.
               </p>
               <p style={{ marginBottom: 14 }}>
-                Il vous reste <strong style={{ color: "var(--gold)" }}>{fmt(res.semainesRestantes)} semaines</strong>,{" "}
-                soit environ <strong style={{ color: "var(--gold)" }}>{res.etesRestants} étés</strong>.
+                Il vous reste <strong style={{ color: "var(--primary)" }}>{fmt(res.semainesRestantes)} semaines</strong>,{" "}
+                soit environ <strong style={{ color: "var(--primary)" }}>{res.etesRestants} étés</strong>.
               </p>
               {frequenceVisites > 0 && visitesRestantes !== null && (
                 <p style={{ marginBottom: 14 }}>
                   Si vous voyez vos proches {frequenceVisites} fois par an, il vous reste environ{" "}
-                  <strong style={{ color: "var(--gold)" }}>{fmt(visitesRestantes)} occasions</strong> de les retrouver.
+                  <strong style={{ color: "var(--primary)" }}>{fmt(visitesRestantes)} occasions</strong> de les retrouver.
                   Ce chiffre n'est pas là pour angoisser, mais pour vous rappeler que chaque rencontre compte.
                 </p>
               )}

@@ -193,7 +193,7 @@ export default function FonctionPublique() {
           </div>
 
           {/* Résumé */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
             {[
               { l: "Trimestres service", v: `${totalTrim}`, gold: true },
               { l: "Durée requise", v: `${DUREE_REQUISE} trim.` },
@@ -216,8 +216,8 @@ export default function FonctionPublique() {
           />
           <div onClick={() => setBonus3Enfants(b => !b)} role="checkbox" aria-checked={bonus3Enfants} tabIndex={0}
             onKeyDown={e => (e.key === " " || e.key === "Enter") && setBonus3Enfants(b => !b)}
-            style={{ display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", padding: "12px 16px", borderRadius: 12, background: bonus3Enfants ? "rgba(184,147,74,0.08)" : "var(--card-bg)", border: `1px solid ${bonus3Enfants ? "rgba(184,147,74,0.3)" : "var(--border)"}`, transition: "all 0.2s" }}>
-            <div aria-hidden="true" style={{ width: 20, height: 20, borderRadius: 6, border: `1.5px solid ${bonus3Enfants ? "rgba(184,147,74,0.8)" : "var(--border)"}`, background: bonus3Enfants ? "rgba(184,147,74,0.3)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
+            style={{ display: "flex", alignItems: "flex-start", gap: 14, cursor: "pointer", padding: "12px 16px", borderRadius: 12, background: bonus3Enfants ? "rgba(43,92,230,0.07)" : "var(--card-bg)", border: `1px solid ${bonus3Enfants ? "rgba(43,92,230,0.2)" : "var(--border)"}`, transition: "all 0.2s" }}>
+            <div aria-hidden="true" style={{ width: 20, height: 20, borderRadius: 6, border: `1.5px solid ${bonus3Enfants ? "rgba(43,92,230,0.7)" : "var(--border)"}`, background: bonus3Enfants ? "rgba(43,92,230,0.2)" : "transparent", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 1 }}>
               {bonus3Enfants && <span style={{ color: "var(--gold)", fontSize: 13 }}>✓</span>}
             </div>
             <div>

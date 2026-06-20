@@ -91,7 +91,7 @@ function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, pri
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
+            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(43,92,230,0.02)" : "transparent" }}>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{r.annee}</td>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtEur(Math.round(r.mensualite))}</td>
               <td style={{ padding: "8px 10px", textAlign: "right", color: r.capitalRestant < 50000 ? "var(--gold)" : "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtEur(Math.round(r.capitalRestant))}</td>
@@ -330,7 +330,7 @@ export default function EmpruntImmobilier() {
               </div>
               <NumInput label="Prix du bien" value={prix} onChange={setPrix} unit="€" min={10000} max={5000000} />
               {prix > 0 && (
-                <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
+                <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <div style={{ fontSize: 11, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Frais de notaire estimés</div>
@@ -421,7 +421,7 @@ export default function EmpruntImmobilier() {
                     /mois · sur {duree} ans
                   </div>
                   {primo && (
-                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 10, fontSize: 12, color: "var(--text-secondary)" }}>
+                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(43,92,230,0.05)", border: "1px solid var(--border-gold)", borderRadius: 10, fontSize: 12, color: "var(--text-secondary)" }}>
                       <span style={{ color: "var(--gold)" }}>{fmtEur(Math.round(mPrimo))}/mois</span> à 1,95% (PTZ) ·{" "}
                       <span>{fmtEur(Math.round(mPrincipal))}/mois</span> principal
                     </div>
@@ -576,7 +576,7 @@ export default function EmpruntImmobilier() {
             <ZoomableChart caption="Courbe d'amortissement">
               <LineAreaChart
                 series={[
-                  { id: "restant", label: "Capital restant", points: amortChart.map(p => ({ x: p.x, y: p.restant })), color: "#b8934a", fillColor: "rgba(184,147,74,0.12)" },
+                  { id: "restant", label: "Capital restant", points: amortChart.map(p => ({ x: p.x, y: p.restant })), color: "var(--primary)", fillColor: "rgba(43,92,230,0.1)" },
                   { id: "interets", label: "Intérêts cumulés", points: amortChart.map(p => ({ x: p.x, y: p.interets })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.10)", dashed: true },
                 ]}
                 xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}

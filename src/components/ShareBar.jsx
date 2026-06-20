@@ -251,7 +251,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
               ].map(opt => (
                 <button key={opt.label} role="menuitem" onClick={opt.fn}
                   style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
-                  onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.1)"}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(43,92,230,0.08)"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
                   {opt.label}
                 </button>

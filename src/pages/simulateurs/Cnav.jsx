@@ -200,7 +200,7 @@ export default function Cnav() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(43,92,230,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Plafonnement PASS 2026 : 48 060 €", "✓ Taux plein : 50 %", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
@@ -224,7 +224,7 @@ export default function Cnav() {
           </div>
 
           {/* Barre récapitulative */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap", marginTop: 4 }}>
             {[
               { l: "Trimestres totaux", v: `${((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4}`, gold: true },
               { l: "Durée requise", v: `${dureeRequise} trim.` },
@@ -312,7 +312,7 @@ export default function Cnav() {
             </div>
             <ZoomableChart caption="Pension selon l'âge de départ">
               <LineAreaChart
-                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "#b8934a", fillColor: "rgba(184,147,74,0.15)" }]}
+                series={[{ id: "pension", label: "Pension nette", points: pensionParAge, color: "var(--primary)", fillColor: "rgba(43,92,230,0.12)" }]}
                 xFmt={(v) => `${v} ans`}
                 yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
                 aria="Pension selon l'âge de départ"
@@ -358,7 +358,7 @@ export default function Cnav() {
                       padding: "10px 6px",
                       borderRadius: 10,
                       border: `2px solid ${isActive ? "var(--gold)" : tauxPlein ? "rgba(34,197,94,0.35)" : "var(--border)"}`,
-                      background: isActive ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                      background: isActive ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
                       cursor: "pointer",
                       textAlign: "center",
                       transition: "border-color 0.15s",

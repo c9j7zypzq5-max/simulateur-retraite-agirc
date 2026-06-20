@@ -135,7 +135,7 @@ function TableCIPAV({ revenuAnnuel }) {
               key={c.classe}
               style={{
                 borderBottom: "1px solid var(--border)",
-                background: c.classe === currentClass ? "rgba(184,147,74,0.08)" : "transparent",
+                background: c.classe === currentClass ? "rgba(43,92,230,0.07)" : "transparent",
               }}
             >
               <td
@@ -418,8 +418,8 @@ export default function Cnavpl() {
           {/* Récapitulatif */}
           <div
             style={{
-              background: "rgba(184,147,74,0.06)",
-              border: "1px solid rgba(184,147,74,0.15)",
+              background: "rgba(43,92,230,0.05)",
+              border: "1px solid rgba(43,92,230,0.12)",
               borderRadius: 12,
               padding: "14px 20px",
               display: "flex",

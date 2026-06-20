@@ -203,7 +203,7 @@ export default function Independants() {
           </div>
 
           {/* Résumé */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
             {[
               { l: "Trimestres", v: `${((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4}`, gold: true },
               { l: "Points RCI/an", v: revenu ? fmt(((Math.min(revenu * 12, PASS) * TAUX_RCI_T1) + Math.max(0, Math.min(revenu * 12, 4 * PASS) - PASS) * TAUX_RCI_T2) / VALEUR_ACHAT_RCI) : "—" },

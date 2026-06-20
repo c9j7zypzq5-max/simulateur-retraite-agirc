@@ -1051,7 +1051,7 @@ export default function Comparateur() {
                 display: 'inline-flex', alignItems: 'center', gap: 6,
                 padding: '6px 14px', borderRadius: 9,
                 border: '1px solid var(--border-gold)',
-                background: 'rgba(184,147,74,0.06)',
+                background: 'rgba(43,92,230,0.05)',
                 color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
                 fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 8,
               }}
@@ -1215,7 +1215,7 @@ export default function Comparateur() {
                       aria-pressed={active}
                       style={{
                         padding: '6px 14px', borderRadius: 7, border: 'none', cursor: 'pointer',
-                        background: active ? 'rgba(184,147,74,0.25)' : 'transparent',
+                        background: active ? 'rgba(43,92,230,0.18)' : 'transparent',
                         color: active ? 'var(--gold)' : 'var(--text-secondary)',
                         fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", transition: 'all 0.2s',
                       }}>
@@ -1269,12 +1269,12 @@ export default function Comparateur() {
                     display: 'inline-flex', alignItems: 'center', gap: 6,
                     padding: '6px 14px', borderRadius: 9,
                     border: '1px solid var(--border-gold)',
-                    background: 'rgba(184,147,74,0.06)',
+                    background: 'rgba(43,92,230,0.05)',
                     color: 'var(--gold-mid)', fontSize: 12, cursor: 'pointer',
                     fontFamily: "'Hanken Grotesk', sans-serif",
                   }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(184,147,74,0.14)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(184,147,74,0.06)'}
+                  onMouseEnter={e => e.currentTarget.style.background = 'rgba(43,92,230,0.1)'}
+                  onMouseLeave={e => e.currentTarget.style.background = 'rgba(43,92,230,0.05)'}
                 >{btn.label}</button>
               ))}
             </div>

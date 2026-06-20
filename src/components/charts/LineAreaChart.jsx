@@ -19,7 +19,7 @@ const EX = {
   textSec: "#7a6c52",
   textMain: "#1c1208",
   cardBg: "#ffffff",
-  borderGold: "#b8934a",
+  borderGold: "var(--primary)",
 };
 
 export default function LineAreaChart({

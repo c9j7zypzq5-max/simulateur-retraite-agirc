@@ -159,7 +159,7 @@ export function Toggle({ options, checked, onChange }) {
         <button key={opt} onClick={() => onChange(i === 1)}
           aria-pressed={String((i === 1) === checked)}
           style={{ padding: "9px 16px", borderRadius: 8, border: "none",
-            background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
+            background: (i === 1) === checked ? "rgba(43,92,230,0.18)" : "transparent",
             color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
             fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {opt}
@@ -177,11 +177,11 @@ export function Chip({ label, value, accent, small }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
-        border: `1px solid ${hovered ? "var(--border-gold)" : (accent ? "rgba(184,147,74,0.4)" : "var(--border)")}`,
+        background: accent ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
+        border: `1px solid ${hovered ? "var(--border-gold)" : (accent ? "rgba(43,92,230,0.25)" : "var(--border)")}`,
         borderRadius: 10,
         padding: small ? "10px 12px" : "14px 16px",
-        boxShadow: hovered ? "0 4px 18px rgba(184,147,74,0.1)" : "var(--card-shadow)",
+        boxShadow: hovered ? "0 4px 18px rgba(43,92,230,0.08)" : "var(--card-shadow)",
         cursor: "default",
       }}
     >
@@ -231,11 +231,11 @@ export function AccordionSection({ title, subtitle, children, gold = false, defa
   const reallyOpen = open || exporting;
   const panelId = `acc-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`;
   return (
-    <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+    <div style={{ background: gold ? "rgba(43,92,230,0.04)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(43,92,230,0.15)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={panelId}
         onMouseEnter={() => setBtnHovered(true)}
         onMouseLeave={() => setBtnHovered(false)}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(184,147,74,0.04)" : "none", border: "none", cursor: "pointer" }}>
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(43,92,230,0.03)" : "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
           <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
           {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
@@ -279,7 +279,7 @@ export function StatusBadge({ status, label }) {
     warn: { bg: "rgba(249,115,22,0.1)",   color: "#f97316", border: "1px solid rgba(249,115,22,0.25)" },
     bad:  { bg: "rgba(239,68,68,0.1)",    color: "#ef4444", border: "1px solid rgba(239,68,68,0.25)" },
     info: { bg: "rgba(99,102,241,0.1)",   color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" },
-    gold: { bg: "rgba(184,147,74,0.1)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
+    gold: { bg: "rgba(43,92,230,0.08)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
   };
   const s = palette[status] || palette.info;
   return (

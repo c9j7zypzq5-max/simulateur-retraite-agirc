@@ -29,7 +29,7 @@ export default function ZoomableChart({ children, innerRef, style, caption }) {
         <span data-noexport="true" aria-hidden="true" style={{
           position: "absolute", top: 8, right: 8, width: 26, height: 26, borderRadius: 8,
           display: "flex", alignItems: "center", justifyContent: "center",
-          background: "rgba(184,147,74,0.15)", border: "1px solid var(--border-gold)",
+          background: "rgba(43,92,230,0.12)", border: "1px solid var(--border-gold)",
           color: "var(--gold)", fontSize: 14, pointerEvents: "none",
         }}>⤢</span>
       </div>

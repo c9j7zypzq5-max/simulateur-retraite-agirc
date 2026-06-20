@@ -130,7 +130,7 @@ export default function RendementLocatif() {
   const rendChart = useMemo(() => {
     if (!hasResult || res.rendementBrut <= 0) return [];
     const bars = [
-      { label: "Brut", segments: [{ value: +res.rendementBrut.toFixed(2), color: "#b8934a", label: "Rendement brut" }] },
+      { label: "Brut", segments: [{ value: +res.rendementBrut.toFixed(2), color: "var(--primary)", label: "Rendement brut" }] },
       { label: "Net", segments: [{ value: +res.rendementNet.toFixed(2), color: "#6eb5d4", label: "Rendement net" }] },
     ];
     if (apport > 0 && res.rendementFondsPropres > 0) {

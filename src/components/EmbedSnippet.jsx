@@ -18,7 +18,7 @@ export default function EmbedSnippet({ path = "/embed/epargne", height = 520, la
         <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)" }}>Intégrer {label} sur votre site</h3>
         <button
           onClick={copy}
-          style={{ padding: "8px 16px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", background: copied ? "rgba(34,197,94,0.12)" : "rgba(184,147,74,0.12)", color: copied ? "#22c55e" : "var(--gold)", border: `1px solid ${copied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}` }}
+          style={{ padding: "8px 16px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", background: copied ? "rgba(34,197,94,0.12)" : "rgba(43,92,230,0.1)", color: copied ? "#22c55e" : "var(--gold)", border: `1px solid ${copied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}` }}
         >
           {copied ? "Copié ✓" : "Copier le code"}
         </button>

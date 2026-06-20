@@ -175,10 +175,10 @@ function drawFrame(ctx, {
   // ── Header
   const BOX_TOP = 26, BOX_H = 126;
   ctx.globalAlpha = 1;
-  ctx.fillStyle = 'rgba(184,147,74,0.1)';
+  ctx.fillStyle = 'rgba(43,92,230,0.08)';
   roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
   ctx.fill();
-  ctx.strokeStyle = 'rgba(184,147,74,0.4)';
+  ctx.strokeStyle = 'rgba(43,92,230,0.25)';
   ctx.lineWidth = 1;
   roundRect(ctx, 28, BOX_TOP, W - 56, BOX_H, 28);
   ctx.stroke();
@@ -519,7 +519,7 @@ function drawFrame(ctx, {
     ctx.globalAlpha = 1;
     ctx.fillStyle = 'rgba(4,10,22,0.97)';
     ctx.fillRect(0, H - BH, W, BH);
-    ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1; ctx.setLineDash([]);
+    ctx.strokeStyle = 'rgba(43,92,230,0.2)'; ctx.lineWidth = 1; ctx.setLineDash([]);
     ctx.beginPath(); ctx.moveTo(40, H - BH); ctx.lineTo(W - 40, H - BH); ctx.stroke();
     // Marque + wordmark, centrés ensemble
     ctx.font = 'bold 24px Hanken Grotesk, sans-serif';
@@ -588,7 +588,7 @@ function drawFrame(ctx, {
     });
 
     const brandY = H - 130;
-    ctx.strokeStyle = 'rgba(184,147,74,0.3)'; ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(43,92,230,0.2)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(40, brandY); ctx.lineTo(W - 40, brandY); ctx.stroke();
     // Marque + wordmark, centrés ensemble
     ctx.font = 'bold 36px Hanken Grotesk, sans-serif';

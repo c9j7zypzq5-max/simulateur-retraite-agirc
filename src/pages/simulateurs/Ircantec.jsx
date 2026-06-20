@@ -213,7 +213,7 @@ export default function Ircantec() {
           </div>
 
           {/* Résumé points */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
             {[
               { l: "Points/an", v: salaire ? fmt(res.ptsParAn) : "—", gold: true },
               { l: "Points TA", v: fmt(res.pointsTA) },
@@ -281,7 +281,7 @@ export default function Ircantec() {
                   </div>
                   <ZoomableChart caption="Pension nette mensuelle IRCANTEC selon le total d'années cotisées">
                     <LineAreaChart
-                      series={[{ id: "pension", label: "Pension nette / mois", points: ircantecChart, color: "#b8934a" }]}
+                      series={[{ id: "pension", label: "Pension nette / mois", points: ircantecChart, color: "var(--primary)" }]}
                       xFmt={v => `${v} ans`}
                       yFmt={v => `${Math.round(v)} €`}
                       annotations={currentTotal > 0 ? [{ x: currentTotal }] : []}

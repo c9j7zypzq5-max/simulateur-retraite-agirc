@@ -258,7 +258,7 @@ export default function Ptz() {
                       <button key={z.id} onClick={() => setZone(z.id)}
                         style={{
                           textAlign: "left", padding: "10px 14px", borderRadius: 12, cursor: "pointer",
-                          background: active ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
+                          background: active ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
                           border: `1.5px solid ${active ? "var(--gold-mid)" : "var(--border)"}`,
                           transition: "border-color 0.2s, background 0.2s",
                         }}
