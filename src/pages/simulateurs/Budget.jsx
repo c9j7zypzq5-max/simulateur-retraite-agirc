@@ -485,7 +485,7 @@ export default function Budget() {
           </div>
 
           {/* Jauges */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }} ref={resultsRef}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px" }} ref={resultsRef}>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.gaugesTitle}
             </div>

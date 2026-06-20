@@ -573,7 +573,7 @@ export default function Patrimoine() {
 
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/patrimoine" size={34} />}
           badge={txt.badge}

@@ -1011,7 +1011,7 @@ export default function Comparateur() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: '0 auto', padding: '0 16px 60px' }}>
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/comparateur" size={34} />}
           badge={txt.badge}
@@ -1020,14 +1020,14 @@ export default function Comparateur() {
         />
 
         {/* Bandeau features */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'rgba(184,147,74,0.07)', border: '1px solid var(--border-gold)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12, padding: '12px 20px', marginBottom: 20, fontSize: 13, color: 'var(--text-secondary)' }}>
           {txt.features.map((t, i) => (
             <span key={i} style={{ whiteSpace: 'nowrap' }}>{t}</span>
           ))}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '28px 28px', boxShadow: 'var(--card-shadow)', marginBottom: 20 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', boxShadow: 'var(--card-shadow)', marginBottom: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, fontWeight: 400 }}>
             {txt.assetsTitle}
           </h2>
@@ -1197,7 +1197,7 @@ export default function Comparateur() {
         {!loading && hasResult && (
           <div
             ref={resultsRef}
-            style={{ background: 'linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))', border: '1px solid var(--border-gold)', borderRadius: 20, padding: '28px 28px', marginBottom: 20, boxShadow: 'var(--card-shadow)' }}
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginBottom: 20, boxShadow: 'var(--card-shadow)' }}
           >
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 20 }}>
               <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', margin: 0, fontWeight: 400 }}>
@@ -1313,7 +1313,7 @@ export default function Comparateur() {
 
         {/* État vide */}
         {!loading && !hasResult && Object.keys(errors).length === 0 && (
-          <div style={{ textAlign: 'center', padding: '40px 28px', background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, color: 'var(--text-secondary)' }}>
+          <div style={{ textAlign: 'center', padding: '40px 28px', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, color: 'var(--text-secondary)' }}>
             <div style={{ fontSize: 32, marginBottom: 12 }}>📊</div>
             <p style={{ fontSize: 14, marginBottom: 6 }}>{txt.emptyTitle}</p>
             <p style={{ fontSize: 12, opacity: 0.7 }}>{txt.emptySubtitle}</p>
@@ -1323,7 +1323,7 @@ export default function Comparateur() {
         <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos / About */}
-        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--border)', borderRadius: 20, padding: '36px 28px', marginTop: 20 }}>
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 'clamp(20px,4vw,26px)', fontWeight: 600, color: 'var(--text)', marginBottom: 24 }}>
             {txt.aboutTitle}
           </h2>

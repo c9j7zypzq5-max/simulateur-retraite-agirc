@@ -254,7 +254,7 @@ export default function Independants() {
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.baseNetteMensuelle)}</div>
                   <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Taux effectif : {(res.tauxEffectif * 100).toFixed(1)} %</div>
                 </div>
-                <div style={{ background: "rgba(184,147,74,0.08)", border: "1px solid rgba(184,147,74,0.3)", borderRadius: 12, padding: "16px" }}>
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px" }}>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 8 }}>Complémentaire RCI</div>
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(res.rciNetteMensuelle)}</div>
                   <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>{fmt(res.pointsRci)} points × {VALEUR_SERVICE_RCI} €/an</div>
@@ -291,7 +291,7 @@ export default function Independants() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La SSI, régime obligatoire des indépendants</h3>
@@ -304,7 +304,7 @@ export default function Independants() {
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Indépendants</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
