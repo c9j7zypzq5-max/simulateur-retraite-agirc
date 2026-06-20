@@ -250,7 +250,7 @@ export default function Navbar({ theme, setTheme }) {
           </LocaleLink>
 
           {/* Desktop nav items (hidden on mobile) */}
-          <div className="desktop-nav" style={{ display: "flex", alignItems: "center", gap: 2, marginLeft: 16 }}>
+          <div className="desktop-nav" style={{ alignItems: "center", gap: 2, marginLeft: 16 }}>
             {/* Simulateurs dropdown button */}
             <button
               onClick={() => setSimsOpen(v => !v)}

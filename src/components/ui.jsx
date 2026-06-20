@@ -349,18 +349,19 @@ function HeaderBreadcrumb() {
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
 export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
   return (
-    <div style={{ padding: "28px 0 28px", animation: "fadeUp .5s ease both" }}>
+    <div style={{ padding: "28px 0 36px", animation: "fadeUp .5s ease both", textAlign: "center" }}>
       <HeaderBreadcrumb />
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
         <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
         <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>{badge}</span>
+        <div style={{ width: 36, height: 2, background: "linear-gradient(270deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-        <span style={{ fontSize: 36 }} aria-hidden="true">{icon}</span>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 14 }}>
+        <span style={{ fontSize: 40 }} aria-hidden="true">{icon}</span>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
       </div>
-      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 10 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
-      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}><AutoLinkText>{desc}</AutoLinkText></p>}
+      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 12 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
+      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 580, margin: "0 auto" }}><AutoLinkText>{desc}</AutoLinkText></p>}
     </div>
   );
 }
