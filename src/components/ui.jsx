@@ -64,7 +64,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
         {label}
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6, verticalAlign: "middle" }}>ⓘ</span>}
       </label>
-      <div style={{ display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "var(--input-bg)", border: `1.5px solid ${focused ? "rgba(184,147,74,0.6)" : "var(--border)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s, background 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "var(--input-shadow)" }}>
+      <div style={{ display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
         <input type="text" inputMode="numeric"
           id={inputId} name={inputId}
           aria-describedby={hintId}
@@ -73,10 +73,10 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
           onBlur={handleBlur}
           placeholder={unit ? `0 ${unit}` : "0"}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
-        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
+          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0 }} />
+        {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
       </div>
-      {hint && <div id={hintId} style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
+      {hint && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }
@@ -119,10 +119,10 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
   const inc = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) + step));
 
   const btnStyle = {
-    width: 40, height: 44, borderRadius: 10, border: "1.5px solid var(--border)",
-    background: "var(--card-bg)", color: "var(--text)", fontSize: 20, cursor: "pointer",
+    width: 32, height: 32, borderRadius: 6, border: "none",
+    background: "var(--primary-soft, #EAF0FF)", color: "var(--primary)", fontSize: 18, cursor: "pointer",
     display: "flex", alignItems: "center", justifyContent: "center",
-    transition: "border-color 0.2s",
+    fontWeight: 600,
   };
 
   return (
@@ -132,24 +132,20 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6 }}>ⓘ</span>}
       </label>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}>−</button>
-        <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "var(--card-bg)", border: `1.5px solid ${focused ? "var(--gold-mid)" : "var(--border)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "none" }}>
+        <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}>−</button>
+        <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
           <input type="text" inputMode="decimal"
             value={focused ? raw : (value === null || value === undefined ? "" : String(value))}
             onChange={handleChange}
             onFocus={e => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
             onBlur={handleBlur}
             placeholder="0"
-            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />
-          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
+            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0, textAlign: "center" }} />
+          {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
         </div>
-        <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}>+</button>
+        <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}>+</button>
       </div>
-      {hint && <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
+      {hint && <div style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }
