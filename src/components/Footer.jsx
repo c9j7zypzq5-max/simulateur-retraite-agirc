@@ -107,8 +107,8 @@ function RelatedTerms() {
         <Link to="/lexique" style={{
           display: "inline-flex", alignItems: "center",
           padding: "8px 14px", borderRadius: 20, textDecoration: "none",
-          background: "transparent", border: "1px dashed var(--border-gold)",
-          color: "var(--gold)", fontSize: 13,
+          background: "transparent", border: "1px dashed var(--primary)",
+          color: "var(--primary)", fontSize: 13,
         }}>
           {tr("sections.allLexique")}
         </Link>
@@ -134,9 +134,9 @@ function RelatedGuides() {
         {guides.map(g => (
           <Link key={g.slug} to={`/guides/${g.slug}`} style={{
             display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 12, textDecoration: "none",
-            background: "var(--card-bg)", border: "1px solid var(--border)", transition: "border-color 0.2s",
+            background: "var(--surface)", border: "1px solid var(--border)", transition: "border-color 0.2s",
           }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--primary)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
             <span style={{ fontSize: "1.4rem", flexShrink: 0 }} aria-hidden="true">{g.emoji}</span>
@@ -177,12 +177,12 @@ function RelatedArticles() {
         {articles.map(a => (
           <Link key={a.slug} to={`/blog/${a.slug}`} style={{
             display: "block", padding: "14px 16px", borderRadius: 12, textDecoration: "none",
-            background: "var(--card-bg)", border: "1px solid var(--border)", transition: "border-color 0.2s",
+            background: "var(--surface)", border: "1px solid var(--border)", transition: "border-color 0.2s",
           }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "var(--primary)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
-            <div style={{ fontSize: 11, color: "var(--gold-mid)", marginBottom: 6 }}>{a.category}</div>
+            <div style={{ fontSize: 11, color: "var(--primary)", marginBottom: 6 }}>{a.category}</div>
             <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", lineHeight: 1.3 }}>{a.title}</div>
           </Link>
         ))}
@@ -202,6 +202,7 @@ export default function Footer() {
     <RelatedTerms />
     <RelatedArticles />
     <footer style={{
+      background: "var(--surface)",
       borderTop: "1px solid var(--border)",
       padding: "28px 24px 40px",
       marginTop: 60,
@@ -217,7 +218,7 @@ export default function Footer() {
       }}>
         <Link to="/" style={{ display: "flex", alignItems: "center", gap: 8, textDecoration: "none" }}>
           <img src="/logo-mark.svg" alt="" width={24} height={24} style={{ display: "block", flexShrink: 0 }} />
-          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--text)" }}>
             simfinly.com
           </span>
         </Link>
