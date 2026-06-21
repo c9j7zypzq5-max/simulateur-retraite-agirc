@@ -69,9 +69,16 @@ Chaque simulateur ouvre un nouveau corpus de requêtes. Pistes à fort volume :
 - [x] **Viralité** : incitation au partage affichée au-dessus de `ShareBar`
       lorsqu'un résultat est disponible.
 
+## Réalisé (lot 2)
+- [x] **Traduction EN** des 3 simulateurs universels : emprunt-immobilier
+      (`/en/simulators/mortgage`), rendement-locatif (`/en/simulators/rental-yield`),
+      assurance-vie (`/en/simulators/life-insurance`) — refactor TXT fr/en,
+      règles FR décrites en anglais.
+- [x] **OG/partage localisé EN + polish visuel** : `ShareBar` i18n + propagation
+      `l=locale`, `api/share.js` et `api/og.js` localisés, carte résultat polie
+      (liseré d'accent, pastille marque, badge catégorie).
+
 ## Reste à faire (suite recommandée)
-- [ ] Traduire en EN les simulateurs universels restants (emprunt-immobilier,
-      rendement-locatif, assurance-vie) — refactor TXT fr/en par fichier.
 - [ ] Étendre les comparatifs (SCPI vs locatif, micro vs réel, capital vs rente).
-- [ ] Image OG enrichie avec la valeur du résultat (étendre `api/og`).
 - [ ] Bloc « Articles liés » sur chaque page simulateur (maillage blog↔sim).
+- [ ] Traduire d'autres simulateurs universels (salaire, épargne-salariale…).
