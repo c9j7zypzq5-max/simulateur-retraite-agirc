@@ -15,6 +15,13 @@ dist-ssr
 .env.local
 .vercel
 
+# Claude Code local config
+.claude/
+
+# Playwright
+playwright-report/
+test-results/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

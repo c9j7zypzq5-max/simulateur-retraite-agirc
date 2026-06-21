@@ -13,7 +13,9 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
@@ -94,10 +96,9 @@ export default function Independants() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite Indépendants TNS 2025 — SSI", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Indépendants TNS 2025 — SSI";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -149,7 +150,7 @@ export default function Independants() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Indépendants / TNS",
@@ -169,7 +170,7 @@ export default function Independants() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/independants" size={34} />}
           badge="Indépendants & TNS · Données 2026"
@@ -179,13 +180,13 @@ export default function Independants() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Base SSI alignée sur CNAV", "✓ Complémentaire RCI incluse", "✓ Valeur service : 0,6331 €/pt"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
 
           <NumInput id="revenu" label="Revenu net mensuel moyen" value={revenu} onChange={setRevenu} unit="€" min={0} max={40000}
             hint={revenu ? `Annuel : ${fmtEur(revenu * 12)} · ${revenu * 12 > PASS ? "Tranche 2 RCI activée" : "Tranche 1 RCI uniquement"}` : "Revenu net d'activité (hors charges sociales)"}
@@ -202,7 +203,7 @@ export default function Independants() {
           </div>
 
           {/* Résumé */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
             {[
               { l: "Trimestres", v: `${((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4}`, gold: true },
               { l: "Points RCI/an", v: revenu ? fmt(((Math.min(revenu * 12, PASS) * TAUX_RCI_T1) + Math.max(0, Math.min(revenu * 12, 4 * PASS) - PASS) * TAUX_RCI_T2) / VALEUR_ACHAT_RCI) : "—" },
@@ -210,7 +211,7 @@ export default function Independants() {
             ].map((item, i) => (
               <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
                 <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
               </div>
             ))}
           </div>
@@ -226,16 +227,16 @@ export default function Independants() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension totale estimée</h2>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension totale estimée</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Pension nette mensuelle estimée (base + RCI)</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Pension nette mensuelle estimée (base + RCI)</div>
             {!hasResult ? (
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.totalNette)} euros par mois`}>
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -250,12 +251,12 @@ export default function Independants() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
                 <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px" }}>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Régime de base SSI</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.baseNetteMensuelle)}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--text)" }}>{fmtEur(res.baseNetteMensuelle)}</div>
                   <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Taux effectif : {(res.tauxEffectif * 100).toFixed(1)} %</div>
                 </div>
-                <div style={{ background: "rgba(184,147,74,0.08)", border: "1px solid rgba(184,147,74,0.3)", borderRadius: 12, padding: "16px" }}>
+                <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "16px" }}>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 8 }}>Complémentaire RCI</div>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(res.rciNetteMensuelle)}</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(res.rciNetteMensuelle)}</div>
                   <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>{fmt(res.pointsRci)} points × {VALEUR_SERVICE_RCI} €/an</div>
                 </div>
               </div>
@@ -272,7 +273,7 @@ export default function Independants() {
         </div>
 
         <ShareBar params={{ revenu, anneesFaites, anneesRestantes, ageDépart, activite }} resultsRef={resultsRef} report={report} name="independants" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="independants"
@@ -290,21 +291,21 @@ export default function Independants() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La SSI, régime obligatoire des indépendants</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La SSI, régime obligatoire des indépendants</h3>
             <p style={{ marginBottom: 16 }}>La Sécurité Sociale des Indépendants (SSI), anciennement appelée RSI, est le régime obligatoire des travailleurs non-salariés : artisans, commerçants, dirigeants de sociétés soumises à l'impôt sur le revenu. Depuis 2020, la SSI est intégrée au régime général géré par les URSSAF, mais les règles de calcul de la retraite restent distinctes. Elle couvre plus de 3 millions de cotisants actifs.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Des cotisations sur le revenu professionnel</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Des cotisations sur le revenu professionnel</h3>
             <p style={{ marginBottom: 16 }}>Contrairement aux salariés, les indépendants cotisent sur leur revenu professionnel net (bénéfice), non sur un salaire brut. Le taux de cotisation retraite de base s'élève à 17,75 % jusqu'au PASS et 0,60 % au-delà. La retraite de base fonctionne en trimestres, comme le régime général, avec les mêmes règles de décote et surcote. Une cotisation minimale assure la validation d'au moins 3 trimestres même en cas de faibles revenus.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite complémentaire RCI</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite complémentaire RCI</h3>
             <p>En plus de la retraite de base, les artisans et commerçants bénéficient d'une retraite complémentaire par points (RCI). Le taux de cotisation est de 7 % sur les revenus jusqu'à 37 960 € et de 8 % sur la tranche supérieure. La valeur du point RCI est révisée annuellement. Cette complémentaire représente en moyenne 30 à 40 % du total de la pension versée à la retraite.</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Indépendants</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Indépendants</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
 
@@ -322,7 +323,7 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}

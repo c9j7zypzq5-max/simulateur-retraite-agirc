@@ -9,11 +9,13 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
@@ -133,7 +135,7 @@ function TableCIPAV({ revenuAnnuel }) {
               key={c.classe}
               style={{
                 borderBottom: "1px solid var(--border)",
-                background: c.classe === currentClass ? "rgba(184,147,74,0.08)" : "transparent",
+                background: c.classe === currentClass ? "rgba(43,92,230,0.07)" : "transparent",
               }}
             >
               <td
@@ -171,29 +173,13 @@ function TableCIPAV({ revenuAnnuel }) {
   );
 }
 
-// ─── FAQ ───────────────────────────────────────────────────────────────────
-
 const FAQ = [
-  {
-    q: "Quelles sont les professions libérales couvertes par CIPAV ?",
-    a: "CIPAV couvre les professions libérales non réglementées : consultants, graphistes, traducteurs, photographes, coaches, formateurs indépendants, etc. Les médecins, avocats, notaires, experts-comptables ont leurs propres régimes : CARMF (médecins), CNBF (avocats), CRPCEN (notaires), CAVEC (experts-comptables).",
-  },
-  {
-    q: "Comment sont calculés les points CIPAV ?",
-    a: "CIPAV fonctionne par classes selon le revenu BNC (Bénéfices Non Commerciaux). Chaque classe correspond à un nombre de points/an : classe 1 = 222 pts, classe 2 = 333 pts, etc. À la retraite, vos points totaux sont convertis en rente mensuelle (valeur point ~0,4753 €).",
-  },
-  {
-    q: "Qui doit cotiser à CIPAV si je suis en micro-entreprise ?",
-    a: "En micro-entreprise (auto-entrepreneur), vous cotisez à la SSI pour la retraite de base et aux régimes SSI pour la complémentaire, NON à CIPAV. CIPAV s'applique si vous êtes en régime réel (BNC déclaré) ou en EIRL avec option réelle.",
-  },
-  {
-    q: "Quelle est la différence entre pension de base et complémentaire ?",
-    a: "La pension de base (régime SSI pour libéraux) couvre un minimum et est plafonnée au PASS. La pension complémentaire CIPAV s'y ajoute. Ensemble, elles forment votre retraite totale. Cette simulation calcule les deux.",
-  },
-  {
-    q: "Puis-je prendre ma retraite à 62 ans en tant que libéral ?",
-    a: "Oui, mais avec une décote de −0,625 % par trimestre manquant (max −12,5 %). Pour le taux plein (50 %), il faut atteindre 172 trimestres ET 67 ans. Ou avoir tous les trimestres et partir entre 62 et 67 avec décote réduite.",
-  },
+  { q: "Qu'est-ce que la CNAVPL ?", a: "La Caisse Nationale d'Assurance Vieillesse des Professions Libérales gère la retraite de base de tous les professionnels libéraux non membres de sections spécifiques (avocats, médecins, notaires, etc. ont leurs propres caisses). Elle couvre notamment les consultants, formateurs, architectes, et autres libéraux non réglementés." },
+  { q: "Comment se calculent les points CNAVPL ?", a: "Les cotisations versées à la CNAVPL achètent des points selon un rapport cotisation/valeur d'achat annuel. En 2025, la valeur d'achat d'un point est de 7,04 €. La pension annuelle = nombre de points × valeur de service (0,5714 €/point en 2025). Le nombre de points dépend du revenu professionnel et de la durée de cotisation." },
+  { q: "Quelle est la différence entre CNAVPL et les sections professionnelles ?", a: "La CNAVPL gère la retraite de BASE des libéraux non réglementés. Chaque profession réglementée a sa section autonome (CIPAV pour les architectes/consultants, CARMF pour les médecins, CNBF pour les avocats, etc.) qui gèrent à la fois la retraite de base et complémentaire propre à la profession." },
+  { q: "Peut-on racheter des trimestres à la CNAVPL ?", a: "Oui, les libéraux peuvent racheter jusqu'à 12 trimestres d'études supérieures ou de début de carrière (années incomplètes). Le coût dépend de l'âge au rachat et du revenu. Deux options : rachat « taux seul » (améliore la décote) ou « taux et durée » (plus coûteux mais améliore aussi le calcul de la pension)." },
+  { q: "Comment est calculée la retraite de base des libéraux ?", a: "Comme pour le régime général (CNAV), la pension de base des libéraux = SAM (Salaire Annuel Moyen des 25 meilleures années) × taux (50 % au taux plein) × (trimestres cotisés / trimestres requis pour le taux plein). La durée requise dépend de l'année de naissance (168 à 172 trimestres selon la génération)." },
+  { q: "Les libéraux ont-ils droit à la retraite complémentaire ?", a: "Oui. En plus de la retraite de base (CNAVPL ou section), tous les libéraux cotisent à une retraite complémentaire : pour les non-réglementés, c'est la CIPAV (pour la plupart) ou la complémentaire de la section. La pension complémentaire s'exprime en points, valorisés à la liquidation." },
 ];
 
 export default function Cnavpl() {
@@ -207,9 +193,9 @@ export default function Cnavpl() {
   const [anneeNaissance, setAnneeNaissance] = useState(null);
   const [ageDépart, setAgeDépart] = useState(65);
 
+  usePageMeta("Simulateur Retraite CIPAV 2025 — Professions libérales", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
+
   useEffect(() => {
-    document.title = "Simulateur Retraite CIPAV 2025 — Professions libérales";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -281,7 +267,7 @@ export default function Cnavpl() {
       style={{
         minHeight: "100vh",
         background: "var(--bg)",
-        fontFamily: "'DM Sans', sans-serif",
+        fontFamily: "'Hanken Grotesk', sans-serif",
         color: "var(--text)",
       }}
     >
@@ -304,7 +290,7 @@ export default function Cnavpl() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/cnavpl" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -319,8 +305,8 @@ export default function Cnavpl() {
             display: "flex",
             flexWrap: "wrap",
             gap: 14,
-            background: "rgba(184,147,74,0.07)",
-            border: "1px solid var(--border-gold)",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
             borderRadius: 12,
             padding: "12px 20px",
             marginBottom: 20,
@@ -338,17 +324,17 @@ export default function Cnavpl() {
         {/* Formulaire */}
         <div
           style={{
-            background: "var(--card-bg)",
+            background: "var(--surface)",
             border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "32px 28px",
+            borderRadius: 16,
+            padding: "24px 20px",
             boxShadow: "var(--card-shadow)",
             marginBottom: 0,
           }}
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 19,
               color: "var(--text-secondary)",
               marginBottom: 28,
@@ -416,8 +402,8 @@ export default function Cnavpl() {
           {/* Récapitulatif */}
           <div
             style={{
-              background: "rgba(184,147,74,0.06)",
-              border: "1px solid rgba(184,147,74,0.15)",
+              background: "rgba(43,92,230,0.05)",
+              border: "1px solid rgba(43,92,230,0.12)",
               borderRadius: 12,
               padding: "14px 20px",
               display: "flex",
@@ -452,7 +438,7 @@ export default function Cnavpl() {
                 </div>
                 <div
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 21,
                     fontWeight: 700,
                     color: item.gold ? "var(--gold)" : "var(--text)",
@@ -469,17 +455,17 @@ export default function Cnavpl() {
         <div
           ref={resultsRef}
           style={{
-            background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))",
-            border: "1px solid var(--border-gold)",
-            borderRadius: 20,
-            padding: "32px 28px",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
+            borderRadius: 16,
+            padding: "24px 20px",
             marginTop: 20,
             boxShadow: "var(--card-shadow)",
           }}
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 19,
               color: "var(--text-secondary)",
               marginBottom: 24,
@@ -499,11 +485,10 @@ export default function Cnavpl() {
           >
             <div
               style={{
-                fontSize: 11,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
+                fontSize: 13,
                 color: "var(--text-secondary)",
-                marginBottom: 10,
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                marginBottom: 6,
               }}
             >
               Pension nette mensuelle estimée
@@ -516,13 +501,11 @@ export default function Cnavpl() {
               <>
                 <div
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "clamp(48px,10vw,72px)",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontWeight: 700,
+                    fontSize: 42,
+                    color: "var(--primary)",
                     lineHeight: 1,
-                    background: "linear-gradient(135deg,var(--gold),var(--gold-mid))",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
                   }}
                 >
                   {pensionTotaleAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
@@ -575,7 +558,7 @@ export default function Cnavpl() {
                 </div>
                 <span
                   style={{
-                    fontFamily: "'Cormorant Garamond', serif",
+                    fontFamily: "'Space Grotesk', sans-serif",
                     fontSize: 24,
                     fontWeight: 700,
                     color: res.decote > 0 ? "#f87171" : "var(--text-secondary)",
@@ -621,7 +604,7 @@ export default function Cnavpl() {
         </div>
 
         <ShareBar params={{ revenuAnnuel, anneesFaites, anneesRestantes, anneeNaissance, ageDépart }} resultsRef={resultsRef} report={report} name="cnavpl" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {res.pensionTotale > 0 && (
           <ScenarioCompare
             name="cnavpl"
@@ -689,14 +672,14 @@ export default function Cnavpl() {
         </AccordionSection>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un régime par classes pour les professions libérales</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un régime par classes pour les professions libérales</h3>
             <p style={{ marginBottom: 16 }}>La CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) gère la retraite complémentaire d'environ 700 000 professionnels libéraux : architectes, ingénieurs, guides-conférenciers, ostéopathes, psychologues, géomètres et de nombreuses autres professions réglementées. La cotisation est déterminée non par un taux appliqué au revenu, mais par l'appartenance à l'une des 6 classes définies par tranches de revenus par rapport au PASS.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite de base CNAVPL et complémentaire CIPAV</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite de base CNAVPL et complémentaire CIPAV</h3>
             <p style={{ marginBottom: 16 }}>Les professions libérales affiliées à la CIPAV cotisent à deux régimes superposés. La retraite de base est gérée par la CNAVPL selon un mécanisme en points, similaire au régime général pour les règles de liquidation. La retraite complémentaire CIPAV fonctionne également par points, avec une valeur d'achat et une valeur de service révisées annuellement. Les points acquis s'accumulent tout au long de la carrière.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les professions concernées et les autres caisses</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les professions concernées et les autres caisses</h3>
             <p>Toutes les professions libérales ne dépendent pas de la CIPAV. Les médecins relèvent de la CARMF, les notaires de la CPRN, les experts-comptables de la CAVEC. La CIPAV regroupe principalement les « autres professions libérales » non rattachées à une caisse spécifique. Depuis 2018, les auto-entrepreneurs exerçant une activité libérale relevant de la CIPAV y cotisent également, selon les mêmes classes de cotisation.</p>
           </div>
         </div>
@@ -704,16 +687,16 @@ export default function Cnavpl() {
         {/* FAQ */}
         <div
           style={{
-            background: "var(--card-bg)",
+            background: "var(--surface)",
             border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "36px 28px",
+            borderRadius: 16,
+            padding: "24px 20px",
             marginTop: 20,
           }}
         >
           <h2
             style={{
-              fontFamily: "'Cormorant Garamond', serif",
+              fontFamily: "'Space Grotesk', sans-serif",
               fontSize: "clamp(20px,4vw,26px)",
               fontWeight: 600,
               color: "var(--text)",
@@ -740,6 +723,7 @@ export default function Cnavpl() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );
@@ -767,7 +751,7 @@ function FaqItem({ q, a }) {
       >
         <span
           style={{
-            fontFamily: "'Cormorant Garamond', serif",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontSize: 16,
             fontWeight: 600,
             color: "var(--text)",

@@ -67,15 +67,15 @@ function drawFrame(ctx, {
   roundRect(ctx, badgeX - 170, badgeY - 22, 340, 44, 22);
   ctx.stroke();
   ctx.fillStyle = color;
-  ctx.font = 'bold 17px DM Sans, sans-serif';
+  ctx.font = 'bold 17px Hanken Grotesk, sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText(`${emoji}  ${simulatorName}`, badgeX, badgeY + 7);
 
   // Titre
   ctx.fillStyle = '#ffffff';
-  ctx.font = 'bold 50px DM Sans, sans-serif';
+  ctx.font = 'bold 50px Hanken Grotesk, sans-serif';
   ctx.fillText('Ma simulation', W / 2, 240);
-  ctx.font = 'bold 50px DM Sans, sans-serif';
+  ctx.font = 'bold 50px Hanken Grotesk, sans-serif';
   ctx.fillStyle = color;
   ctx.fillText('simfinly.com', W / 2, 306);
 
@@ -118,7 +118,7 @@ function drawFrame(ctx, {
         ctx.setLineDash([]);
         ctx.globalAlpha = Math.min(1, chartPhase * 3) * 0.8;
         ctx.fillStyle = color;
-        ctx.font = '13px DM Sans, sans-serif';
+        ctx.font = '13px Hanken Grotesk, sans-serif';
         ctx.textAlign = 'right';
         ctx.fillText(fmtK(targetValue), chartX + chartW, cyTarget - 6);
         ctx.globalAlpha = 1;
@@ -162,11 +162,11 @@ function drawFrame(ctx, {
 
     // Compteur valeur courante
     ctx.fillStyle = lightenHex(color, 0.2);
-    ctx.font = 'bold 30px DM Sans, sans-serif';
+    ctx.font = 'bold 30px Hanken Grotesk, sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText(fmtK(last.value), chartX + chartW, chartY + chartH + 36);
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.font = '14px DM Sans, sans-serif';
+    ctx.font = '14px Hanken Grotesk, sans-serif';
     ctx.fillText('Valeur projetée', chartX + chartW, chartY + chartH + 56);
 
     // Axes
@@ -180,7 +180,7 @@ function drawFrame(ctx, {
     // Labels axe X (temps / âge)
     const step = Math.ceil(maxT / 4);
     ctx.fillStyle = 'rgba(255,255,255,0.3)';
-    ctx.font = '13px DM Sans, sans-serif';
+    ctx.font = '13px Hanken Grotesk, sans-serif';
     ctx.textAlign = 'center';
     for (let tt = 0; tt <= maxT; tt += step) {
       const label = ageActuel != null ? `${Math.round(ageActuel + tt)} ans` : `${Math.round(tt)} ans`;
@@ -189,7 +189,7 @@ function drawFrame(ctx, {
 
     // Ticks axe Y (scale dynamique)
     ctx.fillStyle = 'rgba(255,255,255,0.25)';
-    ctx.font = '11px DM Sans, sans-serif';
+    ctx.font = '11px Hanken Grotesk, sans-serif';
     ctx.textAlign = 'left';
     for (const f of [0.25, 0.5, 0.75]) {
       const val = maxP * f;
@@ -230,11 +230,11 @@ function drawFrame(ctx, {
     ctx.stroke();
 
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.font = '12px DM Sans, sans-serif';
+    ctx.font = '12px Hanken Grotesk, sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(m.label.toUpperCase(), mx + 16, my + 24);
     ctx.fillStyle = lightenHex(color, 0.2);
-    ctx.font = 'bold 22px DM Sans, sans-serif';
+    ctx.font = 'bold 22px Hanken Grotesk, sans-serif';
     ctx.fillText(m.value, mx + 16, my + 56);
   });
 
@@ -253,11 +253,11 @@ function drawFrame(ctx, {
   ctx.stroke();
 
   ctx.fillStyle = color;
-  ctx.font = 'bold 28px DM Sans, sans-serif';
+  ctx.font = 'bold 28px Hanken Grotesk, sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText('simfinly.com', W / 2, H - 80);
   ctx.fillStyle = 'rgba(255,255,255,0.3)';
-  ctx.font = '16px DM Sans, sans-serif';
+  ctx.font = '16px Hanken Grotesk, sans-serif';
   ctx.fillText('Calculs gratuits · Sans inscription · 100 % confidentiel', W / 2, H - 50);
 
   ctx.globalAlpha = 1;
@@ -380,7 +380,7 @@ export default function VideoExport({
             border: `1px solid ${state === 'recording' ? 'rgba(239,68,68,0.5)' : 'var(--border)'}`,
             borderRadius: 10,
             color: state === 'recording' ? '#ef4444' : 'var(--text-secondary)',
-            fontSize: 12, fontFamily: "'DM Sans', sans-serif",
+            fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif",
             cursor: state === 'processing' ? 'wait' : 'pointer',
             transition: 'all 0.2s',
           }}

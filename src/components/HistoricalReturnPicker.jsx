@@ -31,9 +31,9 @@ export default function HistoricalReturnPicker({ duration, onSelect }) {
           display: 'inline-flex', alignItems: 'center', gap: 4,
           padding: '4px 10px', borderRadius: 7,
           border: '1px solid var(--border-gold)',
-          background: open ? 'rgba(184,147,74,0.12)' : 'rgba(184,147,74,0.06)',
+          background: open ? 'rgba(43,92,230,0.1)' : 'rgba(43,92,230,0.05)',
           color: 'var(--gold-mid)', fontSize: 11,
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Hanken Grotesk', sans-serif",
           cursor: 'pointer', whiteSpace: 'nowrap', minHeight: 28,
         }}
       >
@@ -74,13 +74,13 @@ export default function HistoricalReturnPicker({ duration, onSelect }) {
                       style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                         width: '100%', padding: '7px 14px',
-                        background: p.highlight ? 'rgba(184,147,74,0.08)' : 'transparent',
+                        background: p.highlight ? 'rgba(43,92,230,0.07)' : 'transparent',
                         border: 'none', cursor: 'pointer',
                         transition: 'background 0.15s',
                         minHeight: 34,
                       }}
-                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(184,147,74,0.1)'}
-                      onMouseLeave={e => e.currentTarget.style.background = p.highlight ? 'rgba(184,147,74,0.08)' : 'transparent'}
+                      onMouseEnter={e => e.currentTarget.style.background = 'rgba(43,92,230,0.08)'}
+                      onMouseLeave={e => e.currentTarget.style.background = p.highlight ? 'rgba(43,92,230,0.07)' : 'transparent'}
                     >
                       <span style={{ fontSize: 12, color: 'var(--text)', textAlign: 'left' }}>{p.label}</span>
                       <span style={{ fontSize: 13, fontWeight: 700, color, flexShrink: 0, marginLeft: 8 }}>

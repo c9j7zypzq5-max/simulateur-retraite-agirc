@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -6,10 +7,11 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
-import { NumInput } from "../../components/ui.jsx";
+import { NumInput, FaqSection } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
@@ -108,16 +110,6 @@ const TXT = {
   },
 };
 
-function useIsMobile(breakpoint = 680) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const h = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", h, { passive: true });
-    return () => window.removeEventListener("resize", h);
-  }, [breakpoint]);
-  return mobile;
-}
-
 // ─── Calcul règle 50/30/20 ────────────────────────────────────────────────────
 function calcBudget({ revenus, fixe, variable }) {
   const rev = revenus ?? 0;
@@ -203,7 +195,7 @@ function DonutChart({ besoins, envies, epargne, total, txt }) {
 
   const gap = 0.015;
   const segments = [
-    { key: "besoins", ratio: arcs.besoins, color: "#b8934a", label: txt.segBesoins },
+    { key: "besoins", ratio: arcs.besoins, color: "var(--primary)", label: txt.segBesoins },
     { key: "envies",  ratio: arcs.envies,  color: "#818cf8", label: txt.segEnvies },
     { key: "epargne", ratio: arcs.epargne, color: "#4ade80", label: txt.segEpargne },
   ];
@@ -239,10 +231,10 @@ function DonutChart({ besoins, envies, epargne, total, txt }) {
         );
       })}
       <circle cx={cx} cy={cy} r={48} fill="var(--card-bg)" />
-      <text x={cx} y={cy - 6} textAnchor="middle" style={{ fill: "var(--text)", fontSize: 13, fontFamily: "'DM Sans', sans-serif", fontWeight: 600 }}>
+      <text x={cx} y={cy - 6} textAnchor="middle" style={{ fill: "var(--text)", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}>
         {total > 0 ? `${Math.round((arcs.epargne) * 100)}%` : "—"}
       </text>
-      <text x={cx} y={cy + 12} textAnchor="middle" style={{ fill: "var(--text-secondary)", fontSize: 9, fontFamily: "'DM Sans', sans-serif" }}>
+      <text x={cx} y={cy + 12} textAnchor="middle" style={{ fill: "var(--text-secondary)", fontSize: 9, fontFamily: "'Hanken Grotesk', sans-serif" }}>
         {txt.donutCenter}
       </text>
     </svg>
@@ -306,7 +298,7 @@ function MonthProgress({ txt }) {
           width: `${pct}%`,
           background: "linear-gradient(90deg, #b8934a, #f59e0b)",
           transition: "none",
-          boxShadow: "0 0 6px rgba(184,147,74,0.4)",
+          boxShadow: "0 0 6px rgba(43,92,230,0.25)",
         }} />
       </div>
       <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)", marginTop: 4 }}>{txt.monthSimNote}</div>
@@ -351,6 +343,15 @@ function MotivationMessage({ tauxEpargne, txt }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
+const FAQ = [
+  { q: "Qu'est-ce que la règle des 50/30/20 ?", a: "La règle 50/30/20 propose d'allouer 50 % des revenus nets aux besoins essentiels (logement, alimentation, transport), 30 % aux envies (loisirs, restaurants, abonnements) et 20 % à l'épargne ou au remboursement de dettes." },
+  { q: "Doit-on viser exactement 50 % pour les besoins ?", a: "Non, c'est un objectif indicatif. Dans des villes chères où le loyer dépasse 40 % du salaire, il est normal d'ajuster : réduire la part « envies » ou augmenter les revenus à terme. L'important est de maintenir une épargne positive." },
+  { q: "Quels montants compter dans les « besoins » ?", a: "Tout ce qui est incompressible : loyer ou crédit immobilier, charges (électricité, eau, internet), assurances obligatoires, transports domicile-travail, alimentation de base et remboursements de prêts en cours." },
+  { q: "Comment améliorer mon taux d'épargne ?", a: "Deux leviers : réduire les dépenses variables (surtout les envies) ou augmenter vos revenus. Un taux d'épargne de 10 % est un bon départ ; 20 % ou plus accélère significativement la constitution d'un patrimoine à long terme." },
+  { q: "Le simulateur tient-il compte des impôts ?", a: "Non, entrez vos revenus nets mensuels après impôts et prélèvements sociaux. Si vous êtes salarié, utilisez directement le net fiscal ou le net perçu après prélèvement à la source." },
+  { q: "Quelle est la différence entre épargne de précaution et investissement ?", a: "L'épargne de précaution (3 à 6 mois de charges sur Livret A ou LDDS) couvre les imprévus sans pénalité. L'investissement à long terme (PEA, assurance-vie, immobilier) vise la croissance du patrimoine et s'effectue une fois le matelas de sécurité constitué." },
+];
+
 export default function Budget() {
   const [theme, setTheme] = useTheme();
   useMoney();
@@ -365,10 +366,7 @@ export default function Budget() {
   const resultsRef = useRef(null);
   const chartRef   = useRef(null);
 
-  useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
-  }, [txt.docTitle, txt.metaDesc]);
+  usePageMeta(txt.docTitle, txt.metaDesc);
 
   useEffect(() => {
     const shared = readShareParams();
@@ -412,7 +410,7 @@ export default function Budget() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -426,11 +424,11 @@ export default function Budget() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "48px 24px 0" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(43,92,230,0.08)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           {txt.badge}
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
           {txt.title1}<br />
           <em style={{ color: "var(--gold)", fontStyle: "italic" }}>{txt.title2}</em>
         </h1>
@@ -440,12 +438,12 @@ export default function Budget() {
       </div>
 
       {/* ── Main layout ── */}
-      <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 16px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: isMobile ? 0 : 24, alignItems: "start" }}>
 
         {/* ── Colonne gauche : inputs ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.inputSectionTitle}
             </div>
             <NumInput label={txt.inputRevenu}   value={revenus}         onChange={setRevenus}         unit={`${activeSymbol()}/mois`} min={0} max={50000} />
@@ -462,8 +460,8 @@ export default function Budget() {
         {/* ── Colonne droite : visualisations ── */}
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Donut */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.donutTitle}
             </div>
             <ZoomableChart innerRef={chartRef} style={{ display: "flex", alignItems: "center", flexDirection: isMobile ? "column" : "row", gap: 24 }}>
@@ -476,7 +474,7 @@ export default function Budget() {
               />
               <div style={{ flex: 1 }}>
                 {[
-                  { label: txt.segBesoins, value: animBesoins, pct: res?.tauxBesoins ?? 0, color: "#b8934a" },
+                  { label: txt.segBesoins, value: animBesoins, pct: res?.tauxBesoins ?? 0, color: "var(--primary)" },
                   { label: txt.segEnvies,  value: animEnvies,  pct: res?.tauxEnvies  ?? 0, color: "#818cf8" },
                   { label: txt.segEpargne, value: animEpargne, pct: animTaux,              color: "#4ade80" },
                 ].map(s => (
@@ -496,17 +494,17 @@ export default function Budget() {
           </div>
 
           {/* Jauges */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }} ref={resultsRef}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px" }} ref={resultsRef}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               {txt.gaugesTitle}
             </div>
-            <Gauge label={txt.gaugeBesoins} value={res?.besoinsReel ?? 0} total={revenus ?? 1} color="#b8934a" icon="🏠" pctLabel={txt.pctRevenu} />
+            <Gauge label={txt.gaugeBesoins} value={res?.besoinsReel ?? 0} total={revenus ?? 1} color="var(--primary)" icon="🏠" pctLabel={txt.pctRevenu} />
             <Gauge label={txt.gaugeEnvies}  value={res?.enviesReel  ?? 0} total={revenus ?? 1} color="#818cf8" icon="🎯" pctLabel={txt.pctRevenu} />
             <Gauge label={txt.segEpargne}   value={res?.epargneReel ?? 0} total={revenus ?? 1} color="#4ade80" icon="💚" pctLabel={txt.pctRevenu} />
 
-            <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(184,147,74,0.06)", border: "1px solid var(--border)" }}>
+            <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(43,92,230,0.05)", border: "1px solid var(--border)" }}>
               <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 4 }}>{txt.solde}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
                 {res ? (res.epargneReel >= 0 ? "+" : "") + fmtCur(Math.round(animEpargne)) : "—"}
               </div>
             </div>
@@ -522,6 +520,7 @@ export default function Budget() {
         </div>
       </div>
 
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

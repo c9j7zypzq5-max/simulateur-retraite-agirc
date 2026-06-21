@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { track } from "@vercel/analytics";
-import { buildShareUrl } from "../hooks/useShareableUrl.js";
+import { buildShareUrl, encodeParams } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
+import { useAuth } from "../hooks/useAuth.js";
+
+const SS_KEY = "pending_pro_pdf";
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -41,6 +44,7 @@ function cleanClone(clonedDoc) {
 }
 
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
+  const { isPro } = useAuth();
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -57,7 +61,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     padding: "7px 14px", background: "var(--card-bg)",
     border: "1px solid var(--border)", borderRadius: 10,
     color: "var(--text-secondary)", fontSize: 12,
-    fontFamily: "'DM Sans', sans-serif", cursor: "pointer",
+    fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer",
     transition: "border-color 0.2s, color 0.2s",
   };
   const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
@@ -163,6 +167,26 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     } catch { /* ignore */ } finally { setBusy(false); }
   }
 
+  async function handleProPdf() {
+    setMenuOpen(false); setBusy(true);
+    track("export", { format: "pdf-pro", simulateur: name });
+    try {
+      // Capture chart image if available
+      let chartImage = null;
+      if (chartRef?.current) {
+        try {
+          const c = await snapshot(chartRef.current);
+          if (c) chartImage = { dataUrl: c.toDataURL("image/png"), w: c.width, h: c.height };
+        } catch { /* no chart */ }
+      }
+
+      if (!report) return;
+      const cleanUrl = window.location.origin + window.location.pathname;
+      const { buildReportPdfPro } = await import("../utils/pdfReport.js");
+      await buildReportPdfPro({ report, url: cleanUrl, name, chartImage });
+    } catch { /* ignore */ } finally { setBusy(false); }
+  }
+
   function canvasToBlob(canvas) {
     return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
   }
@@ -223,10 +247,11 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
               {[
                 { label: "Image (carte résultat)", fn: handleDownloadPNG },
                 { label: "Document PDF complet", fn: handleDownloadPDF },
+                { label: "Rapport Pro", fn: handleProPdf },
               ].map(opt => (
                 <button key={opt.label} role="menuitem" onClick={opt.fn}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}
-                  onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.1)"}
+                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(43,92,230,0.08)"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
                   {opt.label}
                 </button>

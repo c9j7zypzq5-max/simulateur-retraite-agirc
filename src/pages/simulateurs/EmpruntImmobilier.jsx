@@ -1,25 +1,19 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
@@ -56,7 +50,7 @@ function JaugeEndettement({ taux }) {
         </span>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 12, color, fontWeight: 600 }}>{label}</span>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color, fontWeight: 700 }}>
+          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, color, fontWeight: 700 }}>
             {taux > 0 ? taux.toFixed(1) : "—"}%
           </span>
         </div>
@@ -97,10 +91,10 @@ function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, pri
         </thead>
         <tbody>
           {rows.map((r, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
+            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(43,92,230,0.02)" : "transparent" }}>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{r.annee}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(r.mensualite))}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: r.capitalRestant < 50000 ? "var(--gold)" : "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtEur(Math.round(r.capitalRestant))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtEur(Math.round(r.mensualite))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: r.capitalRestant < 50000 ? "var(--gold)" : "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtEur(Math.round(r.capitalRestant))}</td>
             </tr>
           ))}
         </tbody>
@@ -110,7 +104,7 @@ function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, pri
 }
 
 // ─── sectionTitle constant (pas de dépendance mobile) ────────────────────────
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 const FAQ = [
   {
@@ -150,8 +144,8 @@ export default function EmpruntImmobilier() {
 
   // card padding responsive : 28/32px desktop, 20/16px mobile
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -175,9 +169,9 @@ export default function EmpruntImmobilier() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
+
   useEffect(() => {
-    document.title = "Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -234,6 +228,25 @@ export default function EmpruntImmobilier() {
 
   const hasResult = prix && prix > 0;
 
+  const amortChart = useMemo(() => {
+    if (!hasResult || capitalEmprunte <= 0) return [];
+    const r = taux / 100 / 12;
+    const n = duree * 12;
+    const men = r === 0 ? capitalEmprunte / n
+      : (capitalEmprunte * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    let restant = capitalEmprunte;
+    let cumulInt = 0;
+    return Array.from({ length: duree + 1 }, (_, yr) => {
+      if (yr === 0) return { x: 0, restant: capitalEmprunte, interets: 0 };
+      for (let mo = 0; mo < 12; mo++) {
+        const int = restant * r;
+        cumulInt += int;
+        restant = Math.max(0, restant - (men - int));
+      }
+      return { x: yr, restant: Math.round(restant), interets: Math.round(cumulInt) };
+    });
+  }, [hasResult, capitalEmprunte, taux, duree]);
+
   // Scénario B : on ne fait varier que la durée et le taux (capital identique).
   const mTotalB = mensualite(capitalPrincipal, bTaux, bDuree) + mensualite(primoCapital, primoTaux, bDuree);
   const coutTotalB = mTotalB * bDuree * 12;
@@ -276,7 +289,7 @@ export default function EmpruntImmobilier() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur d'emprunt immobilier",
@@ -295,7 +308,7 @@ export default function EmpruntImmobilier() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ background: "var(--bg)", padding: "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/emprunt-immobilier" size={34} />}
           badge="Immobilier · Simulation 2026"
@@ -304,7 +317,7 @@ export default function EmpruntImmobilier() {
           desc="Calculez vos mensualités, votre taux d'endettement et le coût total de votre crédit. Inclut frais de notaire, primo-accédant et tableau d'amortissement."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
+        <div style={{ maxWidth: 960, margin: "0 auto", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24, alignItems: "start" }}>
 
           {/* ── Colonne formulaire — visuellement 2e sur mobile (order 2) ── */}
           <div style={{ order: isMobile ? 2 : 1 }}>
@@ -317,13 +330,13 @@ export default function EmpruntImmobilier() {
               </div>
               <NumInput label="Prix du bien" value={prix} onChange={setPrix} unit="€" min={10000} max={5000000} />
               {prix > 0 && (
-                <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
+                <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "14px 16px", marginBottom: 20 }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <div style={{ fontSize: 11, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Frais de notaire estimés</div>
                       <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 2 }}>{neuf ? "2,5% (neuf)" : "7,5% (ancien)"}</div>
                     </div>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(fn))}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(fn))}</span>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12 }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Inclure dans l'emprunt</span>
@@ -337,7 +350,7 @@ export default function EmpruntImmobilier() {
                 <div style={{ display: "flex", gap: 8, marginTop: -12, marginBottom: 24 }}>
                   {[10, 20, 30].map(p => (
                     <button key={p} onClick={() => setApport(Math.round(prix * p / 100))}
-                      style={{ flex: 1, padding: "7px 4px", background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text-secondary)", borderRadius: 8, cursor: "pointer", fontSize: 11, fontFamily: "'DM Sans', sans-serif" }}
+                      style={{ flex: 1, padding: "7px 4px", background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text-secondary)", borderRadius: 8, cursor: "pointer", fontSize: 11, fontFamily: "'Hanken Grotesk', sans-serif" }}
                       onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
                       onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
                     >
@@ -395,20 +408,20 @@ export default function EmpruntImmobilier() {
           {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
             {/* Résultat principal */}
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 Mensualité crédit
               </div>
               {hasResult ? (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtEur(Math.round(animMensualite))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
                     /mois · sur {duree} ans
                   </div>
                   {primo && (
-                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(184,147,74,0.06)", border: "1px solid var(--border-gold)", borderRadius: 10, fontSize: 12, color: "var(--text-secondary)" }}>
+                    <div style={{ marginTop: 14, padding: "10px 16px", background: "rgba(43,92,230,0.05)", border: "1px solid var(--border-gold)", borderRadius: 10, fontSize: 12, color: "var(--text-secondary)" }}>
                       <span style={{ color: "var(--gold)" }}>{fmtEur(Math.round(mPrimo))}/mois</span> à 1,95% (PTZ) ·{" "}
                       <span>{fmtEur(Math.round(mPrincipal))}/mois</span> principal
                     </div>
@@ -416,7 +429,7 @@ export default function EmpruntImmobilier() {
                   {chargesTotal > 0 && (
                     <div style={{ marginTop: 14, padding: "10px 16px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10 }}>
                       <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Coût mensuel total (crédit + charges)</div>
-                      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>
                         {fmtEur(Math.round(mTotal + chargesTotal))}
                       </div>
                     </div>
@@ -487,7 +500,7 @@ export default function EmpruntImmobilier() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -497,7 +510,7 @@ export default function EmpruntImmobilier() {
             {hasResult && capitalEmprunte > 0 && !compareOn && (
               <button
                 onClick={startCompare}
-                style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}
+                style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}
               >
                 ⚖️ Comparer durée / taux (2ᵉ scénario)
               </button>
@@ -506,7 +519,7 @@ export default function EmpruntImmobilier() {
             {hasResult && capitalEmprunte > 0 && compareOn && (
               <div style={card}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                  <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
+                  <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>Comparaison de scénarios</h3>
                   <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
                 </div>
                 <div className="cmp-grid">
@@ -517,7 +530,7 @@ export default function EmpruntImmobilier() {
                       <li>Taux : <strong style={{ color: "var(--text)" }}>{taux} %</strong></li>
                     </ul>
                     <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>Mensualité</div>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(Math.round(mTotal))}<span style={{ fontSize: 13 }}>/mois</span></div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--text)" }}>{fmtEur(Math.round(mTotal))}<span style={{ fontSize: 13 }}>/mois</span></div>
                     <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Coût total</div>
                     <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(coutTotal))}</div>
                   </div>
@@ -526,7 +539,7 @@ export default function EmpruntImmobilier() {
                     <StepperInput label="Durée" value={bDuree} onChange={v => setBDuree(Math.round(v))} min={1} max={30} step={1} unit="ans" />
                     <StepperInput label="Taux annuel" value={bTaux} onChange={setBTaux} min={0.1} max={15} step={0.1} unit="%" />
                     <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>Mensualité</div>
-                    <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(mTotalB))}<span style={{ fontSize: 13 }}>/mois</span></div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--gold)" }}>{fmtEur(Math.round(mTotalB))}<span style={{ fontSize: 13 }}>/mois</span></div>
                     <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 8 }}>Coût total</div>
                     <div style={{ fontSize: 15, color: "var(--text)" }}>{fmtEur(Math.round(coutTotalB))}</div>
                   </div>
@@ -554,6 +567,29 @@ export default function EmpruntImmobilier() {
           </div>
         </div>
 
+        {/* Graphique amortissement */}
+        {hasResult && amortChart.length > 1 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 24, boxShadow: "var(--card-shadow)" }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
+              Évolution du capital et des intérêts
+            </div>
+            <ZoomableChart caption="Courbe d'amortissement">
+              <LineAreaChart
+                series={[
+                  { id: "restant", label: "Capital restant", points: amortChart.map(p => ({ x: p.x, y: p.restant })), color: "var(--primary)", fillColor: "rgba(43,92,230,0.1)" },
+                  { id: "interets", label: "Intérêts cumulés", points: amortChart.map(p => ({ x: p.x, y: p.interets })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.10)", dashed: true },
+                ]}
+                xFmt={(v) => `${v} an${v > 1 ? "s" : ""}`}
+                yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
+                aria="Courbe d'amortissement"
+              />
+            </ZoomableChart>
+          </div>
+        )}
+
+        {/* Affiliation */}
+        {hasResult && <AffiliateCTA type="emprunt" />}
+
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
           <AdUnit slot="auto" format="auto" />
@@ -561,13 +597,13 @@ export default function EmpruntImmobilier() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La formule de calcul de la mensualité</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>La formule de calcul de la mensualité</h3>
             <p style={{ marginBottom: 16 }}>La mensualité d'un crédit immobilier est calculée par la formule d'amortissement constant : M = C × t / (1 − (1 + t)⁻ⁿ), où C est le capital emprunté, t le taux mensuel (taux annuel ÷ 12) et n la durée en mois. Au début du prêt, la mensualité se compose principalement d'intérêts ; au fil du temps, la part en capital augmente progressivement. Le tableau d'amortissement détaille cette décomposition mois par mois.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le taux d'endettement et la règle HCSF des 35 %</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Le taux d'endettement et la règle HCSF des 35 %</h3>
             <p style={{ marginBottom: 16 }}>Depuis janvier 2022, les règles du Haut Conseil de Stabilité Financière (HCSF) sont contraignantes pour les banques : le <Terme slug="taux-endettement">taux d'endettement</Terme> ne peut pas dépasser 35 % des revenus nets (assurance comprise) et la durée du prêt est limitée à 25 ans (27 ans pour les achats dans le neuf avec différé). Ces règles visent à protéger les emprunteurs contre le surendettement. Les banques disposent d'un quota de dérogations limité à 20 % des dossiers.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Frais de notaire et coût total du crédit</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Frais de notaire et coût total du crédit</h3>
             <p>Les frais de notaire représentent environ 7 à 8 % du prix d'achat dans l'ancien (droits de mutation, émoluments, débours) et seulement 2 à 3 % dans le neuf. Le coût total du crédit comprend les intérêts versés sur toute la durée, l'assurance emprunteur (souvent 0,2 à 0,5 % du capital par an) et les éventuelles garanties. Ce coût peut représenter 30 à 50 % du capital emprunté sur 20 ans.</p>
           </div>
         </div>

@@ -5,7 +5,8 @@ import {
   Trophy, Landmark, Scale, Briefcase, Building, Building2, CalendarClock,
   Stethoscope, Wheat, Coins, KeyRound, Receipt, TrendingUp, PieChart, Wallet,
   PiggyBank, Flame, Gem, BarChart3, Clock, CalendarDays, Shield, CreditCard,
-  Calculator, QrCode,
+  Calculator, QrCode, ScrollText, Users, Gavel, Euro, Award, Gift, Hourglass,
+  HandCoins, Home,
 } from "lucide-react";
 
 const MAP = {
@@ -33,7 +34,21 @@ const MAP = {
   "/simulateurs/vie-en-semaines": CalendarDays,
   "/simulateurs/assurance-vie": Shield,
   "/simulateurs/credit-conso": CreditCard,
+  "/simulateurs/succession": ScrollText,
+  "/simulateurs/divorce": Gavel,
+  "/simulateurs/freelance-vs-salarie": Users,
   "/outils/qr-code": QrCode,
+  "/simulateurs/retraite-anticipee": Hourglass,
+  "/simulateurs/donation": Gift,
+  "/simulateurs/epargne-salariale": HandCoins,
+  "/simulateurs/deficit-foncier": Home,
+  // Simulateurs belges
+  "/simulateurs/pension-legale": Award,
+  "/simulateurs/impot-revenu-be": Euro,
+  // Simulateurs suisses
+  "/simulateurs/lpp-deuxieme-pilier": Briefcase,
+  "/simulateurs/impot-revenu-ch": Receipt,
+  "/simulateurs/prevoyance-ch": Shield,
 };
 
 export default function SimIcon({ path, size = 22, strokeWidth = 1.6 }) {

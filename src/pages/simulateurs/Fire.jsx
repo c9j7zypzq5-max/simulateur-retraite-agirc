@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -16,11 +17,12 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, ProgressBar, StatusBadge, useAnimatedNumber,
-  SimulateurHeader,
+  SimulateurHeader, FaqItem, FaqSection,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -553,12 +555,12 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       <defs><style>{css}</style></defs>
 
       {/* Zone remplie */}
-      <polygon className={`gcArea_${animKey}`} points={fillPts} fill="rgba(184,147,74,1)" />
+      <polygon className={`gcArea_${animKey}`} points={fillPts} fill="var(--primary)" />
 
       {/* Ligne cible pointillée */}
       <line x1={PAD.left} y1={cibleY} x2={W - PAD.right} y2={cibleY}
         stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="5,4" opacity="0.5" />
-      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="13.5" fill="var(--gold)" opacity="0.75" fontFamily="DM Sans, sans-serif">
+      <text x={W - PAD.right + 4} y={parseFloat(cibleY) + 4} fontSize="13.5" fill="var(--gold)" opacity="0.75" fontFamily="Hanken Grotesk, sans-serif">
         {fmtK(patrimoineCible)}
       </text>
 
@@ -568,7 +570,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
           <line x1={fireX} y1={PAD.top} x2={fireX} y2={H - PAD.bottom}
             stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="4,3" opacity="0.55" />
           <text x={fireX + 5} y={PAD.top + 13} fontSize="13" fill="var(--gold)"
-            fontFamily="DM Sans, sans-serif" opacity="0.9">
+            fontFamily="Hanken Grotesk, sans-serif" opacity="0.9">
             {txt.liberteFinanciere}
           </text>
         </>
@@ -608,7 +610,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       {/* Labels âge (axe X) */}
       {ages.map(d => (
         <text key={d.age} x={x(d.annee)} y={H - 6} textAnchor="middle" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {txt.ageAns(d.age)}
         </text>
       ))}
@@ -616,7 +618,7 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       {/* Labels patrimoine (axe Y) */}
       {yTicks.map((t, i) => (
         <text key={i} x={PAD.left - 6} y={t.yv + 4} textAnchor="end" fontSize="13"
-          fill="var(--text-secondary)" fontFamily="DM Sans, sans-serif">
+          fill="var(--text-secondary)" fontFamily="Hanken Grotesk, sans-serif">
           {fmtK(t.val)}
         </text>
       ))}
@@ -645,11 +647,11 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
             <rect x={boxX} y={boxY} width={boxW} height={boxH} rx="6"
               fill="var(--card-bg)" stroke="var(--border-gold)" strokeWidth="1" opacity="0.97" />
             <text x={boxX + 8} y={boxY + 18} fontSize="13" fontWeight="600"
-              fill="var(--text)" fontFamily="DM Sans, sans-serif">
+              fill="var(--text)" fontFamily="Hanken Grotesk, sans-serif">
               {txt.ageAns(hoverPt.age)}
             </text>
             <text x={boxX + 8} y={boxY + 35} fontSize="13"
-              fill="var(--gold)" fontFamily="DM Sans, sans-serif">
+              fill="var(--gold)" fontFamily="Hanken Grotesk, sans-serif">
               {fmtCur(Math.round(hoverPt.patrimoine))}
             </text>
           </g>
@@ -675,7 +677,7 @@ function MilestonesTable({ milestones, txt }) {
         </thead>
         <tbody>
           {milestones.map(m => (
-            <tr key={m.key} style={{ borderBottom: "1px solid var(--border)", background: m.key === "fire" ? "rgba(184,147,74,0.08)" : "transparent" }}>
+            <tr key={m.key} style={{ borderBottom: "1px solid var(--border)", background: m.key === "fire" ? "rgba(43,92,230,0.07)" : "transparent" }}>
               <td style={{ padding: "12px 0" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontSize: 15 }}>{m.icon}</span>
@@ -753,7 +755,7 @@ function SensibiliteTable({ depensesBrutes, tauxRetrait, txt }) {
             const target4 = depensesBrutes / 0.04;
             const diff = target4 - target;
             return (
-              <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(184,147,74,0.08)" : "transparent" }}>
+              <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(43,92,230,0.07)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{t} %</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{fmtCur(target)}</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: diff >= 0 ? "#22c55e" : "#ef4444", fontSize: 11 }}>
@@ -790,7 +792,7 @@ function SavingsRateTable({ savingsRate, txt }) {
             const next = SAVINGS_REF[i + 1];
             const active = savingsRate != null && savingsRate >= sr && (!next || savingsRate < next.sr);
             return (
-              <tr key={sr} style={{ borderBottom: "1px solid var(--border)", background: active ? "rgba(184,147,74,0.1)" : "transparent" }}>
+              <tr key={sr} style={{ borderBottom: "1px solid var(--border)", background: active ? "rgba(43,92,230,0.08)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: active ? "var(--gold)" : "var(--text)", fontWeight: active ? 600 : 400 }}>
                   {sr} %{active ? `  ${txt.savVous}` : ""}
                 </td>
@@ -837,9 +839,9 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
   const btnStyle = {
     padding: '7px 16px', borderRadius: 9,
     border: '1px solid var(--border-gold)',
-    background: 'rgba(184,147,74,0.07)',
+    background: 'rgba(43,92,230,0.06)',
     color: 'var(--gold)', fontSize: 13, cursor: 'pointer',
-    fontFamily: "'DM Sans', sans-serif",
+    fontFamily: "'Hanken Grotesk', sans-serif",
   };
 
   if (!active) {
@@ -944,19 +946,14 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
 }
 
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}
+const FAQ = [
+  { q: "Qu'est-ce que la règle des 4 % ?", a: "La règle des 4 % stipule que vous pouvez retirer 4 % de votre portefeuille chaque année sans l'épuiser sur 30 ans. Elle est issue de l'étude Trinity (1998) basée sur les marchés américains. En pratique, votre capital FIRE = dépenses annuelles × 25. Par exemple, pour vivre avec 30 000 €/an, il vous faut 750 000 € de capital investi." },
+  { q: "Quelle différence entre Lean FIRE, Barista FIRE et Fat FIRE ?", a: "Lean FIRE désigne l'indépendance financière avec un budget frugal (< 25 000 €/an). Barista FIRE permet de couvrir les dépenses de base grâce au capital tout en gardant un emploi partiel pour les « extras ». Fat FIRE vise un mode de vie confortable (> 80 000 €/an) nécessitant un capital nettement plus important." },
+  { q: "Comment calculer mon taux d'épargne pour le FIRE ?", a: "Votre taux d'épargne = épargne mensuelle / revenu net mensuel × 100. Plus il est élevé, plus vous atteindrez le FIRE rapidement : à 50 % d'épargne, l'indépendance financière est possible en environ 17 ans depuis zéro ; à 70 %, en moins de 9 ans. Ce simulateur calcule automatiquement votre taux à partir des montants saisis." },
+  { q: "Quels placements pour vivre de ses rentes en France ?", a: "En France, un portefeuille FIRE repose généralement sur des ETF indiciels world (Assurance-vie ou PEA pour l'optimisation fiscale), de l'immobilier locatif, et une épargne sécurisée (livrets). Le PEA est particulièrement adapté après 5 ans (flat tax réduite à 17,2 %). L'assurance-vie permet des retraits avec abattement de 4 600 € (ou 9 200 € pour un couple) par an au-delà de 8 ans." },
+  { q: "Le FIRE est-il réaliste en France avec les impôts ?", a: "Oui, mais il faut anticiper la fiscalité sur les revenus du capital : prélèvement forfaitaire unique (PFU) de 30 % sur les dividendes et plus-values hors enveloppes fiscales. En optimisant via PEA (17,2 % après 5 ans) et assurance-vie, l'impact fiscal peut être réduit significativement. La France offre aussi une protection sociale (santé, retraite) qui diminue le capital nécessaire par rapport aux pays sans protection sociale." },
+  { q: "Qu'est-ce que le Coast FIRE ?", a: "Le Coast FIRE est le point où votre capital actuel, sans apport supplémentaire, atteindra votre objectif FIRE à l'âge de retraite souhaité, grâce à la seule croissance des marchés. Une fois ce seuil atteint, vous n'avez plus besoin d'épargner pour la retraite : il suffit de couvrir vos dépenses courantes par votre activité." },
+];
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function Fire() {
@@ -983,16 +980,16 @@ export default function Fire() {
   const { getProfile, updateProfile } = useProfile();
   const { saveEntry } = useSimHistory();
 
-  useEffect(() => {
-    document.title = locale === 'en'
+  usePageMeta(
+    locale === 'en'
       ? "FIRE Calculator — Financial Independence, Retire Early | Simfinly"
-      : "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE";
-    document.querySelector('meta[name="description"]')?.setAttribute(
-      "content",
-      locale === 'en'
-        ? "Calculate the net worth you need to live off your investments and the age you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones."
-        : "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année."
-    );
+      : "Simulateur FIRE 2026 — Indépendance financière & Coast FIRE",
+    locale === 'en'
+      ? "Calculate the net worth you need to live off your investments and the age you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones."
+      : "Calculez à quel âge vous atteindrez l'indépendance financière : règle des 4 %, Coast FIRE, paliers Lean/Barista/Fat FIRE, taux d'épargne, fiscalité et projection année par année."
+  );
+
+  useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -1151,7 +1148,7 @@ export default function Fire() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -1162,16 +1159,9 @@ export default function Fire() {
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
         "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
-      <JsonLd data={{
-        "@context": "https://schema.org", "@type": "FAQPage",
-        "mainEntity": txt.faq.map(f => ({
-          "@type": "Question", "name": f.q,
-          "acceptedAnswer": { "@type": "Answer", "text": f.a },
-        })),
-      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/fire" size={34} />}
           badge={txt.badge}
@@ -1180,15 +1170,15 @@ export default function Fire() {
         />
 
         {/* Reassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(43,92,230,0.06)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {txt.reassurance.map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>
           ))}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
             {txt.situationActuelle}
           </h2>
 
@@ -1199,7 +1189,7 @@ export default function Fire() {
           <NumInput id="revenu-mensuel" label={txt.revenuMensuel} value={revenuMensuel} onChange={setRevenu} unit={`${activeSymbol()}/mois`} min={0} max={100000}
             hint={savingsRate != null ? txt.tauxEpargneHint(Math.round(savingsRate)) : txt.revenuMensuelHint} />
 
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, marginTop: 32, fontWeight: 400 }}>
             {txt.objectifFire}
           </h2>
 
@@ -1229,8 +1219,8 @@ export default function Fire() {
         </div>
 
         {/* Résultats */}
-        <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>
             {txt.trajectoire}
           </h2>
 
@@ -1242,7 +1232,7 @@ export default function Fire() {
               </p>
             ) : isAlreadyFire ? (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                   {txt.objectifAtteint}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "var(--text-secondary)" }}>
@@ -1251,8 +1241,8 @@ export default function Fire() {
               </>
             ) : nonAtteint ? (
               <>
-                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.patrimoineCible}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(40px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>{txt.patrimoineCible}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                   {fmtCur(Math.round(patrimoineAnim))}
                 </div>
                 <div style={{ marginTop: 12, fontSize: 14, color: "#e08030" }}>
@@ -1261,10 +1251,10 @@ export default function Fire() {
               </>
             ) : (
               <>
-                <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                   {txt.ageAtteinteFire}
                 </div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(56px,12vw,88px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                   {res.ageAtteinte} ans
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
@@ -1315,7 +1305,7 @@ export default function Fire() {
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, marginBottom: 10 }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 18 }}>🛟</span>
-                      <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>Coast FIRE</span>
+                      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>Coast FIRE</span>
                     </div>
                     <StatusBadge status={coastReached ? "good" : "gold"} label={coastReached ? `${txt.milesReached} ✓` : `${Math.round(coastPct)} %`} />
                   </div>
@@ -1373,6 +1363,9 @@ export default function Fire() {
             />
           </div>
         </div>
+
+        {/* Affiliation */}
+        {hasResult && <AffiliateCTA type="epargne" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
@@ -1458,32 +1451,21 @@ export default function Fire() {
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aPropos}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aPropos}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH1}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH1}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP1}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH2}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH2}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP2}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP3}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH4}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH4}</h3>
             <p>{txt.aboutP4}</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
-            {txt.faqTitle}
-          </h2>
-          {txt.faq.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
-          <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            {txt.ressources}{" "}
-            <a href="https://www.earlyretirementnow.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>Early Retirement Now</a>
-            {" · "}
-            <a href="https://www.bogleheads.org" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>Bogleheads</a>
-          </p>
-        </div>
+        <FaqSection items={FAQ} />
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>

@@ -2,41 +2,59 @@
    (meilleur LCP que @import CSS, qui crée une chaîne de requêtes bloquante). */
 
 :root {
-  --bg: #060e1c;
-  --card-bg: rgba(255,255,255,0.03);
-  --text: #f1e4c3;
-  --text-secondary: #94a3b8;
-  --gold: #e8c06a;
-  --gold-mid: #b8934a;
-  --border: rgba(255,255,255,0.07);
-  --border-gold: rgba(184,147,74,0.25);
-  --input-bg: rgba(255,255,255,0.03);
-  --input-shadow: none;
-  --progress-track: #1e293b;
-  --progress-acquired: linear-gradient(90deg,#334155,#64748b);
-  --card-shadow: none;
-  --scrollbar-thumb: #334155;
-  --surface: #0d1a30;
-  --chip-bg: rgba(255,255,255,0.04);
+  --bg: #F5F6F8;
+  --surface: #ffffff;
+  --card-bg: #ffffff;
+  --text: #0F1828;
+  --text-secondary: #5B6677;
+  --primary: #2B5CE6;
+  --primary-soft: #EAF0FF;
+  --gold: #2B5CE6;
+  --gold-mid: #3d6fe8;
+  --border: #e7eaf0;
+  --border-gold: #cdddfb;
+  --positive: #15A06B;
+  --positive-soft: #dcfce7;
+  --negative: #dc2626;
+  --negative-soft: #fef2f2;
+  --warning: #b45309;
+  --input-bg: #F5F6F8;
+  --progress-track: #e7eaf0;
+  --progress-acquired: linear-gradient(90deg, #2B5CE6, #5B8CFF);
+  --card-shadow: 0 1px 4px rgba(15,24,40,0.07), 0 4px 16px rgba(15,24,40,0.05);
+  --scrollbar-thumb: #cdddfb;
+  --chip-bg: #EAF0FF;
+  --r-sm: 8px;
+  --r-md: 11px;
+  --r-lg: 16px;
+  --hover-bg: rgba(43,92,230,0.06);
+  --drawer-bg: #ffffff;
 }
 
-[data-theme="light"] {
-  --bg: #faf6ef;
-  --card-bg: #ffffff;
-  --text: #1c1208;
-  --text-secondary: #645634;
-  --gold: #8a6322;
-  --gold-mid: #6f4e1b;
-  --border: rgba(0,0,0,0.07);
-  --border-gold: rgba(184,147,74,0.35);
-  --input-bg: #ffffff;
-  --input-shadow: 0 1px 3px rgba(0,0,0,0.04);
-  --progress-track: rgba(0,0,0,0.08);
-  --progress-acquired: linear-gradient(90deg,#c8b99a,#a08060);
-  --card-shadow: 0 4px 20px rgba(0,0,0,0.05);
-  --scrollbar-thumb: #c8b99a;
-  --surface: #ffffff;
-  --chip-bg: rgba(0,0,0,0.04);
+[data-theme="dark"] {
+  --bg: #0B1220;
+  --surface: #131D30;
+  --card-bg: #131D30;
+  --text: #EAF0FA;
+  --text-secondary: #8593A8;
+  --primary: #5B8CFF;
+  --primary-soft: #1B2A45;
+  --gold: #5B8CFF;
+  --gold-mid: #4a7af0;
+  --border: #202C40;
+  --border-gold: #28406e;
+  --positive: #34D399;
+  --positive-soft: #064e3b;
+  --negative: #f87171;
+  --negative-soft: #450a0a;
+  --input-bg: #0B1220;
+  --progress-track: #202C40;
+  --progress-acquired: linear-gradient(90deg, #5B8CFF, #8aaeff);
+  --card-shadow: none;
+  --scrollbar-thumb: #202C40;
+  --chip-bg: #1B2A45;
+  --hover-bg: rgba(255,255,255,0.06);
+  --drawer-bg: #0F1828;
 }
 
 *, *::before, *::after {
@@ -47,11 +65,14 @@
   transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.2s ease;
 }
 
-body {
+html, body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Hanken Grotesk', sans-serif;
+  /* Filet de sécurité : aucun débordement horizontal sur mobile */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 /* ── Skip link ── */
@@ -138,15 +159,17 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   50%       { box-shadow: 0 0 18px 3px rgba(184,147,74,0.18); }
 }
 
-/* ── Responsive simulator grid ── */
+/* ── Responsive simulator grid ──
+   min(100%, 280px) empêche tout débordement sur les écrans < 300px de large. */
 .sim-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
   gap: 20px;
 }
 .sim-featured { grid-column: span 2; }
 @media (max-width: 680px) {
   .sim-featured { grid-column: span 1; }
+  .sim-grid { gap: 14px; }
 }
 
 /* ── Navbar drawer & overlay ── */
@@ -165,11 +188,24 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
 
 /* ── Mobile hero ── */
 @media (max-width: 600px) {
-  .hero-section { padding: 48px 20px 36px !important; }
-  .hero-stats { gap: 20px !important; }
+  .hero-section { padding: 36px 16px 28px !important; }
+  .hero-stats { gap: 10px !important; }
+  /* Les 3 stats tiennent sur une ligne en se partageant l'espace */
+  .hero-stats > div { flex: 1 1 0 !important; min-width: 0 !important; padding: 12px 8px !important; }
   .filter-bar { padding: 0 16px 0 !important; }
+  /* Réduit le padding latéral de toutes les sections de la home sur mobile */
+  .home-pad { padding-left: 16px !important; padding-right: 16px !important; }
 }
 
-/* Barre de catégories : desktop uniquement */
+/* Barre de catégories : supprimée du JSX, toujours cachée */
 .desktop-catbar { display: none; }
-@media (min-width: 900px) { .desktop-catbar { display: block; } }
+
+/* Desktop nav visibility */
+.nav-hamburger { display: flex; }
+.desktop-nav { display: none; }
+
+@media (min-width: 900px) {
+  .nav-hamburger { display: none !important; }
+  .desktop-nav { display: flex !important; }
+}
+

@@ -2,22 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
-import { NumInput, StepperInput, Chip, fmt, fmtEur } from "../../components/ui.jsx";
-
-function useIsMobile(breakpoint = 680) {
-  const [mobile, setMobile] = useState(() => window.innerWidth < breakpoint);
-  useEffect(() => {
-    const h = () => setMobile(window.innerWidth < breakpoint);
-    window.addEventListener("resize", h, { passive: true });
-    return () => window.removeEventListener("resize", h);
-  }, [breakpoint]);
-  return mobile;
-}
+import { useIsMobile } from "../../hooks/useIsMobile.js";
+import { NumInput, StepperInput, Chip, fmt, fmtEur, FaqSection } from "../../components/ui.jsx";
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -116,7 +109,7 @@ function SalaryReveal({ value }) {
   }, [value]);
 
   return (
-    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--gold)", letterSpacing: "0.02em" }}>
+    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "2.6rem", fontWeight: 700, color: "var(--primary)", letterSpacing: "0.02em" }}>
       {Math.round(displayed).toLocaleString("fr-FR")} €
     </span>
   );
@@ -214,8 +207,8 @@ function CareerCurve({ years, net, pouvAchat }) {
       >
         <defs>
           <linearGradient id="career-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"   stopColor="#b8934a" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#b8934a" stopOpacity="0.01" />
+            <stop offset="0%"   stopColor="var(--primary)" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.01" />
           </linearGradient>
         </defs>
 
@@ -227,7 +220,7 @@ function CareerCurve({ years, net, pouvAchat }) {
               stroke="var(--border)" strokeWidth={0.5} strokeDasharray="4 4"
             />
             <text x={PAD.l - 4} y={yOf(v) + 3.5} textAnchor="end"
-              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               {Math.round(v / 1000)}k
             </text>
           </g>
@@ -241,7 +234,7 @@ function CareerCurve({ years, net, pouvAchat }) {
             <line x1={xOf(y)} y1={PAD.t + h} x2={xOf(y)} y2={PAD.t + h + 4}
               stroke="var(--border)" strokeWidth={0.5} />
             <text x={xOf(y)} y={PAD.t + h + 14} textAnchor="middle"
-              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+              style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
               {y === 0 ? "Auj." : `+${y}a`}
             </text>
           </g>
@@ -258,40 +251,40 @@ function CareerCurve({ years, net, pouvAchat }) {
 
         {/* Courbe salaire net */}
         {visYears.length >= 2 && (
-          <path d={netPath} stroke="#b8934a" strokeWidth={2.5} fill="none"
+          <path d={netPath} stroke="var(--primary)" strokeWidth={2.5} fill="none"
             strokeLinecap="round" strokeLinejoin="round" />
         )}
 
         {/* Points annuels */}
         {visYears.map((r, i) => (
           <circle key={i} cx={xOf(i)} cy={yOf(r.netY)} r={2.2}
-            fill="#b8934a" opacity={0.65} />
+            fill="var(--primary)" opacity={0.65} />
         ))}
 
         {/* Trait vertical tooltip */}
         {tooltip && (
           <line x1={tooltip.svgX} y1={PAD.t} x2={tooltip.svgX} y2={PAD.t + h}
-            stroke="var(--gold)" strokeWidth={1} strokeDasharray="3 3" opacity={0.85} />
+            stroke="var(--primary)" strokeWidth={1} strokeDasharray="3 3" opacity={0.85} />
         )}
 
         {/* Point surligné tooltip */}
         {tooltip && ttRow && (
           <circle cx={tooltip.svgX} cy={yOf(ttRow.netY)} r={5}
-            fill="#b8934a" stroke="var(--card-bg)" strokeWidth={2} />
+            fill="var(--primary)" stroke="var(--surface)" strokeWidth={2} />
         )}
 
         {/* Légende */}
         <g>
           <line x1={PAD.l} y1={SVG_H - 6} x2={PAD.l + 18} y2={SVG_H - 6}
-            stroke="#b8934a" strokeWidth={2} />
+            stroke="var(--primary)" strokeWidth={2} />
           <text x={PAD.l + 22} y={SVG_H - 2}
-            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
             Salaire net
           </text>
           <line x1={PAD.l + 84} y1={SVG_H - 6} x2={PAD.l + 102} y2={SVG_H - 6}
             stroke="#f87171" strokeWidth={1.5} strokeDasharray="5 4" />
           <text x={PAD.l + 106} y={SVG_H - 2}
-            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'DM Sans', sans-serif" }}>
+            style={{ fill: "var(--text-secondary)", fontSize: 8, fontFamily: "'Hanken Grotesk', sans-serif" }}>
             Pouvoir d'achat réel (inflation 2%)
           </text>
         </g>
@@ -305,8 +298,8 @@ function CareerCurve({ years, net, pouvAchat }) {
           ...(ttOnRight
             ? { left: `calc(${(tooltip.svgX / SVG_W) * 100}% + 10px)` }
             : { right: `calc(${((SVG_W - tooltip.svgX) / SVG_W) * 100}% + 10px)` }),
-          background: "var(--card-bg)",
-          border: "1px solid var(--border-gold)",
+          background: "var(--surface)",
+          border: "1px solid var(--border)",
           borderRadius: 8,
           padding: "8px 12px",
           fontSize: "0.77rem",
@@ -316,7 +309,7 @@ function CareerCurve({ years, net, pouvAchat }) {
           boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           whiteSpace: "nowrap",
         }}>
-          <div style={{ fontWeight: 600, color: "var(--gold)", marginBottom: 5, fontSize: "0.82rem" }}>
+          <div style={{ fontWeight: 600, color: "var(--primary)", marginBottom: 5, fontSize: "0.82rem" }}>
             {ttRow.year === 0 ? "Aujourd'hui" : `Dans ${ttRow.year} an${ttRow.year > 1 ? "s" : ""}`}
             {ttRow.year > 0 && (
               <span style={{ fontWeight: 400, color: "var(--text-secondary)", marginLeft: 6 }}>
@@ -360,7 +353,7 @@ function Milestones({ years, horizon }) {
               padding: "12px 16px",
               borderRadius: 10,
               border: "1px solid var(--border)",
-              background: "var(--card-bg)",
+              background: "var(--surface)",
               minWidth: 110,
               opacity: i < visible ? 1 : 0,
               transform: i < visible ? "translateY(0)" : "translateY(12px)",
@@ -368,7 +361,7 @@ function Milestones({ years, horizon }) {
             }}
           >
             <div style={{ fontSize: "0.7rem", color: "var(--text-secondary)", marginBottom: 4 }}>Dans {y} an{y > 1 ? "s" : ""}</div>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--gold)" }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 700, color: "var(--primary)" }}>
               {row ? fmtEur(Math.round(row.netY)) : "—"}
             </div>
             <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>net/mois</div>
@@ -391,7 +384,7 @@ function CompareBar({ label, value, maxValue, color }) {
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.83rem", marginBottom: 6 }}>
         <span style={{ color: "var(--text-secondary)" }}>{label}</span>
-        <span style={{ color, fontWeight: 700, fontFamily: "'Cormorant Garamond', serif" }}>{fmtEur(Math.round(value))}</span>
+        <span style={{ color, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{fmtEur(Math.round(value))}</span>
       </div>
       <div style={{ height: 10, borderRadius: 5, background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
         <div style={{
@@ -435,6 +428,15 @@ function PouvoirAchat({ ratio }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
+const FAQ = [
+  { q: "Quel est le taux de cotisations sociales salarié en France en 2025 ?", a: "Le taux global de cotisations salariales pour un non-cadre est d'environ 22-23 % du brut (maladie, vieillesse, chômage, CSG/CRDS). Pour un cadre, il est légèrement supérieur (24-25 %) du fait de la cotisation Agirc-Arrco T2 et de la prévoyance obligatoire cadre (APEC)." },
+  { q: "Comment passer du salaire brut au net ?", a: "Net ≈ Brut × (1 − taux de cotisations salariales). En pratique, multipliez le brut par ~0,77 (non-cadre) ou ~0,75 (cadre) pour obtenir le net avant impôt. Le prélèvement à la source (PAS) est ensuite déduit du net imposable, donnant le net en poche." },
+  { q: "Quelle est la différence entre net imposable et net en poche ?", a: "Le net imposable inclut la CSG déductible (6,8 %) et sert de base au calcul de l'impôt sur le revenu. Le net en poche (net fiscal) est le montant versé sur le compte après prélèvement à la source (PAS). L'écart varie selon votre tranche marginale d'imposition." },
+  { q: "Le 13e mois est-il soumis aux cotisations sociales ?", a: "Oui, le 13e mois (prime annuelle contractuelle) est un salaire comme les autres : il est soumis aux cotisations sociales (patronales et salariales) et à l'impôt sur le revenu. Il n'existe pas d'exonération spécifique pour le 13e mois, contrairement à certaines primes d'intéressement ou participation." },
+  { q: "Qu'est-ce que le SMIC en 2025 ?", a: "Le SMIC brut mensuel 2025 est de 1 801,80 € (base 35 h/semaine), soit environ 1 426 € net. Il est revalorisé chaque 1er janvier et peut être revalorisé en cours d'année si l'inflation dépasse 2 %. Le taux horaire brut est de 11,88 €." },
+  { q: "Comment fonctionne la réduction Fillon (allègement général) ?", a: "La réduction générale de cotisations patronales (dite « Fillon ») s'applique aux salaires ≤ 1,6 SMIC et réduit les charges patronales jusqu'à 32 % du brut pour les entreprises de plus de 50 salariés. Cet allègement est automatiquement calculé par l'employeur et n'apparaît pas sur le bulletin de paie du salarié." },
+];
+
 export default function Salaire() {
   const [theme, setTheme] = useTheme();
   const [brut,      setBrut]      = useState(3500);
@@ -446,9 +448,9 @@ export default function Salaire() {
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
+  usePageMeta("Simulateur Salaire Net/Brut & Évolution de carrière — Simfinly.com", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
+
   useEffect(() => {
-    document.title = "Simulateur Salaire Net/Brut & Évolution de carrière — Simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre salaire net, projetez votre évolution de carrière et visualisez l'impact de l'inflation sur votre pouvoir d'achat.");
   }, []);
 
   useEffect(() => {
@@ -497,7 +499,7 @@ export default function Salaire() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Salaire Net/Brut & carrière",
@@ -511,13 +513,13 @@ export default function Salaire() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "48px 24px 0" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", color: "var(--gold)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "var(--surface)", border: "1px solid var(--border)", color: "var(--text-secondary)", fontSize: "0.75rem", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 14px", borderRadius: 20, marginBottom: 20 }}>
           Finances · Nouveau
         </div>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 700, color: "var(--text)", marginBottom: 12, lineHeight: 1.2 }}>
           Salaire Net/Brut<br />
-          <em style={{ color: "var(--gold)", fontStyle: "italic" }}>& Évolution de carrière</em>
+          <em style={{ color: "var(--primary)", fontStyle: "italic" }}>& Évolution de carrière</em>
         </h1>
         <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: 1.7, maxWidth: 600, marginBottom: 40 }}>
           Calculez votre salaire net, projetez son évolution sur {horizon} ans et visualisez l'impact de l'inflation sur votre pouvoir d'achat réel.
@@ -525,12 +527,12 @@ export default function Salaire() {
       </div>
 
       {/* ── Layout 2 colonnes ── */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 24px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "340px 1fr", gap: isMobile ? 0 : 32, alignItems: "start" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "0 16px 80px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: isMobile ? 0 : 24, alignItems: "start" }}>
 
         {/* ── Colonne gauche : inputs + salary reveal — passe en second sur mobile ── */}
         <div style={{ order: isMobile ? 2 : 1 }}>
           {/* Salary reveal */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 14, padding: 28, marginBottom: 24, textAlign: "center" }} ref={resultsRef}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24, textAlign: "center" }} ref={resultsRef}>
             <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 8, letterSpacing: "0.06em", textTransform: "uppercase" }}>Salaire net mensuel</div>
             <SalaryReveal value={res.net} />
             <div style={{ fontSize: "0.78rem", color: "var(--text-secondary)", marginTop: 8 }}>
@@ -544,7 +546,7 @@ export default function Salaire() {
               report={report}
               name="salaire"
             />
-
+            {brut && <AffiliateCTA type="per" />}
             <div style={{ marginTop: 16 }}>
               <ScenarioCompare
                 name="salaire"
@@ -560,8 +562,8 @@ export default function Salaire() {
           </div>
 
           {/* Inputs */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 28 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px" }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Paramètres
             </div>
             <NumInput label="Salaire brut mensuel" value={brut} onChange={setBrut} unit="€" min={500} max={50000} />
@@ -572,9 +574,9 @@ export default function Salaire() {
                 {["non-cadre", "cadre"].map(s => (
                   <button key={s} onClick={() => setStatut(s)} style={{
                     flex: 1, padding: "9px 0", borderRadius: 10, fontSize: "0.82rem", fontWeight: 500, cursor: "pointer",
-                    border: `1px solid ${statut === s ? "var(--border-gold)" : "var(--border)"}`,
-                    background: statut === s ? "rgba(184,147,74,0.1)" : "transparent",
-                    color: statut === s ? "var(--gold)" : "var(--text-secondary)",
+                    border: `1px solid ${statut === s ? "var(--primary)" : "var(--border)"}`,
+                    background: statut === s ? "rgba(43,92,230,0.08)" : "transparent",
+                    color: statut === s ? "var(--primary)" : "var(--text-secondary)",
                     transition: "all 0.2s",
                   }}>
                     {s === "cadre" ? "Cadre (25%)" : "Non-cadre (23%)"}
@@ -592,8 +594,8 @@ export default function Salaire() {
         {/* ── Colonne droite : visualisations — passe en premier sur mobile ── */}
         <div style={{ order: isMobile ? 1 : 2, marginBottom: isMobile ? 24 : 0 }}>
           {/* Courbe de carrière */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 16 }}>
               Courbe de carrière
             </div>
             <ZoomableChart innerRef={chartRef}>
@@ -602,23 +604,23 @@ export default function Salaire() {
           </div>
 
           {/* Timeline jalons */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>
               Jalons de carrière
             </div>
             <Milestones years={res.years} horizon={horizon} />
           </div>
 
           {/* Comparaison barres */}
-          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: 24, marginBottom: 24 }}>
-            <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: 24, marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>
               Salaire actuel vs dans {horizon} ans
             </div>
             <CompareBar label={`Aujourd'hui (${age} ans)`}    value={res.net}        maxValue={maxNet} color="#818cf8" />
-            <CompareBar label={`Dans ${horizon} ans (${age + horizon} ans)`} value={res.last.netY} maxValue={maxNet} color="#b8934a" />
+            <CompareBar label={`Dans ${horizon} ans (${age + horizon} ans)`} value={res.last.netY} maxValue={maxNet} color="var(--primary)" />
             <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
               Gain projeté : <strong style={{ color: "#4ade80" }}>+{fmtEur(Math.round(animGain))}/mois</strong>
-              {" · "}Cumulé sur {horizon} ans : <strong style={{ color: "var(--gold)" }}>{fmtEur(Math.round(res.cumNet))}</strong>
+              {" · "}Cumulé sur {horizon} ans : <strong style={{ color: "var(--primary)" }}>{fmtEur(Math.round(res.cumNet))}</strong>
             </div>
           </div>
 
@@ -627,6 +629,7 @@ export default function Salaire() {
         </div>
       </div>
 
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

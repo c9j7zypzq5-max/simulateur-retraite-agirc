@@ -2,8 +2,11 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
+import { AuthProvider } from "./context/AuthProvider.jsx";
+import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
+import HreflangTags from "./components/HreflangTags.jsx";
 import Home from "./pages/Home.jsx";
 
 // Pages chargées à la demande (code splitting) : chaque simulateur devient son
@@ -26,6 +29,11 @@ const EmbedEmprunt            = lazy(() => import("./pages/embed/EmbedEmprunt.js
 const EmbedFire               = lazy(() => import("./pages/embed/EmbedFire.jsx"));
 const Widgets                 = lazy(() => import("./pages/Widgets.jsx"));
 const NotFound                = lazy(() => import("./pages/NotFound.jsx"));
+const Pro                     = lazy(() => import("./pages/Pro.jsx"));
+const Merci                   = lazy(() => import("./pages/Merci.jsx"));
+const MerciPro                = lazy(() => import("./pages/MerciPro.jsx"));
+const Connexion               = lazy(() => import("./pages/Connexion.jsx"));
+const Compte                  = lazy(() => import("./pages/Compte.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -55,8 +63,30 @@ const CreditConso  = lazy(() => import("./pages/simulateurs/CreditConso.jsx"));
 const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"));
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
 const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
+// Nouveaux simulateurs
+const Succession         = lazy(() => import("./pages/simulateurs/Succession.jsx"));
+const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSalarie.jsx"));
+const Divorce            = lazy(() => import("./pages/simulateurs/Divorce.jsx"));
+const RetraiteAnticipee  = lazy(() => import("./pages/simulateurs/RetraiteAnticipee.jsx"));
+const Donation           = lazy(() => import("./pages/simulateurs/Donation.jsx"));
+const EpargneSalariale   = lazy(() => import("./pages/simulateurs/EpargneSalariale.jsx"));
+const DeficitFoncier     = lazy(() => import("./pages/simulateurs/DeficitFoncier.jsx"));
+// Simulateurs belges
+const ImpotRevenuBE  = lazy(() => import("./pages/simulateurs/ImpotRevenuBE.jsx"));
+const PensionLegaleBE = lazy(() => import("./pages/simulateurs/PensionLegaleBE.jsx"));
+const SuccessionBE   = lazy(() => import("./pages/simulateurs/SuccessionBE.jsx"));
 // Outils
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
+// Dashboard
+const TableauDeBord        = lazy(() => import("./pages/TableauDeBord.jsx"));
+const WizardRetraite         = lazy(() => import("./pages/WizardRetraite.jsx"));
+const RapportPartage         = lazy(() => import("./pages/RapportPartage.jsx"));
+const SynthesePatrimoniale   = lazy(() => import("./pages/SynthesePatrimoniale.jsx"));
+// Simulateurs suisses
+const LppDeuxiemePilier      = lazy(() => import("./pages/simulateurs/LppDeuxiemePilier.jsx"));
+const ImpotRevenuCH          = lazy(() => import("./pages/simulateurs/ImpotRevenuCH.jsx"));
+const PrevoyanceCH           = lazy(() => import("./pages/simulateurs/PrevoyanceCH.jsx"));
+const ComparaisonReforme     = lazy(() => import("./pages/simulateurs/ComparaisonReforme.jsx"));
 
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
@@ -68,7 +98,7 @@ function ScrollToTop() {
 // Fallback affiché le temps de charger le chunk d'une route.
 function RouteFallback() {
   return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'DM Sans', sans-serif" }}>
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <span style={{ fontSize: 14, opacity: 0.7 }}>Chargement…</span>
     </div>
   );
@@ -76,27 +106,57 @@ function RouteFallback() {
 
 export default function App() {
   return (
+    <AuthProvider>
+    <FiscalProfileProvider>
     <VideoRecordingProvider>
     <CurrencyProvider>
     <BrowserRouter>
       <ScrollToTop />
+      <HreflangTags />
       <VideoRecordingToast />
       <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* ── English versions (universal simulators only) ── */}
+        {/* ── Belgique (/be/) ── */}
+        <Route path="/be" element={<Home />} />
+        {/* Simulateurs universels — même composant que FR */}
+        <Route path="/be/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/be/simulateurs/fire" element={<Fire />} />
+        <Route path="/be/simulateurs/budget" element={<Budget />} />
+        <Route path="/be/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/be/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/be/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/be/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/be/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
+        <Route path="/be/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/be/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        {/* Simulateurs avec règles belges spécifiques */}
+        <Route path="/be/simulateurs/impot-revenu" element={<ImpotRevenuBE />} />
+        <Route path="/be/simulateurs/succession" element={<SuccessionBE />} />
+        <Route path="/be/simulateurs/pension-legale" element={<PensionLegaleBE />} />
+        {/* Légal */}
+        <Route path="/be/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/be/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        {/* ── Suisse (/ch/) ── */}
+        <Route path="/ch" element={<Home />} />
+        <Route path="/ch/simulateurs/lpp-deuxieme-pilier" element={<LppDeuxiemePilier />} />
+        <Route path="/ch/simulateurs/impot-revenu-ch" element={<ImpotRevenuCH />} />
+        <Route path="/ch/simulateurs/prevoyance-ch" element={<PrevoyanceCH />} />
+        <Route path="/ch/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/ch/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
-        <Route path="/en/simulateurs/epargne" element={<Epargne />} />
-        <Route path="/en/simulateurs/fire" element={<Fire />} />
-        <Route path="/en/simulateurs/budget" element={<Budget />} />
-        <Route path="/en/simulateurs/patrimoine" element={<Patrimoine />} />
-        <Route path="/en/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
-        <Route path="/en/simulateurs/credit-conso" element={<CreditConso />} />
-        <Route path="/en/simulateurs/comparateur" element={<Comparateur />} />
-        <Route path="/en/outils/qr-code" element={<QrCode />} />
-        <Route path="/en/mentions-legales" element={<MentionsLegales />} />
-        <Route path="/en/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        <Route path="/en/simulators/savings" element={<Epargne />} />
+        <Route path="/en/simulators/fire" element={<Fire />} />
+        <Route path="/en/simulators/budget" element={<Budget />} />
+        <Route path="/en/simulators/wealth" element={<Patrimoine />} />
+        <Route path="/en/simulators/cost-in-hours" element={<CoutEnHeures />} />
+        <Route path="/en/simulators/consumer-credit" element={<CreditConso />} />
+        <Route path="/en/simulators/comparator" element={<Comparateur />} />
+        <Route path="/en/tools/qr-code" element={<QrCode />} />
+        <Route path="/en/legal-notice" element={<MentionsLegales />} />
+        <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />
@@ -128,6 +188,14 @@ export default function App() {
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
         {/* Comparateur */}
         <Route path="/simulateurs/comparateur" element={<Comparateur />} />
+        {/* Nouveaux simulateurs */}
+        <Route path="/simulateurs/succession" element={<Succession />} />
+        <Route path="/simulateurs/freelance-vs-salarie" element={<FreelanceVsSalarie />} />
+        <Route path="/simulateurs/divorce" element={<Divorce />} />
+        <Route path="/simulateurs/retraite-anticipee" element={<RetraiteAnticipee />} />
+        <Route path="/simulateurs/donation" element={<Donation />} />
+        <Route path="/simulateurs/epargne-salariale" element={<EpargneSalariale />} />
+        <Route path="/simulateurs/deficit-foncier" element={<DeficitFoncier />} />
         {/* Outils */}
         <Route path="/outils/qr-code" element={<QrCode />} />
         {/* Blog */}
@@ -146,7 +214,24 @@ export default function App() {
         <Route path="/widgets" element={<Widgets />} />
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
+        <Route path="/tableau-de-bord" element={<TableauDeBord />} />
+        <Route path="/wizard-retraite" element={<WizardRetraite />} />
+        <Route path="/rapport/:id" element={<RapportPartage />} />
+        <Route path="/synthese-patrimoniale" element={<SynthesePatrimoniale />} />
+        <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
+        {/* Pro / Paiements */}
+        <Route path="/pro" element={<Pro />} />
+        <Route path="/en/pro" element={<Pro />} />
+        <Route path="/merci" element={<Merci />} />
+        <Route path="/en/thank-you" element={<Merci />} />
+        <Route path="/merci-pro" element={<MerciPro />} />
+        <Route path="/en/thank-you-pro" element={<MerciPro />} />
+        {/* Comptes */}
+        <Route path="/connexion" element={<Connexion />} />
+        <Route path="/en/login" element={<Connexion />} />
+        <Route path="/compte" element={<Compte />} />
+        <Route path="/en/account" element={<Compte />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
@@ -159,5 +244,7 @@ export default function App() {
     </BrowserRouter>
     </CurrencyProvider>
     </VideoRecordingProvider>
+    </FiscalProfileProvider>
+    </AuthProvider>
   );
 }

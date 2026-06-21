@@ -3,6 +3,7 @@ import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -11,7 +12,7 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   StepperInput, AccordionSection,
-  Chip, fmt, SimulateurHeader,
+  Chip, fmt, SimulateurHeader, FaqItem,
 } from "../../components/ui.jsx";
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
@@ -61,7 +62,7 @@ function GrilleVie({ semainesVecues, semainesTotales }) {
           style={{
             aspectRatio: "1",
             borderRadius: "1px",
-            background: vecue ? "var(--gold-mid)" : "var(--border)",
+            background: vecue ? "var(--primary)" : "var(--border)",
             opacity: vecue ? 1 : 0.6,
           }}
         />
@@ -77,20 +78,6 @@ const FAQ = [
   { q: "Est-ce que ce simulateur peut être anxiogène ?", a: "Pour certaines personnes, oui. Si vous le ressentez ainsi, nous vous encourageons à regarder ce qui est déjà accompli (cases dorées) plutôt que ce qui reste. L'objectif est la clarté, pas l'anxiété. Vos semaines restantes sont un capital précieux à investir consciemment." },
   { q: "Comment utiliser cette visualisation ?", a: "Certaines personnes impriment leur grille et la collent au bureau. D'autres se posent chaque trimestre : 'Est-ce que j'utilise mes semaines de façon alignée avec mes priorités ?' L'outil n'est pas là pour juger, mais pour aider à décider." },
 ];
-
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}
 
 // ─── Composant ────────────────────────────────────────────────────────────────
 export default function VieEnSemaines() {
@@ -112,9 +99,9 @@ export default function VieEnSemaines() {
     }
   }, [genre, esperanceModifiee]);
 
+  usePageMeta("Simulateur Ma Vie en Semaines — Visualisez votre temps de vie", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
+
   useEffect(() => {
-    document.title = "Simulateur Ma Vie en Semaines — Visualisez votre temps de vie";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Visualisez votre vie entière en semaines : semaines vécues, restantes, étés à venir. Inspiré du concept \"Your Life in Weeks\".");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -168,7 +155,7 @@ export default function VieEnSemaines() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Ma vie en semaines",
@@ -188,7 +175,7 @@ export default function VieEnSemaines() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/vie-en-semaines" size={34} />}
           badge="Vie & Temps · 2026"
@@ -197,23 +184,23 @@ export default function VieEnSemaines() {
         />
 
         {/* Reassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Aucune donnée envoyée", "✓ Basé sur les données INSEE 2024", "✓ Ton factuel et bienveillant"].map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>
           ))}
         </div>
 
         {/* Grille — toujours visible en premier */}
-        <div ref={resultsRef} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16, flexWrap: "wrap", gap: 8 }}>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--text)", margin: 0 }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--text)", margin: 0 }}>
               {hasResult
                 ? `${fmt(res.semainesVecues)} semaines vécues · ${fmt(res.semainesRestantes)} à venir`
                 : "Votre vie en semaines"}
             </h2>
             <div style={{ display: "flex", gap: 16, fontSize: 11, color: "var(--text-secondary)" }}>
               <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 1, background: "var(--gold-mid)" }} />
+                <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 1, background: "var(--primary)" }} />
                 Vécues
               </span>
               <span style={{ display: "flex", alignItems: "center", gap: 5 }}>
@@ -257,8 +244,8 @@ export default function VieEnSemaines() {
         )}
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>
             Paramètres
           </h2>
 
@@ -273,7 +260,7 @@ export default function VieEnSemaines() {
               value={dateNaissance}
               max={new Date().toISOString().split("T")[0]}
               onChange={e => setDateNaissance(e.target.value)}
-              style={{ width: "100%", background: "var(--input-bg)", border: "1.5px solid var(--border)", borderRadius: 12, color: "var(--text)", fontFamily: "'DM Sans', sans-serif", fontSize: 16, padding: "14px 20px", outline: "none", boxSizing: "border-box", colorScheme: "dark light" }}
+              style={{ width: "100%", background: "var(--input-bg)", border: "1.5px solid var(--border)", borderRadius: 12, color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, padding: "14px 20px", outline: "none", boxSizing: "border-box", colorScheme: "dark light" }}
             />
           </div>
 
@@ -286,7 +273,7 @@ export default function VieEnSemaines() {
               {[["femme", "♀ Femme", ESPERANCE_FEMME], ["homme", "♂ Homme", ESPERANCE_HOMME]].map(([val, label, esp]) => (
                 <button key={val} onClick={() => { setGenre(val); if (!esperanceModifiee) setEsperance(esp); }}
                   aria-pressed={genre === val ? "true" : "false"}
-                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(184,147,74,0.25)" : "transparent", color: genre === val ? "var(--gold)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'DM Sans', sans-serif" }}>
+                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(43,92,230,0.12)" : "transparent", color: genre === val ? "var(--primary)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   {label}
                 </button>
               ))}
@@ -331,13 +318,13 @@ export default function VieEnSemaines() {
                 {res.pctEcoule.toFixed(0)} % de votre espérance de vie estimée.
               </p>
               <p style={{ marginBottom: 14 }}>
-                Il vous reste <strong style={{ color: "var(--gold)" }}>{fmt(res.semainesRestantes)} semaines</strong>,{" "}
-                soit environ <strong style={{ color: "var(--gold)" }}>{res.etesRestants} étés</strong>.
+                Il vous reste <strong style={{ color: "var(--primary)" }}>{fmt(res.semainesRestantes)} semaines</strong>,{" "}
+                soit environ <strong style={{ color: "var(--primary)" }}>{res.etesRestants} étés</strong>.
               </p>
               {frequenceVisites > 0 && visitesRestantes !== null && (
                 <p style={{ marginBottom: 14 }}>
                   Si vous voyez vos proches {frequenceVisites} fois par an, il vous reste environ{" "}
-                  <strong style={{ color: "var(--gold)" }}>{fmt(visitesRestantes)} occasions</strong> de les retrouver.
+                  <strong style={{ color: "var(--primary)" }}>{fmt(visitesRestantes)} occasions</strong> de les retrouver.
                   Ce chiffre n'est pas là pour angoisser, mais pour vous rappeler que chaque rencontre compte.
                 </p>
               )}
@@ -349,21 +336,21 @@ export default function VieEnSemaines() {
         )}
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>4 160 semaines : un chiffre qui change tout</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>4 160 semaines : un chiffre qui change tout</h3>
             <p style={{ marginBottom: 16 }}>Une vie humaine de 80 ans représente exactement 4 160 semaines. C'est peu, et c'est beaucoup — mais c'est surtout un nombre concret qu'on peut visualiser d'un seul regard. Ce simulateur met en perspective le temps déjà écoulé et celui qu'il reste selon votre espérance de vie. Contrairement à une représentation en années ou en jours, la semaine est une unité à la fois suffisamment petite pour être tangible et suffisamment grande pour être significative.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'origine : Tim Urban et Wait But Why</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>L'origine : Tim Urban et Wait But Why</h3>
             <p style={{ marginBottom: 16 }}>Cette visualisation a été popularisée en 2014 par Tim Urban sur son blog Wait But Why, avec l'article « Your Life in Weeks ». Sa représentation sous forme de grille — chaque case représentant une semaine, les cases passées en gris et les cases à venir en blanc — a eu un impact profond sur de nombreux lecteurs, les poussant à repenser leurs priorités et l'usage de leur temps. L'article est devenu viral et a engendré une prise de conscience sur le caractère fini du temps disponible.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Comment utiliser cet outil positivement</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Comment utiliser cet outil positivement</h3>
             <p>La visualisation de sa vie en semaines n'est pas un exercice morbide, mais un outil de clarification. Confronté à cette grille, chacun peut identifier ce qui mérite vraiment son temps et ce qui n'en vaut pas la peine. Les psychologues parlent de « salience of mortality » : rappeler que le temps est fini augmente la motivation à vivre conformément à ses valeurs et à ne pas remettre à demain ce qui compte aujourd'hui.</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
             Questions fréquentes
           </h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}

@@ -53,7 +53,7 @@ export default function Methodologie() {
   const today = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(new Date());
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -65,7 +65,7 @@ export default function Methodologie() {
         <div style={{ padding: "16px 0 12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 8 }}>
             <span style={{ fontSize: 36 }}>🔬</span>
-            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,40px)", fontWeight: 600, color: "var(--text)" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,40px)", fontWeight: 600, color: "var(--text)" }}>
               Méthodologie & sources
             </h1>
           </div>
@@ -74,7 +74,7 @@ export default function Methodologie() {
 
         {SECTIONS.map((sec, i) => (
           <section key={i} style={{ marginBottom: 22 }}>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 10 }}>{sec.h2}</h2>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 10 }}>{sec.h2}</h2>
             {sec.body.map((p, j) => (
               <p key={j} style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-secondary)", marginBottom: 14 }}>{p}</p>
             ))}

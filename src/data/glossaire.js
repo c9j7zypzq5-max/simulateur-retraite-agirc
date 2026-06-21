@@ -662,17 +662,6 @@ export const GLOSSARY = [
 
   // ── Retraite (compléments) ──────────────────────────────────────────────────
   {
-    slug: 'reversion', term: 'Pension de réversion', full: 'Pension de réversion',
-    aliases: ['pension de réversion', 'réversion'], category: 'Retraite',
-    short: "Part de la retraite d'un défunt versée au conjoint survivant, sous conditions.",
-    long: [
-      "La pension de réversion permet au conjoint (ou ex-conjoint) survivant de percevoir une fraction de la retraite du défunt. Les conditions (âge, ressources, mariage) et le taux varient selon les régimes.",
-      "Au régime général, elle représente 54 % de la pension de base, sous condition de ressources.",
-    ],
-    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'],
-    related: ['cnav', 'agirc-arrco'],
-  },
-  {
     slug: 'aspa', term: 'ASPA', full: "Allocation de Solidarité aux Personnes Âgées",
     aliases: ['ASPA'], category: 'Retraite',
     short: "« Minimum vieillesse » : revenu minimal garanti aux retraités les plus modestes.",
@@ -886,6 +875,226 @@ export const GLOSSARY = [
       "Un reste à vivre confortable sécurise votre budget et votre capacité d'épargne.",
     ],
     sims: ['/simulateurs/budget', '/simulateurs/emprunt-immobilier'], related: ['taux-endettement', 'taux-epargne'],
+  },
+
+  // ── Budget (nouveaux) ─────────────────────────────────────────────────────
+  {
+    slug: 'budget-50-30-20', term: 'Règle 50/30/20', full: 'Règle budgétaire 50/30/20',
+    aliases: ['règle 50/30/20', '50/30/20'], category: 'Budget',
+    short: "Méthode de budgétisation : 50 % des revenus pour les besoins, 30 % pour les envies, 20 % pour l'épargne.",
+    long: [
+      "La règle 50/30/20 est une méthode simple pour structurer son budget mensuel sans tableur. Elle divise les revenus nets en trois enveloppes : besoins essentiels (loyer, alimentation, transport), envies (restaurants, loisirs, abonnements non indispensables) et épargne.",
+      "Elle n'est pas rigide : en région parisienne, le loyer seul peut dépasser 30 % des revenus. L'objectif est de garder l'épargne non négociable, quitte à ajuster les deux autres catégories.",
+    ],
+    sims: ['/simulateurs/budget'], related: ['taux-epargne', 'reste-a-vivre', 'epargne-precaution'],
+  },
+  {
+    slug: 'epargne-precaution', term: "Épargne de précaution", full: "Épargne de précaution (fonds d'urgence)",
+    aliases: ["épargne de précaution", "fonds d'urgence", "matelas de sécurité"], category: 'Budget',
+    short: "Réserve liquide de 3 à 6 mois de dépenses pour faire face aux imprévus sans s'endetter.",
+    long: [
+      "L'épargne de précaution est la première brique de toute stratégie financière. Elle couvre les accidents de la vie (perte d'emploi, panne, santé) sans avoir à vendre des placements ou recourir au crédit.",
+      "On recommande généralement 3 mois de dépenses fixes pour un salarié stable, 6 mois pour un indépendant ou une situation plus incertaine. Elle doit être logée sur un compte liquide (Livret A, LDDS) et non sur des placements risqués.",
+    ],
+    sims: ['/simulateurs/budget', '/simulateurs/epargne'], related: ['livret-a', 'ldds', 'taux-epargne'],
+  },
+  {
+    slug: 'budget-base-zero', term: 'Budget base zéro', full: 'Méthode du budget base zéro',
+    aliases: ['budget base zéro'], category: 'Budget',
+    short: "Méthode où chaque euro de revenu est affecté à une dépense ou à l'épargne, jusqu'à atteindre zéro.",
+    long: [
+      "Le budget base zéro (ou « zero-based budget ») consiste à attribuer un rôle précis à chaque euro dès le début du mois. Revenus − (dépenses + épargne) = 0. Rien n'est laissé à la dérive.",
+      "C'est la méthode la plus rigoureuse pour contrôler ses finances, mais aussi la plus chronophage. Elle convient particulièrement à ceux qui cherchent à maximiser leur taux d'épargne ou à sortir d'une situation d'endettement.",
+    ],
+    sims: ['/simulateurs/budget'], related: ['taux-epargne', 'budget-50-30-20', 'reste-a-vivre'],
+  },
+
+  // ── Retraite (nouveaux) ───────────────────────────────────────────────────
+  {
+    slug: 'retraite-progressive', term: 'Retraite progressive', full: 'Retraite progressive',
+    aliases: ['retraite progressive'], category: 'Retraite',
+    short: "Dispositif permettant de liquider une partie de sa retraite tout en continuant à travailler à temps partiel.",
+    long: [
+      "La retraite progressive permet, sous conditions d'âge et de trimestres, de percevoir une fraction de sa pension de retraite tout en exerçant une activité à temps partiel. Elle offre une transition douce vers la retraite complète.",
+      "La fraction de pension versée est calculée en fonction du temps de travail restant. À la cessation totale d'activité, la pension est liquidée définitivement et intègre les droits acquis pendant la période progressive.",
+    ],
+    sims: ['/simulateurs/agirc-arrco', '/simulateurs/cnav'], related: ['cumul-emploi-retraite', 'taux-plein', 'surcote'],
+  },
+  {
+    slug: 'carriere-longue', term: 'Carrière longue', full: 'Dispositif carrière longue',
+    aliases: ['carrière longue', 'départ anticipé carrière longue'], category: 'Retraite',
+    short: "Dispositif permettant de partir à la retraite avant l'âge légal pour les personnes ayant commencé à travailler jeunes.",
+    long: [
+      "Le dispositif carrière longue permet aux assurés ayant commencé à cotiser avant 20 ans (voire 18 ou 16 ans selon les périodes) et ayant validé un certain nombre de trimestres de partir avant l'âge légal de départ à la retraite.",
+      "Les conditions précises (âge de début, nombre de trimestres cotisés) varient selon la génération. Ce dispositif a été étendu et modifié par les réformes successives des retraites.",
+    ],
+    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['trimestre', 'taux-plein', 'decote'],
+  },
+  {
+    slug: 'reversion', term: 'Pension de réversion', full: 'Pension de réversion',
+    aliases: ['pension de réversion', 'réversion'], category: 'Retraite',
+    short: "Fraction de la pension d'un assuré décédé reversée à son conjoint survivant, sous conditions.",
+    long: [
+      "La pension de réversion est versée au conjoint (ou ex-conjoint non remarié selon les cas) d'un assuré décédé. Son montant est une fraction (50 % au régime général, 60 % à l'Agirc-Arrco) de la retraite du défunt.",
+      "Au régime général, elle est soumise à une condition de ressources. À l'Agirc-Arrco, elle n'est versée qu'aux conjoints mariés et sans condition de ressources, mais les concubins et partenaires de PACS en sont exclus.",
+    ],
+    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
+  },
+  {
+    slug: 'droits-derives', term: 'Droits dérivés', full: 'Droits dérivés à la retraite',
+    aliases: ['droits dérivés'], category: 'Retraite',
+    short: "Droits à la retraite acquis non pas par son propre travail, mais via le conjoint (réversion, majoration).",
+    long: [
+      "Les droits dérivés désignent les avantages de retraite qui ne découlent pas de la propre carrière de l'assuré, mais de sa situation familiale : pension de réversion au décès du conjoint, majorations pour enfants, assurance vieillesse des parents au foyer (AVPF).",
+      "Ils jouent un rôle important dans la retraite des personnes ayant eu des carrières courtes ou interrompues pour élever des enfants.",
+    ],
+    sims: ['/simulateurs/cnav'], related: ['reversion', 'trimestre', 'aspa'],
+  },
+
+  // ── Immobilier (nouveaux) ─────────────────────────────────────────────────
+  {
+    slug: 'sci', term: 'SCI', full: 'Société Civile Immobilière',
+    aliases: ['SCI', 'société civile immobilière'], category: 'Immobilier',
+    short: "Structure juridique permettant à plusieurs personnes de détenir et gérer un patrimoine immobilier en commun.",
+    long: [
+      "La SCI (Société Civile Immobilière) permet de détenir un bien immobilier à plusieurs en évitant les contraintes de l'indivision. Elle facilite la transmission du patrimoine (donation de parts) et peut être soumise à l'IR ou à l'IS selon le régime choisi.",
+      "Elle est souvent utilisée en famille pour organiser la succession ou par des investisseurs souhaitant séparer patrimoine professionnel et immobilier. Sa création implique des frais de notaire et une comptabilité annuelle.",
+    ],
+    sims: ['/simulateurs/rendement-locatif'], related: ['lmnp', 'nue-propriete', 'plus-value-immobiliere'],
+  },
+  {
+    slug: 'garantie-loyers-impayes', term: 'GLI', full: "Garantie Loyers Impayés",
+    aliases: ['GLI', 'garantie loyers impayés', "assurance loyers impayés"], category: 'Immobilier',
+    short: "Assurance souscrite par le bailleur couvrant les impayés de loyer et les dégradations locatives.",
+    long: [
+      "La Garantie Loyers Impayés (GLI) est une assurance qui protège le propriétaire bailleur contre le risque de non-paiement du loyer, ainsi que contre les dégradations et les frais de contentieux. Elle coûte environ 2 à 4 % des loyers annuels.",
+      "Pour y être éligible, le locataire doit en général justifier de revenus représentant 3 fois le loyer. La GLI est une alternative au garant personne physique ou à la caution bancaire.",
+    ],
+    sims: ['/simulateurs/rendement-locatif'], related: ['rendement-locatif', 'lmnp'],
+  },
+  {
+    slug: 'viager', term: 'Viager', full: 'Vente en viager',
+    aliases: ['viager', 'vente en viager'], category: 'Immobilier',
+    short: "Vente immobilière où l'acheteur (débirentier) verse une rente viagère au vendeur (crédirentier) jusqu'à son décès.",
+    long: [
+      "Dans une vente en viager, l'acheteur (débirentier) verse un bouquet (apport initial) puis une rente mensuelle ou trimestrielle au vendeur (crédirentier) jusqu'au décès de ce dernier. Le prix total est donc aléatoire.",
+      "Le viager occupé (le vendeur continue à vivre dans le bien) génère une décote de valeur d'usage (droit d'usage et d'habitation). C'est un outil patrimonial pour les seniors souhaitant compléter leur retraite sans vendre leur logement.",
+    ],
+    sims: ['/simulateurs/rendement-locatif'], related: ['nue-propriete', 'usufruit'],
+  },
+  {
+    slug: 'copropriete', term: 'Copropriété', full: 'Copropriété',
+    aliases: ['copropriété', 'charges de copropriété'], category: 'Immobilier',
+    short: "Régime de propriété d'un immeuble partagé entre plusieurs propriétaires, chacun détenant des tantièmes.",
+    long: [
+      "La copropriété est le régime juridique qui s'applique lorsqu'un immeuble appartient à plusieurs propriétaires. Chaque copropriétaire détient un lot (appartement + quote-part des parties communes) exprimé en tantièmes.",
+      "Les décisions collectives sont prises en assemblée générale selon des majorités définies par la loi. Les charges (entretien, gardien, assurance) sont réparties selon les tantièmes. Un syndic gère l'immeuble au quotidien.",
+    ],
+    sims: ['/simulateurs/emprunt-immobilier'], related: ['frais-notaire', 'rendement-locatif'],
+  },
+
+  // ── Finances / Investissement (nouveaux) ──────────────────────────────────
+  {
+    slug: 'patrimoine-net', term: 'Patrimoine net', full: 'Patrimoine net (valeur nette)',
+    aliases: ['patrimoine net', 'valeur nette', 'net worth'], category: 'Finances',
+    short: "Total de vos actifs (épargne, immobilier, placements) moins le total de vos dettes.",
+    long: [
+      "Le patrimoine net est l'indicateur central de votre situation financière : Actifs − Passifs. Actifs = liquidités, épargne, placements, valeur de marché des biens immobiliers ; Passifs = crédits en cours, dettes.",
+      "Suivre son patrimoine net dans le temps permet de mesurer l'évolution réelle de sa richesse, indépendamment des fluctuations de revenus. C'est souvent une métrique centrale dans la philosophie FIRE.",
+    ],
+    sims: ['/simulateurs/patrimoine', '/simulateurs/epargne'], related: ['interets-composes', 'diversification', 'fire'],
+  },
+  {
+    slug: 'frais-gestion', term: 'Frais de gestion', full: 'Frais de gestion (TER)',
+    aliases: ['frais de gestion', 'frais annuels'], category: 'Finances',
+    short: "Coût annuel prélevé par un fonds ou une assurance-vie, exprimé en % des encours. Réduit mécaniquement le rendement.",
+    long: [
+      "Les frais de gestion sont prélevés chaque année sur l'encours de votre placement. Pour un fonds, ils sont résumés dans le TER (Total Expense Ratio). Sur un contrat d'assurance-vie, il faut additionner les frais du contrat et ceux des unités de compte.",
+      "Un écart de 1 % de frais par an paraît anodin mais, sur 30 ans, peut amputer le capital final de 20 à 25 %. C'est pourquoi les ETF indiciel (frais souvent < 0,25 %) surperforment statistiquement la plupart des fonds actifs sur longue période.",
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/comparateur'], related: ['ter', 'etf', 'assurance-vie', 'rendement-reel'],
+  },
+  {
+    slug: 'rente', term: 'Rente', full: 'Rente viagère ou financière',
+    aliases: ['rente', 'rente viagère'], category: 'Finances',
+    short: "Revenu périodique versé à vie (viagère) ou pour une durée déterminée, issu d'un capital converti.",
+    long: [
+      "Une rente est un revenu régulier versé sur une période déterminée ou jusqu'au décès du bénéficiaire (rente viagère). Elle peut provenir d'un contrat d'assurance-vie ou de retraite (PER) lors de la liquidation, ou d'un capital placé générant des intérêts prélevés périodiquement.",
+      "La rente viagère offre une sécurité (revenus garantis à vie) mais sacrifie le capital transmissible. La stratégie de retrait programmé (SWR dans la philosophie FIRE) constitue une alternative plus flexible.",
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/per'], related: ['per', 'assurance-vie', 'swr'],
+  },
+  {
+    slug: 'crowdfunding', term: 'Crowdfunding', full: 'Financement participatif',
+    aliases: ['crowdfunding', 'financement participatif', 'crowdlending'], category: 'Finances',
+    short: "Financement de projets (immobilier, entreprises) par une foule d'investisseurs particuliers via des plateformes en ligne.",
+    long: [
+      "Le crowdfunding (financement participatif) permet à des particuliers d'investir directement dans des projets immobiliers ou des PME via des plateformes agréées. Le crowdlending est la version prêt (avec intérêts) ; le crowdequity est la version actions.",
+      "Les rendements proposés sont élevés (6 à 12 % brut), mais le risque de perte en capital est réel (retards de projet, défaut). Ces placements ne bénéficient pas de la garantie des dépôts et doivent rester une part minoritaire d'un portefeuille diversifié.",
+    ],
+    sims: ['/simulateurs/comparateur'], related: ['diversification', 'rendement-reel'],
+  },
+  {
+    slug: 'plus-value-mobiliere', term: 'Plus-value mobilière', full: 'Plus-value sur valeurs mobilières',
+    aliases: ['plus-value mobilière', 'plus-values mobilières'], category: 'Impôts',
+    short: "Gain réalisé lors de la vente de titres (actions, ETF, obligations) soumis en principe au PFU de 30 %.",
+    long: [
+      "La plus-value mobilière est la différence positive entre le prix de cession et le prix d'acquisition d'un titre financier (action, ETF, obligation, part de fonds). Elle est soumise au Prélèvement Forfaitaire Unique (PFU) de 30 % ou, sur option, au barème progressif de l'IR.",
+      "Des abattements anciens existent encore pour les titres acquis avant 2018 dans certains cas. Les moins-values sont imputables sur les plus-values de même nature pendant 10 ans.",
+    ],
+    sims: ['/simulateurs/impot-revenu'], related: ['pfu', 'pea', 'tmi', 'plus-value-immobiliere'],
+  },
+  {
+    slug: 'niches-fiscales', term: 'Niches fiscales', full: 'Niches fiscales (avantages fiscaux)',
+    aliases: ['niches fiscales', 'niche fiscale'], category: 'Impôts',
+    short: "Dispositifs légaux permettant de réduire son impôt : déductions, réductions et crédits d'impôt.",
+    long: [
+      "Les niches fiscales regroupent l'ensemble des déductions (réduction de la base imposable), réductions d'impôt (diminution directe de l'impôt dû) et crédits d'impôt (remboursables si excédentaires). Elles visent à encourager certains comportements économiques.",
+      "Le législateur a plafonné leur montant global à 10 000 € par an (avec quelques exceptions à 18 000 €). Au-delà, l'excédent n'est pas reportable. L'optimisation fiscale consiste à utiliser les niches les plus adaptées à sa situation en respectant ce plafond.",
+    ],
+    sims: ['/simulateurs/impot-revenu', '/simulateurs/per'], related: ['credit-impot', 'abattement', 'per', 'tmi'],
+  },
+  {
+    slug: 'flat-tax', term: 'Flat tax', full: 'Flat tax (Prélèvement Forfaitaire Unique)',
+    aliases: ['flat tax', 'PFU'], category: 'Impôts',
+    short: "Imposition forfaitaire de 30 % (12,8 % IR + 17,2 % PS) sur les revenus du capital mobilier.",
+    long: [
+      "La flat tax, ou PFU (Prélèvement Forfaitaire Unique), est un taux d'imposition fixe de 30 % sur les revenus du capital : dividendes, intérêts, plus-values mobilières. Elle se compose de 12,8 % d'IR et 17,2 % de prélèvements sociaux.",
+      "Le contribuable peut opter pour le barème progressif de l'IR s'il est dans une tranche marginale basse (0 % ou 11 %). Cette option s'applique alors à l'ensemble des revenus mobiliers de l'année, pas seulement à certains.",
+    ],
+    sims: ['/simulateurs/impot-revenu'], related: ['pfu', 'tmi', 'dividende', 'plus-value-mobiliere'],
+  },
+
+  // ── FIRE (nouveaux) ───────────────────────────────────────────────────────
+  {
+    slug: 'numero-f', term: 'Nombre F', full: 'Nombre F (F.U. Number)',
+    aliases: ['nombre F', 'F number', 'F.U. number'], category: 'FIRE',
+    short: "Capital minimum permettant de ne plus dépendre d'un emploi indésirable, calculé selon la règle des 4 %.",
+    long: [
+      "Le « Nombre F » (ou F.U. Number, terme issu de la culture FIRE) désigne le capital à partir duquel vous pouvez refuser un emploi ou une situation que vous ne souhaitez plus subir. C'est une version personnalisée de l'objectif FIRE.",
+      "Il se calcule comme vos dépenses annuelles incompressibles × 25 (règle des 4 %). Une fois ce seuil atteint, vous avez le choix de rester ou de partir, même si vous continuez à travailler. L'indépendance financière est une question de liberté, pas nécessairement de retraite anticipée.",
+    ],
+    sims: ['/simulateurs/fire', '/simulateurs/epargne'], related: ['fire', 'swr', 'taux-epargne'],
+  },
+  {
+    slug: 'frugalisme', term: 'Frugalisme', full: 'Frugalisme',
+    aliases: ['frugalisme', 'frugaliste'], category: 'FIRE',
+    short: "Philosophie de vie consistant à réduire volontairement ses dépenses pour accélérer l'indépendance financière.",
+    long: [
+      "Le frugalisme est la pratique consistant à vivre en dessous de ses moyens de façon volontaire et réfléchie, non par contrainte, mais pour dégager un taux d'épargne élevé et accélérer l'atteinte de l'indépendance financière.",
+      "Il ne s'agit pas de privation : les frugalistes optimisent leurs dépenses en alignant leur argent sur leurs valeurs. L'objectif n'est pas de dépenser zéro, mais d'éviter les dépenses qui n'apportent pas de bonheur durable.",
+    ],
+    sims: ['/simulateurs/fire', '/simulateurs/budget', '/simulateurs/cout-en-heures'], related: ['fire', 'lean-fire', 'taux-epargne', 'numero-f'],
+  },
+  {
+    slug: 'chelo', term: 'CHELO', full: 'Coût en Heures de Liberté Obtenues',
+    aliases: ['CHELO', 'coût en heures'], category: 'FIRE',
+    short: "Méthode qui exprime le prix d'un achat en heures de travail nécessaires pour le financer.",
+    long: [
+      "Le CHELO (ou « coût en heures ») est une façon de réévaluer ses achats en les exprimant en temps de travail. On divise le prix d'un bien par son salaire horaire net pour obtenir le nombre d'heures à travailler pour le financer.",
+      "Cette perspective peut modifier profondément les comportements de consommation : un abonnement à 20 €/mois peut représenter 2 h de travail mensuel, soit 24 h par an — est-ce que cela en vaut vraiment la peine ? Concept popularisé par le livre « Votre vie ou votre argent ».",
+    ],
+    sims: ['/simulateurs/cout-en-heures'], related: ['fire', 'frugalisme', 'taux-epargne'],
   },
 ];
 

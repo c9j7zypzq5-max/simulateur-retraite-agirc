@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -6,6 +7,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import Terme from "../../components/Terme.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import AdUnit from "../../components/AdUnit.jsx";
@@ -18,6 +20,7 @@ import {
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -225,17 +228,6 @@ const TXT = {
   },
 };
 
-function useIsMobile(breakpoint = 680) {
-  const [mob, setMob] = useState(() =>
-    typeof window !== "undefined" && window.innerWidth < breakpoint
-  );
-  useEffect(() => {
-    const fn = () => setMob(window.innerWidth < breakpoint);
-    window.addEventListener("resize", fn, { passive: true });
-    return () => window.removeEventListener("resize", fn);
-  }, [breakpoint]);
-  return mob;
-}
 
 // ─── Calculs crédit à la consommation ────────────────────────────────────────
 // Crédit amortissable classique : mensualités constantes calculées à partir du
@@ -289,10 +281,10 @@ function TableauAmortissement({ montant, taegPct, dureeMois, txt }) {
         </thead>
         <tbody>
           {rows.map((row, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(184,147,74,0.02)" : "transparent" }}>
+            <tr key={i} style={{ borderBottom: "1px solid var(--border)", background: i % 2 === 0 ? "rgba(43,92,230,0.02)" : "transparent" }}>
               <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text-secondary)" }}>{row.annee}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtCur(Math.round(m))}</td>
-              <td style={{ padding: "8px 10px", textAlign: "right", color: row.capitalRestant <= 0 ? "var(--gold)" : "var(--text)", fontFamily: "'Cormorant Garamond', serif", fontSize: 15 }}>{fmtCur(Math.round(row.capitalRestant))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtCur(Math.round(m))}</td>
+              <td style={{ padding: "8px 10px", textAlign: "right", color: row.capitalRestant <= 0 ? "var(--gold)" : "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontSize: 15 }}>{fmtCur(Math.round(row.capitalRestant))}</td>
             </tr>
           ))}
         </tbody>
@@ -301,7 +293,7 @@ function TableauAmortissement({ montant, taegPct, dureeMois, txt }) {
   );
 }
 
-const sectionTitle = { fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function CreditConso() {
@@ -313,8 +305,8 @@ export default function CreditConso() {
   const txt = TXT[locale] ?? TXT.fr;
 
   const card = {
-    background: "var(--card-bg)", border: "1px solid var(--border)",
-    borderRadius: 20, padding: isMobile ? "20px 16px" : "28px 32px",
+    background: "var(--surface)", border: "1px solid var(--border)",
+    borderRadius: 16, padding: isMobile ? "20px 16px" : "24px 20px",
     marginBottom: 20, boxShadow: "var(--card-shadow)",
   };
 
@@ -325,9 +317,9 @@ export default function CreditConso() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta(txt.docTitle, txt.metaDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.metaDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -390,7 +382,7 @@ export default function CreditConso() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
@@ -409,7 +401,7 @@ export default function CreditConso() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 940, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 24px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/credit-conso" size={34} />}
           badge={txt.badge}
@@ -418,7 +410,7 @@ export default function CreditConso() {
           desc={txt.pageDesc}
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24 }}>
 
           {/* ── Colonne formulaire ── */}
           <div style={{ order: isMobile ? 2 : 1 }}>
@@ -436,8 +428,8 @@ export default function CreditConso() {
 
           {/* ── Colonne résultats ── */}
           <div style={{ order: isMobile ? 1 : 2, minWidth: 0 }}>
-            <div style={{ background: "linear-gradient(145deg, rgba(184,147,74,0.08), var(--card-bg))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-              <div style={{ fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 10 }}>
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, textAlign: "center", boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>
                 {txt.heroLabel}
               </div>
               {!hasInput ? (
@@ -446,7 +438,7 @@ export default function CreditConso() {
                 </p>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(44px,8vw,68px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                     {fmtCur(Math.round(animMensualite))}
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 8 }}>
@@ -465,6 +457,7 @@ export default function CreditConso() {
                 report={report}
                 name="credit-conso"
               />
+              {hasInput && <AffiliateCTA type="credit" />}
             </div>
 
             {hasInput && (
@@ -490,7 +483,7 @@ export default function CreditConso() {
                 ].map(({ label, value, accent }) => (
                   <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: "1px solid var(--border)" }}>
                     <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{label}</span>
-                    <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
+                    <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</span>
                   </div>
                 ))}
               </AccordionSection>
@@ -530,14 +523,14 @@ export default function CreditConso() {
         </div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH3_1}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.aboutH3_1}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP1}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_2}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_2}</h3>
             <p style={{ marginBottom: 16 }}>{txt.aboutP2_pre}<Terme slug="taeg">{locale === 'en' ? 'APR' : 'TAEG'}</Terme>{txt.aboutP2_post}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_3}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.aboutH3_3}</h3>
             <p>{txt.aboutP3}</p>
           </div>
         </div>

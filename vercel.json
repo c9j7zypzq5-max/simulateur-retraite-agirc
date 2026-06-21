@@ -21,6 +21,7 @@
   ],
   "rewrites": [
     { "source": "/sitemap.xml", "destination": "/api/sitemap" },
+    { "source": "/api/webhook", "destination": "/api/stripe?action=webhook" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

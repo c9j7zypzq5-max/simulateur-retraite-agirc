@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Home, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "../lib/router.jsx";
 import { useExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
@@ -64,7 +65,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
         {label}
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6, verticalAlign: "middle" }}>ⓘ</span>}
       </label>
-      <div style={{ display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "var(--input-bg)", border: `1.5px solid ${focused ? "rgba(184,147,74,0.6)" : "var(--border)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s, background 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "var(--input-shadow)" }}>
+      <div style={{ display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
         <input type="text" inputMode="numeric"
           id={inputId} name={inputId}
           aria-describedby={hintId}
@@ -73,10 +74,10 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
           onBlur={handleBlur}
           placeholder={unit ? `0 ${unit}` : "0"}
-          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 600, color: "var(--text)", padding: "14px 0 14px 20px", width: 0 }} />
-        {unit && <span style={{ padding: "0 20px", fontSize: 18, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+          style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0 }} />
+        {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
       </div>
-      {hint && <div id={hintId} style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
+      {hint && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }
@@ -119,10 +120,10 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
   const inc = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) + step));
 
   const btnStyle = {
-    width: 40, height: 44, borderRadius: 10, border: "1.5px solid var(--border)",
-    background: "var(--card-bg)", color: "var(--text)", fontSize: 20, cursor: "pointer",
+    width: 32, height: 32, borderRadius: 6, border: "none",
+    background: "var(--primary-soft, #EAF0FF)", color: "var(--primary)", fontSize: 18, cursor: "pointer",
     display: "flex", alignItems: "center", justifyContent: "center",
-    transition: "border-color 0.2s",
+    fontWeight: 600,
   };
 
   return (
@@ -132,24 +133,20 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6 }}>ⓘ</span>}
       </label>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}>−</button>
-        <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "rgba(184,147,74,0.08)" : "var(--card-bg)", border: `1.5px solid ${focused ? "var(--gold-mid)" : "var(--border)"}`, borderRadius: 12, overflow: "hidden", transition: "border-color 0.2s", boxShadow: focused ? "0 0 0 3px rgba(184,147,74,0.12)" : "none" }}>
+        <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}>−</button>
+        <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
           <input type="text" inputMode="decimal"
             value={focused ? raw : (value === null || value === undefined ? "" : String(value))}
             onChange={handleChange}
             onFocus={e => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
             onBlur={handleBlur}
             placeholder="0"
-            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Cormorant Garamond', serif", fontSize: 24, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 16px", width: 0, textAlign: "center" }} />
-          {unit && <span style={{ padding: "0 16px", fontSize: 16, color: "var(--gold-mid)", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600 }}>{unit}</span>}
+            style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0, textAlign: "center" }} />
+          {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
         </div>
-        <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "var(--gold-mid)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}>+</button>
+        <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}>+</button>
       </div>
-      {hint && <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>{hint}</div>}
+      {hint && <div style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }
@@ -163,9 +160,9 @@ export function Toggle({ options, checked, onChange }) {
         <button key={opt} onClick={() => onChange(i === 1)}
           aria-pressed={String((i === 1) === checked)}
           style={{ padding: "9px 16px", borderRadius: 8, border: "none",
-            background: (i === 1) === checked ? "rgba(184,147,74,0.25)" : "transparent",
+            background: (i === 1) === checked ? "rgba(43,92,230,0.18)" : "transparent",
             color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
-            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'DM Sans', sans-serif" }}>
+            fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {opt}
         </button>
       ))}
@@ -181,16 +178,16 @@ export function Chip({ label, value, accent, small }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: accent ? "rgba(184,147,74,0.12)" : "var(--card-bg)",
-        border: `1px solid ${hovered ? "var(--border-gold)" : (accent ? "rgba(184,147,74,0.4)" : "var(--border)")}`,
+        background: accent ? "rgba(43,92,230,0.1)" : "var(--card-bg)",
+        border: `1px solid ${hovered ? "var(--border-gold)" : (accent ? "rgba(43,92,230,0.25)" : "var(--border)")}`,
         borderRadius: 10,
         padding: small ? "10px 12px" : "14px 16px",
-        boxShadow: hovered ? "0 4px 18px rgba(184,147,74,0.1)" : "var(--card-shadow)",
+        boxShadow: hovered ? "0 4px 18px rgba(43,92,230,0.08)" : "var(--card-shadow)",
         cursor: "default",
       }}
     >
       <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 5 }}>{label}</div>
-      <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: small ? 16 : 20, fontWeight: 700, color: accent ? "var(--gold)" : "var(--text)" }}>{value}</div>
     </div>
   );
 }
@@ -235,13 +232,13 @@ export function AccordionSection({ title, subtitle, children, gold = false, defa
   const reallyOpen = open || exporting;
   const panelId = `acc-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`;
   return (
-    <div style={{ background: gold ? "rgba(184,147,74,0.05)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(184,147,74,0.2)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+    <div style={{ background: gold ? "rgba(43,92,230,0.04)" : "var(--card-bg)", border: `1px solid ${gold ? "rgba(43,92,230,0.15)" : "var(--border)"}`, borderRadius: 20, overflow: "hidden", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open} aria-controls={panelId}
         onMouseEnter={() => setBtnHovered(true)}
         onMouseLeave={() => setBtnHovered(false)}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(184,147,74,0.04)" : "none", border: "none", cursor: "pointer" }}>
+        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "22px 28px", background: btnHovered ? "rgba(43,92,230,0.03)" : "none", border: "none", cursor: "pointer" }}>
         <div style={{ textAlign: "left" }}>
-          <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: gold ? "var(--gold)" : "var(--text)" }}>{title}</div>
           {subtitle && <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 3 }}>{subtitle}</div>}
         </div>
         <span style={{ color: open ? "var(--gold)" : "var(--text-secondary)", fontSize: 22, marginLeft: 16, flexShrink: 0, transition: "transform 0.2s ease, color 0.2s", transform: open ? "rotate(0deg)" : "rotate(0deg)" }} aria-hidden="true">{open ? "−" : "+"}</span>
@@ -266,7 +263,7 @@ export function ResultCard({ label, pension, subLabel, empty }) {
         </p>
       ) : (
         <>
-          <div key={pension} style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "scaleIn 0.3s ease" }}>
+          <div key={pension} style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(48px,10vw,76px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", animation: "scaleIn 0.3s ease" }}>
             {pension}
           </div>
           {subLabel && <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>{subLabel}</div>}
@@ -283,7 +280,7 @@ export function StatusBadge({ status, label }) {
     warn: { bg: "rgba(249,115,22,0.1)",   color: "#f97316", border: "1px solid rgba(249,115,22,0.25)" },
     bad:  { bg: "rgba(239,68,68,0.1)",    color: "#ef4444", border: "1px solid rgba(239,68,68,0.25)" },
     info: { bg: "rgba(99,102,241,0.1)",   color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" },
-    gold: { bg: "rgba(184,147,74,0.1)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
+    gold: { bg: "rgba(43,92,230,0.08)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
   };
   const s = palette[status] || palette.info;
   return (
@@ -303,7 +300,7 @@ export function FaqItem({ q, a }) {
         aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}
       >
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)", transition: "color 0.2s" }}>
           {open ? "−" : "+"}
         </span>
@@ -329,7 +326,7 @@ export function FaqSection({ title = "Questions fréquentes", items }) {
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
       {items?.length > 0 && <JsonLd data={faqLd} />}
-      <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
         {title}
       </h2>
       {items.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
@@ -342,10 +339,31 @@ function HeaderBreadcrumb() {
   const { pathname } = useLocation();
   const meta = ROUTE_META[pathname];
   return (
-    <nav aria-label="Fil d'Ariane" style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 14 }}>
-      <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
-      {meta?.cat && <>{" · "}<span>{meta.cat}</span></>}
-      {meta?.title && <>{" · "}<span style={{ color: "var(--text)" }}>{meta.title}</span></>}
+    <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+      <Link to="/" style={{
+        display: "inline-flex", alignItems: "center", gap: 5,
+        fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
+        background: "var(--hover-bg)", border: "1px solid var(--border)",
+        padding: "4px 10px", borderRadius: 20,
+        transition: "background 0.2s, color 0.2s",
+      }}
+        onMouseEnter={e => { e.currentTarget.style.color = "var(--primary)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
+        onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
+      >
+        <Home size={11} /> Accueil
+      </Link>
+      {meta?.cat && (
+        <>
+          <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
+          <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--hover-bg)", border: "1px solid var(--border)", padding: "4px 10px", borderRadius: 20 }}>{meta.cat}</span>
+        </>
+      )}
+      {meta?.title && (
+        <>
+          <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
+          <span style={{ fontSize: 12, color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", padding: "4px 10px", borderRadius: 20 }}>{meta.title}</span>
+        </>
+      )}
     </nav>
   );
 }
@@ -353,18 +371,19 @@ function HeaderBreadcrumb() {
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
 export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
   return (
-    <div style={{ padding: "28px 0 28px", animation: "fadeUp .5s ease both" }}>
+    <div style={{ padding: "28px 24px 36px", animation: "fadeUp .5s ease both", textAlign: "center", background: "linear-gradient(180deg, var(--primary-soft) 0%, transparent 100%)", borderRadius: 16, marginBottom: 24 }}>
       <HeaderBreadcrumb />
-      <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
         <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
         <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>{badge}</span>
+        <div style={{ width: 36, height: 2, background: "linear-gradient(270deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
-        <span style={{ fontSize: 36 }} aria-hidden="true">{icon}</span>
-        <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16, marginBottom: 14 }}>
+        <span style={{ fontSize: 40 }} aria-hidden="true">{icon}</span>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px,5vw,42px)", fontWeight: 600, lineHeight: 1.1, color: "var(--text)" }}>{title}</h1>
       </div>
-      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 10 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
-      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 520 }}><AutoLinkText>{desc}</AutoLinkText></p>}
+      {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 12 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
+      {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 580, margin: "0 auto" }}><AutoLinkText>{desc}</AutoLinkText></p>}
     </div>
   );
 }

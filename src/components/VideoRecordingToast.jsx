@@ -15,7 +15,7 @@ export default function VideoRecordingToast() {
       display: 'flex', flexDirection: 'column', gap: 8,
       minWidth: 220, maxWidth: 300,
       boxShadow: 'var(--card-shadow, 0 8px 32px rgba(0,0,0,0.5))',
-      fontFamily: "'DM Sans', sans-serif",
+      fontFamily: "'Hanken Grotesk', sans-serif",
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>

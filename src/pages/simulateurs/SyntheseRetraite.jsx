@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { Link } from "../../lib/router.jsx";
+import BarChart from "../../components/charts/BarChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -9,10 +10,12 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, AccordionSection, Chip, useAnimatedNumber,
-  fmtEur, SimulateurHeader,
+  fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Régimes de retraite agrégés ──────────────────────────────────────────────
 // Chaque ligne renvoie vers le simulateur dédié pour chiffrer la pension brute.
@@ -31,10 +34,12 @@ const REGIMES = [
 const PS_RETRAITE = 0.101;
 
 const FAQ = [
-  { q: "À quoi sert la synthèse retraite ?", a: "Au cours d'une carrière, on cotise souvent à plusieurs régimes (salarié, fonction publique, indépendant, agricole…). On parle alors de « polypensionné ». Chaque régime verse sa propre pension : cette page les additionne pour vous donner une vue d'ensemble de votre future retraite totale. Chiffrez chaque régime avec son simulateur dédié, puis reportez le montant ici." },
-  { q: "Dois-je saisir des montants bruts ou nets ?", a: "Saisissez la pension brute mensuelle de chaque régime (avant prélèvements sociaux). C'est la valeur la plus comparable d'un régime à l'autre. La page calcule ensuite une estimation du total net après prélèvements sociaux (~10,1 %), hors impôt sur le revenu." },
-  { q: "Le total net est-il exact ?", a: "C'est une estimation. Les prélèvements sociaux sur les pensions (CSG, CRDS, CASA, cotisation maladie) varient selon votre revenu fiscal de référence : certains retraités modestes en sont exonérés ou bénéficient d'un taux réduit. De plus, la pension reste soumise à l'impôt sur le revenu, non décompté ici. Pour l'impôt, utilisez notre simulateur d'impôt sur le revenu." },
-  { q: "Qu'est-ce que le taux de remplacement ?", a: "C'est le rapport entre votre première pension et votre dernier revenu d'activité. Un taux de remplacement de 70 % signifie que votre retraite représente 70 % de votre dernier salaire. En renseignant votre dernier salaire net, la page calcule ce taux à partir de votre pension totale nette estimée." },
+  { q: "Comment fonctionne la synthèse tous régimes ?", a: "La plupart des actifs cotisent à plusieurs régimes : le régime de base (CNAV pour les salariés, RSI/SSI pour les indépendants, CNRACL pour les fonctionnaires) + un régime complémentaire (Agirc-Arrco pour les salariés du privé, IRCANTEC pour les contractuels publics). La synthèse additionne les pensions estimées de chaque régime pour obtenir la pension totale." },
+  { q: "Quelle est la pension moyenne en France ?", a: "En 2024, la pension moyenne tous régimes confondus s'élève à environ 1 530 € bruts par mois (1 680 € pour les hommes, 1 390 € pour les femmes). Ces montants incluent les régimes de base et complémentaires. Le montant net perçu est en général 15-20 % inférieur (CSG, CRDS, mutuelle)." },
+  { q: "Peut-on recevoir une pension de plusieurs régimes simultanément ?", a: "Oui, absolument. Une carrière mixte (salarié privé puis fonctionnaire, ou salarié puis indépendant) donne lieu à des pensions provenant de chaque régime au prorata de la carrière cotisée dans chacun. Il faut liquider chaque régime séparément et ils versent leurs pensions indépendamment." },
+  { q: "Comment est calculée la pension de réversion ?", a: "La pension de réversion du régime général (CNAV) correspond à 54 % de la retraite du défunt, sous condition de ressources (plafond 2025 : 24 232 €/an pour une personne seule). La réversion Agirc-Arrco est de 60 % des points du défunt, sans condition de ressources." },
+  { q: "Qu'est-ce que le minimum contributif ?", a: "Le minimum contributif (MICO) garantit une pension de base CNAV minimale pour ceux qui ont cotisé toute leur carrière avec de faibles salaires. En 2025, il s'élève à 876,91 € par mois pour une carrière complète au taux plein (majoré à 963,31 € si 120 trimestres cotisés avec revenus > 0,5 SMIC)." },
+  { q: "La retraite est-elle imposable ?", a: "Oui, les pensions de retraite sont soumises à l'impôt sur le revenu, après abattement de 10 % (plafonné à 4 123 € par foyer en 2025). Elles supportent également la CSG à 8,3 % (avec possibilité de taux réduit à 3,8 % ou exonération selon les revenus) et la CRDS à 0,5 %." },
 ];
 
 export default function SyntheseRetraite() {
@@ -46,9 +51,9 @@ export default function SyntheseRetraite() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Synthèse retraite tous régimes — pension totale (polypensionné) | simfinly.com", "Additionnez vos pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute et nette.");
+
   useEffect(() => {
-    document.title = "Synthèse retraite tous régimes — pension totale (polypensionné) | simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Additionnez vos pensions de tous vos régimes de retraite (CNAV, Agirc-Arrco, fonction publique, indépendants, IRCANTEC, MSA, CIPAV) pour estimer votre retraite totale brute et nette.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -81,6 +86,18 @@ export default function SyntheseRetraite() {
   const nbRegimes = REGIMES.filter(r => (vals[r.key] ?? 0) > 0).length;
   const hasResult = totalBrut > 0;
 
+  const SHORT_LABELS = { cnav: "CNAV", agirc: "Agirc", fpub: "Fn.pub.", indep: "Indép.", ircantec: "IRCAN.", msa: "MSA", cipav: "CIPAV" };
+  const REGIME_COLORS = ["var(--primary)", "#6eb5d4", "#4ade80", "#f59e0b", "#a78bfa", "#f87171", "#34d399"];
+  const regimesBars = useMemo(() => {
+    if (!hasResult) return [];
+    return REGIMES
+      .filter(r => (vals[r.key] ?? 0) > 0)
+      .map((r, i) => ({
+        label: SHORT_LABELS[r.key] ?? r.key,
+        segments: [{ value: vals[r.key], color: REGIME_COLORS[i % REGIME_COLORS.length] }],
+      }));
+  }, [vals, hasResult]);
+
   const netAnim = useAnimatedNumber(totalNet);
 
   const report = {
@@ -100,7 +117,7 @@ export default function SyntheseRetraite() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Synthèse retraite tous régimes",
@@ -117,7 +134,7 @@ export default function SyntheseRetraite() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/synthese-retraite" size={34} />}
           badge="Retraite · Vue polypensionné"
@@ -127,13 +144,13 @@ export default function SyntheseRetraite() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ 7 régimes couverts", "✓ Brut, net & annuel", "✓ Calcul 100 % local"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire : une ligne par régime */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 8, fontWeight: 400 }}>Vos pensions par régime</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 8, fontWeight: 400 }}>Vos pensions par régime</h2>
           <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 24 }}>Saisissez la pension <strong>brute mensuelle</strong> de chaque régime auquel vous avez cotisé (laissez vide les autres).</p>
 
           {REGIMES.map(r => (
@@ -158,16 +175,16 @@ export default function SyntheseRetraite() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre retraite totale estimée</h2>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre retraite totale estimée</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Pension totale nette estimée par mois</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Pension totale nette estimée par mois</div>
             {!hasResult ? (
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Renseignez au moins un régime pour voir votre total.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(totalNet)} euros nets par mois`}>
                   {netAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -205,6 +222,16 @@ export default function SyntheseRetraite() {
                 })}
               </div>
 
+              {regimesBars.length > 1 && (
+                <div style={{ marginBottom: 20 }}>
+                  <BarChart
+                    bars={regimesBars}
+                    yFmt={v => `${Math.round(v)} €`}
+                    aria="Pension brute mensuelle par régime"
+                  />
+                </div>
+              )}
+
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
                 ⚠️ <strong>Estimation indicative.</strong> Le total net applique un taux moyen de prélèvements sociaux (~10,1 %) et n'inclut pas l'impôt sur le revenu. Le taux exact dépend de votre revenu fiscal de référence.
                 Pour l'impôt, utilisez le <Link to="/simulateurs/impot-revenu" style={{ color: "var(--gold-mid)" }}>simulateur d'impôt sur le revenu</Link>.
@@ -214,26 +241,26 @@ export default function SyntheseRetraite() {
         </div>
 
         <ShareBar params={{ ...vals, salaire }} resultsRef={resultsRef} report={report} name="synthese-retraite" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Comprendre la retraite des polypensionnés</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Comprendre la retraite des polypensionnés</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une carrière, plusieurs régimes</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une carrière, plusieurs régimes</h3>
             <p style={{ marginBottom: 16 }}>Rares sont les carrières linéaires. Beaucoup de Français cotisent successivement (ou simultanément) à plusieurs régimes : régime général des salariés (CNAV) et sa complémentaire Agirc-Arrco, fonction publique, régime des indépendants, IRCANTEC pour les contractuels publics, MSA pour le monde agricole, ou CIPAV pour les professions libérales. À la retraite, chacun de ces régimes verse sa propre pension : on parle de « polypensionné ».</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Additionner pour y voir clair</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Additionner pour y voir clair</h3>
             <p style={{ marginBottom: 16 }}>Comme chaque régime communique séparément, il est difficile d'avoir une vision consolidée de sa future retraite. Cette synthèse comble ce manque : estimez chaque pension avec le simulateur correspondant, reportez les montants bruts ici, et obtenez votre pension totale brute, une estimation du net après prélèvements sociaux, et votre taux de remplacement par rapport à votre dernier salaire.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Brut, net et impôt</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Brut, net et impôt</h3>
             <p>Les pensions sont d'abord exprimées en brut. Des prélèvements sociaux (CSG, CRDS, CASA, cotisation d'assurance maladie pour les complémentaires) s'appliquent ensuite, pour environ 10 % en moyenne — avec des taux réduits ou des exonérations pour les revenus modestes. Enfin, la pension est soumise à l'impôt sur le revenu. Pour un relevé de carrière officiel tous régimes, consultez votre compte sur <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)" }}>info-retraite.fr</a>.</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Synthèse retraite</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Synthèse retraite</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
             Source officielle : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
@@ -243,6 +270,7 @@ export default function SyntheseRetraite() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );
@@ -254,7 +282,7 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}

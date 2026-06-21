@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import HistoricalReturnPicker from "../../components/HistoricalReturnPicker.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -10,13 +11,16 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import EmbedSnippet from "../../components/EmbedSnippet.jsx";
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  SimulateurHeader,
+  FaqItem, SimulateurHeader,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { useTranslation } from "../../i18n/index.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
@@ -89,6 +93,8 @@ const TXT = {
     reportMulti: "Multiplicateur",
     reportGain: "Gain",
     reportNote: "Taux de rendement constant supposé. Résultats avant fiscalité et inflation.",
+    chartAria: "Courbe de croissance du capital sur la durée d'épargne",
+    chartYears: (n) => `${n} an${n > 1 ? "s" : ""}`,
     faq: [
       { q: "Comment fonctionnent les intérêts composés ?", a: "Les intérêts composés signifient que vous gagnez des intérêts sur vos intérêts. Chaque mois, le taux est appliqué à votre capital cumulé (capital initial + versements + intérêts antérieurs). Plus la durée est longue, plus cette composition joue en votre faveur (effet boule de neige)." },
       { q: "Quel taux de rendement supposer ?", a: "Cela dépend de votre placement : comptes épargne (0,5-1,5 %), fonds euros en assurance-vie (2-3 %), obligataires (3-5 %), actions/bourse (5-10 % en moyenne historique). Consultez votre conseiller pour un taux adapté à votre profil." },
@@ -166,6 +172,8 @@ const TXT = {
     reportMulti: "Multiplier",
     reportGain: "Gain",
     reportNote: "Constant return rate assumed. Results before tax and inflation.",
+    chartAria: "Savings growth curve over the investment period",
+    chartYears: (n) => `${n} yr${n !== 1 ? "s" : ""}`,
     faq: [
       { q: "How does compound interest work?", a: "Compound interest means you earn interest on your interest. Each month, the rate is applied to your accumulated capital (initial capital + contributions + previous interest). The longer the duration, the more this compounding works in your favour (snowball effect)." },
       { q: "What return rate should I use?", a: "It depends on your investment: savings accounts (0.5–1.5%), bond funds in life insurance (2–3%), bond portfolios (3–5%), equities/stock market (5–10% historical average). Consult your financial advisor for a rate suited to your risk profile." },
@@ -230,9 +238,9 @@ export default function Epargne() {
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
 
+  usePageMeta(txt.docTitle, txt.docDesc);
+
   useEffect(() => {
-    document.title = txt.docTitle;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", txt.docDesc);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -306,7 +314,7 @@ export default function Epargne() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": locale === 'en' ? "Compound Interest & Savings Calculator" : "Simulateur Épargne & intérêts composés",
@@ -322,7 +330,7 @@ export default function Epargne() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/epargne" size={34} />}
           badge={txt.badge}
@@ -330,8 +338,8 @@ export default function Epargne() {
           desc={txt.desc}
         />
 
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 32px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.params}</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.params}</h2>
 
           <NumInput id="capital-initial" label={txt.capitalInitial} value={capitalInitial} onChange={setCapitalInitial} unit={money.symbol} min={0} max={1000000}
             hint={capitalInitial ? txt.capitalHint2 : txt.capitalHint}
@@ -347,12 +355,12 @@ export default function Epargne() {
         </div>
 
         {hasResult && (
-          <div style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
-            <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>{txt.projection}</h2>
+          <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 20, boxShadow: "var(--card-shadow)" }} ref={resultsRef}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>{txt.projection}</h2>
 
             <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.capitalFinalLabel}</div>
-              <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>{txt.capitalFinalLabel}</div>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
                 {money.fmt(Math.round(capitalFinalAnim))}
               </div>
               <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
@@ -367,9 +375,25 @@ export default function Epargne() {
               <Chip label={txt.gain} value={`+${((res.multiplicateur - 1) * 100).toFixed(1)} %`} accent small />
             </div>
 
-            <div ref={chartRef}>
-              <ProgressBar label={txt.compo} value={res.totalInterets} total={res.capitalFinal} color="linear-gradient(90deg,rgba(184,147,74,0.5),rgba(184,147,74,0.2))" />
-            </div>
+            {epargneChartData.length > 1 && (
+              <ZoomableChart innerRef={chartRef} caption={txt.chartAria}>
+                <LineAreaChart
+                  series={[{
+                    id: "capital",
+                    label: txt.capitalFinalLabel,
+                    points: epargneChartData.map(p => ({ x: p.t, y: p.value })),
+                    color: "var(--gold)",
+                    fillColor: "rgba(43,92,230,0.12)",
+                  }]}
+                  xFmt={(v) => txt.chartYears(Math.round(v))}
+                  yFmt={(v) => {
+                    const sym = money.symbol;
+                    return v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M${sym}` : `${Math.round(v / 1000)}k${sym}`;
+                  }}
+                  aria={txt.chartAria}
+                />
+              </ZoomableChart>
+            )}
 
             <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
               {txt.disclaimer}
@@ -382,7 +406,7 @@ export default function Epargne() {
         )}
 
         {hasResult && !compareOn && (
-          <button onClick={startCompare} style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
+          <button onClick={startCompare} style={{ width: "100%", marginBottom: 20, padding: "14px 20px", borderRadius: 14, cursor: "pointer", background: "var(--card-bg)", border: "1px dashed var(--border-gold)", color: "var(--gold)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 500 }}>
             {txt.compareBtn}
           </button>
         )}
@@ -390,7 +414,7 @@ export default function Epargne() {
         {hasResult && compareOn && (
           <div style={{ background: "var(--card-bg)", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "24px", marginBottom: 20, boxShadow: "var(--card-shadow)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 18 }}>
-              <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 20, fontWeight: 600, color: "var(--text)" }}>{txt.compareTitle}</h2>
+              <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--text)" }}>{txt.compareTitle}</h2>
               <button onClick={() => setCompareOn(false)} aria-label="Fermer la comparaison" style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>✕</button>
             </div>
             <div className="cmp-grid">
@@ -403,7 +427,7 @@ export default function Epargne() {
                   <li>{txt.dureeLabel} : <strong style={{ color: "var(--text)" }}>{txt.reportAns(duree)}</strong></li>
                 </ul>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{txt.capitalFinalResult}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{money.fmt(Math.round(res.capitalFinal))}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--text)" }}>{money.fmt(Math.round(res.capitalFinal))}</div>
               </div>
               <div className="cmp-colB" style={{ borderLeft: "1px solid var(--border)", paddingLeft: 18 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>{txt.scenarioB}</div>
@@ -412,7 +436,7 @@ export default function Epargne() {
                 <StepperInput label={txt.tauxLabel} value={bTaux} onChange={setBTaux} min={0} max={20} step={0.1} unit="%" />
                 <StepperInput label={txt.dureeLabel} value={bDuree} onChange={setBDuree} min={1} max={40} step={1} unit={txt.dureeUnit} />
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginTop: 4 }}>{txt.capitalFinalResult}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? money.fmt(Math.round(resB.capitalFinal)) : "—"}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--gold)" }}>{hasB ? money.fmt(Math.round(resB.capitalFinal)) : "—"}</div>
               </div>
             </div>
             {hasB && (
@@ -448,7 +472,7 @@ export default function Epargne() {
                   {res.yearlyData.map((row, idx) => (
                     <tr key={idx} style={{ borderBottom: "1px solid var(--border)", background: row.annee % 2 === 0 ? "var(--input-bg)" : "transparent" }}>
                       <td style={{ padding: "10px 8px", textAlign: "left" }}>{txt.rowYear(row.annee)}</td>
-                      <td style={{ padding: "10px 8px", textAlign: "right", fontFamily: "'Cormorant Garamond', serif", fontWeight: 600, color: "var(--gold)" }}>{money.fmt(row.capital)}</td>
+                      <td style={{ padding: "10px 8px", textAlign: "right", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, color: "var(--gold)" }}>{money.fmt(row.capital)}</td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--text-secondary)" }}>{money.fmt(row.versementsCum)}</td>
                       <td style={{ padding: "10px 8px", textAlign: "right", color: "var(--gold-mid)", fontWeight: 500 }}>{money.fmt(row.interstsCum)}</td>
                     </tr>
@@ -459,22 +483,24 @@ export default function Epargne() {
           </AccordionSection>
         )}
 
+        {hasResult && <AffiliateCTA type="epargne" />}
+
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.h3Magic}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>{txt.h3Magic}</h3>
             <p style={{ marginBottom: 16 }}>{txt.pMagic}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Rule72}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Rule72}</h3>
             <p style={{ marginBottom: 16 }}>{txt.pRule72}</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Duration}</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>{txt.h3Duration}</h3>
             <p>{txt.pDuration}</p>
           </div>
         </div>
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.faqTitle}</h2>
           {txt.faq.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
 
@@ -487,16 +513,3 @@ export default function Epargne() {
   );
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}

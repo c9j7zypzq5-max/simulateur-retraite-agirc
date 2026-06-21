@@ -1,5 +1,4 @@
 const KEY = 'mesim_history_v1';
-const MAX = 8;
 
 export function useSimHistory() {
   function getHistory() {
@@ -12,7 +11,7 @@ export function useSimHistory() {
     try {
       const filtered = getHistory().filter(e => e.shareUrl !== shareUrl);
       const entry = { id: Date.now(), simulator, label, shareUrl, savedAt: new Date().toISOString() };
-      localStorage.setItem(KEY, JSON.stringify([entry, ...filtered].slice(0, MAX)));
+      localStorage.setItem(KEY, JSON.stringify([entry, ...filtered]));
       return true;
     } catch { return false; }
   }

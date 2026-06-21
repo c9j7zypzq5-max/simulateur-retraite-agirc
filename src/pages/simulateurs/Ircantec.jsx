@@ -1,6 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
+import ZoomableChart from "../../components/ZoomableChart.jsx";
+import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
@@ -9,11 +11,13 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
 const PASS = 48_060;
@@ -94,10 +98,9 @@ export default function Ircantec() {
 
   const resultsRef = useRef(null);
 
+  usePageMeta("Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
 
   useEffect(() => {
-    document.title = "Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com' + window.location.pathname;
@@ -127,6 +130,17 @@ export default function Ircantec() {
   const pensionAnim = useAnimatedNumber(res.pensionMensuelle);
   const hasResult = res.pensionMensuelle > 0;
 
+  const currentTotal = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
+  const ircantecChart = useMemo(() => {
+    if (!salaire) return [];
+    const maxAns = Math.max(40, currentTotal);
+    return Array.from({ length: maxAns }, (_, i) => {
+      const n = i + 1;
+      const r = calcIrcantec({ salaire, anneesFaites: n, anneesRestantes: 0, ageDépart, tauxReval });
+      return { x: n, y: r.pensionMensuelle };
+    });
+  }, [salaire, ageDépart, tauxReval, currentTotal]);
+
   const report = {
     title: "Simulateur Retraite IRCANTEC",
     highlight: { label: "Pension complémentaire nette mensuelle", value: hasResult ? fmtEur(res.pensionMensuelle) : "—" },
@@ -150,7 +164,7 @@ export default function Ircantec() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'DM Sans', sans-serif", color: "var(--text)" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite IRCANTEC",
@@ -170,7 +184,7 @@ export default function Ircantec() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 60px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/ircantec" size={34} />}
           badge="Contractuels publics · Données 2026"
@@ -180,13 +194,13 @@ export default function Ircantec() {
         />
 
         {/* Réassurance */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "rgba(184,147,74,0.07)", border: "1px solid var(--border-gold)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
           {["✓ Valeur d'achat : 8,06 €/point", "✓ Valeur de service : 0,54076 €/pt/an", "✓ Tranche A + Tranche B"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "32px 28px", boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 28, fontWeight: 400 }}>Votre situation</h2>
 
           <NumInput id="salaire" label="Salaire brut mensuel" value={salaire} onChange={setSalaire} unit="€" min={500} max={40000}
             hint={salaire ? `PASS 2026 : 4 005 €/mois · ${salaire * 12 > PASS ? "Tranche B activée" : "Tranche A uniquement"}` : "Salaire brut mensuel servant au calcul des cotisations IRCANTEC"}
@@ -199,7 +213,7 @@ export default function Ircantec() {
           </div>
 
           {/* Résumé points */}
-          <div style={{ background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.15)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.12)", borderRadius: 12, padding: "14px 20px", display: "flex", flexWrap: "wrap" }}>
             {[
               { l: "Points/an", v: salaire ? fmt(res.ptsParAn) : "—", gold: true },
               { l: "Points TA", v: fmt(res.pointsTA) },
@@ -207,7 +221,7 @@ export default function Ircantec() {
             ].map((item, i) => (
               <div key={i} style={{ flex: 1, minWidth: 100, padding: "4px 16px", borderLeft: i > 0 ? "1px solid var(--border)" : "none" }}>
                 <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{item.l}</div>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 21, fontWeight: 700, color: item.gold ? "var(--gold)" : "var(--text)" }}>{item.v}</div>
               </div>
             ))}
           </div>
@@ -229,16 +243,16 @@ export default function Ircantec() {
         </AccordionSection>
 
         {/* Résultats */}
-        <div ref={resultsRef} style={{ background: "linear-gradient(135deg,rgba(184,147,74,0.08),rgba(232,192,106,0.03))", border: "1px solid var(--border-gold)", borderRadius: 20, padding: "32px 28px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension IRCANTEC estimée</h2>
+        <div ref={resultsRef} style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20, boxShadow: "var(--card-shadow)" }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: "var(--text-secondary)", marginBottom: 24, fontWeight: 400 }}>Votre pension IRCANTEC estimée</h2>
 
           <div style={{ textAlign: "center", padding: "20px 0 24px", borderBottom: "1px solid var(--border)", marginBottom: 20 }}>
-            <div style={{ fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Pension complémentaire nette mensuelle</div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 6 }}>Pension complémentaire nette mensuelle</div>
             {!hasResult ? (
               <p style={{ color: "var(--text-secondary)", fontSize: 14, padding: "16px 0" }}>Saisissez vos paramètres pour voir votre estimation.</p>
             ) : (
               <>
-                <div style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(48px,10vw,72px)", fontWeight: 700, lineHeight: 1, background: "linear-gradient(135deg,var(--gold),var(--gold-mid))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}
                   aria-label={`${Math.round(res.pensionMensuelle)} euros par mois`}>
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
@@ -259,6 +273,23 @@ export default function Ircantec() {
 
               <ProgressBar label="Points Tranche A" value={res.pointsTA} total={res.totalPoints} color="var(--progress-acquired)" />
               <ProgressBar label="Points Tranche B" value={res.pointsTB} total={res.totalPoints} color="linear-gradient(90deg,var(--gold-mid),var(--gold))" />
+
+              {ircantecChart.length > 1 && (
+                <div style={{ marginTop: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
+                    Pension selon la durée de cotisation totale
+                  </div>
+                  <ZoomableChart caption="Pension nette mensuelle IRCANTEC selon le total d'années cotisées">
+                    <LineAreaChart
+                      series={[{ id: "pension", label: "Pension nette / mois", points: ircantecChart, color: "var(--primary)" }]}
+                      xFmt={v => `${v} ans`}
+                      yFmt={v => `${Math.round(v)} €`}
+                      annotations={currentTotal > 0 ? [{ x: currentTotal }] : []}
+                      aria="Pension IRCANTEC selon les années de cotisation"
+                    />
+                  </ZoomableChart>
+                </div>
+              )}
 
               {/* Cotisations */}
               <AccordionSection title="Détail des cotisations" subtitle="Répartition salarié / employeur sur toute la carrière">
@@ -282,7 +313,7 @@ export default function Ircantec() {
         </div>
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval }} resultsRef={resultsRef} report={report} name="ircantec" />
-
+        {hasResult && <AffiliateCTA type="retraite" />}
         {hasResult && (
           <ScenarioCompare
             name="ircantec"
@@ -300,27 +331,28 @@ export default function Ircantec() {
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 
         {/* À propos */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
           <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime des agents non titulaires de l'État</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime des agents non titulaires de l'État</h3>
             <p style={{ marginBottom: 16 }}>L'IRCANTEC (Institution de Retraite Complémentaire des Agents Non Titulaires de l'État et des Collectivités) est le régime de retraite complémentaire obligatoire des agents contractuels de la fonction publique. Il couvre les contractuels de l'État, des collectivités territoriales, des hôpitaux publics et de nombreux organismes parapublics, soit environ 4 millions de cotisants actifs.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un système de points, comme l'Agirc-Arrco</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un système de points, comme l'Agirc-Arrco</h3>
             <p style={{ marginBottom: 16 }}>L'IRCANTEC est un régime par points. Chaque année, vos cotisations sont converties en points : votre salaire brut est multiplié par un taux global (5,50 % jusqu'au PASS en 2026, 11,35 % au-delà), puis divisé par la valeur d'achat du point. En 2026, la valeur de service du point IRCANTEC est de 0,5204 € et la valeur d'achat de 12,516 €. À la liquidation, vos points accumulés sont multipliés par la valeur de service pour obtenir votre pension annuelle complémentaire.</p>
-            <h3 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions de liquidation</h3>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions de liquidation</h3>
             <p>La pension IRCANTEC suit les mêmes règles d'âge que le régime général (64 ans pour les générations 1965+). Aucun taux plein n'est requis pour liquider : la pension est calculée proportionnellement aux points acquis, quel que soit l'âge ou la durée de cotisation. Les droits IRCANTEC s'ajoutent à la pension de base du régime général pour les agents qui y ont également cotisé.</p>
           </div>
         </div>
 
         {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — IRCANTEC</h2>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — IRCANTEC</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
         </div>
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );
@@ -332,7 +364,7 @@ function FaqItem({ q, a }) {
     <div style={{ borderBottom: "1px solid var(--border)" }}>
       <button onClick={() => setOpen(o => !o)} aria-expanded={open}
         style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
         <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
       </button>
       {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
