@@ -4,7 +4,7 @@ import { ImageResponse } from '@vercel/og';
 // d'une simulation, via @vercel/og (Edge runtime, sans module natif).
 // Utilisée comme aperçu de partage social par /api/share.
 //
-// GET /api/og?t=<titre>&v=<valeur>&s=<sous-titre>&c=<catégorie>
+// GET /api/og?t=<titre>&v=<valeur>&s=<sous-titre>&c=<catégorie>&l=<fr|en>
 
 export const config = { runtime: 'edge' };
 
@@ -25,21 +25,44 @@ export default function handler(req) {
   const v = clip(searchParams.get('v'), 22);
   const s = clip(searchParams.get('s'), 60);
   const c = clip(searchParams.get('c'), 20);
+  const isEn = searchParams.get('l') === 'en';
   const color = CAT_COLOR[c] || '#b8934a';
 
-  const header = [el({ fontSize: 30, fontWeight: 700, color: '#e8c06a', display: 'flex' }, 'simfinly.com')];
-  if (c) header.push(el({ marginTop: 16, fontSize: 24, fontWeight: 600, color, display: 'flex' }, c));
+  const footerText = isEn ? 'Calculate for free on simfinly.com' : 'Simulez gratuitement sur simfinly.com';
 
-  const middle = [];
+  // ── En-tête : marque + pastille de catégorie ──
+  const header = [
+    el({ display: 'flex', alignItems: 'center' }, [
+      el({ width: 14, height: 14, borderRadius: 4, backgroundColor: '#e8c06a', marginRight: 14, display: 'flex' }, ''),
+      el({ fontSize: 30, fontWeight: 700, color: '#e8c06a', display: 'flex' }, 'simfinly.com'),
+    ]),
+  ];
+  if (c) {
+    header.push(el({
+      marginTop: 18, fontSize: 22, fontWeight: 600, color, display: 'flex',
+      border: `2px solid ${color}`, borderRadius: 999, padding: '6px 18px', alignSelf: 'flex-start',
+    }, c));
+  }
+
+  let middle;
   if (v) {
-    // Carte de résultat : titre moyen + valeur en grand.
-    if (t) middle.push(el({ fontSize: 44, fontWeight: 700, marginBottom: 6, display: 'flex' }, t));
-    middle.push(el({ fontSize: 112, fontWeight: 800, color: '#e8c06a', display: 'flex' }, v));
-    if (s) middle.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 8, display: 'flex' }, s));
+    // ── Carte de résultat : liseré d'accent + valeur mise en avant ──
+    const inner = [];
+    if (t) inner.push(el({ fontSize: 38, fontWeight: 600, color: '#c8cedb', marginBottom: 10, display: 'flex' }, t));
+    inner.push(el({ fontSize: 110, fontWeight: 800, color: '#e8c06a', lineHeight: 1, display: 'flex' }, v));
+    if (s) inner.push(el({ fontSize: 26, color: '#9aa4b2', marginTop: 14, display: 'flex' }, s));
+    middle = el({
+      display: 'flex', flexDirection: 'column',
+      backgroundColor: 'rgba(255,255,255,0.04)',
+      borderLeft: `10px solid ${color}`,
+      borderRadius: 20, padding: '40px 44px',
+    }, inner);
   } else {
-    // Carte de page : titre en grand.
-    if (t) middle.push(el({ fontSize: 64, fontWeight: 800, lineHeight: 1.1, display: 'flex', color: '#f4f1ea' }, t));
-    if (s) middle.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 12, display: 'flex' }, s));
+    // ── Carte de page : titre en grand ──
+    const inner = [];
+    if (t) inner.push(el({ fontSize: 64, fontWeight: 800, lineHeight: 1.1, display: 'flex', color: '#f4f1ea' }, t));
+    if (s) inner.push(el({ fontSize: 28, color: '#9aa4b2', marginTop: 12, display: 'flex' }, s));
+    middle = el({ display: 'flex', flexDirection: 'column' }, inner);
   }
 
   const tree = el(
@@ -50,8 +73,11 @@ export default function handler(req) {
     },
     [
       el({ display: 'flex', flexDirection: 'column' }, header),
-      el({ display: 'flex', flexDirection: 'column' }, middle),
-      el({ fontSize: 22, color: '#6b7280', display: 'flex' }, 'Simulez gratuitement sur simfinly.com'),
+      middle,
+      el({ display: 'flex', alignItems: 'center' }, [
+        el({ width: 28, height: 3, borderRadius: 2, backgroundColor: color, marginRight: 14, display: 'flex' }, ''),
+        el({ fontSize: 22, color: '#6b7280', display: 'flex' }, footerText),
+      ]),
     ]
   );
 

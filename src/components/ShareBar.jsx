@@ -4,6 +4,7 @@ import { buildShareUrl, encodeParams } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import { useAuth } from "../hooks/useAuth.js";
+import { useTranslation } from "../i18n/index.js";
 
 const SS_KEY = "pending_pro_pdf";
 
@@ -45,6 +46,7 @@ function cleanClone(clonedDoc) {
 
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const { isPro } = useAuth();
+  const { t, locale } = useTranslation();
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -205,11 +207,12 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         v: report.highlight.value || "",
         s: report.highlight.label || "",
         c: cat,
+        l: locale,
       });
       url = `${window.location.origin}/api/share?${qs.toString()}`;
     }
-    const title = `Simulation — ${name} · simfinly.com`;
-    const text = "Voici ma simulation. Faites la vôtre gratuitement :";
+    const title = `${report?.title || name} · simfinly.com`;
+    const text = t("common.shareText");
     try {
       const canvas = await snapshot(resultsRef?.current || pageContainer());
       const blob = canvas ? await canvasToBlob(canvas) : null;
@@ -232,7 +235,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     <div ref={barRef} data-noexport="true" style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
       {report?.highlight && (
         <div style={{ flexBasis: "100%", fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 2 }}>
-          💡 Fier de votre résultat ? Partagez-le ou exportez-le en un clic.
+          {t("common.shareIncentive")}
         </div>
       )}
       {showDownload && (
@@ -240,7 +243,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           <button style={btnStyle} onClick={() => setMenuOpen(o => !o)} disabled={busy}
             onMouseEnter={hoverIn} onMouseLeave={hoverOut} aria-haspopup="true" aria-expanded={menuOpen}>
             <DownloadIcon />
-            <span className="btn-text">{busy ? "…" : "Télécharger"}</span>
+            <span className="btn-text">{busy ? "…" : t("common.download")}</span>
           </button>
           {menuOpen && (
             <div role="menu" style={{
@@ -250,9 +253,9 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
               boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
             }}>
               {[
-                { label: "Image (carte résultat)", fn: handleDownloadPNG },
-                { label: "Document PDF complet", fn: handleDownloadPDF },
-                { label: "Rapport Pro", fn: handleProPdf },
+                { label: t("common.dlImage"), fn: handleDownloadPNG },
+                { label: t("common.dlPdf"), fn: handleDownloadPDF },
+                { label: t("common.dlPro"), fn: handleProPdf },
               ].map(opt => (
                 <button key={opt.label} role="menuitem" onClick={opt.fn}
                   style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
@@ -270,7 +273,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         <button style={btnStyle} onClick={handleShare} disabled={busy}
           onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
           <ShareIcon />
-          <span className="btn-text">Partager</span>
+          <span className="btn-text">{t("common.share")}</span>
         </button>
         {copied && (
           <div style={{
@@ -279,7 +282,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
             fontSize: 11, fontWeight: 600, padding: "4px 10px", borderRadius: 6,
             whiteSpace: "nowrap", pointerEvents: "none", animation: "fadeIn 0.15s ease",
           }}>
-            Copié !
+            {t("common.copied")}
           </div>
         )}
       </div>

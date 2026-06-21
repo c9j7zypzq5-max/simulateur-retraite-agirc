@@ -12,7 +12,8 @@ function esc(s) {
 }
 
 export default function handler(req, res) {
-  const { to = '/', t = '', v = '', s = '', c = '' } = req.query || {};
+  const { to = '/', t = '', v = '', s = '', c = '', l = 'fr' } = req.query || {};
+  const isEn = String(l) === 'en';
 
   // Anti open-redirect : on ne redirige que vers notre propre domaine.
   let dest = String(to);
@@ -22,17 +23,24 @@ export default function handler(req, res) {
     dest = BASE + (dest.startsWith('/') ? '' : '/') + dest;
   }
 
-  const q = new URLSearchParams({ t, v, s, c }).toString();
+  const q = new URLSearchParams({ t, v, s, c, l: isEn ? 'en' : 'fr' }).toString();
   const ogImg = `${BASE}/api/og?${q}`;
   const title = `${t}${v ? ` : ${v}` : ''} · simfinly.com`;
-  const desc = s || 'Simulation réalisée sur simfinly.com — faites la vôtre gratuitement.';
+  const desc = s || (isEn
+    ? 'Simulation made on simfinly.com — make yours for free.'
+    : 'Simulation réalisée sur simfinly.com — faites la vôtre gratuitement.');
+  const ogLocale = isEn ? 'en_US' : 'fr_FR';
+  const redirectLine = isEn
+    ? `Redirecting to the simulation… <a style="color:#e8c06a" href="${esc(dest)}">Continue</a>`
+    : `Redirection vers la simulation… <a style="color:#e8c06a" href="${esc(dest)}">Continuer</a>`;
 
-  const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
+  const html = `<!DOCTYPE html><html lang="${isEn ? 'en' : 'fr'}"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(title)}</title>
 <meta name="robots" content="noindex">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="simfinly.com">
+<meta property="og:locale" content="${ogLocale}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(ogImg)}">
@@ -45,7 +53,7 @@ export default function handler(req, res) {
 <meta http-equiv="refresh" content="0;url=${esc(dest)}">
 </head><body style="font-family:sans-serif;background:#060e1c;color:#f4f1ea;text-align:center;padding:80px 20px">
 <script>location.replace(${JSON.stringify(dest)})</script>
-<p>Redirection vers la simulation… <a style="color:#e8c06a" href="${esc(dest)}">Continuer</a></p>
+<p>${redirectLine}</p>
 </body></html>`;
 
   res.setHeader('Content-Type', 'text/html; charset=utf-8');
