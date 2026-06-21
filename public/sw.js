@@ -1,4 +1,4 @@
-const CACHE = 'mesim-v1';
+const CACHE = 'simfinly-v1';
 
 self.addEventListener('install', e => {
   e.waitUntil(

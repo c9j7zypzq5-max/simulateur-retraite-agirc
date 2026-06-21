@@ -1,34 +1,21 @@
 {
-  "name": "simfinly.com",
-  "short_name": "Simulateurs",
-  "description": "25 simulateurs financiers gratuits : retraite, épargne, FIRE, immobilier, impôts",
+  "name": "Simfinly — Simulateurs financiers",
+  "short_name": "Simfinly",
+  "description": "30+ simulateurs financiers : retraite, épargne, immobilier, impôts",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#060e1c",
-  "theme_color": "#b8934a",
+  "background_color": "#ffffff",
+  "theme_color": "#2b5ce6",
   "lang": "fr-FR",
   "orientation": "any",
   "categories": ["finance", "utilities"],
   "icons": [
     {
-      "src": "/logo-mark.svg",
+      "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "/logo-mark.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "maskable"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/og-image.svg",
-      "type": "image/svg+xml",
-      "label": "simfinly.com — accueil"
+      "purpose": "any maskable"
     }
   ]
 }
