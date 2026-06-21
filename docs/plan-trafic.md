@@ -55,3 +55,23 @@ Chaque simulateur ouvre un nouveau corpus de requêtes. Pistes à fort volume :
 2. **Blog auto + liens articles↔simulateurs** (contenu frais récurrent).
 3. **2-3 nouveaux simulateurs à fort volume**.
 4. **Backlinks + partage social**.
+
+## Réalisé (lot « site-improvements-traffic »)
+- [x] **Nouveaux simulateurs** : frais de notaire (`/simulateurs/frais-notaire`)
+      et pension de réversion (`/simulateurs/pension-reversion`) — WebApplication
+      + FAQPage + HowTo, prérendu SEO, carte d'accueil, sitemap.
+- [x] **Pages comparatives** (`/comparatifs`, `/comparatifs/:slug`) : PER vs
+      assurance-vie, louer ou acheter, freelance vs salarié. JSON-LD Article +
+      BreadcrumbList, prérendu, sitemap, lien footer. Données dans
+      `src/data/comparatifs.js`.
+- [x] **Internationalisation** : version EN de « Ma vie en semaines »
+      (`/en/simulators/life-in-weeks`), à parité avec les simulateurs déjà traduits.
+- [x] **Viralité** : incitation au partage affichée au-dessus de `ShareBar`
+      lorsqu'un résultat est disponible.
+
+## Reste à faire (suite recommandée)
+- [ ] Traduire en EN les simulateurs universels restants (emprunt-immobilier,
+      rendement-locatif, assurance-vie) — refactor TXT fr/en par fichier.
+- [ ] Étendre les comparatifs (SCPI vs locatif, micro vs réel, capital vs rente).
+- [ ] Image OG enrichie avec la valeur du résultat (étendre `api/og`).
+- [ ] Bloc « Articles liés » sur chaque page simulateur (maillage blog↔sim).
