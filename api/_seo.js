@@ -162,6 +162,10 @@ export const SEO_CONTENT_EN = {
     h1: "Your Life in Weeks Calculator",
     intro: "Visualize your entire life as a grid, one square per week. See how many weeks you have lived, how many remain and how many summers are still ahead. A striking perspective on the time that passes, inspired by the Your Life in Weeks concept.",
   },
+  '/simulateurs/rendement-locatif': {
+    h1: "Rental Yield Calculator (France)",
+    intro: "Calculate the gross and net yield of a French rental investment from the price, rent, costs and taxation. The simulator factors in notary fees, service charges, property tax, management fees and gives the monthly cash flow and return on equity.",
+  },
   '/simulateurs/assurance-vie': {
     h1: "French Life Insurance (Assurance-Vie) Calculator",
     intro: "Project the growth of a French life insurance policy and estimate the tax on your gains at withdrawal. The calculation applies the 8-year advantage, the annual allowance (€4,600 single / €9,200 couple), the 30% flat tax and the 17.2% social levies, using 2025 figures.",
