@@ -49,6 +49,9 @@ const SIMULATEURS_FR = [
   { path: "/simulateurs/vie-en-semaines", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
   // Outils
   { path: "/outils/qr-code", title: "Générateur de QR code", desc: "Créez un QR code personnalisé : vos couleurs, le texte ou lien de votre choix, et votre logo ou un emoji au centre. Téléchargement PNG haute résolution, sans inscription.", tag: "Outils", categories: ["Outils"], badges: ["new"], available: true },
+  // Patrimoine & Juridique
+  { path: "/simulateurs/succession", title: "Droits de succession", desc: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2025 : enfants, conjoint, frères/sœurs. Stratégies de réduction incluses.", tag: "Patrimoine", categories: ["Patrimoine"], badges: ["new"], available: true },
+  { path: "/simulateurs/freelance-vs-salarie", title: "Freelance vs Salarié", desc: "Comparez votre revenu net disponible selon votre statut : salarié, micro-entrepreneur BIC, micro-BNC ou portage salarial. Charges sociales, IR 2025 et comparatif complet.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
 ];
 
 // ── EN simulators (universal subset, English content) ────────────────────────
@@ -63,7 +66,7 @@ const SIMULATEURS_EN = [
   { path: "/outils/qr-code", title: "QR Code Generator", desc: "Create a custom QR code: choose your colors, enter any text or URL, add a logo or emoji in the center. High-resolution PNG download, no sign-up required.", tag: "Tools · Free", categories: ["Tools"], badges: ["new"], available: true },
 ];
 
-const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Outils"];
+const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Outils"];
 const FILTERS_EN = ["All", "Finance", "Tools"];
 
 const TXT = {

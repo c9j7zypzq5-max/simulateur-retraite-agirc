@@ -62,8 +62,13 @@ const CreditConso  = lazy(() => import("./pages/simulateurs/CreditConso.jsx"));
 const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"));
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
 const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
+// Nouveaux simulateurs
+const Succession        = lazy(() => import("./pages/simulateurs/Succession.jsx"));
+const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSalarie.jsx"));
 // Outils
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
+// Dashboard
+const TableauDeBord = lazy(() => import("./pages/TableauDeBord.jsx"));
 
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
@@ -137,6 +142,9 @@ export default function App() {
         <Route path="/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
         {/* Comparateur */}
         <Route path="/simulateurs/comparateur" element={<Comparateur />} />
+        {/* Nouveaux simulateurs */}
+        <Route path="/simulateurs/succession" element={<Succession />} />
+        <Route path="/simulateurs/freelance-vs-salarie" element={<FreelanceVsSalarie />} />
         {/* Outils */}
         <Route path="/outils/qr-code" element={<QrCode />} />
         {/* Blog */}
@@ -155,6 +163,7 @@ export default function App() {
         <Route path="/widgets" element={<Widgets />} />
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
+        <Route path="/tableau-de-bord" element={<TableauDeBord />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Pro / Paiements */}
         <Route path="/pro" element={<Pro />} />

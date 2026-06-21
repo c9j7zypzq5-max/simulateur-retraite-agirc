@@ -6,6 +6,7 @@ import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import OnboardingModal, { shouldShowOnboarding } from "../components/OnboardingModal.jsx";
 
 export default function Compte() {
   const [theme, setTheme] = useTheme();
@@ -14,6 +15,7 @@ export default function Compte() {
   const { t, locale } = useTranslation();
   const [portalBusy, setPortalBusy] = useState(false);
   const [error, setError] = useState("");
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     document.title = t("account.docTitle");
@@ -30,6 +32,10 @@ export default function Compte() {
       navigate(`${loginPath}?next=${next}`, { replace: true });
     }
   }, [loading, user, navigate, locale]);
+
+  useEffect(() => {
+    if (user && shouldShowOnboarding()) setShowOnboarding(true);
+  }, [user]);
 
   async function handleManageSubscription() {
     setPortalBusy(true); setError("");
@@ -73,6 +79,7 @@ export default function Compte() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+      {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
       <Navbar theme={theme} setTheme={setTheme} />
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
