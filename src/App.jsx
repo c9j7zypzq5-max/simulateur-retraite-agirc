@@ -100,6 +100,21 @@ export default function App() {
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* ── Belgique (/be/) — même contenu FR, règles belges à venir par simulateur ── */}
+        <Route path="/be" element={<Home />} />
+        <Route path="/be/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/be/simulateurs/fire" element={<Fire />} />
+        <Route path="/be/simulateurs/budget" element={<Budget />} />
+        <Route path="/be/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/be/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/be/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/be/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/be/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
+        <Route path="/be/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/be/simulateurs/succession" element={<Succession />} />
+        <Route path="/be/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        <Route path="/be/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/be/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
         <Route path="/en/simulators/savings" element={<Epargne />} />

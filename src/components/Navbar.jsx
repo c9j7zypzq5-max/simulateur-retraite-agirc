@@ -4,7 +4,7 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useAuth } from "../hooks/useAuth.js";
 import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
-import LangSwitch from "./LangSwitch.jsx";
+import CountrySwitch from "./CountrySwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
 import { canonicalPath, localePath } from "../i18n/paths.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
@@ -308,6 +308,7 @@ export default function Navbar({ theme, setTheme }) {
           {/* Right controls */}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
+            <div className="desktop-nav"><CountrySwitch compact /></div>
           </div>
         </div>
 
@@ -700,8 +701,8 @@ export default function Navbar({ theme, setTheme }) {
             </div>
           )}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{locale === 'en' ? "Language" : "Langue"}</span>
-            <LangSwitch compact />
+            <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{locale === 'en' ? "Country" : "Pays"}</span>
+            <CountrySwitch compact />
           </div>
         </div>
       </aside>
