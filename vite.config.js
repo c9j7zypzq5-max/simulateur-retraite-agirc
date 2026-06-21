@@ -3,6 +3,9 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  test: {
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**'],
+  },
   // Générateur vidéo désactivé en production (préserve le quota Vercel tant que
   // le site n'est pas monétisé) ; actif en preview et en local.
   define: {

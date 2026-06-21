@@ -79,8 +79,14 @@ const SuccessionBE   = lazy(() => import("./pages/simulateurs/SuccessionBE.jsx")
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 // Dashboard
 const TableauDeBord        = lazy(() => import("./pages/TableauDeBord.jsx"));
-const WizardRetraite       = lazy(() => import("./pages/WizardRetraite.jsx"));
-const RapportPartage       = lazy(() => import("./pages/RapportPartage.jsx"));
+const WizardRetraite         = lazy(() => import("./pages/WizardRetraite.jsx"));
+const RapportPartage         = lazy(() => import("./pages/RapportPartage.jsx"));
+const SynthesePatrimoniale   = lazy(() => import("./pages/SynthesePatrimoniale.jsx"));
+// Simulateurs suisses
+const LppDeuxiemePilier      = lazy(() => import("./pages/simulateurs/LppDeuxiemePilier.jsx"));
+const ImpotRevenuCH          = lazy(() => import("./pages/simulateurs/ImpotRevenuCH.jsx"));
+const PrevoyanceCH           = lazy(() => import("./pages/simulateurs/PrevoyanceCH.jsx"));
+const ComparaisonReforme     = lazy(() => import("./pages/simulateurs/ComparaisonReforme.jsx"));
 
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
@@ -132,6 +138,13 @@ export default function App() {
         {/* Légal */}
         <Route path="/be/mentions-legales" element={<MentionsLegales />} />
         <Route path="/be/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        {/* ── Suisse (/ch/) ── */}
+        <Route path="/ch" element={<Home />} />
+        <Route path="/ch/simulateurs/lpp-deuxieme-pilier" element={<LppDeuxiemePilier />} />
+        <Route path="/ch/simulateurs/impot-revenu-ch" element={<ImpotRevenuCH />} />
+        <Route path="/ch/simulateurs/prevoyance-ch" element={<PrevoyanceCH />} />
+        <Route path="/ch/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/ch/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
         <Route path="/en/simulators/savings" element={<Epargne />} />
@@ -204,6 +217,8 @@ export default function App() {
         <Route path="/tableau-de-bord" element={<TableauDeBord />} />
         <Route path="/wizard-retraite" element={<WizardRetraite />} />
         <Route path="/rapport/:id" element={<RapportPartage />} />
+        <Route path="/synthese-patrimoniale" element={<SynthesePatrimoniale />} />
+        <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Pro / Paiements */}
         <Route path="/pro" element={<Pro />} />
