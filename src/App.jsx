@@ -165,6 +165,7 @@ export default function App() {
         <Route path="/en/simulators/life-in-weeks" element={<VieEnSemaines />} />
         <Route path="/en/simulators/life-insurance" element={<AssuranceVie />} />
         <Route path="/en/simulators/rental-yield" element={<RendementLocatif />} />
+        <Route path="/en/simulators/mortgage" element={<EmpruntImmobilier />} />
         <Route path="/en/simulators/consumer-credit" element={<CreditConso />} />
         <Route path="/en/simulators/comparator" element={<Comparateur />} />
         <Route path="/en/tools/qr-code" element={<QrCode />} />

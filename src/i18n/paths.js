@@ -12,6 +12,7 @@ const EN_PATH_MAP = {
   '/simulateurs/vie-en-semaines':    '/simulators/life-in-weeks',
   '/simulateurs/assurance-vie':      '/simulators/life-insurance',
   '/simulateurs/rendement-locatif':  '/simulators/rental-yield',
+  '/simulateurs/emprunt-immobilier': '/simulators/mortgage',
   '/simulateurs/credit-conso':       '/simulators/consumer-credit',
   '/simulateurs/comparateur':        '/simulators/comparator',
   '/outils/qr-code':                 '/tools/qr-code',

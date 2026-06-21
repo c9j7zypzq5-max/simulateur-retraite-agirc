@@ -162,6 +162,10 @@ export const SEO_CONTENT_EN = {
     h1: "Your Life in Weeks Calculator",
     intro: "Visualize your entire life as a grid, one square per week. See how many weeks you have lived, how many remain and how many summers are still ahead. A striking perspective on the time that passes, inspired by the Your Life in Weeks concept.",
   },
+  '/simulateurs/emprunt-immobilier': {
+    h1: "French Mortgage Calculator",
+    intro: "Work out the monthly payment, borrowing capacity, total cost and debt-to-income ratio of a French mortgage. The calculator includes notary fees, the first-time buyer zero-rate loan (PTZ) and a detailed year-by-year amortization schedule.",
+  },
   '/simulateurs/rendement-locatif': {
     h1: "Rental Yield Calculator (France)",
     intro: "Calculate the gross and net yield of a French rental investment from the price, rent, costs and taxation. The simulator factors in notary fees, service charges, property tax, management fees and gives the monthly cash flow and return on equity.",
