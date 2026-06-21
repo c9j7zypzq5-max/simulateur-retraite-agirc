@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
@@ -88,6 +89,7 @@ const FAQ = [
 
 export default function ImpotRevenu() {
   const [theme, setTheme] = useTheme();
+  const { setTmi: setProfileTmi } = useFiscalProfile();
 
   const [revenuBrut, setRevenuBrut]       = useState(null);
   const [situation, setSituation]         = useState("celibataire");
@@ -126,6 +128,11 @@ export default function ImpotRevenu() {
   }, [revenuBrut, situation, nbEnfants]);
 
   const res = revenuBrut ? calcIR(revenuBrut, situation, nbEnfants) : null;
+
+  useEffect(() => {
+    if (res?.tmi != null) setProfileTmi(Math.round(res.tmi * 100));
+  }, [res?.tmi]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const irNetAnim = useAnimatedNumber(res?.irNet || 0);
 
   const hasResult = res && res.irNet > 0;
