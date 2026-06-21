@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import BaremeUpdateBadge from "./BaremeUpdateBadge.jsx";
 import { Home, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "../lib/router.jsx";
 import { useExporting } from "../utils/exportMode.js";
@@ -369,9 +370,14 @@ function HeaderBreadcrumb() {
 }
 
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
-export function SimulateurHeader({ icon, badge, title, subtitle, desc }) {
+export function SimulateurHeader({ icon, badge, title, subtitle, desc, baremePath }) {
   return (
-    <div style={{ padding: "28px 24px 36px", animation: "fadeUp .5s ease both", textAlign: "center", background: "linear-gradient(180deg, var(--primary-soft) 0%, transparent 100%)", borderRadius: 16, marginBottom: 24 }}>
+    <div style={{ position: "relative", padding: "28px 24px 36px", animation: "fadeUp .5s ease both", textAlign: "center", background: "linear-gradient(180deg, var(--primary-soft) 0%, transparent 100%)", borderRadius: 16, marginBottom: 24 }}>
+      {baremePath && (
+        <div style={{ position: "absolute", top: 14, right: 16 }}>
+          <BaremeUpdateBadge path={baremePath} />
+        </div>
+      )}
       <HeaderBreadcrumb />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
         <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />

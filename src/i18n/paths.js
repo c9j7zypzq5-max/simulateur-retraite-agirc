@@ -61,6 +61,9 @@ export const BE_ROUTES = new Set([
   // Légal
   '/mentions-legales',
   '/politique-de-confidentialite',
+  // Contenu éditorial BE
+  '/be/guides',
+  '/be/lexique',
 ]);
 
 // Retourne le chemin localisé EN pour une route canonique FR.

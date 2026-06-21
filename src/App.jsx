@@ -43,6 +43,8 @@ const Ircantec            = lazy(() => import("./pages/simulateurs/Ircantec.jsx"
 const RetraiteProgressive = lazy(() => import("./pages/simulateurs/RetraiteProgressive.jsx"));
 const Cnavpl              = lazy(() => import("./pages/simulateurs/Cnavpl.jsx"));
 const Msa                 = lazy(() => import("./pages/simulateurs/Msa.jsx"));
+const GuidesBE            = lazy(() => import("./pages/simulateurs/GuidesBE.jsx"));
+const LexiqueBE           = lazy(() => import("./pages/simulateurs/LexiqueBE.jsx"));
 const Per                 = lazy(() => import("./pages/simulateurs/Per.jsx"));
 const SyntheseRetraite    = lazy(() => import("./pages/simulateurs/SyntheseRetraite.jsx"));
 // Immobilier
@@ -136,6 +138,9 @@ export default function App() {
         <Route path="/be/simulateurs/impot-revenu" element={<ImpotRevenuBE />} />
         <Route path="/be/simulateurs/succession" element={<SuccessionBE />} />
         <Route path="/be/simulateurs/pension-legale" element={<PensionLegaleBE />} />
+        {/* Contenu BE */}
+        <Route path="/be/guides" element={<GuidesBE />} />
+        <Route path="/be/lexique" element={<LexiqueBE />} />
         {/* Légal */}
         <Route path="/be/mentions-legales" element={<MentionsLegales />} />
         <Route path="/be/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
