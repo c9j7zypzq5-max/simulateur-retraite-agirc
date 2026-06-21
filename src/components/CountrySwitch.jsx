@@ -1,13 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath, countryFromPath, COUNTRIES } from "../i18n/config.js";
-import { canonicalPath, alternatePath, countryAlternatePath, localePath, EN_ROUTES } from "../i18n/paths.js";
+import { canonicalPath, alternatePath, countryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
 
-// Entrée "English" traitée comme un pseudo-pays (langue internationale).
-const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐', locale: 'en' };
+const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐' };
 
-// Sélecteur de pays / langue sous forme de menu déroulant avec drapeaux.
-// Remplace LangSwitch (bouton FR↔EN) par une interface multi-pays extensible.
+// Sélecteur de pays : toujours visible (FR + BE minimum), EN affiché
+// uniquement sur les routes disponibles en anglais.
 export default function CountrySwitch({ compact = false }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
@@ -18,29 +17,29 @@ export default function CountrySwitch({ compact = false }) {
   const country = locale === 'en' ? 'en' : countryFromPath(pathname);
   const canon = canonicalPath(pathname);
 
-  // Construction des options disponibles pour la page courante
+  // ── Construire les options ──
   const options = [];
 
-  // 🇫🇷 France — toujours disponible (chemin canonique sans préfixe)
-  options.push({ code: 'fr', ...COUNTRIES.fr, path: canon === '/' ? '/' : canon });
+  // 🇫🇷 France — toujours disponible (chemin FR canonique)
+  options.push({ code: 'fr', ...COUNTRIES.fr, path: canon === '/' ? '/' : canon, fallback: false });
 
-  // 🇧🇪 Belgique — si la route existe en /be/
-  const bePath = countryAlternatePath(pathname, 'fr');
-  if (bePath !== null) {
-    options.push({ code: 'be', ...COUNTRIES.be, path: bePath });
-  }
+  // 🇧🇪 Belgique — exact si route en BE_ROUTES, sinon accueil /be
+  const beExact = countryAlternatePath(pathname, 'fr');
+  options.push({
+    code: 'be', ...COUNTRIES.be,
+    path: beExact !== null ? beExact : '/be',
+    fallback: beExact === null,
+  });
 
-  // 🌐 English — si la route existe en /en/
-  if (locale !== 'en' && EN_ROUTES.has(canon)) {
+  // 🌐 English — affiché si route disponible EN ou si déjà en anglais
+  if (locale === 'en') {
+    options.push({ code: 'en', ...EN_OPTION, path: pathname, fallback: false });
+  } else if (EN_ROUTES.has(canon)) {
     const enPath = alternatePath(pathname, 'fr');
-    if (enPath) options.push({ code: 'en', ...EN_OPTION, path: enPath });
-  } else if (locale === 'en') {
-    // Sur une page EN, proposer le retour vers la version FR
-    const frPath = canon;
-    // Already added as 'fr' above
+    if (enPath) options.push({ code: 'en', ...EN_OPTION, path: enPath, fallback: false });
   }
 
-  // Fermer le menu sur clic extérieur ou Escape
+  // Fermer sur clic extérieur / Escape
   useEffect(() => {
     if (!open) return;
     const onDown = e => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
@@ -50,10 +49,7 @@ export default function CountrySwitch({ compact = false }) {
     return () => { document.removeEventListener('mousedown', onDown); window.removeEventListener('keydown', onKey); };
   }, [open]);
 
-  // Pas d'alternatives → ne rien afficher
-  if (options.length < 2) return null;
-
-  const current = options.find(o => o.code === country) || options[0];
+  const current = options.find(o => o.code === country) ?? options[0];
 
   return (
     <div ref={ref} style={{ position: 'relative' }}>
@@ -78,12 +74,7 @@ export default function CountrySwitch({ compact = false }) {
       >
         <span style={{ fontSize: compact ? 14 : 16, lineHeight: 1 }}>{current.flag}</span>
         {!compact && <span style={{ color: 'var(--text-secondary)' }}>{current.label}</span>}
-        <span style={{
-          fontSize: 9, opacity: 0.6,
-          display: 'inline-block',
-          transform: open ? 'rotate(180deg)' : 'none',
-          transition: 'transform 0.15s',
-        }}>▾</span>
+        <span style={{ fontSize: 9, opacity: 0.6, display: 'inline-block', transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}>▾</span>
       </button>
 
       {open && (
@@ -95,13 +86,16 @@ export default function CountrySwitch({ compact = false }) {
             border: '1px solid var(--border)',
             borderRadius: 10,
             boxShadow: '0 4px 20px rgba(15,24,40,0.13)',
-            minWidth: 175,
+            minWidth: 190,
             overflow: 'hidden',
             zIndex: 500,
           }}
         >
           {options.map(opt => {
             const isActive = opt.code === country;
+            const sublabel = opt.code === 'fr' ? 'Simulateurs France'
+              : opt.code === 'be' ? (opt.fallback ? 'Accueil Belgique' : 'Simulateurs Belgique')
+              : 'International';
             return (
               <button
                 key={opt.code}
@@ -120,15 +114,11 @@ export default function CountrySwitch({ compact = false }) {
               >
                 <span style={{ fontSize: 20, lineHeight: 1, flexShrink: 0 }}>{opt.flag}</span>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{
-                    fontSize: 13, fontWeight: isActive ? 600 : 400,
-                    color: isActive ? 'var(--primary)' : 'var(--text)',
-                    fontFamily: "'Hanken Grotesk', sans-serif",
-                  }}>
+                  <div style={{ fontSize: 13, fontWeight: isActive ? 600 : 400, color: isActive ? 'var(--primary)' : 'var(--text)', fontFamily: "'Hanken Grotesk', sans-serif" }}>
                     {opt.label}
                   </div>
                   <div style={{ fontSize: 10.5, color: 'var(--text-secondary)', fontFamily: "'Hanken Grotesk', sans-serif" }}>
-                    {opt.code === 'fr' ? 'Simulateurs France' : opt.code === 'be' ? 'Simulateurs Belgique' : 'International'}
+                    {sublabel}
                   </div>
                 </div>
                 {isActive && <span style={{ fontSize: 8, color: 'var(--primary)', flexShrink: 0 }}>●</span>}

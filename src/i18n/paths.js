@@ -29,10 +29,11 @@ const FR_PATH_MAP = Object.fromEntries(
 // Routes disponibles en anglais (clés FR canoniques).
 export const EN_ROUTES = new Set(Object.keys(EN_PATH_MAP));
 
-// Routes disponibles en Belgique (même contenu que FR pour l'instant ;
-// des règles belges spécifiques seront ajoutées par simulateur par la suite).
+// Routes disponibles en Belgique (certaines avec règles belges spécifiques,
+// d'autres partagées avec la version française).
 export const BE_ROUTES = new Set([
   '/',
+  // Universels (même logique que FR)
   '/simulateurs/epargne',
   '/simulateurs/fire',
   '/simulateurs/budget',
@@ -42,8 +43,13 @@ export const BE_ROUTES = new Set([
   '/simulateurs/credit-conso',
   '/simulateurs/emprunt-immobilier',
   '/simulateurs/rendement-locatif',
-  '/simulateurs/succession',
   '/simulateurs/assurance-vie',
+  // Belges — même route canonique, composant adapté
+  '/simulateurs/impot-revenu',
+  '/simulateurs/succession',
+  // Belges uniquement
+  '/simulateurs/pension-legale',
+  // Légal
   '/mentions-legales',
   '/politique-de-confidentialite',
 ]);

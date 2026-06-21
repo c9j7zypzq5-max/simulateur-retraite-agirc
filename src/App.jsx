@@ -66,6 +66,10 @@ const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
 const Succession         = lazy(() => import("./pages/simulateurs/Succession.jsx"));
 const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSalarie.jsx"));
 const Divorce            = lazy(() => import("./pages/simulateurs/Divorce.jsx"));
+// Simulateurs belges
+const ImpotRevenuBE  = lazy(() => import("./pages/simulateurs/ImpotRevenuBE.jsx"));
+const PensionLegaleBE = lazy(() => import("./pages/simulateurs/PensionLegaleBE.jsx"));
+const SuccessionBE   = lazy(() => import("./pages/simulateurs/SuccessionBE.jsx"));
 // Outils
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 // Dashboard
@@ -100,8 +104,9 @@ export default function App() {
       <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* ── Belgique (/be/) — même contenu FR, règles belges à venir par simulateur ── */}
+        {/* ── Belgique (/be/) ── */}
         <Route path="/be" element={<Home />} />
+        {/* Simulateurs universels — même composant que FR */}
         <Route path="/be/simulateurs/epargne" element={<Epargne />} />
         <Route path="/be/simulateurs/fire" element={<Fire />} />
         <Route path="/be/simulateurs/budget" element={<Budget />} />
@@ -111,8 +116,12 @@ export default function App() {
         <Route path="/be/simulateurs/credit-conso" element={<CreditConso />} />
         <Route path="/be/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/be/simulateurs/rendement-locatif" element={<RendementLocatif />} />
-        <Route path="/be/simulateurs/succession" element={<Succession />} />
         <Route path="/be/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        {/* Simulateurs avec règles belges spécifiques */}
+        <Route path="/be/simulateurs/impot-revenu" element={<ImpotRevenuBE />} />
+        <Route path="/be/simulateurs/succession" element={<SuccessionBE />} />
+        <Route path="/be/simulateurs/pension-legale" element={<PensionLegaleBE />} />
+        {/* Légal */}
         <Route path="/be/mentions-legales" element={<MentionsLegales />} />
         <Route path="/be/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}

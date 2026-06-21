@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Link, LocaleLink, useLocation, useLocale } from "../lib/router.jsx";
+import { Link, LocaleLink, useLocation, useLocale, useCountry } from "../lib/router.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useAuth } from "../hooks/useAuth.js";
 import SimIcon from "../data/simIcons.jsx";
@@ -110,6 +110,33 @@ export const NAV_GROUPS = [
   ]},
 ];
 
+/* ── Données de navigation Belgique ── */
+const BE_NAV_GROUPS = [
+  { id: "retraite", icon: "🏦", label: "Retraite", items: [
+    { path: "/simulateurs/pension-legale", title: "Pension légale (ONSS)", subtitle: "1er pilier belge" },
+  ]},
+  { id: "impots", icon: "📋", label: "Fiscalité", items: [
+    { path: "/simulateurs/impot-revenu",  title: "IPP — Impôt sur le revenu", subtitle: "Barème belge 2025" },
+    { path: "/simulateurs/succession",     title: "Droits de succession",      subtitle: "Wallonie · Bruxelles" },
+  ]},
+  { id: "finances", icon: "💰", label: "Finances", items: [
+    { path: "/simulateurs/budget",       title: "Budget 50/30/20",       subtitle: "Répartition & épargne" },
+    { path: "/simulateurs/epargne",      title: "Épargne",               subtitle: "Intérêts composés" },
+    { path: "/simulateurs/fire",         title: "Indépendance financière", subtitle: "Règle des 25x / 4%" },
+    { path: "/simulateurs/patrimoine",   title: "Patrimoine global",      subtitle: "Actifs nets" },
+    { path: "/simulateurs/comparateur",  title: "Comparateur d'actifs",   subtitle: "ETF, actions, crypto…" },
+    { path: "/simulateurs/assurance-vie",title: "Assurance-vie",          subtitle: "Branche 21 / 23" },
+    { path: "/simulateurs/credit-conso", title: "Crédit conso",           subtitle: "Mensualité & coût total" },
+  ]},
+  { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
+    { path: "/simulateurs/emprunt-immobilier", title: "Emprunt immobilier",  subtitle: "Mensualités & capacité" },
+    { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",   subtitle: "Rentabilité nette" },
+  ]},
+  { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
+    { path: "/simulateurs/cout-en-heures", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+  ]},
+];
+
 /* ── Données de navigation EN (universal simulators only) ── */
 const EN_NAV_GROUPS = [
   { id: "finances", icon: "💰", label: "Finance", items: [
@@ -132,8 +159,9 @@ const ALL_ITEMS = ALL_ITEMS_FR;
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
   const locale = useLocale();
+  const country = useCountry();
   const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
-  const navGroups = locale === 'en' ? EN_NAV_GROUPS : NAV_GROUPS;
+  const navGroups = locale === 'en' ? EN_NAV_GROUPS : country === 'be' ? BE_NAV_GROUPS : NAV_GROUPS;
 
   const { isPro, user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
