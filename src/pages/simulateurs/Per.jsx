@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -96,6 +97,7 @@ const FAQ = [
 export default function Per() {
   const [theme, setTheme] = useTheme();
   const isMobile = useIsMobile();
+  const { tmi: profileTmi } = useFiscalProfile();
 
   const card = {
     background: "var(--surface)", border: "1px solid var(--border)",
@@ -105,7 +107,7 @@ export default function Per() {
 
   const [versement, setVersement]   = useState(null);
   const [revenu, setRevenu]         = useState(null);
-  const [tmi, setTmi]               = useState(30);
+  const [tmi, setTmi]               = useState(profileTmi);
   const [ageActuel, setAgeActuel]   = useState(40);
   const [ageDepart, setAgeDepart]   = useState(64);
   const [rendement, setRendement]   = useState(3);

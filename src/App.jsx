@@ -34,6 +34,7 @@ const Merci                   = lazy(() => import("./pages/Merci.jsx"));
 const MerciPro                = lazy(() => import("./pages/MerciPro.jsx"));
 const Connexion               = lazy(() => import("./pages/Connexion.jsx"));
 const Compte                  = lazy(() => import("./pages/Compte.jsx"));
+const Simulateurs             = lazy(() => import("./pages/Simulateurs.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -212,6 +213,7 @@ export default function App() {
         <Route path="/embed/emprunt" element={<EmbedEmprunt />} />
         <Route path="/embed/fire" element={<EmbedFire />} />
         <Route path="/widgets" element={<Widgets />} />
+        <Route path="/simulateurs" element={<Simulateurs />} />
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
         <Route path="/tableau-de-bord" element={<TableauDeBord />} />

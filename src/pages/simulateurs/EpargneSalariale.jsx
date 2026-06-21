@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -133,13 +134,14 @@ const FAQ = [
 
 export default function EpargneSalariale() {
   const [theme, setTheme] = useTheme();
+  const { tmi: profileTmi } = useFiscalProfile();
   const init = useMemo(() => fromParams(readShareParams()), []);
 
   const [versementMensuel, setVersementMensuel] = useState(init.versementMensuel);
   const [tauxAbondement, setTauxAbondement]     = useState(init.tauxAbondement);
   const [rendementAnnuel, setRendementAnnuel]   = useState(init.rendementAnnuel);
   const [duree, setDuree]                       = useState(init.duree);
-  const [tmi, setTmi]                           = useState(init.tmi);
+  const [tmi, setTmi]                           = useState(() => init.tmi !== DEFAULT.tmi ? init.tmi : profileTmi);
 
   const vals = { versementMensuel, tauxAbondement, rendementAnnuel, duree, tmi };
   const res  = useMemo(() => calcEpargneSalariale(vals), [versementMensuel, tauxAbondement, rendementAnnuel, duree, tmi]); // eslint-disable-line react-hooks/exhaustive-deps
