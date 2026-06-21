@@ -15,12 +15,23 @@ function relativeDate(iso) {
   return "à l'instant";
 }
 
+// Génère l'identifiant base64 pour la page /rapport/:id à partir d'une entrée d'historique
+function buildRapportId(entry) {
+  try {
+    return btoa(JSON.stringify(entry));
+  } catch {
+    return null;
+  }
+}
+
 export default function MesSimulations() {
   const [theme, setTheme] = useTheme();
   const { isPro } = useAuth();
   const { getHistory, removeEntry, clearHistory } = useSimHistory();
   const [history, setHistory] = useState([]);
   const [exporting, setExporting] = useState(false);
+  const [exportingXlsx, setExportingXlsx] = useState(false);
+  const [copiedId, setCopiedId] = useState(null); // id de l'entrée dont le lien vient d'être copié
 
   useEffect(() => {
     document.title = "Mes simulations sauvegardées | simfinly.com";
@@ -41,6 +52,42 @@ export default function MesSimulations() {
       console.error("PDF export failed", e);
     } finally {
       setExporting(false);
+    }
+  }
+
+  async function handleShareEntry(entry) {
+    const rapportId = buildRapportId(entry);
+    if (!rapportId) return;
+    const url = `${window.location.origin}/rapport/${rapportId}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedId(entry.id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {
+      // fallback : ouvrir la page
+      window.open(url, "_blank", "noopener");
+    }
+  }
+
+  async function handleExportXlsx() {
+    if (history.length === 0) return;
+    setExportingXlsx(true);
+    try {
+      const { downloadXLSX } = await import("../utils/export.js");
+      const rows = history.map(e => ({
+        Simulateur: e.simulator || "",
+        Nom: e.label || "",
+        Date: new Date(e.savedAt).toLocaleDateString("fr-FR"),
+        Lien: e.shareUrl || "",
+      }));
+      await downloadXLSX(
+        [{ name: "Simulations", rows }],
+        `simfinly-simulations-${new Date().toISOString().slice(0,10)}.xlsx`
+      );
+    } catch (e) {
+      console.error("XLSX export failed", e);
+    } finally {
+      setExportingXlsx(false);
     }
   }
 
@@ -69,13 +116,20 @@ export default function MesSimulations() {
                   disabled={exporting}
                   style={{ fontSize: 13, color: exporting ? "var(--text-secondary)" : "var(--gold)", background: "none", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "8px 14px", cursor: exporting ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
                 >
-                  {exporting ? "Génération…" : "↓ Exporter en PDF"}
+                  {exporting ? "Génération…" : "↓ PDF"}
                 </button>
               ) : (
                 <Link to="/pro" style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ fontSize: 10, color: "var(--gold)", fontWeight: 700 }}>PRO</span> Exporter en PDF
+                  <span style={{ fontSize: 10, color: "var(--gold)", fontWeight: 700 }}>PRO</span> PDF
                 </Link>
               )}
+              <button
+                onClick={handleExportXlsx}
+                disabled={exportingXlsx}
+                style={{ fontSize: 13, color: exportingXlsx ? "var(--text-secondary)" : "var(--text)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", cursor: exportingXlsx ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+              >
+                {exportingXlsx ? "Export…" : "↓ Excel"}
+              </button>
               <button
                 onClick={() => { clearHistory(); setHistory([]); }}
                 style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", cursor: "pointer" }}
@@ -112,6 +166,12 @@ export default function MesSimulations() {
                   </span>
                   <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 12 }}>{relativeDate(entry.savedAt)}</span>
                 </Link>
+                <button
+                  onClick={() => handleShareEntry(entry)}
+                  aria-label="Partager"
+                  title={copiedId === entry.id ? "Lien copié !" : "Copier le lien de partage"}
+                  style={{ flexShrink: 0, background: "none", border: "none", color: copiedId === entry.id ? "#22c55e" : "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 10px", fontFamily: "'Hanken Grotesk', sans-serif", transition: "color 0.2s" }}
+                >{copiedId === entry.id ? "✓" : "🔗"}</button>
                 <button
                   onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
                   aria-label="Supprimer"
