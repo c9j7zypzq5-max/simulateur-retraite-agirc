@@ -163,6 +163,7 @@ export default function App() {
         <Route path="/en/simulators/wealth" element={<Patrimoine />} />
         <Route path="/en/simulators/cost-in-hours" element={<CoutEnHeures />} />
         <Route path="/en/simulators/life-in-weeks" element={<VieEnSemaines />} />
+        <Route path="/en/simulators/life-insurance" element={<AssuranceVie />} />
         <Route path="/en/simulators/consumer-credit" element={<CreditConso />} />
         <Route path="/en/simulators/comparator" element={<Comparateur />} />
         <Route path="/en/tools/qr-code" element={<QrCode />} />

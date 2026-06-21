@@ -162,6 +162,10 @@ export const SEO_CONTENT_EN = {
     h1: "Your Life in Weeks Calculator",
     intro: "Visualize your entire life as a grid, one square per week. See how many weeks you have lived, how many remain and how many summers are still ahead. A striking perspective on the time that passes, inspired by the Your Life in Weeks concept.",
   },
+  '/simulateurs/assurance-vie': {
+    h1: "French Life Insurance (Assurance-Vie) Calculator",
+    intro: "Project the growth of a French life insurance policy and estimate the tax on your gains at withdrawal. The calculation applies the 8-year advantage, the annual allowance (€4,600 single / €9,200 couple), the 30% flat tax and the 17.2% social levies, using 2025 figures.",
+  },
   '/simulateurs/credit-conso': {
     h1: "Personal Loan Calculator",
     intro: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount borrowed, the APR and the term. Includes optional insurance and a full amortization schedule.",
