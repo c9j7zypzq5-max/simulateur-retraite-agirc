@@ -27,11 +27,19 @@ function buildRapportId(entry) {
 export default function MesSimulations() {
   const [theme, setTheme] = useTheme();
   const { isPro } = useAuth();
-  const { getHistory, removeEntry, clearHistory } = useSimHistory();
+  const { getHistory, removeEntry, clearHistory, updateEntry } = useSimHistory();
   const [history, setHistory] = useState([]);
   const [exporting, setExporting] = useState(false);
   const [exportingXlsx, setExportingXlsx] = useState(false);
   const [copiedId, setCopiedId] = useState(null); // id de l'entrée dont le lien vient d'être copié
+
+  // Inline rename state (Pro only)
+  const [editingId, setEditingId] = useState(null);
+  const [editValue, setEditValue] = useState("");
+
+  // Note state (Pro only)
+  const [openNoteId, setOpenNoteId] = useState(null);
+  const [noteValue, setNoteValue] = useState("");
 
   useEffect(() => {
     document.title = "Mes simulations sauvegardées | simfinly.com";
@@ -91,6 +99,12 @@ export default function MesSimulations() {
     }
   }
 
+  function handleSaveLabel(id) {
+    updateEntry(id, { label: editValue });
+    setEditingId(null);
+    setHistory(getHistory());
+  }
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
@@ -144,6 +158,16 @@ export default function MesSimulations() {
           Vos simulations sauvegardées sont conservées sur cet appareil (rien n'est envoyé sur nos serveurs). Cliquez pour les rouvrir avec les mêmes paramètres.
         </p>
 
+        {!isPro && history.length >= 8 && (
+          <div style={{ background: "rgba(184,147,74,0.08)", border: "1px solid rgba(184,147,74,0.25)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ color: "var(--gold)" }}>⚠️</span>
+            <div>
+              <span style={{ fontSize: 13, color: "var(--text)" }}>Limite de 8 simulations atteinte. </span>
+              <Link to="/pro" style={{ fontSize: 13, color: "var(--gold)", textDecoration: "underline" }}>Passer à Pro pour des simulations illimitées →</Link>
+            </div>
+          </div>
+        )}
+
         {history.length === 0 ? (
           <div style={{ textAlign: "center", padding: "50px 20px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20 }}>
             <div style={{ fontSize: 44, marginBottom: 14 }}>🗂️</div>
@@ -158,30 +182,101 @@ export default function MesSimulations() {
         ) : (
           <div style={{ display: "grid", gap: 12 }}>
             {history.map(entry => (
-              <div key={entry.id} style={{ display: "flex", alignItems: "center", gap: 10, background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "4px 4px 4px 0" }}>
-                <Link to={entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")} style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", textDecoration: "none", color: "var(--text)" }}>
-                  <span style={{ minWidth: 0 }}>
-                    {entry.simulator && <span style={{ display: "block", fontSize: 11, color: "var(--gold-mid)", marginBottom: 2 }}>{entry.simulator}</span>}
-                    <span style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.label}</span>
-                  </span>
-                  <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 12 }}>{relativeDate(entry.savedAt)}</span>
-                </Link>
-                <button
-                  onClick={() => handleShareEntry(entry)}
-                  aria-label="Partager"
-                  title={copiedId === entry.id ? "Lien copié !" : "Copier le lien de partage"}
-                  style={{ flexShrink: 0, background: "none", border: "none", color: copiedId === entry.id ? "#22c55e" : "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 10px", fontFamily: "'Hanken Grotesk', sans-serif", transition: "color 0.2s" }}
-                >{copiedId === entry.id ? "✓" : "🔗"}</button>
-                <button
-                  onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
-                  aria-label="Supprimer"
-                  style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 14, padding: "10px 12px" }}
-                >✕</button>
+              <div
+                key={entry.id}
+                className="sim-entry"
+                style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 4px 4px 0" }}>
+                  <Link to={entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")} style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", textDecoration: "none", color: "var(--text)" }}>
+                    <span style={{ minWidth: 0 }}>
+                      {entry.simulator && <span style={{ display: "block", fontSize: 11, color: "var(--gold-mid)", marginBottom: 2 }}>{entry.simulator}</span>}
+                      <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        {isPro && editingId === entry.id ? (
+                          <input
+                            autoFocus
+                            value={editValue}
+                            onChange={e => setEditValue(e.target.value)}
+                            onBlur={() => handleSaveLabel(entry.id)}
+                            onKeyDown={e => {
+                              if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); }
+                              if (e.key === "Escape") { setEditingId(null); }
+                            }}
+                            onClick={e => e.preventDefault()}
+                            style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
+                          />
+                        ) : (
+                          <>
+                            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.label}</span>
+                            {isPro && (
+                              <button
+                                className="edit-pencil"
+                                onClick={e => { e.preventDefault(); setEditingId(entry.id); setEditValue(entry.label); }}
+                                aria-label="Renommer"
+                                title="Renommer"
+                                style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: "0 2px", color: "var(--text-secondary)", opacity: 0, transition: "opacity 0.15s", flexShrink: 0 }}
+                              >✏️</button>
+                            )}
+                          </>
+                        )}
+                      </span>
+                    </span>
+                    <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 12 }}>{relativeDate(entry.savedAt)}</span>
+                  </Link>
+                  {isPro && (
+                    <button
+                      onClick={() => {
+                        if (openNoteId === entry.id) {
+                          setOpenNoteId(null);
+                        } else {
+                          setOpenNoteId(entry.id);
+                          setNoteValue(entry.note || "");
+                        }
+                      }}
+                      aria-label="Note"
+                      title="Ajouter une note"
+                      style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 8px", fontFamily: "'Hanken Grotesk', sans-serif", position: "relative" }}
+                    >
+                      📝{entry.note ? <span style={{ position: "absolute", top: 6, right: 4, width: 6, height: 6, borderRadius: "50%", background: "#3b82f6", display: "inline-block" }} /> : null}
+                    </button>
+                  )}
+                  <button
+                    onClick={() => handleShareEntry(entry)}
+                    aria-label="Partager"
+                    title={copiedId === entry.id ? "Lien copié !" : "Copier le lien de partage"}
+                    style={{ flexShrink: 0, background: "none", border: "none", color: copiedId === entry.id ? "#22c55e" : "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 10px", fontFamily: "'Hanken Grotesk', sans-serif", transition: "color 0.2s" }}
+                  >{copiedId === entry.id ? "✓" : "🔗"}</button>
+                  <button
+                    onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
+                    aria-label="Supprimer"
+                    style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 14, padding: "10px 12px" }}
+                  >✕</button>
+                </div>
+                {openNoteId === entry.id && (
+                  <div style={{ padding: "8px 16px 12px", borderTop: "1px solid var(--border)" }}>
+                    <textarea
+                      value={noteValue}
+                      onChange={e => setNoteValue(e.target.value)}
+                      placeholder="Ajouter une note à cette simulation…"
+                      style={{ width: "100%", minHeight: 60, padding: "8px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", resize: "vertical", boxSizing: "border-box" }}
+                    />
+                    <button
+                      onClick={() => { updateEntry(entry.id, { note: noteValue }); setOpenNoteId(null); setHistory(getHistory()); }}
+                      style={{ marginTop: 6, padding: "5px 14px", borderRadius: 8, background: "var(--gold)", color: "#1a1000", border: "none", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                    >
+                      Enregistrer
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
+
+      <style>{`
+        .sim-entry:hover .edit-pencil { opacity: 1 !important; }
+      `}</style>
 
       <Footer />
     </div>
