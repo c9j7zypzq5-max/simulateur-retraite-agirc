@@ -9,6 +9,7 @@ const EN_PATH_MAP = {
   '/simulateurs/budget':             '/simulators/budget',
   '/simulateurs/patrimoine':         '/simulators/wealth',
   '/simulateurs/cout-en-heures':     '/simulators/cost-in-hours',
+  '/simulateurs/vie-en-semaines':    '/simulators/life-in-weeks',
   '/simulateurs/credit-conso':       '/simulators/consumer-credit',
   '/simulateurs/comparateur':        '/simulators/comparator',
   '/outils/qr-code':                 '/tools/qr-code',

@@ -158,6 +158,10 @@ export const SEO_CONTENT_EN = {
     h1: "Cost in Hours of Work Calculator",
     intro: "Turn any purchase into real hours of your life. Based on your salary, discover the true cost of a product or subscription expressed in time rather than money.",
   },
+  '/simulateurs/vie-en-semaines': {
+    h1: "Your Life in Weeks Calculator",
+    intro: "Visualize your entire life as a grid, one square per week. See how many weeks you have lived, how many remain and how many summers are still ahead. A striking perspective on the time that passes, inspired by the Your Life in Weeks concept.",
+  },
   '/simulateurs/credit-conso': {
     h1: "Personal Loan Calculator",
     intro: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount borrowed, the APR and the term. Includes optional insurance and a full amortization schedule.",
