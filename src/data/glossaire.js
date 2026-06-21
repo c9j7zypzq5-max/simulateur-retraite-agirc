@@ -662,17 +662,6 @@ export const GLOSSARY = [
 
   // ── Retraite (compléments) ──────────────────────────────────────────────────
   {
-    slug: 'reversion', term: 'Pension de réversion', full: 'Pension de réversion',
-    aliases: ['pension de réversion', 'réversion'], category: 'Retraite',
-    short: "Part de la retraite d'un défunt versée au conjoint survivant, sous conditions.",
-    long: [
-      "La pension de réversion permet au conjoint (ou ex-conjoint) survivant de percevoir une fraction de la retraite du défunt. Les conditions (âge, ressources, mariage) et le taux varient selon les régimes.",
-      "Au régime général, elle représente 54 % de la pension de base, sous condition de ressources.",
-    ],
-    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'],
-    related: ['cnav', 'agirc-arrco'],
-  },
-  {
     slug: 'aspa', term: 'ASPA', full: "Allocation de Solidarité aux Personnes Âgées",
     aliases: ['ASPA'], category: 'Retraite',
     short: "« Minimum vieillesse » : revenu minimal garanti aux retraités les plus modestes.",
