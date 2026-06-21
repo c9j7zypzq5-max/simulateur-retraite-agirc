@@ -5,7 +5,7 @@ import {
   Trophy, Landmark, Scale, Briefcase, Building, Building2, CalendarClock,
   Stethoscope, Wheat, Coins, KeyRound, Receipt, TrendingUp, PieChart, Wallet,
   PiggyBank, Flame, Gem, BarChart3, Clock, CalendarDays, Shield, CreditCard,
-  Calculator, QrCode, ScrollText, Users,
+  Calculator, QrCode, ScrollText, Users, Gavel,
 } from "lucide-react";
 
 const MAP = {
@@ -34,6 +34,7 @@ const MAP = {
   "/simulateurs/assurance-vie": Shield,
   "/simulateurs/credit-conso": CreditCard,
   "/simulateurs/succession": ScrollText,
+  "/simulateurs/divorce": Gavel,
   "/simulateurs/freelance-vs-salarie": Users,
   "/outils/qr-code": QrCode,
 };

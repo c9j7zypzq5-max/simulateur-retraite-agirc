@@ -51,6 +51,7 @@ const SIMULATEURS_FR = [
   { path: "/outils/qr-code", title: "Générateur de QR code", desc: "Créez un QR code personnalisé : vos couleurs, le texte ou lien de votre choix, et votre logo ou un emoji au centre. Téléchargement PNG haute résolution, sans inscription.", tag: "Outils", categories: ["Outils"], badges: ["new"], available: true },
   // Patrimoine & Juridique
   { path: "/simulateurs/succession", title: "Droits de succession", desc: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2025 : enfants, conjoint, frères/sœurs. Stratégies de réduction incluses.", tag: "Patrimoine", categories: ["Patrimoine"], badges: ["new"], available: true },
+  { path: "/simulateurs/divorce", title: "Divorce & Partage de patrimoine", desc: "Estimez le partage du patrimoine commun, la pension alimentaire et la prestation compensatoire selon votre régime matrimonial. Barème indicatif Ministère de la Justice 2022.", tag: "Patrimoine · Famille", categories: ["Patrimoine"], badges: ["new"], available: true },
   { path: "/simulateurs/freelance-vs-salarie", title: "Freelance vs Salarié", desc: "Comparez votre revenu net disponible selon votre statut : salarié, micro-entrepreneur BIC, micro-BNC ou portage salarial. Charges sociales, IR 2025 et comparatif complet.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
 ];
 

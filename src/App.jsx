@@ -63,8 +63,9 @@ const CoutEnHeures  = lazy(() => import("./pages/simulateurs/CoutEnHeures.jsx"))
 const VieEnSemaines = lazy(() => import("./pages/simulateurs/VieEnSemaines.jsx"));
 const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
 // Nouveaux simulateurs
-const Succession        = lazy(() => import("./pages/simulateurs/Succession.jsx"));
+const Succession         = lazy(() => import("./pages/simulateurs/Succession.jsx"));
 const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSalarie.jsx"));
+const Divorce            = lazy(() => import("./pages/simulateurs/Divorce.jsx"));
 // Outils
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 // Dashboard
@@ -145,6 +146,7 @@ export default function App() {
         {/* Nouveaux simulateurs */}
         <Route path="/simulateurs/succession" element={<Succession />} />
         <Route path="/simulateurs/freelance-vs-salarie" element={<FreelanceVsSalarie />} />
+        <Route path="/simulateurs/divorce" element={<Divorce />} />
         {/* Outils */}
         <Route path="/outils/qr-code" element={<QrCode />} />
         {/* Blog */}
