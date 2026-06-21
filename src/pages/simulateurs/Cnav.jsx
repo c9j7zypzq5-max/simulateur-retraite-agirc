@@ -9,7 +9,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -81,10 +81,12 @@ function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNai
 }
 
 const FAQ = [
-  { q: "Comment est calculé le Salaire Annuel Moyen (SAM) ?", a: "Le SAM est la moyenne de vos 25 meilleures années de salaire (brut, plafonné au PASS chaque année). Ce simulateur utilise votre salaire actuel comme approximation. Pour un calcul précis, consultez votre relevé de carrière sur info-retraite.fr." },
-  { q: "Qu'est-ce que la décote CNAV ?", a: "Si vous partez avant 67 ans sans avoir validé le nombre de trimestres requis, une décote de 0,625 % par trimestre manquant s'applique, dans la limite de 20 trimestres (soit −12,5 % maximum). À 67 ans, la décote ne s'applique plus quel que soit le nombre de trimestres." },
-  { q: "Qu'est-ce que la surcote CNAV ?", a: "Si vous continuez à travailler après avoir atteint le taux plein (trimestres validés ≥ durée requise ET âge ≥ âge légal), vous cumulez une surcote de +1,25 % par trimestre supplémentaire, sans plafond." },
-  { q: "CNAV et Agirc-Arrco : quelle différence ?", a: "La CNAV (Caisse Nationale d'Assurance Vieillesse) verse la retraite de base des salariés du privé, plafonnée à 50 % du PASS (23 550 €/an). L'Agirc-Arrco est la retraite complémentaire, calculée par points, qui vient s'y ajouter. Pour une retraite complète, il faut simuler les deux." },
+  { q: "Comment sont calculés les trimestres CNAV ?", a: "Un trimestre est validé pour chaque tranche de salaire équivalant à 150 fois le SMIC horaire brut, quel que soit le nombre de jours travaillés. En 2025, il faut gagner environ 1 690 € brut par trimestre pour valider un trimestre. On peut valider au maximum 4 trimestres par année civile." },
+  { q: "Comment est calculé le Salaire Annuel Moyen (SAM) ?", a: "Le SAM est la moyenne de vos 25 meilleures années de salaire brut, chaque année étant plafonnée au PASS (Plafond Annuel de la Sécurité Sociale, soit 47 100 € en 2026). Ce simulateur utilise votre salaire actuel comme approximation. Pour un calcul précis, consultez votre relevé de carrière sur info-retraite.fr." },
+  { q: "Qu'est-ce que le taux plein à la CNAV ?", a: "Le taux plein (50 % du SAM) est accordé lorsque vous cumulez le nombre de trimestres requis (entre 167 et 172 selon votre année de naissance) ET que vous avez atteint l'âge légal de départ (62 à 64 ans selon la génération). Il est aussi accordé automatiquement à 67 ans, quelle que soit la durée de cotisation." },
+  { q: "Qu'est-ce que la décote et la surcote CNAV ?", a: "Si vous partez avant d'avoir tous vos trimestres et avant 67 ans, une décote de 0,625 % par trimestre manquant s'applique, dans la limite de 20 trimestres (soit −12,5 % maximum). À l'inverse, chaque trimestre cotisé après l'obtention du taux plein génère une surcote de +1,25 %, sans plafond." },
+  { q: "Qu'est-ce que le minimum contributif ?", a: "Le minimum contributif est un plancher de pension CNAV garanti aux assurés ayant cotisé toute leur carrière sur de faibles revenus. En 2025, il s'élève à 879,31 €/mois pour une carrière complète (majoré à 963,13 € si vous avez cotisé au moins 120 trimestres sur la base du salaire réel)." },
+  { q: "Comment fonctionne la retraite progressive CNAV ?", a: "La retraite progressive permet de percevoir une fraction de sa pension tout en continuant à travailler à temps partiel. Elle est accessible dès 60 ans (62 ans à terme) avec au moins 150 trimestres validés. La fraction de pension est égale à la quotité de temps non travaillé. C'est une solution pour aménager sa fin de carrière en douceur." },
 ];
 
 export default function Cnav() {
@@ -180,13 +182,6 @@ export default function Cnav() {
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
         "inLanguage": "fr-FR",
-      }} />
-      <JsonLd data={{
-        "@context": "https://schema.org", "@type": "FAQPage",
-        "mainEntity": FAQ.map(f => ({
-          "@type": "Question", "name": f.q,
-          "acceptedAnswer": { "@type": "Answer", "text": f.a },
-        })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
@@ -399,14 +394,7 @@ export default function Cnav() {
           </div>
         </div>
 
-        {/* FAQ */}
-        <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — CNAV</h2>
-          {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
-          <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            Source officielle : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
-          </p>
-        </div>
+        <FaqSection items={FAQ} />
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
@@ -416,16 +404,3 @@ export default function Cnav() {
   );
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}

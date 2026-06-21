@@ -13,7 +13,7 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, AccordionSection, Toggle,
-  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
+  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
@@ -73,22 +73,12 @@ function calcPlusValue({ prixAchat, anneeAchat, anneeVente, travaux, inclureFrai
 }
 
 const FAQ = [
-  {
-    q: "La résidence principale bénéficie-t-elle d'une exonération ?",
-    a: "Oui, absolument. Les plus-values immobilières réalisées sur la résidence principale sont totalement exonérées d'impôt sur le revenu et de prélèvements sociaux. Ce simulateur s'applique aux résidences secondaires et biens d'investissement. Consultez votre notaire pour les régimes particuliers (propriété démembrée, indivision, etc.)."
-  },
-  {
-    q: "À partir de quand la plus-value est-elle exonérée ?",
-    a: "Pour l'impôt sur le revenu (IR), après 22 ans de détention, l'abattement atteint 100 % : vous ne payez que les prélèvements sociaux. Pour les prélèvements sociaux (17,2 %), l'exonération totale intervient après 30 ans de détention. Il existe également une exonération de 100 % si la vente concerne un petit immeuble de faible valeur (< 15 000 €) et certains cas particuliers."
-  },
-  {
-    q: "Qu'est-ce que la surtaxe à 33,33 % ?",
-    a: "Si votre plus-value brute dépasse 50 000 €, une surtaxe de 33,33 % s'ajoute aux prélèvements sociaux sur la partie excédentaire (17,2 % + 33,33 % = 50,53 % de taux marginal). Ce simulateur n'inclut pas cette surtaxe. Pour une plus-value supérieure à 50 000 €, consultez votre notaire."
-  },
-  {
-    q: "Quels travaux déductibles compte-t-on ?",
-    a: "Seuls les travaux de rénovation/amélioration réalisés par une entreprise (facture à l'appui) peuvent être déduits du prix d'acquisition. Sont exclus : l'entretien courant, la peinture, vos travaux personnels. Le notaire établira la liste exacte lors de la vente. Le seuil peut impacter les droits d'enregistrement selon les cas."
-  },
+  { q: "La résidence principale est-elle exonérée de plus-value ?", a: "Oui, totalement. La vente de la résidence principale est exonérée d'impôt sur la plus-value, sans condition de durée de détention. Elle doit être votre résidence principale au moment de la vente (ou au plus tard le 31 décembre de l'année de la vente si vous avez déménagé récemment)." },
+  { q: "Comment calcule-t-on la plus-value imposable ?", a: "Plus-value brute = prix de vente − prix d'achat. On peut majorer le prix d'achat des frais d'acquisition (forfait 7,5 % ou frais réels), des travaux (forfait 15 % si détenu > 5 ans ou factures réelles), et des frais de voirie. La plus-value nette bénéficie ensuite des abattements pour durée de détention." },
+  { q: "Quels sont les abattements selon la durée de détention ?", a: "Pour l'IR (19 %) : 6 % par an de la 6e à la 21e année, puis 4 % la 22e → exonération totale après 22 ans. Pour les prélèvements sociaux (17,2 %) : 1,65 %/an de la 6e à la 21e, 1,6 % la 22e, 9 %/an de la 23e à la 30e → exonération totale après 30 ans." },
+  { q: "Qu'est-ce que la taxe sur les plus-values élevées ?", a: "Une surtaxe progressive s'applique aux plus-values nettes imposables supérieures à 50 000 € (hors résidence principale et terrains à bâtir) : 2 % entre 50 001 et 100 000 €, jusqu'à 6 % au-delà de 260 000 €. Elle s'ajoute à l'IR (19 %) et aux prélèvements sociaux (17,2 %)." },
+  { q: "Y a-t-il d'autres cas d'exonération ?", a: "Oui : première cession de résidence secondaire si vous n'avez pas été propriétaire de votre résidence principale dans les 4 dernières années (exonération partielle), cession < 15 000 €, vente au profit d'organismes de logement social, ou retraités/invalides aux faibles revenus." },
+  { q: "Comment est taxée la plus-value sur un bien loué (LMNP) ?", a: "En LMNP réel, les amortissements déduits viennent augmenter la plus-value imposable (réintégration des amortissements). En revanche, si le bien est loué nu (revenus fonciers), la règle des abattements sur durée de détention s'applique normalement, sans réintégration d'amortissements." },
 ];
 
 export default function PlusValue() {
@@ -472,6 +462,7 @@ export default function PlusValue() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

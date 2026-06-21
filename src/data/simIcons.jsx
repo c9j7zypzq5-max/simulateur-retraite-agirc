@@ -5,7 +5,8 @@ import {
   Trophy, Landmark, Scale, Briefcase, Building, Building2, CalendarClock,
   Stethoscope, Wheat, Coins, KeyRound, Receipt, TrendingUp, PieChart, Wallet,
   PiggyBank, Flame, Gem, BarChart3, Clock, CalendarDays, Shield, CreditCard,
-  Calculator, QrCode, ScrollText, Users, Gavel, Euro, Award,
+  Calculator, QrCode, ScrollText, Users, Gavel, Euro, Award, Gift, Hourglass,
+  HandCoins, Home,
 } from "lucide-react";
 
 const MAP = {
@@ -37,6 +38,10 @@ const MAP = {
   "/simulateurs/divorce": Gavel,
   "/simulateurs/freelance-vs-salarie": Users,
   "/outils/qr-code": QrCode,
+  "/simulateurs/retraite-anticipee": Hourglass,
+  "/simulateurs/donation": Gift,
+  "/simulateurs/epargne-salariale": HandCoins,
+  "/simulateurs/deficit-foncier": Home,
   // Simulateurs belges
   "/simulateurs/pension-legale": Award,
   "/simulateurs/impot-revenu-be": Euro,

@@ -9,7 +9,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
@@ -173,29 +173,13 @@ function TableCIPAV({ revenuAnnuel }) {
   );
 }
 
-// ─── FAQ ───────────────────────────────────────────────────────────────────
-
 const FAQ = [
-  {
-    q: "Quelles sont les professions libérales couvertes par CIPAV ?",
-    a: "CIPAV couvre les professions libérales non réglementées : consultants, graphistes, traducteurs, photographes, coaches, formateurs indépendants, etc. Les médecins, avocats, notaires, experts-comptables ont leurs propres régimes : CARMF (médecins), CNBF (avocats), CRPCEN (notaires), CAVEC (experts-comptables).",
-  },
-  {
-    q: "Comment sont calculés les points CIPAV ?",
-    a: "CIPAV fonctionne par classes selon le revenu BNC (Bénéfices Non Commerciaux). Chaque classe correspond à un nombre de points/an : classe 1 = 222 pts, classe 2 = 333 pts, etc. À la retraite, vos points totaux sont convertis en rente mensuelle (valeur point ~0,4753 €).",
-  },
-  {
-    q: "Qui doit cotiser à CIPAV si je suis en micro-entreprise ?",
-    a: "En micro-entreprise (auto-entrepreneur), vous cotisez à la SSI pour la retraite de base et aux régimes SSI pour la complémentaire, NON à CIPAV. CIPAV s'applique si vous êtes en régime réel (BNC déclaré) ou en EIRL avec option réelle.",
-  },
-  {
-    q: "Quelle est la différence entre pension de base et complémentaire ?",
-    a: "La pension de base (régime SSI pour libéraux) couvre un minimum et est plafonnée au PASS. La pension complémentaire CIPAV s'y ajoute. Ensemble, elles forment votre retraite totale. Cette simulation calcule les deux.",
-  },
-  {
-    q: "Puis-je prendre ma retraite à 62 ans en tant que libéral ?",
-    a: "Oui, mais avec une décote de −0,625 % par trimestre manquant (max −12,5 %). Pour le taux plein (50 %), il faut atteindre 172 trimestres ET 67 ans. Ou avoir tous les trimestres et partir entre 62 et 67 avec décote réduite.",
-  },
+  { q: "Qu'est-ce que la CNAVPL ?", a: "La Caisse Nationale d'Assurance Vieillesse des Professions Libérales gère la retraite de base de tous les professionnels libéraux non membres de sections spécifiques (avocats, médecins, notaires, etc. ont leurs propres caisses). Elle couvre notamment les consultants, formateurs, architectes, et autres libéraux non réglementés." },
+  { q: "Comment se calculent les points CNAVPL ?", a: "Les cotisations versées à la CNAVPL achètent des points selon un rapport cotisation/valeur d'achat annuel. En 2025, la valeur d'achat d'un point est de 7,04 €. La pension annuelle = nombre de points × valeur de service (0,5714 €/point en 2025). Le nombre de points dépend du revenu professionnel et de la durée de cotisation." },
+  { q: "Quelle est la différence entre CNAVPL et les sections professionnelles ?", a: "La CNAVPL gère la retraite de BASE des libéraux non réglementés. Chaque profession réglementée a sa section autonome (CIPAV pour les architectes/consultants, CARMF pour les médecins, CNBF pour les avocats, etc.) qui gèrent à la fois la retraite de base et complémentaire propre à la profession." },
+  { q: "Peut-on racheter des trimestres à la CNAVPL ?", a: "Oui, les libéraux peuvent racheter jusqu'à 12 trimestres d'études supérieures ou de début de carrière (années incomplètes). Le coût dépend de l'âge au rachat et du revenu. Deux options : rachat « taux seul » (améliore la décote) ou « taux et durée » (plus coûteux mais améliore aussi le calcul de la pension)." },
+  { q: "Comment est calculée la retraite de base des libéraux ?", a: "Comme pour le régime général (CNAV), la pension de base des libéraux = SAM (Salaire Annuel Moyen des 25 meilleures années) × taux (50 % au taux plein) × (trimestres cotisés / trimestres requis pour le taux plein). La durée requise dépend de l'année de naissance (168 à 172 trimestres selon la génération)." },
+  { q: "Les libéraux ont-ils droit à la retraite complémentaire ?", a: "Oui. En plus de la retraite de base (CNAVPL ou section), tous les libéraux cotisent à une retraite complémentaire : pour les non-réglementés, c'est la CIPAV (pour la plupart) ou la complémentaire de la section. La pension complémentaire s'exprime en points, valorisés à la liquidation." },
 ];
 
 export default function Cnavpl() {
@@ -739,6 +723,7 @@ export default function Cnavpl() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

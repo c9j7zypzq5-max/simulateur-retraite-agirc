@@ -9,7 +9,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
@@ -142,30 +142,12 @@ function calcMsaSalarie({ salaire, anneesFaites, anneesRestantes, ageDépart, an
 }
 
 const FAQ = [
-  {
-    q: "Qu'est-ce que la MSA ?",
-    a: "La Mutualité Sociale Agricole (MSA) est le régime de sécurité sociale des exploitants agricoles et des salariés agricoles. Elle gère l'assurance maladie, les allocations familiales et la retraite pour environ 1,3 million d'affiliés.",
-  },
-  {
-    q: "Quelle est la différence entre exploitants et salariés agricoles ?",
-    a: "Les exploitants agricoles (propriétaires ou fermiers) cotisent sur leur revenu professionnel et bénéficient d'une retraite complémentaire obligatoire (RCO). Les salariés agricoles relèvent d'un régime de base identique au régime général CNAV (salaire).",
-  },
-  {
-    q: "Qu'est-ce que la RCO (Retraite Complémentaire Obligatoire) ?",
-    a: "Depuis 2011, tous les exploitants agricoles cotisent obligatoirement à la RCO : 3 % sur les revenus jusqu'au PASS, et 6 % de 1 à 3 PASS. Cette retraite complémentaire est calculée par points et s'ajoute à la retraite de base MSA.",
-  },
-  {
-    q: "Comment valider des trimestres en tant qu'exploitant agricole ?",
-    a: "Un trimestre est validé pour un revenu professionnel déclaré d'au moins 1/4 du PASS annuel (environ 11 775 € en 2026). Les 4 trimestres annuels peuvent être validés quel que soit le montant du revenu si celui-ci ne rend pas compte d'une cessation d'activité.",
-  },
-  {
-    q: "Qu'est-ce que la décote et la surcote MSA ?",
-    a: "La décote MSA (−0,625 % par trimestre manquant, jusqu'à −12,5 %) s'applique si vous partez avant 67 ans sans avoir validé le nombre de trimestres requis. La surcote (+1,25 % par trimestre supplémentaire) s'applique après taux plein si vous continuez à travailler.",
-  },
-  {
-    q: "À quel âge puis-je partir en retraite à la MSA ?",
-    a: "L'âge légal de départ MSA varie selon votre année de naissance : 62 ans pour les nés avant 1961, progressivement jusqu'à 64 ans pour les nés après 1965. À 67 ans, vous pouvez partir automatiquement au taux plein.",
-  },
+  { q: "Qui est affilié à la MSA ?", a: "La Mutualité Sociale Agricole (MSA) couvre tous les salariés agricoles (exploitations, coopératives, entreprises du secteur) et les non-salariés agricoles (exploitants, chefs d'exploitation). Le statut d'exploitant agricole requiert une superficie minimale ou un revenu professionnel agricole suffisant." },
+  { q: "Comment sont calculés les trimestres au régime agricole ?", a: "Pour les salariés agricoles : 1 trimestre par tranche de 150 × SMIC horaire cotisée dans l'année, comme pour le régime général CNAV (maximum 4 trimestres/an). Pour les exploitants : les trimestres sont validés sur la base du revenu agricole professionnel ou de la surface exploitée." },
+  { q: "Quelle est la différence entre AMEXA et AVA ?", a: "L'AMEXA (Assurance Maladie des Exploitants Agricoles) couvre la santé des non-salariés agricoles. L'AVA (Assurance Vieillesse Agricole) est la retraite de base des exploitants. S'y ajoute la COREVA (retraite complémentaire facultative) et la RCO (retraite complémentaire obligatoire depuis 2003)." },
+  { q: "Quel est le montant de la retraite minimum pour un exploitant agricole ?", a: "Depuis 2022 (loi Chassaigne), la retraite minimum d'un chef d'exploitation ayant une carrière complète est portée à 85 % du SMIC net, soit environ 1 035 € nets par mois en 2025. Cette garantie s'applique à la pension totale (base + complémentaire)." },
+  { q: "La retraite agricole est-elle différente selon le statut (salarié vs exploitant) ?", a: "Oui. Les salariés agricoles relèvent du régime général de base (CNAV), avec une retraite complémentaire MSA-Cadres ou MSA-Non cadres similaire à Agirc-Arrco. Les exploitants non-salariés ont leur propre régime de base (AVA) et la RCO (retraite complémentaire obligatoire par points)." },
+  { q: "Peut-on cumuler emploi et retraite agricole ?", a: "Oui, le cumul emploi-retraite est possible en agriculture comme dans les autres régimes. Après liquidation de toutes les retraites (base et complémentaires) au taux plein, vous pouvez exercer une activité salariée ou non-salariée agricole sans plafond de revenus, et continuer à cotiser (sans générer de nouveaux droits)." },
 ];
 
 export default function Msa() {
@@ -494,6 +476,7 @@ export default function Msa() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

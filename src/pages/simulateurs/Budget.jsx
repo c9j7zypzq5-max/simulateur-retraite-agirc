@@ -7,7 +7,7 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
-import { NumInput } from "../../components/ui.jsx";
+import { NumInput, FaqSection } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
@@ -343,6 +343,15 @@ function MotivationMessage({ tauxEpargne, txt }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
+const FAQ = [
+  { q: "Qu'est-ce que la règle des 50/30/20 ?", a: "La règle 50/30/20 propose d'allouer 50 % des revenus nets aux besoins essentiels (logement, alimentation, transport), 30 % aux envies (loisirs, restaurants, abonnements) et 20 % à l'épargne ou au remboursement de dettes." },
+  { q: "Doit-on viser exactement 50 % pour les besoins ?", a: "Non, c'est un objectif indicatif. Dans des villes chères où le loyer dépasse 40 % du salaire, il est normal d'ajuster : réduire la part « envies » ou augmenter les revenus à terme. L'important est de maintenir une épargne positive." },
+  { q: "Quels montants compter dans les « besoins » ?", a: "Tout ce qui est incompressible : loyer ou crédit immobilier, charges (électricité, eau, internet), assurances obligatoires, transports domicile-travail, alimentation de base et remboursements de prêts en cours." },
+  { q: "Comment améliorer mon taux d'épargne ?", a: "Deux leviers : réduire les dépenses variables (surtout les envies) ou augmenter vos revenus. Un taux d'épargne de 10 % est un bon départ ; 20 % ou plus accélère significativement la constitution d'un patrimoine à long terme." },
+  { q: "Le simulateur tient-il compte des impôts ?", a: "Non, entrez vos revenus nets mensuels après impôts et prélèvements sociaux. Si vous êtes salarié, utilisez directement le net fiscal ou le net perçu après prélèvement à la source." },
+  { q: "Quelle est la différence entre épargne de précaution et investissement ?", a: "L'épargne de précaution (3 à 6 mois de charges sur Livret A ou LDDS) couvre les imprévus sans pénalité. L'investissement à long terme (PEA, assurance-vie, immobilier) vise la croissance du patrimoine et s'effectue une fois le matelas de sécurité constitué." },
+];
+
 export default function Budget() {
   const [theme, setTheme] = useTheme();
   useMoney();
@@ -511,6 +520,7 @@ export default function Budget() {
         </div>
       </div>
 
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

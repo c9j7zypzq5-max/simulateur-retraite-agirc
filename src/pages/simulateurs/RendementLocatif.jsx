@@ -15,7 +15,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection, Toggle,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader,
+  fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 
 // ─── Logique de calcul rendement locatif ──────────────────────────────────────
@@ -62,10 +62,12 @@ function calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeF
 }
 
 const FAQ = [
-  { q: "Quelle est la différence entre rendement brut et rendement net ?", a: "Le rendement brut compare le loyer annuel au prix d'achat (sans tenir compte des charges). Le rendement net déduit toutes les charges (copropriété, taxe foncière, gestion) du loyer pour donner une vision réaliste de votre rentabilité réelle." },
-  { q: "Comment sont calculés les frais de notaire ?", a: "Pour un bien neuf, les frais de notaire sont estimés à 2,5 % du prix (TVA incluse dans le prix). Pour l'ancien, comptez 7 à 8 % (frais légaux + droits de mutation). Ce simulateur applique 2,5 % neuf et 7,5 % ancien." },
-  { q: "Qu'est-ce que la durée d'amortissement ?", a: "C'est le nombre d'années nécessaires pour récupérer votre investissement initial grâce aux cash-flows nets annuels (loyer - charges). Par exemple, une durée de 15 ans signifie que votre bien sera rentable au bout de 15 ans." },
-  { q: "Comment calculer le rendement selon la fiscalité réelle ?", a: "Ce simulateur affiche le rendement net théorique. Votre imposition dépend de votre régime fiscal (micro-foncier 30 %, réel, LMNP). Consultez un expert pour intégrer la fiscalité personnalisée à votre situation." },
+  { q: "Quelle est la différence entre rendement brut et net ?", a: "Le rendement brut = (loyers annuels / prix d'achat) × 100. Le rendement net déduit les charges : taxe foncière, charges de copropriété non récupérables, assurance PNO, frais de gestion (7-10 % des loyers), vacance locative et provisions pour travaux. Le rendement net est typiquement 2 à 3 points inférieur au brut." },
+  { q: "Qu'est-ce que le rendement net-net (après fiscalité) ?", a: "Le rendement net-net tient compte de la fiscalité des loyers. En régime réel, les charges et intérêts d'emprunt sont déductibles, ce qui peut créer un déficit foncier (plafonné à 10 700 €/an sur le revenu global). Au micro-foncier (recettes < 15 000 €/an), l'abattement forfaitaire de 30 % s'applique automatiquement." },
+  { q: "Quel rendement locatif brut viser en 2025 ?", a: "Un rendement brut de 6 % ou plus est généralement considéré comme intéressant pour une location nue en France. Les zones tendues (Paris, Lyon, Bordeaux) offrent souvent 3-4 % brut mais plus de sécurité locative et de plus-value potentielle. Les villes moyennes et périphéries permettent d'atteindre 7-10 % brut avec des risques plus élevés." },
+  { q: "Comment est imposée la location nue ?", a: "Les revenus fonciers s'ajoutent au revenu imposable. En dessous de 15 000 €/an : micro-foncier avec 30 % d'abattement. Au-delà ou sur option : régime réel avec déduction de toutes les charges. Les loyers supportent aussi les prélèvements sociaux (17,2 %)." },
+  { q: "Qu'est-ce que la location meublée (LMNP) ?", a: "La location meublée non professionnelle (LMNP) relève des BIC. Au micro-BIC (recettes < 77 700 €/an), l'abattement est de 50 %. Au régime réel, l'amortissement du bien (sur 25-40 ans) et du mobilier permet souvent de générer un résultat nul ou déficitaire, éliminant la fiscalité pendant de nombreuses années." },
+  { q: "Comment calculer la rentabilité d'un investissement locatif avec emprunt ?", a: "Le cash-flow mensuel = loyers − mensualité de crédit − charges non récupérables − taxe foncière mensuelle. Un cash-flow positif ou nul est l'objectif minimal. L'effet de levier du crédit améliore le rendement sur fonds propres si le coût du crédit (taux) est inférieur au rendement brut de l'actif." },
 ];
 
 export default function RendementLocatif() {
@@ -412,6 +414,7 @@ export default function RendementLocatif() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

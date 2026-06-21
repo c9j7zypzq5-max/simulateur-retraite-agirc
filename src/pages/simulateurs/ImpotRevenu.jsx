@@ -13,7 +13,7 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection, Toggle,
-  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader,
+  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import BarChart from "../../components/charts/BarChart.jsx";
@@ -78,22 +78,12 @@ function calcIR(revenuBrut, situation, nbEnfants) {
 }
 
 const FAQ = [
-  {
-    q: "Quelle est la différence entre TMI et taux moyen ?",
-    a: "La TMI (Taux Marginal d'Imposition) est le taux appliqué à votre dernier euro de revenu imposable. Le taux moyen est votre impôt total divisé par votre revenu imposable. Par exemple, avec un revenu imposable de 50 000 €, votre TMI pourrait être 30 % (tranche) mais votre taux moyen 15 % (car vous payez 0 % jusqu'à 11 600 €, puis 11 %, puis 30 %)."
-  },
-  {
-    q: "Comment fonctionnent les parts fiscales ?",
-    a: "Les parts fiscales permettent un traitement fiscal favorable selon votre situation. Un célibataire a 1 part, un couple marié 2 parts. Chaque enfant donne droit à +0,5 part pour les 2 premiers (soit 1 part pour 2 enfants), puis +1 part à partir du 3e. L'impôt s'applique sur un quotient (revenu/parts), puis on multiplie par le nombre de parts. Cela réduit l'impôt du couple et des familles nombreuses."
-  },
-  {
-    q: "Qu'est-ce que la décote ?",
-    a: "La décote est une réduction d'impôt pour les contribuables dont l'imposition reste faible. En 2026, elle s'applique si votre impôt brut est inférieur à 1 982 € (célibataire) ou 3 277 € (couple). Vous bénéficiez d'une décote égale à 897 € (ou 1 483 €) moins 45,25 % de votre IR brut. À partir d'un certain revenu, la décote disparaît progressivement."
-  },
-  {
-    q: "Pourquoi y a-t-il un abattement sur les salaires ?",
-    a: "L'abattement de 10 % représente une estimation des frais professionnels (frais de déplacement, vêtements, outils, etc.). Il s'applique automatiquement à tous les salaires. Le minimum garanti est 509 € et le maximum 14 555 € pour 2026. Si vous avez des frais réels supérieurs, vous pouvez opter pour la déclaration au réel."
-  },
+  { q: "Comment fonctionne le barème progressif de l'impôt 2025 ?", a: "Le barème IR 2025 (déclaré en 2026) comporte 5 tranches : 0 % jusqu'à 11 294 €, 11 % de 11 294 € à 28 797 €, 30 % de 28 797 € à 82 341 €, 41 % de 82 341 € à 177 106 €, et 45 % au-delà. Ce barème s'applique au revenu net imposable après abattement de 10 % sur les salaires et après division par le nombre de parts fiscales." },
+  { q: "Quelle est la différence entre TMI et taux moyen d'imposition ?", a: "Le TMI (Taux Marginal d'Imposition) est le taux appliqué à votre dernier euro de revenu imposable. Le taux moyen est votre impôt total divisé par votre revenu imposable. Par exemple, avec un revenu imposable de 50 000 €, votre TMI peut être 30 % (tranche) mais votre taux moyen seulement 14 %, car les premières tranches sont imposées à 0 % et 11 %." },
+  { q: "Qu'est-ce que le quotient familial ?", a: "Le quotient familial permet de diviser le revenu imposable par le nombre de parts pour calculer l'impôt, puis de le multiplier par ce même nombre de parts. Un célibataire a 1 part, un couple marié ou pacsé 2 parts. Chaque enfant à charge ajoute 0,5 part (les 2 premiers) puis 1 part à partir du 3e. Le gain fiscal par demi-part est plafonné à 1 759 € (2026)." },
+  { q: "Comment déclarer mes revenus locatifs à l'impôt ?", a: "Les revenus de location nue (non meublée) sont déclarés en revenus fonciers. Si < 15 000 €/an, le régime micro-foncier s'applique avec un abattement forfaitaire de 30 %. Au-delà ou sur option, le régime réel permet de déduire toutes les charges réelles (travaux, intérêts d'emprunt, assurance, gestion). Les locations meublées relèvent des BIC (micro ou réel)." },
+  { q: "Quelles principales réductions et crédits d'impôt sont disponibles ?", a: "Parmi les plus courants : crédit d'impôt pour emploi à domicile (50 % des dépenses, plafond 12 000 €), crédit d'impôt garde d'enfants (50 % des frais de crèche/assistante maternelle), réduction pour dons aux associations (66 % ou 75 % selon l'organisme), et réduction Pinel pour investissement locatif neuf (taux dégressif selon durée d'engagement)." },
+  { q: "Qu'est-ce que la décote sur l'impôt sur le revenu ?", a: "La décote est une réduction automatique pour les contribuables modestes dont l'IR calculé est faible. En 2026 (revenus 2025), elle s'applique si l'IR brut est inférieur à 1 929 € (célibataire) ou 3 191 € (couple). La décote = 873 € (ou 1 444 €) moins 45,25 % de l'IR brut. Elle disparaît progressivement au-delà des seuils." },
 ];
 
 export default function ImpotRevenu() {

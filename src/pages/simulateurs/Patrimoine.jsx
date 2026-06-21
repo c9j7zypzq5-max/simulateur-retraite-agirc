@@ -17,7 +17,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, useAnimatedNumber,
-  SimulateurHeader,
+  SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
@@ -431,6 +431,15 @@ function YearTable({ projectionData, immoActive, txt }) {
 }
 
 // ─── Composant principal ──────────────────────────────────────────────────────
+const FAQ = [
+  { q: "Comment calculer son patrimoine net ?", a: "Le patrimoine net = actifs totaux (épargne, immobilier, placements, retraite capitalisée) − passifs (crédits immobiliers, dettes en cours). Seule la valeur nette des biens compte : si votre résidence principale vaut 300 000 € avec 150 000 € de crédit restant, elle contribue 150 000 € à votre patrimoine." },
+  { q: "Faut-il inclure la résidence principale dans son patrimoine ?", a: "Oui, mais avec nuance. La résidence principale est un actif non rentable tant qu'elle n'est pas vendue. Beaucoup de conseillers préfèrent analyser le patrimoine « hors résidence principale » pour mesurer la richesse réellement mobilisable." },
+  { q: "Qu'est-ce qu'un patrimoine équilibré ?", a: "Un patrimoine équilibré diversifie les classes d'actifs : immobilier (25-40 %), actions via PEA ou assurance-vie (30-40 %), épargne de précaution liquide (5-10 %) et autres (SCPI, private equity…). La répartition idéale dépend de l'âge, des revenus et du profil de risque." },
+  { q: "À quel âge devrait-on avoir quel niveau de patrimoine ?", a: "Une règle empirique : votre patrimoine devrait être égal à votre revenu annuel brut × votre âge / 10. À 40 ans avec 50 000 € de revenus, cela donne 200 000 €. Ce n'est qu'un repère ; les héritages, les prix immobiliers locaux et la situation familiale jouent un rôle majeur." },
+  { q: "L'assurance-vie est-elle incluse dans le patrimoine ?", a: "Oui, la valeur de rachat d'un contrat d'assurance-vie est un actif. En cas de décès, les capitaux transmis aux bénéficiaires (exonérés jusqu'à 152 500 € par bénéficiaire pour les versements avant 70 ans) n'entrent pas dans la succession classique." },
+  { q: "Doit-on inclure l'épargne retraite (PER, PERP) ?", a: "Oui, les encours de votre PER (Plan d'Épargne Retraite) sont une composante de votre patrimoine, bien que bloqués jusqu'à la retraite (sauf cas de déblocage anticipé). Incluez la valeur liquidative actuelle, non la rente future estimée." },
+];
+
 export default function Patrimoine() {
   const [theme, setTheme] = useTheme();
   useMoney(); // abonnement aux changements de devise
@@ -797,6 +806,7 @@ export default function Patrimoine() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

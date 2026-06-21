@@ -10,7 +10,7 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, AccordionSection, Chip, useAnimatedNumber,
-  fmtEur, SimulateurHeader,
+  fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
@@ -34,10 +34,12 @@ const REGIMES = [
 const PS_RETRAITE = 0.101;
 
 const FAQ = [
-  { q: "À quoi sert la synthèse retraite ?", a: "Au cours d'une carrière, on cotise souvent à plusieurs régimes (salarié, fonction publique, indépendant, agricole…). On parle alors de « polypensionné ». Chaque régime verse sa propre pension : cette page les additionne pour vous donner une vue d'ensemble de votre future retraite totale. Chiffrez chaque régime avec son simulateur dédié, puis reportez le montant ici." },
-  { q: "Dois-je saisir des montants bruts ou nets ?", a: "Saisissez la pension brute mensuelle de chaque régime (avant prélèvements sociaux). C'est la valeur la plus comparable d'un régime à l'autre. La page calcule ensuite une estimation du total net après prélèvements sociaux (~10,1 %), hors impôt sur le revenu." },
-  { q: "Le total net est-il exact ?", a: "C'est une estimation. Les prélèvements sociaux sur les pensions (CSG, CRDS, CASA, cotisation maladie) varient selon votre revenu fiscal de référence : certains retraités modestes en sont exonérés ou bénéficient d'un taux réduit. De plus, la pension reste soumise à l'impôt sur le revenu, non décompté ici. Pour l'impôt, utilisez notre simulateur d'impôt sur le revenu." },
-  { q: "Qu'est-ce que le taux de remplacement ?", a: "C'est le rapport entre votre première pension et votre dernier revenu d'activité. Un taux de remplacement de 70 % signifie que votre retraite représente 70 % de votre dernier salaire. En renseignant votre dernier salaire net, la page calcule ce taux à partir de votre pension totale nette estimée." },
+  { q: "Comment fonctionne la synthèse tous régimes ?", a: "La plupart des actifs cotisent à plusieurs régimes : le régime de base (CNAV pour les salariés, RSI/SSI pour les indépendants, CNRACL pour les fonctionnaires) + un régime complémentaire (Agirc-Arrco pour les salariés du privé, IRCANTEC pour les contractuels publics). La synthèse additionne les pensions estimées de chaque régime pour obtenir la pension totale." },
+  { q: "Quelle est la pension moyenne en France ?", a: "En 2024, la pension moyenne tous régimes confondus s'élève à environ 1 530 € bruts par mois (1 680 € pour les hommes, 1 390 € pour les femmes). Ces montants incluent les régimes de base et complémentaires. Le montant net perçu est en général 15-20 % inférieur (CSG, CRDS, mutuelle)." },
+  { q: "Peut-on recevoir une pension de plusieurs régimes simultanément ?", a: "Oui, absolument. Une carrière mixte (salarié privé puis fonctionnaire, ou salarié puis indépendant) donne lieu à des pensions provenant de chaque régime au prorata de la carrière cotisée dans chacun. Il faut liquider chaque régime séparément et ils versent leurs pensions indépendamment." },
+  { q: "Comment est calculée la pension de réversion ?", a: "La pension de réversion du régime général (CNAV) correspond à 54 % de la retraite du défunt, sous condition de ressources (plafond 2025 : 24 232 €/an pour une personne seule). La réversion Agirc-Arrco est de 60 % des points du défunt, sans condition de ressources." },
+  { q: "Qu'est-ce que le minimum contributif ?", a: "Le minimum contributif (MICO) garantit une pension de base CNAV minimale pour ceux qui ont cotisé toute leur carrière avec de faibles salaires. En 2025, il s'élève à 876,91 € par mois pour une carrière complète au taux plein (majoré à 963,31 € si 120 trimestres cotisés avec revenus > 0,5 SMIC)." },
+  { q: "La retraite est-elle imposable ?", a: "Oui, les pensions de retraite sont soumises à l'impôt sur le revenu, après abattement de 10 % (plafonné à 4 123 € par foyer en 2025). Elles supportent également la CSG à 8,3 % (avec possibilité de taux réduit à 3,8 % ou exonération selon les revenus) et la CRDS à 0,5 %." },
 ];
 
 export default function SyntheseRetraite() {
@@ -268,6 +270,7 @@ export default function SyntheseRetraite() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      <FaqSection items={FAQ} />
       <Footer />
     </div>
   );

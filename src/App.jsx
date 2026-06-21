@@ -66,6 +66,10 @@ const Comparateur   = lazy(() => import("./pages/simulateurs/Comparateur.jsx"));
 const Succession         = lazy(() => import("./pages/simulateurs/Succession.jsx"));
 const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSalarie.jsx"));
 const Divorce            = lazy(() => import("./pages/simulateurs/Divorce.jsx"));
+const RetraiteAnticipee  = lazy(() => import("./pages/simulateurs/RetraiteAnticipee.jsx"));
+const Donation           = lazy(() => import("./pages/simulateurs/Donation.jsx"));
+const EpargneSalariale   = lazy(() => import("./pages/simulateurs/EpargneSalariale.jsx"));
+const DeficitFoncier     = lazy(() => import("./pages/simulateurs/DeficitFoncier.jsx"));
 // Simulateurs belges
 const ImpotRevenuBE  = lazy(() => import("./pages/simulateurs/ImpotRevenuBE.jsx"));
 const PensionLegaleBE = lazy(() => import("./pages/simulateurs/PensionLegaleBE.jsx"));
@@ -171,6 +175,10 @@ export default function App() {
         <Route path="/simulateurs/succession" element={<Succession />} />
         <Route path="/simulateurs/freelance-vs-salarie" element={<FreelanceVsSalarie />} />
         <Route path="/simulateurs/divorce" element={<Divorce />} />
+        <Route path="/simulateurs/retraite-anticipee" element={<RetraiteAnticipee />} />
+        <Route path="/simulateurs/donation" element={<Donation />} />
+        <Route path="/simulateurs/epargne-salariale" element={<EpargneSalariale />} />
+        <Route path="/simulateurs/deficit-foncier" element={<DeficitFoncier />} />
         {/* Outils */}
         <Route path="/outils/qr-code" element={<QrCode />} />
         {/* Blog */}
