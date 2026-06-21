@@ -67,6 +67,7 @@ export default function TableauDeBord() {
   const { getHistory, removeEntry } = useSimHistory();
   const [history, setHistory] = useState([]);
   const [exporting, setExporting] = useState(false);
+  const [activeTab, setActiveTab] = useState("frequent");
 
   useEffect(() => {
     document.title = "Tableau de bord | simfinly.com";
@@ -106,7 +107,36 @@ export default function TableauDeBord() {
   const categories = [...new Set(history.map(e => categoryFromPath(e.shareUrl?.split("?")[0])))];
   const recent = history.slice(0, 8);
 
+  // Category counts for chart and insights
+  const catCounts = {};
+  history.forEach(e => {
+    const c = categoryFromPath(e.shareUrl?.split("?")[0]);
+    catCounts[c] = (catCounts[c] || 0) + 1;
+  });
+
+  // Insights
+  const insights = [];
+  const topCat = Object.entries(catCounts).sort((a, b) => b[1] - a[1])[0];
+  if (topCat) insights.push(`Votre thématique principale : ${topCat[0]} (${topCat[1]} simulation${topCat[1] > 1 ? "s" : ""}).`);
+  if (history.length >= 5) insights.push(`Vous êtes un utilisateur actif avec ${history.length} simulations sauvegardées.`);
+  const retraiteCount = catCounts["Retraite"] || 0;
+  if (retraiteCount === 0) insights.push(`Vous n'avez pas encore simulé votre retraite — commencez avec le Wizard Retraite.`);
+  if (retraiteCount >= 3) insights.push(`Vous avez exploré votre retraite en profondeur (${retraiteCount} simulations).`);
+
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16 };
+
+  // Stat card value for simulations count
+  const simCountValue = isPro
+    ? <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>{history.length}<span style={{ fontSize: 14, color: "var(--gold)" }}>★</span></span>
+    : `${history.length} / 8`;
+  const simCountLabel = isPro ? "simulations sauvegardées" : "simulations (illimité en Pro)";
+
+  // Bar chart data
+  const catEntries = Object.entries(catCounts).filter(([, v]) => v > 0);
+  const maxCount = catEntries.reduce((m, [, v]) => Math.max(m, v), 1);
+
+  // Recent simulations for sidebar tab
+  const recentForSidebar = history.slice(0, 4);
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
@@ -170,10 +200,80 @@ export default function TableauDeBord() {
 
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 32 }}>
-          <StatCard icon={<BarChart3 size={20} />} value={history.length} label="simulations sauvegardées" />
+          <StatCard icon={<BarChart3 size={20} />} value={simCountValue} label={simCountLabel} />
           <StatCard icon={<TrendingUp size={20} />} value={categories.length} label={`catégorie${categories.length > 1 ? "s" : ""} explorée${categories.length > 1 ? "s" : ""}`} />
           <StatCard icon={<Clock size={20} />} value={history.length > 0 ? relativeDate(history[0].savedAt) : "—"} label="dernière activité" />
         </div>
+
+        {/* Category breakdown chart — Pro only */}
+        {isPro && history.length > 0 && (
+          <div style={{ ...card, padding: "22px 24px", marginBottom: 20 }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 18, margin: "0 0 18px" }}>
+              Répartition par catégorie
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {catEntries.sort((a, b) => b[1] - a[1]).map(([cat, count]) => {
+                const colors = CAT_COLORS[cat] || CAT_COLORS.Autre;
+                const widthPct = (count / maxCount) * 100;
+                return (
+                  <div key={cat} style={{ display: "flex", alignItems: "center", gap: 12, height: 28 }}>
+                    <span style={{ width: 100, flexShrink: 0, fontSize: 12, color: "var(--text-secondary)", textAlign: "right", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {cat}
+                    </span>
+                    <div style={{ flex: 1, position: "relative", height: 20, borderRadius: 6, background: "var(--surface, rgba(0,0,0,0.04))", overflow: "hidden" }}>
+                      <svg width="100%" height="20" style={{ display: "block" }}>
+                        <rect
+                          x={0}
+                          y={0}
+                          width={`${widthPct}%`}
+                          height={20}
+                          rx={6}
+                          fill={colors.bg}
+                          stroke={colors.border}
+                          strokeWidth={1}
+                        />
+                      </svg>
+                    </div>
+                    <span style={{ width: 24, flexShrink: 0, fontSize: 13, fontWeight: 600, color: colors.text, textAlign: "left" }}>
+                      {count}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Insights — Pro only */}
+        {isPro && history.length > 0 && insights.length > 0 && (
+          <div style={{ marginBottom: 28 }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 12 }}>
+              Points clés
+            </h2>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {insights.map((insight, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    padding: "8px 14px",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 20,
+                    fontSize: 13,
+                    color: "var(--text)",
+                    lineHeight: 1.4,
+                  }}
+                >
+                  <span role="img" aria-hidden="true">💡</span>
+                  {insight}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 24, alignItems: "start" }}>
           <div>
@@ -229,33 +329,143 @@ export default function TableauDeBord() {
             )}
           </div>
 
-          {/* Sidebar: quick access */}
+          {/* Sidebar: Explorer with tabs */}
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             <div style={{ ...card, padding: "20px" }}>
               <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 14 }}>
-                Accès rapide
+                Explorer
               </h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {QUICK_ACCESS.map(item => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--text)", background: "transparent", transition: "background 0.15s", fontSize: 13 }}
-                    onMouseEnter={e => e.currentTarget.style.background = "var(--surface)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                  >
-                    <span style={{ color: "var(--text-secondary)" }}>
-                      <SimIcon path={item.path} size={15} strokeWidth={1.6} />
-                    </span>
-                    {item.label}
-                    <ArrowRight size={12} style={{ marginLeft: "auto", color: "var(--text-secondary)" }} />
-                  </Link>
-                ))}
-                <Link to="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--gold)", fontSize: 13, marginTop: 4, border: "1px dashed var(--border-gold)" }}>
-                  Tous les simulateurs →
-                </Link>
+              {/* Tab pills */}
+              <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+                <button
+                  onClick={() => setActiveTab("frequent")}
+                  style={{
+                    flex: 1,
+                    padding: "6px 10px",
+                    borderRadius: 20,
+                    border: "1px solid",
+                    borderColor: activeTab === "frequent" ? "rgba(184,147,74,0.4)" : "var(--border)",
+                    background: activeTab === "frequent" ? "rgba(184,147,74,0.12)" : "transparent",
+                    color: activeTab === "frequent" ? "var(--gold)" : "var(--text-secondary)",
+                    fontSize: 12,
+                    fontWeight: activeTab === "frequent" ? 600 : 400,
+                    cursor: "pointer",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  Fréquents
+                </button>
+                <button
+                  onClick={() => setActiveTab("recent")}
+                  style={{
+                    flex: 1,
+                    padding: "6px 10px",
+                    borderRadius: 20,
+                    border: "1px solid",
+                    borderColor: activeTab === "recent" ? "rgba(184,147,74,0.4)" : "var(--border)",
+                    background: activeTab === "recent" ? "rgba(184,147,74,0.12)" : "transparent",
+                    color: activeTab === "recent" ? "var(--gold)" : "var(--text-secondary)",
+                    fontSize: 12,
+                    fontWeight: activeTab === "recent" ? 600 : 400,
+                    cursor: "pointer",
+                    fontFamily: "'Hanken Grotesk', sans-serif",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  Récents
+                </button>
               </div>
+
+              {/* Tab content */}
+              {activeTab === "frequent" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {QUICK_ACCESS.map(item => (
+                    <Link
+                      key={item.path}
+                      to={item.path}
+                      style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--text)", background: "transparent", transition: "background 0.15s", fontSize: 13 }}
+                      onMouseEnter={e => e.currentTarget.style.background = "var(--surface)"}
+                      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                    >
+                      <span style={{ color: "var(--text-secondary)" }}>
+                        <SimIcon path={item.path} size={15} strokeWidth={1.6} />
+                      </span>
+                      {item.label}
+                      <ArrowRight size={12} style={{ marginLeft: "auto", color: "var(--text-secondary)" }} />
+                    </Link>
+                  ))}
+                  <Link to="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--gold)", fontSize: 13, marginTop: 4, border: "1px dashed var(--border-gold)" }}>
+                    Tous les simulateurs →
+                  </Link>
+                </div>
+              )}
+
+              {activeTab === "recent" && (
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {recentForSidebar.length === 0 ? (
+                    <p style={{ fontSize: 13, color: "var(--text-secondary)", padding: "8px 0" }}>
+                      Aucune simulation récente.
+                    </p>
+                  ) : (
+                    recentForSidebar.map(entry => {
+                      const path = entry.shareUrl?.split("?")[0] ?? "";
+                      const cat = categoryFromPath(path);
+                      const colors = CAT_COLORS[cat] || CAT_COLORS.Autre;
+                      return (
+                        <Link
+                          key={entry.id}
+                          to={entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")}
+                          style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--text)", background: "transparent", transition: "background 0.15s", fontSize: 13 }}
+                          onMouseEnter={e => e.currentTarget.style.background = "var(--surface)"}
+                          onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                        >
+                          <span style={{ color: colors.text, flexShrink: 0 }}>
+                            <SimIcon path={path} size={15} strokeWidth={1.6} />
+                          </span>
+                          <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {entry.label}
+                          </span>
+                          <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0 }}>
+                            {relativeDate(entry.savedAt)}
+                          </span>
+                        </Link>
+                      );
+                    })
+                  )}
+                  <Link to="/" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, padding: "10px 12px", borderRadius: 10, textDecoration: "none", color: "var(--gold)", fontSize: 13, marginTop: 4, border: "1px dashed var(--border-gold)" }}>
+                    Tous les simulateurs →
+                  </Link>
+                </div>
+              )}
             </div>
+
+            {/* Wizard Retraite shortcut — Pro only */}
+            {isPro && (
+              <Link
+                to="/wizard-retraite"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "14px 16px",
+                  background: "rgba(184,147,74,0.08)",
+                  border: "1px solid rgba(184,147,74,0.25)",
+                  borderRadius: 14,
+                  textDecoration: "none",
+                  color: "var(--gold)",
+                  fontSize: 13,
+                  fontWeight: 600,
+                  fontFamily: "'Hanken Grotesk', sans-serif",
+                  transition: "background 0.15s",
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.14)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(184,147,74,0.08)"}
+              >
+                <span>Wizard Retraite</span>
+                <ArrowRight size={15} />
+              </Link>
+            )}
 
             {!isPro && (
               <div style={{ ...card, padding: "20px", background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.2)" }}>
