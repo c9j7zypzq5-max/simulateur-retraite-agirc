@@ -45,6 +45,10 @@ const MAP = {
   // Simulateurs belges
   "/simulateurs/pension-legale": Award,
   "/simulateurs/impot-revenu-be": Euro,
+  // Simulateurs suisses
+  "/simulateurs/lpp-deuxieme-pilier": Briefcase,
+  "/simulateurs/impot-revenu-ch": Receipt,
+  "/simulateurs/prevoyance-ch": Shield,
 };
 
 export default function SimIcon({ path, size = 22, strokeWidth = 1.6 }) {

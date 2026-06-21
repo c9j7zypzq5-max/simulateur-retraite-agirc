@@ -137,6 +137,17 @@ const BE_NAV_GROUPS = [
   ]},
 ];
 
+/* ── Données de navigation Suisse ── */
+const CH_NAV_GROUPS = [
+  { id: "retraite", icon: "🏦", label: "Retraite", items: [
+    { path: "/simulateurs/lpp-deuxieme-pilier", title: "LPP / 2e pilier", subtitle: "Avoir & rente projetés" },
+    { path: "/simulateurs/prevoyance-ch",       title: "Pilier 3a",        subtitle: "Épargne retraite déductible" },
+  ]},
+  { id: "impots", icon: "📋", label: "Fiscalité", items: [
+    { path: "/simulateurs/impot-revenu-ch", title: "Impôt sur le revenu", subtitle: "Fédéral + cantonal (Vaud)" },
+  ]},
+];
+
 /* ── Données de navigation EN (universal simulators only) ── */
 const EN_NAV_GROUPS = [
   { id: "finances", icon: "💰", label: "Finance", items: [
@@ -161,7 +172,7 @@ export default function Navbar({ theme, setTheme }) {
   const locale = useLocale();
   const country = useCountry();
   const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
-  const navGroups = locale === 'en' ? EN_NAV_GROUPS : country === 'be' ? BE_NAV_GROUPS : NAV_GROUPS;
+  const navGroups = locale === 'en' ? EN_NAV_GROUPS : country === 'be' ? BE_NAV_GROUPS : country === 'ch' ? CH_NAV_GROUPS : NAV_GROUPS;
 
   const { isPro, user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);

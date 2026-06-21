@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
+import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import HreflangTags from "./components/HreflangTags.jsx";
@@ -77,7 +78,9 @@ const SuccessionBE   = lazy(() => import("./pages/simulateurs/SuccessionBE.jsx")
 // Outils
 const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 // Dashboard
-const TableauDeBord = lazy(() => import("./pages/TableauDeBord.jsx"));
+const TableauDeBord        = lazy(() => import("./pages/TableauDeBord.jsx"));
+const WizardRetraite       = lazy(() => import("./pages/WizardRetraite.jsx"));
+const RapportPartage       = lazy(() => import("./pages/RapportPartage.jsx"));
 
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
@@ -98,6 +101,7 @@ function RouteFallback() {
 export default function App() {
   return (
     <AuthProvider>
+    <FiscalProfileProvider>
     <VideoRecordingProvider>
     <CurrencyProvider>
     <BrowserRouter>
@@ -198,6 +202,8 @@ export default function App() {
         {/* Pages utilitaires */}
         <Route path="/mes-simulations" element={<MesSimulations />} />
         <Route path="/tableau-de-bord" element={<TableauDeBord />} />
+        <Route path="/wizard-retraite" element={<WizardRetraite />} />
+        <Route path="/rapport/:id" element={<RapportPartage />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Pro / Paiements */}
         <Route path="/pro" element={<Pro />} />
@@ -223,6 +229,7 @@ export default function App() {
     </BrowserRouter>
     </CurrencyProvider>
     </VideoRecordingProvider>
+    </FiscalProfileProvider>
     </AuthProvider>
   );
 }

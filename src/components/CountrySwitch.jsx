@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath, countryFromPath, COUNTRIES } from "../i18n/config.js";
-import { canonicalPath, alternatePath, countryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
+import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
 
 const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐' };
 
@@ -29,6 +29,14 @@ export default function CountrySwitch({ compact = false }) {
     code: 'be', ...COUNTRIES.be,
     path: beExact !== null ? beExact : '/be',
     fallback: beExact === null,
+  });
+
+  // 🇨🇭 Suisse — exact si route en CH_ROUTES, sinon accueil /ch
+  const chExact = chCountryAlternatePath(pathname, 'fr');
+  options.push({
+    code: 'ch', ...COUNTRIES.ch,
+    path: chExact !== null ? chExact : '/ch',
+    fallback: chExact === null,
   });
 
   // 🌐 English — affiché si route disponible EN ou si déjà en anglais
@@ -95,6 +103,7 @@ export default function CountrySwitch({ compact = false }) {
             const isActive = opt.code === country;
             const sublabel = opt.code === 'fr' ? 'Simulateurs France'
               : opt.code === 'be' ? (opt.fallback ? 'Accueil Belgique' : 'Simulateurs Belgique')
+              : opt.code === 'ch' ? (opt.fallback ? 'Accueil Suisse' : 'Simulateurs Suisse')
               : 'International';
             return (
               <button

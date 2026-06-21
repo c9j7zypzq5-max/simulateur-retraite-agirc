@@ -29,6 +29,15 @@ const FR_PATH_MAP = Object.fromEntries(
 // Routes disponibles en anglais (clés FR canoniques).
 export const EN_ROUTES = new Set(Object.keys(EN_PATH_MAP));
 
+// Routes disponibles en Suisse.
+export const CH_ROUTES = new Set([
+  '/simulateurs/lpp-deuxieme-pilier',
+  '/simulateurs/impot-revenu-ch',
+  '/simulateurs/prevoyance-ch',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+]);
+
 // Routes disponibles en Belgique (certaines avec règles belges spécifiques,
 // d'autres partagées avec la version française).
 export const BE_ROUTES = new Set([
@@ -67,6 +76,9 @@ export function localePath(route, locale) {
 // canonicalPath('/en/simulators/savings')     → '/simulateurs/epargne'
 // canonicalPath('/simulateurs/epargne')       → '/simulateurs/epargne'
 export function canonicalPath(pathname) {
+  // Retirer le préfixe pays suisse
+  if (pathname === '/ch') return '/';
+  if (pathname.startsWith('/ch/')) return pathname.slice(3);
   // Retirer le préfixe pays belge
   if (pathname === '/be') return '/';
   if (pathname.startsWith('/be/')) return pathname.slice(3);
@@ -79,10 +91,15 @@ export function canonicalPath(pathname) {
   return pathname;
 }
 
-// Retourne le chemin préfixé /be/ pour une route canonique FR.
+// Retourne le chemin préfixé /be/ ou /ch/ pour une route canonique FR.
 // countryPath('/simulateurs/epargne', 'be') → '/be/simulateurs/epargne'
 // countryPath('/simulateurs/epargne', 'fr') → '/simulateurs/epargne'
+// countryPath('/simulateurs/lpp-deuxieme-pilier', 'ch') → '/ch/simulateurs/lpp-deuxieme-pilier'
 export function countryPath(route, country) {
+  if (country === 'ch') {
+    if (!CH_ROUTES.has(route)) return route;
+    return route === '/' ? '/ch' : `/ch${route}`;
+  }
   if (country === 'fr' || !BE_ROUTES.has(route)) return route;
   return route === '/' ? '/be' : `/be${route}`;
 }
@@ -101,4 +118,13 @@ export function countryAlternatePath(pathname, currentCountry) {
   const canon = canonicalPath(pathname);
   if (!BE_ROUTES.has(canon)) return null;
   return currentCountry === 'be' ? canon : countryPath(canon, 'be');
+}
+
+// Retourne le chemin vers le pays alternatif (FR↔CH) pour l'URL courante.
+// chCountryAlternatePath('/simulateurs/lpp-deuxieme-pilier', 'fr') → '/ch/simulateurs/lpp-deuxieme-pilier'
+// chCountryAlternatePath('/ch/simulateurs/lpp-deuxieme-pilier', 'ch') → '/simulateurs/lpp-deuxieme-pilier'
+export function chCountryAlternatePath(pathname, currentCountry) {
+  const canon = canonicalPath(pathname);
+  if (!CH_ROUTES.has(canon)) return null;
+  return currentCountry === 'ch' ? canon : countryPath(canon, 'ch');
 }
