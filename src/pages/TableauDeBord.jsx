@@ -66,6 +66,7 @@ export default function TableauDeBord() {
   const navigate = useNavigate();
   const { getHistory, removeEntry } = useSimHistory();
   const [history, setHistory] = useState([]);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     document.title = "Tableau de bord | simfinly.com";
@@ -82,6 +83,19 @@ export default function TableauDeBord() {
   useEffect(() => {
     setHistory(getHistory());
   }, [getHistory]);
+
+  async function handleExportPdf() {
+    if (!isPro || history.length === 0) return;
+    setExporting(true);
+    try {
+      const { buildMultiReportPdf } = await import("../utils/pdfReport.js");
+      await buildMultiReportPdf(history);
+    } catch (e) {
+      console.error("PDF export failed", e);
+    } finally {
+      setExporting(false);
+    }
+  }
 
   if (loading || !user) return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
@@ -115,11 +129,22 @@ export default function TableauDeBord() {
               Retrouvez vos simulations et accédez rapidement à vos outils.
             </p>
           </div>
-          {isPro && (
-            <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", background: "rgba(184,147,74,0.12)", border: "1px solid rgba(184,147,74,0.3)", borderRadius: 20, fontSize: 12, fontWeight: 700, color: "var(--gold)" }}>
-              ★ Pro
-            </div>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            {isPro && history.length > 0 && (
+              <button
+                onClick={handleExportPdf}
+                disabled={exporting}
+                style={{ fontSize: 13, color: exporting ? "var(--text-secondary)" : "var(--gold)", background: "none", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "8px 14px", cursor: exporting ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+              >
+                {exporting ? "Génération…" : "↓ Exporter en PDF"}
+              </button>
+            )}
+            {isPro && (
+              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", background: "rgba(184,147,74,0.12)", border: "1px solid rgba(184,147,74,0.3)", borderRadius: 20, fontSize: 12, fontWeight: 700, color: "var(--gold)" }}>
+                ★ Pro
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Pro gate */}

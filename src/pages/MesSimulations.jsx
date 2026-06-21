@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
+import { useAuth } from "../hooks/useAuth.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -16,18 +17,32 @@ function relativeDate(iso) {
 
 export default function MesSimulations() {
   const [theme, setTheme] = useTheme();
+  const { isPro } = useAuth();
   const { getHistory, removeEntry, clearHistory } = useSimHistory();
   const [history, setHistory] = useState([]);
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     document.title = "Mes simulations sauvegardées | simfinly.com";
-    // Page personnelle (localStorage) → on évite l'indexation.
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
     setHistory(getHistory());
     return () => robots && robots.setAttribute('content', 'index, follow');
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function handleExportPdf() {
+    if (!isPro || history.length === 0) return;
+    setExporting(true);
+    try {
+      const { buildMultiReportPdf } = await import("../utils/pdfReport.js");
+      await buildMultiReportPdf(history);
+    } catch (e) {
+      console.error("PDF export failed", e);
+    } finally {
+      setExporting(false);
+    }
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
@@ -47,12 +62,27 @@ export default function MesSimulations() {
             </h1>
           </div>
           {history.length > 0 && (
-            <button
-              onClick={() => { clearHistory(); setHistory([]); }}
-              style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", cursor: "pointer" }}
-            >
-              Tout effacer
-            </button>
+            <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+              {isPro ? (
+                <button
+                  onClick={handleExportPdf}
+                  disabled={exporting}
+                  style={{ fontSize: 13, color: exporting ? "var(--text-secondary)" : "var(--gold)", background: "none", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "8px 14px", cursor: exporting ? "not-allowed" : "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+                >
+                  {exporting ? "Génération…" : "↓ Exporter en PDF"}
+                </button>
+              ) : (
+                <Link to="/pro" style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 5 }}>
+                  <span style={{ fontSize: 10, color: "var(--gold)", fontWeight: 700 }}>PRO</span> Exporter en PDF
+                </Link>
+              )}
+              <button
+                onClick={() => { clearHistory(); setHistory([]); }}
+                style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", cursor: "pointer" }}
+              >
+                Tout effacer
+              </button>
+            </div>
           )}
         </div>
 

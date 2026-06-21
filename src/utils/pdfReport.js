@@ -325,6 +325,110 @@ export async function buildReportPdf({ report, url, name, chartImage = null, cha
   doc.save(`compte-rendu-${name}.pdf`);
 }
 
+// ─── Catégorisation des simulateurs (même logique que TableauDeBord) ─────────
+function categoryFromSimPath(path) {
+  if (!path) return "Autre";
+  if (path.includes("retraite") || path.includes("cnav") || path.includes("agirc") || path.includes("per") || path.includes("synthese") || path.includes("independant") || path.includes("ircantec") || path.includes("cnavpl") || path.includes("msa") || path.includes("fonction-publique") || path.includes("pension")) return "Retraite";
+  if (path.includes("emprunt") || path.includes("locatif") || path.includes("ptz") || path.includes("plus-value")) return "Immobilier";
+  if (path.includes("impot") || path.includes("succession") || path.includes("divorce") || path.includes("freelance")) return "Patrimoine & Impôts";
+  if (path.includes("fire") || path.includes("epargne") || path.includes("patrimoine") || path.includes("budget") || path.includes("comparateur") || path.includes("assurance") || path.includes("credit") || path.includes("salaire")) return "Finances";
+  if (path.includes("heures") || path.includes("semaines")) return "Vie & Temps";
+  return "Autre";
+}
+
+const CAT_ORDER = ["Retraite", "Immobilier", "Patrimoine & Impôts", "Finances", "Vie & Temps", "Autre"];
+
+export async function buildMultiReportPdf(entries) {
+  const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+  const pageW = doc.internal.pageSize.getWidth();
+  const pageH = doc.internal.pageSize.getHeight();
+  const M = 48;
+  const contentW = pageW - M * 2;
+  let y = M;
+
+  const ensure = (need) => { if (y + need > pageH - M - 24) { doc.addPage(); y = M; } };
+  const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+  // Header
+  y = drawHeader(doc, pageW, M, "Mes simulations", date, true);
+  y = drawDivider(doc, pageW, M, y) + 22;
+
+  // Title block
+  doc.setFont("helvetica", "bold").setFontSize(20).setTextColor(...INK);
+  doc.text("Mes simulations financières", M, y);
+  y += 26;
+  doc.setFont("helvetica", "normal").setFontSize(11).setTextColor(...SOFT);
+  doc.text(`${entries.length} simulation${entries.length > 1 ? "s" : ""} sauvegardée${entries.length > 1 ? "s" : ""} · ${date}`, M, y);
+  y += 32;
+
+  // Grouped by category
+  const grouped = {};
+  entries.forEach(e => {
+    const path = (e.shareUrl || "").split("?")[0];
+    const cat = categoryFromSimPath(path);
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(e);
+  });
+
+  CAT_ORDER.forEach(cat => {
+    if (!grouped[cat]?.length) return;
+    ensure(52);
+
+    // Category heading
+    doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(...GOLD_DARK);
+    const h = cat.toUpperCase();
+    doc.text(h, M, y);
+    doc.setDrawColor(...GOLD).setLineWidth(0.8).line(M + doc.getTextWidth(h) + 10, y - 3, pageW - M, y - 3);
+    y += 18;
+
+    grouped[cat].forEach((entry, i) => {
+      ensure(54);
+      const ROW_H = 50;
+      if (i % 2 === 0) {
+        doc.setFillColor(...GOLD_TINT);
+        doc.rect(M - 4, y - 14, contentW + 8, ROW_H, "F");
+      }
+
+      // Simulation label
+      doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(...INK);
+      const labelStr = T(entry.label || "Simulation");
+      const labelLines = doc.splitTextToSize(labelStr, contentW - 100);
+      doc.text(labelLines[0], M + 4, y);
+
+      // Date (right-aligned)
+      const savedDate = entry.savedAt ? new Date(entry.savedAt).toLocaleDateString("fr-FR") : "";
+      doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...SOFT);
+      doc.text(savedDate, pageW - M - 4, y, { align: "right" });
+
+      // Simulator name
+      doc.setFont("helvetica", "normal").setFontSize(9).setTextColor(...SOFT);
+      const simLabel = T(entry.simulator || "");
+      if (simLabel) doc.text(simLabel, M + 4, y + 14);
+
+      // URL (truncated, clickable-looking)
+      doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...GOLD_DARK);
+      const rawUrl = T(entry.shareUrl || "");
+      const maxUrlW = contentW - 8;
+      const urlTrunc = doc.getTextWidth(rawUrl) > maxUrlW
+        ? rawUrl.substring(0, Math.floor(maxUrlW / doc.getCharWidthsArray("a")[0]) - 3) + "…"
+        : rawUrl;
+      doc.text(urlTrunc, M + 4, y + 26);
+
+      doc.setDrawColor(...LINE).setLineWidth(0.4).line(M, y + 36, pageW - M, y + 36);
+      y += ROW_H;
+    });
+
+    y += 18;
+  });
+
+  // CTA footer block
+  y = drawCta(doc, "simfinly.com", contentW, M, y, ensure, "Retrouvez et relancez vos simulations sur :");
+
+  addFooters(doc, M, pageH, pageW, true);
+  const isoDate = new Date().toISOString().split("T")[0];
+  doc.save(`simfinly-simulations-${isoDate}.pdf`);
+}
+
 export async function buildReportPdfPro({ report, url, name, chartImage = null, chartPoints = null }) {
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
