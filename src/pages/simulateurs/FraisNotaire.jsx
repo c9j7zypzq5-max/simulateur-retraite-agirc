@@ -47,13 +47,12 @@ const TRANCHES_EMOLUMENTS = [
 // Émoluments du notaire HT pour un prix donné (barème dégressif par tranches).
 function emolumentsNotaireHT(prix) {
   if (!prix || prix <= 0) return 0;
-  let reste = prix, bas = 0, total = 0;
+  let bas = 0, total = 0;
   for (const t of TRANCHES_EMOLUMENTS) {
     const largeur = Math.min(prix, t.jusqua) - bas;
     if (largeur > 0) total += largeur * t.taux;
     bas = t.jusqua;
     if (prix <= t.jusqua) break;
-    reste -= largeur;
   }
   return total;
 }

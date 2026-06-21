@@ -228,6 +228,9 @@ export default function Footer() {
               <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
                 {t("nav.guides")}
               </Link>
+              <Link to="/comparatifs" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("nav.comparatifs")}
+              </Link>
               <Link to="/blog" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
                 {t("nav.blog")}
               </Link>

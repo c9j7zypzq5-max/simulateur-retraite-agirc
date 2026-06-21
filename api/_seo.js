@@ -5,6 +5,8 @@
 // client (rendu client, pas d'hydratation → aucun risque d'incohérence).
 //
 // Clé = chemin de route. Intro = 2-3 phrases factuelles et descriptives.
+import { COMPARATIFS } from '../src/data/comparatifs.js';
+
 export const SEO_CONTENT = {
   '/simulateurs/agirc-arrco': {
     h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
@@ -118,7 +120,17 @@ export const SEO_CONTENT = {
     h1: "Générateur de QR code personnalisé gratuit",
     intro: "Créez un QR code sur mesure : choisissez les couleurs, saisissez le texte ou le lien de votre choix et ajoutez votre logo ou un emoji au centre. Le code est généré dans votre navigateur — aucune donnée envoyée — et téléchargeable en PNG haute résolution, gratuitement et sans inscription.",
   },
+  '/comparatifs': {
+    h1: "Comparatifs financiers",
+    intro: "Des comparaisons claires pour vos grandes décisions : PER ou assurance-vie, louer ou acheter, freelance ou salarié. Chaque comparatif détaille les avantages et inconvénients critère par critère et renvoie vers les simulateurs pour chiffrer votre situation.",
+  },
 };
+
+// Pages comparatives : H1 + intro dérivés des données (src/data/comparatifs.js),
+// ajoutés à SEO_CONTENT pour le prérendu statique de chaque /comparatifs/:slug.
+for (const c of COMPARATIFS) {
+  SEO_CONTENT[`/comparatifs/${c.slug}`] = { h1: c.title, intro: c.intro };
+}
 
 // Contenu SEO en anglais (H1 + intro) pour les pages /en/...
 export const SEO_CONTENT_EN = {

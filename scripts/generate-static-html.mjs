@@ -1,10 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, EN_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, EN_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
+import { COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -34,6 +35,10 @@ function seoForRoute(route, extra = {}, locale = 'fr') {
     const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
     if (g) return { title: `${g.title} — guide complet | simfinly.com`, description: g.intro };
   }
+  if (route.startsWith('/comparatifs/')) {
+    const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
+    if (c) return { title: `${c.title} | simfinly.com`, description: c.intro };
+  }
   if (route.startsWith('/blog/')) {
     return { title: extra.title ? `${extra.title} | simfinly.com` : null, description: extra.description || null };
   }
@@ -50,6 +55,7 @@ function ogImageUrl(route, extra) {
   let t = "", c = "";
   if (route.startsWith('/lexique/')) { const x = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)]; if (x) { t = x.term; c = x.category; } }
   else if (route.startsWith('/guides/')) { const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)]; if (g) { t = g.title; c = g.category; } }
+  else if (route.startsWith('/comparatifs/')) { const x = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)]; if (x) { t = x.shortTitle; c = x.category; } }
   else if (route.startsWith('/blog/')) { t = extra.title || ''; }
   else if (ROUTE_META[route]) { t = ROUTE_META[route].title; c = ROUTE_META[route].cat || ''; }
   if (t) return `${BASE}/api/og?${new URLSearchParams({ t, c }).toString()}`;
@@ -135,6 +141,7 @@ const routes = [
   ...Object.keys(ROUTE_META).filter(r => r !== '/').map(route => ({ route })),
   ...LEXIQUE_SLUGS.map(route => ({ route })),
   ...GUIDES_SLUGS.map(route => ({ route })),
+  ...COMPARATIFS_SLUGS.map(route => ({ route })),
   ...blog,
 ];
 

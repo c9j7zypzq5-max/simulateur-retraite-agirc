@@ -6,6 +6,7 @@
 
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
+import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 
 export const BASE = 'https://www.simfinly.com';
 
@@ -107,6 +108,7 @@ export const ROUTE_META = {
   '/blog':                                { title: 'Blog — Finances personnelles',               emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions',            emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
   '/guides':                              { title: 'Guides finances personnelles',               emoji: '📚', cat: '',          prio: '0.8', freq: 'monthly' },
+  '/comparatifs':                         { title: 'Comparatifs financiers — PER, achat, freelance', emoji: '⚖️', cat: '',          prio: '0.7', freq: 'monthly' },
   '/methodologie':                        { title: 'Méthodologie & sources',                     emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
   '/widgets':                             { title: 'Widgets gratuits à intégrer',                emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
   '/a-propos':                            { title: 'À propos — simfinly.com',                emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
@@ -133,6 +135,9 @@ export const LEXIQUE_SLUGS = GLOSSARY.map(t => `/lexique/${t.slug}`);
 
 // Guides thématiques (/guides/:slug) : pré-rendus au build et inclus au sitemap.
 export const GUIDES_SLUGS = GUIDES.map(g => `/guides/${g.slug}`);
+
+// Pages comparatives (/comparatifs/:slug) : pré-rendues au build et incluses au sitemap.
+export const COMPARATIFS_SLUGS = COMPARATIFS.map(c => `/comparatifs/${c.slug}`);
 
 // og:image par catégorie (différenciation des aperçus de partage social).
 // PNG (pas SVG) : c'est le format réellement rendu par Facebook/LinkedIn/X.
@@ -190,6 +195,21 @@ export function structuredData(route, extra = {}) {
       {
         '@context': 'https://schema.org', '@type': 'Article',
         headline: g.title, description: g.intro, url, mainEntityOfPage: url,
+        author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
+        publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+      },
+    ];
+  }
+
+  // Page comparative → fil d'Ariane + Article
+  if (route.startsWith('/comparatifs/')) {
+    const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
+    if (!c) return [];
+    return [
+      breadcrumb([['Accueil', `${BASE}/`], ['Comparatifs', `${BASE}/comparatifs`], [c.shortTitle, url]]),
+      {
+        '@context': 'https://schema.org', '@type': 'Article',
+        headline: c.title, description: c.intro, url, mainEntityOfPage: url,
         author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
       },

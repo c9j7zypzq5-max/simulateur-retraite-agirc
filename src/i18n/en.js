@@ -2,6 +2,7 @@
 export default {
   nav: {
     guides: 'Guides',
+    comparatifs: 'Comparisons',
     blog: 'Blog',
     lexique: 'Glossary',
     apropos: 'About',

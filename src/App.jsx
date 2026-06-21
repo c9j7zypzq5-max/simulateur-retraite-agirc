@@ -22,6 +22,8 @@ const Lexique                 = lazy(() => import("./pages/Lexique.jsx"));
 const LexiqueTerme            = lazy(() => import("./pages/LexiqueTerme.jsx"));
 const Guides                  = lazy(() => import("./pages/Guides.jsx"));
 const Guide                   = lazy(() => import("./pages/Guide.jsx"));
+const Comparatifs             = lazy(() => import("./pages/Comparatifs.jsx"));
+const Comparatif              = lazy(() => import("./pages/Comparatif.jsx"));
 const MesSimulations          = lazy(() => import("./pages/MesSimulations.jsx"));
 const Methodologie            = lazy(() => import("./pages/Methodologie.jsx"));
 const EmbedEpargne            = lazy(() => import("./pages/embed/EmbedEpargne.jsx"));
@@ -217,6 +219,9 @@ export default function App() {
         {/* Guides */}
         <Route path="/guides" element={<Guides />} />
         <Route path="/guides/:slug" element={<Guide />} />
+        {/* Comparatifs */}
+        <Route path="/comparatifs" element={<Comparatifs />} />
+        <Route path="/comparatifs/:slug" element={<Comparatif />} />
         {/* Widget embarquable (iframe) */}
         <Route path="/embed/epargne" element={<EmbedEpargne />} />
         <Route path="/embed/emprunt" element={<EmbedEmprunt />} />
