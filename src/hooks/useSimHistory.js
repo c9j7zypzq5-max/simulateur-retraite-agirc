@@ -26,5 +26,16 @@ export function useSimHistory() {
     try { localStorage.removeItem(KEY); } catch {}
   }
 
-  return { getHistory, saveEntry, removeEntry, clearHistory };
+  // Met à jour le label et/ou la note d'une entrée existante
+  function updateEntry(id, { label, note }) {
+    try {
+      const history = getHistory().map(e =>
+        e.id === id ? { ...e, ...(label !== undefined ? { label } : {}), ...(note !== undefined ? { note } : {}) } : e
+      );
+      localStorage.setItem(KEY, JSON.stringify(history));
+      return true;
+    } catch { return false; }
+  }
+
+  return { getHistory, saveEntry, removeEntry, clearHistory, updateEntry };
 }
