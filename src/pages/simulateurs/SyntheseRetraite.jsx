@@ -47,6 +47,7 @@ export default function SyntheseRetraite() {
 
   const [vals, setVals] = useState({});
   const [salaire, setSalaire] = useState(null);
+  const [salaireFromWizard, setSalaireFromWizard] = useState(false);
   const setVal = (k, v) => setVals(s => ({ ...s, [k]: v }));
 
   const resultsRef = useRef(null);
@@ -65,12 +66,24 @@ export default function SyntheseRetraite() {
   }, []);
 
   useEffect(() => {
+    // Lire les params de partage (pattern readShareParams existant)
     const shared = readShareParams();
     if (shared) {
       const v = {};
       for (const r of REGIMES) if (shared[r.key] !== undefined) v[r.key] = shared[r.key];
       if (Object.keys(v).length) setVals(v);
       if (shared.salaire !== undefined) setSalaire(shared.salaire);
+    }
+
+    // Lire le param ?salaire= injecté depuis WizardRetraite (pré-remplissage)
+    const urlParams = new URLSearchParams(window.location.search);
+    const salaireParam = urlParams.get("salaire");
+    if (salaireParam) {
+      const val = parseFloat(salaireParam);
+      if (!isNaN(val) && val > 0) {
+        setSalaire(val);
+        setSalaireFromWizard(true);
+      }
     }
   }, []);
 
@@ -169,7 +182,21 @@ export default function SyntheseRetraite() {
 
         {/* Taux de remplacement (optionnel) */}
         <AccordionSection title="Taux de remplacement (optionnel)" subtitle="Comparez votre retraite à votre dernier salaire">
-          <NumInput id="dernier-salaire" label="Dernier salaire net mensuel" value={salaire} onChange={setSalaire} unit="€" min={0} max={50000}
+          {salaireFromWizard && (
+            <div style={{
+              display: "flex", alignItems: "center", gap: 10,
+              background: "rgba(59,130,246,0.08)",
+              border: "1px solid rgba(59,130,246,0.25)",
+              borderRadius: 10, padding: "10px 14px", marginBottom: 16,
+              fontSize: 13, color: "#1d4ed8",
+            }}>
+              <span style={{ flexShrink: 0, fontSize: 16 }}>ℹ️</span>
+              <span>
+                <strong>Données pré-remplies depuis votre profil Wizard</strong> — le salaire mensuel brut a été injecté depuis le Wizard Retraite. Vous pouvez l'ajuster librement.
+              </span>
+            </div>
+          )}
+          <NumInput id="dernier-salaire" label="Dernier salaire net mensuel" value={salaire} onChange={v => { setSalaire(v); setSalaireFromWizard(false); }} unit="€" min={0} max={50000}
             hint={tauxRemplacement ? `Taux de remplacement : ${tauxRemplacement.toFixed(0)} % de votre dernier salaire net` : "Pour calculer le rapport pension nette / dernier salaire"}
           />
         </AccordionSection>

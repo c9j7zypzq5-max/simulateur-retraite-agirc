@@ -48,7 +48,7 @@ const STATUTS = [
     simulateurs: [
       { label: "CNAV — Régime général", path: "/simulateurs/cnav", params: (d) => `anneesFaites=${d.anneesFaites}&salaire=${d.salaireMensuel}` },
       { label: "Agirc-Arrco — Retraite complémentaire", path: "/simulateurs/agirc-arrco", params: (d) => `salaire=${d.salaireMensuel}&anneeNaissance=${d.anneeNaissance}` },
-      { label: "Synthèse tous régimes", path: "/simulateurs/synthese-retraite", params: () => "" },
+      { label: "Synthèse tous régimes", path: "/simulateurs/synthese-retraite", params: (d) => d.salaireMensuel ? `salaire=${d.salaireMensuel}` : "" },
     ],
   },
   {
@@ -59,6 +59,7 @@ const STATUTS = [
     simulateurs: [
       { label: "Fonction publique — Pension civile / CNRACL", path: "/simulateurs/fonction-publique", params: (d) => `salaire=${d.salaireMensuel}` },
       { label: "IRCANTEC — Contractuels du public", path: "/simulateurs/ircantec", params: (d) => `salaire=${d.salaireMensuel}` },
+      { label: "Synthèse tous régimes", path: "/simulateurs/synthese-retraite", params: (d) => d.salaireMensuel ? `salaire=${d.salaireMensuel}` : "" },
     ],
   },
   {
@@ -484,7 +485,7 @@ export default function WizardRetraite() {
             {/* Lien synthèse */}
             <div style={{ textAlign: "center", padding: "8px 0" }}>
               <Link
-                to="/simulateurs/synthese-retraite"
+                to={salaireMensuel ? `/simulateurs/synthese-retraite?salaire=${salaireMensuel}` : "/simulateurs/synthese-retraite"}
                 style={{ fontSize: 13, color: "var(--gold-mid)", textDecoration: "none" }}
               >
                 Voir la synthèse tous régimes →
