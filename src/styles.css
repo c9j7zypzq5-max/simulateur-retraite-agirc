@@ -209,7 +209,3 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   .desktop-nav { display: flex !important; }
 }
 
-/* ── Hide secondary drawer links (Guides/Blog/Lexique) on mobile ── */
-@media (max-width: 899px) {
-  .drawer-secondary-links { display: none !important; }
-}

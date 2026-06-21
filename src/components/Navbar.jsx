@@ -311,21 +311,39 @@ export default function Navbar({ theme, setTheme }) {
             </button>
 
             {/* Guides */}
-            <Link
-              to={locale === 'en' ? "/en/guides" : "/guides"}
-              style={{
-                padding: "8px 12px", borderRadius: 8, textDecoration: "none",
-                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
-                color: pathname.startsWith("/guides") || pathname.startsWith("/en/guides") ? "var(--primary)" : "var(--text-secondary)",
-              }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
-            >
-              Guides
-            </Link>
+            {locale !== 'en' && country === 'fr' && (
+              <Link
+                to="/guides"
+                style={{
+                  padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                  color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Guides
+              </Link>
+            )}
+
+            {/* Blog (FR only) */}
+            {locale !== 'en' && country === 'fr' && (
+              <Link
+                to="/blog"
+                style={{
+                  padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                  color: pathname.startsWith("/blog") ? "var(--primary)" : "var(--text-secondary)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/blog") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Blog
+              </Link>
+            )}
 
             {/* Lexique (FR only) */}
-            {locale !== 'en' && (
+            {locale !== 'en' && country === 'fr' && (
               <Link
                 to="/lexique"
                 style={{
