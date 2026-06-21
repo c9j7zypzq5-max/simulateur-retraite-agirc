@@ -74,6 +74,8 @@ const RetraiteAnticipee  = lazy(() => import("./pages/simulateurs/RetraiteAntici
 const Donation           = lazy(() => import("./pages/simulateurs/Donation.jsx"));
 const EpargneSalariale   = lazy(() => import("./pages/simulateurs/EpargneSalariale.jsx"));
 const DeficitFoncier     = lazy(() => import("./pages/simulateurs/DeficitFoncier.jsx"));
+const FraisNotaire       = lazy(() => import("./pages/simulateurs/FraisNotaire.jsx"));
+const PensionReversion   = lazy(() => import("./pages/simulateurs/PensionReversion.jsx"));
 // Simulateurs belges
 const ImpotRevenuBE  = lazy(() => import("./pages/simulateurs/ImpotRevenuBE.jsx"));
 const PensionLegaleBE = lazy(() => import("./pages/simulateurs/PensionLegaleBE.jsx"));
@@ -173,11 +175,13 @@ export default function App() {
         <Route path="/simulateurs/cnavpl" element={<Cnavpl />} />
         <Route path="/simulateurs/msa" element={<Msa />} />
         <Route path="/simulateurs/per" element={<Per />} />
+        <Route path="/simulateurs/pension-reversion" element={<PensionReversion />} />
         <Route path="/simulateurs/synthese-retraite" element={<SyntheseRetraite />} />
         {/* Immobilier */}
         <Route path="/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/simulateurs/rendement-locatif" element={<RendementLocatif />} />
         <Route path="/simulateurs/ptz" element={<Ptz />} />
+        <Route path="/simulateurs/frais-notaire" element={<FraisNotaire />} />
         {/* Impôts */}
         <Route path="/simulateurs/impot-revenu" element={<ImpotRevenu />} />
         <Route path="/simulateurs/plus-value-immobiliere" element={<PlusValue />} />

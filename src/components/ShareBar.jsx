@@ -230,6 +230,11 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
   return (
     <div ref={barRef} data-noexport="true" style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
+      {report?.highlight && (
+        <div style={{ flexBasis: "100%", fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 2 }}>
+          💡 Fier de votre résultat ? Partagez-le ou exportez-le en un clic.
+        </div>
+      )}
       {showDownload && (
         <div style={{ position: "relative" }}>
           <button style={btnStyle} onClick={() => setMenuOpen(o => !o)} disabled={busy}

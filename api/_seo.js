@@ -74,9 +74,17 @@ export const SEO_CONTENT = {
     h1: "Simulateur FIRE — indépendance financière",
     intro: "Calculez le patrimoine nécessaire pour vivre de vos investissements et l'âge auquel vous atteindrez l'indépendance financière. Le simulateur applique la règle des 4 %, les paliers Lean/Coast/Fat FIRE et trace votre trajectoire année par année.",
   },
+  '/simulateurs/frais-notaire': {
+    h1: "Simulateur de frais de notaire 2025",
+    intro: "Calculez les frais de notaire (frais d'acquisition) de votre achat immobilier : droits de mutation, émoluments du notaire, contribution de sécurité immobilière et débours. Le simulateur distingue l'ancien (~7-8 % du prix) et le neuf (~2-3 %) pour une estimation instantanée.",
+  },
   '/simulateurs/per': {
     h1: "Simulateur PER — Plan d'Épargne Retraite",
     intro: "Estimez l'économie d'impôt liée à vos versements sur un PER et le capital projeté à la retraite. Le calcul applique le plafond de déduction (10 % des revenus, PASS 2025) selon votre tranche marginale d'imposition et votre horizon de placement.",
+  },
+  '/simulateurs/pension-reversion': {
+    h1: "Simulateur de pension de réversion 2025",
+    intro: "Estimez la pension de réversion du conjoint survivant : 54 % de la retraite de base (CNAV) et 60 % de la complémentaire Agirc-Arrco. Le calcul intègre la condition de ressources (plafond 2025 selon votre situation) et l'âge minimum de 55 ans pour une estimation mensuelle claire.",
   },
   '/simulateurs/synthese-retraite': {
     h1: "Synthèse retraite tous régimes — votre pension totale",
