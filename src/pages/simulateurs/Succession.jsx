@@ -150,8 +150,8 @@ export default function Succession() {
   const res = useMemo(() => calcSuccession(vals), [actifNet, lien, nbHeritiers, donations]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta({
-    title: "Simulateur Succession & Droits de Succession 2025 | simfinly.com",
-    description: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2025 : enfants, conjoint, frères/sœurs, autres.",
+    title: "Simulateur Succession & Droits de Succession 2026 | simfinly.com",
+    description: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2026 : enfants, conjoint, frères/sœurs, autres.",
   });
 
   const animDroits  = useAnimatedNumber(res.totalDroits);
@@ -169,14 +169,14 @@ export default function Succession() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Succession 2025", url: "https://www.simfinly.com/simulateurs/succession", description: "Calculez les droits de succession selon le lien de parenté et le barème 2025.", applicationCategory: "FinanceApplication" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Succession 2026", url: "https://www.simfinly.com/simulateurs/succession", description: "Calculez les droits de succession selon le lien de parenté et le barème 2026.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/succession" size={34} />}
           title="Droits de succession"
-          subtitle="Estimation · Barème 2025"
-          desc="Calculez les droits à payer selon le lien de parenté, le patrimoine transmis et les donations antérieures. Abattements et barèmes légaux 2025."
+          subtitle="Estimation · Barème 2026"
+          desc="Calculez les droits à payer selon le lien de parenté, le patrimoine transmis et les donations antérieures. Abattements et barèmes légaux 2026."
           badge="Patrimoine · Succession"
         />
 

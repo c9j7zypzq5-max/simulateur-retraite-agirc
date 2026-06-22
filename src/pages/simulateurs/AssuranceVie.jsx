@@ -73,9 +73,9 @@ const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, 
 // anglais (public expatrié / international intéressé par les produits français).
 const TXT = {
   fr: {
-    docTitle: "Simulateur Assurance-Vie 2025 — Capital, gains et fiscalité",
+    docTitle: "Simulateur Assurance-Vie 2026 — Capital, gains et fiscalité",
     docDesc: "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux. Paramètres 2025.",
-    appName: "Simulateur Assurance-Vie 2025",
+    appName: "Simulateur Assurance-Vie 2026",
     ogDesc: "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans, abattement, PFU et prélèvements sociaux.",
     badge: "Finances · Simulation 2025",
     title: "Simulateur Assurance-Vie",
@@ -162,9 +162,9 @@ const TXT = {
     rNoteBefore: "Avant 8 ans : gains soumis au prélèvement forfaitaire unique de 30 %.",
   },
   en: {
-    docTitle: "French Life Insurance Calculator 2025 — Capital, Gains & Tax",
+    docTitle: "French Life Insurance Calculator 2026 — Capital, Gains & Tax",
     docDesc: "Project the growth of a French life insurance (assurance-vie) policy and estimate the tax on your gains at withdrawal: the 8-year advantage, allowance, flat tax and social levies. 2025 figures.",
-    appName: "French Life Insurance Calculator 2025",
+    appName: "French Life Insurance Calculator 2026",
     ogDesc: "Project the growth of a French life insurance policy and estimate the tax on your gains at withdrawal: 8-year advantage, allowance, flat tax and social levies.",
     badge: "Finance · 2025 simulation",
     title: "Life Insurance Calculator",

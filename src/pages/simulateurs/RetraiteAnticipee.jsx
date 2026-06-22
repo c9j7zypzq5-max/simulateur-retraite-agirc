@@ -225,7 +225,7 @@ export default function RetraiteAnticipee() {
   const res = useMemo(() => calcRetraiteAnticipee(vals), [anneeNaissance, ageFin, trimestresCotises, agePremierTrimestre, salaireMensuelBrut]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta({
-    title: "Simulateur Retraite Anticipée Carrières Longues 2025 | simfinly.com",
+    title: "Simulateur Retraite Anticipée Carrières Longues 2026 | simfinly.com",
     description: "Calculez votre éligibilité au départ anticipé (RACL), votre pension estimée, la décote ou surcote applicable selon la réforme 2023 (loi Borne). Barème officiel par génération.",
   });
 
@@ -246,7 +246,7 @@ export default function RetraiteAnticipee() {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        name: "Simulateur Retraite Anticipée Carrières Longues 2025",
+        name: "Simulateur Retraite Anticipée Carrières Longues 2026",
         url: "https://www.simfinly.com/simulateurs/retraite-anticipee",
         description: "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée, et la décote ou surcote applicable selon la réforme 2023.",
         applicationCategory: "FinanceApplication",

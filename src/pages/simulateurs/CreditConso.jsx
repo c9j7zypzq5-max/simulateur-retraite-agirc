@@ -25,9 +25,9 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
   fr: {
-    docTitle: "Simulateur Crédit Conso 2025 — Mensualité et coût du crédit",
+    docTitle: "Simulateur Crédit Conso 2026 — Mensualité et coût du crédit",
     metaDesc: "Calculez la mensualité de votre crédit à la consommation, le coût total et le total des intérêts selon le montant, le TAEG et la durée. Tableau d'amortissement inclus.",
-    jsonLdName: "Simulateur Crédit à la consommation 2025",
+    jsonLdName: "Simulateur Crédit à la consommation 2026",
     jsonLdDesc: "Calculez la mensualité de votre crédit à la consommation, le coût total et le total des intérêts selon le montant, le TAEG et la durée.",
     jsonLdUrl: "https://www.simfinly.com/simulateurs/credit-conso",
     pageTitle: "Simulateur Crédit Conso",
@@ -128,7 +128,7 @@ const TXT = {
   en: {
     docTitle: "Personal Loan Calculator — Monthly Payment & Cost | Simfinly",
     metaDesc: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes amortization schedule.",
-    jsonLdName: "Personal Loan Calculator 2025",
+    jsonLdName: "Personal Loan Calculator 2026",
     jsonLdDesc: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term.",
     jsonLdUrl: "https://www.simfinly.com/en/simulateurs/credit-conso",
     pageTitle: "Personal Loan Calculator",

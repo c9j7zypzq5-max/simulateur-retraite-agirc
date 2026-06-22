@@ -132,7 +132,7 @@ export default function ImpotRevenuBE() {
   const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
-    title: "Simulateur IPP belge 2025 — Impôt sur le revenu Belgique | simfinly.com",
+    title: "Simulateur IPP belge 2026 — Impôt sur le revenu Belgique | simfinly.com",
     description: "Calculez votre impôt belge (IPP) 2025 : 4 tranches (25–50 %), quotité exemptée, frais professionnels, centimes additionnels communaux et quotient conjugal.",
   });
 
@@ -144,7 +144,7 @@ export default function ImpotRevenuBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur IPP Belgique 2025", url: "https://www.simfinly.com/be/simulateurs/impot-revenu", description: "Calculez votre IPP belge selon les barèmes 2025.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur IPP Belgique 2025", url: "https://www.simfinly.com/be/simulateurs/impot-revenu", description: "Calculez votre IPP belge selon les barèmes 2026.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader

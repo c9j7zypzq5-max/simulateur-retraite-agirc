@@ -136,7 +136,7 @@ export default function LppDeuxiemePilier() {
   const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
-    title: "Simulateur LPP 2e pilier Suisse 2025 — Avoir & rente | simfinly.com",
+    title: "Simulateur LPP 2e pilier Suisse 2026 — Avoir & rente | simfinly.com",
     description: "Estimez votre avoir de vieillesse LPP (2e pilier suisse) et votre rente mensuelle projetée à 65 ans. Bonifications par tranche d'âge, taux d'intérêt 2025, taux de conversion 6,8 %.",
   });
 
@@ -151,7 +151,7 @@ export default function LppDeuxiemePilier() {
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "Simulateur LPP 2e pilier Suisse 2025",
+        name: "Simulateur LPP 2e pilier Suisse 2026",
         url: "https://www.simfinly.com/ch/simulateurs/lpp-deuxieme-pilier",
         description: "Estimez votre avoir LPP et votre rente de retraite suisse selon les règles 2025.",
         applicationCategory: "FinanceApplication",

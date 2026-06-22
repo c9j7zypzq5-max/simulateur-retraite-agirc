@@ -160,7 +160,7 @@ export default function ImpotRevenuCH() {
   const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
-    title: "Simulateur impôt revenu Suisse 2025 — IFD + cantonal | simfinly.com",
+    title: "Simulateur impôt revenu Suisse 2026 — IFD + cantonal | simfinly.com",
     description: "Calculez votre impôt fédéral direct (IFD) et cantonal en Suisse 2025. Barème progressif, déductions AVS, frais professionnels, comparaison entre cantons.",
   });
 
@@ -179,7 +179,7 @@ export default function ImpotRevenuCH() {
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
-        name: "Simulateur impôt revenu Suisse 2025",
+        name: "Simulateur impôt revenu Suisse 2026",
         url: "https://www.simfinly.com/ch/simulateurs/impot-revenu-ch",
         description: "Calculez votre IFD et impôt cantonal suisse selon les barèmes 2025.",
         applicationCategory: "FinanceApplication",

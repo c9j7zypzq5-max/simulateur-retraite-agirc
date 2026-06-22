@@ -105,7 +105,7 @@ const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, 
 // HCSF), en français et en anglais (public expatrié / international).
 const TXT = {
   fr: {
-    docTitle: "Simulateur Emprunt Immobilier 2025 — Mensualité et capacité d'emprunt",
+    docTitle: "Simulateur Emprunt Immobilier 2026 — Mensualité et capacité d'emprunt",
     docDesc: "Calculez votre mensualité, taux d'endettement et coût total du crédit immobilier. Frais de notaire, PTZ, tableau d'amortissement inclus.",
     appName: "Simulateur d'emprunt immobilier",
     badge: "Immobilier · Simulation 2026",
@@ -258,7 +258,7 @@ const TXT = {
     noteEconomie: (val) => `Versements anticipés : ${val} d'intérêts économisés.`,
   },
   en: {
-    docTitle: "French Mortgage Calculator 2025 — Monthly Payment & Borrowing Capacity",
+    docTitle: "French Mortgage Calculator 2026 — Monthly Payment & Borrowing Capacity",
     docDesc: "Work out your monthly payment, debt-to-income ratio and total cost of a French mortgage. Notary fees, zero-rate loan (PTZ) and amortization schedule included.",
     appName: "French mortgage calculator",
     badge: "Real estate · 2026 simulation",

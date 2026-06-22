@@ -68,7 +68,7 @@ function calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeF
 // français et en anglais (public expatrié / international).
 const TXT = {
   fr: {
-    docTitle: "Simulateur Rendement Locatif 2025 — Rentabilité investissement immobilier",
+    docTitle: "Simulateur Rendement Locatif 2026 — Rentabilité investissement immobilier",
     docDesc: "Calculez le rendement brut et net de votre investissement locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.",
     appName: "Simulateur de rendement locatif",
     badge: "Immobilier · Simulation 2026",
@@ -173,7 +173,7 @@ const TXT = {
     noteDuree: (n) => `Durée d'amortissement estimée : ${n} ans.`,
   },
   en: {
-    docTitle: "Rental Yield Calculator 2025 — Buy-to-Let Profitability",
+    docTitle: "Rental Yield Calculator 2026 — Buy-to-Let Profitability",
     docDesc: "Calculate the gross and net yield of a rental investment: rent, costs, monthly cash flow and return on equity.",
     appName: "Rental yield calculator",
     badge: "Real estate · 2026 simulation",

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
+import { useLocale } from "../i18n/index.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -53,9 +54,10 @@ function ArticleImageHeader({ article, height = 120 }) {
 
 function FeaturedArticle({ article }) {
   const [hovered, setHovered] = useState(false);
+  const { locale } = useLocale();
+  const isEn = locale === "en";
   const gradient = CAT_GRADIENTS[article.category] || "linear-gradient(135deg,var(--primary),#5B8CFF)";
   const catStyle = CAT_COLORS[article.category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
-  const isEn = typeof window !== "undefined" && window.location.pathname.startsWith("/en");
   const date = article.publishedAt
     ? new Intl.DateTimeFormat(isEn ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
     : "";
@@ -105,6 +107,7 @@ function FeaturedArticle({ article }) {
 
 function ArticleCard({ article }) {
   const [hovered, setHovered] = useState(false);
+  const { locale } = useLocale();
   return (
     <Link
       to={`/blog/${article.slug}`}
@@ -128,7 +131,7 @@ function ArticleCard({ article }) {
           {article.title}
         </h3>
         <div style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>
-          {article.readTime ? `${article.readTime} min${typeof window !== "undefined" && window.location.pathname.startsWith("/en") ? " read" : " de lecture"}` : ""}
+          {article.readTime ? `${article.readTime} min ${locale === "en" ? "read" : "de lecture"}` : ""}
         </div>
       </div>
     </Link>

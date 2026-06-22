@@ -82,7 +82,7 @@ function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNai
 
 const FAQ = [
   { q: "Comment sont calculés les trimestres CNAV ?", a: "Un trimestre est validé pour chaque tranche de salaire équivalant à 150 fois le SMIC horaire brut, quel que soit le nombre de jours travaillés. En 2025, il faut gagner environ 1 690 € brut par trimestre pour valider un trimestre. On peut valider au maximum 4 trimestres par année civile." },
-  { q: "Comment est calculé le Salaire Annuel Moyen (SAM) ?", a: "Le SAM est la moyenne de vos 25 meilleures années de salaire brut, chaque année étant plafonnée au PASS (Plafond Annuel de la Sécurité Sociale, soit 47 100 € en 2026). Ce simulateur utilise votre salaire actuel comme approximation. Pour un calcul précis, consultez votre relevé de carrière sur info-retraite.fr." },
+  { q: "Comment est calculé le Salaire Annuel Moyen (SAM) ?", a: "Le SAM est la moyenne de vos 25 meilleures années de salaire brut, chaque année étant plafonnée au PASS (Plafond Annuel de la Sécurité Sociale, soit 48 060 € en 2026). Ce simulateur utilise votre salaire actuel comme approximation. Pour un calcul précis, consultez votre relevé de carrière sur info-retraite.fr." },
   { q: "Qu'est-ce que le taux plein à la CNAV ?", a: "Le taux plein (50 % du SAM) est accordé lorsque vous cumulez le nombre de trimestres requis (entre 167 et 172 selon votre année de naissance) ET que vous avez atteint l'âge légal de départ (62 à 64 ans selon la génération). Il est aussi accordé automatiquement à 67 ans, quelle que soit la durée de cotisation." },
   { q: "Qu'est-ce que la décote et la surcote CNAV ?", a: "Si vous partez avant d'avoir tous vos trimestres et avant 67 ans, une décote de 0,625 % par trimestre manquant s'applique, dans la limite de 20 trimestres (soit −12,5 % maximum). À l'inverse, chaque trimestre cotisé après l'obtention du taux plein génère une surcote de +1,25 %, sans plafond." },
   { q: "Qu'est-ce que le minimum contributif ?", a: "Le minimum contributif est un plancher de pension CNAV garanti aux assurés ayant cotisé toute leur carrière sur de faibles revenus. En 2025, il s'élève à 879,31 €/mois pour une carrière complète (majoré à 963,13 € si vous avez cotisé au moins 120 trimestres sur la base du salaire réel)." },
@@ -100,7 +100,7 @@ export default function Cnav() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Retraite CNAV 2025 — Régime général salariés", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
+  usePageMeta("Simulateur Retraite CNAV 2026 — Régime général salariés", "Estimez votre pension de retraite du régime général (CNAV) : trimestres validés, taux plein, décote et surcote.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

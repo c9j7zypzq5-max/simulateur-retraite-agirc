@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES } from '../i18n/paths.js';
+import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES } from '../i18n/paths.js';
 
 const SITE = 'https://www.simfinly.com';
 
 // Injecte dynamiquement les balises <link rel="alternate" hreflang> dans <head>.
-// Couvre FR (canonique), BE (/be/ — fr-BE), et EN (/en/) selon disponibilité.
+// Couvre FR (canonique), CH (/ch/ — fr-CH), BE (/be/ — fr-BE), et EN (/en/).
 export default function HreflangTags() {
   const { pathname } = useLocation();
 
@@ -15,8 +15,9 @@ export default function HreflangTags() {
     const canon = canonicalPath(pathname);
     const hasEN = EN_ROUTES.has(canon);
     const hasBE = BE_ROUTES.has(canon);
+    const hasCH = CH_ROUTES.has(canon);
 
-    if (!hasEN && !hasBE) return;
+    if (!hasEN && !hasBE && !hasCH) return;
 
     const frHref = SITE + (canon === '/' ? '/' : canon);
     const tags = [
@@ -24,6 +25,9 @@ export default function HreflangTags() {
       ['x-default', frHref],
     ];
 
+    if (hasCH) {
+      tags.push(['fr-CH', SITE + countryPath(canon, 'ch')]);
+    }
     if (hasBE) {
       tags.push(['fr-BE', SITE + countryPath(canon, 'be')]);
     }

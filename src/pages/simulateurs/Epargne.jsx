@@ -24,7 +24,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 const TXT = {
   fr: {
-    docTitle: "Simulateur Épargne 2025 — Intérêts composés et capital final",
+    docTitle: "Simulateur Épargne 2026 — Intérêts composés et capital final",
     docDesc: "Simulez la croissance de votre épargne avec les intérêts composés : capital final, intérêts générés, tableau annuel.",
     badge: "Finances · Simulation 2026",
     title: "Épargne & intérêts composés",

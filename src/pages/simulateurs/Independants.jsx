@@ -97,7 +97,7 @@ export default function Independants() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Retraite Indépendants TNS 2025 — SSI", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
+  usePageMeta("Simulateur Retraite Indépendants TNS 2026 — SSI", "Estimez votre retraite en tant qu'indépendant, artisan ou commerçant affilié à la Sécurité Sociale des Indépendants.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

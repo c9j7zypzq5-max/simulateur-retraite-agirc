@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
+import { useLocale } from "../i18n/index.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
@@ -70,6 +71,7 @@ const PROSE_CSS = `
 
 export default function Article() {
   const [theme, setTheme] = useTheme();
+  const { locale } = useLocale();
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -81,8 +83,11 @@ export default function Article() {
     if (!slug) return;
     setLoading(true);
     setNotFound(false);
-    fetch(`/api/article?slug=${encodeURIComponent(slug)}`)
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 10_000);
+    fetch(`/api/article?slug=${encodeURIComponent(slug)}`, { signal: controller.signal })
       .then(r => {
+        clearTimeout(timer);
         if (r.status === 404) { setNotFound(true); setLoading(false); return null; }
         return r.json();
       })
@@ -97,7 +102,8 @@ export default function Article() {
         if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
         link.href = `https://www.simfinly.com/blog/${slug}`;
       })
-      .catch(() => { setNotFound(true); setLoading(false); });
+      .catch(() => { clearTimeout(timer); setNotFound(true); setLoading(false); });
+    return () => { clearTimeout(timer); controller.abort(); };
   }, [slug]);
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;
@@ -119,7 +125,7 @@ export default function Article() {
   };
 
   const date = article?.publishedAt
-    ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
+    ? new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
     : "";
 
   return (

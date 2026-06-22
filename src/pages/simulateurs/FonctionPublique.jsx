@@ -73,7 +73,7 @@ export default function FonctionPublique() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Retraite Fonction Publique 2025", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
+  usePageMeta("Simulateur Retraite Fonction Publique 2026", "Calculez votre retraite de fonctionnaire : indice de traitement, durée de service, pension civile ou militaire.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

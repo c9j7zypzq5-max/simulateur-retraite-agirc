@@ -99,7 +99,7 @@ export default function Ircantec() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Retraite IRCANTEC 2025 — Contractuels fonction publique", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
+  usePageMeta("Simulateur Retraite IRCANTEC 2026 — Contractuels fonction publique", "Calculez votre retraite IRCANTEC : points acquis, valeur du point, pension pour les agents non titulaires de l'État.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

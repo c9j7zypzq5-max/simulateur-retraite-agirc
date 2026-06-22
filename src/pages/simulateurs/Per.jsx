@@ -114,7 +114,7 @@ export default function Per() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur PER 2025 — Économie d'impôt et capital retraite", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2025.");
+  usePageMeta("Simulateur PER 2026 — Économie d'impôt et capital retraite", "Estimez l'avantage fiscal de votre Plan d'Épargne Retraite (PER) : économie d'impôt selon votre TMI, plafond de déduction et capital projeté à la retraite. Paramètres 2026.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

@@ -147,7 +147,7 @@ export default function EpargneSalariale() {
   const res  = useMemo(() => calcEpargneSalariale(vals), [versementMensuel, tauxAbondement, rendementAnnuel, duree, tmi]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta({
-    title: "Simulateur Épargne Salariale PEE PERCO 2025 — Abondement & Capital | simfinly.com",
+    title: "Simulateur Épargne Salariale PEE PERCO 2026 — Abondement & Capital | simfinly.com",
     description: "Calculez l'impact de l'abondement employeur sur votre épargne salariale (PEE, PERCO, PERO). Capital projeté, économie fiscale et gain grâce à l'abondement. Plafonds 2025.",
   });
 
@@ -171,7 +171,7 @@ export default function EpargneSalariale() {
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        name: "Simulateur Épargne Salariale PEE PERCO 2025",
+        name: "Simulateur Épargne Salariale PEE PERCO 2026",
         url: "https://www.simfinly.com/simulateurs/epargne-salariale",
         description: "Calculez l'impact de l'abondement employeur sur votre PEE ou PERCO : capital projeté, gain grâce à l'abondement, économie fiscale. Plafonds 2025.",
         applicationCategory: "FinanceApplication",

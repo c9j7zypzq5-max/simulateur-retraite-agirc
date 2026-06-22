@@ -108,7 +108,7 @@ export default function PensionLegaleBE() {
   const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
-    title: "Simulateur pension légale Belgique 2025 — ONSS | simfinly.com",
+    title: "Simulateur pension légale Belgique 2026 — ONSS | simfinly.com",
     description: "Estimez votre pension de retraite légale belge (1er pilier ONSS) : formule officielle, taux isolé/ménage, bonus pension, minimum garanti. Calcul selon la réforme 2025.",
   });
 
@@ -122,7 +122,7 @@ export default function PensionLegaleBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Pension Légale Belgique 2025", url: "https://www.simfinly.com/be/simulateurs/pension-legale", description: "Estimez votre pension légale belge (ONSS) selon la formule officielle.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Pension Légale Belgique 2026", url: "https://www.simfinly.com/be/simulateurs/pension-legale", description: "Estimez votre pension légale belge (ONSS) selon la formule officielle.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader

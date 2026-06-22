@@ -71,7 +71,7 @@ export default function RetraiteProgressive() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Retraite Progressive 2025", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
+  usePageMeta("Simulateur Retraite Progressive 2026", "Simulez votre retraite progressive : cumul emploi-retraite, fraction de pension, conditions d'éligibilité.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

@@ -79,7 +79,7 @@ export default function PensionReversion() {
   const resultsRef = useRef(null);
 
   usePageMeta(
-    "Simulateur pension de réversion 2025 — conjoint survivant",
+    "Simulateur pension de réversion 2026 — conjoint survivant",
     "Estimez votre pension de réversion : 54 % de la retraite de base (CNAV) et 60 % de la complémentaire Agirc-Arrco, avec la condition de ressources. Calcul gratuit."
   );
 
@@ -161,7 +161,7 @@ export default function PensionReversion() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur pension de réversion 2025",
+        "name": "Simulateur pension de réversion 2026",
         "url": "https://www.simfinly.com/simulateurs/pension-reversion",
         "description": "Estimez la pension de réversion du conjoint survivant : 54 % de la retraite de base et 60 % de la complémentaire Agirc-Arrco, avec condition de ressources.",
         "applicationCategory": "FinanceApplication",

@@ -160,7 +160,7 @@ export default function FreelanceVsSalarie() {
   const [enfants,    setEnfants]    = useState(init.enfants);
 
   usePageMeta({
-    title: "Simulateur Freelance vs Salarié 2025 | simfinly.com",
+    title: "Simulateur Freelance vs Salarié 2026 | simfinly.com",
     description: "Comparez votre net disponible en tant que salarié, micro-entrepreneur (BIC/BNC) ou en portage salarial. Charges sociales, impôt sur le revenu, TMI : tout est calculé.",
   });
 
@@ -182,7 +182,7 @@ export default function FreelanceVsSalarie() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Freelance vs Salarié 2025", url: "https://www.simfinly.com/simulateurs/freelance-vs-salarie", description: "Comparez le net disponible entre salarié, micro-entreprise et portage salarial.", applicationCategory: "FinanceApplication" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Freelance vs Salarié 2026", url: "https://www.simfinly.com/simulateurs/freelance-vs-salarie", description: "Comparez le net disponible entre salarié, micro-entreprise et portage salarial.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader

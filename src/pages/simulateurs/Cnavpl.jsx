@@ -194,7 +194,7 @@ export default function Cnavpl() {
   const [anneeNaissance, setAnneeNaissance] = useState(null);
   const [ageDépart, setAgeDépart] = useState(65);
 
-  usePageMeta("Simulateur Retraite CIPAV 2025 — Professions libérales", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
+  usePageMeta("Simulateur Retraite CIPAV 2026 — Professions libérales", "Estimez votre retraite CIPAV pour les professions libérales : classe de cotisation, points retraite de base et complémentaire.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

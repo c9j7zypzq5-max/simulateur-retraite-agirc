@@ -95,7 +95,7 @@ export default function PlusValue() {
 
   const resultsRef = useRef(null);
 
-  usePageMeta("Simulateur Plus-Value Immobilière 2025 — Calcul IR et prélèvements sociaux", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
+  usePageMeta("Simulateur Plus-Value Immobilière 2026 — Calcul IR et prélèvements sociaux", "Calculez la plus-value immobilière nette après abattements pour durée de détention : IR (22 ans) et prélèvements sociaux (30 ans).");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

@@ -225,7 +225,7 @@ export default function Donation() {
   const res = useMemo(() => calcDonation(vals), [valeurBien, lien, ageDonateur, donationsAnterieures, anneesDernierDon]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta({
-    title: "Simulateur Donation vs Succession 2025 — Économie fiscale | simfinly.com",
+    title: "Simulateur Donation vs Succession 2026 — Économie fiscale | simfinly.com",
     description: "Comparez les droits de donation de votre vivant et les droits de succession. Calculez l'économie fiscale, l'abattement restant et la date de renouvellement. Barème officiel 2025.",
   });
 
@@ -248,7 +248,7 @@ export default function Donation() {
     "@graph": [
       {
         "@type": "SoftwareApplication",
-        name: "Simulateur Donation vs Succession 2025",
+        name: "Simulateur Donation vs Succession 2026",
         url: "https://www.simfinly.com/simulateurs/donation",
         description: "Comparez les droits de donation et de succession pour optimiser la transmission de votre patrimoine. Barème 2025.",
         applicationCategory: "FinanceApplication",

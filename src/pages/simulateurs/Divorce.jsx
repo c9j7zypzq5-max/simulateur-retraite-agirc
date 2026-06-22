@@ -157,7 +157,7 @@ export default function Divorce() {
   const res = useMemo(() => calcDivorce(vals), [regime, actifCommun, revenu1, revenu2, dureeMariage, nbEnfants, garde, propres1, propres2]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta({
-    title: "Simulateur Divorce & Partage Patrimoine 2025 | simfinly.com",
+    title: "Simulateur Divorce & Partage Patrimoine 2026 | simfinly.com",
     description: "Estimez le partage du patrimoine, la pension alimentaire et la prestation compensatoire en cas de divorce. Barème indicatif 2025 — ne remplace pas un avocat.",
   });
 
@@ -172,7 +172,7 @@ export default function Divorce() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Divorce 2025", url: "https://www.simfinly.com/simulateurs/divorce", description: "Estimez le partage du patrimoine et la pension alimentaire en cas de divorce.", applicationCategory: "FinanceApplication" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Divorce 2026", url: "https://www.simfinly.com/simulateurs/divorce", description: "Estimez le partage du patrimoine et la pension alimentaire en cas de divorce.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader

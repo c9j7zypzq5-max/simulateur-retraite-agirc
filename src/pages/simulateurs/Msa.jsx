@@ -163,7 +163,7 @@ export default function Msa() {
   const [anneesRestantes, setAnneesRest] = useState(null);
   const [ageDépart, setAgeDépart] = useState(null);
 
-  usePageMeta("Simulateur Retraite MSA 2025 — Agriculteurs", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
+  usePageMeta("Simulateur Retraite MSA 2026 — Agriculteurs", "Calculez votre retraite agricole MSA : exploitants et salariés agricoles, retraite de base et complémentaire RCO.");
 
   useEffect(() => {
     let link = document.querySelector('link[rel="canonical"]');

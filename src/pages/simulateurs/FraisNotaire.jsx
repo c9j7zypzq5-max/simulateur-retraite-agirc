@@ -100,7 +100,7 @@ export default function FraisNotaire() {
   const resultsRef = useRef(null);
 
   usePageMeta(
-    "Simulateur frais de notaire 2025 — ancien & neuf",
+    "Simulateur frais de notaire 2026 — ancien & neuf",
     "Calculez les frais de notaire (frais d'acquisition) de votre achat immobilier : droits de mutation, émoluments du notaire, débours. Estimation gratuite pour l'ancien et le neuf."
   );
 
@@ -176,7 +176,7 @@ export default function FraisNotaire() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur frais de notaire 2025",
+        "name": "Simulateur frais de notaire 2026",
         "url": "https://www.simfinly.com/simulateurs/frais-notaire",
         "description": "Calculez les frais de notaire de votre achat immobilier : droits de mutation, émoluments du notaire, débours, pour l'ancien et le neuf.",
         "applicationCategory": "FinanceApplication",
