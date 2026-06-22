@@ -12,7 +12,7 @@ import { localePath } from "../i18n/paths.js";
 import { supabase } from "../lib/supabase.js";
 
 // Quota de rapports pour un compte gratuit (non Pro). Au-delà → page Pro.
-const FREE_REPORT_LIMIT = 3;
+const FREE_REPORT_LIMIT = 1;
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -271,9 +271,17 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           <span className="btn-text">{busy ? "…" : t("common.report")}</span>
         </button>
       )}
-      {showDownload && isConfigured && user && !isPro && (
+      {showDownload && isConfigured && user && !isPro && remaining === 0 && (
         <div style={{ flexBasis: "100%", fontSize: 11, color: "var(--text-secondary)", marginTop: -2 }}>
-          {t("common.reportRemaining")(remaining)}
+          {locale === "en"
+            ? <>You've used your free report. <a href="/en/pro" style={{ color: "var(--gold)", textDecoration: "underline" }}>Go Pro for unlimited →</a></>
+            : <>Vous avez utilisé votre rapport gratuit. <a href="/pro" style={{ color: "var(--gold)", textDecoration: "underline" }}>Passez à Pro pour illimité →</a></>
+          }
+        </div>
+      )}
+      {showDownload && isConfigured && user && !isPro && remaining > 0 && (
+        <div style={{ flexBasis: "100%", fontSize: 11, color: "var(--text-secondary)", marginTop: -2 }}>
+          {locale === "en" ? `${remaining} free report remaining` : `${remaining} rapport gratuit restant`}
         </div>
       )}
       {reportError && (
@@ -308,15 +316,27 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         </div>
       )}
 
-      {isConfigured && user && isPro && (
+      {isConfigured && user && (
         <div style={{ position: "relative" }}>
-          <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
-            onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-            <LinkIcon />
-            <span className="btn-text">
-              {publicLinkBusy ? "…" : publicCopied ? (locale === "en" ? "Copied!" : "Copié !") : (locale === "en" ? "Public link" : "Lien public")}
-            </span>
-          </button>
+          {isPro ? (
+            <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
+              onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+              <LinkIcon />
+              <span className="btn-text">
+                {publicLinkBusy ? "…" : publicCopied ? (locale === "en" ? "Copied!" : "Copié !") : (locale === "en" ? "Public link" : "Lien public")}
+              </span>
+            </button>
+          ) : (
+            <button
+              style={{ ...btnStyle, opacity: 0.55, cursor: "default" }}
+              title={locale === "en" ? "Pro feature — upgrade to share a public link" : "Fonctionnalité Pro — passez à Pro pour partager un lien public"}
+              onClick={() => navigate(localePath("/pro", locale))}
+            >
+              <LinkIcon />
+              <span className="btn-text">{locale === "en" ? "Public link" : "Lien public"}</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: "#b45309", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: 10, padding: "1px 5px", marginLeft: 2 }}>PRO</span>
+            </button>
+          )}
         </div>
       )}
     </div>

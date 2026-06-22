@@ -128,7 +128,7 @@ export default function TableauDeBord() {
   // Stat card value for simulations count
   const simCountValue = isPro
     ? <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>{history.length}<span style={{ fontSize: 14, color: "var(--gold)" }}>★</span></span>
-    : `${history.length} / 8`;
+    : `${history.length} / 5`;
   const simCountLabel = isPro ? "simulations sauvegardées" : "simulations (illimité en Pro)";
 
   // Bar chart data
@@ -177,24 +177,15 @@ export default function TableauDeBord() {
           </div>
         </div>
 
-        {/* Pro gate */}
+        {/* Upsell banner (non-bloquant) pour les gratuits */}
         {!isPro && (
-          <div style={{ ...card, padding: "28px 28px", marginBottom: 28, background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.25)", borderRadius: 20 }}>
-            <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <Lock size={24} style={{ color: "var(--gold)", flexShrink: 0, marginTop: 2 }} />
-              <div>
-                <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, marginBottom: 8, color: "var(--text)" }}>
-                  Tableau de bord — fonctionnalité Pro
-                </h2>
-                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 16 }}>
-                  Le tableau de bord centralise toutes vos simulations, affiche vos statistiques et vous permet de retrouver n'importe quelle simulation en un clic.
-                  Disponible avec l'abonnement Pro à 2,99 €/mois.
-                </p>
-                <Link to="/pro" style={{ display: "inline-block", padding: "10px 20px", borderRadius: 10, background: "var(--gold)", color: "#1a1000", fontSize: 14, fontWeight: 700, textDecoration: "none" }}>
-                  Passer à Pro →
-                </Link>
-              </div>
+          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.2)", borderRadius: 14, padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <div style={{ fontSize: 14, color: "var(--text)" }}>
+              <strong>Passez à Pro</strong> pour débloquer les graphiques, les insights et l'export PDF.
             </div>
+            <Link to="/pro" style={{ display: "inline-block", padding: "8px 16px", borderRadius: 10, background: "#2B5CE6", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
+              Découvrir Pro →
+            </Link>
           </div>
         )}
 

@@ -1,4 +1,5 @@
 const KEY = 'mesim_history_v1';
+export const FREE_SIM_LIMIT = 5;
 
 export function useSimHistory() {
   function getHistory() {

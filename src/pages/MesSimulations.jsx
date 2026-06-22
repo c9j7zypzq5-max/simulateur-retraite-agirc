@@ -6,6 +6,7 @@ import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import CompareSection from "../components/CompareModal.jsx";
 import { supabase } from "../lib/supabase.js";
+import { FREE_SIM_LIMIT } from "../hooks/useSimHistory.js";
 
 function relativeDate(iso) {
   const ms = Date.now() - new Date(iso).getTime();
@@ -189,9 +190,24 @@ export default function MesSimulations() {
                 <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: "-0.01em", color: "#0F1828", margin: 0 }}>
                   {activeTab === "compare" ? "Comparaisons" : "Mes simulations"}
                 </h1>
-                <div style={{ fontSize: 13.5, color: "#8a93a3", marginTop: 4 }}>
-                  {history.length} scénario{history.length !== 1 ? "s" : ""} sauvegardé{history.length !== 1 ? "s" : ""}
-                </div>
+                {activeTab !== "compare" && (
+                  <div style={{ marginTop: 6 }}>
+                    {!isPro ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ flex: 1, maxWidth: 120, height: 5, borderRadius: 3, background: "#e7eaf0", overflow: "hidden" }}>
+                          <div style={{ width: `${Math.min(100, (history.length / FREE_SIM_LIMIT) * 100)}%`, height: "100%", borderRadius: 3, background: history.length >= FREE_SIM_LIMIT ? "#c2410c" : "#2B5CE6", transition: "width 0.3s" }} />
+                        </div>
+                        <span style={{ fontSize: 12, color: history.length >= FREE_SIM_LIMIT ? "#c2410c" : "#8a93a3", fontWeight: history.length >= FREE_SIM_LIMIT ? 600 : 400 }}>
+                          {history.length} / {FREE_SIM_LIMIT}
+                        </span>
+                      </div>
+                    ) : (
+                      <div style={{ fontSize: 13.5, color: "#8a93a3" }}>
+                        {history.length} scénario{history.length !== 1 ? "s" : ""} sauvegardé{history.length !== 1 ? "s" : ""}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
               <Link
                 to="/simulateurs"
@@ -211,20 +227,68 @@ export default function MesSimulations() {
                   onClose={() => { setCompareEntries(null); setSelected(new Set()); }}
                 />
               ) : (
-                <div style={{ textAlign: "center", padding: "50px 20px" }}>
-                  <div style={{ fontSize: 36, marginBottom: 14 }}>⇄</div>
-                  <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "#0F1828", marginBottom: 10 }}>Aucune comparaison en cours</h2>
-                  <p style={{ fontSize: 14, color: "#5B6677", lineHeight: 1.7, marginBottom: 20 }}>
-                    {isPro
-                      ? "Revenez dans \"Mes simulations\" et sélectionnez 2 scénarios à comparer."
-                      : "La comparaison de scénarios est une fonctionnalité Pro."}
-                  </p>
-                  {!isPro && (
-                    <Link to="/pro" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "#2B5CE6", color: "#fff", textDecoration: "none", fontSize: 14 }}>
-                      Découvrir Pro →
+                {isPro ? (
+                  <div style={{ textAlign: "center", padding: "50px 20px" }}>
+                    <div style={{ fontSize: 36, marginBottom: 14 }}>⇄</div>
+                    <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "#0F1828", marginBottom: 10 }}>Aucune comparaison en cours</h2>
+                    <p style={{ fontSize: 14, color: "#5B6677", lineHeight: 1.7, marginBottom: 20 }}>
+                      Revenez dans « Mes simulations » et cliquez sur l'icône ⊞ sur 2 scénarios pour les comparer.
+                    </p>
+                    <Link to="/mes-simulations" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "#2B5CE6", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>
+                      Aller à mes simulations →
                     </Link>
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div style={{ padding: isMobile ? "0" : "8px 0" }}>
+                    {/* Hero */}
+                    <div style={{ background: "linear-gradient(135deg, #EAF0FF 0%, #f0f4ff 100%)", border: "1px solid #d0dbff", borderRadius: 14, padding: "28px 24px", marginBottom: 20 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "#0F1828", margin: 0 }}>Comparateur de scénarios</h2>
+                        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", color: "#b45309", background: "#fef3c7", border: "1px solid #fde68a", padding: "3px 9px", borderRadius: 20 }}>Pro</span>
+                      </div>
+                      <p style={{ fontSize: 14, color: "#5B6677", lineHeight: 1.7, marginBottom: 20 }}>
+                        Comparez deux simulations côte à côte : valeurs clés, différences ligne par ligne, et un verdict automatique pour vous aider à choisir le meilleur scénario.
+                      </p>
+                      <Link to="/pro" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "11px 20px", borderRadius: 10, background: "#2B5CE6", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>
+                        Débloquer le comparateur →
+                      </Link>
+                    </div>
+                    {/* Preview mockup */}
+                    <div style={{ border: "1px solid #e7eaf0", borderRadius: 14, overflow: "hidden", opacity: 0.55 }}>
+                      <div style={{ background: "#F5F6F8", padding: "14px 16px", fontSize: 12, color: "#8a93a3", fontWeight: 600, borderBottom: "1px solid #e7eaf0" }}>
+                        Aperçu — fonctionnalité Pro
+                      </div>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0 }}>
+                        {["Scénario A", "Scénario B"].map((label, i) => (
+                          <div key={i} style={{ padding: "18px 20px", borderRight: i === 0 ? "1px solid #e7eaf0" : "none", background: i === 1 ? "rgba(43,92,230,0.03)" : "#fff" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 12 }}>
+                              <span style={{ width: 9, height: 9, borderRadius: 3, background: i === 0 ? "#94a3b8" : "#2B5CE6" }} />
+                              <span style={{ fontSize: 13, fontWeight: 600, color: "#0F1828" }}>{label}</span>
+                              {i === 1 && <span style={{ fontSize: 9, fontWeight: 700, color: "#fff", background: "#15A06B", padding: "2px 7px", borderRadius: 20 }}>Recommandé</span>}
+                            </div>
+                            <div style={{ fontSize: 10, color: "#8a93a3", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Pension nette / mois</div>
+                            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 14 }}>
+                              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 600, color: "#0F1828" }}>{i === 0 ? "1 198 €" : "1 454 €"}</span>
+                              {i === 1 && <span style={{ fontSize: 13, fontWeight: 600, color: "#15A06B" }}>+256 €</span>}
+                            </div>
+                            {["Coefficient", "Total points", "Années en +"].map((row, j) => (
+                              <div key={j} style={{ display: "flex", justifyContent: "space-between", padding: "8px 0", borderTop: "1px solid #f0f2f6", fontSize: 12 }}>
+                                <span style={{ color: "#5B6677" }}>{row}</span>
+                                <span style={{ fontWeight: 600, color: j === 0 ? (i === 0 ? "#c2410c" : "#15A06B") : "#0F1828" }}>
+                                  {j === 0 ? (i === 0 ? "×0,90" : "×1,00") : j === 1 ? (i === 0 ? "9 037" : "9 295") : (i === 0 ? "—" : "2")}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                      <div style={{ background: "#0F1828", padding: "14px 18px", display: "flex", alignItems: "center", gap: 12 }}>
+                        <span style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(21,160,107,0.18)", color: "#34D399", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>✓</span>
+                        <span style={{ fontSize: 13, color: "#e2e6ee" }}>Attendre 2 ans augmente votre pension de <b style={{ color: "#34D399" }}>+256 €/mois (+21 %)</b> et supprime la minoration.</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               )
             ) : (
               <>
@@ -248,13 +312,18 @@ export default function MesSimulations() {
                   </div>
                 )}
 
-                {!isPro && history.length >= 8 && (
-                  <div style={{ background: "rgba(254,243,199,0.6)", border: "1px solid #fde68a", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
-                    <span>⚠️</span>
+                {!isPro && history.length >= FREE_SIM_LIMIT && (
+                  <div style={{ background: "rgba(194,65,12,0.06)", border: "1px solid rgba(194,65,12,0.25)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 16 }}>🔒</span>
                     <div>
-                      <span style={{ fontSize: 13, color: "#0F1828" }}>Limite de 8 simulations atteinte. </span>
-                      <Link to="/pro" style={{ fontSize: 13, color: "#b45309", textDecoration: "underline" }}>Passer à Pro pour des simulations illimitées →</Link>
+                      <span style={{ fontSize: 13, color: "#0F1828", fontWeight: 600 }}>Limite de {FREE_SIM_LIMIT} simulations atteinte. </span>
+                      <Link to="/pro" style={{ fontSize: 13, color: "#2B5CE6", textDecoration: "underline" }}>Passer à Pro pour des simulations illimitées →</Link>
                     </div>
+                  </div>
+                )}
+                {!isPro && history.length === FREE_SIM_LIMIT - 1 && (
+                  <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 12, padding: "10px 14px", marginBottom: 16, fontSize: 12, color: "#92400e" }}>
+                    Plus qu'une simulation avant la limite gratuite. <Link to="/pro" style={{ color: "#2B5CE6", textDecoration: "underline" }}>Passer à Pro →</Link>
                   </div>
                 )}
 
@@ -355,7 +424,7 @@ export default function MesSimulations() {
                                   <div
                                     style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "#0F1828", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: isPro ? "pointer" : "default" }}
                                     onDoubleClick={() => isPro && (setEditingId(entry.id), setEditValue(entry.label))}
-                                    title={isPro ? "Double-cliquer pour renommer" : undefined}
+                                    title={isPro ? "Double-cliquer pour renommer" : "Fonctionnalité Pro — renommez vos simulations"}
                                   >
                                     {entry.label}
                                   </div>
