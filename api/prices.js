@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
 
   const { tickers, from, to } = req.query;
-  if (!tickers) return res.status(400).json({ error: 'tickers manquant' });
+  if (!tickers) return res.status(400).json({ error: 'missing tickers' });
 
   const tickerList = String(tickers).split(',').slice(0, 5).map(t => t.trim()).filter(Boolean);
   const fromStr = from || '2015-01';
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       const result = json?.chart?.result?.[0];
 
       if (!result || !result.timestamp) {
-        results[ticker] = { error: json?.chart?.error?.description || 'Ticker invalide ou données indisponibles' };
+        results[ticker] = { error: json?.chart?.error?.description || 'Invalid ticker or no data available' };
         return;
       }
 
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
         });
       }
 
-      results[ticker] = pts.length >= 2 ? pts : { error: 'Données insuffisantes pour cette période' };
+      results[ticker] = pts.length >= 2 ? pts : { error: 'Insufficient data for this period' };
     } catch (e) {
       results[ticker] = { error: e.message };
     }

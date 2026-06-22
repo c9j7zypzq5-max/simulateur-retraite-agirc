@@ -43,7 +43,7 @@ const raf = () => new Promise(r => requestAnimationFrame(r));
 
 function cleanClone(clonedDoc) {
   clonedDoc
-    .querySelectorAll('nav, footer, section[aria-label="Simulateurs liés"], ins.adsbygoogle, .adsbygoogle, [data-noexport], #seo-prerender')
+    .querySelectorAll('nav, footer, ins.adsbygoogle, .adsbygoogle, [data-noexport], #seo-prerender')
     .forEach(el => { el.style.display = "none"; });
   clonedDoc.querySelectorAll('[style*="text-fill-color"]').forEach(el => {
     el.style.webkitTextFillColor = "#b8860b";

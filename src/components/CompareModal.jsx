@@ -77,7 +77,7 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
         <button
           onClick={onClose}
           style={{ background: "none", border: "none", color: "#5B6677", cursor: "pointer", fontSize: 18, padding: "4px 8px", lineHeight: 1 }}
-          aria-label="Fermer"
+          aria-label={isEn ? "Close" : "Fermer"}
         >✕</button>
       </div>
       <p style={{ fontSize: 13, color: "#5B6677", margin: "0 0 22px" }}>

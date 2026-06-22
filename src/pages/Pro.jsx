@@ -10,7 +10,7 @@ import Footer from "../components/Footer.jsx";
 const COMPARISON_ROWS = {
   fr: [
     { feature: "Simulateurs disponibles", free: "30+", pro: "30+" },
-    { feature: "Simulations sauvegardées", free: "8 max", pro: "Illimitées" },
+    { feature: "Simulations sauvegardées", free: "5 max", pro: "Illimitées" },
     { feature: "Rapport PDF standard", free: true, pro: true },
     { feature: "Rapport PDF Pro (couverture, tableaux, graphique)", free: false, pro: true },
     { feature: "Export Excel complet", free: true, pro: true },
@@ -22,7 +22,7 @@ const COMPARISON_ROWS = {
   ],
   en: [
     { feature: "Available calculators", free: "30+", pro: "30+" },
-    { feature: "Saved simulations", free: "8 max", pro: "Unlimited" },
+    { feature: "Saved simulations", free: "5 max", pro: "Unlimited" },
     { feature: "Standard PDF report", free: true, pro: true },
     { feature: "Pro PDF report (cover, tables, chart)", free: false, pro: true },
     { feature: "Full Excel export", free: true, pro: true },
@@ -59,7 +59,7 @@ const FAQ = {
     ["L'accès Pro fonctionne-t-il sur plusieurs appareils ?", "Oui. Votre abonnement est lié à votre compte : connectez-vous sur n'importe quel appareil pour retrouver vos fonctionnalités Pro."],
     ["Le rapport PDF Pro est-il différent du gratuit ?", "Oui : il inclut une page de couverture, des tableaux alternés, le graphique intégré, une section \"À retenir\" enrichie, et un pied de page professionnel sur chaque page."],
     ["Puis-je annuler à tout moment ?", "Oui, sans frais. L'accès Pro reste actif jusqu'à la fin de la période payée."],
-    ["Combien puis-je sauvegarder de simulations ?", "En gratuit, vous pouvez sauvegarder 8 simulations. En Pro, c'est illimité : sauvegardez autant de scénarios que vous souhaitez."],
+    ["Combien puis-je sauvegarder de simulations ?", "En gratuit, vous pouvez sauvegarder 5 simulations. En Pro, c'est illimité : sauvegardez autant de scénarios que vous souhaitez."],
     ["Quelles fonctionnalités sont vraiment Pro ?", "Le rapport PDF Pro (couverture, tableaux enrichis, graphique), le tableau de bord analytique, la synthèse patrimoniale, les annotations sur vos simulations, le wizard retraite complet, et les simulations illimitées."],
   ],
   en: [
@@ -67,7 +67,7 @@ const FAQ = {
     ["Does Pro access work on multiple devices?", "Yes. Your subscription is linked to your account: sign in on any device to access your Pro features."],
     ["Is the Pro PDF report different from the free one?", "Yes: it includes a cover page, alternating tables, the embedded chart, an enriched \"Key takeaways\" section, and a professional footer on every page."],
     ["Can I cancel at any time?", "Yes, free of charge. Pro access remains active until the end of the paid period."],
-    ["How many simulations can I save?", "On the free plan, you can save 8 simulations. With Pro, it's unlimited: save as many scenarios as you want."],
+    ["How many simulations can I save?", "On the free plan, you can save 5 simulations. With Pro, it's unlimited: save as many scenarios as you want."],
     ["Which features are truly Pro?", "The Pro PDF report (cover page, rich tables, chart), the analytics dashboard, the wealth overview, simulation annotations, the full retirement wizard, and unlimited saved simulations."],
   ],
 };
