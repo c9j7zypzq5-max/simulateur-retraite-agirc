@@ -7,7 +7,7 @@ import CurrencySelect from "./CurrencySelect.jsx";
 import CountrySwitch from "./CountrySwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
 import { canonicalPath, localePath } from "../i18n/paths.js";
-import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode } from "lucide-react";
+import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode, User, LogIn } from "lucide-react";
 
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
 
@@ -29,6 +29,8 @@ const TXT_NAV = {
     savedSims: "Simulations sauvegardées",
     clearHistory: "Effacer",
     viewAll: "Tout voir →",
+    login: "Connexion",
+    account: "Mon compte",
     currency: "Devise",
     comingSoon: "Bientôt",
     deleteEntry: "Supprimer",
@@ -51,6 +53,8 @@ const TXT_NAV = {
     savedSims: "Saved calculations",
     clearHistory: "Clear",
     viewAll: "See all →",
+    login: "Sign in",
+    account: "My account",
     currency: "Currency",
     comingSoon: "Soon",
     deleteEntry: "Remove",
@@ -366,6 +370,23 @@ export default function Navbar({ theme, setTheme }) {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
             <div className="desktop-nav"><CountrySwitch compact /></div>
+            {/* Connexion / compte */}
+            <LocaleLink
+              to={user ? "/compte" : "/connexion"}
+              aria-label={user ? txt.account : txt.login}
+              style={{
+                display: "flex", alignItems: "center", gap: 6,
+                padding: "7px 12px", borderRadius: 9, textDecoration: "none",
+                border: "1px solid var(--border)", color: "var(--text)",
+                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500,
+                flexShrink: 0,
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.color = "var(--primary)"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}
+            >
+              {user ? <User size={16} /> : <LogIn size={16} />}
+              <span className="nav-auth-label">{user ? txt.account : txt.login}</span>
+            </LocaleLink>
           </div>
         </div>
 

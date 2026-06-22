@@ -312,15 +312,16 @@ export default function Pro() {
                 <div key={row.feature} style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 120px 140px",
+                  alignItems: "stretch",
                   background: i % 2 === 0 ? "transparent" : "rgba(184,147,74,0.025)",
                 }}>
-                  <div style={{ padding: "11px 20px", fontSize: 13, color: "var(--text)", borderBottom: "1px solid var(--border)", lineHeight: 1.45 }}>
+                  <div style={{ display: "flex", alignItems: "center", padding: "11px 20px", fontSize: 13, color: "var(--text)", borderBottom: "1px solid var(--border)", lineHeight: 1.45 }}>
                     {row.feature}
                   </div>
-                  <div style={{ padding: "11px 12px", textAlign: "center", borderBottom: "1px solid var(--border)", borderLeft: "1px solid var(--border)" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "11px 12px", borderBottom: "1px solid var(--border)", borderLeft: "1px solid var(--border)" }}>
                     <CellVal val={row.free} />
                   </div>
-                  <div style={{ padding: "11px 12px", textAlign: "center", borderBottom: "1px solid rgba(184,147,74,0.25)", borderLeft: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.04)" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "11px 12px", borderBottom: "1px solid rgba(184,147,74,0.25)", borderLeft: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.04)" }}>
                     <CellVal val={row.pro} />
                   </div>
                 </div>

@@ -580,13 +580,23 @@ export default function EmpruntImmobilier() {
         { label: txt.rEconomie, value: fmtEur(Math.round(amort.economieInterets)), strong: true },
       ] : []),
     ] : [],
-    // Tableau d'amortissement annuel (repris dans le rapport PDF Pro).
+    // Tableau d'amortissement annuel (page dédiée du rapport PDF).
     table: hasResult && amortChart.length > 1 ? {
       heading: txt.amortTitle,
       cols: txt.amortHeaders,
       rows: amortChart.filter(p => p.x >= 1).map(p => [
         String(p.x), fmtEur(Math.round(p.mensualite)), fmtEur(Math.round(p.restant)),
       ]),
+    } : undefined,
+    // Graphique vectoriel (page paysage du rapport PDF), aux couleurs de la DA.
+    chart: hasResult && amortChart.length > 1 ? {
+      heading: txt.chartTitle,
+      xFmt: txt.chartXFmt,
+      yFmt: (v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`,
+      series: [
+        { label: txt.serieRestant, color: [43, 92, 230], points: amortChart.map(p => ({ x: p.x, y: p.restant })) },
+        { label: txt.serieInterets, color: [110, 181, 212], points: amortChart.map(p => ({ x: p.x, y: p.interets })) },
+      ],
     } : undefined,
     notes: hasResult ? [
       ...(revenuTotal > 0 ? [txt.noteEndet(tauxEndet.toFixed(1))] : []),

@@ -1,12 +1,15 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { track } from "@vercel/analytics";
-import { buildShareUrl, encodeParams } from "../hooks/useShareableUrl.js";
+import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useTranslation } from "../i18n/index.js";
+import { localePath } from "../i18n/paths.js";
 
-const SS_KEY = "pending_pro_pdf";
+// Quota de rapports pour un compte gratuit (non Pro). Au-delà → page Pro.
+const FREE_REPORT_LIMIT = 3;
 
 const DownloadIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -45,12 +48,14 @@ function cleanClone(clonedDoc) {
 }
 
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
-  const { isPro } = useAuth();
+  const { isPro, user, isConfigured, reportCount, incrementReportCount } = useAuth();
   const { t, locale } = useTranslation();
+  const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const barRef = useRef(null);
+
+  const remaining = Math.max(0, FREE_REPORT_LIMIT - reportCount);
 
   useEffect(() => {
     if (!copied) return;
@@ -99,80 +104,65 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     }
   }
 
-  async function handleDownloadPDF() {
-    setMenuOpen(false); setBusy(true);
-    track("export", { format: "pdf", simulateur: name });
-    try {
-      // Compte-rendu PDF natif (document propre) si le simulateur fournit ses
-      // données structurées ; sinon, repli sur une capture pleine page.
-      if (report) {
-        // Capture éventuelle du seul graphique pour l'insérer dans le CR.
-        let chartImage = null;
-        if (chartRef?.current) {
-          try {
-            const c = await snapshot(chartRef.current);
-            if (c) chartImage = { dataUrl: c.toDataURL("image/png"), w: c.width, h: c.height };
-          } catch { /* pas de graphique */ }
-        }
-        const cleanUrl = window.location.origin + window.location.pathname;
-        const { buildReportPdf } = await import("../utils/pdfReport.js");
-        await buildReportPdf({ report, url: cleanUrl, name, chartImage });
-        return;
-      }
-      const canvas = await snapshot(pageContainer(), { full: true });
-      if (!canvas) return;
-      const { jsPDF } = await import("jspdf");
-      const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: "a4" });
-      const pageW = pdf.internal.pageSize.getWidth();
-      const pageH = pdf.internal.pageSize.getHeight();
-      const margin = 24;
-
-      // En-tête de marque (page 1)
-      const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-      pdf.setFont("helvetica", "bold"); pdf.setFontSize(13); pdf.setTextColor(154, 111, 42);
-      pdf.text("simfinly.com", margin, margin + 6);
-      pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); pdf.setTextColor(120, 120, 120);
-      pdf.text(`Compte-rendu · ${date}`, pageW - margin, margin + 6, { align: "right" });
-      pdf.setDrawColor(184, 147, 74); pdf.setLineWidth(1);
-      pdf.line(margin, margin + 14, pageW - margin, margin + 14);
-      const headerH = margin + 24;
-
-      const imgW = pageW - margin * 2;
-      const imgH = (imgW * canvas.height) / canvas.width;
-      const imgData = canvas.toDataURL("image/png");
-
-      // Page 1 sous l'en-tête, puis pages suivantes par décalage négatif (canonique).
-      let position = headerH;
-      pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
-      let heightLeft = imgH - (pageH - headerH);
-      while (heightLeft > 0) {
-        position = heightLeft - imgH;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
-        heightLeft -= pageH;
-      }
-
-      pdf.save(`simulation-${name}.pdf`);
-    } catch { /* ignore */ } finally { setBusy(false); }
-  }
-
-  async function handleProPdf() {
-    setMenuOpen(false); setBusy(true);
-    track("export", { format: "pdf-pro", simulateur: name });
-    try {
-      // Capture chart image if available
-      let chartImage = null;
-      if (chartRef?.current) {
-        try {
-          const c = await snapshot(chartRef.current);
-          if (c) chartImage = { dataUrl: c.toDataURL("image/png"), w: c.width, h: c.height };
-        } catch { /* no chart */ }
-      }
-
-      if (!report) return;
-      const cleanUrl = window.location.origin + window.location.pathname;
+  // Génère le rapport (document unique). Capture le graphique en image pour le
+  // repli raster ; les simulateurs fournissant `report.chart` ont un tracé vectoriel.
+  async function generateReport() {
+    let chartImage = null;
+    if (chartRef?.current) {
+      try {
+        const c = await snapshot(chartRef.current);
+        if (c) chartImage = { dataUrl: c.toDataURL("image/png"), w: c.width, h: c.height };
+      } catch { /* pas de graphique */ }
+    }
+    const cleanUrl = window.location.origin + window.location.pathname;
+    if (report) {
       const { buildReportPdfPro } = await import("../utils/pdfReport.js");
       await buildReportPdfPro({ report, url: cleanUrl, name, chartImage });
+      return;
+    }
+    // Simulateur sans données structurées : repli capture pleine page.
+    const canvas = await snapshot(pageContainer(), { full: true });
+    if (!canvas) return;
+    const { jsPDF } = await import("jspdf");
+    const pdf = new jsPDF({ orientation: "portrait", unit: "px", format: "a4" });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 24;
+    const date = new Date().toLocaleDateString(locale === "en" ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    pdf.setFont("helvetica", "bold"); pdf.setFontSize(13); pdf.setTextColor(43, 92, 230);
+    pdf.text("simfinly.com", margin, margin + 6);
+    pdf.setFont("helvetica", "normal"); pdf.setFontSize(9); pdf.setTextColor(120, 120, 120);
+    pdf.text(`${locale === "en" ? "Report" : "Compte-rendu"} · ${date}`, pageW - margin, margin + 6, { align: "right" });
+    pdf.setDrawColor(43, 92, 230); pdf.setLineWidth(1);
+    pdf.line(margin, margin + 14, pageW - margin, margin + 14);
+    const headerH = margin + 24;
+    const imgW = pageW - margin * 2;
+    const imgH = (imgW * canvas.height) / canvas.width;
+    const imgData = canvas.toDataURL("image/png");
+    let position = headerH;
+    pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
+    let heightLeft = imgH - (pageH - headerH);
+    while (heightLeft > 0) {
+      position = heightLeft - imgH;
+      pdf.addPage();
+      pdf.addImage(imgData, "PNG", margin, position, imgW, imgH, undefined, "FAST");
+      heightLeft -= pageH;
+    }
+    pdf.save(`simulation-${name}.pdf`);
+  }
+
+  // Bouton « Rapport » : connexion obligatoire, 3 gratuits puis Pro.
+  async function handleReport() {
+    // Auth non configurée (dev) → pas de gating.
+    if (isConfigured) {
+      if (!user) { navigate(`${localePath("/connexion", locale)}?next=${encodeURIComponent(window.location.pathname)}`); return; }
+      if (!isPro && reportCount >= FREE_REPORT_LIMIT) { navigate(localePath("/pro", locale)); return; }
+    }
+    setBusy(true);
+    track("export", { format: "report", simulateur: name });
+    try {
+      await generateReport();
+      if (isConfigured && !isPro) await incrementReportCount();
     } catch { /* ignore */ } finally { setBusy(false); }
   }
 
@@ -217,32 +207,15 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         </div>
       )}
       {showDownload && (
-        <div style={{ position: "relative" }}>
-          <button style={btnStyle} onClick={() => setMenuOpen(o => !o)} disabled={busy}
-            onMouseEnter={hoverIn} onMouseLeave={hoverOut} aria-haspopup="true" aria-expanded={menuOpen}>
-            <DownloadIcon />
-            <span className="btn-text">{busy ? "…" : t("common.download")}</span>
-          </button>
-          {menuOpen && (
-            <div role="menu" style={{
-              position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 50,
-              background: "var(--card-bg)", border: "1px solid var(--border-gold)",
-              borderRadius: 10, overflow: "hidden", minWidth: 220,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
-            }}>
-              {[
-                { label: t("common.dlPdf"), fn: handleDownloadPDF },
-                { label: t("common.dlPro"), fn: handleProPdf },
-              ].map(opt => (
-                <button key={opt.label} role="menuitem" onClick={opt.fn}
-                  style={{ display: "block", width: "100%", textAlign: "left", padding: "10px 14px", background: "none", border: "none", color: "var(--text)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
-                  onMouseEnter={e => e.currentTarget.style.background = "rgba(43,92,230,0.08)"}
-                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          )}
+        <button style={btnStyle} onClick={handleReport} disabled={busy}
+          onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+          <DownloadIcon />
+          <span className="btn-text">{busy ? "…" : t("common.report")}</span>
+        </button>
+      )}
+      {showDownload && isConfigured && user && !isPro && (
+        <div style={{ flexBasis: "100%", fontSize: 11, color: "var(--text-secondary)", marginTop: -2 }}>
+          {t("common.reportRemaining")(remaining)}
         </div>
       )}
 

@@ -12,7 +12,8 @@ const AuthContext = createContext(null);
 // Valeurs de repli si Supabase n'est pas (encore) configuré, pour que le site
 // continue de fonctionner normalement (mode invité) sans planter.
 const FALLBACK = {
-  user: null, profile: null, isPro: false, loading: false, isConfigured: false,
+  user: null, profile: null, isPro: false, reportCount: 0, loading: false, isConfigured: false,
+  incrementReportCount: async () => {},
   signUp: async () => ({ error: { message: "Authentification non configurée." } }),
   signIn: async () => ({ error: { message: "Authentification non configurée." } }),
   signInGoogle: async () => ({ error: { message: "Authentification non configurée." } }),
@@ -32,7 +33,7 @@ export function AuthProvider({ children }) {
     // RLS garantit qu'on ne lit que SON propre profil.
     const { data } = await supabase
       .from("profiles")
-      .select("email, subscription_status, current_period_end, stripe_customer_id")
+      .select("email, subscription_status, current_period_end, stripe_customer_id, report_count")
       .eq("id", uid)
       .maybeSingle();
     setProfile(data || null);
@@ -59,10 +60,24 @@ export function AuthProvider({ children }) {
     return () => { mounted = false; sub.subscription.unsubscribe(); };
   }, [loadProfile]);
 
+  // Compteur de rapports générés (quota gratuit). Incrémenté côté client sur la
+  // propre ligne du profil (RLS) — pas de statut sensible, pas de fonction serverless.
+  const incrementReportCount = useCallback(async () => {
+    if (!supabase || !user?.id) return;
+    let next = 1;
+    setProfile((p) => {
+      next = (p?.report_count || 0) + 1;
+      return p ? { ...p, report_count: next } : { report_count: next };
+    });
+    await supabase.from("profiles").update({ report_count: next }).eq("id", user.id);
+  }, [user?.id]);
+
   const value = {
     user,
     profile,
     isPro: profile?.subscription_status === "active",
+    reportCount: profile?.report_count || 0,
+    incrementReportCount,
     loading,
     isConfigured: isSupabaseConfigured,
     signUp: (email, password) => supabase.auth.signUp({ email, password }),

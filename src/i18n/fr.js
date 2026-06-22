@@ -78,8 +78,8 @@ export default {
     generatedInBrowser: 'Généré dans votre navigateur · aucune donnée envoyée',
     shareIncentive: '💡 Fier de votre résultat ? Partagez-le ou exportez-le en un clic.',
     shareText: 'Voici ma simulation. Faites la vôtre gratuitement :',
-    dlPdf: 'Document PDF complet',
-    dlPro: 'Rapport Pro',
+    report: 'Rapport',
+    reportRemaining: (n) => n > 0 ? `${n} rapport${n > 1 ? 's' : ''} gratuit${n > 1 ? 's' : ''} restant${n > 1 ? 's' : ''}` : 'Quota gratuit atteint — passez à Pro',
   },
   auth: {
     titleSignin: 'Connexion',

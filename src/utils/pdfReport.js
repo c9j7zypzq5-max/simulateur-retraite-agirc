@@ -1,6 +1,6 @@
-// Génère un compte-rendu PDF NATIF (texte vectoriel) à partir des données structurées
-// d'une simulation. Deux niveaux : rapport gratuit (compact) et rapport Pro (couverture
-// + mise en page aérée + courbe vectorielle).
+// Génère le compte-rendu PDF NATIF (texte vectoriel) à partir des données structurées
+// d'une simulation. Couverture claire + page de contenu + page tableau dédiée +
+// page graphique dédiée en paysage (DA du site).
 //
 // report = {
 //   title, subtitle?,
@@ -8,10 +8,10 @@
 //   params:  [{ label, value }],
 //   results: [{ label, value, strong? }],
 //   notes?:  string[],
-//   table?:  { heading, cols: string[], rows: string[][] }  // tableau annuel optionnel
+//   table?:  { heading, cols: string[], rows: string[][] },  // page tableau dédiée
+//   chart?:  { heading?, xFmt?, yFmt?, series: [{ label, color:[r,g,b], points:[{x,y}] }] }
 // }
-// chartPoints (optionnel) = [{ x, y }]   — tracé vectoriel dans le PDF (net, clair)
-// chartImage  (optionnel) = { dataUrl, w, h } — fallback raster si pas de points
+// chartImage  (optionnel) = { dataUrl, w, h } — repli raster (page paysage) si pas de `chart`
 
 import { jsPDF } from "jspdf";
 
@@ -181,90 +181,6 @@ function drawTable(doc, table, pageW, contentW, M, y, ensure) {
   return y + 14;
 }
 
-// Dessine une courbe vectorielle dans jsPDF à partir de points {x, y} normalisés.
-function drawChartVector(doc, points, contentW, M, y, ensure, pageH) {
-  if (!points || points.length < 2) return y;
-  const chartH = 120;
-  ensure(chartH + 30);
-  doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(...GOLD_DARK);
-  doc.text("GRAPHIQUE", M, y);
-  doc.setDrawColor(...GOLD).setLineWidth(0.8).line(M + doc.getTextWidth("GRAPHIQUE") + 10, y - 3, M + contentW, y - 3);
-  y += 14;
-
-  const PAD_L = 40, PAD_B = 20, PAD_R = 8, PAD_T = 6;
-  const cW = contentW - PAD_L - PAD_R;
-  const cH = chartH - PAD_T - PAD_B;
-  const ox = M + PAD_L, oy = y + chartH - PAD_B;
-
-  const maxX = Math.max(...points.map(p => p.x), 1);
-  const maxY = Math.max(...points.map(p => p.y), 1) * 1.08;
-
-  const px = (v) => ox + (v / maxX) * cW;
-  const py = (v) => oy - (v / maxY) * cH;
-
-  // Fond du graphique
-  doc.setFillColor(...GOLD_TINT);
-  doc.rect(ox, y + PAD_T, cW, cH, "F");
-
-  // Grille (4 lignes)
-  doc.setDrawColor(...LINE).setLineWidth(0.3);
-  [0.25, 0.5, 0.75, 1.0].forEach(f => {
-    const gy = py(maxY * f);
-    doc.line(ox, gy, ox + cW, gy);
-  });
-
-  // Axe X et Y
-  doc.setDrawColor(...SOFT).setLineWidth(0.5);
-  doc.line(ox, oy, ox + cW, oy);
-  doc.line(ox, y + PAD_T, ox, oy);
-
-  // Remplissage area
-  const polyPts = [
-    [ox, oy],
-    ...points.map(p => [px(p.x), py(p.y)]),
-    [px(points[points.length - 1].x), oy],
-  ];
-  doc.setFillColor(184, 147, 74, 0.18).setDrawColor(...GOLD).setLineWidth(0);
-  // jsPDF polygon via lines
-  doc.setFillColor(246, 240, 228);
-  const polyStr = polyPts.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
-  // Dessin ligne principale
-  doc.setDrawColor(...GOLD).setLineWidth(1.5);
-  for (let i = 1; i < points.length; i++) {
-    doc.line(px(points[i-1].x), py(points[i-1].y), px(points[i].x), py(points[i].y));
-  }
-
-  // Labels Y (4 valeurs)
-  doc.setFont("helvetica", "normal").setFontSize(7).setTextColor(...SOFT);
-  const fmtV = (v) => v >= 1_000_000 ? `${(v / 1_000_000).toFixed(1)}M` : v >= 1000 ? `${Math.round(v / 1000)}k` : String(Math.round(v));
-  [0.25, 0.5, 0.75, 1.0].forEach(f => {
-    doc.text(fmtV(maxY * f), ox - 3, py(maxY * f) + 2.5, { align: "right" });
-  });
-
-  // Labels X (5 valeurs)
-  const xStep = Math.max(1, Math.floor(points.length / 5));
-  points.filter((_, i) => i % xStep === 0 || i === points.length - 1).forEach(p => {
-    doc.text(String(Math.round(p.x)), px(p.x), oy + 8, { align: "center" });
-  });
-
-  return y + chartH + 18;
-}
-
-function drawChartImage(doc, chartImage, contentW, M, y, ensure, pageH) {
-  if (!chartImage?.dataUrl) return y;
-  let imgW = contentW;
-  let imgH = (imgW * chartImage.h) / chartImage.w;
-  const maxH = pageH - M * 2 - 40;
-  if (imgH > maxH) { imgH = maxH; imgW = (imgH * chartImage.w) / chartImage.h; }
-  ensure(imgH + 30);
-  doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(...GOLD_DARK);
-  doc.text("GRAPHIQUE", M, y);
-  doc.setDrawColor(...GOLD).setLineWidth(0.8).line(M + doc.getTextWidth("GRAPHIQUE") + 10, y - 3, M + contentW, y - 3);
-  y += 14;
-  doc.addImage(chartImage.dataUrl, "PNG", M, y, imgW, imgH, undefined, "FAST");
-  return y + imgH + 18;
-}
-
 function drawCta(doc, url, contentW, M, y, ensure, label = "Faites votre propre simulation, gratuitement :") {
   ensure(58);
   doc.setFillColor(...GOLD_TINT).roundedRect(M, y, contentW, 50, 8, 8, "F");
@@ -279,54 +195,92 @@ function addFooters(doc, M, pageH, pageW, pro = false) {
   const total = doc.getNumberOfPages();
   for (let p = 1; p <= total; p++) {
     doc.setPage(p);
+    // Dimensions de la page courante (gère les pages en paysage).
+    const pw = doc.internal.pageSize.getWidth();
+    const ph = doc.internal.pageSize.getHeight();
     doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...SOFT);
     if (pro && p === 1) {
       // Couverture : pied déjà présent
     } else {
       const pNum = pro ? `${p - 1} / ${total - 1}` : `${p} / ${total}`;
-      doc.text("Simulation indicative et non contractuelle · simfinly.com", M, pageH - 20);
+      doc.text("Simulation indicative et non contractuelle · simfinly.com", M, ph - 20);
       if (pro) {
         doc.setFont("helvetica", "bold").setFontSize(8).setTextColor(...GOLD_DARK);
-        doc.text("RAPPORT PRO", pageW / 2, pageH - 20, { align: "center" });
+        doc.text("RAPPORT PRO", pw / 2, ph - 20, { align: "center" });
         doc.setFont("helvetica", "normal").setTextColor(...SOFT);
       }
-      doc.text(pNum, pageW - M, pageH - 20, { align: "right" });
+      doc.text(pNum, pw - M, ph - 20, { align: "right" });
     }
   }
 }
 
-// ─── Export public ────────────────────────────────────────────────────────────
+// Dessine un graphique multi-séries pleine page (paysage) aux couleurs de la DA.
+// series = [{ label, color:[r,g,b], points:[{x,y}] }] ; xFmt/yFmt formatteurs.
+function drawChartFullPage(doc, chart, pageW, pageH, M, heading) {
+  const series = (chart?.series || []).filter(s => s.points?.length > 1);
+  if (!series.length) return;
+  const xFmt = chart.xFmt || ((v) => String(v));
+  const yFmt = chart.yFmt || ((v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M` : v >= 1000 ? `${Math.round(v / 1000)}k` : String(Math.round(v)));
 
-export async function buildReportPdf({ report, url, name, chartImage = null, chartPoints = null }) {
-  const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
-  const pageW = doc.internal.pageSize.getWidth();
-  const pageH = doc.internal.pageSize.getHeight();
-  const M = 48;
-  const contentW = pageW - M * 2;
-  let y = M;
+  // Titre de page
+  doc.setFont("helvetica", "bold").setFontSize(15).setTextColor(...GOLD_DARK);
+  doc.text(T(heading).toUpperCase(), M, M + 4);
+  doc.setDrawColor(...GOLD).setLineWidth(1).line(M, M + 12, pageW - M, M + 12);
 
-  const ensure = (need) => { if (y + need > pageH - M - 24) { doc.addPage(); y = M; } };
-  const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  // Légende
+  let lx = M;
+  const ly = M + 30;
+  doc.setFontSize(10);
+  series.forEach(s => {
+    doc.setFillColor(...s.color);
+    doc.circle(lx + 4, ly - 3, 4, "F");
+    doc.setFont("helvetica", "normal").setTextColor(...INK);
+    doc.text(T(s.label), lx + 12, ly);
+    lx += 24 + doc.getTextWidth(T(s.label)) + 18;
+  });
 
-  y = drawHeader(doc, pageW, M, report.title, date, false);
-  y = drawDivider(doc, pageW, M, y) + 12;
-  y = drawTitle(doc, report, contentW, M, y, 19, ensure);
-  y = drawHighlight(doc, report.highlight, pageW, contentW, M, y, ensure, false);
-  y = drawSection(doc, "Paramètres saisis", report.params, pageW, contentW, M, y, ensure, false);
-  y = drawSection(doc, "Résultats", report.results, pageW, contentW, M, y, ensure, false);
+  // Cadre du graphique
+  const PAD_L = 64, PAD_R = 30, PAD_T = ly + 18, PAD_B = 48;
+  const ox = M + PAD_L;
+  const top = PAD_T;
+  const cW = pageW - M * 2 - PAD_L - PAD_R;
+  const cH = pageH - top - PAD_B - 30;
+  const oy = top + cH;
 
-  if (chartPoints?.length > 1) {
-    y = drawChartVector(doc, chartPoints, contentW, M, y, ensure, pageH);
-  } else if (chartImage?.dataUrl) {
-    y = drawChartImage(doc, chartImage, contentW, M, y, ensure, pageH);
-  }
+  const allPts = series.flatMap(s => s.points);
+  const maxX = Math.max(...allPts.map(p => p.x), 1);
+  const maxY = Math.max(...allPts.map(p => p.y), 1) * 1.08;
+  const px = (v) => ox + (v / maxX) * cW;
+  const py = (v) => oy - (v / maxY) * cH;
 
-  y = drawTable(doc, report.table, pageW, contentW, M, y, ensure);
-  y = drawNotes(doc, report.notes, contentW, M, y, ensure, false);
-  y = drawCta(doc, url, contentW, M, y, ensure);
+  // Fond + grille
+  doc.setFillColor(...GOLD_TINT).rect(ox, top, cW, cH, "F");
+  doc.setDrawColor(...LINE).setLineWidth(0.4);
+  [0, 0.25, 0.5, 0.75, 1].forEach(f => { const gy = py(maxY * f); doc.line(ox, gy, ox + cW, gy); });
 
-  addFooters(doc, M, pageH, pageW, false);
-  doc.save(`compte-rendu-${name}.pdf`);
+  // Axes
+  doc.setDrawColor(...SOFT).setLineWidth(0.6);
+  doc.line(ox, oy, ox + cW, oy);
+  doc.line(ox, top, ox, oy);
+
+  // Labels Y
+  doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...SOFT);
+  [0, 0.25, 0.5, 0.75, 1].forEach(f => doc.text(yFmt(maxY * f), ox - 6, py(maxY * f) + 3, { align: "right" }));
+
+  // Labels X (≈8)
+  const xs = series[0].points;
+  const step = Math.max(1, Math.floor(xs.length / 8));
+  xs.filter((_, i) => i % step === 0 || i === xs.length - 1).forEach(p => {
+    doc.text(String(xFmt(p.x)), px(p.x), oy + 16, { align: "center" });
+  });
+
+  // Courbes
+  series.forEach(s => {
+    doc.setDrawColor(...s.color).setLineWidth(2);
+    for (let i = 1; i < s.points.length; i++) {
+      doc.line(px(s.points[i - 1].x), py(s.points[i - 1].y), px(s.points[i].x), py(s.points[i].y));
+    }
+  });
 }
 
 // ─── Catégorisation des simulateurs (même logique que TableauDeBord) ─────────
@@ -433,7 +387,7 @@ export async function buildMultiReportPdf(entries) {
   doc.save(`simfinly-simulations-${isoDate}.pdf`);
 }
 
-export async function buildReportPdfPro({ report, url, name, chartImage = null, chartPoints = null }) {
+export async function buildReportPdfPro({ report, url, name, chartImage = null }) {
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -504,16 +458,9 @@ export async function buildReportPdfPro({ report, url, name, chartImage = null, 
   y = drawHighlight(doc, report.highlight, pageW, contentW, M, y, ensure, true);
   y = drawSection(doc, "Paramètres saisis", report.params, pageW, contentW, M, y, ensure, true);
   y = drawSection(doc, "Résultats détaillés", report.results, pageW, contentW, M, y, ensure, true);
-
-  if (chartPoints?.length > 1) {
-    y = drawChartVector(doc, chartPoints, contentW, M, y, ensure, pageH);
-  } else if (chartImage?.dataUrl) {
-    y = drawChartImage(doc, chartImage, contentW, M, y, ensure, pageH);
-  }
-
-  y = drawTable(doc, report.table, pageW, contentW, M, y, ensure);
   y = drawNotes(doc, report.notes, contentW, M, y, ensure, true);
 
+  // CTA en bas de la page de contenu.
   ensure(60);
   doc.setFillColor(...WHITE).setDrawColor(...GOLD).setLineWidth(0.8);
   doc.roundedRect(M, y, contentW, 52, 8, 8, "FD");
@@ -522,6 +469,40 @@ export async function buildReportPdfPro({ report, url, name, chartImage = null, 
   doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...GOLD_DARK);
   doc.text(T(url), M + 18, y + 40);
 
+  // ── Page dédiée : tableau d'amortissement (tout visible) ──
+  if (report.table?.rows?.length) {
+    doc.addPage();
+    y = M;
+    const tHY = drawHeader(doc, pageW, M, report.title, date, true);
+    y = tHY + 12;
+    doc.setDrawColor(...GOLD).setLineWidth(1.2).line(M, y, pageW - M, y);
+    y += 26;
+    drawTable(doc, report.table, pageW, contentW, M, y, ensure);
+  }
+
+  // ── Page dédiée en paysage : graphique aux couleurs de la DA ──
+  const hasSeries = report.chart?.series?.some(s => s.points?.length > 1);
+  if (hasSeries) {
+    doc.addPage("a4", "landscape");
+    const lw = doc.internal.pageSize.getWidth();
+    const lh = doc.internal.pageSize.getHeight();
+    drawChartFullPage(doc, report.chart, lw, lh, M, report.chart.heading || "Graphique");
+  } else if (chartImage?.dataUrl) {
+    // Repli : image plein cadre sur une page paysage.
+    doc.addPage("a4", "landscape");
+    const lw = doc.internal.pageSize.getWidth();
+    const lh = doc.internal.pageSize.getHeight();
+    doc.setFont("helvetica", "bold").setFontSize(15).setTextColor(...GOLD_DARK);
+    doc.text((report.chart?.heading || "Graphique").toUpperCase(), M, M + 4);
+    doc.setDrawColor(...GOLD).setLineWidth(1).line(M, M + 12, lw - M, M + 12);
+    const availW = lw - M * 2;
+    const availH = lh - (M + 24) - M;
+    let imgW = availW;
+    let imgH = (imgW * chartImage.h) / chartImage.w;
+    if (imgH > availH) { imgH = availH; imgW = (imgH * chartImage.w) / chartImage.h; }
+    doc.addImage(chartImage.dataUrl, "PNG", M + (availW - imgW) / 2, M + 24, imgW, imgH, undefined, "FAST");
+  }
+
   addFooters(doc, M, pageH, pageW, true);
-  doc.save(`rapport-pro-${name}.pdf`);
+  doc.save(`rapport-${name}.pdf`);
 }

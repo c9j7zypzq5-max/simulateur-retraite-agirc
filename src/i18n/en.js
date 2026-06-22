@@ -77,8 +77,8 @@ export default {
     generatedInBrowser: 'Generated in your browser · no data sent',
     shareIncentive: '💡 Proud of your result? Share it or export it in one click.',
     shareText: 'Here is my simulation. Make yours for free:',
-    dlPdf: 'Full PDF document',
-    dlPro: 'Pro report',
+    report: 'Report',
+    reportRemaining: (n) => n > 0 ? `${n} free report${n > 1 ? 's' : ''} left` : 'Free quota reached — go Pro',
   },
   auth: {
     titleSignin: 'Sign in',

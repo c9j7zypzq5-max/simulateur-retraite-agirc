@@ -19,9 +19,13 @@ create table if not exists public.profiles (
   stripe_customer_id  text unique,
   subscription_status text not null default 'free',  -- 'free' | 'active' | 'cancelled'
   current_period_end  timestamptz,
+  report_count        integer not null default 0,    -- quota de rapports générés (compte gratuit)
   created_at          timestamptz not null default now(),
   updated_at          timestamptz not null default now()
 );
+
+-- Déploiements existants : ajoute la colonne si la table préexiste.
+alter table public.profiles add column if not exists report_count integer not null default 0;
 
 alter table public.profiles enable row level security;
 

@@ -70,8 +70,10 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Hanken Grotesk', sans-serif;
-  /* Filet de sécurité : aucun débordement horizontal sur mobile */
-  overflow-x: hidden;
+  /* Filet de sécurité : aucun débordement horizontal sur mobile.
+     `clip` (et non `hidden`) pour ne pas créer de conteneur de défilement,
+     ce qui casserait `position: sticky` de la navbar (bug iOS notamment). */
+  overflow-x: clip;
   max-width: 100%;
 }
 
@@ -146,6 +148,7 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
 /* ── Texte boutons : masqué sur mobile ── */
 @media (max-width: 640px) {
   .btn-text { display: none; }
+  .nav-auth-label { display: none; }
 }
 @keyframes scaleIn {
   from { opacity: 0; transform: scale(0.96); }
