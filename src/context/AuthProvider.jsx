@@ -12,14 +12,19 @@ const AuthContext = createContext(null);
 
 // Valeurs de repli si Supabase n'est pas (encore) configuré, pour que le site
 // continue de fonctionner normalement (mode invité) sans planter.
+const _authNotConfigured = () =>
+  typeof window !== "undefined" && window.location.pathname.startsWith("/en")
+    ? "Authentication not configured."
+    : "Authentification non configurée.";
+
 const FALLBACK = {
   user: null, profile: null, isPro: false, reportCount: 0, loading: false, isConfigured: false,
   incrementReportCount: async () => {},
-  signUp: async () => ({ error: { message: "Authentification non configurée." } }),
-  signIn: async () => ({ error: { message: "Authentification non configurée." } }),
-  signInGoogle: async () => ({ error: { message: "Authentification non configurée." } }),
+  signUp: async () => ({ error: { message: _authNotConfigured() } }),
+  signIn: async () => ({ error: { message: _authNotConfigured() } }),
+  signInGoogle: async () => ({ error: { message: _authNotConfigured() } }),
   signOut: async () => {},
-  resetPassword: async () => ({ error: { message: "Authentification non configurée." } }),
+  resetPassword: async () => ({ error: { message: _authNotConfigured() } }),
   refreshProfile: async () => {},
   getAccessToken: async () => null,
 };

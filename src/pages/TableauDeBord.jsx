@@ -92,7 +92,7 @@ export default function TableauDeBord() {
       const { buildMultiReportPdf } = await import("../utils/pdfReport.js");
       await buildMultiReportPdf(history);
     } catch (e) {
-      console.error("PDF export failed", e);
+      try { (await import("@sentry/react")).captureException(e); } catch { /* Sentry indisponible */ }
     } finally {
       setExporting(false);
     }

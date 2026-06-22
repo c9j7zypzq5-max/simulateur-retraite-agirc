@@ -266,6 +266,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       )}
       {showDownload && (
         <button style={btnStyle} onClick={handleReport} disabled={busy}
+          aria-label={locale === "en" ? "Download PDF report" : "Télécharger le rapport PDF"}
           onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
           <DownloadIcon />
           <span className="btn-text">{busy ? "…" : t("common.report")}</span>
@@ -290,6 +291,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
       <div style={{ position: "relative" }}>
         <button style={btnStyle} onClick={handleShare} disabled={busy}
+          aria-label={locale === "en" ? "Share simulation" : "Partager la simulation"}
           onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
           <ShareIcon />
           <span className="btn-text">{t("common.share")}</span>
@@ -309,6 +311,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       {isConfigured && user && (
         <div style={{ position: "relative" }}>
           <button style={btnStyle} onClick={handleSave}
+            aria-label={locale === "en" ? "Save simulation" : "Sauvegarder la simulation"}
             onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
             <SaveIcon />
             <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
@@ -320,6 +323,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         <div style={{ position: "relative" }}>
           {isPro ? (
             <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
+              aria-label={locale === "en" ? "Copy public link" : "Copier le lien public"}
               onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
               <LinkIcon />
               <span className="btn-text">

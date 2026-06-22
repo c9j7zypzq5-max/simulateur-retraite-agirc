@@ -41,22 +41,26 @@ export default class ErrorBoundary extends Component {
   render() {
     if (!this.state.hasError) return this.props.children;
 
+    const isEn = typeof window !== 'undefined' && window.location.pathname.startsWith('/en');
+    const txt = isEn
+      ? { title: 'Something went wrong', body: 'This page failed to load. This sometimes happens after a site update.', reload: 'Reload page', back: '← Back to home', href: '/en' }
+      : { title: 'Une erreur est survenue', body: 'Le chargement de cette page a échoué. Cela arrive parfois après une mise à jour du site.', reload: 'Recharger la page', back: '← Retour à l\'accueil', href: '/' };
     return (
       <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 16, padding: 24, textAlign: "center", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
         <div style={{ fontSize: 40 }}>⚠️</div>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 600, margin: 0 }}>
-          Une erreur est survenue
+          {txt.title}
         </h1>
         <p style={{ color: "var(--text-secondary)", fontSize: 15, maxWidth: 420, lineHeight: 1.6 }}>
-          Le chargement de cette page a échoué. Cela arrive parfois après une mise à jour du site.
+          {txt.body}
         </p>
         <button
           onClick={() => { sessionStorage.removeItem('chunk_reloaded'); window.location.reload(); }}
           style={{ padding: "10px 22px", borderRadius: 10, border: "1px solid var(--border-gold)", background: "rgba(43,92,230,0.08)", color: "var(--gold)", fontSize: 14, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
         >
-          Recharger la page
+          {txt.reload}
         </button>
-        <a href="/" style={{ fontSize: 13, color: "var(--text-secondary)" }}>← Retour à l'accueil</a>
+        <a href={txt.href} style={{ fontSize: 13, color: "var(--text-secondary)" }}>{txt.back}</a>
       </div>
     );
   }

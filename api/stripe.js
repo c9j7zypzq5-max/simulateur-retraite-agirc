@@ -264,6 +264,7 @@ export default async function handler(req, res) {
     if (action === 'webhook') return await handleWebhook(req, res, stripe);
     res.status(404).json({ error: 'Unknown action' });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('[stripe] unhandled error:', err?.message);
+    res.status(500).json({ error: 'Internal server error' });
   }
 }

@@ -22,9 +22,17 @@ export default async function handler(req, res) {
         `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}` +
         `?interval=1mo&period1=${period1}&period2=${period2}&includeAdjustedClose=true`;
 
-      const resp = await fetch(url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; simfinly/1.0)' },
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      let resp;
+      try {
+        resp = await fetch(url, {
+          headers: { 'User-Agent': 'Mozilla/5.0 (compatible; simfinly/1.0)' },
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
 
       if (!resp.ok) {
         results[ticker] = { error: `HTTP ${resp.status}` };

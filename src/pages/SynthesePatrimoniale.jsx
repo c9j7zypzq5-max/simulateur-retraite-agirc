@@ -2,7 +2,7 @@
 //   <Route path="/synthese-patrimoniale" element={<SynthesePatrimoniale />} />
 
 import { useState, useEffect, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -276,9 +276,14 @@ function ActionItem({ to, label, desc }) {
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function SynthesePatrimoniale() {
   const [theme, setTheme] = useTheme();
+  const navigate = useNavigate();
   const { user, loading, isPro } = useAuth();
   const { getHistory } = useSimHistory();
   const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    if (!loading && !user) navigate("/connexion?next=/synthese-patrimoniale", { replace: true });
+  }, [loading, user, navigate]);
 
   usePageMeta(
     "Synthèse patrimoniale — Vue d'ensemble | simfinly.com",

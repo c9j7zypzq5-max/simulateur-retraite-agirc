@@ -11,6 +11,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, AccordionSection, Chip, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
+  FaqItem,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
@@ -303,16 +304,3 @@ export default function SyntheseRetraite() {
   );
 }
 
-function FaqItem({ q, a }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div style={{ borderBottom: "1px solid var(--border)" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open}
-        style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, background: "none", border: "none", cursor: "pointer", padding: "18px 0", textAlign: "left" }}>
-        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", lineHeight: 1.4 }}>{q}</span>
-        <span aria-hidden="true" style={{ flexShrink: 0, fontSize: 18, color: open ? "var(--gold)" : "var(--text-secondary)" }}>{open ? "−" : "+"}</span>
-      </button>
-      {open && <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>{a}</p>}
-    </div>
-  );
-}

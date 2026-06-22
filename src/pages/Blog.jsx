@@ -55,8 +55,9 @@ function FeaturedArticle({ article }) {
   const [hovered, setHovered] = useState(false);
   const gradient = CAT_GRADIENTS[article.category] || "linear-gradient(135deg,var(--primary),#5B8CFF)";
   const catStyle = CAT_COLORS[article.category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
+  const isEn = typeof window !== "undefined" && window.location.pathname.startsWith("/en");
   const date = article.publishedAt
-    ? new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
+    ? new Intl.DateTimeFormat(isEn ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
     : "";
 
   return (
@@ -94,7 +95,7 @@ function FeaturedArticle({ article }) {
             {date && <span>{date}</span>}
             {date && article.readTime && <span style={{ width: 3, height: 3, borderRadius: "50%", background: "var(--border)", display: "inline-block" }} />}
             {article.readTime && <span>{article.readTime} min</span>}
-            <span style={{ marginLeft: "auto", color: "var(--primary)", fontWeight: 600 }}>Lire →</span>
+            <span style={{ marginLeft: "auto", color: "var(--primary)", fontWeight: 600 }}>{isEn ? "Read →" : "Lire →"}</span>
           </div>
         </div>
       </div>
@@ -127,7 +128,7 @@ function ArticleCard({ article }) {
           {article.title}
         </h3>
         <div style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>
-          {article.readTime ? `${article.readTime} min de lecture` : ""}
+          {article.readTime ? `${article.readTime} min${typeof window !== "undefined" && window.location.pathname.startsWith("/en") ? " read" : " de lecture"}` : ""}
         </div>
       </div>
     </Link>
