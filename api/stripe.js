@@ -21,7 +21,7 @@ async function parseJson(req) {
 // Client admin avec la clé service_role : contourne RLS pour écrire le statut
 // d'abonnement. N'est JAMAIS exposé au navigateur (pas de préfixe VITE_).
 function getSupabaseAdmin() {
-  const url = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL;
+  const url = process.env.VITE_SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
   // import différé pour ne pas alourdir les autres actions

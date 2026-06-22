@@ -10,8 +10,8 @@ import { createClient } from '@supabase/supabase-js';
 // La clé service_role (qui contourne RLS) ne doit JAMAIS être préfixée VITE_
 // ni utilisée ici : elle reste uniquement côté serveur (api/), pour le webhook.
 
-const url = import.meta.env.VITE_SUPABASE_URL;
-const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const url = import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_PUBLIC_SUPABASE_URL;
+const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
 
 export const isSupabaseConfigured = Boolean(url && anonKey);
 
