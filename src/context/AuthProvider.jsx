@@ -80,7 +80,7 @@ export function AuthProvider({ children }) {
     incrementReportCount,
     loading,
     isConfigured: isSupabaseConfigured,
-    signUp: (email, password) => supabase.auth.signUp({ email, password }),
+    signUp: (email, password) => supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/connexion` } }),
     signIn: (email, password) => supabase.auth.signInWithPassword({ email, password }),
     signInGoogle: () => supabase.auth.signInWithOAuth({
       provider: "google",

@@ -89,7 +89,7 @@ export default function CountrySwitch({ compact = false }) {
         <div
           role="listbox"
           style={{
-            position: 'absolute', bottom: '100%', right: 0, marginBottom: 6,
+            position: 'absolute', top: '100%', right: 0, marginTop: 6,
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 10,

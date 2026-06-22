@@ -5,6 +5,7 @@ import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import { useAuth } from "../hooks/useAuth.js";
+import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
 
@@ -47,12 +48,22 @@ function cleanClone(clonedDoc) {
   });
 }
 
+const SaveIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+    <polyline points="17 21 17 13 7 13 7 21"/>
+    <polyline points="7 3 7 8 15 8"/>
+  </svg>
+);
+
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const { isPro, user, isConfigured, reportCount, incrementReportCount } = useAuth();
+  const { saveEntry } = useSimHistory();
   const { t, locale } = useTranslation();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [saved, setSaved] = useState(false);
   const barRef = useRef(null);
 
   const remaining = Math.max(0, FREE_REPORT_LIMIT - reportCount);
@@ -166,6 +177,16 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     } catch { /* ignore */ } finally { setBusy(false); }
   }
 
+  function handleSave() {
+    const shareUrl = buildShareUrl(params);
+    const simulator = name || window.location.pathname;
+    const label = report?.title || name || simulator;
+    saveEntry({ simulator, label, shareUrl });
+    setSaved(true);
+    track("save_simulation", { simulateur: name });
+    setTimeout(() => setSaved(false), 2500);
+  }
+
   async function handleShare() {
     setBusy(true);
     const stateUrl = buildShareUrl(params);
@@ -236,6 +257,16 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           </div>
         )}
       </div>
+
+      {isConfigured && user && (
+        <div style={{ position: "relative" }}>
+          <button style={btnStyle} onClick={handleSave}
+            onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+            <SaveIcon />
+            <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
