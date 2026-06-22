@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { ACCOUNT_ENABLED } from "./config/features.js";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
@@ -236,26 +237,25 @@ export default function App() {
         <Route path="/widgets" element={<Widgets />} />
         <Route path="/simulateurs" element={<Simulateurs />} />
         {/* Pages utilitaires */}
-        <Route path="/mes-simulations" element={<MesSimulations />} />
-        <Route path="/tableau-de-bord" element={<TableauDeBord />} />
-        <Route path="/wizard-retraite" element={<WizardRetraite />} />
         <Route path="/rapport/:id" element={<RapportPartage />} />
         <Route path="/s/:id" element={<PublicShare />} />
-        <Route path="/synthese-patrimoniale" element={<SynthesePatrimoniale />} />
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
-        {/* Pro / Paiements */}
-        <Route path="/pro" element={<Pro />} />
-        <Route path="/en/pro" element={<Pro />} />
-        <Route path="/merci" element={<Merci />} />
-        <Route path="/en/thank-you" element={<Merci />} />
-        <Route path="/merci-pro" element={<MerciPro />} />
-        <Route path="/en/thank-you-pro" element={<MerciPro />} />
-        {/* Comptes */}
-        <Route path="/connexion" element={<Connexion />} />
-        <Route path="/en/login" element={<Connexion />} />
-        <Route path="/compte" element={<Compte />} />
-        <Route path="/en/account" element={<Compte />} />
+        {/* Compte / Pro — masqués jusqu'à la mise en production */}
+        <Route path="/mes-simulations" element={ACCOUNT_ENABLED ? <MesSimulations /> : <NotFound />} />
+        <Route path="/tableau-de-bord" element={ACCOUNT_ENABLED ? <TableauDeBord /> : <NotFound />} />
+        <Route path="/wizard-retraite" element={ACCOUNT_ENABLED ? <WizardRetraite /> : <NotFound />} />
+        <Route path="/synthese-patrimoniale" element={ACCOUNT_ENABLED ? <SynthesePatrimoniale /> : <NotFound />} />
+        <Route path="/pro" element={ACCOUNT_ENABLED ? <Pro /> : <NotFound />} />
+        <Route path="/en/pro" element={ACCOUNT_ENABLED ? <Pro /> : <NotFound />} />
+        <Route path="/merci" element={ACCOUNT_ENABLED ? <Merci /> : <NotFound />} />
+        <Route path="/en/thank-you" element={ACCOUNT_ENABLED ? <Merci /> : <NotFound />} />
+        <Route path="/merci-pro" element={ACCOUNT_ENABLED ? <MerciPro /> : <NotFound />} />
+        <Route path="/en/thank-you-pro" element={ACCOUNT_ENABLED ? <MerciPro /> : <NotFound />} />
+        <Route path="/connexion" element={ACCOUNT_ENABLED ? <Connexion /> : <NotFound />} />
+        <Route path="/en/login" element={ACCOUNT_ENABLED ? <Connexion /> : <NotFound />} />
+        <Route path="/compte" element={ACCOUNT_ENABLED ? <Compte /> : <NotFound />} />
+        <Route path="/en/account" element={ACCOUNT_ENABLED ? <Compte /> : <NotFound />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

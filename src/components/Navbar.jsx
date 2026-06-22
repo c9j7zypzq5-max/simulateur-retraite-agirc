@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Link, LocaleLink, useLocation, useLocale, useCountry } from "../lib/router.jsx";
+import { ACCOUNT_ENABLED } from "../config/features.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useAuth } from "../hooks/useAuth.js";
 import SimIcon from "../data/simIcons.jsx";
@@ -370,30 +371,32 @@ export default function Navbar({ theme, setTheme }) {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {showCurrency && <div className="desktop-nav"><CurrencySelect compact /></div>}
             <div className="desktop-nav"><CountrySwitch compact /></div>
-            {/* Connexion / compte */}
-            <LocaleLink
-              to={user ? "/compte" : "/connexion"}
-              aria-label={user ? txt.account : txt.login}
-              style={{
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "7px 12px", borderRadius: 9, textDecoration: "none",
-                border: "1px solid var(--border)", color: "var(--text)",
-                fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500,
-                flexShrink: 0,
-              }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.color = "var(--primary)"; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}
-            >
-              {user ? <User size={16} /> : <LogIn size={16} />}
-              <span className="nav-auth-label">{user ? txt.account : txt.login}</span>
-              {isPro && (
-                <span style={{
-                  fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 8,
-                  background: "rgba(184,147,74,0.18)", color: "var(--gold)",
-                  border: "1px solid rgba(184,147,74,0.35)", lineHeight: 1.4,
-                }}>PRO</span>
-              )}
-            </LocaleLink>
+            {/* Connexion / compte — masqué si ACCOUNT_ENABLED = false */}
+            {ACCOUNT_ENABLED && (
+              <LocaleLink
+                to={user ? "/compte" : "/connexion"}
+                aria-label={user ? txt.account : txt.login}
+                style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "7px 12px", borderRadius: 9, textDecoration: "none",
+                  border: "1px solid var(--border)", color: "var(--text)",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 13, fontWeight: 500,
+                  flexShrink: 0,
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.color = "var(--primary)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text)"; }}
+              >
+                {user ? <User size={16} /> : <LogIn size={16} />}
+                <span className="nav-auth-label">{user ? txt.account : txt.login}</span>
+                {isPro && (
+                  <span style={{
+                    fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 8,
+                    background: "rgba(184,147,74,0.18)", color: "var(--gold)",
+                    border: "1px solid rgba(184,147,74,0.35)", lineHeight: 1.4,
+                  }}>PRO</span>
+                )}
+              </LocaleLink>
+            )}
           </div>
         </div>
 
@@ -730,8 +733,8 @@ export default function Navbar({ theme, setTheme }) {
           })}
         </nav>
 
-        {/* Simulations sauvegardées */}
-        {history.length > 0 && (
+        {/* Simulations sauvegardées — masquées si ACCOUNT_ENABLED = false */}
+        {ACCOUNT_ENABLED && history.length > 0 && (
           <div style={{ borderTop: "1px solid var(--border)", padding: "10px 10px 4px", flexShrink: 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, padding: "0 2px" }}>
               <span style={{ fontSize: 9.5, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)" }}>

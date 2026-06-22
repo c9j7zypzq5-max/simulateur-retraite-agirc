@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Lock } from "lucide-react";
+import { ACCOUNT_ENABLED } from "../../config/features.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -733,8 +734,8 @@ export default function EmpruntImmobilier() {
               <StepperInput label={txt.assuranceLabel} value={assurance} onChange={setAssurance} min={0} max={2000} step={5} unit="€/mois" />
             </AccordionSection>
 
-            {/* Suivi & remboursement anticipé (Pro) */}
-            <div style={card}>
+            {/* Suivi & remboursement anticipé (Pro) — masqué si ACCOUNT_ENABLED = false */}
+            {ACCOUNT_ENABLED && <div style={card}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
                 <h2 style={{ ...sectionTitle, marginBottom: 0 }}>{txt.proTitle}</h2>
                 <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", borderRadius: 999, padding: "2px 8px" }}>{txt.proBadge}</span>
@@ -838,7 +839,7 @@ export default function EmpruntImmobilier() {
                 report={report}
                 name="emprunt-immobilier"
               />
-            </div>
+            </div>}
 
             {/* Taux d'endettement */}
             {hasResult && salaire && (
@@ -867,7 +868,7 @@ export default function EmpruntImmobilier() {
             )}
 
             {/* Chips Pro : suivi + versements anticipés */}
-            {hasResult && isPro && (elapsed > 0 || hasPrepay) && (
+            {ACCOUNT_ENABLED && hasResult && isPro && (elapsed > 0 || hasPrepay) && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
                 {elapsed > 0 && <Chip label={txt.chipRembourse} value={fmtEur(Math.round(amort.capitalRembourseAujourdhui))} accent small />}
                 {elapsed > 0 && <Chip label={txt.chipRestantAjd} value={fmtEur(Math.round(amort.capitalRestantAujourdhui))} small />}

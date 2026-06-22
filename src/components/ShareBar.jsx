@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { ACCOUNT_ENABLED } from "../config/features.js";
 import { useNavigate } from "react-router-dom";
 import { track } from "@vercel/analytics";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
@@ -272,7 +273,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           <span className="btn-text">{busy ? "…" : t("common.report")}</span>
         </button>
       )}
-      {showDownload && isConfigured && user && !isPro && remaining === 0 && (
+      {ACCOUNT_ENABLED && showDownload && isConfigured && user && !isPro && remaining === 0 && (
         <div style={{ flexBasis: "100%", fontSize: 11, color: "var(--text-secondary)", marginTop: -2 }}>
           {locale === "en"
             ? <>You've used your free report. <a href="/en/pro" style={{ color: "var(--gold)", textDecoration: "underline" }}>Go Pro for unlimited →</a></>
@@ -280,7 +281,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           }
         </div>
       )}
-      {showDownload && isConfigured && user && !isPro && remaining > 0 && (
+      {ACCOUNT_ENABLED && showDownload && isConfigured && user && !isPro && remaining > 0 && (
         <div style={{ flexBasis: "100%", fontSize: 11, color: "var(--text-secondary)", marginTop: -2 }}>
           {locale === "en" ? `${remaining} free report remaining` : `${remaining} rapport gratuit restant`}
         </div>
@@ -308,7 +309,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         )}
       </div>
 
-      {isConfigured && user && (
+      {ACCOUNT_ENABLED && isConfigured && user && (
         <div style={{ position: "relative" }}>
           <button style={btnStyle} onClick={handleSave}
             aria-label={locale === "en" ? "Save simulation" : "Sauvegarder la simulation"}
@@ -319,7 +320,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         </div>
       )}
 
-      {isConfigured && user && (
+      {ACCOUNT_ENABLED && isConfigured && user && (
         <div style={{ position: "relative" }}>
           {isPro ? (
             <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
