@@ -78,7 +78,6 @@ export default {
     generatedInBrowser: 'Généré dans votre navigateur · aucune donnée envoyée',
     shareIncentive: '💡 Fier de votre résultat ? Partagez-le ou exportez-le en un clic.',
     shareText: 'Voici ma simulation. Faites la vôtre gratuitement :',
-    dlImage: 'Image (carte résultat)',
     dlPdf: 'Document PDF complet',
     dlPro: 'Rapport Pro',
   },

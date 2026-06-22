@@ -99,19 +99,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     }
   }
 
-  async function handleDownloadPNG() {
-    setMenuOpen(false); setBusy(true);
-    track("export", { format: "png", simulateur: name });
-    try {
-      const canvas = await snapshot(resultsRef?.current || pageContainer());
-      if (!canvas) return;
-      const link = document.createElement("a");
-      link.download = `simulation-${name}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    } catch { /* ignore */ } finally { setBusy(false); }
-  }
-
   async function handleDownloadPDF() {
     setMenuOpen(false); setBusy(true);
     track("export", { format: "pdf", simulateur: name });
@@ -189,15 +176,13 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     } catch { /* ignore */ } finally { setBusy(false); }
   }
 
-  function canvasToBlob(canvas) {
-    return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-  }
-
   async function handleShare() {
     setBusy(true);
     const stateUrl = buildShareUrl(params);
     // Lien à aperçu social riche (image de résultat via /api/og) si un résultat
-    // est disponible ; sinon lien direct vers la simulation.
+    // est disponible ; sinon lien direct vers la simulation. On NE partage QUE
+    // ce lien : son aperçu social affiche la bonne donnée. Pas de capture d'écran
+    // jointe (évitait deux images différentes dans la feuille de partage).
     let url = stateUrl;
     if (report?.highlight) {
       const cat = ROUTE_META[window.location.pathname]?.cat || "";
@@ -214,15 +199,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     const title = `${report?.title || name} · simfinly.com`;
     const text = t("common.shareText");
     try {
-      const canvas = await snapshot(resultsRef?.current || pageContainer());
-      const blob = canvas ? await canvasToBlob(canvas) : null;
-      const file = blob ? new File([blob], `simulation-${name}.png`, { type: "image/png" }) : null;
-
-      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ files: [file], title, text, url }); return; } catch { /* annulé */ }
-      }
       if (navigator.share) {
-        try { await navigator.share({ title, text: `${text}\n${url}`, url }); return; } catch { /* annulé */ }
+        try { await navigator.share({ title, text, url }); return; } catch { /* annulé */ }
       }
       await navigator.clipboard.writeText(`${text}\n${url}`);
       setCopied(true);
@@ -253,7 +231,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
               boxShadow: "0 8px 24px rgba(0,0,0,0.25)",
             }}>
               {[
-                { label: t("common.dlImage"), fn: handleDownloadPNG },
                 { label: t("common.dlPdf"), fn: handleDownloadPDF },
                 { label: t("common.dlPro"), fn: handleProPdf },
               ].map(opt => (

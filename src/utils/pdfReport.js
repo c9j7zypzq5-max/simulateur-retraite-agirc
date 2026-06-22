@@ -22,6 +22,12 @@ const SOFT      = [107, 92, 62];
 const LINE      = [220, 214, 200];
 const GOLD_TINT = [248, 244, 234];
 const WHITE     = [255, 255, 255];
+// Palette « luxe » de la couverture Pro (fond sombre + or clair).
+const INK_DEEP   = [11, 18, 32];     // #0b1220 — encre profonde
+const INK_PANEL  = [22, 31, 50];     // panneau translucide sur fond sombre
+const GOLD_BRIGHT = [232, 192, 106]; // #e8c06a — or lumineux pour titres/accents
+const CREAM      = [244, 241, 234];  // texte clair sur fond sombre
+const CREAM_DIM  = [168, 176, 190];  // texte secondaire clair
 
 // jsPDF (WinAnsi) ne sait pas rendre les espaces insécables → normalisation.
 const T = s => String(s ?? "").replace(/[    ⁠ ]/g, " ");
@@ -144,7 +150,7 @@ function drawTable(doc, table, pageW, contentW, M, y, ensure) {
   doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(...GOLD_DARK);
   const h = T(table.heading || "TABLEAU").toUpperCase();
   doc.text(h, M, y);
-  doc.setDrawColor(...GOLD).setLineWidth(0.8).line(M + doc.getTextWidth(h) + 10, pageW - M, y - 3, y - 3);
+  doc.setDrawColor(...GOLD).setLineWidth(0.8).line(M + doc.getTextWidth(h) + 10, y - 3, pageW - M, y - 3);
   y += 16;
   const cols = table.cols || [];
   const colW = contentW / Math.max(cols.length, 1);
@@ -439,45 +445,55 @@ export async function buildReportPdfPro({ report, url, name, chartImage = null, 
 
   const ensure = (need) => { if (y + need > pageH - M - 30) { doc.addPage(); y = M; } };
 
-  // ── Page de couverture ──
-  doc.setFillColor(...GOLD_TINT).rect(0, 0, pageW, pageH, "F");
-  doc.setFillColor(...GOLD).rect(0, 0, 6, pageH, "F");
+  // ── Page de couverture (fond sombre + accents or, rendu « premium ») ──
+  doc.setFillColor(...INK_DEEP).rect(0, 0, pageW, pageH, "F");
+  // Liseré or en pied de page pour cadrer la couverture.
+  doc.setFillColor(...GOLD).rect(0, pageH - 5, pageW, 5, "F");
+  // Double filet d'angle haut-droit (détail discret).
+  doc.setDrawColor(...GOLD).setLineWidth(1).line(pageW - M, 64, pageW - M, 108);
+  doc.setDrawColor(...GOLD_DARK).setLineWidth(0.6).line(pageW - M - 5, 64, pageW - M - 5, 108);
 
-  doc.setFont("helvetica", "bold").setFontSize(22).setTextColor(...GOLD_DARK);
-  doc.text("simfinly.com", M, 90);
+  // Marque + badge
+  doc.setFont("helvetica", "bold").setFontSize(22).setTextColor(...GOLD_BRIGHT);
+  doc.text("simfinly.com", M, 96);
 
-  doc.setFillColor(...GOLD).setLineWidth(0);
-  doc.roundedRect(M, 106, 90, 22, 4, 4, "F");
-  doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(...WHITE);
-  doc.text("RAPPORT PRO", M + 45, 121, { align: "center" });
+  doc.setFillColor(...GOLD).roundedRect(M, 112, 96, 22, 4, 4, "F");
+  doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(...INK_DEEP);
+  doc.text("RAPPORT PRO", M + 48, 127, { align: "center" });
 
-  doc.setDrawColor(...GOLD).setLineWidth(1.6).line(M, 148, pageW - M, 148);
-
-  doc.setFont("helvetica", "bold").setFontSize(28).setTextColor(...INK);
+  // Titre principal (clair, grande échelle)
+  doc.setFont("helvetica", "bold").setFontSize(30).setTextColor(...CREAM);
   const titleLines = doc.splitTextToSize(T(report.title || "Simulation"), contentW);
-  let ty = 195;
-  titleLines.forEach(line => { doc.text(line, M, ty); ty += 36; });
+  let ty = 250;
+  titleLines.forEach(line => { doc.text(line, M, ty); ty += 38; });
+  // Filet or sous le titre
+  doc.setDrawColor(...GOLD).setLineWidth(2).line(M, ty - 6, M + 70, ty - 6);
+  ty += 14;
   if (report.subtitle) {
-    doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(...SOFT);
+    doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(...CREAM_DIM);
     doc.splitTextToSize(T(report.subtitle), contentW).forEach(line => { doc.text(line, M, ty); ty += 20; });
   }
-  ty += 18;
+  ty += 24;
 
   if (report.highlight) {
-    doc.setFillColor(...WHITE).setDrawColor(...GOLD).setLineWidth(1);
-    doc.roundedRect(M, ty, contentW, 80, 10, 10, "FD");
-    doc.setFont("helvetica", "normal").setFontSize(11).setTextColor(...SOFT);
-    doc.text(String(report.highlight.label || "").toUpperCase(), M + 22, ty + 26);
-    doc.setFont("helvetica", "bold").setFontSize(32).setTextColor(...GOLD_DARK);
-    doc.text(String(report.highlight.value ?? "—"), M + 22, ty + 60);
-    ty += 110;
+    // Carte highlight : panneau translucide + liseré or épais + grande valeur dorée.
+    const cardH = 96;
+    doc.setFillColor(...INK_PANEL).setDrawColor(...GOLD).setLineWidth(1);
+    doc.roundedRect(M, ty, contentW, cardH, 10, 10, "FD");
+    doc.setFillColor(...GOLD).roundedRect(M, ty, 6, cardH, 3, 3, "F");
+    doc.setFont("helvetica", "normal").setFontSize(11).setTextColor(...CREAM_DIM);
+    doc.text(String(report.highlight.label || "").toUpperCase(), M + 26, ty + 32);
+    doc.setFont("helvetica", "bold").setFontSize(36).setTextColor(...GOLD_BRIGHT);
+    doc.text(String(report.highlight.value ?? "—"), M + 26, ty + 72);
+    ty += cardH + 18;
   }
 
   const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...SOFT);
-  doc.text(`Généré le ${date}`, M, pageH - 60);
-  doc.text("Simulation indicative — Simfinly.com", M, pageH - 44);
-  doc.text("Document personnel et confidentiel", M, pageH - 28);
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...CREAM_DIM);
+  doc.text(`Généré le ${date}`, M, pageH - 66);
+  doc.text("Simulation indicative — simfinly.com", M, pageH - 50);
+  doc.setTextColor(...GOLD_BRIGHT);
+  doc.text("Document personnel et confidentiel", M, pageH - 34);
 
   // ── Pages de contenu ──
   doc.addPage();

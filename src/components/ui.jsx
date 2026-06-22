@@ -117,8 +117,10 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
     else { const c = clamp(n); onChange(c); setRaw(String(c)); }
   }
 
-  const dec = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) - step));
-  const inc = () => onChange(clamp(parseFloat(norm(String(raw || value || min))) + step));
+  // Arrondi anti-dérive flottante : évite 3,0999999999 au lieu de 3,1 quand step=0.1.
+  const roundStep = (n) => Math.round(n * 1e10) / 1e10;
+  const dec = () => onChange(clamp(roundStep(parseFloat(norm(String(raw || value || min))) - step)));
+  const inc = () => onChange(clamp(roundStep(parseFloat(norm(String(raw || value || min))) + step)));
 
   const btnStyle = {
     width: 32, height: 32, borderRadius: 6, border: "none",
