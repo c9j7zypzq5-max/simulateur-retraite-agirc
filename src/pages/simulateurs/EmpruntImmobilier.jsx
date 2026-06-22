@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
+import { Lock } from "lucide-react";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -7,6 +8,8 @@ import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import { useTranslation } from "../../i18n/index.js";
+import { useAuth } from "../../hooks/useAuth.js";
+import { LocaleLink } from "../../lib/router.jsx";
 import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
@@ -16,22 +19,15 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import AdUnit from "../../components/AdUnit.jsx";
+import { buildAmortization, mensualite } from "../../utils/amortization.js";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, Toggle, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader, FaqSection,
+  fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function fraisNotaire(prix, neuf) { return prix * (neuf ? 0.025 : 0.075); }
-
-function mensualite(capital, tauxAnnuel, dureeAns) {
-  if (capital <= 0 || dureeAns <= 0) return 0;
-  const r = tauxAnnuel / 100 / 12;
-  const n = dureeAns * 12;
-  if (r === 0) return capital / n;
-  return (capital * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-}
 
 // ─── Jauge d'endettement ─────────────────────────────────────────────────────
 function JaugeEndettement({ taux, txt }) {
@@ -70,16 +66,12 @@ function JaugeEndettement({ taux, txt }) {
 }
 
 // ─── Tableau d'amortissement ─────────────────────────────────────────────────
-function TableauAmortissement({ capital, tauxAnnuel, dureeAns, primoCapital, primoTaux, headers }) {
-  const rows = [];
-  let rP = capital - primoCapital, rPr = primoCapital;
-  const mP = mensualite(rP, tauxAnnuel, dureeAns);
-  const mPr = mensualite(rPr, primoTaux, dureeAns);
-  for (let i = 1; i <= dureeAns * 12; i++) {
-    const iP = rP * (tauxAnnuel / 100 / 12); rP = Math.max(0, rP - (mP - iP));
-    const iPr = rPr * (primoTaux / 100 / 12); rPr = Math.max(0, rPr - (mPr - iPr));
-    if (i % 12 === 0) rows.push({ annee: i / 12, mensualite: mP + mPr, capitalRestant: rP + rPr });
-  }
+// Consomme la série annuelle du moteur d'amortissement (versements anticipés
+// et durée réelle inclus). `yearly` = [{ x, restant, interets, mensualite }].
+function TableauAmortissement({ yearly, headers }) {
+  const rows = yearly.filter(p => p.x >= 1).map(p => ({
+    annee: p.x, mensualite: p.mensualite, capitalRestant: p.restant,
+  }));
   return (
     <div style={{ overflowX: "auto" }}>
       <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
@@ -236,6 +228,33 @@ const TXT = {
     rEndet: "Taux d'endettement",
     rReste: "Reste à vivre",
     noteEndet: (pct) => `Taux d'endettement de ${pct} % (seuil HCSF : 35 %).`,
+    // ── Suivi & remboursement anticipé (Pro) ──
+    proTitle: "Suivi & remboursement anticipé",
+    proBadge: "Pro",
+    proTeaser: "Suivez l'avancement de votre prêt et simulez des remboursements anticipés : visualisez le capital déjà remboursé, l'économie d'intérêts et la nouvelle durée. Inclus dans l'abonnement Pro.",
+    proCta: "Passer à Pro — 2,99 €/mois →",
+    suiviTitle: "Avancement du prêt",
+    elapsedLabel: "Mensualités déjà remboursées",
+    elapsedHint: (y, m) => `soit ${y} an${y > 1 ? "s" : ""}${m ? ` et ${m} mois` : ""}`,
+    todayMarker: "Aujourd'hui",
+    chipRembourse: "Capital remboursé à ce jour",
+    chipRestantAjd: "Capital restant à ce jour",
+    prepayTitle: "Remboursements anticipés",
+    prepayModeLabel: "Effet du versement",
+    prepayModeDuree: "Raccourcir la durée",
+    prepayModeMensu: "Réduire la mensualité",
+    prepayYearLabel: "Année",
+    prepayAmountLabel: "Montant",
+    prepayAdd: "+ Ajouter un versement",
+    prepayRemove: "Supprimer",
+    prepayEmpty: "Aucun versement anticipé. Ajoutez-en un pour voir l'effet sur votre prêt.",
+    chipEconomie: "Économie d'intérêts",
+    chipDureeReelle: "Durée réelle",
+    monthsUnit: "mois",
+    rEconomie: "Économie d'intérêts (versements anticipés)",
+    rDureeReelle: "Durée réelle du prêt",
+    rRestantAjd: "Capital restant à ce jour",
+    noteEconomie: (val) => `Versements anticipés : ${val} d'intérêts économisés.`,
   },
   en: {
     docTitle: "French Mortgage Calculator 2025 — Monthly Payment & Borrowing Capacity",
@@ -361,6 +380,33 @@ const TXT = {
     rEndet: "Debt-to-income ratio",
     rReste: "Disposable income",
     noteEndet: (pct) => `Debt-to-income ratio of ${pct}% (HCSF cap: 35%).`,
+    // ── Loan tracking & early repayment (Pro) ──
+    proTitle: "Tracking & early repayment",
+    proBadge: "Pro",
+    proTeaser: "Track your loan progress and simulate early repayments: see the capital already repaid, the interest saved and the new term. Included in the Pro subscription.",
+    proCta: "Go Pro — €2.99/month →",
+    suiviTitle: "Loan progress",
+    elapsedLabel: "Payments already made",
+    elapsedHint: (y, m) => `i.e. ${y} year${y > 1 ? "s" : ""}${m ? ` and ${m} month${m > 1 ? "s" : ""}` : ""}`,
+    todayMarker: "Today",
+    chipRembourse: "Capital repaid to date",
+    chipRestantAjd: "Capital remaining to date",
+    prepayTitle: "Early repayments",
+    prepayModeLabel: "Repayment effect",
+    prepayModeDuree: "Shorten the term",
+    prepayModeMensu: "Lower the payment",
+    prepayYearLabel: "Year",
+    prepayAmountLabel: "Amount",
+    prepayAdd: "+ Add a repayment",
+    prepayRemove: "Remove",
+    prepayEmpty: "No early repayment yet. Add one to see the effect on your loan.",
+    chipEconomie: "Interest saved",
+    chipDureeReelle: "Actual term",
+    monthsUnit: "months",
+    rEconomie: "Interest saved (early repayments)",
+    rDureeReelle: "Actual loan term",
+    rRestantAjd: "Capital remaining to date",
+    noteEconomie: (val) => `Early repayments: ${val} of interest saved.`,
   },
 };
 
@@ -369,6 +415,7 @@ export default function EmpruntImmobilier() {
   const [theme, setTheme] = useTheme();
   const isMobile = useIsMobile();
   const { locale } = useTranslation();
+  const { isPro } = useAuth();
   const txt = TXT[locale] || TXT.fr;
   const isEn = locale === "en";
 
@@ -396,8 +443,13 @@ export default function EmpruntImmobilier() {
   const [taxeFonc, setTaxeFonc]       = useState(0);
   const [charges, setCharges]         = useState(0);
   const [assurance, setAssurance]     = useState(0);
+  // Réglages Pro : suivi du prêt + versements anticipés.
+  const [elapsedMonths, setElapsedMonths] = useState(0);
+  const [prepayMode, setPrepayMode]   = useState("duree"); // "duree" | "mensualite"
+  const [prepayments, setPrepayments] = useState([]);      // [{ year, amount }]
 
   const resultsRef = useRef(null);
+  const chartRef = useRef(null);
 
   usePageMeta(txt.docTitle, txt.docDesc);
 
@@ -438,44 +490,55 @@ export default function EmpruntImmobilier() {
   const primoTaux = 1.95;
   const capitalPrincipal = capitalEmprunte - primoCapital;
 
+  // Mensualité contractuelle (sans versement anticipé) — base du taux d'endettement.
   const mPrincipal = mensualite(capitalPrincipal, taux, duree);
   const mPrimo = mensualite(primoCapital, primoTaux, duree);
   const mTotal = mPrincipal + mPrimo;
 
-  const coutTotal = mTotal * duree * 12;
-  const coutInterets = coutTotal - capitalEmprunte;
   const revenuTotal = (salaire ?? 0) + (coEmp ? (salaireCoEmp ?? 0) : 0);
   const chargesTotal = taxeFonc / 12 + charges + assurance;
   const tauxEndet = revenuTotal > 0 ? (mTotal / revenuTotal) * 100 : 0;
   const resteAVivre = revenuTotal - mTotal - chargesTotal;
   const apportPct = prix && prix > 0 ? ((apport ?? 0) / prix * 100).toFixed(1) : 0;
 
+  const hasResult = prix && prix > 0;
+
+  // Réglages Pro effectifs (neutres si non Pro → calcul de base inchangé).
+  const elapsed = isPro ? Math.min(elapsedMonths, duree * 12) : 0;
+  const activePrepays = isPro
+    ? prepayments
+        .filter(p => p.amount > 0 && p.year >= 1)
+        .map(p => ({ month: Math.min(p.year, duree) * 12, amount: p.amount }))
+    : [];
+  const activeKey = JSON.stringify(activePrepays);
+
+  // Moteur d'amortissement unique : alimente la courbe, le tableau, les chips et
+  // le compte-rendu. Prend en compte versements anticipés + suivi (Pro).
+  const amort = useMemo(() => {
+    if (!hasResult || capitalEmprunte <= 0) {
+      return { yearly: [], totalInterets: 0, mensualiteInitiale: 0, dureeReelleMois: duree * 12,
+        capitalRestantAujourdhui: 0, capitalRembourseAujourdhui: 0, economieInterets: 0, capitalTotal: 0 };
+    }
+    return buildAmortization({
+      capitalPrincipal, taux, primoCapital, primoTaux, dureeAns: duree,
+      elapsedMonths: elapsed, prepayments: activePrepays, prepayMode,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hasResult, capitalEmprunte, capitalPrincipal, taux, primoCapital, duree, elapsed, prepayMode, activeKey]);
+
+  const amortChart = amort.yearly;
+  const hasPrepay = activePrepays.length > 0;
+  const dureeReelleMois = amort.dureeReelleMois;
+
+  // Coûts effectifs (intérêts réellement payés, versements anticipés inclus).
+  const coutInterets = hasResult ? amort.totalInterets : 0;
+  const coutTotal = capitalEmprunte + coutInterets;
+
   const animMensualite = useAnimatedNumber(mTotal);
   const animCapital = useAnimatedNumber(capitalEmprunte);
   const animInterets = useAnimatedNumber(coutInterets);
   const animTauxEndet = useAnimatedNumber(tauxEndet);
   const animReste = useAnimatedNumber(resteAVivre);
-
-  const hasResult = prix && prix > 0;
-
-  const amortChart = useMemo(() => {
-    if (!hasResult || capitalEmprunte <= 0) return [];
-    const r = taux / 100 / 12;
-    const n = duree * 12;
-    const men = r === 0 ? capitalEmprunte / n
-      : (capitalEmprunte * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    let restant = capitalEmprunte;
-    let cumulInt = 0;
-    return Array.from({ length: duree + 1 }, (_, yr) => {
-      if (yr === 0) return { x: 0, restant: capitalEmprunte, interets: 0 };
-      for (let mo = 0; mo < 12; mo++) {
-        const int = restant * r;
-        cumulInt += int;
-        restant = Math.max(0, restant - (men - int));
-      }
-      return { x: yr, restant: Math.round(restant), interets: Math.round(cumulInt) };
-    });
-  }, [hasResult, capitalEmprunte, taux, duree]);
 
   // Scénario B : on ne fait varier que la durée et le taux (capital identique).
   const mTotalB = mensualite(capitalPrincipal, bTaux, bDuree) + mensualite(primoCapital, primoTaux, bDuree);
@@ -486,6 +549,13 @@ export default function EmpruntImmobilier() {
     setBDuree(duree); setBTaux(taux); setCompareOn(true);
     track('compare_open', { name: 'emprunt-immobilier' });
   }
+
+  // Durée réelle exprimée en années + mois (versements anticipés en mode "durée").
+  const dureeReelleAns = Math.floor(dureeReelleMois / 12);
+  const dureeReelleReste = dureeReelleMois % 12;
+  const dureeReelleStr = dureeReelleReste
+    ? `${dureeReelleAns} ${txt.yearsUnit} ${dureeReelleReste} ${txt.monthsUnit}`
+    : `${dureeReelleAns} ${txt.yearsUnit}`;
 
   const report = {
     title: txt.rTitle,
@@ -504,9 +574,23 @@ export default function EmpruntImmobilier() {
       { label: txt.rInterets, value: fmtEur(Math.round(coutInterets)) },
       { label: txt.rEndet, value: `${tauxEndet.toFixed(1)}${txt.pctSuffix}` },
       { label: txt.rReste, value: `${fmtEur(Math.round(resteAVivre))}${txt.perMonth}` },
+      ...(elapsed > 0 ? [{ label: txt.rRestantAjd, value: fmtEur(Math.round(amort.capitalRestantAujourdhui)) }] : []),
+      ...(hasPrepay ? [
+        { label: txt.rDureeReelle, value: dureeReelleStr },
+        { label: txt.rEconomie, value: fmtEur(Math.round(amort.economieInterets)), strong: true },
+      ] : []),
     ] : [],
-    notes: hasResult && revenuTotal > 0 ? [
-      txt.noteEndet(tauxEndet.toFixed(1)),
+    // Tableau d'amortissement annuel (repris dans le rapport PDF Pro).
+    table: hasResult && amortChart.length > 1 ? {
+      heading: txt.amortTitle,
+      cols: txt.amortHeaders,
+      rows: amortChart.filter(p => p.x >= 1).map(p => [
+        String(p.x), fmtEur(Math.round(p.mensualite)), fmtEur(Math.round(p.restant)),
+      ]),
+    } : undefined,
+    notes: hasResult ? [
+      ...(revenuTotal > 0 ? [txt.noteEndet(tauxEndet.toFixed(1))] : []),
+      ...(hasPrepay ? [txt.noteEconomie(fmtEur(Math.round(amort.economieInterets)))] : []),
     ] : undefined,
   };
 
@@ -633,6 +717,68 @@ export default function EmpruntImmobilier() {
               <StepperInput label={txt.chargesCoproLabel} value={charges} onChange={setCharges} min={0} max={5000} step={10} unit="€/mois" />
               <StepperInput label={txt.assuranceLabel} value={assurance} onChange={setAssurance} min={0} max={2000} step={5} unit="€/mois" />
             </AccordionSection>
+
+            {/* Suivi & remboursement anticipé (Pro) */}
+            <div style={card}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                <h2 style={{ ...sectionTitle, marginBottom: 0 }}>{txt.proTitle}</h2>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", borderRadius: 999, padding: "2px 8px" }}>{txt.proBadge}</span>
+              </div>
+
+              {!isPro ? (
+                <div style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
+                  <Lock size={22} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+                  <div>
+                    <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 16, marginTop: 0 }}>{txt.proTeaser}</p>
+                    <LocaleLink to="/pro" style={{ display: "inline-block", padding: "10px 18px", borderRadius: 10, background: "var(--primary)", color: "#fff", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
+                      {txt.proCta}
+                    </LocaleLink>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  {/* Avancement du prêt */}
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>{txt.suiviTitle}</div>
+                  <StepperInput
+                    label={txt.elapsedLabel} value={elapsedMonths}
+                    onChange={v => setElapsedMonths(Math.max(0, Math.min(Math.round(v), duree * 12)))}
+                    min={0} max={duree * 12} step={1} unit={txt.monthsUnit}
+                    hint={elapsedMonths > 0 ? txt.elapsedHint(Math.floor(elapsedMonths / 12), elapsedMonths % 12) : undefined}
+                  />
+
+                  {/* Versements anticipés */}
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", margin: "8px 0 10px" }}>{txt.prepayTitle}</div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14, gap: 10, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{txt.prepayModeLabel}</span>
+                    <Toggle
+                      options={[txt.prepayModeDuree, txt.prepayModeMensu]}
+                      checked={prepayMode === "mensualite"}
+                      onChange={on => setPrepayMode(on ? "mensualite" : "duree")}
+                    />
+                  </div>
+
+                  {prepayments.length === 0 && (
+                    <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.6, margin: "0 0 12px" }}>{txt.prepayEmpty}</p>
+                  )}
+                  {prepayments.map((p, i) => (
+                    <div key={i} style={{ display: "grid", gridTemplateColumns: "1fr 1.3fr auto", gap: 8, alignItems: "end", marginBottom: 12 }}>
+                      <NumInput label={txt.prepayYearLabel} value={p.year} unit={txt.yearsUnit} min={1} max={duree}
+                        onChange={v => setPrepayments(arr => arr.map((x, j) => j === i ? { ...x, year: v == null ? null : Math.max(1, Math.min(Math.round(v), duree)) } : x))} />
+                      <NumInput label={txt.prepayAmountLabel} value={p.amount} unit="€" min={0} max={5000000}
+                        onChange={v => setPrepayments(arr => arr.map((x, j) => j === i ? { ...x, amount: v ?? 0 } : x))} />
+                      <button type="button" aria-label={txt.prepayRemove} onClick={() => setPrepayments(arr => arr.filter((_, j) => j !== i))}
+                        style={{ marginBottom: 24, width: 36, height: 36, borderRadius: 8, border: "1px solid var(--border)", background: "var(--card-bg)", color: "var(--text-secondary)", cursor: "pointer", fontSize: 16 }}>
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                  <button type="button" onClick={() => setPrepayments(arr => [...arr, { year: Math.min(5, duree), amount: null }])}
+                    style={{ width: "100%", padding: "10px", borderRadius: 10, border: "1px dashed var(--border-gold)", background: "var(--card-bg)", color: "var(--primary)", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                    {txt.prepayAdd}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
 
           {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
@@ -673,6 +819,7 @@ export default function EmpruntImmobilier() {
               <ShareBar
                 params={{ prix, apport, duree, taux, primo, salaire }}
                 resultsRef={resultsRef}
+                chartRef={chartRef}
                 report={report}
                 name="emprunt-immobilier"
               />
@@ -699,8 +846,18 @@ export default function EmpruntImmobilier() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
                 <Chip label={txt.chipCapital} value={fmtEur(Math.round(animCapital))} accent small />
                 <Chip label={txt.chipInterets} value={fmtEur(Math.round(animInterets))} small />
-                <Chip label={txt.chipCoutTotal} value={fmtEur(Math.round(mTotal * duree * 12))} small />
+                <Chip label={txt.chipCoutTotal} value={fmtEur(Math.round(coutTotal))} small />
                 <Chip label={txt.chipFrais} value={fmtEur(Math.round(fn))} small />
+              </div>
+            )}
+
+            {/* Chips Pro : suivi + versements anticipés */}
+            {hasResult && isPro && (elapsed > 0 || hasPrepay) && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+                {elapsed > 0 && <Chip label={txt.chipRembourse} value={fmtEur(Math.round(amort.capitalRembourseAujourdhui))} accent small />}
+                {elapsed > 0 && <Chip label={txt.chipRestantAjd} value={fmtEur(Math.round(amort.capitalRestantAujourdhui))} small />}
+                {hasPrepay && <Chip label={txt.chipEconomie} value={fmtEur(Math.round(amort.economieInterets))} accent small />}
+                {hasPrepay && <Chip label={txt.chipDureeReelle} value={dureeReelleStr} small />}
               </div>
             )}
 
@@ -785,12 +942,9 @@ export default function EmpruntImmobilier() {
             )}
 
             {/* Tableau d'amortissement */}
-            {hasResult && capitalEmprunte > 0 && (
+            {hasResult && capitalEmprunte > 0 && amortChart.length > 1 && (
               <AccordionSection title={txt.amortTitle} subtitle={txt.amortSubtitle(duree)}>
-                <TableauAmortissement
-                  capital={capitalEmprunte} tauxAnnuel={taux} dureeAns={duree}
-                  primoCapital={primoCapital} primoTaux={primoTaux} headers={txt.amortHeaders}
-                />
+                <TableauAmortissement yearly={amortChart} headers={txt.amortHeaders} />
               </AccordionSection>
             )}
           </div>
@@ -802,11 +956,15 @@ export default function EmpruntImmobilier() {
             <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
               {txt.chartTitle}
             </div>
-            <ZoomableChart caption={txt.chartCaption}>
+            <ZoomableChart caption={txt.chartCaption} innerRef={chartRef}>
               <LineAreaChart
                 series={[
                   { id: "restant", label: txt.serieRestant, points: amortChart.map(p => ({ x: p.x, y: p.restant })), color: "var(--primary)", fillColor: "rgba(43,92,230,0.1)" },
                   { id: "interets", label: txt.serieInterets, points: amortChart.map(p => ({ x: p.x, y: p.interets })), color: "#6eb5d4", fillColor: "rgba(110,181,212,0.10)", dashed: true },
+                ]}
+                annotations={[
+                  ...(elapsed > 0 ? [{ x: elapsed / 12, label: txt.todayMarker, color: "var(--primary)" }] : []),
+                  ...activePrepays.map(p => ({ x: p.month / 12, color: "#6eb5d4", dashed: true })),
                 ]}
                 xFmt={txt.chartXFmt}
                 yFmt={(v) => v >= 1_000_000 ? `${(v / 1e6).toFixed(1)}M€` : `${Math.round(v / 1000)}k€`}
