@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { PS_CAPITAL } from "../../config/constants.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -16,7 +17,7 @@ import {
 import SimIcon from "../../data/simIcons.jsx";
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
-const PS = 0.172; // Prélèvements sociaux : 17,2 %
+const PS = PS_CAPITAL;
 const PLAFOND_NORMAL  = 10_700;
 const PLAFOND_ELEVE   = 21_400; // Régime "louer abordable" (anciennement Loc'Avantages)
 

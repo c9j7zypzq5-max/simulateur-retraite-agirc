@@ -173,7 +173,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   }
 
   async function handleReport() {
-    if (isConfigured) {
+    if (ACCOUNT_ENABLED && isConfigured) {
       if (!user) { navigate(`${localePath("/connexion", locale)}?next=${encodeURIComponent(window.location.pathname)}`); return; }
       if (!isPro && reportCount >= FREE_REPORT_LIMIT) { navigate(localePath("/pro", locale)); return; }
     }

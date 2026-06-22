@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { PASS } from "../../config/constants.js";
 import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -17,8 +18,7 @@ import {
 import SimIcon from "../../data/simIcons.jsx";
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
-const PASS_2025 = 48_060;
-const ABONDEMENT_MAX_LEGAL = 0.08 * PASS_2025; // 3 844,80 €
+const ABONDEMENT_MAX_LEGAL = 0.08 * PASS; // 3 844,80 €
 
 // ─── Calculs ──────────────────────────────────────────────────────────────────
 function futureValue(annuel, taux, duree) {
@@ -344,7 +344,7 @@ export default function EpargneSalariale() {
             <div style={{ ...card, padding: "16px 18px" }}>
               <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 10 }}>Plafonds légaux 2025</div>
               {[
-                ["PASS 2025", fmtEur(PASS_2025)],
+                ["PASS 2026", fmtEur(PASS)],
                 ["Abondement max légal (8 % PASS)", fmtEur(ABONDEMENT_MAX_LEGAL)],
                 ["Max. abondement (3× versement salarié)", fmtEur(res.versementSalarie * 3)],
                 ["Plafond effectif retenu", fmtEur(res.abondementMax)],

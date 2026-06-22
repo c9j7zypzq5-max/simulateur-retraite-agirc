@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PASS } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -20,7 +21,6 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
-const PASS = 48_060;
 const TAUX_PLEIN = 0.50;
 
 function getDureeRequise(anneeNaissance) {

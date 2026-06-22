@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { PMSS } from "../../config/constants.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -16,7 +17,6 @@ import {
 import SimIcon from "../../data/simIcons.jsx";
 
 // ─── Plafond mensuel de la sécurité sociale (PMSS 2025) ─────────────────────
-const PMSS = 3_864; // €/mois
 
 // ─── Âge légal selon génération (réforme 2023 — Loi Borne) ──────────────────
 function ageLegalAns(anneeNaissance) {

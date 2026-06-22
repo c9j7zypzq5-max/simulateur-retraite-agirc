@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PS_RETRAITE } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { Link } from "../../lib/router.jsx";
@@ -32,7 +33,6 @@ const REGIMES = [
 
 // Prélèvements sociaux retraités (CSG 8,3 + CRDS 0,5 + CASA 0,3 + maladie 1,0).
 // Estimation : le taux exact dépend du revenu fiscal de référence.
-const PS_RETRAITE = 0.101;
 
 const FAQ = [
   { q: "Comment fonctionne la synthèse tous régimes ?", a: "La plupart des actifs cotisent à plusieurs régimes : le régime de base (CNAV pour les salariés, RSI/SSI pour les indépendants, CNRACL pour les fonctionnaires) + un régime complémentaire (Agirc-Arrco pour les salariés du privé, IRCANTEC pour les contractuels publics). La synthèse additionne les pensions estimées de chaque régime pour obtenir la pension totale." },

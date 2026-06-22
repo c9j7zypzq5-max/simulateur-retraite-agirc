@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PS_CAPITAL } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
@@ -61,7 +62,7 @@ function calcPlusValue({ prixAchat, anneeAchat, anneeVente, travaux, inclureFrai
 
   // Impôts
   const impotIR = baseIR * 0.19;
-  const impotPS = basePS * 0.172;
+  const impotPS = basePS * PS_CAPITAL;
   const totalImpot = impotIR + impotPS;
 
   // Gain net vendeur

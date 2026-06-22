@@ -178,7 +178,7 @@ const TXT = {
 
 const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
 const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const CURRENT_YEAR = 2025;
+const CURRENT_YEAR = new Date().getFullYear();
 const MIN_YEAR = 1990;
 
 function fmtPct(v) { return `${v >= 0 ? '+' : ''}${v.toFixed(1)} %`; }

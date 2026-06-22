@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PASS } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -21,7 +22,6 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
-const PASS = 48_060;
 
 // Tranche A (≤ PASS) : taux global salarié+patronal
 const TAUX_TA_SAL = 0.0224;

@@ -83,7 +83,7 @@ function FeaturedArticle({ article }) {
         </div>
         <div style={{ padding: "20px 24px" }}>
           <span style={{ display: "inline-block", fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", color: catStyle.color, background: catStyle.bg, border: `1px solid ${catStyle.border}`, padding: "3px 9px", borderRadius: 20, marginBottom: 12 }}>
-            À la une{article.category ? ` · ${article.category}` : ""}
+            {isEn ? "Featured" : "À la une"}{article.category ? ` · ${article.category}` : ""}
           </span>
           <h2 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(18px,3vw,27px)", fontWeight: 600, letterSpacing: "-0.01em", color: "var(--text)", margin: "0 0 10px", lineHeight: 1.2 }}>
             {article.title}

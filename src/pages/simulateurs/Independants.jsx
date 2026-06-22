@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { PASS } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -20,7 +21,6 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
-const PASS = 48_060;
 const TAUX_PLEIN = 0.50;
 const DUREE_REQUISE_BASE = 172; // trimestres (nés 1965+)
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PASS } from "../../config/constants.js";
 import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
@@ -31,7 +32,6 @@ import {
 // → plancher = 10 % × PASS = 4 806 € ; plafond = 10 % × 8 × PASS = 38 448 €.
 // Les figures projetées sont des estimations (2026), hors plafonds non
 // utilisés des années antérieures et hors mutualisation entre conjoints.
-const PASS = 48060;
 const PLAFOND_PLANCHER = Math.round(0.10 * PASS);        // 4 806 € (= 10 % × PASS)
 // Plafond max = 10 % × 8 × PASS = 38 448 € (appliqué dans plafondDeduction).
 

@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { PS_CAPITAL } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -30,7 +31,7 @@ import {
 // versé. La fiscalité réelle dépend de la date des versements (avant/après 2017)
 // et du montant total des primes ; les figures ci-dessous (2025/2026) supposent
 // des versements postérieurs au 27/09/2017 et des primes ≤ 150 000 €.
-const PS = 0.172;            // Prélèvements sociaux : 17,2 %
+const PS = PS_CAPITAL;
 const PFU = 0.30;            // Prélèvement forfaitaire unique avant 8 ans (12,8 % IR + 17,2 % PS)
 const PFL_APRES_8ANS = 0.075; // Prélèvement forfaitaire 7,5 % (primes ≤ 150 000 €) après 8 ans
 const ABATTEMENT_SEUL = 4600;   // Abattement annuel sur les gains, personne seule
