@@ -95,16 +95,17 @@ const DEFAULT = {
 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
-    regime:       p.get("r")  || DEFAULT.regime,
-    actifCommun:  Number(p.get("a"))  || DEFAULT.actifCommun,
-    revenu1:      Number(p.get("r1")) || DEFAULT.revenu1,
-    revenu2:      Number(p.get("r2")) || DEFAULT.revenu2,
-    dureeMariage: Number(p.get("d"))  || DEFAULT.dureeMariage,
-    nbEnfants:    Number(p.get("n"))  || DEFAULT.nbEnfants,
-    garde:        p.get("g")  || DEFAULT.garde,
-    propres1:     Number(p.get("p1")) || DEFAULT.propres1,
-    propres2:     Number(p.get("p2")) || DEFAULT.propres2,
+    regime:       p.r   || DEFAULT.regime,
+    actifCommun:  Number(p.a)  || DEFAULT.actifCommun,
+    revenu1:      Number(p.r1) || DEFAULT.revenu1,
+    revenu2:      Number(p.r2) || DEFAULT.revenu2,
+    dureeMariage: Number(p.d)  || DEFAULT.dureeMariage,
+    nbEnfants:    Number(p.n)  || DEFAULT.nbEnfants,
+    garde:        p.g   || DEFAULT.garde,
+    propres1:     Number(p.p1) || DEFAULT.propres1,
+    propres2:     Number(p.p2) || DEFAULT.propres2,
   };
 }
 function toParams(v) {

@@ -2,20 +2,25 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
+import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import OnboardingModal, { shouldShowOnboarding } from "../components/OnboardingModal.jsx";
 
+const FREE_REPORT_LIMIT = 3;
+
 export default function Compte() {
   const [theme, setTheme] = useTheme();
   const navigate = useNavigate();
-  const { user, loading, isPro, email, profile, signOut, getAccessToken } = useAuth();
+  const { user, loading, isPro, profile, signOut, getAccessToken } = useAuth();
+  const { getHistory } = useSimHistory();
   const { t, locale } = useTranslation();
   const [portalBusy, setPortalBusy] = useState(false);
   const [error, setError] = useState("");
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [savedCount, setSavedCount] = useState(0);
 
   useEffect(() => {
     document.title = t("account.docTitle");
@@ -36,6 +41,10 @@ export default function Compte() {
   useEffect(() => {
     if (user && shouldShowOnboarding()) setShowOnboarding(true);
   }, [user]);
+
+  useEffect(() => {
+    setSavedCount(getHistory().length);
+  }, []);
 
   async function handleManageSubscription() {
     setPortalBusy(true); setError("");
@@ -77,6 +86,15 @@ export default function Compte() {
   const proPath = localePath("/pro", locale);
   const simsPath = "/mes-simulations";
 
+  const reportCount = profile?.report_count || 0;
+  const reportsUsed = isPro ? locale === "en" ? "Unlimited" : "Illimité" : `${reportCount} / ${FREE_REPORT_LIMIT}`;
+  const email = user?.email || profile?.email || "";
+
+  // Member since date from user metadata
+  const memberSince = user?.created_at
+    ? new Date(user.created_at).toLocaleDateString(dateLocale, { month: "long", year: "numeric" })
+    : null;
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
@@ -91,14 +109,53 @@ export default function Compte() {
           {t("account.title")}
         </h1>
 
-        <div style={{ ...card, marginBottom: 16 }}>
-          <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 6 }}>{t("account.loggedInAs")}</div>
-          <div style={{ fontSize: 16, fontWeight: 600 }}>{email}</div>
+        {/* User identity card */}
+        <div style={{ ...card, marginBottom: 16, display: "flex", alignItems: "center", gap: 16 }}>
+          <div style={{
+            width: 48, height: 48, borderRadius: "50%", flexShrink: 0,
+            background: "linear-gradient(135deg, var(--gold) 0%, #c8860b 100%)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 20, fontWeight: 700, color: "#1a1000",
+          }}>
+            {email.charAt(0).toUpperCase()}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 15, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{email}</div>
+            {memberSince && (
+              <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 2 }}>
+                {locale === "en" ? `Member since ${memberSince}` : `Membre depuis ${memberSince}`}
+              </div>
+            )}
+          </div>
+          {isPro && (
+            <span style={{
+              padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+              background: "rgba(184,147,74,0.15)", color: "var(--gold)", border: "1px solid rgba(184,147,74,0.3)",
+              whiteSpace: "nowrap",
+            }}>★ PRO</span>
+          )}
         </div>
 
-        <div style={{ ...card, marginBottom: 16, ...(isPro ? { border: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.06)" } : {}) }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-            <span style={{ fontSize: 22, color: isPro ? "var(--gold)" : "var(--text-secondary)" }}>★</span>
+        {/* Stats row */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 16 }}>
+          <Link to={simsPath} style={{ ...card, textDecoration: "none", color: "var(--text)", padding: 20 }}>
+            <div style={{ fontSize: 28, fontWeight: 700, color: "var(--gold)", fontFamily: "'Space Grotesk', sans-serif" }}>{savedCount}</div>
+            <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4 }}>
+              {locale === "en" ? "Saved simulations" : "Simulations sauvegardées"}
+            </div>
+          </Link>
+          <div style={{ ...card, padding: 20 }}>
+            <div style={{ fontSize: 28, fontWeight: 700, color: "var(--gold)", fontFamily: "'Space Grotesk', sans-serif" }}>{reportsUsed}</div>
+            <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4 }}>
+              {locale === "en" ? "PDF reports generated" : "Rapports PDF générés"}
+            </div>
+          </div>
+        </div>
+
+        {/* Plan card */}
+        <div style={{ ...card, marginBottom: 16, ...(isPro ? { border: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.04)" } : {}) }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+            <span style={{ fontSize: 20, color: isPro ? "var(--gold)" : "var(--text-secondary)" }}>★</span>
             <div style={{ fontSize: 16, fontWeight: 600, color: isPro ? "var(--gold)" : "var(--text)" }}>
               {isPro ? t("account.proActive") : t("account.freePlan")}
             </div>
@@ -107,7 +164,7 @@ export default function Compte() {
             <>
               <p style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 18, lineHeight: 1.6 }}>
                 {t("account.proDesc")}
-                {periodEnd && <> {t("account.nextRenewal")} {periodEnd}.</>}
+                {periodEnd && <> {t("account.nextRenewal")} <strong style={{ color: "var(--text)" }}>{periodEnd}</strong>.</>}
               </p>
               <button
                 onClick={handleManageSubscription}
@@ -133,10 +190,28 @@ export default function Compte() {
           {error && <p style={{ fontSize: 13, color: "#c0392b", marginTop: 12 }}>{error}</p>}
         </div>
 
-        <div style={{ ...card, marginBottom: 16, display: "flex", flexDirection: "column", gap: 12 }}>
-          <Link to={simsPath} style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", color: "var(--text)", fontSize: 14 }}>
-            <span style={{ fontSize: 18 }}>💾</span> {t("account.savedSims")}
-          </Link>
+        {/* Quick links */}
+        <div style={{ ...card, marginBottom: 24 }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 14, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            {locale === "en" ? "Quick access" : "Accès rapide"}
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+            {[
+              { to: simsPath, icon: "💾", label: locale === "en" ? "My saved simulations" : "Mes simulations sauvegardées" },
+              { to: locale === "en" ? "/en" : "/", icon: "📊", label: locale === "en" ? "All simulators" : "Tous les simulateurs" },
+              { to: isPro ? undefined : proPath, icon: "★", label: isPro ? (locale === "en" ? "Manage subscription" : "Gérer mon abonnement") : (locale === "en" ? "Upgrade to Pro" : "Passer à Pro"), onClick: isPro ? handleManageSubscription : undefined, gold: true },
+            ].map(({ to, icon, label, onClick, gold }, i, arr) => {
+              const style = {
+                display: "flex", alignItems: "center", gap: 12, padding: "12px 0",
+                textDecoration: "none", color: gold ? "var(--gold)" : "var(--text)", fontSize: 14,
+                borderBottom: i < arr.length - 1 ? "1px solid var(--border)" : "none",
+                cursor: "pointer", background: "none", border: "none", fontFamily: "'Hanken Grotesk', sans-serif", width: "100%", textAlign: "left",
+              };
+              const content = <><span style={{ fontSize: 16, width: 20, textAlign: "center" }}>{icon}</span>{label}</>;
+              if (onClick) return <button key={i} onClick={onClick} style={style}>{content}</button>;
+              return <Link key={i} to={to} style={style}>{content}</Link>;
+            })}
+          </div>
         </div>
 
         <button

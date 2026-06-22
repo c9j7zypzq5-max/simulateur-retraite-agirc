@@ -117,11 +117,12 @@ const LIEN_OPTIONS = [
 const DEFAULT = { actifNet: 300_000, lien: "enfant", nbHeritiers: 2, donations: 0 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
-    actifNet:    Number(p.get("a")) || DEFAULT.actifNet,
-    lien:        p.get("l") || DEFAULT.lien,
-    nbHeritiers: Number(p.get("n")) || DEFAULT.nbHeritiers,
-    donations:   Number(p.get("d")) || DEFAULT.donations,
+    actifNet:    Number(p.a) || DEFAULT.actifNet,
+    lien:        p.l || DEFAULT.lien,
+    nbHeritiers: Number(p.n) || DEFAULT.nbHeritiers,
+    donations:   Number(p.d) || DEFAULT.donations,
   };
 }
 function toParams(v) {

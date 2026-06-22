@@ -110,11 +110,12 @@ const SITUATIONS = [
 const DEFAULT = { brut: 50_000, ca: 70_000, situation: "celibataire", enfants: 0 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
-    brut:       Number(p.get("b"))  || DEFAULT.brut,
-    ca:         Number(p.get("c"))  || DEFAULT.ca,
-    situation:  p.get("s")          || DEFAULT.situation,
-    enfants:    Number(p.get("e"))  || DEFAULT.enfants,
+    brut:       Number(p.b)  || DEFAULT.brut,
+    ca:         Number(p.c)  || DEFAULT.ca,
+    situation:  p.s          || DEFAULT.situation,
+    enfants:    Number(p.e)  || DEFAULT.enfants,
   };
 }
 function toParams(v) {

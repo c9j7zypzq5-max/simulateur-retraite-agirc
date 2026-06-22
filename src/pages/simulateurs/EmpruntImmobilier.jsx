@@ -477,12 +477,17 @@ export default function EmpruntImmobilier() {
       if (shared.taux !== undefined) setTaux(shared.taux);
       if (shared.primo !== undefined) setPrimo(shared.primo);
       if (shared.salaire !== undefined) setSalaire(shared.salaire);
+      if (shared.coEmp !== undefined) setCoEmp(shared.coEmp);
+      if (shared.salaireCoEmp !== undefined) setSalaireCoEmp(shared.salaireCoEmp);
+      if (shared.taxeFonc !== undefined) setTaxeFonc(shared.taxeFonc);
+      if (shared.charges !== undefined) setCharges(shared.charges);
+      if (shared.assurance !== undefined) setAssurance(shared.assurance);
     }
   }, []);
 
   useEffect(() => {
-    window.history.replaceState(null, '', buildShareUrl({ prix, apport, duree, taux, primo, salaire }));
-  }, [prix, apport, duree, taux, primo, salaire]);
+    window.history.replaceState(null, '', buildShareUrl({ prix, apport, duree, taux, primo, salaire, coEmp, salaireCoEmp, taxeFonc, charges, assurance }));
+  }, [prix, apport, duree, taux, primo, salaire, coEmp, salaireCoEmp, taxeFonc, charges, assurance]);
 
   const fn = prix ? fraisNotaire(prix, neuf) : 0;
   const capitalEmprunte = Math.max(0, (prix ?? 0) + (inclureNotaire ? fn : 0) - (apport ?? 0));
