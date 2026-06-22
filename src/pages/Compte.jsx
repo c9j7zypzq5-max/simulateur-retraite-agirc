@@ -43,8 +43,11 @@ export default function Compte() {
   }, [user]);
 
   useEffect(() => {
-    setSavedCount(getHistory().length);
-  }, []);
+    const update = () => setSavedCount(getHistory().length);
+    update();
+    window.addEventListener("storage", update);
+    return () => window.removeEventListener("storage", update);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleManageSubscription() {
     setPortalBusy(true); setError("");

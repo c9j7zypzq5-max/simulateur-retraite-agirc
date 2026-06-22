@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
@@ -24,11 +24,12 @@ export default function MerciPro() {
   const [theme, setTheme] = useTheme();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id") || "";
-  const { refreshProfile } = useAuth();
+  const { refreshProfile, isPro } = useAuth();
   const { t, locale } = useTranslation();
 
   const [status, setStatus] = useState("verifying"); // verifying | ok | error
   const [activatedEmail, setActivatedEmail] = useState("");
+  const pollRef = useRef(null);
 
   useEffect(() => {
     document.title = t("merciPro.docTitle");
@@ -45,15 +46,26 @@ export default function MerciPro() {
       .then(r => r.json())
       .then(data => {
         if (data.active) {
-          refreshProfile();
           setActivatedEmail(data.email || "");
           setStatus("ok");
+          // Poll refreshProfile jusqu'à isPro confirmé (max 10 × 2s)
+          let attempts = 0;
+          pollRef.current = setInterval(async () => {
+            attempts++;
+            await refreshProfile();
+            if (attempts >= 10) { clearInterval(pollRef.current); pollRef.current = null; }
+          }, 2000);
         } else {
           setStatus("error");
         }
       })
       .catch(() => setStatus("error"));
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
   }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    if (isPro && pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
+  }, [isPro]);
 
   const homePath = localePath("/", locale);
   const proPath = localePath("/pro", locale);

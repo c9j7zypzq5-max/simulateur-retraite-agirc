@@ -386,6 +386,13 @@ export default function Navbar({ theme, setTheme }) {
             >
               {user ? <User size={16} /> : <LogIn size={16} />}
               <span className="nav-auth-label">{user ? txt.account : txt.login}</span>
+              {isPro && (
+                <span style={{
+                  fontSize: 9, fontWeight: 700, padding: "2px 6px", borderRadius: 8,
+                  background: "rgba(184,147,74,0.18)", color: "var(--gold)",
+                  border: "1px solid rgba(184,147,74,0.35)", lineHeight: 1.4,
+                }}>PRO</span>
+              )}
             </LocaleLink>
           </div>
         </div>

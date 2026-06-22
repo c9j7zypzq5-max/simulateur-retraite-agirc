@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import { supabase, isSupabaseConfigured } from "../lib/supabase.js";
+import { syncFromCloud } from "../hooks/useSimHistory.js";
 
 // Contexte d'authentification global. Source de vérité côté client pour :
 //   - l'utilisateur connecté (session Supabase),
@@ -55,6 +56,7 @@ export function AuthProvider({ children }) {
       const u = session?.user ?? null;
       setUser(u);
       loadProfile(u?.id);
+      if (u) syncFromCloud(u, supabase).catch(() => {});
     });
 
     return () => { mounted = false; sub.subscription.unsubscribe(); };

@@ -6,8 +6,10 @@ import { setExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
+import { useToast } from "../context/ToastContext.jsx";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
+import { supabase } from "../lib/supabase.js";
 
 // Quota de rapports pour un compte gratuit (non Pro). Au-delà → page Pro.
 const FREE_REPORT_LIMIT = 3;
@@ -30,11 +32,15 @@ const ShareIcon = () => (
   </svg>
 );
 
+const LinkIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+  </svg>
+);
+
 const raf = () => new Promise(r => requestAnimationFrame(r));
 
-// Nettoyage du DOM cloné avant capture : masque ce qui ne doit pas figurer dans
-// l'export et corrige le texte en dégradé (background-clip:text rendu en bloc
-// plein par html2canvas).
 function cleanClone(clonedDoc) {
   clonedDoc
     .querySelectorAll('nav, footer, section[aria-label="Simulateurs liés"], ins.adsbygoogle, .adsbygoogle, [data-noexport], #seo-prerender')
@@ -58,12 +64,16 @@ const SaveIcon = () => (
 
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const { isPro, user, isConfigured, reportCount, incrementReportCount } = useAuth();
-  const { saveEntry } = useSimHistory();
+  const { saveEntryWithSync } = useSimHistory();
+  const showToast = useToast();
   const { t, locale } = useTranslation();
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [reportError, setReportError] = useState("");
+  const [publicLinkBusy, setPublicLinkBusy] = useState(false);
+  const [publicCopied, setPublicCopied] = useState(false);
   const barRef = useRef(null);
 
   const remaining = Math.max(0, FREE_REPORT_LIMIT - reportCount);
@@ -73,6 +83,12 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     const timer = setTimeout(() => setCopied(false), 2000);
     return () => clearTimeout(timer);
   }, [copied]);
+
+  useEffect(() => {
+    if (!publicCopied) return;
+    const timer = setTimeout(() => setPublicCopied(false), 2000);
+    return () => clearTimeout(timer);
+  }, [publicCopied]);
 
   const btnStyle = {
     display: "inline-flex", alignItems: "center", gap: 6,
@@ -85,7 +101,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
   const hoverOut = e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; };
 
-  // Conteneur complet de la page (le <div> racine du simulateur, enfant de #root).
   function pageContainer() {
     let el = barRef.current;
     if (!el) return resultsRef?.current || null;
@@ -97,13 +112,10 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     if (!target) return null;
     const isDark = !document.documentElement.getAttribute("data-theme") || document.documentElement.getAttribute("data-theme") === "dark";
     if (full) {
-      // Ouvre les accordéons (tableaux/détails) le temps de la capture.
       setExporting(true);
       await raf(); await raf();
     }
     try {
-      // Chargé à la demande : html2canvas (~200 Ko) n'est ainsi pas dans le
-      // bundle initial des simulateurs, seulement au moment d'un export.
       const html2canvas = (await import("html2canvas")).default;
       return await html2canvas(target, {
         backgroundColor: isDark ? "#060e1c" : "#faf6ef",
@@ -115,8 +127,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     }
   }
 
-  // Génère le rapport (document unique). Capture le graphique en image pour le
-  // repli raster ; les simulateurs fournissant `report.chart` ont un tracé vectoriel.
   async function generateReport() {
     let chartImage = null;
     if (chartRef?.current) {
@@ -131,7 +141,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       await buildReportPdfPro({ report, url: cleanUrl, name, chartImage });
       return;
     }
-    // Simulateur sans données structurées : repli capture pleine page.
     const canvas = await snapshot(pageContainer(), { full: true });
     if (!canvas) return;
     const { jsPDF } = await import("jspdf");
@@ -162,38 +171,66 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     pdf.save(`simulation-${name}.pdf`);
   }
 
-  // Bouton « Rapport » : connexion obligatoire, 3 gratuits puis Pro.
   async function handleReport() {
-    // Auth non configurée (dev) → pas de gating.
     if (isConfigured) {
       if (!user) { navigate(`${localePath("/connexion", locale)}?next=${encodeURIComponent(window.location.pathname)}`); return; }
       if (!isPro && reportCount >= FREE_REPORT_LIMIT) { navigate(localePath("/pro", locale)); return; }
     }
     setBusy(true);
+    setReportError("");
     track("export", { format: "report", simulateur: name });
     try {
       await generateReport();
       if (isConfigured && !isPro) await incrementReportCount();
-    } catch { /* ignore */ } finally { setBusy(false); }
+    } catch {
+      const msg = locale === "en" ? "Export failed. Try again." : "Échec de l'export. Réessayez.";
+      setReportError(msg);
+      setTimeout(() => setReportError(""), 4000);
+    } finally { setBusy(false); }
   }
 
   function handleSave() {
     const shareUrl = buildShareUrl(params);
     const simulator = name || window.location.pathname;
     const label = report?.title || name || simulator;
-    saveEntry({ simulator, label, shareUrl });
+    const reportSnapshot = report
+      ? { highlight: report.highlight, results: report.results?.slice(0, 6) }
+      : undefined;
+    saveEntryWithSync({ simulator, label, shareUrl, reportSnapshot }, { user, supabaseClient: supabase });
     setSaved(true);
+    showToast(locale === "en" ? "Simulation saved!" : "Simulation sauvegardée !");
     track("save_simulation", { simulateur: name });
     setTimeout(() => setSaved(false), 2500);
+  }
+
+  async function handlePublicLink() {
+    if (!isPro) { navigate(localePath("/pro", locale)); return; }
+    setPublicLinkBusy(true);
+    try {
+      const shareUrl = buildShareUrl(params);
+      const res = await fetch(`/api/share?action=create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          params: shareUrl,
+          title: report?.title || name || "",
+          highlight: report?.highlight || null,
+        }),
+      });
+      const data = await res.json();
+      if (data.id) {
+        const publicUrl = `${window.location.origin}/s/${data.id}`;
+        await navigator.clipboard.writeText(publicUrl);
+        setPublicCopied(true);
+        showToast(locale === "en" ? "Public link copied!" : "Lien public copié !");
+        track("public_link", { simulateur: name });
+      }
+    } catch { /* ignore */ } finally { setPublicLinkBusy(false); }
   }
 
   async function handleShare() {
     setBusy(true);
     const stateUrl = buildShareUrl(params);
-    // Lien à aperçu social riche (image de résultat via /api/og) si un résultat
-    // est disponible ; sinon lien direct vers la simulation. On NE partage QUE
-    // ce lien : son aperçu social affiche la bonne donnée. Pas de capture d'écran
-    // jointe (évitait deux images différentes dans la feuille de partage).
     let url = stateUrl;
     if (report?.highlight) {
       const cat = ROUTE_META[window.location.pathname]?.cat || "";
@@ -239,6 +276,9 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           {t("common.reportRemaining")(remaining)}
         </div>
       )}
+      {reportError && (
+        <div style={{ flexBasis: "100%", fontSize: 11, color: "#c0392b", marginTop: -4 }}>{reportError}</div>
+      )}
 
       <div style={{ position: "relative" }}>
         <button style={btnStyle} onClick={handleShare} disabled={busy}
@@ -264,6 +304,18 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
             onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
             <SaveIcon />
             <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
+          </button>
+        </div>
+      )}
+
+      {isConfigured && user && isPro && (
+        <div style={{ position: "relative" }}>
+          <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
+            onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+            <LinkIcon />
+            <span className="btn-text">
+              {publicLinkBusy ? "…" : publicCopied ? (locale === "en" ? "Copied!" : "Copié !") : (locale === "en" ? "Public link" : "Lien public")}
+            </span>
           </button>
         </div>
       )}

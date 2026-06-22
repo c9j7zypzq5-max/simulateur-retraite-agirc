@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
+import { ToastProvider } from "./context/ToastContext.jsx";
 import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
@@ -88,6 +89,7 @@ const QrCode        = lazy(() => import("./pages/outils/QrCode.jsx"));
 const TableauDeBord        = lazy(() => import("./pages/TableauDeBord.jsx"));
 const WizardRetraite         = lazy(() => import("./pages/WizardRetraite.jsx"));
 const RapportPartage         = lazy(() => import("./pages/RapportPartage.jsx"));
+const PublicShare            = lazy(() => import("./pages/PublicShare.jsx"));
 const SynthesePatrimoniale   = lazy(() => import("./pages/SynthesePatrimoniale.jsx"));
 // Simulateurs suisses
 const LppDeuxiemePilier      = lazy(() => import("./pages/simulateurs/LppDeuxiemePilier.jsx"));
@@ -114,6 +116,7 @@ function RouteFallback() {
 export default function App() {
   return (
     <AuthProvider>
+    <ToastProvider>
     <FiscalProfileProvider>
     <VideoRecordingProvider>
     <CurrencyProvider>
@@ -237,6 +240,7 @@ export default function App() {
         <Route path="/tableau-de-bord" element={<TableauDeBord />} />
         <Route path="/wizard-retraite" element={<WizardRetraite />} />
         <Route path="/rapport/:id" element={<RapportPartage />} />
+        <Route path="/s/:id" element={<PublicShare />} />
         <Route path="/synthese-patrimoniale" element={<SynthesePatrimoniale />} />
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
@@ -265,6 +269,7 @@ export default function App() {
     </CurrencyProvider>
     </VideoRecordingProvider>
     </FiscalProfileProvider>
+    </ToastProvider>
     </AuthProvider>
   );
 }

@@ -5,6 +5,8 @@ import { useAuth } from "../hooks/useAuth.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
+import CompareModal from "../components/CompareModal.jsx";
+import { supabase } from "../lib/supabase.js";
 
 function relativeDate(iso) {
   const ms = Date.now() - new Date(iso).getTime();
@@ -15,23 +17,18 @@ function relativeDate(iso) {
   return "à l'instant";
 }
 
-// Génère l'identifiant base64 pour la page /rapport/:id à partir d'une entrée d'historique
 function buildRapportId(entry) {
-  try {
-    return btoa(JSON.stringify(entry));
-  } catch {
-    return null;
-  }
+  try { return btoa(JSON.stringify(entry)); } catch { return null; }
 }
 
 export default function MesSimulations() {
   const [theme, setTheme] = useTheme();
-  const { isPro } = useAuth();
-  const { getHistory, removeEntry, clearHistory, updateEntry } = useSimHistory();
+  const { isPro, user } = useAuth();
+  const { getHistory, removeEntryWithSync, clearHistory, updateEntryWithSync, updateEntry } = useSimHistory();
   const [history, setHistory] = useState([]);
   const [exporting, setExporting] = useState(false);
   const [exportingXlsx, setExportingXlsx] = useState(false);
-  const [copiedId, setCopiedId] = useState(null); // id de l'entrée dont le lien vient d'être copié
+  const [copiedId, setCopiedId] = useState(null);
 
   // Inline rename state (Pro only)
   const [editingId, setEditingId] = useState(null);
@@ -41,13 +38,20 @@ export default function MesSimulations() {
   const [openNoteId, setOpenNoteId] = useState(null);
   const [noteValue, setNoteValue] = useState("");
 
+  // Compare state (Pro only)
+  const [selected, setSelected] = useState(new Set());
+  const [compareEntries, setCompareEntries] = useState(null);
+  const [compareError, setCompareError] = useState("");
+
   useEffect(() => {
     document.title = "Mes simulations sauvegardées | simfinly.com";
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
-    setHistory(getHistory());
-    return () => robots && robots.setAttribute('content', 'index, follow');
+    const refresh = () => setHistory(getHistory());
+    refresh();
+    window.addEventListener("storage", refresh);
+    return () => { robots && robots.setAttribute('content', 'index, follow'); window.removeEventListener("storage", refresh); };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleExportPdf() {
@@ -72,7 +76,6 @@ export default function MesSimulations() {
       setCopiedId(entry.id);
       setTimeout(() => setCopiedId(null), 2000);
     } catch {
-      // fallback : ouvrir la page
       window.open(url, "_blank", "noopener");
     }
   }
@@ -100,14 +103,50 @@ export default function MesSimulations() {
   }
 
   function handleSaveLabel(id) {
-    updateEntry(id, { label: editValue });
+    updateEntryWithSync(id, { label: editValue }, { user, supabaseClient: supabase });
     setEditingId(null);
     setHistory(getHistory());
   }
 
+  function handleRemove(id) {
+    removeEntryWithSync(id, { user, supabaseClient: supabase });
+    setHistory(h => h.filter(e => e.id !== id));
+    setSelected(s => { const next = new Set(s); next.delete(id); return next; });
+  }
+
+  function toggleSelect(id) {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) { next.delete(id); return next; }
+      if (next.size >= 2) return prev; // max 2
+      next.add(id);
+      return next;
+    });
+    setCompareError("");
+  }
+
+  function handleCompare() {
+    const [idA, idB] = [...selected];
+    const a = history.find(e => e.id === idA);
+    const b = history.find(e => e.id === idB);
+    if (!a || !b) return;
+    // Les simulateurs peuvent être différents - on compare quand même
+    setCompareEntries([a, b]);
+  }
+
+  const authCtx = { user, supabaseClient: supabase };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+
+      {compareEntries && (
+        <CompareModal
+          entryA={compareEntries[0]}
+          entryB={compareEntries[1]}
+          onClose={() => setCompareEntries(null)}
+        />
+      )}
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
@@ -124,6 +163,14 @@ export default function MesSimulations() {
           </div>
           {history.length > 0 && (
             <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+              {isPro && selected.size === 2 && (
+                <button
+                  onClick={handleCompare}
+                  style={{ fontSize: 13, color: "var(--gold)", background: "rgba(184,147,74,0.1)", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "8px 14px", cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}
+                >
+                  ⇄ Comparer
+                </button>
+              )}
               {isPro ? (
                 <button
                   onClick={handleExportPdf}
@@ -145,7 +192,7 @@ export default function MesSimulations() {
                 {exportingXlsx ? "Export…" : "↓ Excel"}
               </button>
               <button
-                onClick={() => { clearHistory(); setHistory([]); }}
+                onClick={() => { clearHistory(); setHistory([]); setSelected(new Set()); }}
                 style={{ fontSize: 13, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 14px", cursor: "pointer" }}
               >
                 Tout effacer
@@ -155,8 +202,19 @@ export default function MesSimulations() {
         </div>
 
         <p style={{ color: "var(--text-secondary)", fontSize: 14, lineHeight: 1.7, marginBottom: 24 }}>
-          Vos simulations sauvegardées sont conservées sur cet appareil (rien n'est envoyé sur nos serveurs). Cliquez pour les rouvrir avec les mêmes paramètres.
+          {user
+            ? "Vos simulations sont synchronisées sur votre compte et accessibles sur tous vos appareils."
+            : "Vos simulations sauvegardées sont conservées sur cet appareil (rien n'est envoyé sur nos serveurs). Cliquez pour les rouvrir avec les mêmes paramètres."}
         </p>
+
+        {isPro && history.length >= 2 && selected.size === 0 && (
+          <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 16, padding: "8px 14px", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, display: "inline-block" }}>
+            Cochez 2 simulations pour les comparer côte à côte ⇄
+          </div>
+        )}
+        {compareError && (
+          <div style={{ fontSize: 12, color: "#c0392b", marginBottom: 12 }}>{compareError}</div>
+        )}
 
         {!isPro && history.length >= 8 && (
           <div style={{ background: "rgba(184,147,74,0.08)", border: "1px solid rgba(184,147,74,0.25)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
@@ -181,95 +239,130 @@ export default function MesSimulations() {
           </div>
         ) : (
           <div style={{ display: "grid", gap: 12 }}>
-            {history.map(entry => (
-              <div
-                key={entry.id}
-                className="sim-entry"
-                style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, overflow: "hidden" }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 4px 4px 0" }}>
-                  <Link to={entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")} style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", textDecoration: "none", color: "var(--text)" }}>
-                    <span style={{ minWidth: 0 }}>
-                      {entry.simulator && <span style={{ display: "block", fontSize: 11, color: "var(--gold-mid)", marginBottom: 2 }}>{entry.simulator}</span>}
-                      <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        {isPro && editingId === entry.id ? (
-                          <input
-                            autoFocus
-                            value={editValue}
-                            onChange={e => setEditValue(e.target.value)}
-                            onBlur={() => handleSaveLabel(entry.id)}
-                            onKeyDown={e => {
-                              if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); }
-                              if (e.key === "Escape") { setEditingId(null); }
-                            }}
-                            onClick={e => e.preventDefault()}
-                            style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
-                          />
-                        ) : (
-                          <>
-                            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.label}</span>
-                            {isPro && (
-                              <button
-                                className="edit-pencil"
-                                onClick={e => { e.preventDefault(); setEditingId(entry.id); setEditValue(entry.label); }}
-                                aria-label="Renommer"
-                                title="Renommer"
-                                style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: "0 2px", color: "var(--text-secondary)", opacity: 0, transition: "opacity 0.15s", flexShrink: 0 }}
-                              >✏️</button>
-                            )}
-                          </>
+            {history.map(entry => {
+              const isChecked = selected.has(entry.id);
+              return (
+                <div
+                  key={entry.id}
+                  className="sim-entry"
+                  style={{
+                    background: "var(--card-bg)",
+                    border: isChecked ? "1px solid var(--border-gold)" : "1px solid var(--border)",
+                    borderRadius: 12, overflow: "hidden",
+                    transition: "border-color 0.2s",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 4px 4px 0" }}>
+                    {/* Checkbox (Pro only) */}
+                    {isPro && (
+                      <button
+                        onClick={() => toggleSelect(entry.id)}
+                        title={isChecked ? "Désélectionner" : "Sélectionner pour comparer"}
+                        style={{
+                          flexShrink: 0, width: 22, height: 22, borderRadius: 6,
+                          border: isChecked ? "2px solid var(--gold)" : "2px solid var(--border)",
+                          background: isChecked ? "rgba(184,147,74,0.15)" : "transparent",
+                          cursor: "pointer", marginLeft: 12,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          color: "var(--gold)", fontSize: 12, transition: "all 0.15s",
+                        }}
+                      >
+                        {isChecked ? "✓" : ""}
+                      </button>
+                    )}
+                    <Link to={entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")} style={{ flex: 1, minWidth: 0, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", textDecoration: "none", color: "var(--text)" }}>
+                      <span style={{ minWidth: 0 }}>
+                        {entry.simulator && <span style={{ display: "block", fontSize: 11, color: "var(--gold-mid)", marginBottom: 2 }}>{entry.simulator}</span>}
+                        {/* highlight si disponible */}
+                        {entry.reportSnapshot?.highlight && (
+                          <span style={{ display: "block", fontSize: 11, color: "var(--text-secondary)", marginBottom: 2 }}>
+                            {entry.reportSnapshot.highlight.label} : <strong style={{ color: "var(--text)" }}>{entry.reportSnapshot.highlight.value}</strong>
+                          </span>
                         )}
+                        <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                          {isPro && editingId === entry.id ? (
+                            <input
+                              autoFocus
+                              value={editValue}
+                              onChange={e => setEditValue(e.target.value)}
+                              onBlur={() => handleSaveLabel(entry.id)}
+                              onKeyDown={e => {
+                                if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); }
+                                if (e.key === "Escape") { setEditingId(null); }
+                              }}
+                              onClick={e => e.preventDefault()}
+                              style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
+                            />
+                          ) : (
+                            <>
+                              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{entry.label}</span>
+                              {isPro && (
+                                <button
+                                  className="edit-pencil"
+                                  onClick={e => { e.preventDefault(); setEditingId(entry.id); setEditValue(entry.label); }}
+                                  aria-label="Renommer"
+                                  title="Renommer"
+                                  style={{ background: "none", border: "none", cursor: "pointer", fontSize: 16, padding: "0 2px", color: "var(--text-secondary)", opacity: 0, transition: "opacity 0.15s", flexShrink: 0 }}
+                                >✏️</button>
+                              )}
+                            </>
+                          )}
+                        </span>
                       </span>
-                    </span>
-                    <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 12 }}>{relativeDate(entry.savedAt)}</span>
-                  </Link>
-                  {isPro && (
+                      <span style={{ fontSize: 11, color: "var(--text-secondary)", flexShrink: 0, marginLeft: 12 }}>{relativeDate(entry.savedAt)}</span>
+                    </Link>
+                    {isPro && (
+                      <button
+                        onClick={() => {
+                          if (openNoteId === entry.id) {
+                            setOpenNoteId(null);
+                          } else {
+                            setOpenNoteId(entry.id);
+                            setNoteValue(entry.note || "");
+                          }
+                        }}
+                        aria-label="Note"
+                        title="Ajouter une note"
+                        style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 8px", fontFamily: "'Hanken Grotesk', sans-serif", position: "relative" }}
+                      >
+                        📝{entry.note ? <span style={{ position: "absolute", top: 6, right: 4, width: 6, height: 6, borderRadius: "50%", background: "#3b82f6", display: "inline-block" }} /> : null}
+                      </button>
+                    )}
                     <button
-                      onClick={() => {
-                        if (openNoteId === entry.id) {
-                          setOpenNoteId(null);
-                        } else {
-                          setOpenNoteId(entry.id);
-                          setNoteValue(entry.note || "");
-                        }
-                      }}
-                      aria-label="Note"
-                      title="Ajouter une note"
-                      style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 8px", fontFamily: "'Hanken Grotesk', sans-serif", position: "relative" }}
-                    >
-                      📝{entry.note ? <span style={{ position: "absolute", top: 6, right: 4, width: 6, height: 6, borderRadius: "50%", background: "#3b82f6", display: "inline-block" }} /> : null}
-                    </button>
-                  )}
-                  <button
-                    onClick={() => handleShareEntry(entry)}
-                    aria-label="Partager"
-                    title={copiedId === entry.id ? "Lien copié !" : "Copier le lien de partage"}
-                    style={{ flexShrink: 0, background: "none", border: "none", color: copiedId === entry.id ? "#22c55e" : "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 10px", fontFamily: "'Hanken Grotesk', sans-serif", transition: "color 0.2s" }}
-                  >{copiedId === entry.id ? "✓" : "🔗"}</button>
-                  <button
-                    onClick={() => { removeEntry(entry.id); setHistory(h => h.filter(e => e.id !== entry.id)); }}
-                    aria-label="Supprimer"
-                    style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 14, padding: "10px 12px" }}
-                  >✕</button>
-                </div>
-                {openNoteId === entry.id && (
-                  <div style={{ padding: "8px 16px 12px", borderTop: "1px solid var(--border)" }}>
-                    <textarea
-                      value={noteValue}
-                      onChange={e => setNoteValue(e.target.value)}
-                      placeholder="Ajouter une note à cette simulation…"
-                      style={{ width: "100%", minHeight: 60, padding: "8px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", resize: "vertical", boxSizing: "border-box" }}
-                    />
+                      onClick={() => handleShareEntry(entry)}
+                      aria-label="Partager"
+                      title={copiedId === entry.id ? "Lien copié !" : "Copier le lien de partage"}
+                      style={{ flexShrink: 0, background: "none", border: "none", color: copiedId === entry.id ? "#22c55e" : "var(--text-secondary)", cursor: "pointer", fontSize: 13, padding: "10px 10px", fontFamily: "'Hanken Grotesk', sans-serif", transition: "color 0.2s" }}
+                    >{copiedId === entry.id ? "✓" : "🔗"}</button>
                     <button
-                      onClick={() => { updateEntry(entry.id, { note: noteValue }); setOpenNoteId(null); setHistory(getHistory()); }}
-                      style={{ marginTop: 6, padding: "5px 14px", borderRadius: 8, background: "var(--gold)", color: "#1a1000", border: "none", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
-                    >
-                      Enregistrer
-                    </button>
+                      onClick={() => handleRemove(entry.id)}
+                      aria-label="Supprimer"
+                      style={{ flexShrink: 0, background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 14, padding: "10px 12px" }}
+                    >✕</button>
                   </div>
-                )}
-              </div>
-            ))}
+                  {openNoteId === entry.id && (
+                    <div style={{ padding: "8px 16px 12px", borderTop: "1px solid var(--border)" }}>
+                      <textarea
+                        value={noteValue}
+                        onChange={e => setNoteValue(e.target.value)}
+                        placeholder="Ajouter une note à cette simulation…"
+                        style={{ width: "100%", minHeight: 60, padding: "8px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", resize: "vertical", boxSizing: "border-box" }}
+                      />
+                      <button
+                        onClick={() => {
+                          updateEntryWithSync(entry.id, { note: noteValue }, authCtx);
+                          setOpenNoteId(null);
+                          setHistory(getHistory());
+                        }}
+                        style={{ marginTop: 6, padding: "5px 14px", borderRadius: 8, background: "var(--gold)", color: "#1a1000", border: "none", fontSize: 12, fontWeight: 600, cursor: "pointer" }}
+                      >
+                        Enregistrer
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>

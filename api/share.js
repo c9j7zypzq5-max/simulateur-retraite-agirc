@@ -1,9 +1,10 @@
 // Page de partage : sert un HTML minimal portant les balises Open Graph/Twitter
 // (avec une image de résultat générée par /api/og), puis redirige l'internaute
-// vers le simulateur. Permet aux aperçus sociaux d'afficher le résultat alors
-// que le site est une SPA pré-rendue par route (et non par paramètres).
+// vers le simulateur.
 //
-// GET /api/share?to=<chemin simulateur+params>&t=<titre>&v=<valeur>&s=<sous-titre>&c=<catégorie>
+// GET  /api/share?to=...&t=...&v=...&s=...&c=...  → social preview HTML
+// POST /api/share?action=create                   → créer un lien public court
+// GET  /api/share?action=get&id=xxx               → lire les données d'un lien court
 
 const BASE = 'https://www.simfinly.com';
 
@@ -11,11 +12,68 @@ function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-export default function handler(req, res) {
+function nanoid8() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let id = '';
+  for (let i = 0; i < 8; i++) id += chars[Math.floor(Math.random() * chars.length)];
+  return id;
+}
+
+async function getSupabase() {
+  const url = process.env.VITE_SUPABASE_URL || process.env.VITE_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return null;
+  const { createClient } = await import('@supabase/supabase-js');
+  return createClient(url, key, { auth: { persistSession: false } });
+}
+
+export default async function handler(req, res) {
+  const action = req.query?.action;
+
+  // ── POST /api/share?action=create ─────────────────────────────────────────
+  if (req.method === 'POST' && action === 'create') {
+    let body = req.body;
+    if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
+    const { params, title, highlight } = body || {};
+    if (!params) { res.status(400).json({ error: 'params required' }); return; }
+
+    const sb = await getSupabase();
+    if (!sb) { res.status(503).json({ error: 'not configured' }); return; }
+
+    const id = nanoid8();
+    const { error } = await sb.from('public_links').insert({
+      id,
+      params: String(params),
+      title: title || null,
+      highlight: highlight || null,
+    });
+    if (error) { res.status(500).json({ error: error.message }); return; }
+
+    res.setHeader('Cache-Control', 'no-store');
+    res.status(200).json({ id });
+    return;
+  }
+
+  // ── GET /api/share?action=get&id=xxx ──────────────────────────────────────
+  if (req.method === 'GET' && action === 'get') {
+    const id = req.query?.id;
+    if (!id) { res.status(400).json({ error: 'id required' }); return; }
+
+    const sb = await getSupabase();
+    if (!sb) { res.status(503).json({ error: 'not configured' }); return; }
+
+    const { data, error } = await sb.from('public_links').select('params,title,highlight').eq('id', id).maybeSingle();
+    if (error || !data) { res.status(404).json({ error: 'not found' }); return; }
+
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.status(200).json(data);
+    return;
+  }
+
+  // ── GET /api/share (social preview HTML) ──────────────────────────────────
   const { to = '/', t = '', v = '', s = '', c = '', l = 'fr' } = req.query || {};
   const isEn = String(l) === 'en';
 
-  // Anti open-redirect : on ne redirige que vers notre propre domaine.
   let dest = String(to);
   if (dest.startsWith('http')) {
     dest = dest.startsWith(BASE) ? dest : BASE + '/';
