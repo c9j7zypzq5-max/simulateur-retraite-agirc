@@ -15,19 +15,17 @@
 
 import { jsPDF } from "jspdf";
 
-const GOLD      = [184, 147, 74];
-const GOLD_DARK = [154, 111, 42];
-const INK       = [28, 18, 8];
-const SOFT      = [107, 92, 62];
-const LINE      = [220, 214, 200];
-const GOLD_TINT = [248, 244, 234];
+// Palette alignée sur la DA claire du site (src/styles.css, light theme).
+// Les noms historiques (GOLD…) sont conservés : le site lui-même appelle son
+// accent « gold » alors qu'il est bleu (`--gold: #2B5CE6`).
+const GOLD      = [43, 92, 230];    // --primary  #2B5CE6 (accent bleu)
+const GOLD_DARK = [30, 64, 175];    // bleu foncé pour titres / valeurs (#1E40AF)
+const INK       = [15, 24, 40];     // --text     #0F1828
+const SOFT      = [91, 102, 119];   // --text-secondary #5B6677
+const LINE      = [231, 234, 240];  // --border   #e7eaf0
+const GOLD_TINT = [234, 240, 255];  // --primary-soft #EAF0FF
 const WHITE     = [255, 255, 255];
-// Palette « luxe » de la couverture Pro (fond sombre + or clair).
-const INK_DEEP   = [11, 18, 32];     // #0b1220 — encre profonde
-const INK_PANEL  = [22, 31, 50];     // panneau translucide sur fond sombre
-const GOLD_BRIGHT = [232, 192, 106]; // #e8c06a — or lumineux pour titres/accents
-const CREAM      = [244, 241, 234];  // texte clair sur fond sombre
-const CREAM_DIM  = [168, 176, 190];  // texte secondaire clair
+const PAGE_BG   = [245, 246, 248];  // --bg       #F5F6F8
 
 // jsPDF (WinAnsi) ne sait pas rendre les espaces insécables → normalisation.
 const T = s => String(s ?? "").replace(/[    ⁠ ]/g, " ");
@@ -445,54 +443,52 @@ export async function buildReportPdfPro({ report, url, name, chartImage = null, 
 
   const ensure = (need) => { if (y + need > pageH - M - 30) { doc.addPage(); y = M; } };
 
-  // ── Page de couverture (fond sombre + accents or, rendu « premium ») ──
-  doc.setFillColor(...INK_DEEP).rect(0, 0, pageW, pageH, "F");
-  // Liseré or en pied de page pour cadrer la couverture.
+  // ── Page de couverture (DA claire du site : fond clair + accent bleu) ──
+  doc.setFillColor(...PAGE_BG).rect(0, 0, pageW, pageH, "F");
+  // Bandeau d'accent bleu en tête + liseré en pied pour cadrer la couverture.
+  doc.setFillColor(...GOLD).rect(0, 0, pageW, 8, "F");
   doc.setFillColor(...GOLD).rect(0, pageH - 5, pageW, 5, "F");
-  // Double filet d'angle haut-droit (détail discret).
-  doc.setDrawColor(...GOLD).setLineWidth(1).line(pageW - M, 64, pageW - M, 108);
-  doc.setDrawColor(...GOLD_DARK).setLineWidth(0.6).line(pageW - M - 5, 64, pageW - M - 5, 108);
 
   // Marque + badge
-  doc.setFont("helvetica", "bold").setFontSize(22).setTextColor(...GOLD_BRIGHT);
-  doc.text("simfinly.com", M, 96);
+  doc.setFont("helvetica", "bold").setFontSize(22).setTextColor(...GOLD_DARK);
+  doc.text("simfinly.com", M, 100);
 
-  doc.setFillColor(...GOLD).roundedRect(M, 112, 96, 22, 4, 4, "F");
-  doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(...INK_DEEP);
-  doc.text("RAPPORT PRO", M + 48, 127, { align: "center" });
+  doc.setFillColor(...GOLD).roundedRect(M, 116, 96, 22, 4, 4, "F");
+  doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(...WHITE);
+  doc.text("RAPPORT PRO", M + 48, 131, { align: "center" });
 
-  // Titre principal (clair, grande échelle)
-  doc.setFont("helvetica", "bold").setFontSize(30).setTextColor(...CREAM);
+  // Titre principal (encre, grande échelle)
+  doc.setFont("helvetica", "bold").setFontSize(30).setTextColor(...INK);
   const titleLines = doc.splitTextToSize(T(report.title || "Simulation"), contentW);
   let ty = 250;
   titleLines.forEach(line => { doc.text(line, M, ty); ty += 38; });
-  // Filet or sous le titre
+  // Filet d'accent bleu sous le titre
   doc.setDrawColor(...GOLD).setLineWidth(2).line(M, ty - 6, M + 70, ty - 6);
   ty += 14;
   if (report.subtitle) {
-    doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(...CREAM_DIM);
+    doc.setFont("helvetica", "normal").setFontSize(14).setTextColor(...SOFT);
     doc.splitTextToSize(T(report.subtitle), contentW).forEach(line => { doc.text(line, M, ty); ty += 20; });
   }
   ty += 24;
 
   if (report.highlight) {
-    // Carte highlight : panneau translucide + liseré or épais + grande valeur dorée.
+    // Carte highlight : fond blanc + bordure bleue + liseré d'accent + valeur bleue.
     const cardH = 96;
-    doc.setFillColor(...INK_PANEL).setDrawColor(...GOLD).setLineWidth(1);
+    doc.setFillColor(...WHITE).setDrawColor(...GOLD).setLineWidth(1);
     doc.roundedRect(M, ty, contentW, cardH, 10, 10, "FD");
     doc.setFillColor(...GOLD).roundedRect(M, ty, 6, cardH, 3, 3, "F");
-    doc.setFont("helvetica", "normal").setFontSize(11).setTextColor(...CREAM_DIM);
+    doc.setFont("helvetica", "normal").setFontSize(11).setTextColor(...SOFT);
     doc.text(String(report.highlight.label || "").toUpperCase(), M + 26, ty + 32);
-    doc.setFont("helvetica", "bold").setFontSize(36).setTextColor(...GOLD_BRIGHT);
+    doc.setFont("helvetica", "bold").setFontSize(36).setTextColor(...GOLD_DARK);
     doc.text(String(report.highlight.value ?? "—"), M + 26, ty + 72);
     ty += cardH + 18;
   }
 
   const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
-  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...CREAM_DIM);
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...SOFT);
   doc.text(`Généré le ${date}`, M, pageH - 66);
   doc.text("Simulation indicative — simfinly.com", M, pageH - 50);
-  doc.setTextColor(...GOLD_BRIGHT);
+  doc.setTextColor(...GOLD_DARK);
   doc.text("Document personnel et confidentiel", M, pageH - 34);
 
   // ── Pages de contenu ──
