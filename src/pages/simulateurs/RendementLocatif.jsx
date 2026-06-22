@@ -16,7 +16,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection, Toggle,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader, FaqSection,
+  fmtEur, SimulateurHeader, FaqSection,
   FaqItem,
 } from "../../components/ui.jsx";
 
@@ -338,7 +338,6 @@ export default function RendementLocatif() {
   const res = calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative });
   const rendementBrutAnim = useAnimatedNumber(res.rendementBrut);
   const rendementNetAnim = useAnimatedNumber(res.rendementNet);
-  const cashflowAnim = useAnimatedNumber(res.cashflowMensuel);
 
   const hasResult = prix > 0 && loyer > 0;
 

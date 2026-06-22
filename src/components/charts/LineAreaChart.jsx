@@ -41,6 +41,10 @@ export default function LineAreaChart({
     return dataMax * 1.1;
   }, [allPts, annotations]);
 
+  // Clé d'animation : change si les données changent. Déclarée avant tout
+  // early return pour respecter les règles des hooks (ordre d'appel constant).
+  const animKey = useMemo(() => `${series.map(s => s.points.length + "_" + Math.round(s.points[s.points.length - 1]?.y ?? 0)).join("__")}`, [series]);
+
   if (!allPts.length || !series.length || !series[0].points.length) return null;
 
   const cx = (v) => PAD.left + (v / maxX) * iW;
@@ -63,9 +67,6 @@ export default function LineAreaChart({
       : "";
     return { ...s, pts, fillPts };
   });
-
-  // Clé d'animation : change si les données changent
-  const animKey = useMemo(() => `${series.map(s => s.points.length + "_" + Math.round(s.points[s.points.length - 1]?.y ?? 0)).join("__")}`, [series]);
 
   // Hover : index le plus proche du curseur
   const getIdx = (clientX) => {

@@ -13,7 +13,10 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     release: import.meta.env.VITE_APP_VERSION,
     integrations: [
       Sentry.browserTracingIntegration(),
-      Sentry.replayIntegration({ maskAllText: false, blockAllMedia: false }),
+      // Confidentialité : on masque tout le texte et on bloque les médias dans
+      // les rejeux de session — les pages contiennent des données financières
+      // saisies par l'utilisateur (salaire, patrimoine). RGPD by design.
+      Sentry.replayIntegration({ maskAllText: true, blockAllMedia: true }),
     ],
     tracesSampleRate: 0.1,
     replaysSessionSampleRate: 0.01,

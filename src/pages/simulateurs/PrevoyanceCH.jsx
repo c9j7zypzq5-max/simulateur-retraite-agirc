@@ -9,7 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
@@ -124,7 +124,6 @@ export default function PrevoyanceCH() {
   const vals = { age, versementAnnuel, rendement, statut, revenuNet };
   const res  = useMemo(() => calcPrevoyance(vals), [age, versementAnnuel, rendement, statut, revenuNet]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
     title: "Simulateur pilier 3a Suisse 2026 — Épargne retraite déductible | simfinly.com",

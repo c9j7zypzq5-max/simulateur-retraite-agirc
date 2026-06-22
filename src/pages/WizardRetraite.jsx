@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import { NumInput, StepperInput, fmtEur } from "../components/ui.jsx";
+import { NumInput, fmtEur } from "../components/ui.jsx";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 import { Link } from "../lib/router.jsx";
 
@@ -142,7 +142,6 @@ export default function WizardRetraite() {
   );
 
   // ─── Calculs dérivés ───────────────────────────────────────────────────────
-  const ageLegal = anneeNaissance ? getAgeLegal(anneeNaissance) : null;
   const ageLegalLabel = anneeNaissance ? getAgeLegalLabel(anneeNaissance) : null;
   const dureeRequise = anneeNaissance ? getDureeRequise(anneeNaissance) : 172;
   const trimestresManquants = trimestres !== null ? Math.max(0, dureeRequise - trimestres) : null;

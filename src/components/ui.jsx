@@ -18,6 +18,11 @@ export function useAnimatedNumber(target, duration = 700) {
   const frameRef = useRef(null);
   const prevRef  = useRef(0);
   useEffect(() => {
+    // Respecte prefers-reduced-motion : on saute l'animation et on affiche
+    // directement la valeur finale (accessibilité / confort vestibulaire).
+    const reduce = typeof window !== "undefined"
+      && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) { prevRef.current = target; setDisplay(target); return; }
     if (frameRef.current) cancelAnimationFrame(frameRef.current);
     const from = prevRef.current, start = performance.now();
     const step = now => {

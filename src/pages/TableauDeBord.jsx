@@ -6,7 +6,7 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import SimIcon from "../data/simIcons.jsx";
-import { BarChart3, PiggyBank, Flame, Building2, Receipt, Gem, Trophy, Lock, Clock, TrendingUp, ArrowRight } from "lucide-react";
+import { BarChart3, Clock, TrendingUp, ArrowRight } from "lucide-react";
 
 const QUICK_ACCESS = [
   { path: "/simulateurs/synthese-retraite", label: "Synthèse retraite", category: "Retraite" },

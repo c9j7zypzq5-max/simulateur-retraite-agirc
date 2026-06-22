@@ -10,7 +10,7 @@ import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
-import { NumInput, StepperInput, Chip, fmt, fmtEur, FaqSection } from "../../components/ui.jsx";
+import { NumInput, StepperInput, fmtEur, FaqSection } from "../../components/ui.jsx";
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -470,7 +470,6 @@ export default function Salaire() {
 
   const res = calcSalaire({ brut, statut, age, evolution, horizon });
 
-  const animNet  = useAnimatedValue(res.net);
   const animGain = useAnimatedValue(res.gainNet);
   const maxNet   = Math.max(res.net, res.last.netY);
 

@@ -28,7 +28,7 @@ const WHITE     = [255, 255, 255];
 const PAGE_BG   = [245, 246, 248];  // --bg       #F5F6F8
 
 // jsPDF (WinAnsi) ne sait pas rendre les espaces insécables → normalisation.
-const T = s => String(s ?? "").replace(/[    ⁠ ]/g, " ");
+const T = s => String(s ?? "").replace(/[\xa0\u202f\u2009\u2007\u2060\u200a]/g, " ");
 
 // ─── Helpers partagés ────────────────────────────────────────────────────────
 

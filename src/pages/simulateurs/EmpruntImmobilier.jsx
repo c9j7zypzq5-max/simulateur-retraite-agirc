@@ -794,7 +794,7 @@ export default function EmpruntImmobilier() {
                   </button>
                 </>
               )}
-            </div>
+            </div>}
           </div>
 
           {/* ── Colonne résultats — visuellement 1e sur mobile (order 1) ── */}
@@ -839,7 +839,7 @@ export default function EmpruntImmobilier() {
                 report={report}
                 name="emprunt-immobilier"
               />
-            </div>}
+            </div>
 
             {/* Taux d'endettement */}
             {hasResult && salaire && (

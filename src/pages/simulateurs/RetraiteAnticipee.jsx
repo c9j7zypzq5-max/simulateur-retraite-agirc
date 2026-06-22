@@ -109,7 +109,6 @@ function calcRetraiteAnticipee({
   const pensionBrute = salaireBase * 0.5 * tauxProrata * coef;
 
   // Éligibilité RACL
-  const eligible = racl.eligible && ageFin <= racl.ageDepart;
 
   // Départ souhaité vs départ minimal
   const ageDepartSouhaite = ageFin;
@@ -235,9 +234,7 @@ export default function RetraiteAnticipee() {
 
   const isDecote = res.decotePct > 0;
   const isSurcote = res.surcotePct > 0;
-  const isRacl = res.racl.eligible;
 
-  const heroColor = isDecote ? "#ef4444" : isSurcote ? "#22c55e" : "var(--gold)";
 
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px" };
 

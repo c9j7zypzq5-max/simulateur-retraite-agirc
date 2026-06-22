@@ -7,7 +7,7 @@ import SimIcon from "../data/simIcons.jsx";
 import CurrencySelect from "./CurrencySelect.jsx";
 import CountrySwitch from "./CountrySwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
-import { canonicalPath, localePath } from "../i18n/paths.js";
+import { canonicalPath } from "../i18n/paths.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode, User, LogIn } from "lucide-react";
 
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
@@ -194,7 +194,6 @@ export default function Navbar({ theme, setTheme }) {
   const simsRef = useRef(null);
 
   const canonPath = canonicalPath(pathname);
-  const onSim = canonPath.startsWith("/simulateurs/");
   const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
   const current = ALL_ITEMS.find(i => i.path === canonPath);
 

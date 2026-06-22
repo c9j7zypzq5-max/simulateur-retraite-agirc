@@ -11,7 +11,7 @@ import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmt, fmtEur,
+  Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 

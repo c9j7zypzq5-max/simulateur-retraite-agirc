@@ -8,8 +8,8 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
-  NumInput, StepperInput, Toggle, AccordionSection,
-  Chip, ProgressBar, useAnimatedNumber,
+  NumInput, StepperInput, AccordionSection,
+  ProgressBar, useAnimatedNumber,
   fmt, fmtEur, SimulateurHeader,
   FaqItem,
 } from "../../components/ui.jsx";

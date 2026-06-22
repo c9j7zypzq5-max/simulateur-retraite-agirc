@@ -12,7 +12,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmt, fmtEur,
+  Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
@@ -91,7 +91,7 @@ function fromParams(p) {
   return {
     versementMensuel: Number(p.vm) || DEFAULT.versementMensuel,
     tauxAbondement:   Number(p.ta) || DEFAULT.tauxAbondement,
-    rendementAnnuel:  Number(p.r)  !== undefined ? Number(p.r)  : DEFAULT.rendementAnnuel,
+    rendementAnnuel:  Number.isFinite(Number(p.r)) ? Number(p.r) : DEFAULT.rendementAnnuel,
     duree:            Number(p.d)  || DEFAULT.duree,
     tmi:              Number(p.tmi) || DEFAULT.tmi,
   };

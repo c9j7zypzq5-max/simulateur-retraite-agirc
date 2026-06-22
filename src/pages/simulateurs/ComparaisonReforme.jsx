@@ -77,8 +77,6 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
   // --- AVANT ---
   // Départ au taux plein = dès 62 ans si trimestres suffisants, sinon décote
   const trimsManquantsAvant = Math.max(0, avant.duree - trimestres);
-  const dateDepart62 = new Date(anneeNaissance + 62, 0, 1);
-  const ageDepart62Mois = 62 * 12;
 
   // Pension si départ à 62 ans (avec éventuelle décote)
   let pensionAvant62;
@@ -97,7 +95,6 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
   const { pensionNette: pensionAvantTauxPlein, prorata: prorataAvant } = calcPension(sam, trimestres, avant.duree);
 
   // Trimestres manquants avant réforme
-  const trimsAValiderAvant = trimsManquantsAvant;
 
   // Age au taux plein avant réforme
   const trimsRestantsAvant = Math.max(0, avant.duree - trimestres);
@@ -117,7 +114,6 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
   const { pensionNette: pensionApresTauxPlein, prorata: prorataApres } = calcPension(sam, trimestres, apres.duree);
 
   // Écarts
-  const diffMoisTravail = Math.max(0, Math.round((ageTauxPleinApres - Math.max(avant.ageLegal, ageTauxPleinAvant)) * 12));
   const diffMoisLegal = Math.round((apres.ageLegalAns - avant.ageLegal) * 12);
   const diffPension = pensionApresTauxPlein - pensionAvantTauxPlein;
 

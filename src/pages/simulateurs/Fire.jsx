@@ -17,7 +17,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, Toggle, AccordionSection,
   Chip, ProgressBar, StatusBadge, useAnimatedNumber,
-  SimulateurHeader, FaqItem, FaqSection,
+  SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";

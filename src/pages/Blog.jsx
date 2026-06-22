@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
-import { useLocale } from "../i18n/index.js";
+import { useLocale } from "../lib/router.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -43,7 +43,7 @@ function ArticleImageHeader({ article, height = 120 }) {
     return (
       <img
         src={article.image}
-        alt=""
+        alt={article?.imageAlt || article?.title || ""}
         loading="lazy"
         style={{ width: "100%", height, objectFit: "cover", display: "block" }}
       />
@@ -56,7 +56,6 @@ function FeaturedArticle({ article }) {
   const [hovered, setHovered] = useState(false);
   const { locale } = useLocale();
   const isEn = locale === "en";
-  const gradient = CAT_GRADIENTS[article.category] || "linear-gradient(135deg,var(--primary),#5B8CFF)";
   const catStyle = CAT_COLORS[article.category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
   const date = article.publishedAt
     ? new Intl.DateTimeFormat(isEn ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))

@@ -9,8 +9,8 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, signFmt, SimulateurHeader,
+  ProgressBar, useAnimatedNumber,
+  fmtEur, SimulateurHeader,
   FaqItem,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";

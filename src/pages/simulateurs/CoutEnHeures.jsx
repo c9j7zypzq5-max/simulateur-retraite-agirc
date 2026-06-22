@@ -10,7 +10,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
-  NumInput, StepperInput, AccordionSection,
+  NumInput, StepperInput,
   Chip, useAnimatedNumber, fmt, SimulateurHeader, FaqItem,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";

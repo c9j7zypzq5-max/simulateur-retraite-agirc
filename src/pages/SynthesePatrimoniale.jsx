@@ -125,12 +125,12 @@ function PatrimoinePie({ parts }) {
   const CX = 80, CY = 80;
   const circumference = 2 * Math.PI * RADIUS;
 
-  let offset = 0;
-  const arcs = parts.map(p => {
+  // Décalage cumulé calculé par somme préfixe (parts est petit : 1 entrée par
+  // catégorie de patrimoine) — évite toute réassignation pendant le rendu.
+  const arcs = parts.map((p, i) => {
     const pct = p.value / total;
-    const arc = { ...p, dasharray: pct * circumference, dashoffset: -offset * circumference };
-    offset += pct;
-    return arc;
+    const offset = parts.slice(0, i).reduce((s, q) => s + q.value / total, 0);
+    return { ...p, dasharray: pct * circumference, dashoffset: -offset * circumference };
   });
 
   return (
@@ -417,7 +417,6 @@ export default function SynthesePatrimoniale() {
     return list;
   }, [byCategory]);
 
-  const hasData = metrics.pensionMensuelle || metrics.capitalFinal || metrics.valeurBien;
   const hasHistory = history.length > 0;
 
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16 };

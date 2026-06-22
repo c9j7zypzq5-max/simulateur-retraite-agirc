@@ -1,11 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
-import { useLocale } from "../i18n/index.js";
+import { useLocale } from "../lib/router.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import { autolinkTermsHtml } from "../utils/autolinkTerms.js";
+import DOMPurify from "dompurify";
 
 const CATEGORY_COLORS = {
   "FIRE":        { bg: "rgba(239,68,68,0.1)",   color: "#ef4444",   border: "rgba(239,68,68,0.25)" },
@@ -110,7 +111,12 @@ export default function Article() {
   const relatedSim = article ? CATEGORY_SIMULATEURS[article.category] : null;
 
   // Contenu enrichi : les termes connus (TAEG, PER, FIRE…) sont auto-liés vers le lexique.
-  const contentHtml = useMemo(() => autolinkTermsHtml(article?.content || ""), [article?.content]);
+  // Le HTML provient d'articles générés/stockés : on l'assainit avec DOMPurify
+  // avant injection pour neutraliser tout script ou attribut malveillant (XSS).
+  const contentHtml = useMemo(
+    () => DOMPurify.sanitize(autolinkTermsHtml(article?.content || ""), { ADD_ATTR: ["target"] }),
+    [article?.content]
+  );
 
   // Les liens injectés (/lexique/…, /simulateurs/…) sont de simples <a> : on
   // intercepte le clic pour naviguer en SPA plutôt que recharger toute la page.

@@ -9,7 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
   NumInput, AccordionSection,
@@ -157,7 +157,6 @@ export default function ImpotRevenuCH() {
   const vals = { revenuBrut, marie, canton };
   const res  = useMemo(() => calcImpot(vals), [revenuBrut, marie, canton]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
     title: "Simulateur impôt revenu Suisse 2026 — IFD + cantonal | simfinly.com",

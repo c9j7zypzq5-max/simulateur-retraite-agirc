@@ -328,7 +328,6 @@ export default function Succession() {
                   [15_932, 552_324, 20], [552_324, 902_838, 30],
                   [902_838, 1_805_677, 40], [1_805_677, null, 45],
                 ].map(([from, to, rate]) => {
-                  const inRange = res.partTaxable > from && (to === null || res.partTaxable > from);
                   const active = res.tmi * 100 === rate;
                   return (
                     <div key={rate} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, padding: "4px 8px", borderRadius: 6, background: active ? "rgba(184,147,74,0.12)" : "transparent", color: active ? "var(--gold)" : "var(--text-secondary)", fontWeight: active ? 700 : 400 }}>

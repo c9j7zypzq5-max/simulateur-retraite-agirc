@@ -10,7 +10,6 @@ import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
   fmt, fmtEur, SimulateurHeader, FaqSection,
-  FaqItem,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
@@ -686,84 +685,22 @@ export default function Cnavpl() {
         </div>
 
         {/* FAQ */}
-        <div
-          style={{
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
-            borderRadius: 16,
-            padding: "24px 20px",
-            marginTop: 20,
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontSize: "clamp(20px,4vw,26px)",
-              fontWeight: 600,
-              color: "var(--text)",
-              marginBottom: 24,
-            }}
-          >
-            Questions fréquentes — CNAVPL
-          </h2>
-          {FAQ.map(({ q, a }) => (
-            <FaqItem key={q} q={q} a={a} />
-          ))}
-          <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            Plus d'infos : <a href="https://www.cipav-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
-              cipav-retraite.fr
-            </a>{" "}
-            · <a href="https://www.lassuranceretraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
-              lassuranceretraite.fr
-            </a>
-          </p>
-        </div>
+        <FaqSection items={FAQ} title="Questions fréquentes — CNAVPL" />
+        <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
+          Plus d'infos : <a href="https://www.cipav-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+            cipav-retraite.fr
+          </a>{" "}
+          · <a href="https://www.lassuranceretraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+            lassuranceretraite.fr
+          </a>
+        </p>
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
-      <FaqSection items={FAQ} />
       <Footer />
-    </div>
-  );
-}
-
-          background: "none",
-          border: "none",
-          cursor: "pointer",
-          padding: "18px 0",
-          textAlign: "left",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Space Grotesk', sans-serif",
-            fontSize: 16,
-            fontWeight: 600,
-            color: "var(--text)",
-            lineHeight: 1.4,
-          }}
-        >
-          {q}
-        </span>
-        <span
-          aria-hidden="true"
-          style={{
-            flexShrink: 0,
-            fontSize: 18,
-            color: open ? "var(--gold)" : "var(--text-secondary)",
-          }}
-        >
-          {open ? "−" : "+"}
-        </span>
-      </button>
-      {open && (
-        <p style={{ paddingBottom: 18, paddingRight: 32, fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-          {a}
-        </p>
-      )}
     </div>
   );
 }

@@ -10,7 +10,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmt, fmtEur,
+  useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";

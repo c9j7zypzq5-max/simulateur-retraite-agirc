@@ -9,11 +9,11 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
+import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmtEur,
+  Chip, useAnimatedNumber,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 
@@ -133,7 +133,6 @@ export default function LppDeuxiemePilier() {
   const vals = { salaireBrut, age };
   const res  = useMemo(() => calcLPP(vals), [salaireBrut, age]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const shareUrl = buildShareUrl(toParams(vals));
 
   usePageMeta({
     title: "Simulateur LPP 2e pilier Suisse 2026 — Avoir & rente | simfinly.com",
@@ -182,7 +181,7 @@ export default function LppDeuxiemePilier() {
               unit="CHF"
               min={0}
               max={500_000}
-              hint={`Plafonné à CHF 88 200 pour le calcul LPP obligatoire`}
+              hint={`Plafonné à CHF\u00A088\u00A0200 pour le calcul LPP obligatoire`}
             />
 
             <StepperInput

@@ -33,7 +33,7 @@ export default function NotFound() {
           Cette page n'existe pas
         </h1>
         <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: 28, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
-          Le lien est peut-être erroné ou la page a été déplacée. Retrouvez votre chemin parmi nos 25 simulateurs gratuits.
+          Le lien est peut-être erroné ou la page a été déplacée. Retrouvez votre chemin parmi nos simulateurs gratuits.
         </p>
 
         <Link to="/" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 10, background: "var(--primary)", color: "white", border: "none", textDecoration: "none", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}>

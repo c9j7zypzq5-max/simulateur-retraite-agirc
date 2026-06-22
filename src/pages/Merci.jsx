@@ -26,6 +26,23 @@ export default function Merci() {
     return () => robots?.setAttribute('content', 'index, follow');
   }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  async function generatePdf() {
+    const pending = pendingRef.current;
+    if (!pending?.report) { setPdfReady(true); return; }
+    try {
+      const { buildReportPdfPro } = await import("../utils/pdfReport.js");
+      const cleanUrl = `${window.location.origin}${back}`;
+      await buildReportPdfPro({
+        report: pending.report,
+        url: cleanUrl,
+        name: pending.name || "simulation",
+        chartImage: pending.chartImage || null,
+      });
+      sessionStorage.removeItem(SS_KEY);
+    } catch { /* PDF generation failed silently, user can retry below */ }
+    setPdfReady(true);
+  }
+
   useEffect(() => {
     if (!sessionId) { setStatus("error"); return; }
 
@@ -46,23 +63,6 @@ export default function Merci() {
       })
       .catch(() => setStatus("error"));
   }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  async function generatePdf() {
-    const pending = pendingRef.current;
-    if (!pending?.report) { setPdfReady(true); return; }
-    try {
-      const { buildReportPdfPro } = await import("../utils/pdfReport.js");
-      const cleanUrl = `${window.location.origin}${back}`;
-      await buildReportPdfPro({
-        report: pending.report,
-        url: cleanUrl,
-        name: pending.name || "simulation",
-        chartImage: pending.chartImage || null,
-      });
-      sessionStorage.removeItem(SS_KEY);
-    } catch { /* PDF generation failed silently, user can retry below */ }
-    setPdfReady(true);
-  }
 
   async function handleRetryDownload() {
     const pending = pendingRef.current;

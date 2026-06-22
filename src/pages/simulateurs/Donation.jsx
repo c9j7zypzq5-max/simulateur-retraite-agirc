@@ -10,7 +10,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, useAnimatedNumber, fmt, fmtEur,
+  Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
@@ -236,7 +236,6 @@ export default function Donation() {
   const shareUrl = buildShareUrl(toParams(vals));
 
   const isEconomie   = res.economieFiscale > 0;
-  const isNeutral    = res.economieFiscale === 0;
   const isCouteux    = res.economieFiscale < 0;
 
   const heroColor = isEconomie ? "#22c55e" : isCouteux ? "#ef4444" : "var(--gold)";

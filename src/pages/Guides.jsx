@@ -54,7 +54,6 @@ function GuideIcon({ guide, size = 48, color = "var(--primary)" }) {
 
 function FeaturedGuide({ guide }) {
   const [hovered, setHovered] = useState(false);
-  const gradient = CAT_GRADIENTS[guide.category] || "linear-gradient(135deg,var(--primary),#5B8CFF)";
   const catStyle = CAT_COLORS[guide.category] || { color: "var(--primary)", bg: "var(--primary-soft)", border: "var(--border-gold)" };
 
   return (

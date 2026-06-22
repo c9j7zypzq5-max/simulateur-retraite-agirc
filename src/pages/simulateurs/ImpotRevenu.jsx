@@ -14,7 +14,7 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection, Toggle,
-  Chip, useAnimatedNumber, fmt, fmtEur, SimulateurHeader, FaqSection,
+  Chip, useAnimatedNumber, fmtEur, SimulateurHeader,
   FaqItem,
 } from "../../components/ui.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";

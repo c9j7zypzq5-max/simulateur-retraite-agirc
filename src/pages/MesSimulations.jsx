@@ -141,7 +141,6 @@ export default function MesSimulations() {
     }
   }
 
-  const authCtx = { user, supabaseClient: supabase };
 
   return (
     <div style={{ minHeight: "100vh", background: "#F5F6F8", fontFamily: "'Hanken Grotesk', sans-serif", color: "#0F1828" }}>
@@ -227,7 +226,7 @@ export default function MesSimulations() {
                   onClose={() => { setCompareEntries(null); setSelected(new Set()); }}
                 />
               ) : (
-                {isPro ? (
+                isPro ? (
                   <div style={{ textAlign: "center", padding: "50px 20px" }}>
                     <div style={{ fontSize: 36, marginBottom: 14 }}>⇄</div>
                     <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "#0F1828", marginBottom: 10 }}>Aucune comparaison en cours</h2>
@@ -288,7 +287,7 @@ export default function MesSimulations() {
                       </div>
                     </div>
                   </div>
-                )}
+                )
               )
             ) : (
               <>

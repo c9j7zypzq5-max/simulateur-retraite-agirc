@@ -10,7 +10,7 @@ import AdUnit from "../../components/AdUnit.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
   Chip, ProgressBar, useAnimatedNumber,
-  fmt, fmtEur, SimulateurHeader, FaqSection,
+  fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";

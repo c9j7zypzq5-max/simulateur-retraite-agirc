@@ -480,7 +480,7 @@ export default function Patrimoine() {
       sessionStorage.setItem('tracked_patrimoine', '1');
       fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: 'patrimoine' }) }).catch(() => {});
     }
-  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locale]);  
 
   useEffect(() => {
     const shared = readShareParams();

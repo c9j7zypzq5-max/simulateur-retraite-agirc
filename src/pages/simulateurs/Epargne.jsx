@@ -15,7 +15,7 @@ import ZoomableChart from "../../components/ZoomableChart.jsx";
 import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import {
   NumInput, StepperInput, AccordionSection,
-  Chip, ProgressBar, useAnimatedNumber,
+  Chip, useAnimatedNumber,
   FaqItem, SimulateurHeader,
 } from "../../components/ui.jsx";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
@@ -249,7 +249,7 @@ export default function Epargne() {
       sessionStorage.setItem('tracked_epargne', '1');
       fetch('/api/track', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: 'epargne' }) }).catch(() => {});
     }
-  }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [locale]);  
 
   useEffect(() => {
     const shared = readShareParams();
