@@ -9,7 +9,7 @@ import { prefetchRoute } from "../utils/prefetch.js";
 import { GLOSSARY } from "../data/glossaire.js";
 import { Search, X, LayoutGrid, Clock, ShieldCheck } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
-import { LocaleLink } from "../lib/router.jsx";
+import { LocaleLink, useCountry } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
 
@@ -63,6 +63,45 @@ const SIMULATEURS_FR = [
   { path: "/simulateurs/freelance-vs-salarie", title: "Freelance vs Salarié", desc: "Comparez votre revenu net disponible selon votre statut : salarié, micro-entrepreneur BIC, micro-BNC ou portage salarial. Charges sociales, IR 2025 et comparatif complet.", tag: "Finances", categories: ["Finances"], badges: ["new"], available: true },
 ];
 
+// ── BE simulators (Belgian-specific + universal subset) ──────────────────────
+const SIMULATEURS_BE = [
+  // Spécifiques Belgique
+  { path: "/simulateurs/pension-legale",     title: "Pension légale (ONSS)",               desc: "Estimez votre pension légale belge en tant que salarié, fonctionnaire ou indépendant selon vos années de carrière, votre régime et votre salaire. Barème 2025.",                                  tag: "Retraite · Belgique",  categories: ["Retraite"],    badges: ["new"], featured: true, available: true },
+  { path: "/simulateurs/impot-revenu",       title: "IPP — Impôt des personnes physiques",  desc: "Calculez votre impôt belge selon le barème IPP 2025, votre situation familiale (isolé, cohabitant, enfants à charge) et vos revenus professionnels.",                                            tag: "Fiscalité · Belgique", categories: ["Fiscalité"],   badges: ["new"], available: true },
+  { path: "/simulateurs/succession",         title: "Droits de succession (Belgique)",      desc: "Calculez les droits de succession selon le droit belge (Wallonie · Bruxelles · Flandre), le lien de parenté et l'actif net transmis. Barème 2025.",                                              tag: "Fiscalité · Belgique", categories: ["Fiscalité"],   badges: ["new"], available: true },
+  // Simulateurs universels disponibles en Belgique
+  { path: "/simulateurs/epargne",            title: "Épargne & intérêts composés",          desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.",                                                                              tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/fire",               title: "Indépendance financière (FIRE)",        desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez à quel âge vous atteindrez la liberté financière. Règle des 25x / 4%.",                                          tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/budget",             title: "Budget & Épargne 50/30/20",             desc: "Répartissez votre budget mensuel selon la règle d'or. Donut chart animé, jauges en temps réel et conseils personnalisés selon votre taux d'épargne.",                                          tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/patrimoine",         title: "Patrimoine global",                    desc: "Consolidez l'ensemble de votre patrimoine — financier, immobilier et retraite — pour visualiser votre richesse nette et sa répartition par classe d'actifs.",                                    tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/comparateur",        title: "Comparateur d'actifs",                 desc: "Comparez la performance historique d'ETF, actions et cryptos sur la période de votre choix : volatilité, drawdown et rendement annualisé.",                                                     tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/assurance-vie",      title: "Assurance-vie",                        desc: "Projetez la croissance de votre contrat et la fiscalité des gains au rachat.",                                                                                                                    tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/credit-conso",       title: "Crédit à la consommation",             desc: "Calculez la mensualité, le coût total et les intérêts de votre crédit conso à partir du TAEG et de la durée. Tableau d'amortissement inclus.",                                                  tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/emprunt-immobilier", title: "Emprunt immobilier",                   desc: "Calculez vos mensualités, votre capacité d'emprunt et le coût total du crédit.",                                                                                                                 tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",                    desc: "Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion.",                                                                     tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/cout-en-heures",     title: "Le vrai prix en heures de vie",        desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?",                                                 tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: ["new"], available: true },
+];
+
+// ── CH simulators (Swiss-specific + universal subset) ────────────────────────
+const SIMULATEURS_CH = [
+  // Spécifiques Suisse
+  { path: "/simulateurs/lpp-deuxieme-pilier", title: "LPP / 2e pilier",                    desc: "Projetez votre avoir de vieillesse et votre rente LPP à la retraite selon votre salaire coordonné, vos cotisations annuelles et le taux de conversion. Simulation selon la LSS 2025.",         tag: "Retraite · Suisse",    categories: ["Retraite"],    badges: ["new"], featured: true, available: true },
+  { path: "/simulateurs/prevoyance-ch",       title: "Prévoyance · Pilier 3a",             desc: "Estimez le capital accumulé sur votre pilier 3a selon vos versements annuels, le rendement projeté et l'horizon retraite. Déduction fiscale cantonale calculée.",                               tag: "Retraite · Suisse",    categories: ["Retraite"],    badges: ["new"], available: true },
+  { path: "/simulateurs/impot-revenu-ch",     title: "Impôt sur le revenu (Suisse)",       desc: "Calculez votre impôt fédéral direct et cantonal (Vaud, Genève, Zurich…) selon vos revenus, votre situation familiale et les déductions applicables. Barème 2025.",                             tag: "Fiscalité · Suisse",   categories: ["Fiscalité"],   badges: ["new"], available: true },
+  // Simulateurs universels pertinents pour la Suisse
+  { path: "/simulateurs/rente-capital",       title: "Rente viagère vs retrait programmé", desc: "Comparez deux stratégies de liquidation de votre capital retraite (2e pilier, 3a) : rente viagère à vie ou retrait programmé sur une durée choisie. Point de bascule calculé.",                tag: "Retraite · Stratégie", categories: ["Retraite"],    badges: ["new"], available: true },
+  { path: "/simulateurs/epargne",             title: "Épargne & intérêts composés",        desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.",                                                                              tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/fire",                title: "Indépendance financière (FIRE)",      desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez à quel âge vous atteindrez la liberté financière. Règle des 25x / 4%.",                                          tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/budget",              title: "Budget & Épargne 50/30/20",           desc: "Répartissez votre budget mensuel selon la règle d'or. Donut chart animé, jauges en temps réel et conseils personnalisés.",                                                                       tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/patrimoine",          title: "Patrimoine global",                  desc: "Consolidez l'ensemble de votre patrimoine — financier, immobilier et retraite — pour visualiser votre richesse nette et sa répartition par classe d'actifs.",                                    tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/inflation",           title: "Inflation & pouvoir d'achat",        desc: "Mesurez l'érosion de votre budget mensuel selon votre profil de consommation et visualisez l'impact sur 10, 20 ou 30 ans.",                                                                      tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/comparateur",         title: "Comparateur d'actifs",               desc: "Comparez la performance historique d'ETF, actions et cryptos sur la période de votre choix : volatilité, drawdown et rendement annualisé.",                                                     tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/emprunt-immobilier",  title: "Emprunt immobilier",                 desc: "Calculez vos mensualités, votre capacité d'emprunt et le coût total du crédit.",                                                                                                                  tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/rendement-locatif",   title: "Rendement locatif",                  desc: "Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion.",                                                                     tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/credit-conso",        title: "Crédit à la consommation",           desc: "Calculez la mensualité, le coût total et les intérêts de votre crédit conso à partir du TAEG et de la durée.",                                                                                   tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/cout-en-heures",      title: "Le vrai prix en heures de vie",      desc: "Convertissez n'importe quel achat en heures de travail réelles.",                                                                                                                                 tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: ["new"], available: true },
+];
+
 // ── EN simulators (universal subset, English content) ────────────────────────
 const SIMULATEURS_EN = [
   { path: "/simulateurs/fire", title: "FIRE Calculator", desc: "Calculate the net worth you need to live off your investments and the age at which you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones.", tag: "Finance · FIRE", categories: ["Finance"], badges: ["popular"], featured: true, available: true },
@@ -76,6 +115,8 @@ const SIMULATEURS_EN = [
 ];
 
 const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Outils"];
+const FILTERS_BE = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
+const FILTERS_CH = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_EN = ["All", "Finance", "Tools"];
 
 const TXT = {
@@ -102,6 +143,66 @@ const TXT = {
     emptyCategory: "Aucun simulateur dans cette catégorie pour l'instant.",
     lexiqueSection: "Dans le lexique",
     blogSection: "Dans le blog",
+    ctaFeatured: "Simuler maintenant →",
+    ctaCard: "Simuler →",
+    badgePopular: "★ Populaire",
+    badgeUpdated: "Mis à jour 2026",
+    badgeNew: "Nouveau",
+    defaultFilter: "Tous",
+  },
+  be: {
+    docTitle: "Simfinly.com — Simulateurs gratuits retraite, fiscalité & finances (Belgique)",
+    docDesc: (n) => `Simulez votre pension légale ONSS, votre IPP, vos droits de succession et votre épargne. ${n} simulateurs gratuits adaptés à la législation belge.`,
+    heroBadge: "Retraite · Fiscalité · Finances · Immobilier",
+    heroTitle: "Simulez vos grandes décisions",
+    heroEm: "avec la fiscalité belge",
+    heroDesc: "Des simulateurs gratuits, précis et pédagogiques adaptés à la législation belge — pension légale ONSS, IPP, droits de succession et épargne.",
+    stat1Label: "simulateurs actifs",
+    stat2: "30 s",
+    stat2Label: "pour une première estimation",
+    stat3: "100 %",
+    stat3Label: "gratuit & sans inscription",
+    simCountFmt: (n) => n.toLocaleString("fr-BE"),
+    simCountLabel: "simulations réalisées",
+    searchPlaceholder: "Rechercher un simulateur (pension, IPP, succession, FIRE…)",
+    searchAriaLabel: "Rechercher un simulateur",
+    clearSearch: "Effacer la recherche",
+    filterPrefix: "Filtrer :",
+    gridTitle: "Simulateurs disponibles",
+    emptyQuery: (q) => `Aucun simulateur ne correspond à « ${q} ».`,
+    emptyCategory: "Aucun simulateur dans cette catégorie pour l'instant.",
+    lexiqueSection: null,
+    blogSection: null,
+    ctaFeatured: "Simuler maintenant →",
+    ctaCard: "Simuler →",
+    badgePopular: "★ Populaire",
+    badgeUpdated: "Mis à jour 2026",
+    badgeNew: "Nouveau",
+    defaultFilter: "Tous",
+  },
+  ch: {
+    docTitle: "Simfinly.com — Simulateurs gratuits LPP, pilier 3a, fiscalité & finances (Suisse)",
+    docDesc: (n) => `Simulez votre 2e pilier LPP, pilier 3a, impôts et épargne. ${n} simulateurs gratuits adaptés au droit suisse.`,
+    heroBadge: "Retraite LPP · Pilier 3a · Fiscalité · Finances",
+    heroTitle: "Simulez vos grandes décisions",
+    heroEm: "avec le droit suisse",
+    heroDesc: "Des simulateurs gratuits et précis pour vos décisions financières — 2e pilier LPP, prévoyance 3a, fiscalité cantonale et épargne.",
+    stat1Label: "simulateurs actifs",
+    stat2: "30 s",
+    stat2Label: "pour une première estimation",
+    stat3: "100 %",
+    stat3Label: "gratuit & sans inscription",
+    simCountFmt: (n) => n.toLocaleString("fr-CH"),
+    simCountLabel: "simulations réalisées",
+    searchPlaceholder: "Rechercher un simulateur (LPP, pilier 3a, impôts, FIRE…)",
+    searchAriaLabel: "Rechercher un simulateur",
+    clearSearch: "Effacer la recherche",
+    filterPrefix: "Filtrer :",
+    gridTitle: "Simulateurs disponibles",
+    emptyQuery: (q) => `Aucun simulateur ne correspond à « ${q} ».`,
+    emptyCategory: "Aucun simulateur dans cette catégorie pour l'instant.",
+    lexiqueSection: null,
+    blogSection: null,
     ctaFeatured: "Simuler maintenant →",
     ctaCard: "Simuler →",
     badgePopular: "★ Populaire",
@@ -275,11 +376,13 @@ function FilterBar({ activeFilter, setActiveFilter, filters, filterPrefix }) {
 export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
-  const txt = TXT[locale] ?? TXT.fr;
+  const country = useCountry();
+  const txtKey = locale === 'en' ? 'en' : country === 'ch' ? 'ch' : country === 'be' ? 'be' : 'fr';
+  const txt = TXT[txtKey] ?? TXT.fr;
   useAuth();
 
-  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : SIMULATEURS_FR;
-  const FILTERS = locale === 'en' ? FILTERS_EN : FILTERS_FR;
+  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : country === 'ch' ? SIMULATEURS_CH : country === 'be' ? SIMULATEURS_BE : SIMULATEURS_FR;
+  const FILTERS = locale === 'en' ? FILTERS_EN : country === 'ch' ? FILTERS_CH : country === 'be' ? FILTERS_BE : FILTERS_FR;
 
   const [activeFilter, setActiveFilter] = useState(txt.defaultFilter);
   const [query, setQuery] = useState(() => {
@@ -323,7 +426,7 @@ export default function Home() {
 
     const t = setTimeout(() => setCardsVisible(true), 100);
     return () => clearTimeout(t);
-  }, [locale]);
+  }, [locale, country]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Reset filter when locale changes
   useEffect(() => {

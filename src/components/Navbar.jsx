@@ -145,11 +145,28 @@ const BE_NAV_GROUPS = [
 /* ── Données de navigation Suisse ── */
 const CH_NAV_GROUPS = [
   { id: "retraite", icon: "🏦", label: "Retraite", items: [
-    { path: "/simulateurs/lpp-deuxieme-pilier", title: "LPP / 2e pilier", subtitle: "Avoir & rente projetés" },
-    { path: "/simulateurs/prevoyance-ch",       title: "Pilier 3a",        subtitle: "Épargne retraite déductible" },
+    { path: "/simulateurs/lpp-deuxieme-pilier", title: "LPP / 2e pilier",           subtitle: "Avoir & rente projetés" },
+    { path: "/simulateurs/prevoyance-ch",       title: "Pilier 3a",                  subtitle: "Épargne retraite déductible" },
+    { path: "/simulateurs/rente-capital",       title: "Rente vs retrait programmé", subtitle: "Stratégie de liquidation" },
   ]},
   { id: "impots", icon: "📋", label: "Fiscalité", items: [
-    { path: "/simulateurs/impot-revenu-ch", title: "Impôt sur le revenu", subtitle: "Fédéral + cantonal (Vaud)" },
+    { path: "/simulateurs/impot-revenu-ch", title: "Impôt sur le revenu", subtitle: "Fédéral + cantonal" },
+  ]},
+  { id: "finances", icon: "💰", label: "Finances", items: [
+    { path: "/simulateurs/epargne",     title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
+    { path: "/simulateurs/fire",        title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
+    { path: "/simulateurs/budget",      title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
+    { path: "/simulateurs/patrimoine",  title: "Patrimoine global",           subtitle: "Financier + immo + retraite" },
+    { path: "/simulateurs/comparateur", title: "Comparateur d'actifs",        subtitle: "ETF, actions, crypto…" },
+    { path: "/simulateurs/inflation",   title: "Inflation & pouvoir d'achat", subtitle: "Impact sur votre budget" },
+    { path: "/simulateurs/credit-conso",title: "Crédit conso",                subtitle: "Mensualité & coût total" },
+  ]},
+  { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
+    { path: "/simulateurs/emprunt-immobilier", title: "Emprunt immobilier", subtitle: "Mensualités & capacité" },
+    { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",  subtitle: "Rentabilité nette" },
+  ]},
+  { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
+    { path: "/simulateurs/cout-en-heures", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
   ]},
 ];
 

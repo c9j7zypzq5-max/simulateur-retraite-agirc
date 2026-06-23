@@ -174,6 +174,20 @@ export default function App() {
         <Route path="/ch/simulateurs/lpp-deuxieme-pilier" element={<LppDeuxiemePilier />} />
         <Route path="/ch/simulateurs/impot-revenu-ch" element={<ImpotRevenuCH />} />
         <Route path="/ch/simulateurs/prevoyance-ch" element={<PrevoyanceCH />} />
+        {/* Simulateurs universels accessibles sous /ch/ — même composant que FR */}
+        <Route path="/ch/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/ch/simulateurs/fire" element={<Fire />} />
+        <Route path="/ch/simulateurs/budget" element={<Budget />} />
+        <Route path="/ch/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/ch/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/ch/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/ch/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/ch/simulateurs/vie-en-semaines" element={<VieEnSemaines />} />
+        <Route path="/ch/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
+        <Route path="/ch/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/ch/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        <Route path="/ch/simulateurs/rente-capital" element={<RenteCapital />} />
+        <Route path="/ch/simulateurs/inflation" element={<Inflation />} />
         <Route path="/ch/mentions-legales" element={<MentionsLegales />} />
         <Route path="/ch/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}

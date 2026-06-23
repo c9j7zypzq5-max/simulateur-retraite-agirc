@@ -37,9 +37,24 @@ export const EN_ROUTES = new Set(Object.keys(EN_PATH_MAP));
 
 // Routes disponibles en Suisse.
 export const CH_ROUTES = new Set([
+  '/',
   '/simulateurs/lpp-deuxieme-pilier',
   '/simulateurs/impot-revenu-ch',
   '/simulateurs/prevoyance-ch',
+  // Simulateurs universels disponibles sous /ch/
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/credit-conso',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/vie-en-semaines',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  '/simulateurs/rente-capital',
+  '/simulateurs/inflation',
   '/mentions-legales',
   '/politique-de-confidentialite',
 ]);
