@@ -11,6 +11,7 @@ export default function CountrySwitch({ compact = false }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [openUp, setOpenUp] = useState(false);
   const ref = useRef(null);
 
   const locale = localeFromPath(pathname);
@@ -59,10 +60,25 @@ export default function CountrySwitch({ compact = false }) {
 
   const current = options.find(o => o.code === country) ?? options[0];
 
+  // Hauteur estimée du menu (4 options × ~48 px + marges)
+  const MENU_HEIGHT = options.length * 48 + 16;
+
+  const handleToggle = () => {
+    if (!open && ref.current) {
+      const rect = ref.current.getBoundingClientRect();
+      setOpenUp(window.innerHeight - rect.bottom < MENU_HEIGHT);
+    }
+    setOpen(v => !v);
+  };
+
+  const dropdownPos = openUp
+    ? { bottom: '100%', marginBottom: 6 }
+    : { top: '100%', marginTop: 6 };
+
   return (
     <div ref={ref} style={{ position: 'relative' }}>
       <button
-        onClick={() => setOpen(v => !v)}
+        onClick={handleToggle}
         aria-expanded={open}
         aria-haspopup="listbox"
         title="Changer de pays / Switch country"
@@ -89,7 +105,7 @@ export default function CountrySwitch({ compact = false }) {
         <div
           role="listbox"
           style={{
-            position: 'absolute', top: '100%', right: 0, marginTop: 6,
+            position: 'absolute', right: 0, ...dropdownPos,
             background: 'var(--surface)',
             border: '1px solid var(--border)',
             borderRadius: 10,
