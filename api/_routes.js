@@ -263,14 +263,14 @@ export const COMPARATIFS_SLUGS = COMPARATIFS.map(c => `/comparatifs/${c.slug}`);
 // PNG (pas SVG) : c'est le format réellement rendu par Facebook/LinkedIn/X.
 // Régénérables depuis les SVG via : node scripts/generate-og-png.mjs
 export const OG_IMAGE_BY_CAT = {
-  Retraite:   '/og-retraite.png',
-  Immobilier: '/og-immobilier.png',
-  Impôts:     '/og-impots.png',
-  Finances:   '/og-finances.png',
-  FIRE:       '/og-finances.png',
-  Budget:     '/og-finances.png',
+  Retraite:   '/og-retraite.webp',
+  Immobilier: '/og-immobilier.webp',
+  Impôts:     '/og-impots.webp',
+  Finances:   '/og-finances.webp',
+  FIRE:       '/og-finances.webp',
+  Budget:     '/og-finances.webp',
 };
-export const OG_IMAGE_DEFAULT = '/og-image.png';
+export const OG_IMAGE_DEFAULT = '/og-image.webp';
 
 export function ogImageForRoute(route) {
   const meta = ROUTE_META[route];

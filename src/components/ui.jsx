@@ -6,6 +6,8 @@ import { useExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import AutoLinkText from "./AutoLinkText.jsx";
 import JsonLd from "./JsonLd.jsx";
+import { NAV_GROUPS } from "./Navbar.jsx";
+import { canonicalPath } from "../i18n/paths.js";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -376,6 +378,44 @@ function HeaderBreadcrumb() {
   );
 }
 
+// ─── Chips "Voir aussi" (3 simulateurs du même groupe) ────────────────────────
+function SimulateurVoirAussi() {
+  const { pathname } = useLocation();
+  const canon = canonicalPath(pathname);
+  if (!canon.startsWith('/simulateurs/')) return null;
+  const group = NAV_GROUPS.find(g => g.items.some(i => i.path === canon));
+  if (!group) return null;
+  const siblings = group.items.filter(i => i.path !== canon).slice(0, 3);
+  if (!siblings.length) return null;
+  const countryPrefix = /^\/(ch|be)\//.test(pathname)
+    ? '/' + pathname.split('/')[1]
+    : '';
+  return (
+    <div role="navigation" aria-label="Voir aussi" style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
+      {siblings.map(s => (
+        <Link
+          key={s.path}
+          to={`${countryPrefix}${s.path}`}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            padding: '4px 12px', borderRadius: 20,
+            background: 'var(--chip-bg)', border: '1px solid var(--border)',
+            textDecoration: 'none', fontSize: 12,
+            color: 'var(--text-secondary)',
+            fontFamily: "'Hanken Grotesk', sans-serif",
+            transition: 'border-color 0.15s, color 0.15s',
+          }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--primary)'; e.currentTarget.style.color = 'var(--primary)'; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--text-secondary)'; }}
+        >
+          <span aria-hidden="true">{s.icon}</span>
+          <span>{s.title}</span>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 // ─── SimulateurHeader ─────────────────────────────────────────────────────────
 export function SimulateurHeader({ icon, badge, title, subtitle, desc, baremePath }) {
   return (
@@ -397,6 +437,7 @@ export function SimulateurHeader({ icon, badge, title, subtitle, desc, baremePat
       </div>
       {subtitle && <p style={{ fontSize: 13, color: "var(--gold-mid)", letterSpacing: "0.05em", marginBottom: 12 }}><AutoLinkText>{subtitle}</AutoLinkText></p>}
       {desc && <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 580, margin: "0 auto" }}><AutoLinkText>{desc}</AutoLinkText></p>}
+      <SimulateurVoirAussi />
     </div>
   );
 }
