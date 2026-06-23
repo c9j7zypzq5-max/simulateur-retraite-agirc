@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar.jsx";
 import JsonLd from "./components/JsonLd.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import ShareBar from "./components/ShareBar.jsx";
+import SimRecommendations from "./components/SimRecommendations.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -695,6 +696,27 @@ export default function SimulateurRetraite() {
         </div>
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} report={report} name="agirc-arrco" />
+
+        {/* ── Recommandations contextuelles ── */}
+        {hasResult && (() => {
+          const items = [];
+          if (res.pensionNette < 800) {
+            items.push({ icon: "🏦", label: "Boostez votre retraite avec un PER", description: `Votre complémentaire estimée (${fmtEur(Math.round(res.pensionNette))}/mois) est faible. Un Plan d'Épargne Retraite peut combler l'écart.`, to: "/simulateurs/per", cta: "Simuler le PER →" });
+          }
+          if (ageDépart !== null && ageDépart < 67) {
+            const gainDelai = calcResult({ salaire, anneesFaites, anneesRestantes: (anneesRestantes ?? 0) + 1, evolutionSalaire, tauxReval, ageDépart: ageDépart + 1, bonus3Enfants: false, estCadre }).pensionNette - res.pensionNette;
+            if (gainDelai > 30) {
+              items.push({ icon: "⏳", label: "Travailler 1 an de plus : +" + fmtEur(Math.round(gainDelai)) + "/mois", description: `Partir à ${ageDépart + 1} ans plutôt qu'à ${ageDépart} ans vous rapporterait ${fmtEur(Math.round(gainDelai * 12))} de plus par an.`, to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" });
+            }
+          }
+          items.push({ icon: "🧾", label: "Estimez votre retraite de base (CNAV)", description: "La retraite complémentaire Agirc-Arrco s'ajoute à la pension de base Assurance Retraite (CNAV). Calculez les deux pour une vision complète.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" });
+          if (salaire && salaire > 4000) {
+            items.push({ icon: "💡", label: "Optimisez votre fiscalité avec un PER", description: "Les versements sur un PER sont déductibles de votre revenu imposable, ce qui peut générer une économie d'impôt significative.", to: "/simulateurs/per", cta: "Calculer l'économie →" });
+          } else {
+            items.push({ icon: "📊", label: "Comparez vos scénarios de départ", description: "Utilisez le simulateur de synthèse pour comparer tous vos régimes (base + complémentaire) selon l'âge de départ.", to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" });
+          }
+          return <SimRecommendations items={items.slice(0, 3)} />;
+        })()}
 
         {/* ── Comparateur ── */}
         <AccordionSection title="Comparer deux scénarios" subtitle="Simulez un départ ou un salaire différent et comparez les pensions côte à côte" gold>

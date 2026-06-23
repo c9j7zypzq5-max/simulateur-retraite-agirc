@@ -80,6 +80,7 @@ const EpargneSalariale   = lazy(() => import("./pages/simulateurs/EpargneSalaria
 const DeficitFoncier     = lazy(() => import("./pages/simulateurs/DeficitFoncier.jsx"));
 const FraisNotaire       = lazy(() => import("./pages/simulateurs/FraisNotaire.jsx"));
 const PensionReversion   = lazy(() => import("./pages/simulateurs/PensionReversion.jsx"));
+const RenteCapital       = lazy(() => import("./pages/simulateurs/RenteCapital.jsx"));
 // Simulateurs belges
 const ImpotRevenuBE  = lazy(() => import("./pages/simulateurs/ImpotRevenuBE.jsx"));
 const PensionLegaleBE = lazy(() => import("./pages/simulateurs/PensionLegaleBE.jsx"));
@@ -186,6 +187,7 @@ export default function App() {
         <Route path="/simulateurs/msa" element={<Msa />} />
         <Route path="/simulateurs/per" element={<Per />} />
         <Route path="/simulateurs/pension-reversion" element={<PensionReversion />} />
+        <Route path="/simulateurs/rente-capital" element={<RenteCapital />} />
         <Route path="/simulateurs/synthese-retraite" element={<SyntheseRetraite />} />
         {/* Immobilier */}
         <Route path="/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />

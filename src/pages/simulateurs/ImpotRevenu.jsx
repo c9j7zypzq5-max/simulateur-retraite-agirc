@@ -5,6 +5,7 @@ import { track } from '@vercel/analytics';
 import ShareBar from "../../components/ShareBar.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import SimRecommendations from "../../components/SimRecommendations.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useTheme } from "../../hooks/useTheme.js";
@@ -359,6 +360,18 @@ export default function ImpotRevenu() {
                 name="impot-revenu"
               />
               <AffiliateCTA type="assurance-vie" />
+              {hasResult && (() => {
+                const tmiPct = Math.round((res.tmi ?? 0) * 100);
+                const items = [];
+                if (tmiPct >= 30) {
+                  items.push({ icon: "🏦", label: "Réduisez votre impôt avec un PER", description: `À ${tmiPct} % de TMI, chaque euro versé sur un PER individuel vous économise ${tmiPct} centimes d'impôt.`, to: "/simulateurs/per", cta: "Calculer l'économie →" });
+                }
+                if (tmiPct >= 11) {
+                  items.push({ icon: "📈", label: "Investissez via une assurance-vie", description: "L'assurance-vie offre une fiscalité avantageuse après 8 ans. Idéale pour optimiser votre épargne long terme.", to: "/simulateurs/assurance-vie", cta: "Simuler →" });
+                }
+                items.push({ icon: "🏠", label: "Déduisez des charges foncières", description: "Si vous percevez des loyers, le régime réel vous permet de déduire charges et intérêts d'emprunt de vos revenus.", to: "/simulateurs/rendement-locatif", cta: "Simuler →" });
+                return <SimRecommendations items={items.slice(0, 3)} title="Optimisez votre fiscalité" />;
+              })()}
               <ScenarioCompare
                 name="impot-revenu"
                 base={{ revenuBrut, nbEnfants }}

@@ -6,7 +6,64 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import SimIcon from "../data/simIcons.jsx";
-import { BarChart3, Clock, TrendingUp, ArrowRight, Heart, Target, AlertCircle } from "lucide-react";
+import { BarChart3, Clock, TrendingUp, ArrowRight, Heart, Target, AlertCircle, X } from "lucide-react";
+import { FISCAL_VERSION, FISCAL_CHANGES } from "../config/constants.js";
+
+const FISCAL_ACK_KEY = "mesim_fiscal_ack";
+
+// ─── Alerte changements fiscaux ──────────────────────────────────────────────
+function FiscalAlertBanner({ hasHistory }) {
+  const [visible, setVisible] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const ack = localStorage.getItem(FISCAL_ACK_KEY);
+    if (ack !== FISCAL_VERSION && hasHistory) setVisible(true);
+  }, [hasHistory]);
+
+  function dismiss() {
+    localStorage.setItem(FISCAL_ACK_KEY, FISCAL_VERSION);
+    setVisible(false);
+  }
+
+  if (!visible) return null;
+
+  return (
+    <div style={{ background: "rgba(184,147,74,0.08)", border: "1px solid rgba(184,147,74,0.35)", borderRadius: 14, padding: "14px 18px", marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+        <div style={{ display: "flex", alignItems: "flex-start", gap: 10, flex: 1 }}>
+          <span style={{ fontSize: 18, flexShrink: 0 }}>📢</span>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: 14, color: "var(--text)", marginBottom: 4 }}>
+              Paramètres fiscaux {FISCAL_VERSION} mis à jour
+            </div>
+            <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: expanded ? 12 : 0 }}>
+              Le PASS, les tranches IR et la valeur du point Agirc-Arrco ont été revalorisés.
+              Vos simulations affichent désormais les valeurs {FISCAL_VERSION}.
+              {" "}<button onClick={() => setExpanded(e => !e)} style={{ background: "none", border: "none", color: "var(--gold)", cursor: "pointer", fontSize: 13, padding: 0, fontFamily: "inherit" }}>
+                {expanded ? "Masquer le détail ↑" : "Voir le détail ↓"}
+              </button>
+            </div>
+            {expanded && (
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
+                {FISCAL_CHANGES.map(({ label, value, prev, delta, icon }) => (
+                  <div key={label} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "8px 12px", fontSize: 12, minWidth: 160 }}>
+                    <div style={{ fontWeight: 600, color: "var(--text)", marginBottom: 2 }}>{icon} {label}</div>
+                    <div style={{ color: "var(--gold)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>{value}</div>
+                    <div style={{ color: "var(--text-secondary)", fontSize: 11, marginTop: 2 }}>Avant : {prev} · {delta}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        <button onClick={dismiss} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-secondary)", padding: 0, flexShrink: 0, display: "flex" }} aria-label="Fermer">
+          <X size={16} />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 const QUICK_ACCESS = [
   { path: "/simulateurs/synthese-retraite", label: "Synthèse retraite", category: "Retraite" },
@@ -161,6 +218,83 @@ function KeyIndicatorsPanel({ history }) {
   );
 }
 
+// ─── Suivi temporel ──────────────────────────────────────────────────────────
+function SimEvolutionChart({ history }) {
+  // Group entries by simulator slug, pick the one with most entries
+  const grouped = useMemo(() => {
+    const map = {};
+    for (const e of history) {
+      if (!e.reportSnapshot?.highlight?.value) continue;
+      const p = e.shareUrl?.split("?")[0] ?? "";
+      const slug = p.replace(/.*\/simulateurs\//, "").replace(/.*\//, "") || "autre";
+      if (!map[slug]) map[slug] = [];
+      map[slug].push(e);
+    }
+    // Only groups with 2+ entries
+    const eligible = Object.entries(map).filter(([, v]) => v.length >= 2);
+    if (!eligible.length) return null;
+    // Pick group with most entries
+    eligible.sort((a, b) => b[1].length - a[1].length);
+    const [slug, entries] = eligible[0];
+    const sorted = [...entries].sort((a, b) => new Date(a.savedAt) - new Date(b.savedAt));
+    return { slug, entries: sorted };
+  }, [history]);
+
+  if (!grouped) return null;
+
+  const { slug, entries } = grouped;
+  const label = entries[0].reportSnapshot?.highlight?.label ?? slug;
+  const values = entries.map(e => {
+    const raw = e.reportSnapshot?.highlight?.value ?? "0";
+    return parseFloat(raw.replace(/[^\d.,]/g, "").replace(",", ".")) || 0;
+  });
+  const maxVal = Math.max(...values, 1);
+  const minVal = Math.min(...values);
+  const range  = maxVal - minVal || 1;
+  const H = 60;
+
+  const points = entries.map((e, i) => {
+    const x = values.length === 1 ? 50 : (i / (values.length - 1)) * 100;
+    const y = H - ((values[i] - minVal) / range) * (H - 8) - 4;
+    return { x, y, val: values[i], date: e.savedAt };
+  });
+
+  const trend = values[values.length - 1] >= values[0] ? "#22c55e" : "#ef4444";
+  const polyline = points.map(p => `${p.x},${p.y}`).join(" ");
+
+  return (
+    <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px", marginBottom: 20 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, margin: "0 0 4px" }}>
+        Évolution de votre simulation
+      </h2>
+      <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 16 }}>
+        {label} · <strong style={{ color: trend }}>{entries.length} sauvegardes</strong>
+      </div>
+      <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" style={{ width: "100%", height: H, display: "block", overflow: "visible" }}>
+        {/* Area fill */}
+        <polygon
+          points={`0,${H} ${polyline} 100,${H}`}
+          fill={`${trend}22`}
+          stroke="none"
+        />
+        {/* Line */}
+        <polyline points={polyline} fill="none" stroke={trend} strokeWidth={1.5} strokeLinejoin="round" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+        {/* Points */}
+        {points.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r={3} fill={trend} vectorEffect="non-scaling-stroke" />
+        ))}
+      </svg>
+      <div style={{ display: "flex", justifyContent: "space-between", marginTop: 8, fontSize: 11, color: "var(--text-secondary)" }}>
+        <span>{new Date(entries[0].savedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</span>
+        <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 13, color: trend }}>
+          {entries[entries.length - 1].reportSnapshot?.highlight?.value}
+        </span>
+        <span>{new Date(entries[entries.length - 1].savedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</span>
+      </div>
+    </div>
+  );
+}
+
 function StatCard({ icon, value, label }) {
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px", display: "flex", alignItems: "center", gap: 16 }}>
@@ -305,6 +439,9 @@ export default function TableauDeBord() {
           </div>
         )}
 
+        {/* Alerte changements fiscaux */}
+        <FiscalAlertBanner hasHistory={history.length > 0} />
+
         {/* Stats */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 14, marginBottom: 32 }}>
           <StatCard icon={<BarChart3 size={20} />} value={simCountValue} label={simCountLabel} />
@@ -342,6 +479,9 @@ export default function TableauDeBord() {
             </div>
           </div>
         )}
+
+        {/* Suivi temporel */}
+        <SimEvolutionChart history={history} />
 
         {/* Indicateurs clés */}
         <KeyIndicatorsPanel history={history} />
