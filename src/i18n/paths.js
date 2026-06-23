@@ -18,6 +18,8 @@ const EN_PATH_MAP = {
   '/outils/qr-code':                 '/tools/qr-code',
   '/mentions-legales':               '/legal-notice',
   '/politique-de-confidentialite':   '/privacy-policy',
+  '/simulateurs/rente-capital':      '/simulators/annuity-vs-withdrawal',
+  '/simulateurs/inflation':          '/simulators/inflation',
   '/connexion':                      '/login',
   '/compte':                         '/account',
   '/pro':                            '/pro',

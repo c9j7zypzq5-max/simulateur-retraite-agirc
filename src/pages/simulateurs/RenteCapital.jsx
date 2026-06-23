@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
+import { useTranslation } from "../../i18n/index.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
@@ -73,6 +74,7 @@ function calcRetrait({ capital, rendement, horizon, tmi }) {
 
 export default function RenteCapital() {
   const [theme, setTheme] = useTheme();
+  const { locale } = useTranslation();
   usePageMeta(
     "Rente viagère vs retrait programmé — simulateur 2026",
     "Comparez une rente viagère et un retrait programmé sur votre épargne retraite (PER, assurance-vie). Calculez le revenu mensuel net et le point de bascule selon votre espérance de vie."
@@ -123,7 +125,7 @@ export default function RenteCapital() {
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "inLanguage": "fr-FR",
+        "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "FAQPage",

@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
+import { useTranslation } from "../../i18n/index.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
@@ -77,6 +78,7 @@ function calcInflation({ budget, horizon, rates }) {
 
 export default function Inflation() {
   const [theme, setTheme] = useTheme();
+  const { locale } = useTranslation();
   usePageMeta(
     "Simulateur d'inflation personnalisé — pouvoir d'achat 2026",
     "Mesurez l'érosion de votre pouvoir d'achat selon vos habitudes de consommation. Personnalisez le taux d'inflation par catégorie (alimentation, logement, santé…) et visualisez l'impact sur votre budget."
@@ -113,7 +115,7 @@ export default function Inflation() {
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "inLanguage": "fr-FR",
+        "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "FAQPage",
