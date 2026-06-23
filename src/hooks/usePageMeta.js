@@ -1,9 +1,10 @@
 import { useEffect } from "react";
+import { ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, BASE } from "../../api/_routes.js";
 
 // Met à jour les métadonnées de la page lors de la navigation côté client (SPA).
 // Le HTML statique pré-rendu (scripts/generate-static-html.mjs) couvre déjà les
 // crawlers ; ce hook garde la cohérence quand l'utilisateur navigue sans
-// rechargement : title, description, Open Graph, Twitter Card et canonical.
+// rechargement : title, description, Open Graph, Twitter Card, og:image et canonical.
 export function usePageMeta(title, description) {
   useEffect(() => {
     const setAttr = (selector, value) => {
@@ -34,5 +35,21 @@ export function usePageMeta(title, description) {
       document.head.appendChild(link);
     }
     link.href = canonicalUrl;
+
+    // og:image + twitter:image : image de catégorie brandée (/api/og).
+    // Évite que la navigation SPA laisse l'image générique de la home sur les
+    // pages simulateurs visitées après une navigation interne.
+    let canonPath = window.location.pathname;
+    if (canonPath.startsWith('/en/')) canonPath = canonPath.slice(3);
+    else if (canonPath.startsWith('/be/')) canonPath = canonPath.slice(3);
+    else if (canonPath.startsWith('/ch/')) canonPath = canonPath.slice(3);
+    const meta = ROUTE_META[canonPath];
+    if (meta) {
+      const ogImg = meta.cat && OG_IMAGE_BY_CAT[meta.cat]
+        ? `${BASE}/api/og?${new URLSearchParams({ t: meta.title, c: meta.cat }).toString()}`
+        : `${BASE}${OG_IMAGE_DEFAULT}`;
+      setAttr('meta[property="og:image"]', ogImg);
+      setAttr('meta[name="twitter:image"]', ogImg);
+    }
   }, [title, description]);
 }

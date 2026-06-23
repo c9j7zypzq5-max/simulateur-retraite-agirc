@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ACCOUNT_ENABLED } from "./config/features.js";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
-import { CurrencyProvider } from "./i18n/CurrencyContext.jsx";
+import { CurrencyProvider, useMoney } from "./i18n/CurrencyContext.jsx";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
@@ -100,6 +100,19 @@ const ImpotRevenuCH          = lazy(() => import("./pages/simulateurs/ImpotReven
 const PrevoyanceCH           = lazy(() => import("./pages/simulateurs/PrevoyanceCH.jsx"));
 const ComparaisonReforme     = lazy(() => import("./pages/simulateurs/ComparaisonReforme.jsx"));
 
+// Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
+// Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
+function CurrencyLocaleSync() {
+  const { pathname } = useLocation();
+  const { suggestCurrency } = useMoney();
+  useEffect(() => {
+    if (pathname.startsWith('/en') ) suggestCurrency('USD');
+    else if (pathname.startsWith('/ch')) suggestCurrency('CHF');
+    else suggestCurrency('EUR');
+  }, [pathname, suggestCurrency]);
+  return null;
+}
+
 // Remonte en haut de page à chaque changement de route (navigation interne).
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -124,6 +137,7 @@ export default function App() {
     <VideoRecordingProvider>
     <CurrencyProvider>
     <BrowserRouter>
+      <CurrencyLocaleSync />
       <ScrollToTop />
       <HreflangTags />
       <VideoRecordingToast />

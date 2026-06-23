@@ -172,6 +172,7 @@ const TXT = {
     // GrowthCurve
     liberteFinanciere: "Liberté financière",
     ageAns: (age) => `${age} ans`,
+    ageUnit: "ans",
     // MilestonesTable age cell
     milesAgeSuffix: (age) => `${age} ans`,
     milesAgeMax: "> 80 ans",
@@ -348,6 +349,7 @@ const TXT = {
     // GrowthCurve
     liberteFinanciere: "Financial freedom",
     ageAns: (age) => `Age ${age}`,
+    ageUnit: "yrs",
     // MilestonesTable age cell
     milesAgeSuffix: (age) => `Age ${age}`,
     milesAgeMax: "> age 80",
@@ -859,11 +861,11 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
   const rows = [
     {
       label: txt.compAgeFire,
-      a: resA.ageAtteinte != null ? `${resA.ageAtteinte} ans` : '> 80 ans',
+      a: resA.ageAtteinte != null ? `${resA.ageAtteinte} ${txt.ageUnit}` : `> 80 ${txt.ageUnit}`,
       av: resA.ageAtteinte,
-      b: resB.ageAtteinte != null ? `${resB.ageAtteinte} ans` : '> 80 ans',
+      b: resB.ageAtteinte != null ? `${resB.ageAtteinte} ${txt.ageUnit}` : `> 80 ${txt.ageUnit}`,
       bv: resB.ageAtteinte,
-      invert: true, unit: 'ans',
+      invert: true, unit: txt.ageUnit,
     },
     {
       label: txt.compAnneesRestantes,
@@ -871,7 +873,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
       av: resA.anneesRestantes != null ? Math.ceil(resA.anneesRestantes) : null,
       b: resB.anneesRestantes != null ? `${Math.ceil(resB.anneesRestantes)}` : '—',
       bv: resB.anneesRestantes != null ? Math.ceil(resB.anneesRestantes) : null,
-      invert: true, unit: 'ans',
+      invert: true, unit: txt.ageUnit,
     },
     {
       label: txt.compCapitalCible,
@@ -1135,7 +1137,7 @@ export default function Fire() {
     ],
     results: hasResult ? [
       { label: txt.reportPatrimoineCible, value: fmtCur(Math.round(res.patrimoineCible)), strong: true },
-      ...(res.ageAtteinte ? [{ label: txt.reportAgeAtteinte, value: `${res.ageAtteinte} ans` }] : []),
+      ...(res.ageAtteinte ? [{ label: txt.reportAgeAtteinte, value: `${res.ageAtteinte} ${txt.ageUnit}` }] : []),
       ...(res.anneesRestantes ? [{ label: txt.reportAnneesRestantes, value: `${Math.ceil(res.anneesRestantes)}` }] : []),
       { label: txt.reportRevenuPassif, value: fmtCur(Math.round(res.revenuPassifMensuel)) },
       ...(savingsRate != null ? [{ label: txt.reportTauxEpargne, value: `${Math.round(savingsRate)} %` }] : []),
@@ -1182,7 +1184,7 @@ export default function Fire() {
             {txt.situationActuelle}
           </h2>
 
-          <NumInput id="age-actuel" label={txt.ageActuel} value={ageActuel} onChange={setAge} unit="ans" min={15} max={79} hint={txt.ageActuelHint} />
+          <NumInput id="age-actuel" label={txt.ageActuel} value={ageActuel} onChange={setAge} unit={txt.ageUnit} min={15} max={79} hint={txt.ageActuelHint} />
           <NumInput id="capital-actuel" label={txt.capitalActuel} value={capitalActuel} onChange={setCapital} unit={activeSymbol()} min={0} max={10000000} hint={txt.capitalActuelHint} />
           <NumInput id="epargne-mensuelle" label={txt.epargneMensuelle} value={epargneMensuelle} onChange={setEpargne} unit={`${activeSymbol()}/mois`} min={0} max={50000}
             hint={epargneMensuelle ? txt.epargneAnnuelleHint(fmtCur(epargneMensuelle * 12)) : txt.epargneMensuelleHintAlt} />
@@ -1200,7 +1202,7 @@ export default function Fire() {
             <HistoricalReturnPicker duration={Math.ceil(res.anneesRestantes) || 30} onSelect={setRendement} />
           </div>
           <StepperInput label={txt.tauxRetrait} value={tauxRetrait} onChange={setTauxRetrait} min={1} max={6} step={0.25} unit="%" hint={txt.tauxRetraitHint} tooltip={txt.tauxRetraitTooltip} />
-          <StepperInput label={txt.ageCoast} value={ageCoast} onChange={setAgeCoast} min={Math.max(ageRef + 1, 50)} max={75} step={1} unit="ans" hint={txt.ageCoastHint} />
+          <StepperInput label={txt.ageCoast} value={ageCoast} onChange={setAgeCoast} min={Math.max(ageRef + 1, 50)} max={75} step={1} unit={txt.ageUnit} hint={txt.ageCoastHint} />
 
           {/* Fiscalité */}
           <div style={{ marginTop: 4 }}>
@@ -1255,7 +1257,7 @@ export default function Fire() {
                   {txt.ageAtteinteFire}
                 </div>
                 <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, fontSize: 42, color: "var(--primary)", lineHeight: 1 }}>
-                  {res.ageAtteinte} ans
+                  {res.ageAtteinte} {txt.ageUnit}
                 </div>
                 <div style={{ marginTop: 10, fontSize: 14, color: "var(--text-secondary)" }}>
                   {ageActuel ? txt.ansLabel(Math.ceil(res.anneesRestantes)) : ""}{fireDateLabel ? ` · ${txt.versLabel(fireDateLabel)}` : ""} · {txt.patrimoineCibleLabel}{" "}
@@ -1289,7 +1291,7 @@ export default function Fire() {
 
               {/* Chips */}
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginBottom: 20 }}>
-                {res.ageAtteinte && <Chip label={txt.ageFireChip} value={`${res.ageAtteinte} ans`} accent />}
+                {res.ageAtteinte && <Chip label={txt.ageFireChip} value={`${res.ageAtteinte} ${txt.ageUnit}`} accent />}
                 {res.anneesRestantes && <Chip label={txt.anneesRestantes} value={`${Math.ceil(res.anneesRestantes)}`} />}
                 <Chip label={txt.revenuPassifMensuel} value={fmtCur(Math.round(res.revenuPassifMensuel))} accent />
                 <Chip label={txt.capitalCible} value={fmtCur(Math.round(res.patrimoineCible))} />

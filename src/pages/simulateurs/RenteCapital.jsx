@@ -149,7 +149,7 @@ export default function RenteCapital() {
           <NumInput label="Capital disponible" value={capital} onChange={setCapital} unit="€" min={0} max={2000000} id="capital-rente" />
           <StepperInput label="Taux de conversion rente" value={tauxConversion} onChange={setTauxConv} min={2} max={8} step={0.1} unit=" %" hint="Taux proposé par l'assureur pour convertir le capital en rente mensuelle (indicatif : 3,5 % – 5,5 %)" />
           <StepperInput label="Rendement annuel du capital" value={rendement} onChange={setRendement} min={0} max={10} step={0.5} unit=" %" hint="Pour le retrait programmé : rendement moyen annuel de l'épargne (fonds €, UC…)" />
-          <StepperInput label="Horizon de retrait programmé" value={horizon} onChange={setHorizon} min={5} max={40} step={1} unit=" ans" hint="Durée sur laquelle épuiser le capital (ex. 25 ans = de 65 à 90 ans)" />
+          <StepperInput label="Horizon de retrait programmé" value={horizon} onChange={setHorizon} min={5} max={40} step={1} unit={locale === 'en' ? ' yrs' : ' ans'} hint="Durée sur laquelle épuiser le capital (ex. 25 ans = de 65 à 90 ans)" />
           <StepperInput label="Tranche marginale d'imposition" value={tmi} onChange={setTmi} min={0} max={45} step={11} unit=" %" hint="Votre TMI actuel, utilisé pour estimer l'imposition des revenus" />
         </div>
 

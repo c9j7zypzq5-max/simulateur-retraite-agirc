@@ -35,6 +35,8 @@ export const EN_ROUTES = [
   '/outils/qr-code',
   '/mentions-legales',
   '/politique-de-confidentialite',
+  '/simulateurs/rente-capital',
+  '/simulateurs/inflation',
 ];
 
 // Méta anglaises (title + description) par route, pour le HTML statique /en/...
@@ -52,6 +54,8 @@ export const ROUTE_META_EN = {
   '/simulateurs/credit-conso':    { title: 'Personal Loan Calculator — Monthly Payment & Cost | Simfinly',   description: 'Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes optional insurance and an amortization schedule.' },
   '/simulateurs/comparateur':     { title: 'Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly',        description: 'Compare the historical performance of ETFs, stocks and cryptocurrencies over any period, from real data. Total return, CAGR, recurring contributions and base-100 index.' },
   '/outils/qr-code':              { title: 'Free Custom QR Code Generator — Color, Logo | Simfinly',         description: 'Create a custom QR code for free: pick the colors, enter any text or link and add your logo or an emoji in the center. High-resolution PNG, no sign-up.' },
+  '/simulateurs/rente-capital':   { title: 'Annuity vs Programmed Withdrawal Simulator | Simfinly', description: 'Compare a life annuity and programmed withdrawals for your retirement savings. Monthly net income, break-even point and 20-year cumulative by tax bracket.' },
+  '/simulateurs/inflation':       { title: 'Personal Inflation & Purchasing Power Simulator | Simfinly', description: 'Measure how inflation erodes your budget by spending category. Customize rates for food, housing, transport and more — project the impact over 10 to 30 years.' },
   '/mentions-legales':            { title: 'Legal notice — Simfinly',                                        description: 'Legal notice for simfinly.com: publisher, host, intellectual property and liability.' },
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
 };
@@ -93,6 +97,8 @@ export const ROUTE_META = {
   '/simulateurs/synthese-retraite':       { title: 'Synthèse retraite tous régimes — pension totale', emoji: '🧮', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/retraite-anticipee':      { title: 'Simulateur Retraite anticipée — carrières longues', emoji: '⏩', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/pension-reversion':       { title: 'Simulateur Pension de réversion 2025',        emoji: '💞', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/rente-capital':           { title: 'Simulateur Rente viagère vs retrait programmé', emoji: '⚖️', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/inflation':               { title: "Simulateur d'inflation & pouvoir d'achat",      emoji: '📈', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/emprunt-immobilier':      { title: 'Simulateur Emprunt immobilier',              emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/simulateurs/rendement-locatif':       { title: 'Simulateur Rendement locatif',               emoji: '📊', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/simulateurs/ptz':                     { title: 'Simulateur PTZ 2025 — Prêt à Taux Zéro',     emoji: '🏡', cat: 'Immobilier', prio: '0.8', freq: 'monthly' },

@@ -347,15 +347,34 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
       {/* ── Boutons de partage réseaux sociaux ── */}
       {report?.highlight && (() => {
-        const pageUrl = encodeURIComponent(window.location.href);
+        // Build a /api/share redirect URL so scrapers see the personalized
+        // result OG image (title + value via /api/og) instead of the generic
+        // category PNG from the pre-rendered HTML.
+        const canonPath = (() => {
+          let p = window.location.pathname;
+          if (p.startsWith('/en/')) p = p.slice(3);
+          else if (p.startsWith('/be/')) p = p.slice(3);
+          else if (p.startsWith('/ch/')) p = p.slice(3);
+          return p;
+        })();
+        const cat = ROUTE_META[canonPath]?.cat || '';
+        const shareParams = new URLSearchParams({
+          to: window.location.pathname,
+          t:  report.highlight.label,
+          v:  report.highlight.value,
+          c:  cat,
+          l:  locale,
+        });
+        const sharePreviewUrl = `${window.location.origin}/api/share?${shareParams.toString()}`;
+        const encodedShare = encodeURIComponent(sharePreviewUrl);
         const text    = encodeURIComponent(
           locale === "en"
             ? `I just simulated my finances on simfinly.com: ${report.highlight.label} → ${report.highlight.value}`
             : `Je viens de simuler mes finances sur simfinly.com : ${report.highlight.label} → ${report.highlight.value}`
         );
-        const twitterUrl   = `https://twitter.com/intent/tweet?text=${text}&url=${pageUrl}`;
-        const linkedinUrl  = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
-        const whatsappUrl  = `https://wa.me/?text=${text}%20${pageUrl}`;
+        const twitterUrl   = `https://twitter.com/intent/tweet?text=${text}&url=${encodedShare}`;
+        const linkedinUrl  = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedShare}`;
+        const whatsappUrl  = `https://wa.me/?text=${text}%20${encodedShare}`;
         const socialStyle  = { ...btnStyle, padding: "6px 10px", gap: 0 };
         return (
           <>

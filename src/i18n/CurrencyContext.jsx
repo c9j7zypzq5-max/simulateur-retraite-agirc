@@ -44,17 +44,25 @@ export function CurrencyProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, code); } catch { /* ignore */ }
   }, []);
 
+  // Suggestion automatique (locale URL, détection navigateur) : ignorée si
+  // l'utilisateur a déjà choisi explicitement.
+  const suggestCurrency = useCallback((code) => {
+    if (userPicked || !CURRENCIES[code]) return;
+    setCurrencyState(code);
+  }, [userPicked]);
+
   const value = useMemo(() => {
     const def = CURRENCIES[currency] || CURRENCIES[DEFAULT_CURRENCY];
     return {
       currency,
       setCurrency,
+      suggestCurrency,
       symbol: def.symbol,
       info: def,
       fmt: (n, decimals) => formatMoney(n, currency, decimals),
       sign: (n, decimals) => signMoney(n, currency, decimals),
     };
-  }, [currency, setCurrency]);
+  }, [currency, setCurrency, suggestCurrency]);
 
   return <CurrencyCtx.Provider value={value}>{children}</CurrencyCtx.Provider>;
 }
@@ -68,6 +76,7 @@ export function useMoney() {
   return {
     currency: DEFAULT_CURRENCY,
     setCurrency: () => {},
+    suggestCurrency: () => {},
     symbol: def.symbol,
     info: def,
     fmt: (n, decimals) => formatMoney(n, DEFAULT_CURRENCY, decimals),

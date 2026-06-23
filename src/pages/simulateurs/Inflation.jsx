@@ -137,7 +137,7 @@ export default function Inflation() {
         {/* ── Inputs ── */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20 }}>
           <NumInput label="Budget mensuel actuel" value={budget} onChange={setBudget} unit="€" min={500} max={20000} id="budget-inflation" />
-          <StepperInput label="Horizon de projection" value={horizon} onChange={setHorizon} min={1} max={40} step={1} unit=" ans" />
+          <StepperInput label="Horizon de projection" value={horizon} onChange={setHorizon} min={1} max={40} step={1} unit={locale === 'en' ? ' yrs' : ' ans'} />
 
           <div style={{ marginTop: 20 }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 12, letterSpacing: "0.08em", textTransform: "uppercase" }}>
