@@ -212,3 +212,63 @@ button:disabled, input:disabled { color: #6b7c93; opacity: 1; cursor: not-allowe
   .desktop-nav { display: flex !important; }
 }
 
+/* ── Print styles ─────────────────────────────────────────────────────────────
+   Masque les éléments non pertinents pour l'impression et adapte les couleurs
+   pour les imprimantes noir & blanc. Les résultats de simulation restent lisibles.  */
+@media print {
+  /* Reset couleurs pour impression propre */
+  :root {
+    --bg: #ffffff;
+    --card-bg: #ffffff;
+    --surface: #ffffff;
+    --text: #000000;
+    --text-secondary: #444444;
+    --border: #cccccc;
+    --primary: #000000;
+    --gold: #000000;
+  }
+
+  /* Masquer les éléments non imprimables */
+  nav, footer,
+  [data-noprint],
+  .skip-link,
+  .pwa-install-banner,
+  .toast-container {
+    display: none !important;
+  }
+
+  /* Éviter les coupures de page dans les cartes de résultat */
+  main > div, .sim-card, [class*="result"] {
+    break-inside: avoid;
+  }
+
+  /* Supprimer les ombres et arrière-plans décoratifs */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Rétablir les fonds des cartes de données */
+  .card-bg-print {
+    background: #f8f8f8 !important;
+    border: 1px solid #ccc !important;
+  }
+
+  /* Liens : afficher l'URL après le texte */
+  a[href]:not([href^="#"])::after {
+    content: " (" attr(href) ")";
+    font-size: 10px;
+    color: #555;
+  }
+
+  body { font-size: 12pt; line-height: 1.4; }
+  h1 { font-size: 18pt; }
+  h2 { font-size: 14pt; }
+  h3 { font-size: 12pt; }
+
+  main { max-width: 100% !important; padding: 0 !important; }
+}
+

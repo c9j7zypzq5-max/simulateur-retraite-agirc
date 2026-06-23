@@ -34,7 +34,7 @@ export default function AdUnit({ slot, placement, format = "auto", style = {} })
   if (!adSlot) return null;
 
   return (
-    <div ref={ref} style={{ textAlign: "center", overflow: "hidden", minHeight: 1, ...style }}>
+    <div ref={ref} data-noprint style={{ textAlign: "center", overflow: "hidden", minHeight: 1, ...style }}>
       {visible && (
         <ins
           className="adsbygoogle"
