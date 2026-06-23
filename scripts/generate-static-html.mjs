@@ -82,8 +82,7 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   else urlPath = route;
   const url = `${BASE}${urlPath}`;
   let out = html
-    .replace(/content="\/og-image\.png"/g, `content="${escapeAttr(ogImg)}"`)
-    .replace(/content="\/og-image\.svg"/g, `content="${escapeAttr(ogImg)}"`)
+    .replace(/content="\/og-image\.(png|webp|svg)"/g, `content="${escapeAttr(ogImg)}"`)
     .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${escapeAttr(url)}"`)
     .replace(/<html lang="[^"]*"/, `<html lang="${locale === 'en' ? 'en' : 'fr'}"`);
 

@@ -1,0 +1,91 @@
+# Simfinly
+
+> Simfinly est une suite de simulateurs financiers gratuits en ligne : retraite (CNAV, Agirc-Arrco, fonctionnaires, indépendants, LPP suisse, pension belge), immobilier, impôts, épargne, FIRE, budget, patrimoine et plus encore. Tous les calculs sont instantanés, sans inscription, disponibles en français, anglais, et en versions adaptées pour la Suisse et la Belgique.
+
+## Simulateurs retraite (France)
+
+- [Synthèse retraite tous régimes](https://www.simfinly.com/simulateurs/synthese-retraite): Cumule tous les régimes de retraite pour estimer la pension totale brute et nette.
+- [Retraite Agirc-Arrco](https://www.simfinly.com/simulateurs/agirc-arrco): Calcule les points Agirc-Arrco et la pension complémentaire nette selon la carrière et le salaire.
+- [Retraite CNAV (régime général)](https://www.simfinly.com/simulateurs/cnav): Estime la retraite de base du régime général selon les trimestres validés et le salaire annuel moyen.
+- [Retraite Fonction publique](https://www.simfinly.com/simulateurs/fonction-publique): Calcule la pension statutaire des agents titulaires de l'État selon l'indice, les annuités et les bonifications.
+- [Retraite Indépendants & TNS](https://www.simfinly.com/simulateurs/independants): Projection de retraite pour les travailleurs non salariés (SSI + RCI).
+- [Retraite IRCANTEC](https://www.simfinly.com/simulateurs/ircantec): Calcule la retraite complémentaire des agents contractuels de la fonction publique.
+- [Retraite progressive](https://www.simfinly.com/simulateurs/retraite-progressive): Combine temps partiel et pension partielle ; idéal pour une transition douce.
+- [Retraite professions libérales (CIPAV)](https://www.simfinly.com/simulateurs/cnavpl): Simule la retraite des médecins, avocats et autres professions libérales affiliées à la CIPAV.
+- [Retraite agricole MSA](https://www.simfinly.com/simulateurs/msa): Pension de retraite des exploitants agricoles et salariés agricoles.
+- [Retraite anticipée — carrières longues](https://www.simfinly.com/simulateurs/retraite-anticipee): Vérifie les conditions de départ anticipé et calcule l'abattement ou la surcote.
+- [Pension de réversion](https://www.simfinly.com/simulateurs/pension-reversion): Estime la pension de réversion CNAV et Agirc-Arrco versée au conjoint survivant.
+- [Plan Épargne Retraite (PER)](https://www.simfinly.com/simulateurs/per): Projette le capital et la déduction fiscale d'un PER selon les versements annuels et la tranche marginale.
+- [Rente viagère vs retrait programmé](https://www.simfinly.com/simulateurs/rente-capital): Compare la rente et les retraits programmés : revenu mensuel net, point mort, cumulatif 20 ans.
+- [Réforme retraite 2023 — avant/après](https://www.simfinly.com/simulateurs/comparaison-reforme): Mesure l'impact de la réforme 2023 sur l'âge de départ et la pension selon le profil.
+
+## Simulateurs retraite (Suisse)
+
+- [LPP / 2e pilier suisse](https://www.simfinly.com/ch/simulateurs/lpp-deuxieme-pilier): Estime l'avoir de vieillesse LPP et la rente projetée selon le salaire coordonné et les années de cotisation.
+- [Pilier 3a suisse](https://www.simfinly.com/ch/simulateurs/prevoyance-ch): Projette le capital pilier 3a et l'économie d'impôt cantonal annuelle selon les versements.
+- [Rente vs retrait programmé (CH)](https://www.simfinly.com/ch/simulateurs/rente-capital): Compare la rente viagère et les retraits programmés pour un capital retraite en CHF.
+
+## Simulateurs retraite (Belgique)
+
+- [Pension légale ONSS](https://www.simfinly.com/be/simulateurs/pension-legale): Estime la pension légale belge (1er pilier) selon la carrière, le statut (salarié/indépendant) et l'âge de départ.
+
+## Simulateurs immobilier
+
+- [Emprunt immobilier](https://www.simfinly.com/simulateurs/emprunt-immobilier): Mensualité, capacité d'emprunt, TAEG et tableau d'amortissement complet.
+- [Rendement locatif](https://www.simfinly.com/simulateurs/rendement-locatif): Rentabilité brute et nette d'un investissement locatif, cash-flow mensuel et retour sur fonds propres.
+- [Prêt à Taux Zéro (PTZ)](https://www.simfinly.com/simulateurs/ptz): Vérifie l'éligibilité PTZ 2026 et calcule le montant et la durée du prêt sans intérêt.
+- [Frais de notaire](https://www.simfinly.com/simulateurs/frais-notaire): Estime les frais d'acquisition (émoluments, droits de mutation, taxe publicité foncière) pour un achat immobilier.
+- [Plus-value immobilière](https://www.simfinly.com/simulateurs/plus-value-immobiliere): Calcule l'impôt et les prélèvements sociaux sur la plus-value lors d'une cession immobilière.
+- [Déficit foncier](https://www.simfinly.com/simulateurs/deficit-foncier): Optimise la déduction du déficit foncier sur le revenu global et calcule l'économie fiscale.
+
+## Simulateurs fiscalité
+
+- [Impôt sur le revenu (France)](https://www.simfinly.com/simulateurs/impot-revenu): TMI, taux moyen, impôt net par tranche selon le foyer fiscal et les revenus 2025.
+- [Impôt sur le revenu (Suisse)](https://www.simfinly.com/ch/simulateurs/impot-revenu-ch): Impôt fédéral direct + impôt cantonal selon le canton, le revenu imposable et la situation familiale.
+- [IPP — Impôt des personnes physiques (Belgique)](https://www.simfinly.com/be/simulateurs/impot-revenu): Calcul de l'IPP belge selon les barèmes 2025 et les déductions applicables.
+- [Droits de succession (Belgique)](https://www.simfinly.com/be/simulateurs/succession): Droits de succession belges selon la région, le lien de parenté et l'actif net transmis.
+- [Droits de succession (France)](https://www.simfinly.com/simulateurs/succession): Droits de succession français selon le lien de parenté et les abattements légaux.
+- [Donation](https://www.simfinly.com/simulateurs/donation): Calcule les droits de donation après abattements et compare les stratégies de transmission.
+
+## Simulateurs finances personnelles
+
+- [Épargne & intérêts composés](https://www.simfinly.com/simulateurs/epargne): Projection du capital d'épargne sur le long terme avec intérêts composés et versements réguliers.
+- [Indépendance financière FIRE](https://www.simfinly.com/simulateurs/fire): Patrimoine cible et âge d'indépendance financière selon la règle des 4 % (Lean/Coast/Fat FIRE).
+- [Budget 50/30/20](https://www.simfinly.com/simulateurs/budget): Répartit le budget mensuel en besoins (50 %), envies (30 %) et épargne (20 %) avec conseils personnalisés.
+- [Patrimoine global](https://www.simfinly.com/simulateurs/patrimoine): Consolide actifs financiers, immobiliers et droits à la retraite pour visualiser le patrimoine net.
+- [Comparateur d'actifs](https://www.simfinly.com/simulateurs/comparateur): Compare la performance historique d'ETF, actions et crypto sur une période au choix (CAGR, total return).
+- [Assurance-vie](https://www.simfinly.com/simulateurs/assurance-vie): Projette la valeur d'un contrat assurance-vie et estime la fiscalité à la sortie (abattement 8 ans, flat tax).
+- [Crédit à la consommation](https://www.simfinly.com/simulateurs/credit-conso): Mensualité, coût total et tableau d'amortissement d'un prêt personnel selon le TAEG et la durée.
+- [Salaire net/brut & carrière](https://www.simfinly.com/simulateurs/salaire): Conversion salaire brut/net, projection de carrière et pouvoir d'achat dans le temps.
+- [Épargne salariale (PEE/PERCO)](https://www.simfinly.com/simulateurs/epargne-salariale): Projection du capital via l'épargne salariale avec abondement employeur.
+- [Inflation & pouvoir d'achat](https://www.simfinly.com/simulateurs/inflation): Mesure l'impact de l'inflation sur le budget par poste de dépense sur 10 à 30 ans.
+- [Freelance vs salarié](https://www.simfinly.com/simulateurs/freelance-vs-salarie): Compare le revenu net d'un freelance et d'un salarié à salaire brut équivalent.
+- [Divorce — partage du patrimoine](https://www.simfinly.com/simulateurs/divorce): Simule le partage des actifs lors d'un divorce selon le régime matrimonial.
+
+## Simulateurs vie & temps
+
+- [Prix en heures de vie](https://www.simfinly.com/simulateurs/cout-en-heures): Convertit n'importe quel achat en heures de travail réelles en fonction du salaire net.
+- [Ma vie en semaines](https://www.simfinly.com/simulateurs/vie-en-semaines): Visualise la durée d'une vie humaine semaine par semaine, inspiré de Wait But Why.
+
+## Outils
+
+- [Générateur de QR code](https://www.simfinly.com/outils/qr-code): QR code personnalisé (couleur, logo, texte libre) téléchargeable en PNG haute résolution.
+
+## Contenus éditoriaux
+
+- [Blog — Articles financiers](https://www.simfinly.com/blog): Articles pratiques sur la retraite, l'immobilier, la fiscalité et les finances personnelles en France.
+- [Guides thématiques](https://www.simfinly.com/guides): Guides complets par thématique (retraite, immobilier, impôts, FIRE) pour comprendre et agir.
+- [Lexique financier](https://www.simfinly.com/lexique): Définitions claires et illustrées des termes financiers courants.
+- [Comparatifs](https://www.simfinly.com/comparatifs): Comparatifs de produits financiers (livrets, assurances-vie, PER, courtiers).
+
+## Versions internationales
+
+- [Version anglaise (EN)](https://www.simfinly.com/en): International calculators in English: FIRE, compound interest, budget, net worth, mortgage.
+- [Version Suisse (FR-CH)](https://www.simfinly.com/ch): Simulateurs adaptés à la Suisse : LPP, pilier 3a, impôt cantonal, épargne en CHF.
+- [Version Belgique (FR-BE)](https://www.simfinly.com/be): Simulateurs adaptés à la Belgique : pension ONSS, IPP, droits de succession.
+
+## Informations légales
+
+- [Mentions légales](https://www.simfinly.com/mentions-legales): Éditeur, hébergeur, propriété intellectuelle et responsabilité.
+- [Politique de confidentialité](https://www.simfinly.com/politique-de-confidentialite): Données collectées, Google AdSense, cookies et droits RGPD.
+- [Méthodologie](https://www.simfinly.com/methodologie): Sources officielles et hypothèses utilisées pour les calculs des simulateurs.
