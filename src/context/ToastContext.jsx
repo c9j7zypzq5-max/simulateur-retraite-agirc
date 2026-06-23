@@ -15,11 +15,15 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={showToast}>
       {children}
-      <div style={{
-        position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-        zIndex: 9999, pointerEvents: "none",
-      }}>
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        style={{
+          position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
+          display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+          zIndex: 9999, pointerEvents: "none",
+        }}>
         {toasts.map(({ id, msg, type }) => (
           <div key={id} style={{
             padding: "10px 20px",

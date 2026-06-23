@@ -87,7 +87,7 @@ export default function Inflation() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon="📈"
           title="Inflation & pouvoir d'achat personnalisé"
@@ -249,7 +249,7 @@ export default function Inflation() {
             a: "L'investissement en actions sur le long terme (ETF monde, par exemple) a historiquement produit des rendements supérieurs à l'inflation. L'immobilier offre aussi une protection naturelle. Les fonds euros d'assurance-vie ou le Livret A protègent partiellement selon les taux en vigueur.",
           },
         ]} />
-      </div>
+      </main>
 
       <Footer />
     </div>

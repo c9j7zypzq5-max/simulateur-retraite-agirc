@@ -93,7 +93,7 @@ export default function RenteCapital() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon="⚖️"
           title="Rente viagère ou retrait programmé ?"
@@ -250,7 +250,7 @@ export default function RenteCapital() {
             a: "Oui, c'est souvent recommandé : convertir une partie du capital en rente pour couvrir les dépenses incompressibles (loyer, alimentation) et garder une autre partie en retrait programmé pour les dépenses variables et la transmission. Cette approche hybride réduit le risque de survie tout en conservant une flexibilité.",
           },
         ]} />
-      </div>
+      </main>
 
       <Footer />
     </div>
