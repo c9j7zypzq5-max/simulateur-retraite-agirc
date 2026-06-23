@@ -7,7 +7,27 @@ import AdUnit from "../../components/AdUnit.jsx";
 import SimRecommendations from "../../components/SimRecommendations.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { readShareParams } from "../../hooks/useShareableUrl.js";
+import JsonLd from "../../components/JsonLd.jsx";
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
+
+const FAQ = [
+  {
+    q: "Qu'est-ce que l'inflation par catégorie ?",
+    a: "L'inflation n'est pas uniforme : l'alimentation, l'énergie et les services de santé augmentent souvent plus vite que la moyenne. L'INSEE mesure l'Indice des Prix à la Consommation (IPC) en pondérant chaque catégorie selon son poids dans le budget des ménages français.",
+  },
+  {
+    q: "Comment se calcule le taux d'inflation moyen pondéré ?",
+    a: "Chaque catégorie est pondérée par sa part dans votre budget. Si l'alimentation représente 25 % de vos dépenses et son inflation est de 4 %, sa contribution au taux moyen est de 0,25 × 4 % = 1 %. Le taux moyen est la somme de ces contributions.",
+  },
+  {
+    q: "Quel taux d'inflation utiliser pour ses projections ?",
+    a: "La Banque Centrale Européenne (BCE) vise une inflation de 2 % à moyen terme. Mais selon votre mode de vie, votre inflation personnelle peut être plus élevée : les ménages à faibles revenus subissent souvent une inflation plus forte car ils consacrent une plus grande part à l'alimentation et à l'énergie.",
+  },
+  {
+    q: "Comment protéger son épargne de l'inflation ?",
+    a: "L'investissement en actions sur le long terme (ETF monde, par exemple) a historiquement produit des rendements supérieurs à l'inflation. L'immobilier offre aussi une protection naturelle. Les fonds euros d'assurance-vie ou le Livret A protègent partiellement selon les taux en vigueur.",
+  },
+];
 
 // Inflation historique France (source INSEE)
 const INFLATION_HISTORY = [
@@ -85,6 +105,23 @@ export default function Inflation() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur d'Inflation Personnelle 2026",
+        "url": "https://www.simfinly.com/simulateurs/inflation",
+        "description": "Calculez l'impact de l'inflation sur votre budget par catégorie de dépenses : alimentation, logement, transport, santé. Projection du pouvoir d'achat sur 1 à 30 ans.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
       <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -231,24 +268,7 @@ export default function Inflation() {
 
         <AdUnit slot="auto" format="auto" />
 
-        <FaqSection items={[
-          {
-            q: "Qu'est-ce que l'inflation par catégorie ?",
-            a: "L'inflation n'est pas uniforme : l'alimentation, l'énergie et les services de santé augmentent souvent plus vite que la moyenne. L'INSEE mesure l'Indice des Prix à la Consommation (IPC) en pondérant chaque catégorie selon son poids dans le budget des ménages français.",
-          },
-          {
-            q: "Comment se calcule le taux d'inflation moyen pondéré ?",
-            a: "Chaque catégorie est pondérée par sa part dans votre budget. Si l'alimentation représente 25 % de vos dépenses et son inflation est de 4 %, sa contribution au taux moyen est de 0,25 × 4 % = 1 %. Le taux moyen est la somme de ces contributions.",
-          },
-          {
-            q: "Quel taux d'inflation utiliser pour ses projections ?",
-            a: "La Banque Centrale Européenne (BCE) vise une inflation de 2 % à moyen terme. Mais selon votre mode de vie, votre inflation personnelle peut être plus élevée : les ménages à faibles revenus subissent souvent une inflation plus forte car ils consacrent une plus grande part à l'alimentation et à l'énergie.",
-          },
-          {
-            q: "Comment protéger son épargne de l'inflation ?",
-            a: "L'investissement en actions sur le long terme (ETF monde, par exemple) a historiquement produit des rendements supérieurs à l'inflation. L'immobilier offre aussi une protection naturelle. Les fonds euros d'assurance-vie ou le Livret A protègent partiellement selon les taux en vigueur.",
-          },
-        ]} />
+        <FaqSection items={FAQ} />
       </main>
 
       <Footer />
