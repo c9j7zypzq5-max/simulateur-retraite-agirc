@@ -9,6 +9,7 @@ import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
 import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import HreflangTags from "./components/HreflangTags.jsx";
+import CountrySuggestionBanner from "./components/CountrySuggestionBanner.jsx";
 import Home from "./pages/Home.jsx";
 
 // Pages chargées à la demande (code splitting) : chaque simulateur devient son
@@ -140,6 +141,7 @@ export default function App() {
       <CurrencyLocaleSync />
       <ScrollToTop />
       <HreflangTags />
+      <CountrySuggestionBanner />
       <VideoRecordingToast />
       <a href="#main-content" className="skip-link">Aller au contenu principal</a>
       <ErrorBoundary>
@@ -247,6 +249,7 @@ export default function App() {
         <Route path="/simulateurs/succession" element={<Succession />} />
         <Route path="/simulateurs/freelance-vs-salarie" element={<FreelanceVsSalarie />} />
         <Route path="/simulateurs/divorce" element={<Divorce />} />
+        <Route path="/simulateurs/pension-legale" element={<PensionLegaleBE />} />
         <Route path="/simulateurs/retraite-anticipee" element={<RetraiteAnticipee />} />
         <Route path="/simulateurs/donation" element={<Donation />} />
         <Route path="/simulateurs/epargne-salariale" element={<EpargneSalariale />} />

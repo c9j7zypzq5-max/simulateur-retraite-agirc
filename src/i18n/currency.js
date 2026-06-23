@@ -68,6 +68,24 @@ const TZ_TO_COUNTRY = {
   'Pacific/Auckland': 'NZ', 'Africa/Johannesburg': 'ZA',
 };
 
+// Pays probable du visiteur déduit SANS appel réseau : CH ou BE selon la région
+// de la langue navigateur (ex. « fr-CH ») ou le fuseau horaire. Renvoie null si
+// aucune correspondance CH/BE (FR reste le défaut côté routing).
+export function guessCountryFromBrowser() {
+  try {
+    const langs = (typeof navigator !== 'undefined' && (navigator.languages || [navigator.language])) || [];
+    for (const l of langs) {
+      const region = String(l || '').split('-')[1]?.toUpperCase();
+      if (region === 'CH') return 'ch';
+      if (region === 'BE') return 'be';
+    }
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (tz === 'Europe/Zurich') return 'ch';
+    if (tz === 'Europe/Brussels') return 'be';
+  } catch { /* environnement sans navigator/Intl */ }
+  return null;
+}
+
 // Devise probable du visiteur, déduite côté navigateur SANS appel réseau :
 //  1. région de la/les langue(s) (ex. « en-US » → US) ;
 //  2. sinon, fuseau horaire (ex. « America/New_York » → US) ;

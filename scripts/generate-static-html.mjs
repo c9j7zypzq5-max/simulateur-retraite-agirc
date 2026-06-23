@@ -74,7 +74,7 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   const { title, description } = seoForRoute(route, extra, locale, country);
   const ogImg = ogImageUrl(route, extra);
   const ld = structuredDataScripts(route, extra);
-  const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale);
+  const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale, country);
   let urlPath;
   if (locale === 'en') urlPath = `/en${route === '/' ? '' : route}`;
   else if (country === 'ch') urlPath = `/ch${route === '/' ? '' : route}`;

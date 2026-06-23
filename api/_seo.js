@@ -132,6 +132,146 @@ for (const c of COMPARATIFS) {
   SEO_CONTENT[`/comparatifs/${c.slug}`] = { h1: c.title, intro: c.intro };
 }
 
+// Contenu SEO suisse (H1 + intro) pour les pages /ch/...
+export const SEO_CONTENT_CH = {
+  '/': {
+    h1: "Simulateurs financiers gratuits pour la Suisse",
+    intro: "LPP et 2e pilier, pilier 3a, impôt fédéral et cantonal, épargne et FIRE en CHF. Des simulateurs gratuits adaptés au droit suisse, sans inscription.",
+  },
+  '/simulateurs/lpp-deuxieme-pilier': {
+    h1: "Simulateur LPP — votre 2e pilier suisse",
+    intro: "Estimez votre avoir de vieillesse LPP et votre rente du 2e pilier selon votre salaire coordonné, vos années de cotisation et les taux d'intérêt LPP 2025. Un outil gratuit pour anticiper votre retraite professionnelle en Suisse.",
+  },
+  '/simulateurs/impot-revenu-ch': {
+    h1: "Simulateur d'impôt sur le revenu Suisse — fédéral + cantonal",
+    intro: "Calculez votre impôt fédéral direct et votre impôt cantonal selon votre canton de résidence, votre revenu imposable et votre situation familiale. Barèmes officiels 2025 pour les 26 cantons suisses.",
+  },
+  '/simulateurs/prevoyance-ch': {
+    h1: "Simulateur pilier 3a — prévoyance individuelle Suisse",
+    intro: "Projetez le capital accumulé dans votre pilier 3a et calculez l'économie d'impôt annuelle sur vos versements. Le simulateur utilise le plafond 2025 (CHF 7 258 pour les salariés) et votre tranche cantonale d'imposition.",
+  },
+  '/simulateurs/epargne': {
+    h1: "Simulateur d'épargne et intérêts composés en CHF",
+    intro: "Projetez la croissance de votre épargne en francs suisses grâce aux intérêts composés et à des versements réguliers. Visualisez le capital atteint selon le rendement, la durée et l'effort d'épargne mensuel en CHF.",
+  },
+  '/simulateurs/fire': {
+    h1: "Simulateur FIRE en CHF — indépendance financière (Suisse)",
+    intro: "Calculez le patrimoine en CHF nécessaire pour vivre de vos investissements et l'âge auquel vous atteignez l'indépendance financière en Suisse. Le simulateur applique la règle des 4 % et trace les paliers Lean, Coast et Fat FIRE.",
+  },
+  '/simulateurs/budget': {
+    h1: "Simulateur budget 50/30/20 en CHF",
+    intro: "Répartissez votre budget mensuel en francs suisses selon la règle 50/30/20 : 50 % besoins, 30 % envies, 20 % épargne. Taux d'épargne en temps réel et conseils adaptés à votre situation financière.",
+  },
+  '/simulateurs/patrimoine': {
+    h1: "Simulateur de patrimoine global en CHF",
+    intro: "Consolidez vos actifs financiers, immobiliers et retraite en francs suisses pour visualiser votre richesse nette totale et sa répartition par classe d'actifs.",
+  },
+  '/simulateurs/emprunt-immobilier': {
+    h1: "Simulateur d'emprunt immobilier en CHF (Suisse)",
+    intro: "Calculez la mensualité, la capacité d'emprunt et le coût total de votre crédit immobilier en francs suisses. Le simulateur inclut le taux d'endettement et un tableau d'amortissement détaillé.",
+  },
+  '/simulateurs/rendement-locatif': {
+    h1: "Simulateur de rendement locatif en CHF",
+    intro: "Évaluez la rentabilité brute et nette d'un investissement locatif en Suisse, en CHF. Cash flow mensuel, retour sur fonds propres et comparaison des opportunités d'investissement immobilier.",
+  },
+  '/simulateurs/assurance-vie': {
+    h1: "Simulateur d'épargne et assurance-vie en CHF",
+    intro: "Projetez la croissance de votre épargne en francs suisses et estimez le capital disponible à l'échéance. Un outil pour planifier votre épargne à long terme en contexte suisse.",
+  },
+  '/simulateurs/rente-capital': {
+    h1: "Simulateur rente viagère vs retrait programmé en CHF",
+    intro: "Comparez la rente viagère et les retraits programmés pour votre capital retraite en CHF. Revenu mensuel net, point mort et cumul sur 20 ans pour choisir la meilleure option de décaissement.",
+  },
+  '/simulateurs/inflation': {
+    h1: "Simulateur inflation et pouvoir d'achat en CHF",
+    intro: "Mesurez l'impact de l'inflation sur votre budget en francs suisses, poste de dépense par poste de dépense. Projetez l'érosion de votre pouvoir d'achat sur 10 à 30 ans selon votre panier personnalisé.",
+  },
+  '/simulateurs/comparateur': {
+    h1: "Comparateur d'actifs ETF, actions, crypto en CHF",
+    intro: "Comparez la performance historique d'ETF, d'actions et de cryptomonnaies sur la période de votre choix, en CHF. Retour total, CAGR, versements programmés et indice base 100.",
+  },
+  '/simulateurs/credit-conso': {
+    h1: "Simulateur de crédit à la consommation en CHF",
+    intro: "Calculez la mensualité, le coût total et les intérêts de votre crédit conso en francs suisses selon le montant, le TAEG et la durée. Tableau d'amortissement inclus.",
+  },
+  '/simulateurs/cout-en-heures': {
+    h1: "Simulateur : le vrai prix en heures de vie (CHF)",
+    intro: "Convertissez n'importe quel achat en heures de travail réelles, en CHF. Découvrez le coût véritable d'un bien ou d'un abonnement exprimé en temps plutôt qu'en francs.",
+  },
+  '/simulateurs/vie-en-semaines': {
+    h1: "Simulateur : ma vie en semaines",
+    intro: "Visualisez l'intégralité de votre vie sous forme de grille, une case par semaine. Semaines vécues, semaines restantes et étés encore à venir — une perspective forte sur le temps qui passe.",
+  },
+};
+
+// Contenu SEO belge (H1 + intro) pour les pages /be/...
+export const SEO_CONTENT_BE = {
+  '/': {
+    h1: "Simulateurs financiers gratuits pour la Belgique",
+    intro: "Pension légale ONSS, IPP, droits de succession, épargne et FIRE en EUR. Des simulateurs gratuits adaptés à la législation belge 2025, sans inscription.",
+  },
+  '/simulateurs/pension-legale': {
+    h1: "Simulateur pension légale Belgique (ONSS)",
+    intro: "Estimez votre pension légale belge selon votre carrière, votre statut (salarié, indépendant) et votre âge de départ. Le simulateur applique les barèmes ONSS 2025 pour la pension de retraite et, le cas échéant, la pension de survie.",
+  },
+  '/simulateurs/impot-revenu': {
+    h1: "Simulateur IPP 2025 — impôt des personnes physiques Belgique",
+    intro: "Calculez votre impôt des personnes physiques (IPP) belge selon votre revenu imposable, votre situation familiale et les barèmes 2025. Estimation nette après déduction des charges professionnelles forfaitaires.",
+  },
+  '/simulateurs/succession': {
+    h1: "Simulateur droits de succession Belgique",
+    intro: "Calculez les droits de succession belges selon la Région (Flandre, Wallonie, Bruxelles-Capitale), le lien de parenté et l'actif net de la succession. Barèmes 2025 officiels, avec dettes et déductions déductibles.",
+  },
+  '/simulateurs/epargne': {
+    h1: "Simulateur d'épargne et intérêts composés en EUR (Belgique)",
+    intro: "Projetez la croissance de votre épargne en euros sur le long terme grâce aux intérêts composés. Capital final selon le rendement, la durée et l'effort d'épargne mensuel.",
+  },
+  '/simulateurs/fire': {
+    h1: "Simulateur FIRE — indépendance financière (Belgique)",
+    intro: "Calculez le patrimoine nécessaire pour vivre de vos investissements en Belgique et l'âge auquel vous atteignez l'indépendance financière. Règle des 4 %, paliers Lean, Coast et Fat FIRE.",
+  },
+  '/simulateurs/budget': {
+    h1: "Simulateur budget 50/30/20 — finances personnelles Belgique",
+    intro: "Répartissez votre budget mensuel selon la règle 50/30/20 : besoins, envies, épargne. Taux d'épargne en temps réel et conseils adaptés à la situation belge.",
+  },
+  '/simulateurs/patrimoine': {
+    h1: "Simulateur de patrimoine global — richesse nette Belgique",
+    intro: "Consolidez vos actifs financiers et immobiliers pour visualiser votre richesse nette totale et sa répartition par classe d'actifs, en contexte belge.",
+  },
+  '/simulateurs/emprunt-immobilier': {
+    h1: "Simulateur d'emprunt immobilier Belgique",
+    intro: "Calculez la mensualité, la capacité d'emprunt et le coût total de votre crédit hypothécaire en Belgique. Le simulateur inclut le taux d'endettement et un tableau d'amortissement annuel.",
+  },
+  '/simulateurs/rendement-locatif': {
+    h1: "Simulateur de rendement locatif Belgique",
+    intro: "Évaluez la rentabilité brute et nette d'un investissement locatif en Belgique. Cash flow mensuel, retour sur fonds propres et comparaison des opportunités immobilières belges.",
+  },
+  '/simulateurs/assurance-vie': {
+    h1: "Simulateur épargne-pension et assurance groupe Belgique",
+    intro: "Projetez la croissance de votre épargne-pension ou assurance groupe en Belgique et estimez le capital disponible à l'échéance. Un outil pour planifier votre complément de retraite.",
+  },
+  '/simulateurs/rente-capital': {
+    h1: "Simulateur rente viagère vs retrait programmé — retraite Belgique",
+    intro: "Comparez la rente viagère et les retraits programmés pour votre capital retraite. Revenu mensuel net, point mort et cumul sur 20 ans pour choisir le meilleur mode de décaissement.",
+  },
+  '/simulateurs/inflation': {
+    h1: "Simulateur inflation et pouvoir d'achat — Belgique 2025",
+    intro: "Mesurez l'impact de l'inflation sur votre budget en euros, par poste de dépense. Projetez l'érosion de votre pouvoir d'achat sur 10 à 30 ans selon l'indice des prix à la consommation belge.",
+  },
+  '/simulateurs/comparateur': {
+    h1: "Comparateur d'actifs ETF, actions, crypto — Belgique",
+    intro: "Comparez la performance historique d'ETF, d'actions et de cryptomonnaies sur la période de votre choix. Retour total, CAGR, versements programmés et indice base 100.",
+  },
+  '/simulateurs/credit-conso': {
+    h1: "Simulateur de crédit à la consommation Belgique",
+    intro: "Calculez la mensualité, le coût total et les intérêts de votre crédit à la consommation selon le montant, le TAEG et la durée. Adapté au marché belge, tableau d'amortissement inclus.",
+  },
+  '/simulateurs/cout-en-heures': {
+    h1: "Simulateur : le vrai prix en heures de vie (Belgique)",
+    intro: "Convertissez n'importe quel achat en heures de travail réelles. Découvrez le coût véritable d'un bien ou d'un abonnement exprimé en temps plutôt qu'en euros.",
+  },
+};
+
 // Contenu SEO en anglais (H1 + intro) pour les pages /en/...
 export const SEO_CONTENT_EN = {
   '/': {
@@ -198,8 +338,12 @@ function escapeHtml(s) {
 // dans le HTML brut pour les crawlers et le rendu sans JS.
 const SR_ONLY = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
 
-export function seoHtmlForRoute(route, locale = 'fr') {
-  const dict = locale === 'en' ? SEO_CONTENT_EN : SEO_CONTENT;
+export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
+  let dict;
+  if (locale === 'en') dict = SEO_CONTENT_EN;
+  else if (country === 'ch') dict = SEO_CONTENT_CH;
+  else if (country === 'be') dict = SEO_CONTENT_BE;
+  else dict = SEO_CONTENT;
   const c = dict[route];
   if (!c) return '';
   return `<div id="seo-prerender" style="${SR_ONLY}"><h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p></div>`;
