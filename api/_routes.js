@@ -14,11 +14,7 @@ export const BASE = 'https://www.simfinly.com';
 // la locale par défaut (servie à la racine) ; l'anglais est préfixé (/en/...).
 export const I18N = { defaultLocale: 'fr', locales: ['fr', 'en'] };
 
-// Routes disposant d'une version anglaise (/en/...). Seuls les outils
-// « universels » (non spécifiques à la France) sont traduits : les simulateurs
-// de retraite, d'impôt, PER, etc. restent en français uniquement. Source unique
-// de vérité partagée par le routing React (src/i18n/paths.js), le switcher de
-// langue, le prérendu statique, le sitemap et les liens hreflang.
+// Routes disponibles en version anglaise (/en/...).
 export const EN_ROUTES = [
   '/',
   '/simulateurs/epargne',
@@ -39,6 +35,49 @@ export const EN_ROUTES = [
   '/simulateurs/inflation',
 ];
 
+// Routes disponibles sous /ch/ (Suisse). Miroir de src/i18n/paths.js CH_ROUTES.
+export const CH_ROUTES = [
+  '/',
+  '/simulateurs/lpp-deuxieme-pilier',
+  '/simulateurs/impot-revenu-ch',
+  '/simulateurs/prevoyance-ch',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/credit-conso',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/vie-en-semaines',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  '/simulateurs/rente-capital',
+  '/simulateurs/inflation',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+];
+
+// Routes disponibles sous /be/ (Belgique). Miroir de src/i18n/paths.js BE_ROUTES.
+export const BE_ROUTES = [
+  '/',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  '/simulateurs/impot-revenu',
+  '/simulateurs/succession',
+  '/simulateurs/pension-legale',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+];
+
 // Méta anglaises (title + description) par route, pour le HTML statique /en/...
 export const ROUTE_META_EN = {
   '/':                            { title: 'Free Financial Calculators — Savings, FIRE, Budget | Simfinly', description: 'Free online financial calculators: compound interest, FIRE & financial independence, 50/30/20 budget, net worth and more. Instant results, no sign-up.' },
@@ -50,7 +89,7 @@ export const ROUTE_META_EN = {
   '/simulateurs/vie-en-semaines': { title: 'Your Life in Weeks Calculator — Visualize Your Lifetime | Simfinly', description: 'Visualize your entire life as a grid, one square per week. See the weeks you have lived, the weeks left and the summers ahead. Inspired by Your Life in Weeks.' },
   '/simulateurs/assurance-vie':   { title: 'French Life Insurance Calculator — Capital & Tax | Simfinly', description: 'Project the growth of a French assurance-vie policy and estimate the tax on your gains at withdrawal: the 8-year advantage, allowance, flat tax and social levies.' },
   '/simulateurs/rendement-locatif': { title: 'Rental Yield Calculator — Buy-to-Let Profitability | Simfinly', description: 'Calculate the gross and net yield of a French rental investment: rent, costs, monthly cash flow and return on equity. Instant, free, no sign-up.' },
-  '/simulateurs/emprunt-immobilier': { title: 'French Mortgage Calculator — Payment & Capacity | Simfinly', description: 'Work out your monthly payment, debt-to-income ratio and the total cost of a French mortgage. Notary fees, zero-rate loan (PTZ) and amortization schedule included.' },
+  '/simulateurs/emprunt-immobilier': { title: 'Mortgage Calculator — Monthly Payment & Borrowing Capacity | Simfinly', description: 'Work out your monthly payment, debt-to-income ratio and the total cost of a mortgage. Amortization schedule and total interest included.' },
   '/simulateurs/credit-conso':    { title: 'Personal Loan Calculator — Monthly Payment & Cost | Simfinly',   description: 'Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes optional insurance and an amortization schedule.' },
   '/simulateurs/comparateur':     { title: 'Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly',        description: 'Compare the historical performance of ETFs, stocks and cryptocurrencies over any period, from real data. Total return, CAGR, recurring contributions and base-100 index.' },
   '/outils/qr-code':              { title: 'Free Custom QR Code Generator — Color, Logo | Simfinly',         description: 'Create a custom QR code for free: pick the colors, enter any text or link and add your logo or an emoji in the center. High-resolution PNG, no sign-up.' },
@@ -60,74 +99,110 @@ export const ROUTE_META_EN = {
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
 };
 
-// Méta d'une route pour une locale donnée (EN si dispo, sinon repli FR).
-export function routeMeta(route, locale = 'fr') {
+// Méta suisses (title + description) pour le HTML statique /ch/...
+export const ROUTE_META_CH = {
+  '/': { title: 'Simfinly — Simulateurs gratuits LPP, pilier 3a, fiscalité & finances (Suisse)', description: 'Simulez votre 2e pilier LPP, votre pilier 3a, votre impôt cantonal et votre épargne. Simulateurs gratuits adaptés au droit suisse, sans inscription.' },
+};
+
+// Méta belges (title + description) pour le HTML statique /be/...
+export const ROUTE_META_BE = {
+  '/': { title: 'Simfinly — Simulateurs gratuits pension, IPP, succession & finances (Belgique)', description: 'Simulez votre pension légale ONSS, votre IPP, vos droits de succession et votre épargne. Simulateurs gratuits adaptés à la législation belge 2025, sans inscription.' },
+};
+
+// Méta d'une route pour une locale et un pays donnés.
+export function routeMeta(route, locale = 'fr', country = 'fr') {
   if (locale === 'en' && ROUTE_META_EN[route]) return ROUTE_META_EN[route];
+  if (country === 'ch' && ROUTE_META_CH[route]) return ROUTE_META_CH[route];
+  if (country === 'be' && ROUTE_META_BE[route]) return ROUTE_META_BE[route];
   return ROUTE_META[route];
 }
 
-// Liens hreflang d'une route, pour le HTML statique. N'émet des balises que pour
-// les routes réellement disponibles en anglais (EN_ROUTES) : Google découvre
-// ainsi la version /en correspondante, sans alternate trompeur sur les pages
-// françaises uniquement.
+// Liens hreflang d'une route pour le HTML statique.
+// Émet toutes les variantes disponibles (fr, en, fr-CH, fr-BE, x-default) afin
+// que Google comprenne le maillage international sans exécuter JavaScript.
 export function hreflangLinks(route) {
-  if (I18N.locales.length < 2 || !EN_ROUTES.includes(route)) return '';
+  const links = [];
   const fr = `${BASE}${route === '/' ? '/' : route}`;
-  const en = `${BASE}/en${route === '/' ? '' : route}`;
-  return [
-    `<link rel="alternate" hreflang="fr" href="${fr}" />`,
-    `<link rel="alternate" hreflang="en" href="${en}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${fr}" />`,
-  ].join('\n    ');
+  links.push(`<link rel="alternate" hreflang="fr" href="${fr}" />`);
+  if (EN_ROUTES.includes(route)) {
+    links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en${route === '/' ? '' : route}" />`);
+  }
+  if (CH_ROUTES.includes(route)) {
+    links.push(`<link rel="alternate" hreflang="fr-CH" href="${BASE}/ch${route === '/' ? '' : route}" />`);
+  }
+  if (BE_ROUTES.includes(route)) {
+    links.push(`<link rel="alternate" hreflang="fr-BE" href="${BASE}/be${route === '/' ? '' : route}" />`);
+  }
+  links.push(`<link rel="alternate" hreflang="x-default" href="${fr}" />`);
+  // Inutile si seulement fr + x-default (même URL = balisage inutile)
+  if (links.length <= 2) return '';
+  return links.join('\n    ');
 }
 
 // Méta par route : title (HTML statique), cat (og:image par catégorie),
 // prio / freq (sitemap).
 export const ROUTE_META = {
-  '/':                                    { title: 'simfinly.com — 25 simulateurs gratuits', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
-  '/simulateurs/agirc-arrco':             { title: 'Simulateur Agirc-Arrco 2026',                emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/cnav':                    { title: 'Simulateur CNAV — Régime général',            emoji: '🏛', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/fonction-publique':       { title: 'Simulateur Retraite Fonction publique',       emoji: '⚖️', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/independants':            { title: 'Simulateur Retraite Indépendants / TNS',      emoji: '💼', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/ircantec':                { title: 'Simulateur IRCANTEC',                         emoji: '🏢', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/retraite-progressive':    { title: 'Simulateur Retraite progressive',             emoji: '📅', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/cnavpl':                  { title: 'Simulateur Professions libérales',            emoji: '👨‍⚕️', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
-  '/simulateurs/msa':                     { title: 'Simulateur Retraite agricole MSA',            emoji: '🌾', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/per':                     { title: 'Simulateur PER 2025 — Plan Épargne Retraite', emoji: '💼', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/synthese-retraite':       { title: 'Synthèse retraite tous régimes — pension totale', emoji: '🧮', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/retraite-anticipee':      { title: 'Simulateur Retraite anticipée — carrières longues', emoji: '⏩', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/pension-reversion':       { title: 'Simulateur Pension de réversion 2025',        emoji: '💞', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/rente-capital':           { title: 'Simulateur Rente viagère vs retrait programmé', emoji: '⚖️', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/inflation':               { title: "Simulateur d'inflation & pouvoir d'achat",      emoji: '📈', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/emprunt-immobilier':      { title: 'Simulateur Emprunt immobilier',              emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
-  '/simulateurs/rendement-locatif':       { title: 'Simulateur Rendement locatif',               emoji: '📊', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
-  '/simulateurs/ptz':                     { title: 'Simulateur PTZ 2025 — Prêt à Taux Zéro',     emoji: '🏡', cat: 'Immobilier', prio: '0.8', freq: 'monthly' },
-  '/simulateurs/frais-notaire':           { title: 'Simulateur Frais de notaire 2025',           emoji: '🖋', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
-  '/simulateurs/impot-revenu':            { title: 'Simulateur Impôt sur le revenu 2026',        emoji: '📋', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
-  '/simulateurs/plus-value-immobiliere':  { title: 'Simulateur Plus-value immobilière',          emoji: '📈', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
-  '/simulateurs/deficit-foncier':         { title: 'Simulateur Déficit foncier 2025',              emoji: '🏚', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
-  '/simulateurs/budget':                  { title: 'Simulateur Budget 50/30/20',                 emoji: '📊', cat: 'Budget',     prio: '0.9', freq: 'monthly' },
-  '/simulateurs/salaire':                 { title: 'Simulateur Salaire Net/Brut',                emoji: '💼', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/epargne':                 { title: 'Simulateur Épargne & intérêts composés',     emoji: '💰', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/fire':                    { title: 'Simulateur FIRE — Indépendance financière',  emoji: '🔥', cat: 'FIRE',       prio: '0.9', freq: 'monthly' },
-  '/simulateurs/patrimoine':              { title: 'Simulateur Patrimoine global 2026',           emoji: '💎', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
-  '/simulateurs/comparateur':            { title: "Comparateur d'actifs — ETF, actions, crypto",  emoji: '📊', cat: 'Finances',   prio: '0.9', freq: 'weekly'  },
-  '/simulateurs/assurance-vie':          { title: 'Simulateur Assurance-vie — fiscalité & rendement', emoji: '🛡️', cat: 'Finances',  prio: '0.8', freq: 'monthly' },
-  '/simulateurs/epargne-salariale':      { title: 'Simulateur Épargne salariale — PEE PERCO PERO',  emoji: '🏢', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/donation':               { title: 'Simulateur Donation vs Succession',               emoji: '🎁', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
-  '/simulateurs/credit-conso':           { title: 'Simulateur Crédit à la consommation',         emoji: '💳', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/cout-en-heures':          { title: 'Simulateur Prix en heures de vie',           emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
-  '/simulateurs/vie-en-semaines':         { title: 'Simulateur Ma vie en semaines',              emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
-  '/outils/qr-code':                      { title: 'Générateur de QR code personnalisé (couleur, logo)', emoji: '🔳', cat: '', prio: '0.7', freq: 'monthly' },
-  '/blog':                                { title: 'Blog — Finances personnelles',               emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
-  '/lexique':                             { title: 'Lexique financier — définitions',            emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
-  '/guides':                              { title: 'Guides finances personnelles',               emoji: '📚', cat: '',          prio: '0.8', freq: 'monthly' },
-  '/comparatifs':                         { title: 'Comparatifs financiers — PER, achat, freelance', emoji: '⚖️', cat: '',          prio: '0.7', freq: 'monthly' },
-  '/methodologie':                        { title: 'Méthodologie & sources',                     emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
-  '/widgets':                             { title: 'Widgets gratuits à intégrer',                emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
-  '/a-propos':                            { title: 'À propos — simfinly.com',                emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
-  '/mentions-legales':                    { title: 'Mentions légales',                           emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
-  '/politique-de-confidentialite':        { title: 'Politique de confidentialité',               emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
+  '/':                                    { title: 'simfinly.com — 35+ simulateurs gratuits retraite, immobilier, finances', emoji: '📊', cat: '',          prio: '1.0', freq: 'weekly'  },
+  // Retraite
+  '/simulateurs/agirc-arrco':             { title: 'Simulateur retraite Agirc-Arrco 2026 — points & pension nette',         emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/cnav':                    { title: 'Simulateur CNAV 2026 — régime général retraite de base',                emoji: '🏛', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/fonction-publique':       { title: 'Simulateur retraite Fonction publique 2026',                           emoji: '⚖️', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/independants':            { title: 'Simulateur retraite Indépendants & TNS 2026 — SSI + RCI',              emoji: '💼', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/ircantec':                { title: 'Simulateur IRCANTEC — agents non-titulaires de la fonction publique',  emoji: '🏢', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/retraite-progressive':    { title: 'Simulateur retraite progressive — mi-temps & pension partielle',       emoji: '📅', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/cnavpl':                  { title: 'Simulateur retraite professions libérales CIPAV 2026',                 emoji: '👨‍⚕️', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
+  '/simulateurs/msa':                     { title: 'Simulateur retraite agricole MSA — exploitants & salariés',            emoji: '🌾', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/per':                     { title: 'Simulateur PER 2026 — déduction fiscale & capital projeté',            emoji: '💼', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/synthese-retraite':       { title: 'Simulateur synthèse retraite tous régimes — pension totale 2026',      emoji: '🧮', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/retraite-anticipee':      { title: 'Simulateur retraite anticipée 2026 — carrières longues & conditions',  emoji: '⏩', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/pension-reversion':       { title: 'Simulateur pension de réversion 2026 — CNAV + Agirc-Arrco',           emoji: '💞', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/rente-capital':           { title: 'Simulateur rente viagère vs retrait programmé — retraite PER',         emoji: '⚖️', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/comparaison-reforme':     { title: 'Simulateur réforme retraite 2023 — comparaison avant/après',          emoji: '📊', cat: 'Retraite',   prio: '0.7', freq: 'monthly' },
+  // Simulateurs Suisse
+  '/simulateurs/lpp-deuxieme-pilier':     { title: 'Simulateur LPP 2e pilier Suisse 2025 — avoir & rente projetés',        emoji: '🏦', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/impot-revenu-ch':         { title: 'Simulateur impôt revenu Suisse — fédéral + cantonal 2025',             emoji: '📋', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
+  '/simulateurs/prevoyance-ch':           { title: 'Simulateur pilier 3a Suisse — capital & déduction fiscale 2025',       emoji: '🏦', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  // Immobilier
+  '/simulateurs/emprunt-immobilier':      { title: 'Simulateur emprunt immobilier — mensualités, capacité, TAEG',          emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
+  '/simulateurs/rendement-locatif':       { title: 'Simulateur rendement locatif — rentabilité brute & nette',             emoji: '📊', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
+  '/simulateurs/ptz':                     { title: 'Simulateur PTZ 2026 — prêt à taux zéro primo-accédant',               emoji: '🏡', cat: 'Immobilier', prio: '0.8', freq: 'monthly' },
+  '/simulateurs/frais-notaire':           { title: 'Simulateur frais de notaire 2026 — acquisition immobilière',           emoji: '🖋', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
+  // Impôts
+  '/simulateurs/impot-revenu':            { title: 'Simulateur impôt sur le revenu 2026 — TMI & taux moyen',               emoji: '📋', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
+  '/simulateurs/plus-value-immobiliere':  { title: 'Simulateur plus-value immobilière — abattements & imposition',         emoji: '📈', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
+  '/simulateurs/deficit-foncier':         { title: 'Simulateur déficit foncier 2026 — économie impôt travaux',             emoji: '🏚', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
+  '/simulateurs/succession':              { title: 'Simulateur droits de succession 2026 — barème officiel',               emoji: '🎁', cat: 'Impôts',     prio: '0.9', freq: 'monthly' },
+  '/simulateurs/donation':                { title: 'Simulateur donation vs succession — optimisation fiscale',              emoji: '🎁', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
+  // Finances
+  '/simulateurs/inflation':               { title: "Simulateur inflation & pouvoir d'achat personnalisé 2026",             emoji: '📈', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/budget':                  { title: 'Simulateur budget 50/30/20 — répartition & taux d\'épargne',           emoji: '📊', cat: 'Budget',     prio: '0.9', freq: 'monthly' },
+  '/simulateurs/salaire':                 { title: 'Simulateur salaire net/brut 2026 — évolution de carrière',             emoji: '💼', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/epargne':                 { title: 'Simulateur épargne & intérêts composés — projection long terme',       emoji: '💰', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/fire':                    { title: 'Simulateur FIRE — indépendance financière & retraite anticipée',       emoji: '🔥', cat: 'FIRE',       prio: '0.9', freq: 'monthly' },
+  '/simulateurs/patrimoine':              { title: 'Simulateur patrimoine global 2026 — richesse nette & répartition',     emoji: '💎', cat: 'Finances',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/comparateur':             { title: "Comparateur d'actifs — ETF, actions, crypto : performance historique", emoji: '📊', cat: 'Finances',   prio: '0.9', freq: 'weekly'  },
+  '/simulateurs/assurance-vie':           { title: 'Simulateur assurance-vie — rendement & fiscalité au rachat',           emoji: '🛡️', cat: 'Finances',  prio: '0.8', freq: 'monthly' },
+  '/simulateurs/epargne-salariale':       { title: 'Simulateur épargne salariale PEE PERCO PERO — gain fiscal',            emoji: '🏢', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/credit-conso':            { title: 'Simulateur crédit à la consommation — mensualité & coût total',        emoji: '💳', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/freelance-vs-salarie':    { title: 'Simulateur freelance vs salarié — revenus nets comparés 2026',         emoji: '💼', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  // Patrimoine & Juridique
+  '/simulateurs/divorce':                 { title: 'Simulateur divorce & partage de patrimoine — prestation compensatoire', emoji: '⚖️', cat: 'Patrimoine', prio: '0.7', freq: 'monthly' },
+  // Simulateurs BE-spécifiques
+  '/simulateurs/pension-legale':          { title: 'Simulateur pension légale Belgique (ONSS) 2025 — salarié & indépendant', emoji: '🏦', cat: 'Retraite',  prio: '0.9', freq: 'monthly' },
+  // Vie & Temps
+  '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat',             emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/simulateurs/vie-en-semaines':         { title: 'Simulateur ma vie en semaines — visualiser son temps',                 emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/outils/qr-code':                      { title: 'Générateur de QR code personnalisé — couleur, logo, texte libre',      emoji: '🔳', cat: '', prio: '0.7', freq: 'monthly' },
+  // Contenu éditorial
+  '/blog':                                { title: 'Blog finances personnelles — retraite, immobilier, épargne, FIRE',     emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
+  '/lexique':                             { title: 'Lexique financier — définitions TAEG, PER, TMI, FIRE…',               emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
+  '/guides':                              { title: 'Guides finances personnelles — retraite, immobilier, épargne',         emoji: '📚', cat: '',          prio: '0.8', freq: 'monthly' },
+  '/comparatifs':                         { title: 'Comparatifs financiers — PER, achat vs location, freelance',          emoji: '⚖️', cat: '',          prio: '0.7', freq: 'monthly' },
+  '/methodologie':                        { title: 'Méthodologie & sources — calculs simfinly.com',                        emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
+  '/widgets':                             { title: 'Widgets gratuits à intégrer — simulateurs embarquables',               emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
+  '/a-propos':                            { title: 'À propos — simfinly.com',                                             emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
+  '/mentions-legales':                    { title: 'Mentions légales — simfinly.com',                                      emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
+  '/politique-de-confidentialite':        { title: 'Politique de confidentialité — simfinly.com',                         emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
 };
 
 // Slugs de blog de secours : utilisés pour générer les HTML statiques au build

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, EN_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, EN_ROUTES, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -20,11 +20,19 @@ function escapeAttr(s) {
 
 // Titre + description spécifiques à une route (sinon null → on garde la valeur
 // par défaut de index.html). `extra` porte les métadonnées blog issues de Redis.
-function seoForRoute(route, extra = {}, locale = 'fr') {
+function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   if (locale === 'en') {
     const meta = ROUTE_META_EN[route];
     if (meta) return { title: meta.title, description: meta.description };
     return { title: null, description: SEO_CONTENT_EN[route]?.intro || null };
+  }
+  if (country === 'ch') {
+    const meta = ROUTE_META_CH[route];
+    if (meta) return { title: meta.title, description: meta.description };
+  }
+  if (country === 'be') {
+    const meta = ROUTE_META_BE[route];
+    if (meta) return { title: meta.title, description: meta.description };
   }
   if (route.startsWith('/lexique/')) {
     const slug = route.slice('/lexique/'.length);
@@ -62,12 +70,16 @@ function ogImageUrl(route, extra) {
   return `${BASE}${ogImageForRoute(route)}`;
 }
 
-function patchHtml(html, route, extra, locale = 'fr') {
-  const { title, description } = seoForRoute(route, extra, locale);
+function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
+  const { title, description } = seoForRoute(route, extra, locale, country);
   const ogImg = ogImageUrl(route, extra);
   const ld = structuredDataScripts(route, extra);
   const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale);
-  const urlPath = locale === 'en' ? `/en${route === '/' ? '' : route}` : route;
+  let urlPath;
+  if (locale === 'en') urlPath = `/en${route === '/' ? '' : route}`;
+  else if (country === 'ch') urlPath = `/ch${route === '/' ? '' : route}`;
+  else if (country === 'be') urlPath = `/be${route === '/' ? '' : route}`;
+  else urlPath = route;
   const url = `${BASE}${urlPath}`;
   let out = html
     .replace(/content="\/og-image\.png"/g, `content="${escapeAttr(ogImg)}"`)
@@ -78,6 +90,12 @@ function patchHtml(html, route, extra, locale = 'fr') {
   if (locale === 'en') {
     out = out
       .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="en_US"');
+  } else if (country === 'ch') {
+    out = out
+      .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_CH"');
+  } else if (country === 'be') {
+    out = out
+      .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_BE"');
   }
 
   if (title) {
@@ -160,6 +178,22 @@ for (const route of EN_ARRAY) {
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'en'));
 }
 
+// ── Pages CH (/ch/... routes disponibles en Suisse) ────────────────────────────
+for (const route of CH_ROUTES) {
+  const urlPath = route === '/' ? '/ch' : `/ch${route}`;
+  const dir = path.join(distDir, urlPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'ch'));
+}
+
+// ── Pages BE (/be/... routes disponibles en Belgique) ─────────────────────────
+for (const route of BE_ROUTES) {
+  const urlPath = route === '/' ? '/be' : `/be${route}`;
+  const dir = path.join(distDir, urlPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'be'));
+}
+
 // Versionne le cache du service worker à chaque build : le nom de cache change,
 // donc l'ancien cache (anciens JS/CSS) est purgé à l'activation du nouveau SW.
 try {
@@ -172,4 +206,4 @@ try {
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.
 
-console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} fichiers EN`);
+console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE`);
