@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useAuth } from "../hooks/useAuth.js";
@@ -6,7 +6,7 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import SimIcon from "../data/simIcons.jsx";
-import { BarChart3, Clock, TrendingUp, ArrowRight } from "lucide-react";
+import { BarChart3, Clock, TrendingUp, ArrowRight, Heart, Target, AlertCircle } from "lucide-react";
 
 const QUICK_ACCESS = [
   { path: "/simulateurs/synthese-retraite", label: "Synthèse retraite", category: "Retraite" },
@@ -45,6 +45,121 @@ const CAT_COLORS = {
   "Vie & Temps": { bg: "rgba(168,85,247,0.1)", border: "rgba(168,85,247,0.3)", text: "#a855f7" },
   Autre:       { bg: "var(--card-bg)",         border: "var(--border)",         text: "var(--text-secondary)" },
 };
+
+// ─── Score de santé financière ───────────────────────────────────────────────
+function calcHealthScore(history) {
+  if (!history.length) return { score: 0, details: [], missing: ["Lancez votre première simulation pour commencer."] };
+
+  const paths = history.map(e => e.shareUrl?.split("?")[0] ?? "");
+  const simulators = new Set(paths);
+  const categories = new Set(paths.map(categoryFromPath));
+
+  let score = 0;
+  const details = [];
+  const missing = [];
+
+  const hasRetraite = categories.has("Retraite");
+  const hasFinances = categories.has("Finances");
+  const hasImpots   = categories.has("Impôts");
+  const hasImmo     = categories.has("Immobilier");
+
+  if (hasRetraite) { score += 25; details.push("Retraite simulée ✓"); }
+  else missing.push("Simulez votre retraite (Agirc-Arrco, CNAV…)");
+
+  if (hasFinances) { score += 20; details.push("Épargne/Finances simulée ✓"); }
+  else missing.push("Simulez votre épargne ou votre patrimoine");
+
+  if (hasImpots) { score += 15; details.push("Imposition simulée ✓"); }
+  else missing.push("Calculez votre impôt sur le revenu");
+
+  if (hasImmo) { score += 15; details.push("Immobilier simulé ✓"); }
+
+  if (simulators.size >= 3) { score += 10; details.push(`${simulators.size} simulateurs distincts`); }
+
+  const msLast = Date.now() - new Date(history[0].savedAt).getTime();
+  if (msLast < 30 * 86400000) { score += 10; details.push("Simulation récente (< 30 j)"); }
+
+  if (history.length >= 5) { score += 5; details.push(`${history.length} simulations sauvegardées`); }
+
+  return { score: Math.min(100, score), details, missing };
+}
+
+function ScoreRing({ score }) {
+  const r = 44;
+  const circ = 2 * Math.PI * r;
+  const dash = (score / 100) * circ;
+  const color = score >= 70 ? "#22c55e" : score >= 40 ? "var(--gold)" : "#ef4444";
+  return (
+    <svg width={110} height={110} aria-label={`Score financier : ${score}/100`}>
+      <circle cx={55} cy={55} r={r} fill="none" stroke="var(--border)" strokeWidth={8} />
+      <circle cx={55} cy={55} r={r} fill="none" stroke={color} strokeWidth={8}
+        strokeDasharray={`${dash} ${circ}`} strokeDashoffset={circ / 4}
+        strokeLinecap="round" style={{ transition: "stroke-dasharray 0.8s cubic-bezier(.4,0,.2,1)" }} />
+      <text x={55} y={52} textAnchor="middle" fill={color}
+        style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700 }}>
+        {score}
+      </text>
+      <text x={55} y={68} textAnchor="middle" fill="var(--text-secondary)"
+        style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 10 }}>
+        /100
+      </text>
+    </svg>
+  );
+}
+
+// ─── Indicateurs clés ────────────────────────────────────────────────────────
+const KEY_SIMS = [
+  { label: "Retraite",    paths: ["agirc-arrco", "cnav", "synthese-retraite", "independants", "cnavpl", "ircantec", "msa", "fonction-publique"], color: "#b8934a" },
+  { label: "Épargne",     paths: ["epargne", "fire", "assurance-vie", "epargne-salariale", "per"], color: "#22c55e" },
+  { label: "Imposition",  paths: ["impot-revenu", "plus-value", "deficit-foncier"], color: "#ef4444" },
+  { label: "Immobilier",  paths: ["emprunt-immobilier", "rendement-locatif", "ptz"], color: "#3b82f6" },
+  { label: "Patrimoine",  paths: ["patrimoine", "succession", "donation"], color: "#a855f7" },
+];
+
+function KeyIndicatorsPanel({ history }) {
+  const indicators = useMemo(() => {
+    return KEY_SIMS.map(({ label, paths, color }) => {
+      const match = history.find(e => {
+        const p = e.shareUrl?.split("?")[0] ?? "";
+        return paths.some(slug => p.includes(slug));
+      });
+      return {
+        label,
+        color,
+        highlight: match?.reportSnapshot?.highlight ?? null,
+        path: match?.shareUrl?.split("?")[0] ?? null,
+        savedAt: match?.savedAt ?? null,
+      };
+    });
+  }, [history]);
+
+  const filled = indicators.filter(i => i.highlight);
+  if (!filled.length) return null;
+
+  return (
+    <div style={{ marginBottom: 28 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 12 }}>
+        Mes indicateurs clés
+      </h2>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: 12 }}>
+        {filled.map(({ label, color, highlight, path, savedAt }) => (
+          <Link
+            key={label}
+            to={path ? path.replace(/^https?:\/\/[^/]+/, "") : "#"}
+            style={{ textDecoration: "none", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "14px 16px", transition: "border-color 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = color}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
+          >
+            <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color, marginBottom: 6 }}>{label}</div>
+            <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{highlight.label}</div>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: "var(--text)" }}>{highlight.value}</div>
+            {savedAt && <div style={{ fontSize: 10, color: "var(--text-secondary)", marginTop: 6, opacity: 0.7 }}>{relativeDate(savedAt)}</div>}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function StatCard({ icon, value, label }) {
   return (
@@ -106,6 +221,7 @@ export default function TableauDeBord() {
 
   const categories = [...new Set(history.map(e => categoryFromPath(e.shareUrl?.split("?")[0])))];
   const recent = history.slice(0, 8);
+  const { score: healthScore, details: scoreDetails, missing: scoreMissing } = useMemo(() => calcHealthScore(history), [history]);
 
   // Category counts for chart and insights
   const catCounts = {};
@@ -195,6 +311,40 @@ export default function TableauDeBord() {
           <StatCard icon={<TrendingUp size={20} />} value={categories.length} label={`catégorie${categories.length > 1 ? "s" : ""} explorée${categories.length > 1 ? "s" : ""}`} />
           <StatCard icon={<Clock size={20} />} value={history.length > 0 ? relativeDate(history[0].savedAt) : "—"} label="dernière activité" />
         </div>
+
+        {/* Score de santé financière */}
+        {history.length > 0 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "22px 24px", marginBottom: 20 }}>
+            <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, margin: "0 0 18px" }}>
+              Score de santé financière
+            </h2>
+            <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
+              <ScoreRing score={healthScore} />
+              <div style={{ flex: 1, minWidth: 200 }}>
+                {scoreDetails.length > 0 && (
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
+                    {scoreDetails.map((d, i) => (
+                      <span key={i} style={{ fontSize: 12, padding: "4px 10px", borderRadius: 20, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: "#22c55e" }}>{d}</span>
+                    ))}
+                  </div>
+                )}
+                {scoreMissing.length > 0 && (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    {scoreMissing.map((m, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12, color: "var(--text-secondary)" }}>
+                        <AlertCircle size={12} style={{ flexShrink: 0, marginTop: 1, color: "var(--gold)" }} />
+                        {m}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Indicateurs clés */}
+        <KeyIndicatorsPanel history={history} />
 
         {/* Category breakdown chart — Pro only */}
         {isPro && history.length > 0 && (

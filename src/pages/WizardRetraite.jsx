@@ -427,11 +427,79 @@ export default function WizardRetraite() {
                   {fmtEur(pension.total)}
                 </div>
                 {pension.complementaire && (
-                  <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
+                  <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 12 }}>
                     Base CNAV : {fmtEur(pension.base)} · Agirc-Arrco estimé : {fmtEur(pension.complementaire)}
                   </div>
                 )}
-                <div role="note" style={{ marginTop: 12, fontSize: 11, color: "var(--text-secondary)", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 12px", lineHeight: 1.6 }}>
+
+                {/* Taux de remplacement */}
+                {dernierSalaire > 0 && (() => {
+                  const taux = Math.round((pension.total / dernierSalaire) * 100);
+                  const color = taux >= 70 ? "#22c55e" : taux >= 50 ? "var(--gold)" : "#ef4444";
+                  const label = taux >= 70 ? "Bon" : taux >= 50 ? "Acceptable" : "Insuffisant";
+                  const gap = Math.max(0, dernierSalaire * 0.70 - pension.total);
+                  return (
+                    <div>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                        <span style={{ fontSize: 12, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase" }}>Taux de remplacement</span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 12, color, fontWeight: 600 }}>{label}</span>
+                          <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color }}>{taux} %</span>
+                        </div>
+                      </div>
+                      <div style={{ height: 8, borderRadius: 4, background: "var(--border)", overflow: "hidden", marginBottom: 12 }}>
+                        <div style={{ height: "100%", width: `${Math.min(taux, 100)}%`, background: `linear-gradient(90deg, #3b82f6, ${color})`, borderRadius: 4, transition: "width 0.6s cubic-bezier(.4,0,.2,1)" }} />
+                      </div>
+
+                      {/* Indicateurs complémentaires */}
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginBottom: gap > 0 ? 12 : 0 }}>
+                        {[
+                          { l: "Pension nette/mois", v: fmtEur(pension.total) },
+                          { l: "Dernier salaire", v: fmtEur(dernierSalaire) },
+                          { l: "Perte mensuelle", v: `− ${fmtEur(Math.max(0, dernierSalaire - pension.total))}` },
+                        ].map(({ l, v }, i) => (
+                          <div key={i} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px" }}>
+                            <div style={{ fontSize: 9, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{l}</div>
+                            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 700, color: i === 2 ? "#f87171" : "var(--text)" }}>{v}</div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Gap d'épargne retraite */}
+                      {gap > 0 && (
+                        <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 12, padding: "14px 16px", marginBottom: 12 }}>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: "var(--gold)", marginBottom: 6 }}>
+                            Gap d'épargne pour atteindre 70 % de remplacement
+                          </div>
+                          <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
+                            Il vous manque <strong style={{ color: "var(--gold)" }}>{fmtEur(gap)}/mois</strong> pour atteindre un taux de 70 %.
+                            Un versement mensuel dans un PER ou une assurance-vie peut combler ce manque.
+                          </div>
+                          <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
+                            <Link to={`/simulateurs/per${salaireMensuel ? `?salaire=${salaireMensuel}` : ""}`}
+                              style={{ fontSize: 12, padding: "8px 14px", borderRadius: 10, background: "rgba(184,147,74,0.15)", border: "1px solid var(--border-gold)", color: "var(--gold)", textDecoration: "none" }}>
+                              Simuler mon PER →
+                            </Link>
+                            <Link to="/simulateurs/epargne"
+                              style={{ fontSize: 12, padding: "8px 14px", borderRadius: 10, background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)", textDecoration: "none" }}>
+                              Simuler une épargne →
+                            </Link>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                {/* Impact sur 20 ans */}
+                <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 14px", marginBottom: 12 }}>
+                  <div style={{ fontSize: 10, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>Pension cumulée sur 20 ans (indicatif)</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: "var(--text)" }}>
+                    {fmtEur(pension.total * 12 * 20)}
+                  </div>
+                </div>
+
+                <div role="note" style={{ marginTop: 4, fontSize: 11, color: "var(--text-secondary)", background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 8, padding: "10px 12px", lineHeight: 1.6 }}>
                   ⚠️ <strong>Estimation très approximative</strong> — à titre indicatif uniquement. Affinez le calcul avec les simulateurs ci-dessous.
                 </div>
               </div>

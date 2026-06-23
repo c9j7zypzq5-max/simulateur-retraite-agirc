@@ -7,6 +7,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams } from "../../hooks/useShareableUrl.js";
@@ -377,6 +378,22 @@ export default function EpargneSalariale() {
         </AccordionSection>
 
         <ShareBar params={toParams(vals)} name="epargne-salariale" />
+
+        <ScenarioCompare
+          name="epargne-salariale"
+          fields={[
+            { key: "versementMensuel", label: "Versement mensuel salarié", unit: "€", type: "num", min: 0, max: 10000, kind: "eur" },
+            { key: "tauxAbondement",   label: "Taux d'abondement",         unit: "%", type: "step", min: 0, max: 300, step: 10 },
+            { key: "rendementAnnuel",  label: "Rendement annuel",          unit: "%", type: "step", min: 0, max: 12,  step: 0.5 },
+            { key: "duree",            label: "Durée",                     unit: "ans", type: "step", min: 1, max: 40, step: 1 },
+          ]}
+          base={vals}
+          compute={calcEpargneSalariale}
+          metrics={[
+            { label: "Capital final", get: r => r.capitalFinal, fmt: v => fmtEur(Math.round(v)), higherBetter: true },
+            { label: "Gain abondement", get: r => r.gainAbondement, fmt: v => fmtEur(Math.round(v)), higherBetter: true },
+          ]}
+        />
       </div>
       <Footer />
     </div>

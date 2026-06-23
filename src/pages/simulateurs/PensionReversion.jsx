@@ -5,6 +5,7 @@ import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
+import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -35,6 +36,17 @@ const PLAFOND_COUPLE = 39537;   // ressources annuelles, en couple (2025)
 const AGE_MIN = 55;
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
+
+function calcReversion({ pensionBase, pensionCompl, ressources, situation, age }) {
+  const eligibleAge = (age ?? 0) >= AGE_MIN;
+  const plafond = situation === "couple" ? PLAFOND_COUPLE : PLAFOND_SEUL;
+  const reversionBaseBruteAnnuelle = (pensionBase ?? 0) * 12 * TAUX_BASE;
+  const depassement = Math.max(0, (ressources ?? 0) + reversionBaseBruteAnnuelle - plafond);
+  const reversionBaseMensuelle = eligibleAge ? Math.max(0, reversionBaseBruteAnnuelle - depassement) / 12 : 0;
+  const reversionComplMensuelle = eligibleAge ? (pensionCompl ?? 0) * TAUX_COMPL : 0;
+  const totalMensuel = reversionBaseMensuelle + reversionComplMensuelle;
+  return { reversionBaseMensuelle, reversionComplMensuelle, totalMensuel };
+}
 
 const FAQ = [
   {
@@ -311,6 +323,23 @@ export default function PensionReversion() {
             )}
           </div>
         </div>
+
+        {hasInput && (
+          <ScenarioCompare
+            name="pension-reversion"
+            fields={[
+              { key: "pensionBase",  label: "Retraite de base du défunt",   unit: "€/mois", type: "num",  min: 0, max: 5000,   kind: "eur" },
+              { key: "pensionCompl", label: "Retraite complémentaire",      unit: "€/mois", type: "num",  min: 0, max: 5000,   kind: "eur" },
+              { key: "ressources",   label: "Ressources du survivant",      unit: "€/an",   type: "num",  min: 0, max: 200000, kind: "eur" },
+            ]}
+            base={{ pensionBase, pensionCompl, ressources, situation, age }}
+            compute={calcReversion}
+            metrics={[
+              { label: "Réversion totale",       get: r => r.totalMensuel,            fmt: v => `${fmtEur(Math.round(v))}/mois`, higherBetter: true },
+              { label: "Réversion base (54 %)",  get: r => r.reversionBaseMensuelle,  fmt: v => `${fmtEur(Math.round(v))}/mois`, higherBetter: true },
+            ]}
+          />
+        )}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
