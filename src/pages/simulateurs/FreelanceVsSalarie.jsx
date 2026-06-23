@@ -260,8 +260,9 @@ export default function FreelanceVsSalarie() {
           </div>
         </div>
 
-        {/* Résultats côte à côte */}
-        <div style={{ display: "flex", gap: 14, marginBottom: 28, flexWrap: "wrap" }}>
+        {/* Résultats côte à côte — grille auto-adaptative : 4 colonnes sur
+            desktop, repli à 2 puis 1 colonne sur tablette/mobile (cases lisibles). */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginBottom: 28 }}>
           <ResultCol
             title="Salarié"
             color="var(--primary)"

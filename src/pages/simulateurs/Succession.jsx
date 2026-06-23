@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
@@ -140,6 +141,7 @@ const FAQ = [
 
 export default function Succession() {
   const [theme, setTheme] = useTheme();
+  const isMobile = useIsMobile();
   const init = useMemo(() => fromParams(readShareParams()), []);
   const [actifNet, setActifNet] = useState(init.actifNet);
   const [lien, setLien] = useState(init.lien);
@@ -182,7 +184,7 @@ export default function Succession() {
 
         <AdUnit slot="succession-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, marginBottom: 22 }}>Votre situation</h2>
