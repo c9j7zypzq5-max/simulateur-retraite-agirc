@@ -6,6 +6,7 @@ import { GLOSSARY } from "../data/glossaire.js";
 import { GUIDES } from "../data/guides.js";
 import { ROUTE_META } from "../../api/_routes.js";
 import { useTranslation } from "../i18n/index.js";
+import { usePwaInstall } from "../hooks/usePwaInstall.js";
 
 // Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
 const BLOG_CATS_FOR_SIM = {
@@ -191,11 +192,37 @@ function RelatedArticles() {
   );
 }
 
+function PwaInstallBanner() {
+  const { canInstall, install, dismiss } = usePwaInstall();
+  const { locale } = useTranslation();
+  if (!canInstall) return null;
+  const isEn = locale === "en";
+  return (
+    <div style={{ background: "rgba(43,92,230,0.07)", borderTop: "1px solid rgba(43,92,230,0.15)", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
+      <span style={{ fontSize: 22 }}>📲</span>
+      <div style={{ fontSize: 13, color: "var(--text)" }}>
+        <strong>{isEn ? "Install Simfinly" : "Installer Simfinly"}</strong>
+        {" — "}
+        {isEn ? "access all simulators offline, instantly." : "accédez à tous les simulateurs hors ligne, instantanément."}
+      </div>
+      <div style={{ display: "flex", gap: 8 }}>
+        <button onClick={install} style={{ padding: "7px 16px", borderRadius: 8, background: "#2b5ce6", color: "#fff", border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13, fontWeight: 600 }}>
+          {isEn ? "Install" : "Installer"}
+        </button>
+        <button onClick={dismiss} style={{ padding: "7px 12px", borderRadius: 8, background: "none", color: "var(--text-secondary)", border: "1px solid var(--border)", cursor: "pointer", fontFamily: "inherit", fontSize: 13 }}>
+          {isEn ? "No thanks" : "Non merci"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function Footer() {
   const { t, locale } = useTranslation();
   const isEn = locale === "en";
   return (
     <>
+    <PwaInstallBanner />
     <SideAds />
     <RelatedSimulators />
     <RelatedGuides />

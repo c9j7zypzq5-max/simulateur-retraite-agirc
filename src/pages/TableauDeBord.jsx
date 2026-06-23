@@ -218,6 +218,42 @@ function KeyIndicatorsPanel({ history }) {
   );
 }
 
+// ─── Badges de progression ───────────────────────────────────────────────────
+const BADGES = [
+  { id: "first_sim",  icon: "🎯", label: "Première simulation", desc: "Vous avez fait votre première simulation.",       check: (h) => h.length >= 1  },
+  { id: "explorer",  icon: "🗺️", label: "Explorateur",          desc: "3 simulateurs distincts utilisés.",             check: (h) => new Set(h.map(e => e.shareUrl?.split("?")[0])).size >= 3 },
+  { id: "saver",     icon: "💾", label: "Sauvegardeur",         desc: "5 simulations sauvegardées.",                   check: (h) => h.length >= 5  },
+  { id: "retraite",  icon: "🏆", label: "Planificateur retraite", desc: "Simulation retraite réalisée.",                check: (h) => h.some(e => categoryFromPath(e.shareUrl?.split("?")[0]) === "Retraite") },
+  { id: "finances",  icon: "💰", label: "Maître des finances",  desc: "4 catégories distinctes explorées.",            check: (h) => new Set(h.map(e => categoryFromPath(e.shareUrl?.split("?")[0]))).size >= 4 },
+  { id: "actif",     icon: "🔥", label: "Utilisateur actif",    desc: "Simulation dans les 7 derniers jours.",         check: (h) => h.length > 0 && (Date.now() - new Date(h[0].savedAt)) < 7 * 86400000 },
+];
+
+function BadgesPanel({ history }) {
+  const earned = BADGES.filter(b => b.check(history));
+  const locked = BADGES.filter(b => !b.check(history));
+  if (!history.length) return null;
+
+  return (
+    <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px", marginBottom: 20 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, margin: "0 0 14px" }}>
+        Mes badges <span style={{ fontSize: 12, fontWeight: 400, color: "var(--text-secondary)" }}>({earned.length}/{BADGES.length})</span>
+      </h2>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        {earned.map(b => (
+          <div key={b.id} title={b.desc} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 20, background: "rgba(184,147,74,0.1)", border: "1px solid rgba(184,147,74,0.3)", fontSize: 12, fontWeight: 600, color: "var(--gold)" }}>
+            <span>{b.icon}</span> {b.label}
+          </div>
+        ))}
+        {locked.map(b => (
+          <div key={b.id} title={b.desc} style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 12px", borderRadius: 20, background: "var(--surface, rgba(0,0,0,0.04))", border: "1px solid var(--border)", fontSize: 12, color: "var(--text-secondary)", opacity: 0.5 }}>
+            <span style={{ filter: "grayscale(1)" }}>{b.icon}</span> {b.label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ─── Suivi temporel ──────────────────────────────────────────────────────────
 function SimEvolutionChart({ history }) {
   // Group entries by simulator slug, pick the one with most entries
@@ -479,6 +515,9 @@ export default function TableauDeBord() {
             </div>
           </div>
         )}
+
+        {/* Badges de progression */}
+        <BadgesPanel history={history} />
 
         {/* Suivi temporel */}
         <SimEvolutionChart history={history} />

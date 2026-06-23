@@ -1,21 +1,64 @@
 {
   "name": "Simfinly — Simulateurs financiers",
   "short_name": "Simfinly",
-  "description": "30+ simulateurs financiers : retraite, épargne, immobilier, impôts",
-  "start_url": "/",
+  "description": "30+ simulateurs financiers : retraite, épargne, immobilier, impôts — gratuit et sans publicité intrusive.",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "background_color": "#f5f6f8",
   "theme_color": "#2b5ce6",
   "lang": "fr-FR",
+  "dir": "ltr",
   "orientation": "any",
   "categories": ["finance", "utilities"],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Simuler ma retraite Agirc-Arrco",
+      "short_name": "Retraite Agirc",
+      "url": "/simulateurs/agirc-arrco?source=pwa-shortcut",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Calculer mon impôt sur le revenu",
+      "short_name": "Impôt revenu",
+      "url": "/simulateurs/impot-revenu?source=pwa-shortcut",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Tableau de bord",
+      "short_name": "Tableau de bord",
+      "url": "/tableau-de-bord?source=pwa-shortcut",
+      "icons": [{ "src": "/favicon.svg", "sizes": "any" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-retraite.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "label": "Simulateur retraite Agirc-Arrco"
+    },
+    {
+      "src": "/og-finances.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "label": "Simulateurs financiers — épargne, budget, FIRE"
+    }
+  ],
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }

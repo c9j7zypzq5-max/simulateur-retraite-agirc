@@ -296,6 +296,43 @@ function categoryFromSimPath(path) {
 
 const CAT_ORDER = ["Retraite", "Immobilier", "Patrimoine & Impôts", "Finances", "Vie & Temps", "Autre"];
 
+// Compute a financial health score (0-100) from saved entries.
+function computeHealthScore(entries) {
+  const paths = entries.map(e => (e.shareUrl || "").split("?")[0]);
+  const cats  = new Set(paths.map(categoryFromSimPath));
+  let score = 0;
+  if (cats.has("Retraite"))           score += 25;
+  if (cats.has("Finances"))           score += 20;
+  if (cats.has("Patrimoine & Impôts")) score += 15;
+  if (cats.has("Immobilier"))         score += 15;
+  if (new Set(paths).size >= 3)       score += 10;
+  const last = entries.reduce((m, e) => new Date(e.savedAt || 0) > m ? new Date(e.savedAt || 0) : m, new Date(0));
+  if (Date.now() - last < 30 * 86400000) score += 10;
+  if (entries.length >= 5)            score += 5;
+  return Math.min(100, score);
+}
+
+// Extract the best "highlight" per category from entries.
+const KEY_CATS = [
+  { label: "Retraite",   paths: ["agirc-arrco", "cnav", "synthese-retraite", "independant", "cnavpl", "ircantec", "msa", "fonction-publique", "pension"] },
+  { label: "Épargne",    paths: ["epargne", "fire", "assurance-vie", "epargne-salariale", "per", "rente-capital"] },
+  { label: "Fiscalité",  paths: ["impot-revenu", "plus-value", "deficit-foncier"] },
+  { label: "Immobilier", paths: ["emprunt-immobilier", "rendement-locatif", "ptz", "frais-notaire"] },
+  { label: "Patrimoine", paths: ["patrimoine", "succession", "donation", "divorce"] },
+];
+
+function getKeyHighlights(entries) {
+  return KEY_CATS
+    .map(({ label, paths }) => {
+      const match = entries.find(e => {
+        const p = (e.shareUrl || "").split("?")[0];
+        return paths.some(slug => p.includes(slug));
+      });
+      return match?.reportSnapshot?.highlight ? { label, ...match.reportSnapshot.highlight } : null;
+    })
+    .filter(Boolean);
+}
+
 export async function buildMultiReportPdf(entries) {
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
@@ -306,6 +343,67 @@ export async function buildMultiReportPdf(entries) {
 
   const ensure = (need) => { if (y + need > pageH - M - 24) { doc.addPage(); y = M; } };
   const date = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+
+  // ── Page de couverture ───────────────────────────────────────────────────────
+  doc.setFillColor(...PAGE_BG).rect(0, 0, pageW, pageH, "F");
+  doc.setFillColor(...GOLD).rect(0, 0, pageW, 8, "F");
+  doc.setFillColor(...GOLD).rect(0, pageH - 5, pageW, 5, "F");
+
+  doc.setFont("helvetica", "bold").setFontSize(22).setTextColor(...GOLD_DARK);
+  doc.text("simfinly.com", M, 100);
+  doc.setFillColor(...GOLD).roundedRect(M, 116, 96, 22, 4, 4, "F");
+  doc.setFont("helvetica", "bold").setFontSize(9).setTextColor(...WHITE);
+  doc.text("RAPPORT PRO", M + 48, 131, { align: "center" });
+
+  doc.setFont("helvetica", "bold").setFontSize(28).setTextColor(...INK);
+  doc.text("Synthèse patrimoniale", M, 220);
+  doc.setDrawColor(...GOLD).setLineWidth(2).line(M, 232, M + 70, 232);
+
+  doc.setFont("helvetica", "normal").setFontSize(12).setTextColor(...SOFT);
+  doc.text(`${entries.length} simulation${entries.length > 1 ? "s" : ""} sauvegardée${entries.length > 1 ? "s" : ""} · ${date}`, M, 254);
+
+  // Score de santé financière
+  const healthScore = computeHealthScore(entries);
+  const scoreColor  = healthScore >= 70 ? [34, 197, 94] : healthScore >= 40 ? [184, 147, 74] : [239, 68, 68];
+  doc.setFillColor(...WHITE).setDrawColor(...GOLD).setLineWidth(1);
+  doc.roundedRect(M, 278, 180, 80, 8, 8, "FD");
+  doc.setFont("helvetica", "normal").setFontSize(9).setTextColor(...SOFT);
+  doc.text("SCORE DE SANTÉ FINANCIÈRE", M + 16, 298);
+  doc.setFont("helvetica", "bold").setFontSize(42).setTextColor(...scoreColor);
+  doc.text(String(healthScore), M + 16, 344);
+  doc.setFont("helvetica", "normal").setFontSize(12).setTextColor(...SOFT);
+  doc.text("/100", M + 58, 344);
+
+  // Key indicators grid on cover (2 cols × N rows)
+  const highlights = getKeyHighlights(entries);
+  if (highlights.length) {
+    let hx = M;
+    let hy = 382;
+    const colW2 = (contentW - 12) / 2;
+    highlights.forEach((h, i) => {
+      if (i > 0 && i % 2 === 0) { hx = M; hy += 90; }
+      doc.setFillColor(...WHITE).setDrawColor(...GOLD).setLineWidth(0.8);
+      doc.roundedRect(hx, hy, colW2, 78, 6, 6, "FD");
+      doc.setFillColor(...GOLD).roundedRect(hx, hy, 5, 78, 3, 3, "F");
+      doc.setFont("helvetica", "normal").setFontSize(8).setTextColor(...SOFT);
+      doc.text(T(h.label).toUpperCase(), hx + 14, hy + 20);
+      doc.setFont("helvetica", "bold").setFontSize(18).setTextColor(...GOLD_DARK);
+      doc.text(T(h.value), hx + 14, hy + 52);
+      doc.setFont("helvetica", "normal").setFontSize(9).setTextColor(...SOFT);
+      const labelStr = T(h.label ?? "");
+      const labelLines = doc.splitTextToSize(labelStr, colW2 - 22);
+      if (labelLines[0]) doc.text(labelLines[0], hx + 14, hy + 66);
+      hx += colW2 + 12;
+    });
+  }
+
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(...SOFT);
+  doc.text(`Généré le ${date}`, M, pageH - 66);
+  doc.text("Simulation indicative — simfinly.com", M, pageH - 50);
+
+  // ── Page de contenu ─────────────────────────────────────────────────────────
+  doc.addPage();
+  y = M;
 
   // Header
   y = drawHeader(doc, pageW, M, "Mes simulations", date, true);
