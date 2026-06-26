@@ -15,6 +15,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème des frais d'acquisition (« frais de notaire ») ──────────────────────
 // Les frais d'acquisition se décomposent en 4 postes. Valeurs INDICATIVES,
@@ -59,28 +60,7 @@ function emolumentsNotaireHT(prix) {
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = [
-  {
-    q: "Que comprennent les « frais de notaire » ?",
-    a: "Contrairement à une idée répandue, l'essentiel des frais de notaire ne va pas au notaire. Ils se composent à environ 80 % de droits de mutation (impôts reversés à l'État et aux collectivités), puis des émoluments du notaire (sa rémunération réglementée), de la contribution de sécurité immobilière et des débours (frais avancés pour le compte du client). On parle plus justement de « frais d'acquisition ».",
-  },
-  {
-    q: "Pourquoi les frais sont-ils plus faibles dans le neuf ?",
-    a: "Dans l'immobilier neuf (VEFA ou première vente), les droits de mutation sont réduits à 0,715 % au lieu d'environ 5,80 % dans l'ancien. Les frais d'acquisition tombent alors à 2-3 % du prix, contre 7-8 % dans l'ancien. En contrepartie, le prix au mètre carré du neuf est généralement plus élevé et la TVA (20 %) est déjà incluse dans le prix de vente.",
-  },
-  {
-    q: "Les frais de notaire portent-ils sur le mobilier ?",
-    a: "Non. Si le bien est vendu avec des meubles (cuisine équipée, électroménager…), leur valeur peut être déduite du prix servant de base aux droits de mutation, ce qui réduit les frais. Cette déduction doit rester raisonnable et justifiable (généralement plafonnée autour de 5 % du prix) pour ne pas être requalifiée par l'administration fiscale.",
-  },
-  {
-    q: "Peut-on négocier les frais de notaire ?",
-    a: "Les droits de mutation et la contribution de sécurité immobilière sont des taxes fixes, non négociables. En revanche, depuis 2016 le notaire peut accorder une remise sur ses émoluments pour la part du prix supérieure à 100 000 €, dans la limite de 20 %. Pour les biens de forte valeur, cette remise peut représenter plusieurs centaines d'euros.",
-  },
-  {
-    q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il fournit une estimation indicative basée sur les barèmes 2024-2025. Le montant exact figure dans le décompte établi par le notaire et peut varier selon le département (taux de droits de mutation), la nature du bien et les débours réels. Rapprochez-vous d'un notaire pour un calcul précis.",
-  },
-];
+const FAQ = FAQS['/simulateurs/frais-notaire'];
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function FraisNotaire() {

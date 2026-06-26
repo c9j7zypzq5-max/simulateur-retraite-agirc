@@ -14,6 +14,7 @@ import {
   Chip, useAnimatedNumber, fmt, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barèmes droits de succession belges par région ───────────────────────────
 // Source : SPF Finance / portails régionaux (en vigueur 2024)
@@ -133,13 +134,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers, rg: v.region };
 }
 
-const FAQ = [
-  { q: "Quelle est la différence majeure avec les droits de succession en France ?", a: "En France, les héritiers bénéficient d'un abattement de 100 000 € par enfant avant tout calcul. En Belgique, il n'existe pas d'abattement standard de ce type : les droits s'appliquent dès le 1er euro (par tranche progressive). Les taux belges de ligne directe commencent à 3 % (Wallonie) ou 3 % (Bruxelles) et montent jusqu'à 30 %, ce qui est moins élevé qu'en France (jusqu'à 45 % en ligne directe)." },
-  { q: "Pourquoi les droits varient-ils selon la région belge ?", a: "Les droits de succession en Belgique sont régionaux : chaque région (Wallonie, Bruxelles-Capitale, Flandre) fixe ses propres taux et règles. La Flandre a par exemple supprimé les droits entre partenaires cohabitants légaux et offre des réductions importantes pour la transmission de l'habitation familiale. Ce simulateur couvre Wallonie et Bruxelles-Capitale." },
-  { q: "Le conjoint est-il exonéré en Belgique ?", a: "Oui, le conjoint marié et le cohabitant légal sont entièrement exonérés de droits de succession dans les 3 régions belges. Cette exonération s'applique indépendamment du montant de l'héritage." },
-  { q: "Existe-t-il des réductions ou planification possible ?", a: "Oui : la donation est un outil clé. En Wallonie et à Bruxelles, les donations immobilières sont taxées à 3,3 % (ligne directe) et les donations mobilières à 3 % (ligne directe). Après un délai de carence (3 ans en général), ces biens ne font plus partie de la succession. Les assurances-vie peuvent aussi permettre une transmission hors succession." },
-  { q: "La maison familiale bénéficie-t-elle d'un régime particulier ?", a: "En Wallonie, la résidence principale transmise en ligne directe entre époux ou cohabitants légaux bénéficie d'une exonération totale de droits de succession. À Bruxelles, une réduction d'impôt s'applique pour la partie inférieure à 160 000 €. Ces régimes incitatifs visent à maintenir les familles dans leur logement." },
-];
+const FAQ = FAQS['/simulateurs/succession-be'];
 
 export default function SuccessionBE() {
   const [theme, setTheme] = useTheme();

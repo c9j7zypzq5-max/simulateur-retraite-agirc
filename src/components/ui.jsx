@@ -325,17 +325,8 @@ export function FaqItem({ q, a }) {
 }
 
 export function FaqSection({ title = "Questions fréquentes", items }) {
-  // Données structurées FAQPage (schema.org) → éligibilité aux rich results.
-  const faqLd = {
-    "@context": "https://schema.org", "@type": "FAQPage",
-    mainEntity: (items || []).map(({ q, a }) => ({
-      "@type": "Question", name: q,
-      acceptedAnswer: { "@type": "Answer", text: a },
-    })),
-  };
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
-      {items?.length > 0 && <JsonLd data={faqLd} />}
       <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
         {title}
       </h2>

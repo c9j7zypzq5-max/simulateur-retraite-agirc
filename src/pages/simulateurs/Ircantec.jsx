@@ -20,6 +20,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
 
@@ -81,12 +82,7 @@ function calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, taux
   };
 }
 
-const FAQ = [
-  { q: "Qui est concerné par l'IRCANTEC ?", a: "L'IRCANTEC (Institution de Retraite Complémentaire des Agents Non Titulaires de l'État et des Collectivités) couvre les agents contractuels de la fonction publique (État, collectivités territoriales, hôpitaux) ainsi que les élus locaux. Les fonctionnaires titulaires, eux, ne cotisent pas à l'IRCANTEC mais relèvent des régimes SRE ou CNRACL." },
-  { q: "Comment fonctionne le régime par points IRCANTEC ?", a: "Chaque année, vos cotisations (salarié + employeur) sont divisées par la valeur d'achat du point (8,06 € en 2026) pour obtenir un nombre de points. À la retraite, ces points sont multipliés par la valeur de service du point (0,54076 €/point/an en 2026) pour calculer votre pension annuelle complémentaire." },
-  { q: "L'IRCANTEC est-il cumulable avec d'autres régimes ?", a: "Oui. L'IRCANTEC est une retraite complémentaire. Les contractuels de l'État perçoivent également une retraite de base CNAV (régime général). Les contractuels territoriaux ou hospitaliers peuvent relever du régime de base de leur collectivité. L'IRCANTEC s'ajoute à ces pensions de base." },
-  { q: "Comment est revalorisée la valeur de service du point IRCANTEC ?", a: "La valeur de service est revalorisée annuellement par décret, en général en lien avec l'évolution des prix (inflation). En 2026, elle s'établit à 0,54076 €/point/an. Ce simulateur permet d'appliquer une revalorisation projetée pour estimer l'impact de l'inflation sur votre future pension." },
-];
+const FAQ = FAQS['/simulateurs/ircantec'];
 
 export default function Ircantec() {
   const [theme, setTheme] = useTheme();

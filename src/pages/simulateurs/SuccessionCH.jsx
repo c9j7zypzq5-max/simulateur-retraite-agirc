@@ -5,6 +5,7 @@ import Footer from "../../components/Footer.jsx";
 import { NumInput, SimulateurHeader, FaqSection, Chip } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // Droits de succession suisses simplifiés par canton
 // Sources : lois cantonales 2025. Ligne directe (enfants) = exonérée dans presque tous cantons.
@@ -37,12 +38,7 @@ const LIENS = [
 const eur = (n) => Math.round(n).toLocaleString("fr-CH") + " CHF";
 const pct = (n) => (n * 100).toFixed(1) + " %";
 
-const FAQ_ITEMS = [
-  { q: "Les enfants paient-ils des droits de succession en Suisse ?", a: "Dans la grande majorité des cantons suisses, les descendants en ligne directe (enfants, petits-enfants) sont totalement exonérés de droits de succession. Seul Appenzell Rhodes-Intérieures impose encore les enfants à un taux symbolique. Le conjoint survivant est également exonéré dans tous les cantons." },
-  { q: "Est-ce que la Confédération prélève des droits de succession ?", a: "Non. En Suisse, il n'existe pas de droits de succession fédéraux. Seuls les cantons (et parfois les communes) peuvent percevoir ces taxes. Chaque canton a sa propre loi, ce qui explique les disparités importantes entre Zoug (très peu taxé) et Neuchâtel (taux plus élevés pour les tiers)." },
-  { q: "Qu'est-ce que la réserve héréditaire en droit suisse ?", a: "La réserve héréditaire protège certains héritiers légaux contre une déshérison totale. En droit suisse (réforme 2023), les enfants ont droit à 50 % de leur part légale comme réserve. Le conjoint survivant bénéficie d'une réserve de 25 % de sa part légale." },
-  { q: "Peut-on réduire les droits de succession par donation de son vivant ?", a: "Oui. Les donations entre vifs permettent de transmettre son patrimoine de manière anticipée. En Suisse, les règles varient selon les cantons : certains assimilent les donations récentes à la succession, d'autres les exonèrent. La planification successorale avec un notaire est recommandée pour les patrimoines importants." },
-];
+const FAQ_ITEMS = FAQS['/simulateurs/succession-ch'];
 
 export default function SuccessionCH() {
   const [theme, setTheme] = useTheme();

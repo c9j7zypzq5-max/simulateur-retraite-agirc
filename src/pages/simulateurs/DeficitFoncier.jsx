@@ -15,6 +15,7 @@ import {
   SimulateurHeader, FaqSection, Toggle,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
 const PS = PS_CAPITAL;
@@ -124,36 +125,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le déficit foncier et comment fonctionne-t-il ?",
-    a: "Le déficit foncier est le résultat négatif obtenu quand les charges d'un bien immobilier loué (intérêts d'emprunt, travaux, frais de gestion, taxe foncière…) dépassent les loyers perçus. Ce déficit peut être déduit du revenu global imposable dans la limite de 10 700 € par an (ou 21 400 € dans certains dispositifs). Le surplus est reportable sur les revenus fonciers des 10 années suivantes. C'est un puissant levier de réduction d'impôt pour les investisseurs immobiliers.",
-  },
-  {
-    q: "Quels travaux sont déductibles en déficit foncier ?",
-    a: "Seuls les travaux de réparation, d'entretien et d'amélioration sont déductibles en déficit foncier. Les travaux de construction, reconstruction ou d'agrandissement ne sont pas déductibles (ils augmentent la valeur du bien et relèvent des plus-values). Exemples de travaux déductibles : réfection de toiture, remplacement de chaudière, isolation, ravalement de façade, mise aux normes électriques, rénovation de salle de bain. Conservez toutes les factures.",
-  },
-  {
-    q: "Quelle est la limite des 10 700 € et comment s'applique-t-elle ?",
-    a: "La limite de 10 700 € représente le maximum de déficit foncier imputable sur votre revenu global (salaires, retraites…) en une seule année. Si votre déficit dépasse cette limite, l'excédent est automatiquement reporté sur vos revenus fonciers des 10 années suivantes. Attention : cette limite concerne uniquement le déficit lié aux travaux et charges autres que les intérêts d'emprunt ; les intérêts d'emprunt, eux, ne peuvent être déduits que des revenus fonciers, sans possibilité d'imputation sur le revenu global.",
-  },
-  {
-    q: "Peut-on cumuler déficit foncier et autres dispositifs fiscaux ?",
-    a: "Le déficit foncier s'applique uniquement au régime réel d'imposition des revenus fonciers. Il n'est pas compatible avec le régime micro-foncier (abattement de 30 % sur loyers bruts, accessible si revenus fonciers < 15 000 €). Il peut être utilisé en parallèle avec d'autres dispositifs comme le statut LMNP (location meublée, régime BIC), mais les deux ne se cumulent pas sur un même bien. La loi Denormandie ou Malraux offrent par ailleurs des réductions d'impôt supplémentaires sur certains travaux.",
-  },
-  {
-    q: "Qu'est-ce que le régime « louer abordable » et son plafond de 21 400 € ?",
-    a: "Depuis 2022, le dispositif Loc'Avantages (renommé « louer abordable ») permet, sous conditions, de bénéficier d'un plafond de déficit foncier relevé à 21 400 € au lieu de 10 700 €. Pour en bénéficier, le propriétaire doit signer une convention avec l'Anah (Agence Nationale de l'Habitat), louer le bien à un loyer inférieur au marché (de 15 % à 45 % selon le niveau), et réaliser des travaux de rénovation. Ce dispositif cumule l'avantage du déficit foncier majoré et une réduction d'impôt supplémentaire.",
-  },
-  {
-    q: "Les prélèvements sociaux s'appliquent-ils aussi au déficit foncier ?",
-    a: "Oui, les prélèvements sociaux (17,2 %) s'appliquent aux revenus fonciers nets positifs. En cas de déficit foncier, il n'y a pas de revenus fonciers imposables, donc pas de prélèvements sociaux à payer sur ces revenus. L'économie calculée par ce simulateur intègre donc l'économie d'IR (à votre TMI) ET l'économie de prélèvements sociaux sur la part de déficit imputée, ce qui majore significativement le bénéfice fiscal réel.",
-  },
-  {
-    q: "Pendant combien de temps peut-on reporter un déficit foncier ?",
-    a: "Le déficit foncier non utilisé (partie dépassant 10 700 € ou non imputée) est reportable sur les revenus fonciers des 10 années suivantes. Ce report est automatique et doit être déclaré chaque année. Attention : si vous vendez le bien ou cessez de le louer avant l'expiration des 3 ans suivant l'imputation du déficit, l'administration peut remettre en cause l'avantage fiscal obtenu. Il est donc conseillé de conserver le bien loué pendant au moins 3 ans après la déduction.",
-  },
-];
+const FAQ = FAQS['/simulateurs/deficit-foncier'];
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function DeficitFoncier() {

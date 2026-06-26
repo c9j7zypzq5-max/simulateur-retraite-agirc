@@ -11,6 +11,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { NumInput, StepperInput, fmtEur, FaqSection } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -428,14 +429,7 @@ function PouvoirAchat({ ratio }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
-const FAQ = [
-  { q: "Quel est le taux de cotisations sociales salarié en France en 2025 ?", a: "Le taux global de cotisations salariales pour un non-cadre est d'environ 22-23 % du brut (maladie, vieillesse, chômage, CSG/CRDS). Pour un cadre, il est légèrement supérieur (24-25 %) du fait de la cotisation Agirc-Arrco T2 et de la prévoyance obligatoire cadre (APEC)." },
-  { q: "Comment passer du salaire brut au net ?", a: "Net ≈ Brut × (1 − taux de cotisations salariales). En pratique, multipliez le brut par ~0,77 (non-cadre) ou ~0,75 (cadre) pour obtenir le net avant impôt. Le prélèvement à la source (PAS) est ensuite déduit du net imposable, donnant le net en poche." },
-  { q: "Quelle est la différence entre net imposable et net en poche ?", a: "Le net imposable inclut la CSG déductible (6,8 %) et sert de base au calcul de l'impôt sur le revenu. Le net en poche (net fiscal) est le montant versé sur le compte après prélèvement à la source (PAS). L'écart varie selon votre tranche marginale d'imposition." },
-  { q: "Le 13e mois est-il soumis aux cotisations sociales ?", a: "Oui, le 13e mois (prime annuelle contractuelle) est un salaire comme les autres : il est soumis aux cotisations sociales (patronales et salariales) et à l'impôt sur le revenu. Il n'existe pas d'exonération spécifique pour le 13e mois, contrairement à certaines primes d'intéressement ou participation." },
-  { q: "Qu'est-ce que le SMIC en 2025 ?", a: "Le SMIC brut mensuel 2025 est de 1 801,80 € (base 35 h/semaine), soit environ 1 426 € net. Il est revalorisé chaque 1er janvier et peut être revalorisé en cours d'année si l'inflation dépasse 2 %. Le taux horaire brut est de 11,88 €." },
-  { q: "Comment fonctionne la réduction Fillon (allègement général) ?", a: "La réduction générale de cotisations patronales (dite « Fillon ») s'applique aux salaires ≤ 1,6 SMIC et réduit les charges patronales jusqu'à 32 % du brut pour les entreprises de plus de 50 salariés. Cet allègement est automatiquement calculé par l'employeur et n'apparaît pas sur le bulletin de paie du salarié." },
-];
+const FAQ = FAQS['/simulateurs/salaire'];
 
 export default function Salaire() {
   const [theme, setTheme] = useTheme();

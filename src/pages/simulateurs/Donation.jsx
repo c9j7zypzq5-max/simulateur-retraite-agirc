@@ -14,6 +14,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barèmes fiscaux (identiques succession 2025) ────────────────────────────
 const TRANCHES_DIRECTE = [
@@ -162,40 +163,7 @@ function toParams(v) {
   return { v: v.valeurBien, l: v.lien, ag: v.ageDonateur, da: v.donationsAnterieures, ad: v.anneesDernierDon };
 }
 
-const FAQ = [
-  {
-    q: "Pourquoi donner de son vivant plutôt qu'hériter ?",
-    a: "La donation permet de transmettre un patrimoine en franchise de droits grâce aux abattements légaux, rechargés tous les 15 ans. Un parent avec 2 enfants peut ainsi transmettre jusqu'à 200 000 € tous les 15 ans sans aucun droit à payer (100 000 € par enfant). En succession, ces mêmes abattements s'appliquent mais les donations des 15 dernières années sont rapportées fiscalement, réduisant ce qui reste disponible.",
-  },
-  {
-    q: "Qu'est-ce que le rapport fiscal des donations antérieures ?",
-    a: "Toute donation effectuée dans les 15 ans précédant un décès ou une nouvelle donation doit être « rapportée » fiscalement : sa valeur s'impute sur l'abattement disponible. Si vous avez donné 60 000 € il y a 8 ans à votre enfant, il ne lui reste plus que 40 000 € d'abattement disponible sur les 100 000 €. Passé 15 ans, l'ardoise est remise à zéro.",
-  },
-  {
-    q: "Comment fonctionne l'abattement du conjoint en donation ?",
-    a: "Contrairement à la succession où le conjoint est totalement exonéré, la donation au conjoint ou partenaire PACS est taxée au-delà d'un abattement de 80 724 €. Ce montant est rechargeable tous les 15 ans. Le barème applicable est celui en ligne directe (jusqu'à 45 % pour les très hautes valeurs). Attention : certaines formes juridiques de donation au conjoint (donation au dernier vivant) obéissent à d'autres règles.",
-  },
-  {
-    q: "Qu'est-ce que la donation-partage et pourquoi est-elle avantageuse ?",
-    a: "La donation-partage est un acte notarié qui permet de répartir de son vivant tout ou partie de son patrimoine entre ses héritiers (enfants, petits-enfants). Son avantage majeur : les biens donnés sont évalués à la date de la donation et non à la date du décès pour le calcul des droits et des soultes. Ainsi, si un bien immobilier prend de la valeur, la plus-value après donation n'est plus taxable. Elle gèle aussi l'évaluation pour le calcul de la réserve héréditaire.",
-  },
-  {
-    q: "Y a-t-il d'autres abattements ou exonérations en matière de donation ?",
-    a: "Oui, plusieurs dispositifs complémentaires existent : le don familial de sommes d'argent (exonéré jusqu'à 31 865 € tous les 15 ans, versé par un parent/grand-parent de moins de 80 ans à un enfant/petit-enfant majeur), les présents d'usage (cadeaux proportionnés à la fortune du donateur, non taxables), et la réduction de droits pour charge de famille (si le donataire a 3 enfants ou plus). Ces abattements se cumulent avec l'abattement principal.",
-  },
-  {
-    q: "Que se passe-t-il si la donation dépasse l'abattement disponible ?",
-    a: "La fraction dépassant l'abattement est taxée selon le barème progressif. En ligne directe (enfant), le taux commence à 5 % et monte jusqu'à 45 % pour les parts dépassant 1 805 677 €. Les droits sont dus au moment de la donation et doivent être payés par le donataire (ou pris en charge par le donateur, mais cette prise en charge constitue elle-même un don taxable). Un notaire peut vous aider à optimiser le calendrier des donations.",
-  },
-  {
-    q: "Faut-il un notaire pour faire une donation ?",
-    a: "Un acte notarié est obligatoire pour : les donations de biens immobiliers, les donations-partages, les donations avec réserve d'usufruit, et les donations entre époux. Pour les dons manuels (sommes d'argent, valeurs mobilières remises en main propre), aucun acte notarié n'est requis, mais il est fortement conseillé de déposer un formulaire Cerfa 2735 auprès du fisc pour tracer la donation et ouvrir le délai de 15 ans. Un notaire reste recommandé pour tout don significatif.",
-  },
-  {
-    q: "La donation avec réserve d'usufruit, comment ça marche ?",
-    a: "Le donateur peut donner la nue-propriété d'un bien en conservant l'usufruit (le droit d'en jouir ou d'en percevoir les revenus jusqu'à son décès). Les droits de donation sont alors calculés sur la valeur de la seule nue-propriété, qui dépend de l'âge du donateur (un barème fiscal fixe la valeur de l'usufruit selon l'âge : 60 % avant 61 ans, 50 % entre 61 et 70 ans, etc.). Au décès de l'usufruitier, la pleine propriété est reconstituée sans droits supplémentaires.",
-  },
-];
+const FAQ = FAQS['/simulateurs/donation'];
 
 function Row({ label, value, highlight, positive, negative }) {
   return (

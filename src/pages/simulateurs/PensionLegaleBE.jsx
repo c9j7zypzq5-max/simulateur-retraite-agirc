@@ -14,6 +14,7 @@ import {
   Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Paramètres pension légale belge 2024 ────────────────────────────────────
 const PLAFOND_SALAIRE = 58_380;   // salaire plafonné annuel (limite de calcul)
@@ -71,14 +72,7 @@ function calcPension({ salaireMoyen, carriereAns, tauxMenage, birthYear }) {
   };
 }
 
-const FAQ = [
-  { q: "Comment est calculée la pension légale en Belgique ?", a: "La pension légale (= premier pilier) est calculée sur la base de votre salaire annuel moyen (plafonné à 58 380 €) sur toute votre carrière, du nombre d'années de carrière (45 ans = carrière complète) et d'un taux de 60 % (isolé) ou 75 % (ménage/soutien de famille). La formule : pension mensuelle = (salaire moyen × taux × années / 45) / 12." },
-  { q: "Quel est l'âge légal de retraite en Belgique ?", a: "L'âge légal est de 65 ans pour les personnes nées avant 1963, 66 ans (2025–2029), et 67 ans à partir de 2030 pour celles nées après 1964. Il est possible de partir plus tôt (retraite anticipée) dès 60 ans avec une très longue carrière (42 à 44 ans selon l'année) mais avec une pension réduite." },
-  { q: "Qu'est-ce que le taux ménage et le taux isolé ?", a: "Le taux isolé (60 %) s'applique aux personnes seules ou dont le conjoint a sa propre pension. Le taux ménage (75 %) s'applique si votre conjoint n'a pas de revenu propre et ne bénéficie pas de sa propre pension. Le taux ménage donne une pension plus élevée mais disparaît si le conjoint commence à percevoir ses propres revenus ou sa propre pension." },
-  { q: "Qu'est-ce que le bonus pension ?", a: "Le bonus pension récompense ceux qui travaillent au-delà de leur carrière complète (45 ans) ou de leur âge légal de retraite. Chaque année supplémentaire travaillée après 45 ans de carrière donne droit à une majoration de 2 % de la pension par an (plafonné à 5 ans supplémentaires, soit +10 % maximum)." },
-  { q: "Puis-je cumuler une pension légale et un travail ?", a: "Oui, depuis 2015, la Belgique permet le cumul retraite/travail sans limite de revenus pour les pensionnés ayant une carrière complète (45 ans) ou étant âgés de plus de 65 ans. Des plafonds s'appliquent dans les autres cas. Le travail pendant la pension peut même générer des droits supplémentaires." },
-  { q: "Quels sont les autres piliers de la pension en Belgique ?", a: "La pension belge repose sur 3 piliers : 1er pilier = pension légale ONSS (ce simulateur) ; 2e pilier = pension complémentaire d'entreprise (EIP, CPTI, fonds de pension) ; 3e pilier = épargne pension individuelle (épargne-pension, assurance-vie, VAPZE pour indépendants). La pension complémentaire peut représenter un complément significatif selon votre contrat." },
-];
+const FAQ = FAQS['/simulateurs/pension-legale'];
 
 const DEFAULT = { salaireMoyen: 3_200 * 12, carriereAns: 40, tauxMenage: false, birthYear: 1965 };
 

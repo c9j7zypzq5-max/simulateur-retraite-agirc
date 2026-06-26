@@ -5,6 +5,7 @@ import Footer from "../../components/Footer.jsx";
 import { NumInput, SimulateurHeader, FaqSection, fmtEur } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // Durée d'assurance requise selon l'année de naissance (réforme 2023)
 function getDureeRequise(annee) {
@@ -40,13 +41,7 @@ const PERIODES = [
 
 function fmt(n) { return Math.round(n * 10) / 10; }
 
-const FAQ_ITEMS = [
-  { q: "Quelle est la différence entre trimestres cotisés et assimilés ?", a: "Les trimestres cotisés sont ceux où des cotisations ont été versées à la Sécurité sociale (emploi, travail indépendant). Les trimestres assimilés sont attribués pour certaines périodes sans activité : chômage, maladie, maternité, service militaire, invalidité. Ils comptent pour la durée d'assurance (taux plein) mais pas tous pour la retraite de base." },
-  { q: "Combien de trimestres faut-il pour partir à taux plein ?", a: "La durée requise dépend de votre année de naissance. Pour les générations nées à partir de 1965, il faut 172 trimestres (43 ans) suite à la réforme 2023. Pour les générations 1960 et avant, 167 trimestres (41 ans et 9 mois) suffisent." },
-  { q: "Que se passe-t-il si je n'ai pas tous mes trimestres à l'âge légal ?", a: "Vous pouvez continuer à travailler jusqu'à atteindre le nombre requis, ou partir à 67 ans au taux plein automatique quelle que soit la durée validée. Partir avant avec des trimestres manquants entraîne une décote de 1,25 % par trimestre manquant (max 20 trimestres décotés)." },
-  { q: "Les trimestres de chômage comptent-ils vraiment ?", a: "Oui. Les périodes de chômage indemnisé (Pôle emploi / France Travail) ouvrent droit à des trimestres assimilés : 50 jours indemnisés = 1 trimestre (dans la limite de 4 par an). Le chômage non indemnisé ne donne pas de trimestres." },
-  { q: "Combien de trimestres MDA puis-je obtenir par enfant ?", a: "Pour chaque enfant né ou adopté après le 1er janvier 2010, les parents cumulent 4 trimestres de majoration (2 pour la maternité + 2 pour l'éducation). Pour les enfants nés avant 2010, la femme bénéficiait automatiquement de 4 trimestres par enfant. Un maximum de 4 trimestres par enfant est accordé." },
-];
+const FAQ_ITEMS = FAQS['/simulateurs/trimestres'];
 
 export default function Trimestres() {
   const [theme, setTheme] = useTheme();

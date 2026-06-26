@@ -18,6 +18,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
@@ -79,12 +80,7 @@ function calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite }
   };
 }
 
-const FAQ = [
-  { q: "Quelle est la différence entre le régime de base SSI et le RCI ?", a: "Le régime de base SSI (Sécurité Sociale des Indépendants) est aligné sur le régime général CNAV depuis 2020 : mêmes règles de validation de trimestres et même formule de calcul, plafonné au PASS. Le RCI (Régime Complémentaire des Indépendants) est un régime par points, similaire à l'Agirc-Arrco des salariés." },
-  { q: "Quels sont les profils concernés par ce simulateur ?", a: "Ce simulateur s'adresse aux artisans, commerçants et industriels affiliés à la SSI (ex-RSI). Les professions libérales réglementées (médecins, avocats, architectes…) relèvent de la CNAVPL et de caisses autonomes spécifiques (CARMF, CNBF, CIPAV…), qui feront l'objet d'un simulateur dédié à venir." },
-  { q: "Comment valider des trimestres en tant qu'indépendant ?", a: "Un trimestre est validé pour chaque tranche de 600 SMIC horaires de revenu cotisé (soit environ 6 594 € en 2026). Il est donc possible de valider 4 trimestres avec un revenu annuel d'environ 26 376 €, même si ce revenu est inférieur au PASS." },
-  { q: "La micro-entreprise (auto-entrepreneur) est-elle couverte ?", a: "Oui. Les micro-entrepreneurs sont affiliés à la SSI et cotisent à la retraite sur la base de leur chiffre d'affaires (après abattement forfaitaire). Le taux de cotisation retraite varie selon l'activité (12,8 % à 22 %). Ce simulateur vous permet d'approximer votre pension si vous renseignez votre revenu net après abattement." },
-];
+const FAQ = FAQS['/simulateurs/independants'];
 
 export default function Independants() {
   const [theme, setTheme] = useTheme();

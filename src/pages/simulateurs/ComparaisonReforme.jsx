@@ -7,6 +7,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
+import { FAQS } from '../../data/faqs.js';
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
 
 // ─── Règles AVANT réforme (système pré-2023) ────────────────────────────────
@@ -155,28 +156,7 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
 }
 
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
-const FAQ = [
-  {
-    q: "Qu'est-ce que la réforme des retraites de 2023 (loi Borne) ?",
-    a: "La loi Borne, promulguée le 14 avril 2023, relève progressivement l'âge légal de départ à la retraite de 62 à 64 ans selon l'année de naissance. Elle augmente également la durée de cotisation requise pour obtenir le taux plein. La montée en charge est progressive : les personnes nées à partir de 1967 sont les premières à être pleinement concernées par l'âge légal à 64 ans.",
-  },
-  {
-    q: "À quel âge puis-je partir à la retraite après la réforme ?",
-    a: "L'âge légal dépend de votre année de naissance : 62 ans pour les personnes nées avant 1962, puis il augmente progressivement de 3 mois par génération pour atteindre 64 ans pour les personnes nées en 1967 et après. Avant réforme, l'âge légal était de 62 ans pour toutes les générations.",
-  },
-  {
-    q: "La réforme impacte-t-elle le montant de ma pension ?",
-    a: "Indirectement, oui. Si vous deviez partir avant 62 ans dans le système antérieur, la réforme repousse votre départ et peut légèrement augmenter votre pension via une proratisation plus favorable. Mais pour la majorité, qui partait déjà à 62 ans ou plus, l'impact est surtout un allongement de la durée de travail. Le montant de la pension au taux plein reste calculé selon la même formule (SAM × 50 % × prorata).",
-  },
-  {
-    q: "Qu'est-ce que le taux plein et la décote ?",
-    a: "Le taux plein (50 % du Salaire Annuel Moyen, plafonné au PASS) est accordé quand vous avez cumulé le nombre de trimestres requis ET atteint l'âge légal. Si vous partez avant d'avoir tous vos trimestres, une décote de 0,625 % par trimestre manquant s'applique (max 20 trimestres, soit −12,5 %). Le taux plein est automatique à 67 ans, quelle que soit la durée cotisée.",
-  },
-  {
-    q: "Quelles sont les exceptions à la réforme de 2023 ?",
-    a: "Plusieurs dispositifs dérogatoires subsistent : le dispositif Retraite Anticipée pour Carrières Longues (RACL) permet aux personnes ayant commencé à travailler avant 21 ans de partir à 60 ans (avant 17 ans → 58 ans). Les personnes en invalidité, inaptitude au travail, ou exposées à des facteurs de pénibilité bénéficient aussi de règles spécifiques. Les fonctionnaires en catégorie active ont leurs propres barèmes.",
-  },
-];
+const FAQ = FAQS['/simulateurs/comparaison-reforme'];
 
 // ─── Sous-composants ──────────────────────────────────────────────────────────
 function ColCard({ title, color, bg, border, children }) {

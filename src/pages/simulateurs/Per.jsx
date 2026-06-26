@@ -21,6 +21,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème PER ────────────────────────────────────────────────────────────────
 // Plan d'Épargne Retraite (PER individuel). Constantes 2026.
@@ -66,32 +67,7 @@ function computePer({ versement, revenu, tmi, ageActuel, ageDepart, rendement })
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le Plan d'Épargne Retraite (PER) ?",
-    a: "Le PER est un produit d'épargne de long terme créé par la loi PACTE (2019) destiné à se constituer un complément de revenu pour la retraite. Les sommes versées sont investies (fonds en euros, unités de compte) et bloquées jusqu'au départ en retraite, sauf cas de déblocage anticipé. Son principal atout est la déductibilité fiscale des versements volontaires.",
-  },
-  {
-    q: "Comment fonctionne le plafond de déduction des versements ?",
-    a: "Les versements volontaires sont déductibles du revenu imposable dans la limite d'un plafond annuel : 10 % de vos revenus professionnels nets de l'année précédente (dans la limite de 8 PASS, soit 38 448 € en 2026), ou 10 % du PASS (4 806 €) si ce montant est plus favorable. Les plafonds non utilisés des trois années précédentes peuvent être reportés et un couple peut mutualiser ses plafonds.",
-  },
-  {
-    q: "Comment sont imposées les sommes à la sortie ?",
-    a: "À la retraite, vous choisissez une sortie en capital, en rente, ou un mélange. Si vous avez déduit vos versements à l'entrée : en sortie en capital, la part correspondant aux versements est imposée au barème de l'impôt sur le revenu, et les gains au prélèvement forfaitaire unique (PFU 30 %). En sortie en rente viagère, la rente est imposée comme une pension (régime des rentes à titre gratuit).",
-  },
-  {
-    q: "Mon épargne est-elle bloquée jusqu'à la retraite ?",
-    a: "Oui en principe, mais la loi prévoit des cas de déblocage anticipé : achat de la résidence principale, ou accidents de la vie (invalidité, décès du conjoint, expiration des droits au chômage, surendettement, cessation d'activité non salariée après liquidation judiciaire). En dehors de ces cas, les sommes restent indisponibles jusqu'au départ en retraite.",
-  },
-  {
-    q: "Faut-il sortir en capital ou en rente ?",
-    a: "La sortie en capital offre une liberté totale d'usage des fonds mais une fiscalité concentrée sur l'année de retrait. La rente viagère garantit un revenu régulier à vie, mais le capital est définitivement converti et la fiscalité s'étale dans le temps. Le choix dépend de votre besoin de liquidité, de votre espérance de vie estimée et de votre TMI à la retraite.",
-  },
-  {
-    q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur les paramètres 2026 (PASS, plafonds de déduction). L'économie d'impôt réelle dépend de votre taux marginal exact et le capital projeté suppose un rendement constant, ce qui n'est jamais garanti sur les marchés. Rapprochez-vous d'un conseiller pour une étude personnalisée.",
-  },
-];
+const FAQ = FAQS['/simulateurs/per'];
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function Per() {

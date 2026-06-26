@@ -15,6 +15,7 @@ import {
   Chip, Toggle, useAnimatedNumber, fmt, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème IPP belge 2025 (exercice d'imposition 2025, revenus 2024) ─────────
 const BAREME_BE = [
@@ -103,13 +104,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = [
-  { q: "Quelle est la différence entre l'IPP et l'IR français ?", a: "L'IPP (Impôt des Personnes Physiques) est l'impôt belge sur le revenu. Il comporte 4 tranches (25 %, 40 %, 45 %, 50 %) contre 5 tranches en France. Le taux marginal maximum est de 50 % en Belgique vs 45 % en France. L'IPP comprend aussi des centimes additionnels communaux (en moyenne 7 %) qui s'ajoutent à l'impôt fédéral." },
-  { q: "Qu'est-ce que la quotité exemptée d'impôt ?", a: "La quotité exemptée est la tranche de revenu totalement exonérée d'IPP. Elle s'élève à 10 160 € de base (EI 2025) pour chaque contribuable. Elle se traduit par une réduction d'impôt calculée au taux de 25 %. Des majorations s'appliquent en fonction du nombre d'enfants à charge." },
-  { q: "Comment fonctionne le quotient conjugal ?", a: "Le quotient conjugal permet au conjoint qui gagne davantage de transférer 30 % de son revenu (plafonné à 12 550 €) vers son partenaire, chacun étant ensuite imposé séparément. Cela réduit l'imposition globale du ménage en limitant l'effet de la progressivité. Il ne s'applique que si le revenu du partenaire est inférieur à 30 % du total du ménage." },
-  { q: "Que sont les centimes additionnels communaux ?", a: "Les communes belges perçoivent un pourcentage supplémentaire calculé sur l'impôt fédéral (en général entre 0 % et 9 %). La moyenne nationale est d'environ 7 %. Certaines communes (Lasne, Koksijde…) ont des taux très bas ; d'autres (Liège, Mons…) approchent le maximum. Ce taux est indiqué sur votre avertissement-extrait de rôle." },
-  { q: "Qu'est-ce que le forfait de frais professionnels ?", a: "En Belgique, les frais professionnels peuvent être déduits de façon forfaitaire (30 % du revenu, plafond ~5 040 €) ou au réel si vos dépenses professionnelles sont supérieures. Le forfait est automatiquement appliqué si vous ne déclarez pas vos frais réels. Les travailleurs indépendants ont un calcul différent." },
-];
+const FAQ = FAQS['/simulateurs/impot-revenu-be'];
 
 export default function ImpotRevenuBE() {
   const [theme, setTheme] = useTheme();

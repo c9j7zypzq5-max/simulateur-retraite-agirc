@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import { FAQS } from '../../data/faqs.js';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -89,28 +90,7 @@ function calcLPP({ salaireBrut, age }) {
   };
 }
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le 2e pilier (LPP) en Suisse ?",
-    a: "Le 2e pilier (Loi sur la prévoyance professionnelle, LPP) est l'épargne retraite obligatoire liée à votre emploi en Suisse. Avec l'AVS (1er pilier), il forme la base de votre retraite. Les cotisations sont versées par l'employeur et le salarié à parts égales dans une caisse de pension. L'objectif est de maintenir environ 60 % de votre dernier salaire à la retraite.",
-  },
-  {
-    q: "Comment est calculé le salaire coordonné ?",
-    a: "Le salaire coordonné est la part de votre salaire soumise aux cotisations LPP obligatoires. Il correspond à votre salaire annuel brut (plafonné à 88 200 CHF) duquel on déduit la déduction de coordination (25 725 CHF en 2025). Cette déduction représente la part couverte par l'AVS. Le minimum du salaire coordonné assurable est de 3 675 CHF.",
-  },
-  {
-    q: "Que sont les bonifications de vieillesse ?",
-    a: "Les bonifications de vieillesse sont les cotisations annuelles versées au 2e pilier, exprimées en % du salaire coordonné. Elles augmentent avec l'âge : 7 % de 25 à 34 ans, 10 % de 35 à 44 ans, 15 % de 45 à 54 ans, et 18 % de 55 à 65 ans. La moitié est payée par l'employeur, l'autre moitié déduite de votre salaire.",
-  },
-  {
-    q: "Qu'est-ce que le taux de conversion de 6,8 % ?",
-    a: "Le taux de conversion est le pourcentage appliqué à votre avoir de vieillesse accumulé pour calculer votre rente annuelle à la retraite. À 65 ans, un capital de 100 000 CHF donne une rente de 6 800 CHF par an (567 CHF/mois). Ce taux légal (6,8 %) s'applique à la part obligatoire LPP ; les caisses de pension peuvent appliquer un taux différent pour la part surobligatoire.",
-  },
-  {
-    q: "Puis-je retirer mon 2e pilier en capital plutôt qu'en rente ?",
-    a: "Oui, la loi suisse vous permet de retirer tout ou partie de votre avoir de vieillesse en capital à la retraite, plutôt qu'une rente viagère. Le retrait en capital offre plus de flexibilité mais transfère le risque de longévité sur vous. Ce retrait est imposé comme un revenu extraordinaire (taux réduit) l'année du retrait. Certaines caisses de pension limitent ou n'offrent pas cette option.",
-  },
-];
+const FAQ = FAQS['/simulateurs/lpp-deuxieme-pilier'];
 
 const DEFAULT = { salaireBrut: 80_000, age: 35 };
 

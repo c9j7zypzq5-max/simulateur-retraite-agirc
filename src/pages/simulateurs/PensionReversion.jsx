@@ -16,6 +16,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème de la pension de réversion ──────────────────────────────────────────
 // Valeurs INDICATIVES 2025, isolées ici pour être corrigées facilement.
@@ -48,28 +49,7 @@ function calcReversion({ pensionBase, pensionCompl, ressources, situation, age }
   return { reversionBaseMensuelle, reversionComplMensuelle, totalMensuel };
 }
 
-const FAQ = [
-  {
-    q: "Qui peut bénéficier d'une pension de réversion ?",
-    a: "La pension de réversion est réservée à l'époux ou ex-époux survivant d'une personne décédée ayant cotisé à la retraite. Le mariage est obligatoire : ni le PACS ni le concubinage n'ouvrent droit à réversion. Pour le régime de base, il faut avoir au moins 55 ans et des ressources inférieures à un plafond ; pour la complémentaire Agirc-Arrco, 55 ans suffisent (sans condition de ressources) mais le remariage supprime le droit.",
-  },
-  {
-    q: "Quel est le taux de la pension de réversion ?",
-    a: "Il dépend du régime. Pour la retraite de base du régime général (CNAV), la réversion correspond à 54 % de la pension de base du défunt. Pour la retraite complémentaire Agirc-Arrco des salariés du privé, le taux est de 60 % de la pension complémentaire. Les deux peuvent se cumuler si le défunt cotisait aux deux régimes.",
-  },
-  {
-    q: "Comment fonctionne la condition de ressources ?",
-    a: "Seule la réversion de base (CNAV) est soumise à condition de ressources. En 2025, les ressources annuelles du survivant ne doivent pas dépasser 24 710 € pour une personne seule (39 537 € pour un couple). Si le total des ressources et de la réversion dépasse ce plafond, la réversion de base est réduite du montant du dépassement. La réversion complémentaire Agirc-Arrco, elle, n'est pas concernée.",
-  },
-  {
-    q: "À partir de quel âge perçoit-on la réversion ?",
-    a: "L'âge minimum est de 55 ans, aussi bien pour le régime de base que pour l'Agirc-Arrco. Avant cet âge, le conjoint survivant peut, sous conditions (enfants à charge, invalidité), percevoir une allocation veuvage temporaire, mais pas la pension de réversion proprement dite.",
-  },
-  {
-    q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur les barèmes 2025 (taux de 54 % et 60 %, plafonds de ressources). Le calcul réel dépend de la carrière du défunt, de tous ses régimes (fonction publique, indépendants…) et de la situation précise du survivant. Adressez-vous à votre caisse de retraite pour un calcul officiel.",
-  },
-];
+const FAQ = FAQS['/simulateurs/pension-reversion'];
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function PensionReversion() {

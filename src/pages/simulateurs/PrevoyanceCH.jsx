@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import { FAQS } from '../../data/faqs.js';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -74,28 +75,7 @@ function calcPrevoyance({ age, versementAnnuel, rendement, statut, revenuNet }) 
   };
 }
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le pilier 3a en Suisse ?",
-    a: "Le pilier 3a (prévoyance individuelle liée) est le troisième niveau d'épargne retraite en Suisse. Il permet aux salariés et indépendants de verser chaque année un montant dans un compte bancaire ou une police d'assurance dédié, en bénéficiant d'une déduction fiscale immédiate. Les fonds sont bloqués jusqu'à la retraite (65 ans pour les hommes, 64 ans pour les femmes, bientôt 65 ans pour tous).",
-  },
-  {
-    q: "Quels sont les plafonds de déduction pour 2025 ?",
-    a: "Pour 2025, les plafonds sont : 7 056 CHF/an pour les salariés affiliés à une caisse de pension (LPP) ; 20 % du revenu net indépendant, avec un maximum de 35 280 CHF, pour les indépendants sans 2e pilier. Ces montants sont révisés périodiquement par le Conseil fédéral en fonction de l'évolution de l'AVS.",
-  },
-  {
-    q: "Quelle est la différence entre compte 3a bancaire et police d'assurance 3a ?",
-    a: "Un compte 3a bancaire offre une grande flexibilité : vous pouvez verser le montant souhaité (jusqu'au plafond), gérer des fonds de placement, et retirer facilement. Une police d'assurance 3a combine épargne et couverture risques (décès, invalidité), mais engage sur une durée fixe avec des pénalités si vous résiliez avant terme. Pour la pure performance long terme, les fonds 3a en actions sont souvent préférables.",
-  },
-  {
-    q: "Comment est imposé le retrait du pilier 3a ?",
-    a: "Le capital accumulé dans le pilier 3a est imposé lors du retrait à un taux réduit, séparé du revenu ordinaire. Le taux varie selon le canton et le montant retiré, mais il est généralement de 5–10 % du capital. Pour minimiser l'impôt, il est conseillé d'échelonner les retraits sur plusieurs années et de détenir plusieurs comptes 3a ouverts à des années différentes.",
-  },
-  {
-    q: "Puis-je retirer le 3a avant la retraite ?",
-    a: "Oui, dans certains cas précis : achat d'une résidence principale en Suisse, financement d'une activité indépendante, départ définitif de Suisse, invalidité, ou décès (les ayants droit touchent le capital). En dehors de ces cas, le capital est bloqué jusqu'à 5 ans avant l'âge légal de retraite. Un retrait anticipé déclenche l'imposition du capital.",
-  },
-];
+const FAQ = FAQS['/simulateurs/prevoyance-ch'];
 
 const DEFAULT = { age: 35, versementAnnuel: 7_056, rendement: 2, statut: 'salarie', revenuNet: 80_000 };
 

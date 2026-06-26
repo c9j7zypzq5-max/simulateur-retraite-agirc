@@ -5,6 +5,7 @@ import Footer from "../../components/Footer.jsx";
 import { NumInput, StepperInput, SimulateurHeader, FaqSection, Chip } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // Paramètres CNAP 2025
 // Valeur du point de pension (majoration au 1er janvier 2025)
@@ -62,13 +63,7 @@ function calcLU({ salaireAnnuel, anneesTotal, ageDépart, nbEnfants }) {
   return { pensionBrute, pensionNette, retenueAcc, txRemplacement, anneesEffectives, enfantsEligibles, majorationFamille, agePossible, manqPourAnticiee };
 }
 
-const FAQ_ITEMS = [
-  { q: "Comment fonctionne la retraite au Luxembourg (CNAP) ?", a: "Le régime général luxembourgeois (CNAP — Caisse Nationale d'Assurance Pension) est un régime par répartition. La pension est calculée sur la base des années de cotisation et du revenu moyen. Le taux de remplacement est l'un des plus élevés d'Europe : environ 73 % du dernier salaire en moyenne pour une carrière complète de 40 ans." },
-  { q: "Quel est l'âge légal de retraite au Luxembourg ?", a: "L'âge légal est 65 ans pour une pension normale. Il est possible de partir à 60 ans avec 40 années d'assurance (retraite anticipée ordinaire), ou à 57 ans avec 40 années effectives de cotisation (retraite anticipée pour longues carrières). Il n'y a pas de réforme d'âge prévue à ce stade." },
-  { q: "Comment est calculée la pension luxembourgeoise ?", a: "La pension est proportionnelle aux revenus cotisés et à la durée de carrière : environ 1,85 % du revenu moyen mensuel par année de cotisation, avec un forfait supplémentaire par année. Une pension minimale est garantie pour ceux qui ont cotisé au moins 40 ans." },
-  { q: "Les frontaliers français ont-ils droit à la retraite luxembourgeoise ?", a: "Oui. Les travailleurs frontaliers qui ont cotisé au Luxembourg ont droit à une pension CNAP proportionnelle à leurs années de cotisation luxembourgeoises. La pension est ensuite versée en France, mais reste soumise à l'impôt luxembourgeois sous la plupart des conventions fiscales." },
-  { q: "Puis-je cumuler pension luxembourgeoise et pension française ?", a: "Oui, le règlement européen (CE 883/2004) organise la coordination des régimes. Chaque pays calcule une pension 'nationale' proportionnelle aux années cotisées dans ce pays. Vous percevrez une pension de chaque régime auquel vous avez cotisé, dans les conditions d'âge propres à chacun." },
-];
+const FAQ_ITEMS = FAQS['/simulateurs/retraite-luxembourg'];
 
 const STATUTS = [
   { key: "salarie",     label: "Salarié" },

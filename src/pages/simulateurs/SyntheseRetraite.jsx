@@ -18,6 +18,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Régimes de retraite agrégés ──────────────────────────────────────────────
 // Chaque ligne renvoie vers le simulateur dédié pour chiffrer la pension brute.
@@ -34,14 +35,7 @@ const REGIMES = [
 // Prélèvements sociaux retraités (CSG 8,3 + CRDS 0,5 + CASA 0,3 + maladie 1,0).
 // Estimation : le taux exact dépend du revenu fiscal de référence.
 
-const FAQ = [
-  { q: "Comment fonctionne la synthèse tous régimes ?", a: "La plupart des actifs cotisent à plusieurs régimes : le régime de base (CNAV pour les salariés, RSI/SSI pour les indépendants, CNRACL pour les fonctionnaires) + un régime complémentaire (Agirc-Arrco pour les salariés du privé, IRCANTEC pour les contractuels publics). La synthèse additionne les pensions estimées de chaque régime pour obtenir la pension totale." },
-  { q: "Quelle est la pension moyenne en France ?", a: "En 2024, la pension moyenne tous régimes confondus s'élève à environ 1 530 € bruts par mois (1 680 € pour les hommes, 1 390 € pour les femmes). Ces montants incluent les régimes de base et complémentaires. Le montant net perçu est en général 15-20 % inférieur (CSG, CRDS, mutuelle)." },
-  { q: "Peut-on recevoir une pension de plusieurs régimes simultanément ?", a: "Oui, absolument. Une carrière mixte (salarié privé puis fonctionnaire, ou salarié puis indépendant) donne lieu à des pensions provenant de chaque régime au prorata de la carrière cotisée dans chacun. Il faut liquider chaque régime séparément et ils versent leurs pensions indépendamment." },
-  { q: "Comment est calculée la pension de réversion ?", a: "La pension de réversion du régime général (CNAV) correspond à 54 % de la retraite du défunt, sous condition de ressources (plafond 2025 : 24 232 €/an pour une personne seule). La réversion Agirc-Arrco est de 60 % des points du défunt, sans condition de ressources." },
-  { q: "Qu'est-ce que le minimum contributif ?", a: "Le minimum contributif (MICO) garantit une pension de base CNAV minimale pour ceux qui ont cotisé toute leur carrière avec de faibles salaires. En 2025, il s'élève à 876,91 € par mois pour une carrière complète au taux plein (majoré à 963,31 € si 120 trimestres cotisés avec revenus > 0,5 SMIC)." },
-  { q: "La retraite est-elle imposable ?", a: "Oui, les pensions de retraite sont soumises à l'impôt sur le revenu, après abattement de 10 % (plafonné à 4 123 € par foyer en 2025). Elles supportent également la CSG à 8,3 % (avec possibilité de taux réduit à 3,8 % ou exonération selon les revenus) et la CRDS à 0,5 %." },
-];
+const FAQ = FAQS['/simulateurs/synthese-retraite'];
 
 export default function SyntheseRetraite() {
   const [theme, setTheme] = useTheme();

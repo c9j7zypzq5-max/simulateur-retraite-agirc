@@ -17,6 +17,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Paramètres Fonction Publique 2026 ───────────────────────────────────────
 const DUREE_REQUISE = 172; // trimestres (post-réforme 2023, nés 1965+)
@@ -54,12 +55,7 @@ function calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categAc
   return { pensionBrute, pensionNette, trimestresService: trim, tauxLiquidation, decote, surcote, prorat, trimManquants, trimSuppl, ageLegal };
 }
 
-const FAQ = [
-  { q: "Quel est le taux maximum de pension dans la fonction publique ?", a: "Le taux maximum est de 75 % du traitement indiciaire brut (hors primes). Ce taux est atteint lorsque vous avez validé les trimestres requis (172 pour les nés après 1964) et que vous partez à l'âge légal ou après. La réforme 2023 a aligné progressivement les règles avec le régime général." },
-  { q: "Qu'est-ce que la catégorie active ?", a: "Les agents de catégorie active exercent des métiers à risques particuliers (policiers, pompiers, personnel soignant, surveillants pénitentiaires…). Ils bénéficient d'un droit à départ anticipé de 5 ans par rapport aux agents sédentaires. L'âge légal est donc de 59 ans pour les nés en 1965+." },
-  { q: "Les primes sont-elles prises en compte dans la pension ?", a: "Non. La pension de base fonction publique est calculée exclusivement sur le traitement indiciaire brut (hors primes, heures supplémentaires, NBI). C'est pour compenser cela que le régime RAFP (Retraite Additionnelle de la Fonction Publique) a été créé : il prend en compte une partie des primes." },
-  { q: "Quelle différence avec le régime CNRACL ?", a: "Le régime CNRACL s'applique aux fonctionnaires territoriaux et hospitaliers. Le régime de la Fonction Publique d'État (SRE) s'applique aux fonctionnaires civils et militaires de l'État. Les règles de calcul sont très proches ; ce simulateur s'applique aux deux régimes (sédentaires ou actifs)." },
-];
+const FAQ = FAQS['/simulateurs/fonction-publique'];
 
 export default function FonctionPublique() {
   const [theme, setTheme] = useTheme();

@@ -12,29 +12,9 @@ import JsonLd from "../../components/JsonLd.jsx";
 import {
   NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
-const FAQ = [
-  {
-    q: "Quelle est la différence entre rente viagère et retrait programmé ?",
-    a: "La rente viagère convertit votre capital en un revenu mensuel garanti jusqu'à votre décès, quoi qu'il arrive. Le retrait programmé conserve votre capital et vous permet de retirer une mensualité sur une durée déterminée, avec la possibilité de transmettre le capital restant à votre décès.",
-  },
-  {
-    q: "Qu'est-ce que le taux de conversion d'une rente ?",
-    a: "Le taux de conversion (ou taux de rente) est le pourcentage annuel de votre capital converti en rente. Par exemple, avec un capital de 200 000 € et un taux de 4,5 %, vous recevrez 9 000 €/an soit 750 €/mois brut. Ce taux dépend de votre âge, de votre sexe et des conditions de marché (taux techniques de l'assureur).",
-  },
-  {
-    q: "Comment est imposée la rente viagère ?",
-    a: "La rente viagère issue d'un PER est imposée comme un revenu ordinaire (barème IR). Pour une rente issue d'une assurance-vie (rente à titre onéreux), seule une fraction est imposable : 40 % entre 60 et 69 ans, 30 % à partir de 70 ans — et les prélèvements sociaux s'appliquent sur cette même fraction.",
-  },
-  {
-    q: "À quel âge la rente devient-elle plus avantageuse ?",
-    a: "Le 'point de bascule' dépend des rendements, du taux de conversion et de votre espérance de vie. En général, si vous vivez plus de 20-25 ans après le départ, la rente viagère est plus avantageuse car elle continue indéfiniment. Le retrait programmé est préférable si vous souhaitez transmettre un capital ou anticipez une durée de retraite courte.",
-  },
-  {
-    q: "Peut-on combiner les deux approches ?",
-    a: "Oui, c'est souvent recommandé : convertir une partie du capital en rente pour couvrir les dépenses incompressibles (loyer, alimentation) et garder une autre partie en retrait programmé pour les dépenses variables et la transmission. Cette approche hybride réduit le risque de survie tout en conservant une flexibilité.",
-  },
-];
+const FAQ = FAQS['/simulateurs/rente-capital'];
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 // Taux de conversion rente viagère indicatifs 2026 (assurance vie en rente)

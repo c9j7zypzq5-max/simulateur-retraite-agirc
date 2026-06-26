@@ -18,6 +18,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
 const TAUX_PLEIN = 0.50;
@@ -142,14 +143,7 @@ function calcMsaSalarie({ salaire, anneesFaites, anneesRestantes, ageDépart, an
   };
 }
 
-const FAQ = [
-  { q: "Qui est affilié à la MSA ?", a: "La Mutualité Sociale Agricole (MSA) couvre tous les salariés agricoles (exploitations, coopératives, entreprises du secteur) et les non-salariés agricoles (exploitants, chefs d'exploitation). Le statut d'exploitant agricole requiert une superficie minimale ou un revenu professionnel agricole suffisant." },
-  { q: "Comment sont calculés les trimestres au régime agricole ?", a: "Pour les salariés agricoles : 1 trimestre par tranche de 150 × SMIC horaire cotisée dans l'année, comme pour le régime général CNAV (maximum 4 trimestres/an). Pour les exploitants : les trimestres sont validés sur la base du revenu agricole professionnel ou de la surface exploitée." },
-  { q: "Quelle est la différence entre AMEXA et AVA ?", a: "L'AMEXA (Assurance Maladie des Exploitants Agricoles) couvre la santé des non-salariés agricoles. L'AVA (Assurance Vieillesse Agricole) est la retraite de base des exploitants. S'y ajoute la COREVA (retraite complémentaire facultative) et la RCO (retraite complémentaire obligatoire depuis 2003)." },
-  { q: "Quel est le montant de la retraite minimum pour un exploitant agricole ?", a: "Depuis 2022 (loi Chassaigne), la retraite minimum d'un chef d'exploitation ayant une carrière complète est portée à 85 % du SMIC net, soit environ 1 035 € nets par mois en 2025. Cette garantie s'applique à la pension totale (base + complémentaire)." },
-  { q: "La retraite agricole est-elle différente selon le statut (salarié vs exploitant) ?", a: "Oui. Les salariés agricoles relèvent du régime général de base (CNAV), avec une retraite complémentaire MSA-Cadres ou MSA-Non cadres similaire à Agirc-Arrco. Les exploitants non-salariés ont leur propre régime de base (AVA) et la RCO (retraite complémentaire obligatoire par points)." },
-  { q: "Peut-on cumuler emploi et retraite agricole ?", a: "Oui, le cumul emploi-retraite est possible en agriculture comme dans les autres régimes. Après liquidation de toutes les retraites (base et complémentaires) au taux plein, vous pouvez exercer une activité salariée ou non-salariée agricole sans plafond de revenus, et continuer à cotiser (sans générer de nouveaux droits)." },
-];
+const FAQ = FAQS['/simulateurs/msa'];
 
 export default function Msa() {
   const [theme, setTheme] = useTheme();

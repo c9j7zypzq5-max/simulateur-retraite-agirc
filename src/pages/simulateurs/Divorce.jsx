@@ -15,6 +15,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème pension alimentaire (indicatif MJ 2022) ──────────────────────────
 // % du revenu net mensuel du débiteur selon nombre d'enfants
@@ -113,13 +114,7 @@ function toParams(v) {
   return { r: v.regime, a: v.actifCommun, r1: v.revenu1, r2: v.revenu2, d: v.dureeMariage, n: v.nbEnfants, g: v.garde, p1: v.propres1, p2: v.propres2 };
 }
 
-const FAQ = [
-  { q: "Qu'est-ce que le régime de communauté réduite aux acquêts ?", a: "C'est le régime matrimonial légal par défaut en France. Les biens acquis pendant le mariage (acquêts) sont communs et partagés 50/50 en cas de divorce. Les biens possédés avant le mariage ou reçus par donation/héritage restent des « propres » qui ne sont pas partagés." },
-  { q: "Comment est calculée la pension alimentaire ?", a: "Il n'existe pas de formule légale obligatoire en France, mais le Ministère de la Justice publie un barème indicatif basé sur le revenu net du débiteur et le nombre d'enfants. Le juge reste libre de fixer un montant différent selon la situation réelle de chaque famille. Ce simulateur utilise ce barème indicatif." },
-  { q: "La prestation compensatoire est-elle systématique ?", a: "Non. Elle est accordée par le juge uniquement si le divorce crée une disparité significative dans les conditions de vie des époux. Elle prend en compte : la durée du mariage, les sacrifices professionnels consentis, les revenus et patrimoines respectifs, l'âge et l'état de santé. Elle peut être refusée même en cas d'écart de revenus important." },
-  { q: "Qu'est-ce que les droits de partage ?", a: "Les droits de partage sont une taxe perçue par l'État lors de la liquidation du régime matrimonial. Depuis 2022, ils sont fixés à 1,1% de la valeur du patrimoine commun partagé (contre 2,5% auparavant). Un bien immobilier commun de 300 000 € génère donc 3 300 € de droits de partage." },
-  { q: "Ces estimations sont-elles fiables ?", a: "Ce simulateur donne des ordres de grandeur indicatifs pour vous aider à anticiper votre situation financière. Les montants réels seront fixés par le juge aux affaires familiales ou dans la convention homologuée (divorce par consentement mutuel). Consultez impérativement un avocat spécialisé en droit de la famille pour votre situation." },
-];
+const FAQ = FAQS['/simulateurs/divorce'];
 
 function SectionTitle({ children }) {
   return (

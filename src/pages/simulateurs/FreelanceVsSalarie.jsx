@@ -14,6 +14,7 @@ import {
   useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème IR 2026 (revenus 2025) ───────────────────────────────────────────
 const BAREME = [
@@ -143,13 +144,7 @@ function ResultCol({ title, color, accent, rows, netMensuel, tmi, animNet }) {
   );
 }
 
-const FAQ = [
-  { q: "Pourquoi le CA freelance doit-il être plus élevé que le brut salarié ?", a: "En tant que salarié, votre employeur paie ~42% de charges patronales en plus de votre brut. Un freelance doit donc facturer suffisamment pour couvrir ses propres charges sociales (21-22% du CA) et ses frais professionnels. Un brut salarié de 50 000 € coûte ~71 000 € à l'employeur, ce qui est le CA minimal à viser pour comparer à armes égales." },
-  { q: "Quelle différence entre micro-BIC et micro-BNC ?", a: "Le régime micro-BIC (Bénéfices Industriels et Commerciaux) s'applique aux activités commerciales et artisanales avec un abattement de 50% sur le CA. Le micro-BNC (Bénéfices Non Commerciaux) concerne les professions libérales (consultant, coach, formateur…) avec un abattement plus faible de 34% — mais les taux de cotisation sont similaires (~21%)." },
-  { q: "Quand le micro-entrepreneur devient-il moins intéressant ?", a: "Au-delà de 77 700 € de CA pour les services (BIC) ou 77 700 € en BNC (seuils 2025), le régime micro ne s'applique plus automatiquement. De plus, si vos charges réelles dépassent l'abattement forfaitaire (ex : 60% de charges réelles vs 50% forfaitaire BIC), le régime réel est plus avantageux." },
-  { q: "Le portage salarial est-il intéressant ?", a: "Le portage permet de bénéficier du statut salarié (chômage, retraite complémentaire) tout en travaillant comme indépendant. La contrepartie est une commission de 8-12% prélevée par la société de portage sur le CA, ce qui réduit le net disponible. C'est souvent moins rentable que la micro-entreprise mais plus protecteur." },
-  { q: "Ces calculs prennent-ils en compte la retraite ?", a: "Partiellement : les cotisations sociales calculées incluent la retraite de base. Cependant, un salarié cotise aussi à la retraite complémentaire Agirc-Arrco (via les charges sociales), tandis qu'un micro-entrepreneur génère peu de droits retraite complémentaire. Sur le long terme, le salarié accumule plus de droits retraite pour le même revenu net." },
-];
+const FAQ = FAQS['/simulateurs/freelance-vs-salarie'];
 
 export default function FreelanceVsSalarie() {
   const [theme, setTheme] = useTheme();

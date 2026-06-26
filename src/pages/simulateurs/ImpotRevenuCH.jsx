@@ -9,6 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
+import { FAQS } from '../../data/faqs.js';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -111,28 +112,7 @@ function calcImpot({ revenuBrut, marie, canton }) {
   };
 }
 
-const FAQ = [
-  {
-    q: "Comment fonctionne l'impôt fédéral direct (IFD) en Suisse ?",
-    a: "L'IFD est un impôt progressif prélevé par la Confédération sur le revenu net des personnes physiques. Le barème 2025 part de 0 % pour les revenus inférieurs à 18 000 CHF et monte à 11,5 % pour les revenus dépassant 176 000 CHF. Les couples mariés bénéficient du splitting : le revenu est divisé par deux, l'impôt calculé puis multiplié par deux, ce qui réduit l'effet de la progressivité.",
-  },
-  {
-    q: "Qu'est-ce que l'impôt cantonal et l'impôt communal ?",
-    a: "En plus de l'IFD, chaque canton et commune perçoit ses propres impôts sur le revenu, calculés sur la base du revenu imposable cantonal (qui peut différer légèrement de la base fédérale). Les taux varient fortement selon le canton : Zoug est le moins imposé, Neuchâtel parmi les plus élevés. Ce simulateur utilise une approximation basée sur un multiplicateur de l'IFD.",
-  },
-  {
-    q: "Quelles déductions puis-je appliquer en Suisse ?",
-    a: "Les principales déductions pour un salarié comprennent : les frais professionnels (forfait 3 % du salaire, min 2 000 CHF, max 4 000 CHF), les cotisations sociales obligatoires (AVS/AI/APG ≈ 5,3 % du salaire brut), les primes d'assurance maladie LAMal (déduction forfaitaire), les versements au pilier 3a (max 7 056 CHF), les intérêts de dettes et les frais de garde d'enfants.",
-  },
-  {
-    q: "Pourquoi l'impôt varie-t-il autant selon le canton ?",
-    a: "La Suisse applique le principe du fédéralisme fiscal : chaque canton fixe librement ses taux d'imposition. Un contribuable gagnant 100 000 CHF peut payer presque deux fois plus d'impôts à Neuchâtel qu'à Zoug. En plus du canton, la commune de domicile ajoute un impôt supplémentaire (multiplicateur communal). Ce système crée une concurrence fiscale entre cantons.",
-  },
-  {
-    q: "Comment sont traités les couples mariés ?",
-    a: "En Suisse fédérale, les couples mariés et partenaires enregistrés bénéficient d'un tarif préférentiel (tarif du ménage ou splitting). Pour l'IFD, le revenu commun est divisé par deux, l'impôt calculé sur cette moitié puis multiplié par deux — ce qui réduit l'imposition par rapport à deux célibataires. Attention : dans certains cantons, les couples mariés à deux revenus peuvent être défavorisés par rapport aux concubins.",
-  },
-];
+const FAQ = FAQS['/simulateurs/impot-revenu-ch'];
 
 const DEFAULT = { revenuBrut: 90_000, marie: false, canton: "VD" };
 

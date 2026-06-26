@@ -18,6 +18,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Calcul Retraite Progressive ─────────────────────────────────────────────
 function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
@@ -54,12 +55,7 @@ function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
 
 const QUOTITES = [50, 60, 70, 80];
 
-const FAQ = [
-  { q: "Qui peut bénéficier de la retraite progressive ?", a: "La retraite progressive est ouverte aux salariés du secteur privé (et depuis 2023 aux fonctionnaires) ayant atteint l'âge légal diminué de 2 ans (soit 62 ans pour les nés en 1965+) ET justifiant d'au moins 150 trimestres validés. Vous devez travailler à temps partiel (entre 40 % et 80 % d'un temps plein)." },
-  { q: "Comment est calculée la fraction de pension versée ?", a: "La fraction de pension = 1 − quotité de travail. Par exemple, si vous travaillez à 60 %, vous percevez 40 % de vos droits à pension acquis au moment de la liquidation. Cette fraction est recalculée en cas de changement de quotité." },
-  { q: "La retraite progressive améliore-t-elle la pension finale ?", a: "Oui, de deux façons : (1) vous continuez à valider des trimestres, ce qui augmente votre durée d'assurance ; (2) vous pouvez cumuler une surcote si vous aviez déjà le taux plein. Au moment de votre départ définitif, vos droits sont recalculés en tenant compte de toute votre carrière, y compris la période progressive." },
-  { q: "La retraite progressive est-elle cumulable avec tous les régimes ?", a: "La retraite progressive existe dans le régime général CNAV (salariés du privé) et depuis la réforme 2023 dans la fonction publique. Les indépendants (SSI) peuvent également en bénéficier. Elle n'est pas applicable aux régimes spéciaux. Dans tous les cas, la pension partielle et le revenu d'activité se cumulent sans plafond pendant la période progressive." },
-];
+const FAQ = FAQS['/simulateurs/retraite-progressive'];
 
 export default function RetraiteProgressive() {
   const [theme, setTheme] = useTheme();

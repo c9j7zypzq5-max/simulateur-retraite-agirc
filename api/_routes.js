@@ -7,6 +7,7 @@
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
+import { FAQS } from '../src/data/faqs.js';
 
 export const BASE = 'https://www.simfinly.com';
 
@@ -385,6 +386,16 @@ export function structuredData(route, extra = {}) {
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
       inLanguage: 'fr-FR',
     });
+    const faqs = FAQS[route];
+    if (faqs && faqs.length > 0) {
+      out.push({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: faqs.map(({ q, a }) => ({
+          '@type': 'Question', name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      });
+    }
   }
   return out;
 }

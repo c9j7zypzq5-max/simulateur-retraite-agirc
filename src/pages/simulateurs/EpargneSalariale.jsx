@@ -17,6 +17,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
 const ABONDEMENT_MAX_LEGAL = 0.08 * PASS; // 3 844,80 €
@@ -102,36 +103,7 @@ function toParams(v) {
   return { vm: v.versementMensuel, ta: v.tauxAbondement, r: v.rendementAnnuel, d: v.duree, tmi: v.tmi };
 }
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que l'abondement employeur dans un PEE ?",
-    a: "L'abondement est une contribution financière versée par votre employeur en complément de vos propres versements sur le Plan d'Épargne Entreprise (PEE) ou le PERCO/PERO. Il est encadré par la loi : l'employeur ne peut pas abonder plus de 3 fois votre versement, et le total de l'abondement ne peut dépasser 8 % du PASS (Plafond Annuel de la Sécurité Sociale), soit 3 844,80 € en 2025. C'est un avantage considérable : si votre employeur abonde à 100 %, chaque euro que vous versez est doublé.",
-  },
-  {
-    q: "L'abondement est-il soumis à l'impôt sur le revenu ?",
-    a: "Non, l'abondement versé par l'employeur est totalement exonéré d'impôt sur le revenu, dans la limite légale de 8 % du PASS. Il est également exonéré de cotisations sociales salariales (mais soumis à CSG/CRDS à 9,7 %). Cette double exonération fait de l'abondement l'un des avantages salariaux les plus avantageux fiscalement.",
-  },
-  {
-    q: "Quelle est la différence entre PEE, PERCO et PERO ?",
-    a: "Le PEE (Plan d'Épargne Entreprise) est bloqué 5 ans, avec une sortie en capital exonérée d'IR (hors prélèvements sociaux). Le PERCO (Plan d'Épargne Retraite Collectif) est bloqué jusqu'à la retraite, avec une sortie en rente ou en capital. Le PERO (Plan d'Épargne Retraite Obligatoire) fonctionne sur le même principe que le PERCO mais avec des versements obligatoires pour certaines catégories. Dans tous les cas, l'abondement est soumis aux mêmes règles légales.",
-  },
-  {
-    q: "Quand peut-on débloquer son PEE avant les 5 ans ?",
-    a: "La loi prévoit plusieurs cas de déblocage anticipé du PEE avant l'échéance des 5 ans : mariage ou PACS, naissance ou adoption d'un 3e enfant, divorce ou séparation, invalidité, décès du titulaire ou de son conjoint, rupture du contrat de travail (licenciement, démission, retraite), création ou reprise d'entreprise, achat de la résidence principale, surendettement. Ces déblocages restent exonérés d'impôt sur le revenu.",
-  },
-  {
-    q: "Les versements volontaires dans le PEE sont-ils déductibles de l'IR ?",
-    a: "Non, contrairement au PER individuel, les versements volontaires que vous effectuez dans un PEE ne sont pas déductibles de votre impôt sur le revenu. En revanche, les sommes issues de la participation, de l'intéressement ou de l'abondement employeur sont exonérées d'IR à l'entrée. Lors de la sortie, la plus-value réalisée est exonérée d'IR (mais soumise aux prélèvements sociaux de 17,2 %).",
-  },
-  {
-    q: "Comment choisir entre verser dans son PEE et dans son PER individuel ?",
-    a: "Le PEE est plus souple (déblocage à 5 ans) et bénéficie de l'abondement employeur, qui peut représenter un rendement immédiat très élevé. Le PER individuel permet en revanche de déduire les versements de l'IR, ce qui est intéressant si votre TMI est élevé (30 % ou plus). La stratégie optimale consiste souvent à maximiser l'abondement du PEE en premier, puis à compléter avec un PER si vous êtes dans une tranche élevée d'imposition.",
-  },
-  {
-    q: "Quel rendement réaliste attendre de son PEE ?",
-    a: "Le rendement dépend entièrement des fonds choisis. Les fonds monétaires offrent peu (2-3 % en période de taux hauts), les fonds obligataires 3-5 %, les fonds actions 5-9 % sur longue période. Beaucoup de PEE proposent des fonds investis en actions de l'entreprise, souvent avec une décote d'achat. Le simulateur utilise un rendement annuel moyen supposé constant, mais la réalité est plus volatile. Diversifiez vos supports si votre PEE le permet.",
-  },
-];
+const FAQ = FAQS['/simulateurs/epargne-salariale'];
 
 export default function EpargneSalariale() {
   const [theme, setTheme] = useTheme();

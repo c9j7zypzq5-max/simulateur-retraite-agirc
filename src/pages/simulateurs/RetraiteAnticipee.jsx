@@ -15,6 +15,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Plafond mensuel de la sécurité sociale (PMSS 2025) ─────────────────────
 
@@ -161,40 +162,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le dispositif carrières longues (RACL) ?",
-    a: "Le dispositif de Retraite Anticipée pour Carrières Longues (RACL) permet de partir à la retraite avant l'âge légal si vous avez commencé à travailler jeune. Après la réforme de 2023, vous pouvez partir à 60 ans si vous avez débuté avant 21 ans (avec 5 trimestres cotisés avant vos 21 ans), ou à 58 ans si vous avez commencé avant 17 ans. Dans les deux cas, vous devez avoir cotisé la durée requise pour votre génération plus 2 trimestres supplémentaires.",
-  },
-  {
-    q: "Comment fonctionne la décote ?",
-    a: "La décote s'applique si vous partez à la retraite avant d'avoir atteint le taux plein (durée de cotisation complète). Chaque trimestre manquant entraîne une réduction de 1,25 % de votre pension, dans la limite de 20 trimestres (soit -25 % au maximum). Attention : la décote s'applique même si vous partez à l'âge légal si vous n'avez pas tous vos trimestres.",
-  },
-  {
-    q: "Qu'est-ce que la surcote ?",
-    a: "La surcote récompense les assurés qui continuent à travailler après avoir atteint le taux plein (âge légal + durée de cotisation complète). Chaque trimestre supplémentaire cotisé au-delà du taux plein augmente la pension de 1,25 %, sans plafond légal. C'est une incitation financière significative à prolonger son activité.",
-  },
-  {
-    q: "Quelle est la durée de cotisation pour le taux plein ?",
-    a: "La durée requise dépend de votre année de naissance. La réforme 2023 a progressivement augmenté cette durée : 168 trimestres (42 ans) pour les générations 1958-1960, 169 pour 1961-1963, 170 pour 1964-1965, 171 pour 1966-1967, et 172 trimestres (43 ans) pour les générations 1968 et après. Les générations nées avant 1958 gardent 166 trimestres.",
-  },
-  {
-    q: "Comment est calculée ma pension CNAV de base ?",
-    a: "La formule simplifiée est : Salaire annuel moyen (SAM, basé sur vos 25 meilleures années, plafonné au PMSS) × 50 % × (trimestres cotisés / durée requise pour le taux plein). Le PMSS 2025 est de 3 864 €/mois. Si vous avez tous vos trimestres, le coefficient prorata vaut 1. La pension est ensuite ajustée par la décote ou surcote. Ce simulateur utilise le salaire mensuel brut actuel comme proxy du SAM.",
-  },
-  {
-    q: "Les trimestres assimilés (chômage, maladie) comptent-ils pour la RACL ?",
-    a: "Les trimestres assimilés (chômage indemnisé, maladie, maternité, invalidité) comptent pour la durée d'assurance (qui détermine le taux plein) mais PAS pour le critère de début de carrière dans le dispositif carrières longues. Ce dernier exige des trimestres cotisés réels (par une activité salariée ou non salariée). Vérifiez votre relevé de carrière sur info-retraite.fr.",
-  },
-  {
-    q: "Puis-je cumuler emploi et retraite après mon départ ?",
-    a: "Oui, le cumul emploi-retraite (CER) est possible sous conditions. En CER intégral (vous avez liquidé toutes vos retraites et êtes au taux plein), vos revenus d'activité sont illimités et vous pouvez acquérir de nouveaux droits depuis 2023. En CER partiel, le cumul est plafonné à votre dernier salaire ou 160 % du SMIC. Renseignez-vous auprès de votre caisse de retraite.",
-  },
-  {
-    q: "L'âge légal va-t-il encore changer ?",
-    a: "La réforme du système de retraites de 2023 (loi Borne) a fixé le calendrier de montée en charge jusqu'à 64 ans pour les générations 1967 et postérieures. Des débats politiques sont régulièrement ouverts sur ce sujet, mais les modifications éventuelles ne peuvent s'appliquer qu'aux générations pas encore en âge de partir. Pour les personnes proches de la retraite, les règles actuelles s'appliquent.",
-  },
-];
+const FAQ = FAQS['/simulateurs/retraite-anticipee'];
 
 function Row({ label, value, highlight, ok, warn }) {
   return (

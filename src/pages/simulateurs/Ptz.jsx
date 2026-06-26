@@ -18,6 +18,7 @@ import {
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème PTZ ────────────────────────────────────────────────────────────────
 // Source : décret n° 2025-299 du 29 mars 2025 (JO 30/03/2025), en vigueur depuis
@@ -75,32 +76,7 @@ function plafondOperation(zone, personnes) {
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que le prêt à taux zéro (PTZ) ?",
-    a: "Le PTZ est un prêt sans intérêt ni frais de dossier, accordé sous conditions de ressources aux primo-accédants (personnes n'ayant pas été propriétaires de leur résidence principale au cours des deux dernières années) pour financer l'achat de leur résidence principale. Il complète un prêt principal et ne peut pas financer la totalité de l'opération.",
-  },
-  {
-    q: "Quels logements sont éligibles au PTZ en 2025 ?",
-    a: "Depuis le décret du 29 mars 2025, le PTZ est rouvert à tous les logements neufs (appartements comme maisons individuelles) sur l'ensemble du territoire. Les logements anciens restent éligibles uniquement en zones B2 et C, à condition de réaliser des travaux représentant au moins 25 % du coût total de l'opération. L'acquisition d'un logement social par son locataire est aussi possible.",
-  },
-  {
-    q: "Comment est déterminé le montant du PTZ ?",
-    a: "Le montant = quotité × coût de l'opération retenu (plafonné selon la zone et le nombre d'occupants). La quotité dépend de votre tranche de revenus : 50 % pour les ménages les plus modestes (tranche 1), 40 % pour les tranches 2 et 3, et 20 % pour la tranche 4. La tranche se détermine en divisant votre revenu fiscal de référence par un coefficient familial.",
-  },
-  {
-    q: "Quels sont les plafonds de revenus ?",
-    a: "L'éligibilité dépend du revenu fiscal de référence de l'année N-2 (ou du coût total ÷ 9 s'il est plus élevé), rapporté à un coefficient familial qui augmente avec le nombre d'occupants. Le plafond le plus élevé (tranche 4) atteint 49 000 € de revenu pondéré en zone A/B1. Au-delà, le foyer n'est pas éligible.",
-  },
-  {
-    q: "Comment se rembourse le PTZ ?",
-    a: "Le PTZ bénéficie d'un différé de remboursement : pendant cette période (jusqu'à plusieurs années selon vos revenus), vous ne remboursez rien sur le PTZ. La durée totale (différé + remboursement) s'échelonne entre 20 et 25 ans. Plus vos revenus sont modestes, plus le différé est long.",
-  },
-  {
-    q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur le barème 2025 (décret n° 2025-299). Le montant exact dépend de critères précis vérifiés par votre banque et le SGFGAS (zone exacte de la commune, composition du foyer, coût retenu de l'opération). Rapprochez-vous d'un établissement prêteur pour une étude personnalisée.",
-  },
-];
+const FAQ = FAQS['/simulateurs/ptz'];
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function Ptz() {

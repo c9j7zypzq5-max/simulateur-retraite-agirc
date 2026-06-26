@@ -16,6 +16,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx"; // fmt utilisé dans le barème indicatif
 import SimIcon from "../../data/simIcons.jsx";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Barème successoral 2025 ─────────────────────────────────────────────────
 const TRANCHES_DIRECTE = [
@@ -130,14 +131,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers, d: v.donations };
 }
 
-const FAQ = [
-  { q: "Comment fonctionne l'abattement pour un enfant ?", a: "Chaque enfant bénéficie d'un abattement de 100 000 € sur sa part successorale. Cet abattement se recharge tous les 15 ans. Les dons effectués dans les 15 années précédant le décès viennent en réduction de cet abattement." },
-  { q: "Le conjoint est-il vraiment exonéré à 100 % ?", a: "Oui, depuis la loi TEPA de 2007, le conjoint survivant et le partenaire de PACS sont totalement exonérés de droits de succession, quelle que soit la valeur du patrimoine transmis." },
-  { q: "Qu'est-ce que l'actif net successoral ?", a: "L'actif net successoral est la valeur totale du patrimoine transmis après déduction des dettes (emprunts immobiliers en cours, factures impayées, frais funéraires). C'est la base de calcul des droits." },
-  { q: "Les dons antérieurs réduisent-ils l'abattement ?", a: "Oui : les donations effectuées dans les 15 ans précédant le décès s'imputent sur l'abattement disponible. Une donation de 50 000 € faite il y a 10 ans réduit l'abattement enfant de 100 000 € à 50 000 €. Au-delà de 15 ans, l'abattement est totalement rechargé." },
-  { q: "Comment se calculent les droits entre frères et sœurs ?", a: "L'abattement est de 15 932 €. Les droits s'appliquent à taux de 35 % jusqu'à 24 430 € et 45 % au-delà. Ce taux élevé explique pourquoi les donations ou assurances-vie sont souvent utilisées pour transmettre à des collatéraux." },
-  { q: "Peut-on réduire les droits de succession ?", a: "Oui, plusieurs stratégies existent : donations de son vivant (toutes les 15 ans, l'abattement se recharge), démembrement de propriété (donner la nue-propriété en conservant l'usufruit), assurance-vie (hors succession jusqu'à 152 500 € par bénéficiaire pour les primes versées avant 70 ans). Consultez un notaire pour votre situation." },
-];
+const FAQ = FAQS['/simulateurs/succession'];
 
 export default function Succession() {
   const [theme, setTheme] = useTheme();

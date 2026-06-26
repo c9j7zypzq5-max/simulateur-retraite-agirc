@@ -11,24 +11,8 @@ import { readShareParams } from "../../hooks/useShareableUrl.js";
 import JsonLd from "../../components/JsonLd.jsx";
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
 
-const FAQ = [
-  {
-    q: "Qu'est-ce que l'inflation par catégorie ?",
-    a: "L'inflation n'est pas uniforme : l'alimentation, l'énergie et les services de santé augmentent souvent plus vite que la moyenne. L'INSEE mesure l'Indice des Prix à la Consommation (IPC) en pondérant chaque catégorie selon son poids dans le budget des ménages français.",
-  },
-  {
-    q: "Comment se calcule le taux d'inflation moyen pondéré ?",
-    a: "Chaque catégorie est pondérée par sa part dans votre budget. Si l'alimentation représente 25 % de vos dépenses et son inflation est de 4 %, sa contribution au taux moyen est de 0,25 × 4 % = 1 %. Le taux moyen est la somme de ces contributions.",
-  },
-  {
-    q: "Quel taux d'inflation utiliser pour ses projections ?",
-    a: "La Banque Centrale Européenne (BCE) vise une inflation de 2 % à moyen terme. Mais selon votre mode de vie, votre inflation personnelle peut être plus élevée : les ménages à faibles revenus subissent souvent une inflation plus forte car ils consacrent une plus grande part à l'alimentation et à l'énergie.",
-  },
-  {
-    q: "Comment protéger son épargne de l'inflation ?",
-    a: "L'investissement en actions sur le long terme (ETF monde, par exemple) a historiquement produit des rendements supérieurs à l'inflation. L'immobilier offre aussi une protection naturelle. Les fonds euros d'assurance-vie ou le Livret A protègent partiellement selon les taux en vigueur.",
-  },
-];
+import { FAQS } from '../../data/faqs.js';
+const FAQ = FAQS['/simulateurs/inflation'];
 
 // Inflation historique France (source INSEE)
 const INFLATION_HISTORY = [

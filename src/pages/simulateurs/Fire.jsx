@@ -23,6 +23,7 @@ import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { FAQS } from '../../data/faqs.js';
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -948,14 +949,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
 }
 
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
-const FAQ = [
-  { q: "Qu'est-ce que la règle des 4 % ?", a: "La règle des 4 % stipule que vous pouvez retirer 4 % de votre portefeuille chaque année sans l'épuiser sur 30 ans. Elle est issue de l'étude Trinity (1998) basée sur les marchés américains. En pratique, votre capital FIRE = dépenses annuelles × 25. Par exemple, pour vivre avec 30 000 €/an, il vous faut 750 000 € de capital investi." },
-  { q: "Quelle différence entre Lean FIRE, Barista FIRE et Fat FIRE ?", a: "Lean FIRE désigne l'indépendance financière avec un budget frugal (< 25 000 €/an). Barista FIRE permet de couvrir les dépenses de base grâce au capital tout en gardant un emploi partiel pour les « extras ». Fat FIRE vise un mode de vie confortable (> 80 000 €/an) nécessitant un capital nettement plus important." },
-  { q: "Comment calculer mon taux d'épargne pour le FIRE ?", a: "Votre taux d'épargne = épargne mensuelle / revenu net mensuel × 100. Plus il est élevé, plus vous atteindrez le FIRE rapidement : à 50 % d'épargne, l'indépendance financière est possible en environ 17 ans depuis zéro ; à 70 %, en moins de 9 ans. Ce simulateur calcule automatiquement votre taux à partir des montants saisis." },
-  { q: "Quels placements pour vivre de ses rentes en France ?", a: "En France, un portefeuille FIRE repose généralement sur des ETF indiciels world (Assurance-vie ou PEA pour l'optimisation fiscale), de l'immobilier locatif, et une épargne sécurisée (livrets). Le PEA est particulièrement adapté après 5 ans (flat tax réduite à 17,2 %). L'assurance-vie permet des retraits avec abattement de 4 600 € (ou 9 200 € pour un couple) par an au-delà de 8 ans." },
-  { q: "Le FIRE est-il réaliste en France avec les impôts ?", a: "Oui, mais il faut anticiper la fiscalité sur les revenus du capital : prélèvement forfaitaire unique (PFU) de 30 % sur les dividendes et plus-values hors enveloppes fiscales. En optimisant via PEA (17,2 % après 5 ans) et assurance-vie, l'impact fiscal peut être réduit significativement. La France offre aussi une protection sociale (santé, retraite) qui diminue le capital nécessaire par rapport aux pays sans protection sociale." },
-  { q: "Qu'est-ce que le Coast FIRE ?", a: "Le Coast FIRE est le point où votre capital actuel, sans apport supplémentaire, atteindra votre objectif FIRE à l'âge de retraite souhaité, grâce à la seule croissance des marchés. Une fois ce seuil atteint, vous n'avez plus besoin d'épargner pour la retraite : il suffit de couvrir vos dépenses courantes par votre activité." },
-];
+const FAQ = FAQS['/simulateurs/fire'];
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function Fire() {
