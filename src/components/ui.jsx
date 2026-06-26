@@ -348,8 +348,17 @@ export function FaqSection({ title = "Questions fréquentes", items }) {
 function HeaderBreadcrumb() {
   const { pathname } = useLocation();
   const meta = ROUTE_META[pathname];
+  const BASE = 'https://www.simfinly.com';
+  const crumbs = [{ name: 'Accueil', item: `${BASE}/` }];
+  if (meta?.cat) crumbs.push({ name: meta.cat });
+  if (meta?.title) crumbs.push({ name: meta.title });
+  const breadcrumbLd = {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, ...(c.item ? { item: c.item } : {}) })),
+  };
   return (
     <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+      <JsonLd data={breadcrumbLd} />
       <Link to="/" style={{
         display: "inline-flex", alignItems: "center", gap: 5,
         fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",

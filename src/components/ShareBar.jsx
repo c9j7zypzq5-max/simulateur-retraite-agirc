@@ -367,10 +367,12 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         });
         const sharePreviewUrl = `${window.location.origin}/api/share?${shareParams.toString()}`;
         const encodedShare = encodeURIComponent(sharePreviewUrl);
-        const text    = encodeURIComponent(
+        const HASHTAGS = { Retraite: '#Retraite', Immobilier: '#Immobilier', 'Impôts': '#Impots', Finances: '#Finances', FIRE: '#FIRE #IndépendanceFinancière', Budget: '#Budget' };
+        const tag = HASHTAGS[cat] || '#FinancesPersonnelles';
+        const text = encodeURIComponent(
           locale === "en"
-            ? `I just simulated my finances on simfinly.com: ${report.highlight.label} → ${report.highlight.value}`
-            : `Je viens de simuler mes finances sur simfinly.com : ${report.highlight.label} → ${report.highlight.value}`
+            ? `I just calculated on simfinly.com: ${report.highlight.label} → ${report.highlight.value} | Calculated with Simfinly`
+            : `J'ai simulé sur simfinly.com : ${report.highlight.label} → ${report.highlight.value} ${tag} | Calculé avec Simfinly`
         );
         const twitterUrl   = `https://twitter.com/intent/tweet?text=${text}&url=${encodedShare}`;
         const linkedinUrl  = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedShare}`;
