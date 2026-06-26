@@ -124,6 +124,74 @@ export const SEO_CONTENT = {
     h1: "Comparatifs financiers",
     intro: "Des comparaisons claires pour vos grandes décisions : PER ou assurance-vie, louer ou acheter, freelance ou salarié. Chaque comparatif détaille les avantages et inconvénients critère par critère et renvoie vers les simulateurs pour chiffrer votre situation.",
   },
+  '/simulateurs/donation': {
+    h1: "Simulateur donation vs succession — optimisation fiscale 2026",
+    intro: "Comparez donation et succession pour transmettre votre patrimoine au meilleur coût fiscal. Le simulateur calcule les droits applicables selon les abattements légaux (100 000 € par parent et par enfant, renouvelables tous les 15 ans) et vous aide à choisir entre donner de son vivant ou laisser hériter.",
+  },
+  '/simulateurs/divorce': {
+    h1: "Simulateur partage de patrimoine et prestation compensatoire — divorce 2026",
+    intro: "Évaluez le partage des biens et la prestation compensatoire lors d'un divorce selon le régime matrimonial (communauté réduite aux acquêts ou séparation de biens). Le simulateur estime l'équilibre patrimonial après séparation et les droits de partage applicables.",
+  },
+  '/simulateurs/freelance-vs-salarie': {
+    h1: "Simulateur freelance vs salarié — revenus nets comparés 2026",
+    intro: "Comparez votre revenu net en tant que freelance (micro-entreprise, EURL, SASU) et en tant que salarié à partir d'un chiffre d'affaires ou d'un salaire brut identique. Le simulateur intègre cotisations sociales, impôt sur le revenu et charges pour un arbitrage éclairé.",
+  },
+  '/simulateurs/epargne-salariale': {
+    h1: "Simulateur épargne salariale PEE / PERCO / PERO — gain fiscal 2026",
+    intro: "Estimez le gain fiscal et social de votre épargne salariale (PEE, PERCO, PERO) grâce à l'abondement employeur, l'exonération de cotisations et la déductibilité fiscale des versements. Un outil pour comparer les dispositifs et maximiser votre complément de rémunération net.",
+  },
+  '/simulateurs/deficit-foncier': {
+    h1: "Simulateur déficit foncier 2026 — économie d'impôt sur les travaux",
+    intro: "Calculez l'économie d'impôt générée par vos travaux de rénovation locative grâce au mécanisme du déficit foncier. Le simulateur intègre le plafond de 10 700 €/an imputable sur le revenu global, le report du surplus sur 10 ans et l'impact sur votre tranche marginale d'imposition.",
+  },
+  '/simulateurs/retraite-anticipee': {
+    h1: "Simulateur retraite anticipée 2026 — carrières longues et conditions d'éligibilité",
+    intro: "Vérifiez si vous êtes éligible à la retraite anticipée pour carrière longue (départ dès 58 ou 60 ans), calculez votre pension prévisionnelle et l'impact d'un départ avant l'âge légal. Le simulateur applique les règles de la réforme 2023 (loi Borne) selon votre année de naissance.",
+  },
+  '/simulateurs/trimestres': {
+    h1: "Simulateur trimestres retraite 2026 — durée d'assurance et taux plein",
+    intro: "Comptabilisez vos trimestres cotisés et assimilés (chômage, maladie, maternité, MDA, service militaire) pour connaître votre durée d'assurance totale et l'âge auquel vous atteindrez le taux plein. Le simulateur applique les durées requises de la réforme 2023 selon votre génération.",
+  },
+  '/simulateurs/rente-capital': {
+    h1: "Simulateur rente viagère vs retrait programmé — arbitrage retraite",
+    intro: "Comparez la rente viagère et les retraits programmés pour votre capital retraite (PER, assurance-vie). Le simulateur calcule le revenu mensuel net, le point mort et le cumul sur 20 ans selon votre tranche marginale et votre espérance de vie, pour choisir le meilleur mode de décaissement.",
+  },
+  '/simulateurs/inflation': {
+    h1: "Simulateur inflation et pouvoir d'achat personnalisé 2026",
+    intro: "Mesurez l'impact de l'inflation sur votre budget poste par poste (alimentation, énergie, logement, santé, transports). Projetez l'érosion de votre pouvoir d'achat sur 10 à 30 ans selon des taux d'inflation différenciés par catégorie, et identifiez les leviers pour protéger vos finances.",
+  },
+  '/simulateurs/succession': {
+    h1: "Simulateur droits de succession 2026 — barème officiel par lien de parenté",
+    intro: "Calculez les droits de succession français selon le lien de parenté (enfants, frères/sœurs, neveux, tiers) et l'actif net successoral. Le simulateur applique les abattements légaux 2026 et les taux progressifs du barème officiel pour une estimation instantanée des droits dus.",
+  },
+  '/simulateurs/pension-legale': {
+    h1: "Simulateur pension légale Belgique (ONSS) 2025 — salarié et indépendant",
+    intro: "Estimez votre pension légale belge selon votre statut (salarié ou indépendant), votre durée de carrière et votre salaire moyen. Le simulateur applique les barèmes ONSS 2025 et distingue la pension de retraite et la pension de survie pour les conjoints survivants.",
+  },
+  '/simulateurs/comparaison-reforme': {
+    h1: "Simulateur réforme retraite 2023 — comparaison avant/après loi Borne",
+    intro: "Comparez votre âge de départ et votre pension selon les règles avant et après la réforme des retraites de 2023 (loi Borne). Mesurez l'impact du relèvement de l'âge légal à 64 ans et de l'allongement de la durée de cotisation requise sur votre situation personnelle.",
+  },
+  '/simulateurs/lpp-deuxieme-pilier': {
+    h1: "Simulateur LPP — 2e pilier suisse (accessible depuis la France)",
+    intro: "Estimez votre avoir de vieillesse LPP et votre rente du 2e pilier si vous travaillez ou avez travaillé en Suisse. Salaire coordonné, taux d'intérêt LPP 2025 et projection de rente selon votre durée de cotisation — utile pour les frontaliers franco-suisses.",
+  },
+  '/simulateurs/impot-revenu-ch': {
+    h1: "Simulateur impôt sur le revenu Suisse — fédéral et cantonal 2025",
+    intro: "Calculez votre impôt fédéral direct et votre impôt cantonal en Suisse selon votre canton de résidence, votre revenu imposable et votre situation familiale. Barèmes officiels 2025 pour les 26 cantons, utile pour les résidents suisses et les frontaliers fiscalement domiciliés en Suisse.",
+  },
+  '/simulateurs/prevoyance-ch': {
+    h1: "Simulateur pilier 3a — prévoyance individuelle suisse 2025",
+    intro: "Projetez le capital accumulé dans votre pilier 3a et calculez l'économie d'impôt annuelle sur vos versements. Le simulateur utilise le plafond 2025 (CHF 7 258 pour les salariés) et votre tranche cantonale d'imposition — accessible aux frontaliers domiciliés en Suisse.",
+  },
+  '/simulateurs/succession-ch': {
+    h1: "Simulateur droits de succession Suisse 2025 — par canton et lien de parenté",
+    intro: "Estimez les droits de succession selon le canton suisse, le lien de parenté (enfants, conjoints, collatéraux, tiers) et l'actif net transmis. Les enfants et le conjoint survivant sont exonérés dans la quasi-totalité des cantons : le simulateur détaille les exceptions et les barèmes 2025.",
+  },
+  '/simulateurs/retraite-luxembourg': {
+    h1: "Simulateur retraite Luxembourg (CNAP) 2025 — pension et taux de remplacement",
+    intro: "Estimez votre pension du régime général luxembourgeois (CNAP) selon votre durée de carrière, votre salaire moyen et votre âge de départ. Conçu pour les frontaliers franco-luxembourgeois et les expatriés : possibilité de partir dès 60 ans avec 40 années d'assurance.",
+  },
 };
 
 // Pages comparatives : H1 + intro dérivés des données (src/data/comparatifs.js),
@@ -325,6 +393,14 @@ export const SEO_CONTENT_EN = {
   '/outils/qr-code': {
     h1: "Free Custom QR Code Generator",
     intro: "Create a custom QR code: choose the colors, enter any text or URL and add your logo or an emoji in the center. Generated in your browser — no data sent — and downloadable as high-resolution PNG, completely free with no sign-up.",
+  },
+  '/simulateurs/cnav': {
+    h1: "French State Pension Calculator (CNAV) 2026",
+    intro: "Estimate your French general-scheme pension (Assurance Retraite / CNAV) based on your career, average annual earnings and retirement age. The calculator applies the official formula: quarters validated, reference annual salary and replacement rate.",
+  },
+  '/simulateurs/retraite-luxembourg': {
+    h1: "Luxembourg Pension Calculator (CNAP) 2025 — net pension & replacement rate",
+    intro: "Estimate your Luxembourg general-scheme pension (CNAP — Caisse Nationale d'Assurance Pension) based on your career length, insured salary and planned retirement age. Designed for cross-border workers and expatriates employed in Luxembourg.",
   },
 };
 
