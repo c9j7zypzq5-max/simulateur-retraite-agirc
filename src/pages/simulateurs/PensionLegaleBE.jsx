@@ -15,6 +15,8 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres pension légale belge 2024 ────────────────────────────────────
 const PLAFOND_SALAIRE = 58_380;   // salaire plafonné annuel (limite de calcul)
@@ -283,6 +285,8 @@ export default function PensionLegaleBE() {
         <AdUnit slot="pension-be-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/pension-legale']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

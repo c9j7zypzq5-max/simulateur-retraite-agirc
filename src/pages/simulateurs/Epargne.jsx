@@ -21,6 +21,8 @@ import {
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 const TXT = {
   fr: {
@@ -508,6 +510,8 @@ export default function Epargne() {
 
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/epargne']} />
+
       <Footer />
     </div>
   );

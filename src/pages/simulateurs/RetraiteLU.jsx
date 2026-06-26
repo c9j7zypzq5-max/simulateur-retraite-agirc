@@ -6,6 +6,8 @@ import { NumInput, StepperInput, SimulateurHeader, FaqSection, Chip } from "../.
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // Paramètres CNAP 2025
 // Valeur du point de pension (majoration au 1er janvier 2025)
@@ -170,6 +172,8 @@ export default function RetraiteLU() {
         <div style={{ marginTop: 24, padding: "16px 20px", background: "rgba(184,147,74,0.07)", border: "1px solid rgba(184,147,74,0.2)", borderRadius: 12, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
           <strong>Note :</strong> Ce simulateur est une estimation basée sur le régime général CNAP 2025 (taux indicatifs). Le calcul réel tient compte de l'historique complet des revenus cotisés. Pour une projection personnalisée, consultez votre relevé de carrière sur <em>guichet.lu</em>.
         </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-luxembourg']} />
+
 
         <FaqSection items={FAQ_ITEMS} />
       </main>

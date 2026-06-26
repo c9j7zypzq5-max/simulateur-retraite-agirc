@@ -16,6 +16,8 @@ import {
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème pension alimentaire (indicatif MJ 2022) ──────────────────────────
 // % du revenu net mensuel du débiteur selon nombre d'enfants
@@ -376,6 +378,8 @@ export default function Divorce() {
         <AdUnit slot="divorce-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/divorce']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

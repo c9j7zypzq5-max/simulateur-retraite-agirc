@@ -17,6 +17,8 @@ import {
   Chip, useAnimatedNumber,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres LPP 2025 ─────────────────────────────────────────────────────
 const DEDUCTION_COORDINATION = 25_725;   // CHF (2025)
@@ -293,6 +295,8 @@ export default function LppDeuxiemePilier() {
         <AdUnit slot="lpp-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/lpp-deuxieme-pilier']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

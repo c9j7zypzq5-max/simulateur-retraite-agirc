@@ -12,6 +12,8 @@ import Footer from "../../components/Footer.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { NumInput, StepperInput, fmtEur, FaqSection } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -621,6 +623,8 @@ export default function Salaire() {
           <PouvoirAchat ratio={pouvoirRatio ?? 1} />
         </div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/salaire']} />
+
 
       <FaqSection items={FAQ} />
       <Footer />

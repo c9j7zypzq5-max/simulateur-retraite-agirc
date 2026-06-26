@@ -19,6 +19,8 @@ import {
   fmtEur, SimulateurHeader, FaqSection,
   FaqItem,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Logique de calcul rendement locatif ──────────────────────────────────────
 function calcRendement({ prix, neuf, travaux, apport, loyer, chargesCopro, taxeFonciere, gestionLocative }) {
@@ -626,6 +628,8 @@ export default function RendementLocatif() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/rendement-locatif']} />
+
       <FaqSection items={txt.faq} />
       <Footer />
     </div>

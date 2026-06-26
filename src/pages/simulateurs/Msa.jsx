@@ -19,6 +19,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
 const TAUX_PLEIN = 0.50;
@@ -471,6 +473,8 @@ export default function Msa() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/msa']} />
+
       <FaqSection items={FAQ} />
       <Footer />
     </div>

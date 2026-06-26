@@ -26,6 +26,8 @@ import {
   Chip, Toggle, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function fraisNotaire(prix, neuf) { return prix * (neuf ? 0.025 : 0.075); }
@@ -1012,6 +1014,8 @@ export default function EmpruntImmobilier() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/emprunt-immobilier']} />
+
         <FaqSection items={txt.faq} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>

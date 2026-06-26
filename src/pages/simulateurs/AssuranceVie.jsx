@@ -22,6 +22,8 @@ import {
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème assurance-vie ────────────────────────────────────────────────────
 // Fiscalité des rachats sur un contrat d'assurance-vie. Constantes 2025.
@@ -561,6 +563,8 @@ export default function AssuranceVie() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/assurance-vie']} />
+
         <FaqSection items={txt.faq} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>

@@ -19,6 +19,8 @@ import {
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème PTZ ────────────────────────────────────────────────────────────────
 // Source : décret n° 2025-299 du 29 mars 2025 (JO 30/03/2025), en vigueur depuis
@@ -392,6 +394,8 @@ export default function Ptz() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/ptz']} />
+
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>

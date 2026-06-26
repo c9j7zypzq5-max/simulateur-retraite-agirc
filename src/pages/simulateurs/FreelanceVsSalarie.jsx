@@ -15,6 +15,8 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème IR 2026 (revenus 2025) ───────────────────────────────────────────
 const BAREME = [
@@ -361,6 +363,8 @@ export default function FreelanceVsSalarie() {
         <AdUnit slot="freelance-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/freelance-vs-salarie']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

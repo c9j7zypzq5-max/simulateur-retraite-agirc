@@ -16,6 +16,8 @@ import {
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
 const PS = PS_CAPITAL;
@@ -398,6 +400,8 @@ export default function DeficitFoncier() {
         <AdUnit slot="deficit-foncier-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/deficit-foncier']} />
+
         <FaqSection items={FAQ} />
 
         {/* À propos */}

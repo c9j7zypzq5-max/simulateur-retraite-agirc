@@ -19,6 +19,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres SSI 2026 ─────────────────────────────────────────────────────
 // Régime de base : aligné sur CNAV depuis 2020
@@ -309,6 +311,8 @@ export default function Independants() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/independants']} />
+
       <Footer />
     </div>
   );

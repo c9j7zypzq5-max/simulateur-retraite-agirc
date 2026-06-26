@@ -20,6 +20,8 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
 const TAUX_PLEIN = 0.50;
@@ -387,6 +389,8 @@ export default function Cnav() {
             <p>Si vous partez avant 67 ans sans avoir validé le nombre de trimestres requis, une décote de 0,625 % par trimestre manquant s'applique, jusqu'à 12,5 % maximum. À l'inverse, chaque trimestre cotisé après le taux plein génère une surcote de +1,25 %, sans plafond. L'âge légal de départ varie de 62 à 64 ans selon votre génération. À 67 ans, le taux plein est automatiquement attribué quelle que soit la durée de cotisation.</p>
           </div>
         </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/cnav']} />
+
 
         <FaqSection items={FAQ} />
 

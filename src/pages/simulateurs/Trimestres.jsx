@@ -6,6 +6,8 @@ import { NumInput, SimulateurHeader, FaqSection, fmtEur } from "../../components
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // Durée d'assurance requise selon l'année de naissance (réforme 2023)
 function getDureeRequise(annee) {
@@ -162,6 +164,8 @@ export default function Trimestres() {
         </div>
 
         <ShareBar params={valeurs} resultsRef={null} name={REPORT_PARAMS.name} report={REPORT_PARAMS} />
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/trimestres']} />
+
 
         <FaqSection items={FAQ_ITEMS} />
       </main>

@@ -17,6 +17,8 @@ import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -384,6 +386,8 @@ export default function CoutEnHeures() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/cout-en-heures']} />
+
       <Footer />
     </div>
   );

@@ -19,6 +19,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Calcul Retraite Progressive ─────────────────────────────────────────────
 function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
@@ -343,6 +345,8 @@ export default function RetraiteProgressive() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-progressive']} />
+
       <Footer />
     </div>
   );

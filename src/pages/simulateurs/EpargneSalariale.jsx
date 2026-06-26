@@ -18,6 +18,8 @@ import {
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
 const ABONDEMENT_MAX_LEGAL = 0.08 * PASS; // 3 844,80 €
@@ -334,6 +336,8 @@ export default function EpargneSalariale() {
         <AdUnit slot="epargne-salariale-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/epargne-salariale']} />
+
         <FaqSection items={FAQ} />
 
         {/* À propos */}

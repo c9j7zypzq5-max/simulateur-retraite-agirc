@@ -13,6 +13,8 @@ import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 const TXT = {
   fr: {
@@ -513,6 +515,8 @@ export default function Budget() {
           </div>
         </div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/budget']} />
+
 
       <FaqSection items={FAQ} />
       <Footer />

@@ -15,6 +15,8 @@ import {
   StepperInput, AccordionSection,
   Chip, fmt, SimulateurHeader, FaqItem,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Constantes ───────────────────────────────────────────────────────────────
 const ESPERANCE_FEMME = 85;
@@ -480,6 +482,8 @@ export default function VieEnSemaines() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/vie-en-semaines']} />
+
       <Footer />
     </div>
   );

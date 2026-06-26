@@ -9,6 +9,8 @@ import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import { FAQS } from '../../data/faqs.js';
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Règles AVANT réforme (système pré-2023) ────────────────────────────────
 function getAvantReforme(anneeNaissance) {
@@ -500,6 +502,8 @@ export default function ComparaisonReforme() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/comparaison-reforme']} />
+
         <FaqSection
           title="Questions fréquentes — Réforme des retraites 2023"
           items={FAQ}

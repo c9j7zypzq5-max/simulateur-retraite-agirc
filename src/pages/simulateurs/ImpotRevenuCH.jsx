@@ -17,6 +17,8 @@ import {
   Chip, useAnimatedNumber, fmt,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème IFD 2025 (personnes seules, CHF) ─────────────────────────────────
 // Source : AFC (Administration fédérale des contributions)
@@ -347,6 +349,8 @@ export default function ImpotRevenuCH() {
         <AdUnit slot="impot-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/impot-revenu-ch']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

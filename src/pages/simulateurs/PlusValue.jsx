@@ -20,6 +20,8 @@ import {
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Calcul abattements ────────────────────────────────────────────────────────
 function calcAbattementIR(duree) {
@@ -458,6 +460,8 @@ export default function PlusValue() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/plus-value-immobiliere']} />
+
       <FaqSection items={FAQ} />
       <Footer />
     </div>

@@ -18,6 +18,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres Fonction Publique 2026 ───────────────────────────────────────
 const DUREE_REQUISE = 172; // trimestres (post-réforme 2023, nés 1965+)
@@ -318,6 +320,8 @@ export default function FonctionPublique() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/fonction-publique']} />
+
       <Footer />
     </div>
   );

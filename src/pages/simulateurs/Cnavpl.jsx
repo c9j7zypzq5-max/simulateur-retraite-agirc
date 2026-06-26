@@ -17,6 +17,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
@@ -679,6 +681,8 @@ export default function Cnavpl() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/cnavpl']} />
+
         <FaqSection items={FAQ} title="Questions fréquentes — CNAVPL" />
         <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
           Plus d'infos : <a href="https://www.cipav-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>

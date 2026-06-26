@@ -24,6 +24,8 @@ import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Translations ──────────────────────────────────────────────────────────────
 const TXT = {
@@ -800,6 +802,8 @@ export default function Patrimoine() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/patrimoine']} />
+
       <FaqSection items={FAQ} />
       <Footer />
     </div>

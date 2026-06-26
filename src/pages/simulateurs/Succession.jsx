@@ -17,6 +17,8 @@ import {
 } from "../../components/ui.jsx"; // fmt utilisé dans le barème indicatif
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème successoral 2025 ─────────────────────────────────────────────────
 const TRANCHES_DIRECTE = [
@@ -361,6 +363,8 @@ export default function Succession() {
 
         {/* FAQ */}
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/succession']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

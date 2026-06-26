@@ -16,6 +16,8 @@ import {
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Plafond mensuel de la sécurité sociale (PMSS 2025) ─────────────────────
 
@@ -413,6 +415,8 @@ export default function RetraiteAnticipee() {
         <AdUnit slot="retraite-anticipee-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-anticipee']} />
+
         <FaqSection
           title="Questions fréquentes — Retraite anticipée"
           items={FAQ}

@@ -6,6 +6,8 @@ import { NumInput, SimulateurHeader, FaqSection, Chip } from "../../components/u
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // Droits de succession suisses simplifiés par canton
 // Sources : lois cantonales 2025. Ligne directe (enfants) = exonérée dans presque tous cantons.
@@ -167,6 +169,8 @@ export default function SuccessionCH() {
         <div style={{ marginTop: 24, padding: "16px 20px", background: "rgba(184,147,74,0.07)", border: "1px solid rgba(184,147,74,0.2)", borderRadius: 12, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
           <strong>Note :</strong> Ce simulateur fournit une estimation simplifiée basée sur des taux indicatifs 2025. Les droits réels peuvent varier selon les abattements communaux, les exonérations spécifiques et l'interprétation notariale. Consultez un notaire pour toute succession significative.
         </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/succession-ch']} />
+
 
         <FaqSection items={FAQ_ITEMS} />
       </main>

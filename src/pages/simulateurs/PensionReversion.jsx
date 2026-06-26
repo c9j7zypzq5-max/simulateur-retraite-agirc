@@ -17,6 +17,8 @@ import {
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème de la pension de réversion ──────────────────────────────────────────
 // Valeurs INDICATIVES 2025, isolées ici pour être corrigées facilement.
@@ -340,6 +342,8 @@ export default function PensionReversion() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/pension-reversion']} />
+
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>

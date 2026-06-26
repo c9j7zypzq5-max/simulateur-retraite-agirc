@@ -17,6 +17,8 @@ import {
   Chip, useAnimatedNumber,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres pilier 3a 2025 ────────────────────────────────────────────────
 const PLAFOND_SALARIE     = 7_056;   // CHF/an — salarié affilié LPP (2025)
@@ -306,6 +308,8 @@ export default function PrevoyanceCH() {
         <AdUnit slot="prevoyance-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/prevoyance-ch']} />
+
           <FaqSection items={FAQ} />
         </AccordionSection>
 

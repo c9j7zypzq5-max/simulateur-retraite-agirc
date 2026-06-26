@@ -15,6 +15,8 @@ import {
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barèmes fiscaux (identiques succession 2025) ────────────────────────────
 const TRANCHES_DIRECTE = [
@@ -438,6 +440,8 @@ export default function Donation() {
         <AdUnit slot="donation-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/donation']} />
+
         <FaqSection
           title="Questions fréquentes — Donation & Succession"
           items={FAQ}

@@ -19,6 +19,8 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Régimes de retraite agrégés ──────────────────────────────────────────────
 // Chaque ligne renvoie vers le simulateur dédié pour chiffrer la pension brute.
@@ -292,6 +294,8 @@ export default function SyntheseRetraite() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/synthese-retraite']} />
+
       <FaqSection items={FAQ} />
       <Footer />
     </div>

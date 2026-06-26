@@ -16,6 +16,8 @@ import {
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import SimRecommendations from '../../components/SimRecommendations.jsx';
+import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Barème des frais d'acquisition (« frais de notaire ») ──────────────────────
 // Les frais d'acquisition se décomposent en 4 postes. Valeurs INDICATIVES,
@@ -325,6 +327,8 @@ export default function FraisNotaire() {
         </div>
 
         {/* FAQ */}
+        <SimRecommendations items={RECOMMENDATIONS['/simulateurs/frais-notaire']} />
+
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
