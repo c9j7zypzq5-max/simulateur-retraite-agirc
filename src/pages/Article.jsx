@@ -5,6 +5,8 @@ import { useLocale } from "../lib/router.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
+import SimRecommendations from "../components/SimRecommendations.jsx";
+import { GUIDES } from "../data/guides.js";
 import { autolinkTermsHtml } from "../utils/autolinkTerms.js";
 import DOMPurify from "dompurify";
 
@@ -17,13 +19,37 @@ const CATEGORY_COLORS = {
   "Budget":      { bg: "rgba(20,184,166,0.1)",  color: "#14b8a6",   border: "rgba(20,184,166,0.25)" },
 };
 
-const CATEGORY_SIMULATEURS = {
-  "FIRE":       { label: "Simulateur FIRE",               path: "/simulateurs/fire" },
-  "Épargne":    { label: "Simulateur Épargne",            path: "/simulateurs/epargne" },
-  "Retraite":   { label: "Simulateur Agirc-Arrco",        path: "/simulateurs/agirc-arrco" },
-  "Immobilier": { label: "Simulateur Emprunt immobilier", path: "/simulateurs/emprunt-immobilier" },
-  "Fiscalité":  { label: "Simulateur Impôt sur le revenu",path: "/simulateurs/impot-revenu" },
-  "Budget":     { label: "Simulateur Budget 50/30/20",    path: "/simulateurs/budget" },
+const CATEGORY_RECOMMENDATIONS = {
+  "Retraite": [
+    { icon: "🏛", label: "CNAV — régime général",        description: "Estimez votre pension de base",           to: "/simulateurs/cnav",               cta: "Simuler →" },
+    { icon: "🏦", label: "Agirc-Arrco",                  description: "Votre retraite complémentaire salariés",  to: "/simulateurs/agirc-arrco",        cta: "Simuler →" },
+    { icon: "💼", label: "Plan Épargne Retraite (PER)",  description: "Déduction fiscale + capital projeté",     to: "/simulateurs/per",                cta: "Simuler →" },
+  ],
+  "FIRE": [
+    { icon: "🔥", label: "Indépendance financière",      description: "Règle des 25x et taux de retrait 4 %",   to: "/simulateurs/fire",               cta: "Simuler →" },
+    { icon: "📈", label: "Épargne & intérêts composés",  description: "Projeter votre capital long terme",       to: "/simulateurs/epargne",            cta: "Simuler →" },
+    { icon: "🌐", label: "Patrimoine global",            description: "Vision consolidée de vos actifs nets",    to: "/simulateurs/patrimoine",         cta: "Simuler →" },
+  ],
+  "Épargne": [
+    { icon: "📈", label: "Épargne & intérêts composés",  description: "Capitalisation et versements programmés", to: "/simulateurs/epargne",            cta: "Simuler →" },
+    { icon: "🛡️", label: "Assurance-vie",                description: "Rendement, fiscalité et succession",      to: "/simulateurs/assurance-vie",      cta: "Simuler →" },
+    { icon: "🌐", label: "Comparateur d'actifs",         description: "ETF, actions, crypto comparés",           to: "/simulateurs/comparateur",        cta: "Simuler →" },
+  ],
+  "Immobilier": [
+    { icon: "🏠", label: "Emprunt immobilier",           description: "Mensualités, capacité et coût total",     to: "/simulateurs/emprunt-immobilier", cta: "Simuler →" },
+    { icon: "🏘️", label: "Rendement locatif",            description: "Rentabilité brute et nette",              to: "/simulateurs/rendement-locatif",  cta: "Simuler →" },
+    { icon: "🏡", label: "Prêt à Taux Zéro (PTZ)",      description: "PTZ primo-accédant 2026",                 to: "/simulateurs/ptz",                cta: "Simuler →" },
+  ],
+  "Fiscalité": [
+    { icon: "📊", label: "Impôt sur le revenu",          description: "TMI, taux moyen et niches fiscales",      to: "/simulateurs/impot-revenu",       cta: "Simuler →" },
+    { icon: "📉", label: "Déficit foncier",              description: "Économie d'impôt sur les travaux",        to: "/simulateurs/deficit-foncier",    cta: "Simuler →" },
+    { icon: "🏛️", label: "Droits de succession",         description: "Barème officiel et abattements 2026",     to: "/simulateurs/succession",         cta: "Simuler →" },
+  ],
+  "Budget": [
+    { icon: "📋", label: "Budget 50/30/20",              description: "Répartition et épargne mensuelle",        to: "/simulateurs/budget",             cta: "Simuler →" },
+    { icon: "💵", label: "Salaire Net/Brut & Carrière",  description: "Projection et pouvoir d'achat",           to: "/simulateurs/salaire",            cta: "Simuler →" },
+    { icon: "💳", label: "Crédit conso",                 description: "Mensualité et coût total réel",           to: "/simulateurs/credit-conso",       cta: "Simuler →" },
+  ],
 };
 
 const PROSE_CSS = `
@@ -127,7 +153,8 @@ export default function Article() {
   }, [slug]);
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;
-  const relatedSim = article ? CATEGORY_SIMULATEURS[article.category] : null;
+  const relatedRecs = article ? (CATEGORY_RECOMMENDATIONS[article.category] || null) : null;
+  const relatedGuide = article ? (GUIDES.find(g => g.category === article.category) || null) : null;
 
   // Contenu enrichi : les termes connus (TAEG, PER, FIRE…) sont auto-liés vers le lexique.
   // Le HTML provient d'articles générés/stockés : on l'assainit avec DOMPurify
@@ -256,31 +283,29 @@ export default function Article() {
               <AdUnit slot="auto" format="auto" />
             </div>
 
-            {/* CTA simulateur lié */}
-            {relatedSim && (
-              <div style={{
-                background: "linear-gradient(135deg,rgba(184,147,74,0.1),rgba(232,192,106,0.04))",
-                border: "1px solid var(--border-gold)", borderRadius: 16, padding: "24px 28px",
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                gap: 16, flexWrap: "wrap", marginBottom: 32,
-              }}>
-                <div>
-                  <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 6 }}>
-                    Passez à la pratique
-                  </div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)" }}>
-                    {relatedSim.label}
-                  </div>
-                </div>
-                <Link to={relatedSim.path} style={{
-                  padding: "10px 24px", borderRadius: 10, flexShrink: 0,
-                  background: "rgba(184,147,74,0.2)", color: "var(--gold)",
-                  border: "1px solid var(--border-gold)", textDecoration: "none",
-                  fontSize: 13, fontWeight: 500,
-                }}>
-                  Lancer le simulateur →
-                </Link>
+            {/* Simulateurs liés */}
+            {relatedRecs && (
+              <div style={{ marginBottom: 32 }}>
+                <SimRecommendations items={relatedRecs} />
               </div>
+            )}
+
+            {/* Lien vers le guide thématique */}
+            {relatedGuide && (
+              <Link to={`/guides/${relatedGuide.slug}`} style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "16px 20px", borderRadius: 12, textDecoration: "none",
+                background: "var(--card-bg)", border: "1px solid var(--border)",
+                gap: 12, marginBottom: 32,
+              }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; }}
+              >
+                <div>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Guide complet</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)" }}>{relatedGuide.title} →</div>
+                </div>
+              </Link>
             )}
 
             {/* Navigation */}
