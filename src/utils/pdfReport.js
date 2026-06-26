@@ -13,7 +13,7 @@
 // }
 // chartImage  (optionnel) = { dataUrl, w, h } — repli raster (page paysage) si pas de `chart`
 
-import { jsPDF } from "jspdf";
+// jsPDF chargé dynamiquement pour éviter de l'inclure dans le bundle initial.
 
 // Palette alignée sur la DA claire du site (src/styles.css, light theme).
 // Les noms historiques (GOLD…) sont conservés : le site lui-même appelle son
@@ -334,6 +334,7 @@ function getKeyHighlights(entries) {
 }
 
 export async function buildMultiReportPdf(entries) {
+  const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
@@ -486,6 +487,7 @@ export async function buildMultiReportPdf(entries) {
 }
 
 export async function buildReportPdfPro({ report, url, name, chartImage = null }) {
+  const { jsPDF } = await import("jspdf");
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
   const pageW = doc.internal.pageSize.getWidth();
   const pageH = doc.internal.pageSize.getHeight();
