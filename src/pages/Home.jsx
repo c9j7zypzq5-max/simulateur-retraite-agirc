@@ -57,6 +57,9 @@ const SIMULATEURS_FR = [
   { path: "/simulateurs/vie-en-semaines", title: "Ma vie en semaines", desc: "Visualisez l'intégralité de votre vie sous forme de grille — une case par semaine. Combien vous en reste-t-il ? Combien d'étés, de week-ends, de visites ?", tag: "Vie & Temps", categories: ["Vie & Temps"], badges: ["new"], available: true },
   // Outils
   { path: "/outils/qr-code", title: "Générateur de QR code", desc: "Créez un QR code personnalisé : vos couleurs, le texte ou lien de votre choix, et votre logo ou un emoji au centre. Téléchargement PNG haute résolution, sans inscription.", tag: "Outils", categories: ["Outils"], badges: ["new"], available: true },
+  // Simulateurs Retraite supplémentaires
+  { path: "/simulateurs/trimestres", title: "Trimestres retraite", desc: "Comptabilisez vos trimestres cotisés et assimilés (chômage, maladie, maternité, MDA) pour savoir combien il vous en manque et à quel âge vous atteindrez le taux plein.", tag: "Retraite · Durée d'assurance", categories: ["Retraite"], badges: ["new"], available: true },
+  { path: "/simulateurs/retraite-luxembourg", title: "Retraite Luxembourg (CNAP)", desc: "Estimez votre pension CNAP pour les frontaliers et expatriés travaillant au Luxembourg : carrière, salaire, âge de départ, majoration famille et taux de remplacement.", tag: "Retraite · Luxembourg", categories: ["Retraite"], badges: ["new"], available: true },
   // Patrimoine & Juridique
   { path: "/simulateurs/succession", title: "Droits de succession", desc: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2025 : enfants, conjoint, frères/sœurs. Stratégies de réduction incluses.", tag: "Patrimoine", categories: ["Patrimoine"], badges: ["new"], available: true },
   { path: "/simulateurs/divorce", title: "Divorce & Partage de patrimoine", desc: "Estimez le partage du patrimoine commun, la pension alimentaire et la prestation compensatoire selon votre régime matrimonial. Barème indicatif Ministère de la Justice 2022.", tag: "Patrimoine · Famille", categories: ["Patrimoine"], badges: ["new"], available: true },
@@ -88,6 +91,7 @@ const SIMULATEURS_CH = [
   { path: "/simulateurs/lpp-deuxieme-pilier", title: "LPP / 2e pilier",                    desc: "Projetez votre avoir de vieillesse et votre rente LPP à la retraite selon votre salaire coordonné, vos cotisations annuelles et le taux de conversion. Simulation selon la LSS 2025.",         tag: "Retraite · Suisse",    categories: ["Retraite"],    badges: ["new"], featured: true, available: true },
   { path: "/simulateurs/prevoyance-ch",       title: "Prévoyance · Pilier 3a",             desc: "Estimez le capital accumulé sur votre pilier 3a selon vos versements annuels, le rendement projeté et l'horizon retraite. Déduction fiscale cantonale calculée.",                               tag: "Retraite · Suisse",    categories: ["Retraite"],    badges: ["new"], available: true },
   { path: "/simulateurs/impot-revenu-ch",     title: "Impôt sur le revenu (Suisse)",       desc: "Calculez votre impôt fédéral direct et cantonal (Vaud, Genève, Zurich…) selon vos revenus, votre situation familiale et les déductions applicables. Barème 2025.",                             tag: "Fiscalité · Suisse",   categories: ["Fiscalité"],   badges: ["new"], available: true },
+  { path: "/simulateurs/succession-ch",       title: "Droits de succession (Suisse)",      desc: "Estimez les droits de succession selon le canton, le lien de parenté et l'actif net. La plupart des cantons exonèrent les enfants — vérifiez votre canton.",                                      tag: "Fiscalité · Suisse",   categories: ["Fiscalité"],   badges: ["new"], available: true },
   // Simulateurs universels pertinents pour la Suisse
   { path: "/simulateurs/rente-capital",       title: "Rente viagère vs retrait programmé", desc: "Comparez deux stratégies de liquidation de votre capital retraite (2e pilier, 3a) : rente viagère à vie ou retrait programmé sur une durée choisie. Point de bascule calculé.",                tag: "Retraite · Stratégie", categories: ["Retraite"],    badges: ["new"], available: true },
   { path: "/simulateurs/epargne",             title: "Épargne & intérêts composés",        desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.",                                                                              tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
@@ -105,10 +109,13 @@ const SIMULATEURS_CH = [
 // ── EN simulators (universal subset, English content) ────────────────────────
 const SIMULATEURS_EN = [
   { path: "/simulateurs/fire", title: "FIRE Calculator", desc: "Calculate the net worth you need to live off your investments and the age at which you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones.", tag: "Finance · FIRE", categories: ["Finance"], badges: ["popular"], featured: true, available: true },
+  { path: "/simulateurs/cnav", title: "French State Pension (CNAV)", desc: "Estimate your French state pension based on your quarters, average salary and departure age. Useful for expats, cross-border workers and anyone with a French career.", tag: "Retirement · France", categories: ["Retirement"], badges: ["new"], available: true },
+  { path: "/simulateurs/retraite-luxembourg", title: "Luxembourg Pension (CNAP)", desc: "Estimate your Luxembourg CNAP pension: career length, salary, family bonus. Covers cross-border workers (frontaliers) and expats working in Luxembourg.", tag: "Retirement · Luxembourg", categories: ["Retirement"], badges: ["new"], available: true },
   { path: "/simulateurs/epargne", title: "Compound Interest Calculator", desc: "Project how your savings grow over time with compound interest and regular monthly contributions. See the final balance for any interest rate, duration and savings effort.", tag: "Finance · Savings", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/simulateurs/budget", title: "50/30/20 Budget Calculator", desc: "Split your monthly income with the 50/30/20 rule: 50% needs, 30% wants, 20% savings. Real-time donut chart, gauges and personalised tips.", tag: "Finance · Personal Finance", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/simulateurs/patrimoine", title: "Net Worth Calculator", desc: "Consolidate your financial assets, real estate and retirement savings to see your total net worth and how it breaks down by asset class.", tag: "Finance · Wealth", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/simulateurs/comparateur", title: "Asset Comparison Tool", desc: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period from real data. Total return, CAGR, and a base-100 index for clean comparisons.", tag: "Finance · Investing", categories: ["Finance"], badges: ["new"], available: true },
+  { path: "/simulateurs/emprunt-immobilier", title: "Mortgage Calculator", desc: "Work out your monthly payment, debt-to-income ratio and total cost of a mortgage. Amortization schedule and total interest included.", tag: "Finance · Real Estate", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/simulateurs/credit-conso", title: "Personal Loan Calculator", desc: "Calculate monthly payments, total cost, and total interest of a personal loan. Includes optional insurance and a full amortization schedule.", tag: "Finance · Credit", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/simulateurs/cout-en-heures", title: "Cost in Hours of Work", desc: "Turn any purchase into real hours of your life. Based on your salary, discover the true cost of a product or subscription expressed in time rather than money.", tag: "Finance · Time", categories: ["Finance"], badges: ["new"], available: true },
   { path: "/outils/qr-code", title: "QR Code Generator", desc: "Create a custom QR code: choose your colors, enter any text or URL, add a logo or emoji in the center. High-resolution PNG download, no sign-up required.", tag: "Tools · Free", categories: ["Tools"], badges: ["new"], available: true },
@@ -117,7 +124,7 @@ const SIMULATEURS_EN = [
 const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Outils"];
 const FILTERS_BE = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_CH = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
-const FILTERS_EN = ["All", "Finance", "Tools"];
+const FILTERS_EN = ["All", "Retirement", "Finance", "Tools"];
 
 const TXT = {
   fr: {
@@ -211,12 +218,12 @@ const TXT = {
     defaultFilter: "Tous",
   },
   en: {
-    docTitle: "Simfinly.com — Free Financial Calculators",
-    docDesc: (n) => `Free online financial calculators: compound interest, FIRE, budget 50/30/20, net worth, personal loan, and more. ${n} calculators, instant results, no sign-up.`,
-    heroBadge: "Finance · FIRE · Budget · Savings",
-    heroTitle: "Make better financial decisions",
+    docTitle: "Simfinly.com — Free Financial Calculators for Expats & Everyone",
+    docDesc: (n) => `Free financial calculators: French pension (CNAV), Luxembourg pension (CNAP), FIRE, compound interest, 50/30/20 budget, net worth and more. ${n} calculators, instant results, no sign-up.`,
+    heroBadge: "Retirement · Finance · FIRE · Budget",
+    heroTitle: "Make smarter financial decisions",
     heroEm: "with free calculators",
-    heroDesc: "Free, instant, and educational financial calculators — compound interest, FIRE, budget planning, net worth, and more. No sign-up required.",
+    heroDesc: "Free, instant financial calculators for expats and everyone — French state pension (CNAV), Luxembourg pension (CNAP), FIRE, savings, budget and more. No sign-up required.",
     stat1Label: "free calculators",
     stat2: "30 s",
     stat2Label: "to get your first result",

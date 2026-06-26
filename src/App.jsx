@@ -100,6 +100,15 @@ const LppDeuxiemePilier      = lazy(() => import("./pages/simulateurs/LppDeuxiem
 const ImpotRevenuCH          = lazy(() => import("./pages/simulateurs/ImpotRevenuCH.jsx"));
 const PrevoyanceCH           = lazy(() => import("./pages/simulateurs/PrevoyanceCH.jsx"));
 const ComparaisonReforme     = lazy(() => import("./pages/simulateurs/ComparaisonReforme.jsx"));
+// Nouveaux simulateurs et contenus CH/LU
+const Trimestres    = lazy(() => import("./pages/simulateurs/Trimestres.jsx"));
+const SuccessionCH  = lazy(() => import("./pages/simulateurs/SuccessionCH.jsx"));
+const RetraiteLU    = lazy(() => import("./pages/simulateurs/RetraiteLU.jsx"));
+const LexiqueCH     = lazy(() => import("./pages/simulateurs/LexiqueCH.jsx"));
+const GuidesCH      = lazy(() => import("./pages/simulateurs/GuidesCH.jsx"));
+// Nouveaux widgets embarquables
+const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
+const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -190,6 +199,10 @@ export default function App() {
         <Route path="/ch/simulateurs/assurance-vie" element={<AssuranceVie />} />
         <Route path="/ch/simulateurs/rente-capital" element={<RenteCapital />} />
         <Route path="/ch/simulateurs/inflation" element={<Inflation />} />
+        {/* Contenu CH */}
+        <Route path="/ch/guides" element={<GuidesCH />} />
+        <Route path="/ch/lexique" element={<LexiqueCH />} />
+        <Route path="/ch/simulateurs/succession-ch" element={<SuccessionCH />} />
         <Route path="/ch/mentions-legales" element={<MentionsLegales />} />
         <Route path="/ch/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}
@@ -207,6 +220,8 @@ export default function App() {
         <Route path="/en/simulators/comparator" element={<Comparateur />} />
         <Route path="/en/simulators/annuity-vs-withdrawal" element={<RenteCapital />} />
         <Route path="/en/simulators/inflation" element={<Inflation />} />
+        <Route path="/en/simulators/french-pension" element={<Cnav />} />
+        <Route path="/en/simulators/luxembourg-pension" element={<RetraiteLU />} />
         <Route path="/en/tools/qr-code" element={<QrCode />} />
         <Route path="/en/legal-notice" element={<MentionsLegales />} />
         <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
@@ -272,11 +287,16 @@ export default function App() {
         <Route path="/embed/epargne" element={<EmbedEpargne />} />
         <Route path="/embed/emprunt" element={<EmbedEmprunt />} />
         <Route path="/embed/fire" element={<EmbedFire />} />
+        <Route path="/embed/budget" element={<EmbedBudget />} />
+        <Route path="/embed/retraite" element={<EmbedRetraite />} />
         <Route path="/widgets" element={<Widgets />} />
         <Route path="/simulateurs" element={<Simulateurs />} />
         {/* Pages utilitaires */}
         <Route path="/rapport/:id" element={<RapportPartage />} />
         <Route path="/s/:id" element={<PublicShare />} />
+        <Route path="/simulateurs/trimestres" element={<Trimestres />} />
+        <Route path="/simulateurs/succession-ch" element={<SuccessionCH />} />
+        <Route path="/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Compte / Pro — masqués jusqu'à la mise en production */}

@@ -9,6 +9,8 @@ const WIDGETS = [
   { path: "/embed/epargne", height: 520, label: "le simulateur d'épargne", title: "Épargne & intérêts composés" },
   { path: "/embed/emprunt", height: 500, label: "le simulateur d'emprunt", title: "Emprunt immobilier" },
   { path: "/embed/fire", height: 560, label: "le simulateur FIRE", title: "Indépendance financière (FIRE)" },
+  { path: "/embed/budget", height: 480, label: "le simulateur budget 50/30/20", title: "Budget 50/30/20" },
+  { path: "/embed/retraite", height: 540, label: "le simulateur retraite CNAV", title: "Retraite CNAV (estimation rapide)" },
 ];
 
 const ALL_SIMULATORS = [

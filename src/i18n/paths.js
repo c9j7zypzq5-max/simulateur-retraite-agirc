@@ -20,6 +20,8 @@ const EN_PATH_MAP = {
   '/politique-de-confidentialite':   '/privacy-policy',
   '/simulateurs/rente-capital':      '/simulators/annuity-vs-withdrawal',
   '/simulateurs/inflation':          '/simulators/inflation',
+  '/simulateurs/cnav':               '/simulators/french-pension',
+  '/simulateurs/retraite-luxembourg': '/simulators/luxembourg-pension',
   '/connexion':                      '/login',
   '/compte':                         '/account',
   '/pro':                            '/pro',
@@ -55,8 +57,11 @@ export const CH_ROUTES = new Set([
   '/simulateurs/assurance-vie',
   '/simulateurs/rente-capital',
   '/simulateurs/inflation',
+  '/simulateurs/succession-ch',
   '/mentions-legales',
   '/politique-de-confidentialite',
+  '/ch/guides',
+  '/ch/lexique',
 ]);
 
 // Routes disponibles en Belgique (certaines avec règles belges spécifiques,

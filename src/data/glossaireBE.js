@@ -11,4 +11,8 @@ export const GLOSSAIRE_BE = [
   { terme: "Frais propres à l'employeur", definition: "Remboursements d'entreprise pour frais réels engagés dans l'exercice de la profession, exonérés d'impôt dans les limites légales." },
   { terme: "Tantième", definition: "Fraction de carrière utilisée pour calculer la pension : 1/45e par année de carrière complète pour un salarié." },
   { terme: "Coefficient de revalorisation", definition: "Facteur annuel appliqué aux salaires passés pour les actualiser avant calcul de la pension légale (environ 1,06 à 1,09 selon les années)." },
+  { terme: "Bonus pension (Belgique)", definition: "Supplément de pension accordé pour chaque trimestre de travail effectué au-delà du droit à une pension complète après 45 ans de carrière. Introduit par la réforme 2023 pour encourager les longues carrières." },
+  { terme: "Pension de survie", definition: "Pension versée au conjoint survivant d'un travailleur décédé. En Belgique, le taux est de 80 % de la pension de retraite du défunt, sous conditions d'âge (≥ 48 ans) et de durée de mariage (≥ 1 an). Revenu plafond à respecter." },
+  { terme: "Cotisation ONSS", definition: "Office National de Sécurité Sociale — organisme centralisant les cotisations salariales belges. Le taux global est d'environ 38 % du salaire brut (dont 13,07 % à la charge du travailleur) et finance la pension, l'assurance maladie, le chômage et les allocations familiales." },
+  { terme: "Garantie de revenus aux personnes âgées (GRAPA)", definition: "Revenu minimum belge garanti aux personnes de 65 ans et plus dont la pension légale est insuffisante. Montant 2025 : environ 1 350 €/mois pour une personne isolée. Soumis à condition de ressources et de résidence." },
 ];

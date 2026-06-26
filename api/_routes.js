@@ -33,6 +33,8 @@ export const EN_ROUTES = [
   '/politique-de-confidentialite',
   '/simulateurs/rente-capital',
   '/simulateurs/inflation',
+  '/simulateurs/cnav',
+  '/simulateurs/retraite-luxembourg',
 ];
 
 // Routes disponibles sous /ch/ (Suisse). Miroir de src/i18n/paths.js CH_ROUTES.
@@ -54,6 +56,7 @@ export const CH_ROUTES = [
   '/simulateurs/assurance-vie',
   '/simulateurs/rente-capital',
   '/simulateurs/inflation',
+  '/simulateurs/succession-ch',
   '/mentions-legales',
   '/politique-de-confidentialite',
 ];
@@ -97,6 +100,8 @@ export const ROUTE_META_EN = {
   '/simulateurs/inflation':       { title: 'Personal Inflation & Purchasing Power Simulator | Simfinly', description: 'Measure how inflation erodes your budget by spending category. Customize rates for food, housing, transport and more — project the impact over 10 to 30 years.' },
   '/mentions-legales':            { title: 'Legal notice — Simfinly',                                        description: 'Legal notice for simfinly.com: publisher, host, intellectual property and liability.' },
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
+  '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
+  '/simulateurs/retraite-luxembourg': { title: 'Luxembourg State Pension Calculator (CNAP) 2025 — Estimate Your Pension', description: 'Estimate your Luxembourg CNAP pension based on your career length, salary and departure age. Also covers cross-border workers and expats.' },
 };
 
 // Méta suisses (title + description) pour le HTML statique /ch/...
@@ -220,6 +225,10 @@ export const ROUTE_META = {
   '/simulateurs/divorce':                 { title: 'Simulateur divorce & partage de patrimoine — prestation compensatoire', emoji: '⚖️', cat: 'Patrimoine', prio: '0.7', freq: 'monthly' },
   // Simulateurs BE-spécifiques
   '/simulateurs/pension-legale':          { title: 'Simulateur pension légale Belgique (ONSS) 2025 — salarié & indépendant', emoji: '🏦', cat: 'Retraite',  prio: '0.9', freq: 'monthly' },
+  // Nouveaux simulateurs
+  '/simulateurs/trimestres':              { title: 'Simulateur trimestres retraite 2026 — durée d\'assurance & taux plein', emoji: '📅', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/simulateurs/succession-ch':           { title: 'Simulateur droits de succession Suisse 2025 — par canton', emoji: '🏔', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
+  '/simulateurs/retraite-luxembourg':     { title: 'Simulateur retraite Luxembourg (CNAP) 2025 — pension & taux remplacement', emoji: '🇱🇺', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
   // Vie & Temps
   '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat',             emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur ma vie en semaines — visualiser son temps',                 emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
@@ -248,6 +257,12 @@ export const BLOG_SLUGS = [
   '/blog/ptz-2026-elargi-tout-le-territoire',
   '/blog/assurance-vie-2026-fonds-euros-fiscalite',
   '/blog/per-2026-plafonds-deduction-nouveautes',
+  // Longue traîne — articles ciblés par profession et thématique
+  '/blog/calcul-trimestres-retraite-guide-complet',
+  '/blog/retraite-infirmiere-fonctionnaire-hospitalier',
+  '/blog/retraite-enseignant-education-nationale-calcul',
+  '/blog/retraite-agriculteur-msa-exploitant',
+  '/blog/droits-succession-suisse-cantons-heritiers',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
