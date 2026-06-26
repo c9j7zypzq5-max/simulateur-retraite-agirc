@@ -59,7 +59,7 @@ const SIMULATEURS_FR = [
   { path: "/outils/qr-code", title: "Générateur de QR code", desc: "Créez un QR code personnalisé : vos couleurs, le texte ou lien de votre choix, et votre logo ou un emoji au centre. Téléchargement PNG haute résolution, sans inscription.", tag: "Outils", categories: ["Outils"], badges: ["new"], available: true },
   // Simulateurs Retraite supplémentaires
   { path: "/simulateurs/trimestres", title: "Trimestres retraite", desc: "Comptabilisez vos trimestres cotisés et assimilés (chômage, maladie, maternité, MDA) pour savoir combien il vous en manque et à quel âge vous atteindrez le taux plein.", tag: "Retraite · Durée d'assurance", categories: ["Retraite"], badges: ["new"], available: true },
-  { path: "/simulateurs/retraite-luxembourg", title: "Retraite Luxembourg (CNAP)", desc: "Estimez votre pension CNAP pour les frontaliers et expatriés travaillant au Luxembourg : carrière, salaire, âge de départ, majoration famille et taux de remplacement.", tag: "Retraite · Luxembourg", categories: ["Retraite"], badges: ["new"], available: true },
+  { path: "/simulateurs/retraite-luxembourg", title: "Retraite Luxembourg (CNAP)", desc: "Estimez votre pension CNAP pour les frontaliers et expatriés travaillant au Luxembourg : carrière, salaire, âge de départ, majoration famille et taux de remplacement.", tag: "Frontaliers · Luxembourg", categories: ["Frontaliers"], badges: ["new"], available: true },
   // Patrimoine & Juridique
   { path: "/simulateurs/succession", title: "Droits de succession", desc: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2025 : enfants, conjoint, frères/sœurs. Stratégies de réduction incluses.", tag: "Patrimoine", categories: ["Patrimoine"], badges: ["new"], available: true },
   { path: "/simulateurs/divorce", title: "Divorce & Partage de patrimoine", desc: "Estimez le partage du patrimoine commun, la pension alimentaire et la prestation compensatoire selon votre régime matrimonial. Barème indicatif Ministère de la Justice 2022.", tag: "Patrimoine · Famille", categories: ["Patrimoine"], badges: ["new"], available: true },
@@ -121,7 +121,7 @@ const SIMULATEURS_EN = [
   { path: "/outils/qr-code", title: "QR Code Generator", desc: "Create a custom QR code: choose your colors, enter any text or URL, add a logo or emoji in the center. High-resolution PNG download, no sign-up required.", tag: "Tools · Free", categories: ["Tools"], badges: ["new"], available: true },
 ];
 
-const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Outils"];
+const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Frontaliers", "Outils"];
 const FILTERS_BE = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_CH = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_EN = ["All", "Retirement", "Finance", "Tools"];

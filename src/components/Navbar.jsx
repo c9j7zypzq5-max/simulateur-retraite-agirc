@@ -214,6 +214,12 @@ export default function Navbar({ theme, setTheme }) {
   const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
   const current = ALL_ITEMS.find(i => i.path === canonPath);
 
+  // Liens Guides / Lexique / Blog selon le pays
+  const guidesPath  = country === 'ch' ? '/ch/guides'  : country === 'be' ? '/be/guides'  : '/guides';
+  const lexiquePath = country === 'ch' ? '/ch/lexique' : country === 'be' ? '/be/lexique' : '/lexique';
+  const showContent = locale !== 'en';
+  const showBlog    = locale !== 'en' && country === 'fr';
+
   const [history, setHistory] = useState([]);
   const { getHistory, removeEntry, clearHistory } = useSimHistory();
 
@@ -331,24 +337,24 @@ export default function Navbar({ theme, setTheme }) {
               <span style={{ fontSize: 9, opacity: 0.7, transform: simsOpen ? "rotate(180deg)" : "none", transition: "transform 0.2s", display: "inline-block" }}>▾</span>
             </button>
 
-            {/* Guides */}
-            {locale !== 'en' && country === 'fr' && (
+            {/* Guides (FR + CH + BE) */}
+            {showContent && (
               <Link
-                to="/guides"
+                to={guidesPath}
                 style={{
                   padding: "8px 12px", borderRadius: 8, textDecoration: "none",
                   fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
-                  color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)",
+                  color: pathname.includes("/guides") ? "var(--primary)" : "var(--text-secondary)",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.includes("/guides") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
               >
                 Guides
               </Link>
             )}
 
-            {/* Blog (FR only) */}
-            {locale !== 'en' && country === 'fr' && (
+            {/* Blog (FR uniquement) */}
+            {showBlog && (
               <Link
                 to="/blog"
                 style={{
@@ -363,17 +369,17 @@ export default function Navbar({ theme, setTheme }) {
               </Link>
             )}
 
-            {/* Lexique (FR only) */}
-            {locale !== 'en' && country === 'fr' && (
+            {/* Lexique (FR + CH + BE) */}
+            {showContent && (
               <Link
-                to="/lexique"
+                to={lexiquePath}
                 style={{
                   padding: "8px 12px", borderRadius: 8, textDecoration: "none",
                   fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
-                  color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)",
+                  color: pathname.includes("/lexique") ? "var(--primary)" : "var(--text-secondary)",
                 }}
                 onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
-                onMouseLeave={e => { e.currentTarget.style.color = pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+                onMouseLeave={e => { e.currentTarget.style.color = pathname.includes("/lexique") ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
               >
                 Lexique
               </Link>
@@ -583,31 +589,31 @@ export default function Navbar({ theme, setTheme }) {
 
           {/* Guides / Blog / Lexique — masqués sur mobile */}
           <div className="drawer-secondary-links">
-          {/* Guides (FR only) */}
-          {txt.guidesSubtitle !== null && (
+          {/* Guides (FR + CH + BE) */}
+          {showContent && (
             <Link
-              to="/guides" onClick={close}
+              to={guidesPath} onClick={close}
               style={{
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/guides") ? "rgba(43,92,230,0.08)" : "transparent",
-                border: `1px solid ${pathname.startsWith("/guides") ? "var(--primary-soft)" : "transparent"}`,
+                background: pathname.includes("/guides") ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname.includes("/guides") ? "var(--primary-soft)" : "transparent"}`,
               }}
-              onMouseEnter={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "var(--hover-bg)"; }}
-              onMouseLeave={e => { if (!pathname.startsWith("/guides")) e.currentTarget.style.background = "transparent"; }}
+              onMouseEnter={e => { if (!pathname.includes("/guides")) e.currentTarget.style.background = "var(--hover-bg)"; }}
+              onMouseLeave={e => { if (!pathname.includes("/guides")) e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text-secondary)" }}><Library size={18} /></span>
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.includes("/guides") ? "var(--primary)" : "var(--text-secondary)" }}><Library size={18} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/guides") ? 500 : 400, color: pathname.startsWith("/guides") ? "var(--primary)" : "var(--text)" }}>Guides</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.includes("/guides") ? 500 : 400, color: pathname.includes("/guides") ? "var(--primary)" : "var(--text)" }}>Guides</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.guidesSubtitle}</div>
               </div>
-              {pathname.startsWith("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
+              {pathname.includes("/guides") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
 
-          {/* Blog (FR only) */}
-          {txt.blogSubtitle !== null && (
+          {/* Blog (FR uniquement) */}
+          {showBlog && (
             <Link
               to="/blog" onClick={close}
               style={{
@@ -629,26 +635,26 @@ export default function Navbar({ theme, setTheme }) {
             </Link>
           )}
 
-          {/* Lexique (FR only) */}
-          {txt.lexiqueSubtitle !== null && (
+          {/* Lexique (FR + CH + BE) */}
+          {showContent && (
             <Link
-              to="/lexique" onClick={close}
+              to={lexiquePath} onClick={close}
               style={{
                 display: "flex", alignItems: "center", gap: 10,
                 padding: "9px 10px", borderRadius: 9,
                 textDecoration: "none", marginBottom: 6,
-                background: pathname.startsWith("/lexique") ? "rgba(43,92,230,0.08)" : "transparent",
-                border: `1px solid ${pathname.startsWith("/lexique") ? "var(--primary-soft)" : "transparent"}`,
+                background: pathname.includes("/lexique") ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname.includes("/lexique") ? "var(--primary-soft)" : "transparent"}`,
               }}
-              onMouseEnter={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "var(--hover-bg)"; }}
-              onMouseLeave={e => { if (!pathname.startsWith("/lexique")) e.currentTarget.style.background = "transparent"; }}
+              onMouseEnter={e => { if (!pathname.includes("/lexique")) e.currentTarget.style.background = "var(--hover-bg)"; }}
+              onMouseLeave={e => { if (!pathname.includes("/lexique")) e.currentTarget.style.background = "transparent"; }}
             >
-              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname.includes("/lexique") ? "var(--primary)" : "var(--text-secondary)" }}><BookOpen size={18} /></span>
               <div>
-                <div style={{ fontSize: "0.88rem", fontWeight: pathname.startsWith("/lexique") ? 500 : 400, color: pathname.startsWith("/lexique") ? "var(--primary)" : "var(--text)" }}>Lexique</div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname.includes("/lexique") ? 500 : 400, color: pathname.includes("/lexique") ? "var(--primary)" : "var(--text)" }}>Lexique</div>
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.lexiqueSubtitle}</div>
               </div>
-              {pathname.startsWith("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
+              {pathname.includes("/lexique") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
 
