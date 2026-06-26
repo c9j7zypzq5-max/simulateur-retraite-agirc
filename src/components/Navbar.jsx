@@ -714,7 +714,7 @@ export default function Navbar({ theme, setTheme }) {
 
                 <div style={{
                   overflow: "hidden",
-                  maxHeight: isOpen ? "520px" : "0",
+                  maxHeight: isOpen ? `${group.items.length * 70 + 20}px` : "0",
                   transition: "max-height 0.28s ease",
                 }}>
                   {group.items.map(item => {
