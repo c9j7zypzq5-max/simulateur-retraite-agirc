@@ -8,6 +8,7 @@ import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
+import { SEO_CONTENT } from './_seo.js';
 
 export const BASE = 'https://www.simfinly.com';
 
@@ -379,12 +380,25 @@ export function structuredData(route, extra = {}) {
   if (!meta || route === '/') return [];
   const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
   if (route.startsWith('/simulateurs/')) {
+    const seoIntro = SEO_CONTENT[route]?.intro;
     out.push({
       '@context': 'https://schema.org', '@type': 'WebApplication',
       name: meta.title, url,
+      description: seoIntro || meta.title,
       applicationCategory: 'FinanceApplication', operatingSystem: 'Any',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
       inLanguage: 'fr-FR',
+    });
+    out.push({
+      '@context': 'https://schema.org', '@type': 'HowTo',
+      name: `Comment utiliser : ${meta.title}`,
+      tool: [{ '@type': 'HowToTool', name: 'simfinly.com — simulateur gratuit en ligne' }],
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Saisir vos paramètres', text: 'Renseignez vos données personnelles (âge, salaire, durée de cotisation…) dans les champs du formulaire.' },
+        { '@type': 'HowToStep', position: 2, name: 'Lire vos résultats', text: "Les résultats se calculent instantanément et s'affichent sous forme de graphiques et tableaux détaillés." },
+        { '@type': 'HowToStep', position: 3, name: 'Comparer plusieurs scénarios', text: 'Ajustez les paramètres pour simuler différentes hypothèses et identifier la stratégie la plus avantageuse.' },
+        { '@type': 'HowToStep', position: 4, name: 'Exporter ou partager', text: 'Téléchargez vos résultats en PDF ou partagez le lien de votre simulation avec votre conseiller financier.' },
+      ],
     });
     const faqs = FAQS[route];
     if (faqs && faqs.length > 0) {
