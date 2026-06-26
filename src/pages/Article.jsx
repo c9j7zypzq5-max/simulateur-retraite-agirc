@@ -102,9 +102,28 @@ export default function Article() {
         let link = document.querySelector('link[rel="canonical"]');
         if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
         link.href = `https://www.simfinly.com/blog/${slug}`;
+        // Article JSON-LD for Google Discover
+        document.getElementById('article-jsonld')?.remove();
+        const ld = {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: data.title,
+          description: data.intro || '',
+          datePublished: data.publishedAt,
+          dateModified: data.updatedAt || data.publishedAt,
+          author: { '@type': 'Organization', name: 'Simfinly', url: 'https://www.simfinly.com' },
+          publisher: { '@type': 'Organization', name: 'Simfinly', url: 'https://www.simfinly.com', logo: { '@type': 'ImageObject', url: 'https://www.simfinly.com/og-image.webp' } },
+          image: data.image || `https://www.simfinly.com/og-image.webp`,
+          mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.simfinly.com/blog/${slug}` },
+        };
+        const s = document.createElement('script');
+        s.id = 'article-jsonld';
+        s.type = 'application/ld+json';
+        s.textContent = JSON.stringify(ld);
+        document.head.appendChild(s);
       })
       .catch(() => { clearTimeout(timer); setNotFound(true); setLoading(false); });
-    return () => { clearTimeout(timer); controller.abort(); };
+    return () => { clearTimeout(timer); controller.abort(); document.getElementById('article-jsonld')?.remove(); };
   }, [slug]);
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;

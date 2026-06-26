@@ -109,6 +109,8 @@ const GuidesCH      = lazy(() => import("./pages/simulateurs/GuidesCH.jsx"));
 // Nouveaux widgets embarquables
 const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
 const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
+// Guides retraite par métier
+const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -297,6 +299,8 @@ export default function App() {
         <Route path="/simulateurs/trimestres" element={<Trimestres />} />
         <Route path="/simulateurs/succession-ch" element={<SuccessionCH />} />
         <Route path="/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
+        {/* Retraite par métier */}
+        <Route path="/retraite/:metier" element={<RetraiteMetier />} />
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Compte / Pro — masqués jusqu'à la mise en production */}

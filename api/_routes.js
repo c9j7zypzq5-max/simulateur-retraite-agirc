@@ -233,6 +233,11 @@ export const ROUTE_META = {
   '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat',             emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur ma vie en semaines — visualiser son temps',                 emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/outils/qr-code':                      { title: 'Générateur de QR code personnalisé — couleur, logo, texte libre',      emoji: '🔳', cat: '', prio: '0.7', freq: 'monthly' },
+  // Retraite par métier
+  '/retraite/fonctionnaire':   { title: 'Retraite fonctionnaire 2026 — âge, calcul, taux et pension nette',  emoji: '🏛️', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/infirmiere':      { title: 'Retraite infirmière 2026 — CNAV, FPH ou CARPIMKO',                  emoji: '🏥', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/enseignant':      { title: 'Retraite enseignant 2026 — âge, calcul de la pension et RAFP',      emoji: '📚', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/agriculteur':     { title: 'Retraite agriculteur 2026 — MSA, calcul et revalorisation',         emoji: '🌾', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   // Contenu éditorial
   '/blog':                                { title: 'Blog finances personnelles — retraite, immobilier, épargne, FIRE',     emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions TAEG, PER, TMI, FIRE…',               emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
