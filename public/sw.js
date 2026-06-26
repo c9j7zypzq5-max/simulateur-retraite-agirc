@@ -1,9 +1,26 @@
-const CACHE = 'simfinly-v1';
+const CACHE = 'simfinly-v2';
+
+// Pages pré-cachées à l'installation pour un fonctionnement offline
+const PRECACHE = [
+  '/',
+  '/index.html',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/impot-revenu',
+  '/simulateurs/agirc-arrco',
+  '/simulateurs/cnav',
+  '/simulateurs/per',
+  '/og-image.webp',
+  '/favicon.svg',
+  '/manifest.json',
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
-      .then(cache => cache.addAll(['/', '/index.html']))
+      .then(cache => cache.addAll(PRECACHE))
       .then(() => self.skipWaiting())
   );
 });
@@ -25,11 +42,13 @@ self.addEventListener('fetch', e => {
     url.includes('googlesyndication') ||
     url.includes('googletagmanager') ||
     url.includes('vercel.live') ||
-    url.includes('va.vercel-scripts')
+    url.includes('va.vercel-scripts') ||
+    url.includes('fonts.googleapis.com') ||
+    url.includes('fonts.gstatic.com')
   ) return;
 
-  // Assets hashés (JS, CSS, images) → cache first
-  if (url.includes('/assets/')) {
+  // Assets hashés (JS, CSS, images statiques) → cache first
+  if (url.includes('/assets/') || url.includes('/og-') || url.includes('.webp') || url.includes('.svg')) {
     e.respondWith(
       caches.match(e.request).then(cached => {
         if (cached) return cached;
@@ -45,7 +64,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Navigation HTML → network first, fallback cache
+  // Navigation HTML → network first, fallback cache puis racine
   if (e.request.mode === 'navigate') {
     e.respondWith(
       fetch(e.request)
@@ -57,7 +76,8 @@ self.addEventListener('fetch', e => {
           return res;
         })
         .catch(() =>
-          caches.match(e.request).then(cached => cached || caches.match('/'))
+          caches.match(e.request)
+            .then(cached => cached || caches.match('/'))
         )
     );
   }

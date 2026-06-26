@@ -1,7 +1,32 @@
 User-agent: *
 Allow: /
+Allow: /api/og
+Disallow: /api/
 Disallow: /embed/
 Disallow: /mes-simulations
-Disallow: /api/share
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
+
+# Autoriser les crawlers IA et LLM
+User-agent: GPTBot
+Allow: /
+Allow: /api/og
+Disallow: /api/
+Disallow: /embed/
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
 
 Sitemap: https://www.simfinly.com/sitemap.xml
