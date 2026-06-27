@@ -6,14 +6,21 @@ export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
   const idRef = useRef(0);
 
-  const showToast = useCallback((msg, type = "success") => {
+  // duration: number (ms) | 'persist' — persistent toasts must be closed manually.
+  const showToast = useCallback((msg, type = "success", { duration = 3000 } = {}) => {
     const id = ++idRef.current;
-    setToasts(t => [...t, { id, msg, type }]);
-    setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3000);
+    setToasts(t => [...t, { id, msg, type, persist: duration === 'persist' }]);
+    if (duration !== 'persist') {
+      setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), duration);
+    }
+  }, []);
+
+  const dismissToast = useCallback((id) => {
+    setToasts(t => t.filter(x => x.id !== id));
   }, []);
 
   return (
-    <ToastContext.Provider value={showToast}>
+    <ToastContext.Provider value={{ showToast, dismissToast }}>
       {children}
       <div
         role="status"
@@ -22,11 +29,12 @@ export function ToastProvider({ children }) {
         style={{
           position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)",
           display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-          zIndex: 9999, pointerEvents: "none",
+          zIndex: 9999,
         }}>
-        {toasts.map(({ id, msg, type }) => (
+        {toasts.map(({ id, msg, type, persist }) => (
           <div key={id} style={{
-            padding: "10px 20px",
+            display: "flex", alignItems: "center", gap: 8,
+            padding: persist ? "10px 14px 10px 20px" : "10px 20px",
             borderRadius: 12,
             fontSize: 13,
             fontWeight: 600,
@@ -36,8 +44,16 @@ export function ToastProvider({ children }) {
             boxShadow: "0 4px 20px rgba(0,0,0,0.25)",
             animation: "toastIn 0.2s ease",
             whiteSpace: "nowrap",
+            pointerEvents: persist ? "auto" : "none",
           }}>
-            {msg}
+            <span>{msg}</span>
+            {persist && (
+              <button
+                onClick={() => dismissToast(id)}
+                aria-label="Fermer"
+                style={{ background: "none", border: "none", cursor: "pointer", color: "inherit", padding: "2px 4px", opacity: 0.7, fontSize: 16, lineHeight: 1 }}
+              >×</button>
+            )}
           </div>
         ))}
       </div>
@@ -46,6 +62,9 @@ export function ToastProvider({ children }) {
   );
 }
 
+// Returns the showToast function directly for backwards compatibility.
+// showToast(msg, type?, { duration? }) — duration: number ms | 'persist'
 export function useToast() {
-  return useContext(ToastContext) || (() => {});
+  const ctx = useContext(ToastContext);
+  return ctx?.showToast || (() => {});
 }

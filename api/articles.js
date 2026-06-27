@@ -26,8 +26,10 @@ export default async function handler(req, res) {
       return res.status(200).json([]);
     }
 
+    const SLUG_RE = /^[a-z0-9-]{1,120}$/;
     const articles = (await Promise.all(
       slugs.map(async slug => {
+        if (!SLUG_RE.test(String(slug))) return null;
         const raw = await redis.get(`blog:article:${slug}`);
         if (!raw) return null;
         const a = typeof raw === 'string' ? JSON.parse(raw) : raw;

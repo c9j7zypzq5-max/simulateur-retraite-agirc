@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import CompareSection from "../components/CompareModal.jsx";
+import ConfirmModal from "../components/ConfirmModal.jsx";
 import { supabase } from "../lib/supabase.js";
 
 function relativeDate(iso) {
@@ -67,6 +68,7 @@ export default function MesSimulations() {
   const [compareEntries, setCompareEntries] = useState(null);
   const [compareError, setCompareError] = useState("");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   useEffect(() => {
     document.title = "Mes simulations sauvegardées | simfinly.com";
@@ -90,6 +92,7 @@ export default function MesSimulations() {
     setHistory(h => h.filter(e => e.id !== id));
     setSelected(s => { const next = new Set(s); next.delete(id); return next; });
     if (compareEntries?.some(e => e.id === id)) setCompareEntries(null);
+    setConfirmDeleteId(null);
   }
 
   function handleSaveLabel(id) {
@@ -143,6 +146,16 @@ export default function MesSimulations() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#F5F6F8", fontFamily: "'Hanken Grotesk', sans-serif", color: "#0F1828" }}>
+      <ConfirmModal
+        open={confirmDeleteId !== null}
+        title="Supprimer cette simulation ?"
+        body="Cette action est irréversible."
+        confirmLabel="Supprimer"
+        cancelLabel="Annuler"
+        danger
+        onConfirm={() => handleRemove(confirmDeleteId)}
+        onCancel={() => setConfirmDeleteId(null)}
+      />
       <Navbar />
 
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -313,7 +326,7 @@ export default function MesSimulations() {
                                   {isChecked ? "✓ Sélectionné" : "Comparer"}
                                 </button>
                                 <button
-                                  onClick={() => handleRemove(entry.id)}
+                                  onClick={() => setConfirmDeleteId(entry.id)}
                                   style={{ width: 36, height: 36, background: "none", border: "1px solid #e7eaf0", borderRadius: 8, cursor: "pointer", color: "#8a93a3", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}
                                 >
                                   ✕
@@ -391,7 +404,7 @@ export default function MesSimulations() {
                                 </button>
                                 {/* Delete */}
                                 <button
-                                  onClick={() => handleRemove(entry.id)}
+                                  onClick={() => setConfirmDeleteId(entry.id)}
                                   title="Supprimer"
                                   style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid #e7eaf0", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#8a93a3", cursor: "pointer", fontSize: 14 }}
                                 >

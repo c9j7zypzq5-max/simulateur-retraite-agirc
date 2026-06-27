@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -7,6 +7,7 @@ import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import OnboardingModal, { shouldShowOnboarding } from "../components/OnboardingModal.jsx";
+import Skeleton, { skeletonStyles } from "../components/Skeleton.jsx";
 
 const NAV_ITEMS = [
   { labelFr: "Mes simulations", labelEn: "My simulations", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>, toFr: "/mes-simulations", toEn: "/en/mes-simulations" },
@@ -23,6 +24,9 @@ export default function Compte() {
   const isEn = locale === "en";
   const [portalBusy, setPortalBusy] = useState(false);
   const [error, setError] = useState("");
+  const abortRef = useRef(null);
+
+  useEffect(() => () => abortRef.current?.abort(), []);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [savedCount, setSavedCount] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
@@ -57,19 +61,37 @@ export default function Compte() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleManageSubscription() {
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
     setPortalBusy(true); setError("");
+    const timeout = setTimeout(() => abortRef.current?.abort(), 10000);
     try {
       const token = await getAccessToken();
       const res = await fetch("/api/stripe?action=portal", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         body: JSON.stringify({ origin: window.location.origin }),
+        signal: abortRef.current.signal,
       });
+      clearTimeout(timeout);
       const data = await res.json();
-      if (data.url) window.location.href = data.url;
-      else setError(data.error || t("account.portalLoading"));
-    } catch {
-      setError(isEn ? "Unable to contact the server." : "Impossible de contacter le serveur.");
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        const msg = res.status === 400
+          ? (isEn ? "No subscription found for this account." : "Aucun abonnement trouvé pour ce compte.")
+          : res.status === 401
+            ? (isEn ? "Session expired. Please log in again." : "Session expirée. Reconnectez-vous.")
+            : data.error || t("account.portalLoading");
+        setError(msg);
+      }
+    } catch (e) {
+      clearTimeout(timeout);
+      if (e.name === "AbortError") {
+        setError(isEn ? "Request timed out. Check your connection." : "La requête a expiré. Vérifiez votre connexion.");
+      } else {
+        setError(isEn ? "Unable to contact the server. Try again." : "Impossible de contacter le serveur. Réessayez.");
+      }
     } finally {
       setPortalBusy(false);
     }
@@ -82,8 +104,20 @@ export default function Compte() {
 
   if (loading || !user) {
     return (
-      <div style={{ minHeight: "100vh", background: "#F5F6F8", display: "flex", alignItems: "center", justifyContent: "center", color: "#8a93a3", fontFamily: "'Hanken Grotesk', sans-serif" }}>
-        {t("account.loading")}
+      <div style={{ minHeight: "100vh", background: "#F5F6F8", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+        <style>{skeletonStyles}</style>
+        <Navbar />
+        <div style={{ maxWidth: 760, margin: "40px auto", padding: "0 16px" }}>
+          <Skeleton height={32} width={200} style={{ marginBottom: 12 }} />
+          <Skeleton height={18} width={160} style={{ marginBottom: 28 }} />
+          <Skeleton height={90} radius={14} style={{ marginBottom: 12 }} />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 12 }}>
+            <Skeleton height={80} radius={14} />
+            <Skeleton height={80} radius={14} />
+          </div>
+          <Skeleton height={160} radius={14} style={{ marginBottom: 12 }} />
+          <Skeleton height={140} radius={14} />
+        </div>
       </div>
     );
   }

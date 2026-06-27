@@ -27,15 +27,23 @@ async function getSupabase() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
+const MAX_PARAMS_LENGTH = 8000;
+const MAX_TITLE_LENGTH  = 300;
+
 export default async function handler(req, res) {
   const action = req.query?.action;
 
   // ── POST /api/share?action=create ─────────────────────────────────────────
   if (req.method === 'POST' && action === 'create') {
     let body = req.body;
-    if (typeof body === 'string') { try { body = JSON.parse(body); } catch { body = {}; } }
+    if (typeof body === 'string') {
+      if (body.length > MAX_PARAMS_LENGTH + 1000) { res.status(413).json({ error: 'Payload too large' }); return; }
+      try { body = JSON.parse(body); } catch { body = {}; }
+    }
     const { params, title, highlight } = body || {};
     if (!params) { res.status(400).json({ error: 'params required' }); return; }
+    if (String(params).length > MAX_PARAMS_LENGTH) { res.status(400).json({ error: 'params too large' }); return; }
+    if (title && String(title).length > MAX_TITLE_LENGTH) { res.status(400).json({ error: 'title too large' }); return; }
 
     const sb = await getSupabase();
     if (!sb) { res.status(503).json({ error: 'not configured' }); return; }

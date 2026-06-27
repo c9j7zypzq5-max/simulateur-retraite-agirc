@@ -3,18 +3,52 @@ import Stripe from 'stripe';
 // bodyParser disabled: we parse JSON manually and read raw body for webhook
 export const config = { api: { bodyParser: false } };
 
+const MAX_BODY_BYTES = 100 * 1024; // 100 KB
+
 function getRawBody(req) {
   return new Promise((resolve, reject) => {
     const chunks = [];
-    req.on('data', chunk => chunks.push(chunk));
+    let size = 0;
+    req.on('data', chunk => {
+      size += chunk.length;
+      if (size > MAX_BODY_BYTES) { reject(new Error('payload_too_large')); return; }
+      chunks.push(chunk);
+    });
     req.on('end', () => resolve(Buffer.concat(chunks)));
     req.on('error', reject);
   });
 }
 
 async function parseJson(req) {
-  const raw = await getRawBody(req);
-  try { return JSON.parse(raw.toString() || '{}'); } catch { return {}; }
+  try {
+    const raw = await getRawBody(req);
+    return JSON.parse(raw.toString() || '{}');
+  } catch (e) {
+    if (e.message === 'payload_too_large') throw e;
+    return {};
+  }
+}
+
+async function getRateLimit(ip, key, limit, windowSec) {
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) return false;
+  try {
+    const { Redis } = await import('@upstash/redis');
+    const redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN });
+    const rk = `rl:${key}:${ip}`;
+    const count = await redis.incr(rk);
+    if (count === 1) await redis.expire(rk, windowSec);
+    return count > limit;
+  } catch { return false; }
+}
+
+function verifyCsrf(req) {
+  const origin = req.headers['origin'] || '';
+  const host = req.headers['host'] || '';
+  if (!origin) return true; // server-to-server, webhook, etc.
+  try {
+    const originHost = new URL(origin).host;
+    return originHost === host || originHost.endsWith('.simfinly.com');
+  } catch { return false; }
 }
 
 // --- Supabase (serveur) ---------------------------------------------------
@@ -48,6 +82,9 @@ const toIso = (unixSeconds) =>
 
 async function handleCreateCheckout(req, res, stripe) {
   if (req.method !== 'POST') return res.status(405).end();
+  if (!verifyCsrf(req)) return res.status(403).json({ error: 'Forbidden' });
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (await getRateLimit(ip, 'checkout', 10, 60)) return res.status(429).json({ error: 'Too many requests' });
   const { origin, path, s } = await parseJson(req);
   if (!origin || typeof origin !== 'string') return res.status(400).json({ error: 'Missing origin' });
 
@@ -80,6 +117,9 @@ async function handleCreateCheckout(req, res, stripe) {
 
 async function handleCreateSubscription(req, res, stripe) {
   if (req.method !== 'POST') return res.status(405).end();
+  if (!verifyCsrf(req)) return res.status(403).json({ error: 'Forbidden' });
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (await getRateLimit(ip, 'subscription', 5, 60)) return res.status(429).json({ error: 'Too many requests' });
   const { origin, email } = await parseJson(req);
   if (!origin || typeof origin !== 'string') return res.status(400).json({ error: 'Missing origin' });
 
@@ -256,8 +296,12 @@ export default async function handler(req, res) {
   const action = query.action;
 
   try {
-    if (action === 'create-checkout') return await handleCreateCheckout(req, res, stripe);
-    if (action === 'create-subscription') return await handleCreateSubscription(req, res, stripe);
+    const wrapSized = async (fn) => {
+      try { return await fn(); }
+      catch (e) { if (e.message === 'payload_too_large') return res.status(413).json({ error: 'Payload too large' }); throw e; }
+    };
+    if (action === 'create-checkout') return wrapSized(() => handleCreateCheckout(req, res, stripe));
+    if (action === 'create-subscription') return wrapSized(() => handleCreateSubscription(req, res, stripe));
     if (action === 'verify-payment') return await handleVerifyPayment(req, res, stripe, query);
     if (action === 'verify-subscription') return await handleVerifySubscription(req, res, stripe, query);
     if (action === 'portal') return await handlePortal(req, res, stripe);

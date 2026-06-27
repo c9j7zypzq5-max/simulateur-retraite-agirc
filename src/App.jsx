@@ -1,5 +1,7 @@
 import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import RouteErrorBoundary from "./components/RouteErrorBoundary.jsx";
+import BackToTop from "./components/BackToTop.jsx";
 import { ACCOUNT_ENABLED } from "./config/features.js";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider, useMoney } from "./i18n/CurrencyContext.jsx";
@@ -135,12 +137,35 @@ function ScrollToTop() {
   return null;
 }
 
+// Réinitialise l'ErrorBoundary à chaque changement de route : une page cassée
+// n'empêche pas de naviguer vers une autre.
+function RouteResetKey({ children }) {
+  const { pathname } = useLocation();
+  return (
+    <RouteErrorBoundary key={pathname}>
+      {children}
+    </RouteErrorBoundary>
+  );
+}
+
 // Fallback affiché le temps de charger le chunk d'une route.
 function RouteFallback() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <span style={{ fontSize: 14, opacity: 0.7 }}>Chargement…</span>
     </div>
+  );
+}
+
+// Wraps a lazy element with its own Suspense + ErrorBoundary so one broken
+// simulator doesn't crash the entire app tree.
+function R({ element }) {
+  return (
+    <RouteErrorBoundary>
+      <Suspense fallback={<RouteFallback />}>
+        {element}
+      </Suspense>
+    </RouteErrorBoundary>
   );
 }
 
@@ -158,8 +183,10 @@ export default function App() {
       <CountrySuggestionBanner />
       <VideoRecordingToast />
       <a href="#main-content" className="skip-link">Aller au contenu principal</a>
+      <BackToTop />
       <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>
+      <RouteResetKey>
       <Routes>
         <Route path="/" element={<Home />} />
         {/* ── Belgique (/be/) ── */}
@@ -333,6 +360,7 @@ export default function App() {
         {/* 404 — attrape-tout */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </RouteResetKey>
       </Suspense>
       </ErrorBoundary>
     </BrowserRouter>

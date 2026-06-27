@@ -46,37 +46,49 @@ export function useAnimatedNumber(target, duration = 700) {
 export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999, id, tooltip }) {
   const inputId = id || label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const hintId  = hint ? `${inputId}-hint` : undefined;
+  const errId   = `${inputId}-err`;
   const [raw, setRaw]     = useState(value === null || value === undefined ? "" : String(value));
   const [focused, setFoc] = useState(false);
+  const [rangeError, setRangeError] = useState("");
+
   useEffect(() => {
     if (!focused) setRaw(value === null || value === undefined ? "" : String(value));
   }, [value, focused]);
 
   const handleChange = e => {
-    // Garder uniquement les chiffres et espaces (séparateurs de milliers)
     const v = e.target.value.replace(/[^0-9\s]/g, "");
     setRaw(v);
     const normalized = v.replace(/\s/g, "");
     const n = Number(normalized);
-    if (!isNaN(n) && normalized !== "") onChange(Math.min(Math.max(n, min), max));
+    if (!isNaN(n) && normalized !== "") {
+      if (n < min) setRangeError(`Minimum : ${min.toLocaleString("fr-FR")}`);
+      else if (n > max) setRangeError(`Maximum : ${max.toLocaleString("fr-FR")}`);
+      else setRangeError("");
+      onChange(Math.min(Math.max(n, min), max));
+    } else {
+      setRangeError("");
+    }
   };
   const handleBlur = () => {
     setFoc(false);
+    setRangeError("");
     const normalized = raw.replace(/\s/g, "");
     const n = Number(normalized);
     if (isNaN(n) || normalized === "") setRaw(value === null || value === undefined ? "" : String(value));
     else { const c = Math.min(Math.max(n, min), max); onChange(c); setRaw(String(c)); }
   };
+  const hasError = focused && !!rangeError;
   return (
     <div style={{ marginBottom: 24 }}>
       <label htmlFor={inputId} style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
         {label}
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6, verticalAlign: "middle" }}>ⓘ</span>}
       </label>
-      <div style={{ display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
+      <div style={{ display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${hasError ? "var(--danger, #dc2626)" : focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: hasError ? "0 0 0 3px rgba(220,38,38,0.12)" : focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
         <input type="text" inputMode="numeric"
           id={inputId} name={inputId}
-          aria-describedby={hintId}
+          aria-describedby={[hintId, hasError ? errId : undefined].filter(Boolean).join(" ") || undefined}
+          aria-invalid={hasError}
           value={focused ? raw : (value === null || value === undefined ? "" : Number(value).toLocaleString("fr-FR"))}
           onChange={handleChange}
           onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
@@ -85,7 +97,8 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0 }} />
         {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
       </div>
-      {hint && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
+      {hasError && <div id={errId} role="alert" style={{ marginTop: 4, fontSize: 12, color: "var(--danger, #dc2626)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{rangeError}</div>}
+      {hint && !hasError && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }

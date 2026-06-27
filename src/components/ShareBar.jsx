@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ACCOUNT_ENABLED } from "../config/features.js";
 import { useNavigate } from "react-router-dom";
 import { track } from "@vercel/analytics";
@@ -76,6 +76,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   const [publicLinkBusy, setPublicLinkBusy] = useState(false);
   const [publicCopied, setPublicCopied] = useState(false);
   const barRef = useRef(null);
+  const abortRef = useRef(null);
 
   const remaining = Math.max(0, FREE_REPORT_LIMIT - reportCount);
 
@@ -91,6 +92,11 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     return () => clearTimeout(timer);
   }, [publicCopied]);
 
+  // Annule les requêtes en cours si le composant est démonté
+  useEffect(() => {
+    return () => { abortRef.current?.abort(); };
+  }, []);
+
   const btnStyle = {
     display: "inline-flex", alignItems: "center", gap: 6,
     padding: "7px 14px", background: "var(--card-bg)",
@@ -98,9 +104,13 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     color: "var(--text-secondary)", fontSize: 12,
     fontFamily: "'Hanken Grotesk', sans-serif", cursor: "pointer",
     transition: "border-color 0.2s, color 0.2s",
+    outline: "none",
   };
+  // CSS handles hover+focus — no inline onMouseEnter needed for keyboard users.
   const hoverIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; };
   const hoverOut = e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; };
+  const focusIn  = e => { e.currentTarget.style.borderColor = "var(--gold-mid)"; e.currentTarget.style.color = "var(--gold)"; e.currentTarget.style.boxShadow = "0 0 0 2px rgba(184,147,74,0.3)"; };
+  const focusOut = e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.boxShadow = "none"; };
 
   function pageContainer() {
     let el = barRef.current;
@@ -206,6 +216,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
 
   async function handlePublicLink() {
     if (!isPro) { navigate(localePath("/pro", locale)); return; }
+    abortRef.current?.abort();
+    abortRef.current = new AbortController();
     setPublicLinkBusy(true);
     try {
       const shareUrl = buildShareUrl(params);
@@ -217,7 +229,9 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           title: report?.title || name || "",
           highlight: report?.highlight || null,
         }),
+        signal: abortRef.current.signal,
       });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       if (data.id) {
         const publicUrl = `${window.location.origin}/s/${data.id}`;
@@ -226,7 +240,11 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         showToast(locale === "en" ? "Public link copied!" : "Lien public copié !");
         track("public_link", { simulateur: name });
       }
-    } catch { /* ignore */ } finally { setPublicLinkBusy(false); }
+    } catch (e) {
+      if (e.name !== "AbortError") {
+        showToast(locale === "en" ? "Could not create link. Try again." : "Impossible de créer le lien. Réessayez.", "error");
+      }
+    } finally { setPublicLinkBusy(false); }
   }
 
   async function handleShare() {
@@ -259,6 +277,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   }
 
   return (
+    <>
+    <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
     <div ref={barRef} data-noexport="true" data-noprint style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 16, flexWrap: "wrap" }}>
       {report?.highlight && (
         <div style={{ flexBasis: "100%", fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.5, marginBottom: 2 }}>
@@ -266,11 +286,16 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         </div>
       )}
       {showDownload && (
-        <button style={btnStyle} onClick={handleReport} disabled={busy}
+        <button style={{ ...btnStyle, cursor: busy ? "not-allowed" : "pointer", opacity: busy ? 0.7 : 1 }}
+          onClick={handleReport} disabled={busy}
           aria-label={locale === "en" ? "Download PDF report" : "Télécharger le rapport PDF"}
-          onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
-          <DownloadIcon />
-          <span className="btn-text">{busy ? "…" : t("common.report")}</span>
+          aria-busy={busy}
+          onMouseEnter={hoverIn} onMouseLeave={hoverOut}
+          onFocus={focusIn} onBlur={focusOut}>
+          {busy
+            ? <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid var(--text-secondary)", borderTopColor: "var(--gold)", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} aria-hidden="true" />
+            : <DownloadIcon />}
+          <span className="btn-text">{busy ? (locale === "en" ? "Generating…" : "Génération…") : t("common.report")}</span>
         </button>
       )}
       {ACCOUNT_ENABLED && showDownload && isConfigured && user && !isPro && remaining === 0 && (
@@ -293,7 +318,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
       <div style={{ position: "relative" }}>
         <button style={btnStyle} onClick={handleShare} disabled={busy}
           aria-label={locale === "en" ? "Share simulation" : "Partager la simulation"}
-          onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+          onMouseEnter={hoverIn} onMouseLeave={hoverOut}
+          onFocus={focusIn} onBlur={focusOut}>
           <ShareIcon />
           <span className="btn-text">{t("common.share")}</span>
         </button>
@@ -313,7 +339,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         <div style={{ position: "relative" }}>
           <button style={btnStyle} onClick={handleSave}
             aria-label={locale === "en" ? "Save simulation" : "Sauvegarder la simulation"}
-            onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+            onMouseEnter={hoverIn} onMouseLeave={hoverOut}
+            onFocus={focusIn} onBlur={focusOut}>
             <SaveIcon />
             <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
           </button>
@@ -325,7 +352,8 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           {isPro ? (
             <button style={btnStyle} onClick={handlePublicLink} disabled={publicLinkBusy}
               aria-label={locale === "en" ? "Copy public link" : "Copier le lien public"}
-              onMouseEnter={hoverIn} onMouseLeave={hoverOut}>
+              onMouseEnter={hoverIn} onMouseLeave={hoverOut}
+              onFocus={focusIn} onBlur={focusOut}>
               <LinkIcon />
               <span className="btn-text">
                 {publicLinkBusy ? "…" : publicCopied ? (locale === "en" ? "Copied!" : "Copié !") : (locale === "en" ? "Public link" : "Lien public")}
@@ -399,5 +427,6 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         );
       })()}
     </div>
+    </>
   );
 }
