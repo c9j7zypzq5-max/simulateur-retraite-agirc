@@ -37,6 +37,7 @@ export const EN_ROUTES = [
   '/simulateurs/inflation',
   '/simulateurs/cnav',
   '/simulateurs/retraite-luxembourg',
+  '/comparatifs',
 ];
 
 // Routes disponibles sous /ch/ (Suisse). Miroir de src/i18n/paths.js CH_ROUTES.
@@ -104,6 +105,7 @@ export const ROUTE_META_EN = {
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
   '/simulateurs/retraite-luxembourg': { title: 'Luxembourg State Pension Calculator (CNAP) 2025 — Estimate Your Pension', description: 'Estimate your Luxembourg CNAP pension based on your career length, salary and departure age. Also covers cross-border workers and expats.' },
+  '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
 };
 
 // Méta suisses (title + description) pour le HTML statique /ch/...
@@ -163,7 +165,11 @@ export function hreflangLinks(route) {
   const fr = `${BASE}${route === '/' ? '/' : route}`;
   links.push(`<link rel="alternate" hreflang="fr" href="${fr}" />`);
   if (EN_ROUTES.includes(route)) {
-    links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en${route === '/' ? '' : route}" />`);
+    // Les comparatifs utilisent /en/comparisons/ (pas /en/comparatifs/)
+    let enSeg = route;
+    if (route === '/comparatifs') enSeg = '/comparisons';
+    else if (route.startsWith('/comparatifs/')) enSeg = route.replace('/comparatifs/', '/comparisons/');
+    links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en${enSeg === '/' ? '' : enSeg}" />`);
   }
   if (CH_ROUTES.includes(route)) {
     links.push(`<link rel="alternate" hreflang="fr-CH" href="${BASE}/ch${route === '/' ? '' : route}" />`);
@@ -332,11 +338,13 @@ export function structuredData(route, extra = {}) {
   if (route.startsWith('/guides/')) {
     const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
     if (!g) return [];
+    const ogImg = ogImageForRoute(route);
     return [
       breadcrumb([['Accueil', `${BASE}/`], ['Guides', `${BASE}/guides`], [g.title, url]]),
       {
         '@context': 'https://schema.org', '@type': 'Article',
         headline: g.title, description: g.intro, url, mainEntityOfPage: url,
+        image: { '@type': 'ImageObject', url: ogImg, width: 1200, height: 630 },
         author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
       },
@@ -347,11 +355,13 @@ export function structuredData(route, extra = {}) {
   if (route.startsWith('/comparatifs/')) {
     const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
     if (!c) return [];
+    const ogImg = ogImageForRoute(route);
     return [
       breadcrumb([['Accueil', `${BASE}/`], ['Comparatifs', `${BASE}/comparatifs`], [c.shortTitle, url]]),
       {
         '@context': 'https://schema.org', '@type': 'Article',
         headline: c.title, description: c.intro, url, mainEntityOfPage: url,
+        image: { '@type': 'ImageObject', url: ogImg, width: 1200, height: 630 },
         author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
       },

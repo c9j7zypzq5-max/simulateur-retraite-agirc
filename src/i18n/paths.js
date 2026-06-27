@@ -27,6 +27,7 @@ const EN_PATH_MAP = {
   '/pro':                            '/pro',
   '/merci':                          '/thank-you',
   '/merci-pro':                      '/thank-you-pro',
+  '/comparatifs':                    '/comparisons',
 };
 
 // Sens inverse : segment EN → chemin canonique FR.

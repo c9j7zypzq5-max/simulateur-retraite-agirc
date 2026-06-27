@@ -76,7 +76,8 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   const ld = structuredDataScripts(route, extra);
   const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale, country);
   let urlPath;
-  if (locale === 'en') urlPath = `/en${route === '/' ? '' : route}`;
+  if (extra.urlPath) urlPath = extra.urlPath;
+  else if (locale === 'en') urlPath = `/en${route === '/' ? '' : route}`;
   else if (country === 'ch') urlPath = `/ch${route === '/' ? '' : route}`;
   else if (country === 'be') urlPath = `/be${route === '/' ? '' : route}`;
   else urlPath = route;
@@ -175,6 +176,15 @@ for (const route of EN_ARRAY) {
   const dir = path.join(distDir, urlPath);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'en'));
+}
+
+// ── Comparatifs EN (/en/comparisons/:slug) ─────────────────────────────────────
+for (const route of COMPARATIFS_SLUGS) {
+  const slug = route.slice('/comparatifs/'.length);
+  const enPath = `/en/comparisons/${slug}`;
+  const dir = path.join(distDir, enPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { urlPath: enPath }, 'en'));
 }
 
 // ── Pages CH (/ch/... routes disponibles en Suisse) ────────────────────────────

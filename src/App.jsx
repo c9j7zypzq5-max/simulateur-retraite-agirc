@@ -227,6 +227,8 @@ export default function App() {
         <Route path="/en/tools/qr-code" element={<QrCode />} />
         <Route path="/en/legal-notice" element={<MentionsLegales />} />
         <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
+        <Route path="/en/comparisons" element={<Comparatifs />} />
+        <Route path="/en/comparisons/:slug" element={<Comparatif />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />
