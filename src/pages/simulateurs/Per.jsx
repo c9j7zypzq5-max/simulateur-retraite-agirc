@@ -10,6 +10,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import LeadGenCTA from "../../components/LeadGenCTA.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -385,6 +386,7 @@ export default function Per() {
 
         {/* Affiliation */}
         {hasInput && <AffiliateCTA type="per" />}
+        {hasInput && <LeadGenCTA type="patrimoine" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

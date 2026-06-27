@@ -16,6 +16,7 @@ import ShareBar from "../../components/ShareBar.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import LeadGenCTA from "../../components/LeadGenCTA.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -373,6 +374,7 @@ export default function Cnav() {
 
         {/* Affiliation */}
         {hasResult && <AffiliateCTA type="retraite" />}
+        {hasResult && <LeadGenCTA type="retraite" />}
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>

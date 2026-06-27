@@ -270,6 +270,12 @@ export default function Footer() {
               <Link to="/methodologie" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
                 {t("nav.methodologie")}
               </Link>
+              <Link to="/barometre-retraite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                Baromètre Retraite
+              </Link>
+              <Link to="/pro-conseiller" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                Pour les conseillers
+              </Link>
               <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
                 {t("nav.widgets")}
               </Link>

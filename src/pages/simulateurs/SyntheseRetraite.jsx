@@ -16,6 +16,7 @@ import {
 } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
+import LeadGenCTA from "../../components/LeadGenCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
@@ -266,6 +267,7 @@ export default function SyntheseRetraite() {
 
         <ShareBar params={{ ...vals, salaire }} resultsRef={resultsRef} report={report} name="synthese-retraite" />
         {hasResult && <AffiliateCTA type="retraite" />}
+        {hasResult && <LeadGenCTA type="retraite" />}
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
 

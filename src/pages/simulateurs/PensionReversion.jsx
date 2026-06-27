@@ -19,6 +19,7 @@ import {
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 
 // ─── Barème de la pension de réversion ──────────────────────────────────────────
 // Valeurs INDICATIVES 2025, isolées ici pour être corrigées facilement.
@@ -322,6 +323,8 @@ export default function PensionReversion() {
             ]}
           />
         )}
+
+        {hasResult && <AffiliateCTA type="retraite" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

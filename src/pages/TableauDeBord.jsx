@@ -371,7 +371,7 @@ export default function TableauDeBord() {
   }, [getHistory]);
 
   async function handleExportPdf() {
-    if (!isPro || history.length === 0) return;
+    if (history.length === 0) return;
     setExporting(true);
     try {
       const { buildMultiReportPdf } = await import("../utils/pdfReport.js");
@@ -412,10 +412,8 @@ export default function TableauDeBord() {
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16 };
 
   // Stat card value for simulations count
-  const simCountValue = isPro
-    ? <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>{history.length}<span style={{ fontSize: 14, color: "var(--gold)" }}>★</span></span>
-    : `${history.length} / 5`;
-  const simCountLabel = isPro ? "simulations sauvegardées" : "simulations (illimité en Pro)";
+  const simCountValue = history.length;
+  const simCountLabel = "simulations sauvegardées";
 
   // Bar chart data
   const catEntries = Object.entries(catCounts).filter(([, v]) => v > 0);
@@ -446,7 +444,7 @@ export default function TableauDeBord() {
             </p>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            {isPro && history.length > 0 && (
+            {history.length > 0 && (
               <button
                 onClick={handleExportPdf}
                 disabled={exporting}
@@ -455,26 +453,10 @@ export default function TableauDeBord() {
                 {exporting ? "Génération…" : "↓ Exporter en PDF"}
               </button>
             )}
-            {isPro && (
-              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", background: "rgba(184,147,74,0.12)", border: "1px solid rgba(184,147,74,0.3)", borderRadius: 20, fontSize: 12, fontWeight: 700, color: "var(--gold)" }}>
-                ★ Pro
-              </div>
-            )}
           </div>
         </div>
 
         {/* Upsell banner (non-bloquant) pour les gratuits */}
-        {!isPro && (
-          <div style={{ background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.2)", borderRadius: 14, padding: "14px 20px", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-            <div style={{ fontSize: 14, color: "var(--text)" }}>
-              <strong>Passez à Pro</strong> pour débloquer les graphiques, les insights et l'export PDF.
-            </div>
-            <Link to="/pro" style={{ display: "inline-block", padding: "8px 16px", borderRadius: 10, background: "#2B5CE6", color: "#fff", fontSize: 13, fontWeight: 600, textDecoration: "none", whiteSpace: "nowrap" }}>
-              Découvrir Pro →
-            </Link>
-          </div>
-        )}
-
         {/* Alerte changements fiscaux */}
         <FiscalAlertBanner hasHistory={history.length > 0} />
 
@@ -525,8 +507,8 @@ export default function TableauDeBord() {
         {/* Indicateurs clés */}
         <KeyIndicatorsPanel history={history} />
 
-        {/* Category breakdown chart — Pro only */}
-        {isPro && history.length > 0 && (
+        {/* Category breakdown chart */}
+        {history.length > 0 && (
           <div style={{ ...card, padding: "22px 24px", marginBottom: 20 }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 18, margin: "0 0 18px" }}>
               Répartition par catégorie
@@ -564,8 +546,8 @@ export default function TableauDeBord() {
           </div>
         )}
 
-        {/* Insights — Pro only */}
-        {isPro && history.length > 0 && insights.length > 0 && (
+        {/* Insights */}
+        {history.length > 0 && insights.length > 0 && (
           <div style={{ marginBottom: 28 }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 12 }}>
               Points clés
@@ -760,45 +742,30 @@ export default function TableauDeBord() {
               )}
             </div>
 
-            {/* Wizard Retraite shortcut — Pro only */}
-            {isPro && (
-              <Link
-                to="/wizard-retraite"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "14px 16px",
-                  background: "rgba(184,147,74,0.08)",
-                  border: "1px solid rgba(184,147,74,0.25)",
-                  borderRadius: 14,
-                  textDecoration: "none",
-                  color: "var(--gold)",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  fontFamily: "'Hanken Grotesk', sans-serif",
-                  transition: "background 0.15s",
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.14)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(184,147,74,0.08)"}
-              >
-                <span>Wizard Retraite</span>
-                <ArrowRight size={15} />
-              </Link>
-            )}
-
-            {!isPro && (
-              <div style={{ ...card, padding: "20px", background: "rgba(184,147,74,0.06)", border: "1px solid rgba(184,147,74,0.2)" }}>
-                <div style={{ fontSize: 20, marginBottom: 10 }}>★</div>
-                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, marginBottom: 8, color: "var(--gold)" }}>Simfinly Pro</h3>
-                <p style={{ fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.6, marginBottom: 14 }}>
-                  Tableau de bord complet, 50 simulations sauvegardées et rapport PDF professionnel.
-                </p>
-                <Link to="/pro" style={{ display: "block", textAlign: "center", padding: "10px", borderRadius: 10, background: "var(--gold)", color: "#1a1000", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>
-                  Voir Pro — 2,99 €/mois
-                </Link>
-              </div>
-            )}
+            {/* Wizard Retraite shortcut */}
+            <Link
+              to="/wizard-retraite"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "14px 16px",
+                background: "rgba(184,147,74,0.08)",
+                border: "1px solid rgba(184,147,74,0.25)",
+                borderRadius: 14,
+                textDecoration: "none",
+                color: "var(--gold)",
+                fontSize: 13,
+                fontWeight: 600,
+                fontFamily: "'Hanken Grotesk', sans-serif",
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(184,147,74,0.14)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(184,147,74,0.08)"}
+            >
+              <span>Wizard Retraite</span>
+              <ArrowRight size={15} />
+            </Link>
           </div>
         </div>
       </div>
