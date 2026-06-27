@@ -15,6 +15,14 @@
         }
       })();
     </script>
+    <!-- CSS critique inline : évite le flash de fond blanc et stabilise la couleur
+         de fond/texte avant le chargement du bundle CSS. -->
+    <style>
+      :root{--bg:#F5F6F8;--surface:#fff;--card-bg:#fff;--text:#0F1828;--text-secondary:#5B6677;--primary:#2B5CE6;--primary-soft:#EAF0FF;--gold:#2B5CE6;--gold-mid:#3d6fe8;--border:#e7eaf0;--border-gold:#cdddfb;--positive:#15A06B;--positive-soft:#dcfce7;--negative:#dc2626;--negative-soft:#fef2f2;--warning:#b45309;--input-bg:#F5F6F8;--progress-track:#e7eaf0;--card-shadow:0 1px 4px rgba(15,24,40,.07),0 4px 16px rgba(15,24,40,.05);--scrollbar-thumb:#cdddfb;--chip-bg:#EAF0FF;--r-sm:8px;--r-md:11px;--r-lg:16px;--hover-bg:rgba(43,92,230,.06);--drawer-bg:#fff}
+      [data-theme="dark"]{--bg:#0B1220;--surface:#131D30;--card-bg:#131D30;--text:#EAF0FA;--text-secondary:#8593A8;--primary:#5B8CFF;--primary-soft:#1B2A45;--gold:#5B8CFF;--gold-mid:#4a7af0;--border:#202C40;--border-gold:#28406e;--positive:#34D399;--positive-soft:#064e3b;--negative:#f87171;--negative-soft:#450a0a;--input-bg:#0B1220;--progress-track:#202C40;--card-shadow:none;--scrollbar-thumb:#202C40;--chip-bg:#1B2A45;--hover-bg:rgba(255,255,255,.06);--drawer-bg:#0F1828}
+      *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+      html,body{margin:0;background:var(--bg);color:var(--text);font-family:'Hanken Grotesk',sans-serif;overflow-x:clip;max-width:100%}
+    </style>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
@@ -76,6 +84,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module" src="/src/main.jsx" fetchpriority="high"></script>
   </body>
 </html>
