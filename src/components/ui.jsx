@@ -354,11 +354,11 @@ function HeaderBreadcrumb() {
   const meta = ROUTE_META[pathname];
   const BASE = 'https://www.simfinly.com';
   const crumbs = [{ name: 'Accueil', item: `${BASE}/` }];
-  if (meta?.cat) crumbs.push({ name: meta.cat });
-  if (meta?.title) crumbs.push({ name: meta.title });
+  if (meta?.cat) crumbs.push({ name: meta.cat, item: `${BASE}/simulateurs` });
+  if (meta?.title) crumbs.push({ name: meta.title, item: `${BASE}${pathname}` });
   const breadcrumbLd = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, ...(c.item ? { item: c.item } : {}) })),
+    itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })),
   };
   return (
     <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
