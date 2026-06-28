@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { Link, LocaleLink, useLocation, useLocale, useCountry } from "../lib/router.jsx";
 import { ACCOUNT_ENABLED } from "../config/features.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -209,10 +209,11 @@ export default function Navbar({ theme, setTheme }) {
 
   const [simsOpen, setSimsOpen] = useState(false);
   const simsRef = useRef(null);
+  const drawerRef = useRef(null);
 
-  const canonPath = canonicalPath(pathname);
-  const showCurrency = CURRENCY_AWARE_ROUTES.has(canonPath);
-  const current = ALL_ITEMS.find(i => i.path === canonPath);
+  const canonPath    = useMemo(() => canonicalPath(pathname), [pathname]);
+  const showCurrency = useMemo(() => CURRENCY_AWARE_ROUTES.has(canonPath), [canonPath]);
+  const current      = useMemo(() => ALL_ITEMS.find(i => i.path === canonPath), [canonPath]);
 
   // Liens Guides / Lexique / Blog selon le pays
   const guidesPath  = country === 'ch' ? '/ch/guides'  : country === 'be' ? '/be/guides'  : '/guides';
@@ -265,6 +266,26 @@ export default function Navbar({ theme, setTheme }) {
   useEffect(() => {
     document.body.style.overflow = drawerOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
+  }, [drawerOpen]);
+
+  // Focus trap pour l'accessibilité du drawer mobile
+  useEffect(() => {
+    if (!drawerOpen || !drawerRef.current) return;
+    const el = drawerRef.current;
+    const focusable = el.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    const trap = e => {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    };
+    el.addEventListener('keydown', trap);
+    first?.focus();
+    return () => el.removeEventListener('keydown', trap);
   }, [drawerOpen]);
 
   return (
@@ -425,7 +446,7 @@ export default function Navbar({ theme, setTheme }) {
         {/* Simulateurs dropdown panel */}
         {simsOpen && (
           <div role="menu" style={{
-            position: "absolute", top: "100%", left: 0, right: 0,
+            position: "absolute", top: "100%", left: 0, right: 0, zIndex: 200,
             background: "var(--surface)",
             borderTop: "1px solid var(--border)",
             borderBottom: "1px solid var(--border)",
@@ -497,8 +518,10 @@ export default function Navbar({ theme, setTheme }) {
 
       {/* ── Drawer ── */}
       <aside
-        className="nav-drawer"
-        aria-label={txt.navAriaLabel}
+        ref={drawerRef}
+        role="dialog"
+        aria-modal={drawerOpen || undefined}
+        aria-label={txt.drawerTitle}
         aria-hidden={!drawerOpen}
         style={{
           position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 300,

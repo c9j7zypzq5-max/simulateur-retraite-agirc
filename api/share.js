@@ -8,6 +8,16 @@
 
 const BASE = 'https://www.simfinly.com';
 
+function setCors(req, res) {
+  const origin = req.headers['origin'] || '';
+  if (origin === BASE || origin.endsWith('.simfinly.com')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+}
+
 function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
@@ -31,6 +41,9 @@ const MAX_PARAMS_LENGTH = 8000;
 const MAX_TITLE_LENGTH  = 300;
 
 export default async function handler(req, res) {
+  setCors(req, res);
+  if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+
   const action = req.query?.action;
 
   // ── POST /api/share?action=create ─────────────────────────────────────────

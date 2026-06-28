@@ -24,9 +24,10 @@ export function usePageMeta(title, description) {
       setAttr('meta[name="twitter:description"]', description);
     }
 
-    // Canonical + og:url pointent vers l'URL courante (sans query ni hash),
-    // pour éviter le contenu dupliqué et un partage social incohérent.
-    const canonicalUrl = window.location.origin + window.location.pathname;
+    // Canonical + og:url : inclut le paramètre ?s= quand présent (simulation
+    // partagée), pour que chaque résultat ait sa propre URL canonique.
+    const shareParam = new URLSearchParams(window.location.search).get('s');
+    const canonicalUrl = window.location.origin + window.location.pathname + (shareParam ? `?s=${shareParam}` : '');
     setAttr('meta[property="og:url"]', canonicalUrl);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) {

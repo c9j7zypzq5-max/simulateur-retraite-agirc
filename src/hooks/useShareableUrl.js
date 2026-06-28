@@ -1,5 +1,8 @@
+const MAX_ENCODE_LENGTH = 8192;
+
 export function encodeParams(params) {
   const encoded = btoa(JSON.stringify(params));
+  if (encoded.length > MAX_ENCODE_LENGTH) throw new Error('params_too_large');
   return encoded;
 }
 

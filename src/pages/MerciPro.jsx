@@ -30,6 +30,7 @@ export default function MerciPro() {
   const [status, setStatus] = useState("verifying"); // verifying | ok | error
   const [activatedEmail, setActivatedEmail] = useState("");
   const pollRef = useRef(null);
+  const isPendingRef = useRef(false);
 
   useEffect(() => {
     document.title = t("merciPro.docTitle");
@@ -39,8 +40,10 @@ export default function MerciPro() {
     return () => robots?.setAttribute('content', 'index, follow');
   }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const SESSION_ID_RE = /^cs_(test|live)_[a-zA-Z0-9]{10,}$/;
+
   useEffect(() => {
-    if (!sessionId) { setStatus("error"); return; }
+    if (!sessionId || !SESSION_ID_RE.test(sessionId)) { setStatus("error"); return; }
 
     fetch(`/api/stripe?action=verify-subscription&session_id=${encodeURIComponent(sessionId)}`)
       .then(r => r.json())
@@ -51,8 +54,10 @@ export default function MerciPro() {
           // Poll refreshProfile jusqu'à isPro confirmé (max 10 × 2s)
           let attempts = 0;
           pollRef.current = setInterval(async () => {
+            if (isPendingRef.current) return;
+            isPendingRef.current = true;
             attempts++;
-            await refreshProfile();
+            try { await refreshProfile(); } finally { isPendingRef.current = false; }
             if (attempts >= 10) { clearInterval(pollRef.current); pollRef.current = null; }
           }, 2000);
         } else {

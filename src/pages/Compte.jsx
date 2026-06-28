@@ -29,7 +29,7 @@ export default function Compte() {
   useEffect(() => () => abortRef.current?.abort(), []);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [savedCount, setSavedCount] = useState(0);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     document.title = t("account.docTitle");
@@ -37,6 +37,7 @@ export default function Compte() {
     if (!robots) { robots = document.createElement("meta"); robots.name = "robots"; document.head.appendChild(robots); }
     robots.setAttribute("content", "noindex, follow");
     const handleResize = () => setIsMobile(window.innerWidth < 640);
+    setIsMobile(window.innerWidth < 640);
     window.addEventListener("resize", handleResize);
     return () => { robots?.setAttribute("content", "index, follow"); window.removeEventListener("resize", handleResize); };
   }, [locale]); // eslint-disable-line react-hooks/exhaustive-deps

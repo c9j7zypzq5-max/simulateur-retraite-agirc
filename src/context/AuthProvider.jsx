@@ -79,6 +79,14 @@ export function AuthProvider({ children }) {
     await supabase.from("profiles").update({ report_count: next }).eq("id", user.id);
   }, [user?.id]);
 
+  function getLocalePath(path) {
+    if (typeof window === 'undefined') return path;
+    const prefix = ['en', 'be', 'ch'].find(p =>
+      window.location.pathname.startsWith(`/${p}/`) || window.location.pathname === `/${p}`
+    );
+    return prefix ? `/${prefix}${path}` : path;
+  }
+
   const value = {
     user,
     profile,
@@ -87,11 +95,11 @@ export function AuthProvider({ children }) {
     incrementReportCount,
     loading,
     isConfigured: isSupabaseConfigured,
-    signUp: (email, password) => supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/connexion` } }),
+    signUp: (email, password) => supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}${getLocalePath('/connexion')}` } }),
     signIn: (email, password) => supabase.auth.signInWithPassword({ email, password }),
     signInGoogle: () => supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/compte` },
+      options: { redirectTo: `${window.location.origin}${getLocalePath('/compte')}` },
     }),
     signOut: async () => { await supabase.auth.signOut(); setUser(null); setProfile(null); },
     resetPassword: (email) => supabase.auth.resetPasswordForEmail(email, {

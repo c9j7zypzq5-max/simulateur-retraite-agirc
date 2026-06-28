@@ -287,7 +287,20 @@ async function handleWebhook(req, res, stripe) {
   res.status(200).json({ received: true });
 }
 
+function setCors(req, res) {
+  const origin = req.headers['origin'] || '';
+  if (origin === 'https://www.simfinly.com' || origin.endsWith('.simfinly.com')) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Vary', 'Origin');
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+}
+
 export default async function handler(req, res) {
+  setCors(req, res);
+  if (req.method === 'OPTIONS') { res.status(204).end(); return; }
+
   const secretKey = process.env.STRIPE_SECRET_KEY;
   if (!secretKey) return res.status(500).json({ error: 'Stripe not configured' });
 

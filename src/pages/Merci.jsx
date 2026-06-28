@@ -43,8 +43,10 @@ export default function Merci() {
     setPdfReady(true);
   }
 
+  const SESSION_ID_RE = /^cs_(test|live)_[a-zA-Z0-9]{10,}$/;
+
   useEffect(() => {
-    if (!sessionId) { setStatus("error"); return; }
+    if (!sessionId || !SESSION_ID_RE.test(sessionId)) { setStatus("error"); return; }
 
     try {
       const raw = sessionStorage.getItem(SS_KEY);

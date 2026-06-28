@@ -85,7 +85,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6, verticalAlign: "middle" }}>ⓘ</span>}
       </label>
       <div style={{ display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${hasError ? "var(--danger, #dc2626)" : focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: hasError ? "0 0 0 3px rgba(220,38,38,0.12)" : focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
-        <input type="text" inputMode="numeric"
+        <input type="text" inputMode="numeric" autoComplete="off"
           id={inputId} name={inputId}
           aria-describedby={[hintId, hasError ? errId : undefined].filter(Boolean).join(" ") || undefined}
           aria-invalid={hasError}

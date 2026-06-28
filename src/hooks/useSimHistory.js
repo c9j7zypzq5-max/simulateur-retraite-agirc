@@ -1,10 +1,26 @@
 const KEY = 'mesim_history_v1';
 export const FREE_SIM_LIMIT = 5;
 
+// Module-level cache: avoids repeated JSON.parse on every getHistory() call.
+let _cache = null; // { raw: string | null, parsed: Entry[] }
+
+function isValidEntry(e) {
+  return e !== null && typeof e === 'object' && typeof e.shareUrl === 'string';
+}
+
+function _invalidateCache() { _cache = null; }
+
 export function useSimHistory() {
   function getHistory() {
-    try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
-    catch { return []; }
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (_cache && _cache.raw === raw) return _cache.parsed;
+      const arr = raw ? JSON.parse(raw) : [];
+      const valid = Array.isArray(arr) ? arr.filter(isValidEntry) : [];
+      _cache = { raw, parsed: valid };
+      return valid;
+    }
+    catch { _cache = null; return []; }
   }
 
   // Sauvegarde une simulation ; déduplique par shareUrl
@@ -17,6 +33,7 @@ export function useSimHistory() {
         ...(reportSnapshot ? { reportSnapshot } : {}),
       };
       localStorage.setItem(KEY, JSON.stringify([entry, ...filtered]));
+      _invalidateCache();
       return true;
     } catch { return false; }
   }
@@ -24,11 +41,12 @@ export function useSimHistory() {
   function removeEntry(id) {
     try {
       localStorage.setItem(KEY, JSON.stringify(getHistory().filter(e => e.id !== id)));
+      _invalidateCache();
     } catch {}
   }
 
   function clearHistory() {
-    try { localStorage.removeItem(KEY); } catch {}
+    try { localStorage.removeItem(KEY); _invalidateCache(); } catch {}
   }
 
   function updateEntry(id, { label, note }) {
@@ -37,6 +55,7 @@ export function useSimHistory() {
         e.id === id ? { ...e, ...(label !== undefined ? { label } : {}), ...(note !== undefined ? { note } : {}) } : e
       );
       localStorage.setItem(KEY, JSON.stringify(history));
+      _invalidateCache();
       return true;
     } catch { return false; }
   }

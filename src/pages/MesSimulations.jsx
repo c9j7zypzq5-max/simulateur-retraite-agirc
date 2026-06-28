@@ -67,7 +67,7 @@ export default function MesSimulations() {
   const [selected, setSelected] = useState(new Set());
   const [compareEntries, setCompareEntries] = useState(null);
   const [compareError, setCompareError] = useState("");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 640);
+  const [isMobile, setIsMobile] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   useEffect(() => {
@@ -79,6 +79,7 @@ export default function MesSimulations() {
     refresh();
     window.addEventListener("storage", refresh);
     const handleResize = () => setIsMobile(window.innerWidth < 640);
+    setIsMobile(window.innerWidth < 640);
     window.addEventListener("resize", handleResize);
     return () => {
       robots?.setAttribute('content', 'index, follow');

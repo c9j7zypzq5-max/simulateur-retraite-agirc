@@ -6,6 +6,7 @@ import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import { useToast } from "../context/ToastContext.jsx";
 
 const GoogleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
@@ -23,6 +24,7 @@ export default function Connexion() {
   const { user, isConfigured, signUp, signIn, signInGoogle, resetPassword } = useAuth();
   const { t, locale } = useTranslation();
 
+  const showToast = useToast();
   const next = params.get("next") || localePath("/compte", locale);
   const [mode, setMode] = useState("signin"); // signin | signup | reset
   const [email, setEmail] = useState("");
@@ -59,6 +61,7 @@ export default function Connexion() {
         setMode("signin");
         return;
       }
+      showToast?.(locale === "en" ? "Welcome to Simfinly!" : "Bienvenue sur Simfinly !", "success");
       navigate(next, { replace: true });
     } catch {
       setError(locale === "en" ? "An error occurred. Please try again." : "Une erreur est survenue. Réessayez.");

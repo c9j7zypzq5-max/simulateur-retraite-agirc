@@ -97,6 +97,12 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     return () => { abortRef.current?.abort(); };
   }, []);
 
+  // Précharge jsPDF et html2canvas après le montage pour que le premier clic soit instantané
+  useEffect(() => {
+    import("jspdf").catch(() => {});
+    import("html2canvas").catch(() => {});
+  }, []);
+
   const btnStyle = {
     display: "inline-flex", alignItems: "center", gap: 6,
     padding: "7px 14px", background: "var(--card-bg)",
