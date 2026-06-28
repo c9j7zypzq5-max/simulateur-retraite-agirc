@@ -194,8 +194,8 @@ export default function RetraiteAnticipee() {
   const res = useMemo(() => calcRetraiteAnticipee(vals), [anneeNaissance, ageFin, trimestresCotises, agePremierTrimestre, salaireMensuelBrut]); // eslint-disable-line react-hooks/exhaustive-deps
 
   usePageMeta(
-    "Simulateur retraite anticipée carrières longues 2026 — Départ avant l'âge légal",
-    "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée et l'impact de la décote ou surcote. Barème officiel par génération, réforme 2023."
+    "Simulateur retraite carrières longues 2026 — RACL, éligibilité et pension CNAV",
+    "Vérifiez votre éligibilité au dispositif carrières longues (RACL) et estimez votre pension CNAV. Décote, surcote, trimestres requis — barème officiel par génération, réforme 2023."
   );
 
   useEffect(() => {
@@ -243,7 +243,7 @@ export default function RetraiteAnticipee() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur retraite anticipée carrières longues 2026",
+        "name": "Simulateur retraite carrières longues 2026",
         "url": "https://www.simfinly.com/simulateurs/retraite-anticipee",
         "description": "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée et l'impact de la décote ou surcote selon la réforme 2023 (loi Borne).",
         "applicationCategory": "FinanceApplication",
@@ -273,9 +273,9 @@ export default function RetraiteAnticipee() {
       <main id="main-content" style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/retraite-anticipee" size={34} />}
-          title="Retraite anticipée carrières longues"
-          subtitle="Départ avant l'âge légal · Dispositif RACL · Réforme 2023"
-          desc="Vérifiez votre éligibilité au départ anticipé pour carrières longues (RACL), estimez votre pension CNAV de base et l'impact de la décote ou surcote selon votre génération et vos trimestres cotisés."
+          title="Retraite carrières longues"
+          subtitle="Dispositif RACL · Éligibilité et pension CNAV · Réforme 2023"
+          desc="Vérifiez votre éligibilité au dispositif carrières longues (RACL), estimez votre pension CNAV et l'impact de la décote ou surcote selon votre génération et vos trimestres cotisés."
           badge="Retraite · RACL 2026"
         />
 
