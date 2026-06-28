@@ -79,6 +79,7 @@ const FreelanceVsSalarie = lazy(() => import("./pages/simulateurs/FreelanceVsSal
 const Divorce            = lazy(() => import("./pages/simulateurs/Divorce.jsx"));
 const RetraiteAnticipee  = lazy(() => import("./pages/simulateurs/RetraiteAnticipee.jsx"));
 const Donation           = lazy(() => import("./pages/simulateurs/Donation.jsx"));
+const FlatTax            = lazy(() => import("./pages/simulateurs/FlatTax.jsx"));
 const EpargneSalariale   = lazy(() => import("./pages/simulateurs/EpargneSalariale.jsx"));
 const DeficitFoncier     = lazy(() => import("./pages/simulateurs/DeficitFoncier.jsx"));
 const FraisNotaire       = lazy(() => import("./pages/simulateurs/FraisNotaire.jsx"));
@@ -301,6 +302,7 @@ export default function App() {
         <Route path="/simulateurs/pension-legale" element={<PensionLegaleBE />} />
         <Route path="/simulateurs/retraite-anticipee" element={<RetraiteAnticipee />} />
         <Route path="/simulateurs/donation" element={<Donation />} />
+        <Route path="/simulateurs/flat-tax" element={<FlatTax />} />
         <Route path="/simulateurs/epargne-salariale" element={<EpargneSalariale />} />
         <Route path="/simulateurs/deficit-foncier" element={<DeficitFoncier />} />
         {/* Outils */}

@@ -123,9 +123,14 @@ export const RECOMMENDATIONS = {
   ],
 
   // ── Impôts & Transmission ───────────────────────────────────────────────────
+  '/simulateurs/flat-tax': [
+    { icon: "📋", label: "Simulez votre impôt sur le revenu", description: "Vérifiez votre TMI pour savoir si l'option barème vous est favorable face à la flat tax.", to: "/simulateurs/impot-revenu", cta: "Simuler l'impôt →" },
+    { icon: "🛡️", label: "Optimisez votre assurance-vie", description: "L'assurance-vie bénéficie d'une fiscalité allégée après 8 ans : 7,5 % d'IR au lieu de 12,8 %.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
+    { icon: "💼", label: "Réduisez l'impôt avec un PER", description: "Les versements PER sont déductibles du revenu imposable et réduisent votre TMI.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+  ],
   '/simulateurs/impot-revenu': [
     { icon: "💼", label: "Réduisez l'impôt avec un PER", description: "Les versements sur un PER réduisent directement votre revenu imposable. Estimez l'économie.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-    { icon: "🎁", label: "Donation vs succession", description: "Anticipez la transmission de votre patrimoine pour optimiser la fiscalité globale.", to: "/simulateurs/donation", cta: "Comparer →" },
+    { icon: "📊", label: "Flat tax ou barème — comparez", description: "Si vous percevez des dividendes, intérêts ou plus-values, calculez l'option la plus avantageuse.", to: "/simulateurs/flat-tax", cta: "Comparer PFU vs barème →" },
     { icon: "🏚", label: "Déficit foncier", description: "Si vous avez un bien locatif, les travaux peuvent générer un déficit foncier déductible.", to: "/simulateurs/deficit-foncier", cta: "Calculer →" },
   ],
   '/simulateurs/succession': [

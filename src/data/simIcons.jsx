@@ -6,7 +6,7 @@ import {
   Stethoscope, Wheat, Coins, KeyRound, Receipt, TrendingUp, PieChart, Wallet,
   PiggyBank, Flame, Gem, BarChart3, Clock, CalendarDays, Shield, CreditCard,
   Calculator, QrCode, ScrollText, Users, Gavel, Euro, Award, Gift, Hourglass,
-  HandCoins, Home, Stamp, HeartHandshake, ArrowLeftRight, TrendingDown,
+  HandCoins, Home, Stamp, HeartHandshake, ArrowLeftRight, TrendingDown, Percent,
 } from "lucide-react";
 
 const MAP = {
@@ -46,6 +46,7 @@ const MAP = {
   "/simulateurs/pension-reversion": HeartHandshake,
   "/simulateurs/rente-capital": ArrowLeftRight,
   "/simulateurs/inflation": TrendingDown,
+  "/simulateurs/flat-tax": Percent,
   // Simulateurs belges
   "/simulateurs/pension-legale": Award,
   "/simulateurs/impot-revenu-be": Euro,
