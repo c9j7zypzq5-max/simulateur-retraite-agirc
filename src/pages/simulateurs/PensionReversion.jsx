@@ -185,7 +185,7 @@ export default function PensionReversion() {
       <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/pension-reversion" size={34} />}
-          badge="Retraite · Simulation 2025"
+          badge="Retraite · Simulation 2026"
           title="Simulateur pension de réversion"
           subtitle="Conjoint survivant · Base & complémentaire"
           desc="Estimez la pension de réversion du conjoint survivant : 54 % de la retraite de base (CNAV), 60 % de la complémentaire Agirc-Arrco, en tenant compte de la condition de ressources et de l'âge."
@@ -324,7 +324,7 @@ export default function PensionReversion() {
           />
         )}
 
-        {hasResult && <AffiliateCTA type="retraite" />}
+        {hasInput && <AffiliateCTA type="retraite" />}
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>

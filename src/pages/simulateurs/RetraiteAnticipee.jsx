@@ -1,8 +1,9 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { PMSS } from "../../config/constants.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
@@ -135,8 +136,6 @@ function calcRetraiteAnticipee({
   };
 }
 
-const LIEN_OPTIONS = []; // pas utilisé ici
-
 const DEFAULT = {
   anneeNaissance: 1975,
   ageFin: 62,
@@ -182,6 +181,7 @@ function Row({ label, value, highlight, ok, warn }) {
 
 export default function RetraiteAnticipee() {
   const [theme, setTheme] = useTheme();
+  const isMobile = useIsMobile();
   const init = useMemo(() => fromParams(readShareParams()), []);
 
   const [anneeNaissance,      setAnneeNaissance]      = useState(init.anneeNaissance);
@@ -193,10 +193,22 @@ export default function RetraiteAnticipee() {
   const vals = { anneeNaissance, ageFin, trimestresCotises, agePremierTrimestre, salaireMensuelBrut };
   const res = useMemo(() => calcRetraiteAnticipee(vals), [anneeNaissance, ageFin, trimestresCotises, agePremierTrimestre, salaireMensuelBrut]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Retraite Anticipée Carrières Longues 2026 | simfinly.com",
-    description: "Calculez votre éligibilité au départ anticipé (RACL), votre pension estimée, la décote ou surcote applicable selon la réforme 2023 (loi Borne). Barème officiel par génération.",
-  });
+  usePageMeta(
+    "Simulateur retraite anticipée carrières longues 2026 — Départ avant l'âge légal",
+    "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée et l'impact de la décote ou surcote. Barème officiel par génération, réforme 2023."
+  );
+
+  useEffect(() => {
+    track('simulator_view', { name: 'retraite-anticipee' });
+    if (!sessionStorage.getItem('tracked_retraite-anticipee')) {
+      sessionStorage.setItem('tracked_retraite-anticipee', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'retraite-anticipee' }),
+      }).catch(() => {});
+    }
+  }, []);
 
   const animPension = useAnimatedNumber(res.pensionBrute);
 
@@ -205,40 +217,71 @@ export default function RetraiteAnticipee() {
   const isDecote = res.decotePct > 0;
   const isSurcote = res.surcotePct > 0;
 
-
-  const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px" };
-
-  const jsonLdData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "SoftwareApplication",
-        name: "Simulateur Retraite Anticipée Carrières Longues 2026",
-        url: "https://www.simfinly.com/simulateurs/retraite-anticipee",
-        description: "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée, et la décote ou surcote applicable selon la réforme 2023.",
-        applicationCategory: "FinanceApplication",
-        operatingSystem: "Web",
-      },
+  const report = {
+    title: "Simulateur retraite anticipée carrières longues",
+    highlight: { label: "Pension brute estimée (CNAV)", value: `${fmtEur(res.pensionBrute)}/mois` },
+    params: [
+      { label: "Année de naissance", value: String(anneeNaissance) },
+      { label: "Âge souhaité de départ", value: `${ageFin} ans` },
+      { label: "Trimestres cotisés", value: String(trimestresCotises) },
+      { label: "Âge au 1er trimestre", value: `${agePremierTrimestre} ans` },
+      { label: "Salaire mensuel brut", value: fmtEur(salaireMensuelBrut) },
+    ],
+    results: [
+      { label: "Pension brute estimée (CNAV)", value: `${fmtEur(res.pensionBrute)}/mois`, strong: true },
+      { label: "Âge légal de départ", value: res.ageRefLabel },
+      { label: "Trimestres requis", value: `${res.dureeRef} trim` },
+      { label: "Éligibilité RACL", value: res.racl.eligible ? `Éligible — départ à ${res.racl.ageDepart} ans` : "Non éligible" },
+      ...(isDecote ? [{ label: "Décote appliquée", value: `−${res.decotePct.toFixed(2)} %` }] : []),
+      ...(isSurcote ? [{ label: "Surcote appliquée", value: `+${res.surcotePct.toFixed(2)} %` }] : []),
     ],
   };
 
+  const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px" };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur retraite anticipée carrières longues 2026",
+        "url": "https://www.simfinly.com/simulateurs/retraite-anticipee",
+        "description": "Calculez votre éligibilité au départ anticipé pour carrières longues (RACL), votre pension CNAV estimée et l'impact de la décote ou surcote selon la réforme 2023 (loi Borne).",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "HowTo",
+        "name": "Comment vérifier son éligibilité à la retraite anticipée carrières longues",
+        "description": "Calculer son droit au départ anticipé RACL et estimer sa pension CNAV en quatre étapes.",
+        "step": [
+          { "@type": "HowToStep", "name": "Saisir son année de naissance", "text": "Votre année de naissance détermine l'âge légal de départ et la durée de cotisation requise pour le taux plein selon la réforme 2023." },
+          { "@type": "HowToStep", "name": "Indiquer ses trimestres cotisés", "text": "Renseignez le nombre de trimestres validés, disponible sur votre relevé de carrière sur info-retraite.fr." },
+          { "@type": "HowToStep", "name": "Préciser l'âge au premier trimestre cotisé", "text": "Si vous avez commencé à travailler avant 21 ans (ou 17 ans), vous pouvez être éligible au dispositif carrières longues (RACL) et partir dès 60 ou 58 ans." },
+          { "@type": "HowToStep", "name": "Lire les résultats", "text": "Le simulateur indique votre éligibilité RACL, l'âge de départ possible, la décote ou surcote appliquée, et votre pension brute CNAV estimée." },
+        ],
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={jsonLdData} />
-
-      <div style={{ maxWidth: 880, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/retraite-anticipee" size={34} />}
-          title="Retraite anticipée"
-          subtitle="Carrières longues · Réforme 2023 (loi Borne)"
-          desc="Estimez votre éligibilité au départ anticipé, votre pension de base CNAV et l'impact de la décote ou surcote selon votre génération et vos trimestres cotisés."
-          badge="Retraite · RACL"
+          title="Retraite anticipée carrières longues"
+          subtitle="Départ avant l'âge légal · Dispositif RACL · Réforme 2023"
+          desc="Vérifiez votre éligibilité au départ anticipé pour carrières longues (RACL), estimez votre pension CNAV de base et l'impact de la décote ou surcote selon votre génération et vos trimestres cotisés."
+          badge="Retraite · RACL 2026"
         />
 
         <AdUnit slot="retraite-anticipee-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, marginBottom: 22 }}>Votre situation</h2>
@@ -414,32 +457,40 @@ export default function RetraiteAnticipee() {
 
         <AdUnit slot="retraite-anticipee-mid" style={{ margin: "24px 0" }} />
 
-        {/* FAQ */}
+        {/* À propos */}
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>À propos de la retraite anticipée carrières longues</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le dispositif carrières longues (RACL)</h3>
+            <p style={{ marginBottom: 14 }}>Le dispositif de Retraite Anticipée pour Carrières Longues (RACL) permet aux assurés ayant commencé à travailler jeune de partir avant l'âge légal. Après la <strong>réforme 2023 (loi Borne)</strong>, un départ anticipé est possible dès <strong>60 ans</strong> si vous avez cotisé votre premier trimestre avant 21 ans, ou dès <strong>58 ans</strong> si vous avez commencé avant 17 ans. Dans les deux cas, vous devez avoir validé la durée requise pour votre génération augmentée de 2 trimestres supplémentaires.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>L'impact de la réforme 2023 par génération</h3>
+            <p style={{ marginBottom: 14 }}>La réforme 2023 a progressivement relevé l'âge légal à 64 ans et allongé la durée de cotisation jusqu'à 172 trimestres (43 ans) pour les générations nées à partir de 1968. Pour chaque génération, l'âge légal et la durée requise sont différents : consultez votre relevé de carrière sur <strong>info-retraite.fr</strong> pour connaître vos droits exacts.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>Décote, surcote et pension CNAV</h3>
+            <p>La <strong>pension de base CNAV</strong> est calculée selon la formule : salaire annuel moyen (25 meilleures années, plafonné au PMSS) × 50 % × prorata de trimestres × coefficient de décote ou surcote. Chaque trimestre manquant entraîne une décote de 1,25 % (jusqu'à −25 %) et chaque trimestre supplémentaire une surcote de +1,25 %, sans plafond. La retraite complémentaire AGIRC-ARRCO s'ajoute à ce montant et représente généralement 30 à 50 % de plus.</p>
+          </div>
+        </div>
+
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-anticipee']} />
 
         <FaqSection
-          title="Questions fréquentes — Retraite anticipée"
+          title="Questions fréquentes — Retraite anticipée carrières longues"
           items={FAQ}
         />
 
-        {/* À propos */}
-        <AccordionSection title="À propos de ce simulateur">
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
-            Ce simulateur applique les règles issues de la <strong>réforme des retraites 2023 (loi Borne)</strong> : âges légaux progressifs selon l'année de naissance, allongement de la durée de cotisation jusqu'à 172 trimestres (43 ans) pour les générations 1968+, et critères du dispositif Retraite Anticipée pour Carrières Longues (RACL).
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            La <strong>pension CNAV de base</strong> est estimée par la formule officielle simplifiée : Salaire de référence × 50 % × prorata de trimestres × coefficient décote/surcote. Le salaire de référence est le <em>salaire annuel moyen</em> de vos 25 meilleures années, plafonné au PMSS (3 864 €/mois en 2025). Ce simulateur utilise votre salaire actuel comme proxy — pour plus de précision, consultez votre relevé de carrière sur <strong>info-retraite.fr</strong>.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            La <strong>retraite complémentaire AGIRC-ARRCO</strong> (pour les salariés du secteur privé) s'ajoute à la pension de base et représente généralement 30 à 50 % du total. Ce simulateur ne la calcule pas — utilisez le simulateur AGIRC-ARRCO disponible sur ce site.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            <strong>Ce simulateur est indicatif.</strong> Pour votre estimation personnalisée officielle, utilisez le simulateur M@rel sur info-retraite.fr ou contactez votre caisse de retraite.
-          </p>
-        </AccordionSection>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+          Simulation indicative basée sur la réforme 2023 (loi Borne) · Formule CNAV simplifiée · Consultez info-retraite.fr pour votre estimation personnalisée officielle
+        </p>
 
-        <ShareBar url={shareUrl} title="Simulation retraite anticipée" />
-      </div>
+        <div style={{ margin: "24px 0" }}>
+          <AdUnit slot="auto" format="auto" />
+        </div>
+
+        <ShareBar
+          params={toParams(vals)}
+          report={report}
+          name="retraite-anticipee"
+        />
+      </main>
       <Footer />
     </div>
   );

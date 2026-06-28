@@ -1,7 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { useIsMobile } from "../../hooks/useIsMobile.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
@@ -183,6 +184,7 @@ function Row({ label, value, highlight, positive, negative }) {
 
 export default function Donation() {
   const [theme, setTheme] = useTheme();
+  const isMobile = useIsMobile();
   const init = useMemo(() => fromParams(readShareParams()), []);
 
   const [valeurBien,           setValeurBien]           = useState(init.valeurBien);
@@ -194,10 +196,22 @@ export default function Donation() {
   const vals = { valeurBien, lien, ageDonateur, donationsAnterieures, anneesDernierDon };
   const res = useMemo(() => calcDonation(vals), [valeurBien, lien, ageDonateur, donationsAnterieures, anneesDernierDon]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Donation vs Succession 2026 — Économie fiscale | simfinly.com",
-    description: "Comparez les droits de donation de votre vivant et les droits de succession. Calculez l'économie fiscale, l'abattement restant et la date de renouvellement. Barème officiel 2025.",
-  });
+  usePageMeta(
+    "Simulateur donation de son vivant 2026 — Droits et économie fiscale",
+    "Calculez les droits de donation de son vivant et comparez avec les droits de succession. Abattement disponible, économie fiscale, barème officiel 2025 — gratuit et sans inscription."
+  );
+
+  useEffect(() => {
+    track('simulator_view', { name: 'donation' });
+    if (!sessionStorage.getItem('tracked_donation')) {
+      sessionStorage.setItem('tracked_donation', '1');
+      fetch('/api/track', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ slug: 'donation' }),
+      }).catch(() => {});
+    }
+  }, []);
 
   const animEconomie  = useAnimatedNumber(Math.max(0, res.economieFiscale));
   const animDonation  = useAnimatedNumber(res.droitsDonation);
@@ -210,39 +224,72 @@ export default function Donation() {
 
   const heroColor = isEconomie ? "#22c55e" : isCouteux ? "#ef4444" : "var(--gold)";
 
-  const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px" };
-
-  const jsonLdData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "SoftwareApplication",
-        name: "Simulateur Donation vs Succession 2026",
-        url: "https://www.simfinly.com/simulateurs/donation",
-        description: "Comparez les droits de donation et de succession pour optimiser la transmission de votre patrimoine. Barème 2025.",
-        applicationCategory: "FinanceApplication",
-        operatingSystem: "Web",
-      },
+  const report = {
+    title: "Simulateur donation de son vivant",
+    highlight: {
+      label: isEconomie ? "Économie fiscale" : isCouteux ? "Surcoût de la donation" : "Résultat fiscal",
+      value: `${isEconomie ? "+" : isCouteux ? "−" : ""}${fmtEur(Math.abs(res.economieFiscale))}`,
+    },
+    params: [
+      { label: "Valeur du bien", value: fmtEur(valeurBien) },
+      { label: "Lien de parenté", value: LIEN_OPTIONS.find(o => o.value === lien)?.label || lien },
+      { label: "Âge du donateur", value: `${ageDonateur} ans` },
+      { label: "Donations antérieures", value: fmtEur(donationsAnterieures) },
+    ],
+    results: [
+      { label: "Droits de donation maintenant", value: fmtEur(res.droitsDonation), strong: true },
+      { label: "Droits si succession (sans don)", value: fmtEur(res.droitsSuccSansAction) },
+      { label: isEconomie ? "Économie fiscale" : "Surcoût", value: `${isEconomie ? "+" : "−"}${fmtEur(Math.abs(res.economieFiscale))}`, strong: true },
+      { label: "Abattement disponible", value: fmtEur(res.abattRestant) },
+      { label: "Renouvellement abattement", value: res.anneesAvantRenouvellement === 0 ? "Disponible" : `${res.anneeRenouvellement}` },
     ],
   };
 
+  const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "20px 22px" };
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "WebApplication",
+        "name": "Simulateur donation de son vivant 2026",
+        "url": "https://www.simfinly.com/simulateurs/donation",
+        "description": "Calculez les droits de donation de son vivant et comparez avec les droits de succession. Économie fiscale, abattement restant, barème officiel 2025.",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+        "inLanguage": "fr-FR",
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": FAQ.map(f => ({
+          "@type": "Question", "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+      }} />
+      <JsonLd data={{
+        "@context": "https://schema.org", "@type": "HowTo",
+        "name": "Comment calculer les droits d'une donation de son vivant",
+        "description": "Estimer l'économie fiscale d'une donation de son vivant par rapport à une succession en quatre étapes.",
+        "step": [
+          { "@type": "HowToStep", "name": "Indiquer la valeur du bien à transmettre", "text": "Saisissez la valeur vénale du bien que vous souhaitez donner : immobilier, liquidités, valeurs mobilières." },
+          { "@type": "HowToStep", "name": "Choisir le lien de parenté", "text": "Sélectionnez le lien entre le donateur et le bénéficiaire. L'abattement varie : 100 000 € pour un enfant, 80 724 € pour un conjoint/PACS, 15 932 € pour un frère/sœur." },
+          { "@type": "HowToStep", "name": "Renseigner l'historique des donations", "text": "Indiquez les donations antérieures effectuées dans les 15 dernières années. Elles réduisent l'abattement disponible." },
+          { "@type": "HowToStep", "name": "Comparer les résultats", "text": "Le simulateur calcule les droits de donation maintenant vs les droits de succession et affiche l'économie fiscale réalisée en donnant de son vivant." },
+        ],
+      }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <JsonLd data={jsonLdData} />
-
-      <div style={{ maxWidth: 880, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/donation" size={34} />}
-          title="Donation vs Succession"
-          subtitle="Optimisation fiscale · Barème 2025"
-          desc="Comparez les droits à payer si vous donnez maintenant ou si vous laissez hériter. Calculez l'économie fiscale, l'abattement restant et la stratégie optimale."
-          badge="Patrimoine · Transmission"
+          title="Simulateur donation de son vivant"
+          subtitle="Droits de donation · Économie fiscale · Barème 2026"
+          desc="Calculez les droits à payer si vous donnez de votre vivant et comparez avec les droits de succession. Économie fiscale, abattement disponible, date de renouvellement — barème officiel 2025."
+          badge="Patrimoine · Transmission 2026"
         />
 
         <AdUnit slot="donation-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, marginBottom: 22 }}>Votre situation</h2>
@@ -448,23 +495,32 @@ export default function Donation() {
         />
 
         {/* À propos */}
-        <AccordionSection title="À propos de ce simulateur">
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
-            Ce simulateur compare deux stratégies de transmission patrimoniale : donner de son vivant ou laisser les biens entrer dans la succession. Il applique les barèmes des <strong>droits de mutation à titre gratuit (DMTG) 2025</strong>, identiques pour les donations et les successions.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            La principale différence entre donation et succession tient aux <strong>abattements</strong> : en succession, le conjoint/partenaire PACS est totalement exonéré, tandis qu'en donation il bénéficie d'un abattement de 80 724 €. Pour les enfants, l'abattement de 100 000 € est identique dans les deux cas, mais en succession les donations des 15 dernières années sont rapportées et viennent l'amputer.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            Le <strong>don familial de sommes d'argent</strong> (jusqu'à 31 865 € exonérés, cumulable avec les abattements) et la <strong>donation en nue-propriété</strong> (qui réduit la base taxable selon l'âge du donateur) ne sont pas inclus dans ce simulateur. Un notaire peut vous présenter l'ensemble des leviers adaptés à votre situation.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            <strong>Ce simulateur est indicatif.</strong> Pour votre stratégie de transmission, consultez un notaire ou un conseiller en gestion de patrimoine.
-          </p>
-        </AccordionSection>
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 8 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 20 }}>À propos de la donation de son vivant</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Pourquoi donner de son vivant ?</h3>
+            <p style={{ marginBottom: 14 }}>La <strong>donation de son vivant</strong> permet de transmettre un patrimoine tout en bénéficiant d'abattements fiscaux rechargés tous les 15 ans. En donnant de son vivant à ses enfants, chaque parent peut ainsi transmettre jusqu'à 100 000 € par enfant sans payer aucun droit de donation. Ces abattements se reconstituent intégralement au bout de 15 ans, permettant une stratégie de donation glissante extrêmement efficace pour réduire la future succession.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>Donation vs succession : quelle différence ?</h3>
+            <p style={{ marginBottom: 14 }}>Les barèmes des droits de mutation à titre gratuit (DMTG) 2025 sont identiques pour les donations et les successions. La principale différence tient aux abattements : en succession, le conjoint/partenaire PACS est totalement exonéré, tandis qu'en donation il bénéficie d'un abattement de 80 724 €. Pour les enfants, l'abattement de 100 000 € est identique, mais en succession les donations des 15 dernières années sont rapportées fiscalement et réduisent l'abattement disponible.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>Les leviers complémentaires</h3>
+            <p>Le <strong>don familial de sommes d'argent</strong> (jusqu'à 31 865 € exonérés, cumulable avec l'abattement principal) et la <strong>donation en nue-propriété</strong> (qui réduit la base taxable selon l'âge du donateur) sont des outils puissants non inclus dans ce simulateur. Pour votre stratégie de transmission patrimoniale, consultez un notaire ou un conseiller en gestion de patrimoine.</p>
+          </div>
+        </div>
 
-        <ShareBar url={shareUrl} title="Simulation donation vs succession" />
-      </div>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+          Simulation indicative basée sur les barèmes DMTG 2025 · Ne constitue pas un conseil fiscal ou notarial · Consultez un notaire pour votre situation
+        </p>
+
+        <div style={{ margin: "24px 0" }}>
+          <AdUnit slot="auto" format="auto" />
+        </div>
+
+        <ShareBar
+          params={toParams(vals)}
+          report={report}
+          name="donation"
+        />
+      </main>
       <Footer />
     </div>
   );
