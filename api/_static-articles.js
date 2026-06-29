@@ -688,6 +688,747 @@ export const STATIC_ARTICLES = [
 <h2>Projeter son épargne salariale</h2>
 <p>Le simulateur d'épargne salariale de simfinly.com calcule la valeur de votre PEE ou PERcol selon vos versements, l'abondement et un rendement estimé. Comparez la performance nette avec un livret A ou une assurance-vie.</p>`,
   },
+  // === Vague 3 — Articles prioritaires (commit 4A) ===
+  {
+    slug: 'investir-bourse-debutant-2026',
+    title: 'Investir en Bourse pour débutant en 2026 : par où commencer ?',
+    category: 'Finances',
+    readTime: 8,
+    publishedAt: '2026-06-01T09:00:00Z',
+    intro: "Actions, ETF, PEA ou compte-titres : comment investir ses premiers euros en Bourse sans se perdre ni prendre de risques inconsidérés. Le guide structuré pour débutants en 2026.",
+    content: `<h2>Pourquoi investir en Bourse plutôt que sur un livret ?</h2>
+<p>Le Livret A à 2,4 % (2026) offre un rendement garanti mais souvent inférieur à l'inflation sur le long terme. La Bourse, en revanche, a historiquement rapporté 7-10 % par an en moyenne sur 20 ans (indice MSCI World) — mais avec de la volatilité. La règle de base : n'investissez en Bourse que les fonds dont vous n'aurez pas besoin avant <strong>5 à 10 ans minimum</strong>.</p>
+<p>L'inflation érode le capital liquide : 10 000 € sur livret à 2,4 % pendant 10 ans donnent ~12 700 €, mais avec une inflation à 2 %, votre pouvoir d'achat réel n'augmente presque pas. À l'inverse, 10 000 € investis à 7 % annuel donnent ~19 700 € réels.</p>
+<h2>ETF ou actions individuelles ? Le choix du débutant</h2>
+<p>Les <strong>ETF indiciels</strong> (trackers) répliquent un indice boursier (CAC 40, MSCI World, S&P 500). Leurs avantages pour un débutant sont décisifs :</p>
+<ul>
+<li><strong>Diversification instantanée</strong> : un seul ETF MSCI World expose à 1 500 entreprises dans 23 pays.</li>
+<li><strong>Frais ultra-faibles</strong> : 0,07-0,30 %/an vs 1-2 % pour les OPCVM actifs.</li>
+<li><strong>Performance</strong> : 80-90 % des fonds actifs font moins bien que leur indice de référence sur 10 ans.</li>
+</ul>
+<p>Les actions individuelles nécessitent une analyse approfondie de l'entreprise (fondamentaux, secteur, concurrence). Réservez-les à une petite fraction de votre portefeuille (<10 %) si vous souhaitez vous exercer.</p>
+<h2>PEA ou compte-titres ordinaire ?</h2>
+<p>Le <strong>PEA</strong> (Plan d'Épargne en Actions) est l'enveloppe fiscale à privilégier pour investir en actions européennes :</p>
+<ul>
+<li>Exonération d'IR sur les plus-values et dividendes après 5 ans (seuls les prélèvements sociaux de 17,2 % restent dus).</li>
+<li>Plafond de versements : 150 000 €.</li>
+<li>Éligible à la plupart des ETF sur indices européens et mondiaux.</li>
+</ul>
+<p>Le <strong>compte-titres ordinaire</strong> (CTO) n'a pas de plafond et permet d'investir sur tous les marchés mondiaux, mais les gains sont soumis à la flat tax de 30 % (ou barème IR si plus avantageux). Utilisez-le en complément du PEA pour les ETF non éligibles PEA (S&P 500 USD, marchés émergents...).</p>
+<h2>La méthode DCA pour débuter sereinement</h2>
+<p>Le Dollar Cost Averaging (DCA) consiste à investir un montant fixe régulièrement (ex : 200 €/mois), quel que soit le niveau du marché. Cette stratégie élimine le risque de "point d'entrée" : vous achetez plus d'actions quand les marchés baissent, moins quand ils montent. Sur 10-20 ans, le DCA bat statistiquement l'investissement en une seule fois (lump sum) dans les scénarios défavorables.</p>
+<p>Commencez avec le simulateur d'épargne de simfinly.com pour projeter la valeur de votre portefeuille selon différents rendements et horizons.</p>`,
+  },
+  {
+    slug: 'choisir-assurance-vie-2026',
+    title: 'Choisir la meilleure assurance-vie en 2026 : critères, frais et stratégie',
+    category: 'Épargne',
+    readTime: 7,
+    publishedAt: '2026-06-02T09:00:00Z',
+    intro: "Fonds euros, unités de compte, frais sur versements, gestion pilotée : comment sélectionner un contrat d'assurance-vie adapté à vos objectifs en 2026.",
+    content: `<h2>Fonds euros ou unités de compte ?</h2>
+<p>Tout contrat d'assurance-vie propose deux types de supports :</p>
+<ul>
+<li><strong>Fonds euros</strong> : capital garanti, rendement autour de 2,5-3,5 % en 2025 selon les assureurs. Idéal pour l'épargne de précaution et la stabilité.</li>
+<li><strong>Unités de compte (UC)</strong> : supports investis sur les marchés (ETF, SCPI, obligations). Capital non garanti mais potentiel de rendement supérieur (5-8 % sur 10 ans pour un profil diversifié).</li>
+</ul>
+<p>La règle pratique : plus l'horizon est long (10+ ans), plus la part UC peut être élevée. À moins de 5 ans d'un objectif, privilégiez les fonds euros.</p>
+<h2>Les frais à comparer en priorité</h2>
+<p>Les frais impactent directement votre rendement final. Les points à vérifier :</p>
+<ul>
+<li><strong>Frais sur versements</strong> : 0 % sur les contrats en ligne, jusqu'à 3-4 % sur les contrats bancaires traditionnels. Sur 100 000 € versés, 3 % de frais = 3 000 € perdus immédiatement.</li>
+<li><strong>Frais de gestion annuels</strong> : 0,5-0,9 % sur fonds euros, 0,6-1 % sur UC. La différence de 0,5 % par an représente des milliers d'euros sur 20 ans.</li>
+<li><strong>Frais d'arbitrage</strong> : gratuits sur les meilleurs contrats en ligne.</li>
+</ul>
+<h2>Gestion libre ou gestion pilotée ?</h2>
+<p>En <strong>gestion libre</strong>, vous choisissez vous-même la répartition entre fonds euros et UC. Nécessite un minimum d'implication. En <strong>gestion pilotée</strong> (ou sous mandat), le gestionnaire adapte automatiquement l'allocation selon un profil (prudent, équilibré, dynamique). Plus simple mais avec des frais supplémentaires (0,2-0,5 %/an).</p>
+<p>Pour les débutants ou les personnes peu disponibles, la gestion pilotée est recommandée — à condition que les frais totaux restent raisonnables (moins de 1,5 % par an tout compris).</p>
+<h2>La fiscalité après 8 ans</h2>
+<p>Après 8 ans de détention, les retraits bénéficient d'un <strong>abattement annuel de 4 600 € (célibataire) ou 9 200 € (couple)</strong> sur les gains. Au-delà, les gains sont taxés à 7,5 % d'IR + 17,2 % de prélèvements sociaux (contre 30 % avant 8 ans). L'assurance-vie est aussi un outil de transmission : chaque bénéficiaire désigné reçoit jusqu'à 152 500 € en franchise de droits de succession.</p>`,
+  },
+  {
+    slug: 'dpe-renovation-travaux-2026',
+    title: 'DPE, rénovation et travaux en 2026 : aides MaPrimeRénov et impact sur la valeur',
+    category: 'Immobilier',
+    readTime: 7,
+    publishedAt: '2026-06-03T09:00:00Z',
+    intro: "Logement classé F ou G, rénovation énergétique, MaPrimeRénov 2026 : comment financer vos travaux et améliorer votre DPE pour vendre, louer ou économiser sur vos factures.",
+    content: `<h2>Qu'est-ce que le DPE et pourquoi il est crucial en 2026 ?</h2>
+<p>Le Diagnostic de Performance Énergétique (DPE) classe les logements de A (très performant) à G (passoire thermique) selon la consommation d'énergie et les émissions de CO₂. En 2026, les conséquences d'un mauvais DPE sont concrètes :</p>
+<ul>
+<li>Les logements classés <strong>G sont interdits à la location</strong> depuis 2025 (décret tertiaire).</li>
+<li>Les logements <strong>F sont interdits à la location pour les nouveaux baux</strong> depuis 2028.</li>
+<li>Un DPE dégradé peut réduire la valeur de revente de <strong>10-20 %</strong> selon les études SeLoger et Les Notaires de France.</li>
+</ul>
+<h2>MaPrimeRénov 2026 : les montants disponibles</h2>
+<p>MaPrimeRénov est la principale aide de l'État pour la rénovation énergétique. En 2026, elle s'articule en deux volets :</p>
+<ul>
+<li><strong>MaPrimeRénov Efficacité</strong> : pour les gestes d'isolation (murs, toiture, fenêtres) ou le changement de chauffage. Montant : 40-70 % des dépenses selon les revenus, plafonnée par geste.</li>
+<li><strong>MaPrimeRénov Décarbonation</strong> : pour le remplacement d'une chaudière gaz/fioul par une pompe à chaleur ou un poêle à granulés. Aide jusqu'à 10 000 € pour les ménages modestes.</li>
+</ul>
+<p>L'éco-PTZ (Prêt à Taux Zéro) pour la rénovation peut compléter jusqu'à 50 000 € sans intérêts, remboursable sur 20 ans.</p>
+<h2>Quel retour sur investissement pour la rénovation ?</h2>
+<p>Isoler ses combles (coût : 2 000-6 000 €) permet d'économiser en moyenne 15-20 % sur la facture de chauffage annuelle. Pour une maison à 2 500 €/an de chauffage, l'économie est de 375-500 €/an. Le retour sur investissement (sans aide) est de 4-16 ans. Avec les aides (30-70 %), le ROI tombe à 2-5 ans pour les foyers modestes.</p>
+<p>Pour les propriétaires bailleurs, rénover un F ou G en D ou E permet de relever les loyers de 3-8 % et d'éviter l'interdiction de location. L'investissement se rentabilise via les loyers supplémentaires et l'évitement des pénalités.</p>
+<h2>Comment simuler le bénéfice d'une rénovation ?</h2>
+<p>Commencez par un audit énergétique (obligatoire pour les passoires thermiques vendues) qui chiffre précisément les gains possibles par type de travaux. Les simulateurs France Rénov' et de simfinly.com permettent d'estimer l'aide disponible selon vos revenus, le type de logement et les travaux envisagés.</p>`,
+  },
+  {
+    slug: 'retraite-medecin-liberal-carmf-2026',
+    title: 'Retraite du médecin libéral en 2026 : CARMF, ASV et calcul de la pension',
+    category: 'Retraite',
+    readTime: 8,
+    publishedAt: '2026-06-04T09:00:00Z',
+    intro: "La retraite du médecin libéral repose sur 3 régimes : CARMF (régime de base + complémentaire) et l'Allocation Supplémentaire de Vieillesse (ASV). Comment calculer sa pension et optimiser son départ ?",
+    content: `<h2>Les trois piliers de la retraite médicale libérale</h2>
+<p>Un médecin libéral conventionné cotise à <strong>trois régimes distincts</strong> gérés par la CARMF (Caisse Autonome de Retraite des Médecins de France) :</p>
+<ul>
+<li><strong>Régime de base</strong> : pension proportionnelle aux revenus, plafonnée et à points. Cotisation annuelle en 2026 : environ 5 000-8 500 € selon le revenu.</li>
+<li><strong>Régime complémentaire</strong> : à points. Cotisation liée aux revenus non commerciaux (BNC).</li>
+<li><strong>ASV</strong> (Allocation Supplémentaire de Vieillesse) : financée à 2/3 par la CPAM (Assurance Maladie) et 1/3 par le médecin. Exclusive aux médecins conventionnés de secteur 1 et 2. Cotisation fixe annuelle (~5 000 €/an en 2026).</li>
+</ul>
+<h2>L'ASV : le régime spécifique aux médecins conventionnés</h2>
+<p>L'ASV est un avantage majeur de la convention médicale. La <strong>CPAM finance 2/3 de la cotisation</strong> : pour 1 € cotisé par le médecin, l'Assurance Maladie en verse 2. Ce mécanisme accélère l'accumulation des droits. La pension ASV à taux plein peut atteindre <strong>30 000-40 000 € brut annuels</strong> pour une carrière complète en secteur 1.</p>
+<p>Le secteur 2 bénéficie d'une ASV, mais avec une cotisation personnelle plus élevée et des droits légèrement réduits. Le secteur 3 (non conventionné) ne cotise pas à l'ASV.</p>
+<h2>Âge de départ et durée de cotisation</h2>
+<p>Les médecins libéraux relèvent du régime des professions libérales — l'âge légal est identique au régime général : <strong>64 ans</strong> pour les générations nées à partir de 1968. La durée requise pour le taux plein varie selon la génération (168-172 trimestres).</p>
+<p>Particularité : un médecin peut continuer à exercer et cotiser au-delà de 64 ans et bénéficier d'une <em>surcote</em> sur les régimes CARMF. Il est aussi possible de liquidier l'ASV à partir de 62 ans tout en continuant à exercer (cumul emploi-retraite libéral).</p>
+<h2>Estimer sa pension CARMF et ASV</h2>
+<p>La pension totale d'un médecin libéral à taux plein est typiquement de <strong>4 000-7 000 €/mois brut</strong> selon le niveau de revenus et la durée de carrière. Le simulateur retraite médecin libéral de simfinly.com projette vos droits CARMF et ASV selon votre spécialité, secteur et revenus annuels BNC.</p>`,
+  },
+  {
+    slug: 'retraite-artisan-commercant-ssi-2026',
+    title: 'Retraite artisan et commerçant (SSI) en 2026 : calcul, taux et pension nette',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-06-05T09:00:00Z',
+    intro: "Artisans et commerçants cotisent à la SSI (ex-RSI) pour leur retraite de base et complémentaire. Comment calculer sa pension, optimiser ses revenus et préparer sa sortie d'activité ?",
+    content: `<h2>Le régime SSI pour les artisans et commerçants</h2>
+<p>Depuis 2018, le Régime Social des Indépendants (RSI) a été intégré à la <strong>SSI</strong> (Sécurité Sociale des Indépendants), gérée par les organismes du régime général (CPAM, Urssaf). Artisans et commerçants cotisent sur leur revenu professionnel pour deux piliers :</p>
+<ul>
+<li><strong>Retraite de base</strong> : fonctionne comme le régime général CNAV, avec la même formule SAM × taux × prorata. Les cotisations sont calculées sur le bénéfice net (BIC).</li>
+<li><strong>Retraite complémentaire obligatoire (RCI)</strong> : à points, spécifique aux artisans et commerçants. Taux de cotisation : environ 7 % du revenu professionnel au-delà du PASS.</li>
+</ul>
+<h2>Les particularités du calcul de la retraite SSI</h2>
+<p>Le principal enjeu pour un artisan/commerçant est de <strong>valider ses trimestres</strong> : un trimestre est validé pour chaque tranche de revenus égale à 150 SMIC horaires (environ 1 690 € brut en 2026). Avec un revenu annuel de 6 760 €, vous validez 4 trimestres — le minimum pour une année pleine.</p>
+<p>Les années avec des revenus très faibles (début d'activité, difficultés) peuvent ne valider que 1 ou 2 trimestres, ce qui impacte le prorata de la pension finale. Le SAM est calculé sur les 25 meilleures années de revenus, comme au régime général.</p>
+<h2>Taux de remplacement : un défi pour les indépendants</h2>
+<p>Le taux de remplacement (ratio pension/dernier revenu) est souvent plus faible pour les artisans et commerçants que pour les salariés. Raison principale : les revenus déclarés (bénéfice net) sont parfois inférieurs au chiffre d'affaires réel, car les charges professionnelles sont déduites. La pension de retraite est calculée sur ces revenus nets.</p>
+<p>Pour compenser, les indépendants ont accès à une épargne retraite déductible plus généreuse via le <strong>PER TNS</strong> : jusqu'à 85 780 € de versements déductibles par an (10 % du bénéfice imposable + 15 % de la fraction entre 1 et 8 PASS).</p>
+<h2>Préparer sa sortie d'activité</h2>
+<p>Un artisan/commerçant peut opter pour la <strong>retraite progressive</strong> s'il réduit son activité, ou céder son entreprise (exonérations de plus-values sous conditions). La cession du fonds de commerce peut générer une plus-value partiellement défiscalisée qui complète la retraite. Le simulateur retraite artisan de simfinly.com projette votre pension SSI selon vos revenus annuels BIC et votre âge de départ.</p>`,
+  },
+  {
+    slug: 'comprendre-cotisations-sociales-2026',
+    title: 'Comprendre les cotisations sociales en 2026 : qui paye quoi et pourquoi',
+    category: 'Budget',
+    readTime: 6,
+    publishedAt: '2026-06-06T09:00:00Z',
+    intro: "Entre les cotisations salariales, patronales et les prélèvements sociaux, le bulletin de paie est souvent illisible. Le guide complet pour comprendre ce que vous cotisez et ce que ça vous ouvre comme droits.",
+    content: `<h2>Cotisations salariales vs cotisations patronales</h2>
+<p>En France, les charges sociales sont divisées en deux parts :</p>
+<ul>
+<li><strong>Cotisations salariales</strong> (prélevées sur votre salaire brut) : environ 22-23 % du salaire brut. Elles financent la maladie, la vieillesse (CNAV + complémentaire), le chômage et la prévoyance. Ce sont elles qui apparaissent comme retenues sur votre bulletin de paie.</li>
+<li><strong>Cotisations patronales</strong> (payées par l'employeur en plus du brut) : environ 42-45 % du salaire brut. Elles financent les mêmes risques + les accidents du travail, la formation professionnelle, la taxe d'apprentissage. L'employeur les verse directement à l'Urssaf.</li>
+</ul>
+<p>Concrètement : pour un salarié coûtant 3 000 € brut à l'employeur (coût total ~4 300 €), le net avant impôt est ~2 300 €, et le net après prélèvement à la source ~1 900-2 100 €.</p>
+<h2>Les prélèvements sociaux : CSG et CRDS</h2>
+<p>La CSG (Contribution Sociale Généralisée, 9,2 %) et la CRDS (Contribution au Remboursement de la Dette Sociale, 0,5 %) sont prélevées sur une assiette large incluant les revenus du capital (dividendes, intérêts, plus-values) à 17,2 %. Contrairement aux cotisations sociales, elles n'ouvrent pas de droits spécifiques — elles financent la protection sociale de façon globale.</p>
+<h2>Ce que vos cotisations financent</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Cotisation</th><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Droits ouverts</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Maladie/maternité</td><td style="padding:8px;border:1px solid #e5e7eb">Remboursements CPAM, indemnités journalières</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Vieillesse CNAV</td><td style="padding:8px;border:1px solid #e5e7eb">Trimestres et pension de base</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Agirc-Arrco</td><td style="padding:8px;border:1px solid #e5e7eb">Points de retraite complémentaire</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Chômage (Assédic)</td><td style="padding:8px;border:1px solid #e5e7eb">Allocation chômage en cas de perte d'emploi</td></tr>
+</tbody></table>
+<h2>Simuler son revenu net</h2>
+<p>Pour calculer votre salaire net à partir d'un brut, ou votre coût total employeur, le simulateur de simfinly.com intègre les taux 2026 selon le statut (cadre ou non-cadre) et prend en compte les allègements de cotisations patronales sur les bas salaires (allègement Fillon).</p>`,
+  },
+  {
+    slug: 'retraite-cadre-agirc-arrco-calcul',
+    title: 'Retraite du cadre en 2026 : calcul CNAV + Agirc-Arrco et coefficient de solidarité',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-06-07T09:00:00Z',
+    intro: "Les cadres cotisent à la fois au régime général CNAV et à l'Agirc-Arrco. Comment calculer sa pension complète, optimiser le timing du départ et éviter le coefficient de solidarité de -10 % ?",
+    content: `<h2>La structure de la retraite cadre : deux régimes superposés</h2>
+<p>Un cadre salarié accumule des droits dans deux régimes :</p>
+<ul>
+<li><strong>CNAV (régime général)</strong> : pension de base calculée sur le SAM (25 meilleures années, plafonnées au PASS) × taux × prorata. Maximum : 50 % du PASS, soit ~1 963 €/mois brut en 2026.</li>
+<li><strong>Agirc-Arrco (complémentaire)</strong> : points accumulés tout au long de la carrière. Valeur du point : 1,4159 € en 2026. Un cadre avec un salaire de 60 000 €/an pendant 30 ans peut accumuler 30 000-50 000 points, soit ~3 500-5 800 €/mois de pension complémentaire.</li>
+</ul>
+<p>La pension totale cadre typique est de <strong>2 500-5 000 €/mois brut</strong> selon la carrière et le niveau de salaire.</p>
+<h2>Le coefficient de solidarité Agirc-Arrco : le piège à éviter</h2>
+<p>Si vous liquidez votre retraite exactement à l'âge du taux plein CNAV, Agirc-Arrco applique un <strong>coefficient de solidarité de −10 %</strong> pendant 3 ans sur la pension complémentaire. Pour une pension complémentaire de 3 000 €/mois, cela représente une perte de 300 €/mois × 36 mois = <strong>10 800 € perdus</strong>.</p>
+<p>Solutions pour l'éviter :</p>
+<ul>
+<li><strong>Retarder d'un an</strong> : partir un an après le taux plein efface la pénalité et déclenche un bonus de +10 % pendant un an.</li>
+<li><strong>Retraite progressive</strong> : réduire progressivement son activité dès 60 ans tout en accumulant des points Agirc-Arrco.</li>
+</ul>
+<h2>Optimiser le timing de départ</h2>
+<p>Pour un cadre né en 1965 (taux plein à 63 ans 3 mois, 170 trimestres requis), le scénario optimal est souvent de partir à <strong>64 ans 3 mois</strong> : un an de décalage efface le coefficient de solidarité et génère une surcote CNAV de 5 %. Sur une espérance de vie de 20 ans après la retraite, ce délai d'un an peut valoir 50 000-80 000 € de pensions supplémentaires.</p>
+<p>Le simulateur cadre de simfinly.com calcule la pension totale CNAV + Agirc-Arrco et compare les scénarios de départ entre 62 et 67 ans pour votre génération et votre niveau de salaire.</p>`,
+  },
+  {
+    slug: 'pea-comment-ouvrir-investir-2026',
+    title: 'PEA en 2026 : comment ouvrir, investir et optimiser son Plan d\'Épargne en Actions',
+    category: 'Finances',
+    readTime: 7,
+    publishedAt: '2026-06-08T09:00:00Z',
+    intro: "Le PEA est l'enveloppe fiscale idéale pour investir en actions. Ouverture, plafond, éligibilité des ETF, fiscalité après 5 ans : tout ce qu'il faut savoir pour démarrer en 2026.",
+    content: `<h2>Pourquoi le PEA est l'enveloppe actions à ouvrir en priorité</h2>
+<p>Le Plan d'Épargne en Actions (PEA) bénéficie d'une fiscalité exceptionnelle après 5 ans de détention : les plus-values et dividendes sont <strong>exonérés d'impôt sur le revenu</strong> (seuls les prélèvements sociaux de 17,2 % restent dus). Comparé à la flat tax de 30 % d'un compte-titres ordinaire, l'économie est substantielle : sur 50 000 € de plus-values, le PEA économise ~6 400 € d'IR.</p>
+<p>Le PEA peut être ouvert auprès d'une banque ou d'un courtier en ligne. Les plafonds : 150 000 € pour un PEA classique, 225 000 € pour un PEA-PME (complémentaire). Seul un PEA par personne est autorisé.</p>
+<h2>Ouvrir son PEA : les étapes</h2>
+<ol>
+<li><strong>Choisir l'établissement</strong> : les courtiers en ligne (Boursorama, Fortuneo, Trade Republic) sont moins chers que les banques traditionnelles (frais de courtage 0-0,5 % vs 1-2 % en banque).</li>
+<li><strong>Fournir les documents</strong> : pièce d'identité, justificatif de domicile, RIB. L'ouverture en ligne prend 10-15 minutes.</li>
+<li><strong>Effectuer un premier versement</strong> : dès 1 € pour déclencher le compteur de 5 ans.</li>
+</ol>
+<h2>Quels ETF choisir sur PEA ?</h2>
+<p>Les ETF éligibles au PEA doivent être domiciliés dans l'Union Européenne et répondre à des critères de composition. Les plus populaires :</p>
+<ul>
+<li><strong>Amundi MSCI World UCITS ETF</strong> (CW8) : exposition mondiale aux marchés développés, TER 0,38 %.</li>
+<li><strong>Lyxor CAC 40 ETF</strong> : exposition aux 40 plus grandes capitalisations françaises, TER 0,25 %.</li>
+<li><strong>Amundi MSCI Emerging Markets</strong> : marchés émergents éligibles PEA via swap, TER 0,20 %.</li>
+</ul>
+<h2>Retrait et fiscalité</h2>
+<p>Avant 5 ans, tout retrait <strong>clôture le PEA</strong> et les gains sont taxés à 30 % (flat tax). Après 5 ans, les retraits partiels sont possibles sans clôture, et les gains ne supportent que les 17,2 % de prélèvements sociaux. Il est possible de convertir le PEA en rente viagère défiscalisée après 5 ans. Le simulateur d'épargne de simfinly.com projette la valeur de votre PEA et l'économie fiscale selon l'horizon et le rendement.</p>`,
+  },
+  {
+    slug: 'micro-entrepreneur-retraite-droits',
+    title: 'Retraite du micro-entrepreneur en 2026 : cotisations, points et droits acquis',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-06-09T09:00:00Z',
+    intro: "Un micro-entrepreneur cotise à la SSI sur son chiffre d'affaires. Mais combien de trimestres valide-t-il vraiment ? Comment prévoir sa retraite quand on est auto-entrepreneur ?",
+    content: `<h2>Comment le micro-entrepreneur cotise-t-il pour la retraite ?</h2>
+<p>Un auto-entrepreneur cotise à la <strong>SSI</strong> (Sécurité Sociale des Indépendants) sur son chiffre d'affaires brut, via un taux forfaitaire selon le secteur d'activité :</p>
+<ul>
+<li>Vente de marchandises : 12,3 % du CA (dont ~6,5 % pour la retraite de base + complémentaire)</li>
+<li>Prestations de services BIC : 21,2 % du CA (dont ~11 % pour la retraite)</li>
+<li>Professions libérales : 21,1 % du CA</li>
+</ul>
+<p>Ces taux incluent toutes les cotisations sociales (maladie, CSG/CRDS, allocations familiales, retraite). La part retraite est environ <strong>30-35 % du total des cotisations</strong>.</p>
+<h2>Validation des trimestres : le point critique</h2>
+<p>Pour valider un trimestre, un micro-entrepreneur doit avoir généré un CA minimum correspondant à <strong>150 × SMIC horaire</strong> (≈ 1 690 € en 2026). En cas d'activité à temps plein, les seuils à atteindre pour valider 4 trimestres :</p>
+<ul>
+<li>Vente de marchandises : CA ≥ <strong>26 130 €/an</strong></li>
+<li>Prestations de services : CA ≥ <strong>15 120 €/an</strong></li>
+<li>Professions libérales : CA ≥ <strong>15 120 €/an</strong></li>
+</ul>
+<p>En dessous de ces seuils, vous ne validez pas 4 trimestres complets — ce qui peut allonger l'âge de départ ou réduire la pension.</p>
+<h2>La retraite complémentaire des auto-entrepreneurs</h2>
+<p>Les auto-entrepreneurs bénéficient d'un <strong>régime complémentaire obligatoire</strong> (RCI pour artisans/commerçants, ou régime spécifique pour libéraux). Les points accumulés dépendent du CA déclaré et du taux de cotisation. Sur un CA de 30 000 €/an pendant 20 ans en prestations de services, la pension complémentaire peut atteindre 200-400 €/mois.</p>
+<h2>Compléter sa retraite en tant qu'auto-entrepreneur</h2>
+<p>Les droits accumulés par les micro-entrepreneurs sont souvent insuffisants pour une retraite confortable si l'auto-entreprise est l'unique activité sur toute la carrière. Les solutions : ouvrir un PER individuel (déductible si TMI ≥ 30 %), valider des trimestres manquants via un rachat, ou combiner micro-entreprise et emploi salarié pendant une partie de la carrière. Le simulateur retraite de simfinly.com calcule vos droits SSI selon votre CA annuel et votre secteur.</p>`,
+  },
+
+  // === Vague 3 — Articles prioritaires (commit 4B) ===
+  {
+    slug: 'loi-de-finances-2026-changements',
+    title: 'Loi de finances 2026 : les principaux changements fiscaux à connaître',
+    category: 'Fiscalité',
+    readTime: 7,
+    publishedAt: '2026-06-10T09:00:00Z',
+    intro: "Barème IR, niches fiscales, immobilier, succession : ce que la loi de finances 2026 change concrètement pour les ménages et les investisseurs.",
+    content: `<h2>Revalorisation du barème de l'impôt sur le revenu</h2>
+<p>La loi de finances 2026 a revalorisé les tranches du barème IR de <strong>1,8 %</strong> pour tenir compte de l'inflation. Les nouveaux seuils (revenus 2025, déclaration 2026) :</p>
+<ul>
+<li>0 % jusqu'à 11 497 € (contre 11 294 € en 2025)</li>
+<li>11 % de 11 497 € à 29 315 € (contre 28 797 €)</li>
+<li>30 % de 29 315 € à 83 823 € (contre 82 341 €)</li>
+<li>41 % de 83 823 € à 180 294 € (contre 177 106 €)</li>
+<li>45 % au-delà de 180 294 €</li>
+</ul>
+<p>Cette revalorisation évite la "fiscal creep" (augmentation automatique de l'impôt sans hausse réelle du pouvoir d'achat) et réduit légèrement l'IR des foyers dont les revenus n'ont pas augmenté plus vite que l'inflation.</p>
+<h2>Les changements sur les niches fiscales</h2>
+<p>La loi de finances 2026 apporte plusieurs ajustements :</p>
+<ul>
+<li><strong>Plafond PER</strong> : porté à 37 680 € pour les salariés (10 % de 8 PASS), contre 37 094 € en 2025.</li>
+<li><strong>Crédit d'impôt garde d'enfant</strong> : plafond relevé à 3 500 € (vs 3 500 € en 2025 — inchangé).</li>
+<li><strong>Abattement assurance-vie après 8 ans</strong> : maintenu à 4 600 € (célibataire) et 9 200 € (couple).</li>
+<li><strong>Loi Pinel</strong> : dispositif en extinction, prorogé avec des taux réduits pour les acquisitions signées avant 2024.</li>
+</ul>
+<h2>Les mesures concernant l'immobilier</h2>
+<p>La loi de finances 2026 maintient le PTZ élargi (décret 2025) à tout le territoire y compris dans l'ancien. Le dispositif de déficit foncier reste plafonné à 10 700 €/an sur le revenu global (21 400 € pour rénovation énergétique). Aucune modification du régime des plus-values immobilières (exonération après 22 ans de propriété, 30 ans pour les prélèvements sociaux).</p>
+<h2>Retraite et cotisations</h2>
+<p>Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 est fixé à 47 100 € (+3,5 % vs 2025). Ce plafond conditionne de nombreux calculs : cotisations retraite, plafonds PER, prestations sociales. Le simulateur IR de simfinly.com intègre le barème 2026 actualisé pour calculer votre impôt sur les revenus 2025.</p>`,
+  },
+  {
+    slug: 'scpi-investir-pierre-papier-2026',
+    title: 'SCPI en 2026 : investir en pierre-papier, rendements et risques',
+    category: 'Immobilier',
+    readTime: 7,
+    publishedAt: '2026-06-11T09:00:00Z',
+    intro: "Les SCPI (Sociétés Civiles de Placement Immobilier) permettent d'investir dans l'immobilier sans gérer de locataires. Rendement, fiscalité, risques et comparaison avec l'immobilier direct.",
+    content: `<h2>Qu'est-ce qu'une SCPI ?</h2>
+<p>Une <strong>SCPI</strong> (Société Civile de Placement Immobilier) est un fonds d'investissement qui collecte des capitaux pour acquérir et gérer un parc immobilier professionnel (bureaux, commerces, entrepôts, résidences spécialisées). En achetant des parts, vous devenez copropriétaire indirectement d'un portefeuille immobilier diversifié — sans vous occuper de la gestion.</p>
+<p>Les revenus locatifs (après frais de gestion) sont reversés aux associés sous forme de dividendes trimestriels. Le <strong>taux de distribution</strong> moyen en 2025 est de 4,5-5 % (avant fiscalité). Certaines SCPI spécialisées (santé, logistique) ont distribué 5-6 %.</p>
+<h2>Les avantages de la pierre-papier</h2>
+<ul>
+<li><strong>Accessibilité</strong> : investir dès 200-1 000 € par part, sans apport immobilier conséquent.</li>
+<li><strong>Diversification</strong> : 1 part = exposition à des dizaines ou centaines de biens dans plusieurs régions ou pays.</li>
+<li><strong>Pas de gestion</strong> : la société de gestion s'occupe de tout (locataires, entretien, travaux).</li>
+<li><strong>Revenus réguliers</strong> : distributions trimestrielles, pratiques pour compléter une retraite.</li>
+</ul>
+<h2>Les risques à connaître</h2>
+<ul>
+<li><strong>Illiquidité</strong> : revendre ses parts peut prendre des mois, surtout en période de tension sur les marchés immobiliers (comme en 2023-2024).</li>
+<li><strong>Perte en capital possible</strong> : la valeur des parts peut baisser si le marché immobilier se détériore (baisse des prix observée en 2023).</li>
+<li><strong>Frais d'entrée élevés</strong> : 8-12 % du prix de souscription. Il faut conserver ses parts <strong>8-10 ans minimum</strong> pour amortir ces frais.</li>
+</ul>
+<h2>Fiscalité des SCPI</h2>
+<p>Les revenus de SCPI sont des revenus fonciers : ils s'ajoutent à vos revenus imposables et sont taxés à votre TMI + 17,2 % de prélèvements sociaux. Pour alléger la fiscalité, il est possible de loger ses parts de SCPI dans une assurance-vie ou un PER — la fiscalité de l'enveloppe s'applique alors, souvent plus avantageuse. Le simulateur d'investissement locatif de simfinly.com calcule le rendement net de fiscalité selon votre TMI et le mode de détention.</p>`,
+  },
+  {
+    slug: 'budget-50-30-20-methode',
+    title: 'La méthode budgétaire 50/30/20 : comment l\'appliquer en France en 2026',
+    category: 'Budget',
+    readTime: 6,
+    publishedAt: '2026-06-12T09:00:00Z',
+    intro: "La règle 50/30/20 est la méthode budgétaire la plus répandue : 50 % pour les besoins, 30 % pour les envies, 20 % pour l'épargne. Comment l'adapter à la réalité française ?",
+    content: `<h2>Le principe de la règle 50/30/20</h2>
+<p>Popularisée par la sénatrice américaine Elizabeth Warren, la règle 50/30/20 divise les revenus nets (après impôts) en trois catégories :</p>
+<ul>
+<li><strong>50 % pour les besoins</strong> (needs) : loyer, charges, alimentation, transports, assurances, crédits en cours.</li>
+<li><strong>30 % pour les envies</strong> (wants) : restaurants, loisirs, abonnements, voyages, shopping non essentiel.</li>
+<li><strong>20 % pour l'épargne et le remboursement de dettes</strong> : livrets, investissements, remboursement de crédit conso anticipé.</li>
+</ul>
+<p>Cette règle est un point de départ, pas une loi absolue. Elle fonctionne bien pour des revenus médians, mais doit être ajustée selon le coût de la vie local.</p>
+<h2>Adapter la règle au contexte français</h2>
+<p>En France, le coût du logement dans les grandes métropoles (Paris, Lyon, Bordeaux) peut dépasser seul les 30-40 % du revenu net. La règle brute est donc difficile à appliquer. Des adaptations réalistes :</p>
+<ul>
+<li>Si votre loyer dépasse 30 % du revenu, ajustez le budget "envies" à la baisse plutôt que de réduire l'épargne.</li>
+<li>Avec un crédit immobilier en cours, l'idéal est que la mensualité reste sous 35 % (limite HCSF) — ce qui correspond environ au "50 %" des besoins.</li>
+<li>L'objectif minimum d'épargne est 10 % pour une épargne de précaution viable, 15-20 % pour préparer sa retraite.</li>
+</ul>
+<h2>Comment appliquer concrètement la méthode</h2>
+<ol>
+<li><strong>Calculez votre revenu net mensuel</strong> (salaire net après impôt).</li>
+<li><strong>Listez vos dépenses fixes</strong> (besoins) et vérifiez qu'elles ne dépassent pas 50 %.</li>
+<li><strong>Automatisez l'épargne</strong> dès le versement du salaire (virement automatique vers livret ou investissement).</li>
+<li><strong>Le reste</strong> est disponible pour les envies — sans culpabilité.</li>
+</ol>
+<h2>Outils pour suivre son budget</h2>
+<p>Le simulateur de budget de simfinly.com vous aide à catégoriser vos dépenses, visualiser la répartition 50/30/20 et identifier les postes à optimiser. La méthode "se payer en premier" (épargner avant de dépenser) est la clé : une fois l'épargne automatisée, le reste du budget est entièrement disponible sans calcul permanent.</p>`,
+  },
+  {
+    slug: 'regle-4-pourcent-fire-france',
+    title: 'Règle des 4 % et FIRE en France : est-elle encore valide en 2026 ?',
+    category: 'FIRE',
+    readTime: 7,
+    publishedAt: '2026-06-13T09:00:00Z',
+    intro: "La règle des 4 % est la pierre angulaire du mouvement FIRE. Mais est-elle adaptée au contexte français (fiscalité, espérance de vie, retraite obligatoire) ? Analyse et alternatives.",
+    content: `<h2>D'où vient la règle des 4 % ?</h2>
+<p>La règle des 4 % est issue de l'étude Trinity (1998) : sur 30 ans d'historique boursier américain, un portefeuille diversifié actions/obligations résiste dans 95 % des cas à un retrait annuel de 4 % du capital initial, ajusté chaque année de l'inflation.</p>
+<p>Concrètement : pour dépenser 30 000 €/an, il faut un capital de 30 000 ÷ 4 % = <strong>750 000 €</strong>. C'est votre "nombre FIRE".</p>
+<h2>Les limites françaises de la règle des 4 %</h2>
+<p>L'étude Trinity utilisait des données américaines sur 30 ans. Pour la France en 2026, plusieurs ajustements s'imposent :</p>
+<ul>
+<li><strong>Horizon plus long</strong> : se retirer à 40 ans implique 50 ans de retraits, pas 30. Les études prolongées montrent que 3-3,5 % est plus sûr sur 50 ans.</li>
+<li><strong>Fiscalité française</strong> : les prélèvements sociaux (17,2 %) et l'IR sur les revenus de retraits s'ajoutent. Pour obtenir 30 000 € nets, il faut retirer ~36 000 € bruts selon la fiscalité, ce qui ramène le taux de retrait effectif à ~3,3 %.</li>
+<li><strong>Retraite obligatoire</strong> : contrairement aux États-Unis, vous percevrez une retraite CNAV/Agirc-Arrco ou libérale dès 62-67 ans. Ce revenu réduit le capital FIRE nécessaire pendant la phase post-65 ans.</li>
+</ul>
+<h2>Le taux de retrait adapté à la France</h2>
+<p>Pour un Français cherchant l'indépendance financière avant 50 ans, les praticiens recommandent généralement un taux de retrait de <strong>3 à 3,5 %</strong> (capital FIRE = 28-33× les dépenses annuelles). Si vous prévoyez une retraite obligatoire après 62 ans, vous pouvez réduire le capital cible en déduisant la valeur actualisée de ces futures pensions.</p>
+<h2>Simulation personnalisée</h2>
+<p>Le simulateur FIRE de simfinly.com calcule votre capital cible en intégrant l'inflation française, la fiscalité sur les revenus mobiliers, et la retraite obligatoire prévue. Testez différents taux de retrait (3 %, 3,5 %, 4 %) et horizons de retrait (30, 40, 50 ans) pour trouver votre équilibre sécurité/objectif de capital.</p>`,
+  },
+  {
+    slug: 'donation-nue-propriete-strategie',
+    title: 'Donation en nue-propriété : stratégie, calcul et avantages fiscaux en 2026',
+    category: 'Fiscalité',
+    readTime: 7,
+    publishedAt: '2026-06-14T09:00:00Z',
+    intro: "Donner la nue-propriété d'un bien à ses enfants tout en gardant l'usufruit : calcul des droits réduits, barème selon l'âge et reconstitution automatique au décès.",
+    content: `<h2>Qu'est-ce que la donation en nue-propriété ?</h2>
+<p>La donation en nue-propriété consiste à <strong>démembrer la propriété d'un bien</strong> : le donateur conserve l'<em>usufruit</em> (droit d'utiliser le bien ou d'en percevoir les revenus jusqu'à son décès) et donne la <em>nue-propriété</em> à ses enfants. Au décès de l'usufruitier, les nus-propriétaires récupèrent la <strong>pleine propriété sans aucun droits supplémentaires</strong>.</p>
+<p>L'intérêt fiscal est majeur : les droits de donation sont calculés sur la <strong>valeur de la nue-propriété seule</strong>, qui est inférieure à la valeur totale du bien. La valeur de la nue-propriété dépend de l'âge de l'usufruitier au moment de la donation.</p>
+<h2>Le barème fiscal de la nue-propriété (article 669 du CGI)</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#FEF3C7"><th style="padding:8px;text-align:left;border:1px solid #FDE68A">Âge de l'usufruitier</th><th style="padding:8px;text-align:center;border:1px solid #FDE68A">Valeur de l'usufruit</th><th style="padding:8px;text-align:center;border:1px solid #FDE68A">Valeur de la nue-propriété</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Moins de 21 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">90 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">10 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 51 à 60 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">60 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">40 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">De 61 à 70 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">50 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">50 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 71 à 80 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">40 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">60 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Plus de 81 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">20 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">80 %</td></tr>
+</tbody></table>
+<h2>Exemple concret à 60 ans</h2>
+<p>Un parent de 60 ans donne la nue-propriété d'un appartement valant 300 000 € à son enfant. La nue-propriété représente 50 % = 150 000 €. Avec l'abattement de 100 000 € par parent par enfant, les droits de donation s'appliquent sur 50 000 €. Au barème des donations en ligne directe, cela donne environ <strong>4 194 € de droits</strong> — contre ~30 000 € si la pleine propriété avait été donnée.</p>
+<h2>Points d'attention</h2>
+<p>La donation en nue-propriété est irrévocable (sauf accord mutuel). L'usufruitier reste redevable de la taxe foncière et des charges de copropriété courantes. Les travaux "gros œuvre" sont à la charge du nu-propriétaire. Un acte notarié est obligatoire. Simulez les droits avec le calculateur de donation de simfinly.com avant de consulter un notaire.</p>`,
+  },
+  {
+    slug: 'plafond-per-deduction-2026',
+    title: 'Plafond PER 2026 : comment maximiser sa déduction fiscale sur le revenu',
+    category: 'Épargne',
+    readTime: 6,
+    publishedAt: '2026-06-15T09:00:00Z',
+    intro: "En 2026, le plafond de déduction PER atteint 37 680 € pour les salariés. Comment calculer son enveloppe disponible, utiliser les plafonds reportés et optimiser sa déduction ?",
+    content: `<h2>Comment est calculé le plafond PER en 2026 ?</h2>
+<p>Le plafond de déduction des versements PER est calculé sur la base du PASS (47 100 € en 2026). Pour un salarié, le plafond est le plus élevé de :</p>
+<ul>
+<li><strong>10 % des revenus professionnels N-1</strong>, dans la limite de 10 % × 8 PASS = <strong>37 680 €</strong> maximum</li>
+<li><strong>10 % du PASS = 4 710 €</strong> (plancher, même sans revenus importants)</li>
+</ul>
+<p>Pour les travailleurs non-salariés (TNS), le plafond est plus généreux : jusqu'à 10 % du bénéfice imposable dans la limite de 8 PASS + 15 % de la fraction du bénéfice entre 1 et 8 PASS, soit un maximum de <strong>85 780 €</strong> en 2026.</p>
+<h2>Les plafonds reportables sur 3 ans</h2>
+<p>Si vous n'utilisez pas tout votre plafond PER une année, le <strong>solde non utilisé est reportable sur les 3 années suivantes</strong>. Ce mécanisme est très avantageux si votre situation financière s'améliore : vous pouvez rattraper plusieurs années de plafond en une seule fois.</p>
+<p>Votre plafond disponible (y compris reports) figure sur votre <strong>avis d'imposition</strong>, rubrique "Plafonds épargne retraite". Vérifiez-le avant chaque versement PER — beaucoup de contribuables sous-utilisent cette capacité.</p>
+<h2>Optimiser son versement PER selon la TMI</h2>
+<p>L'avantage du PER est proportionnel à votre Tranche Marginale d'Imposition :</p>
+<ul>
+<li>TMI 11 % : économie de 110 € pour 1 000 € versés</li>
+<li>TMI 30 % : économie de 300 € — seuil de rentabilité élevé</li>
+<li>TMI 41 % : économie de 410 € — optimal pour les hauts revenus</li>
+<li>TMI 45 % : économie de 450 € — défiscalisation massive possible</li>
+</ul>
+<h2>PER individuel, PERcol ou les deux ?</h2>
+<p>Le plafond PER est <strong>commun à tous les types de PER</strong> (individuel, collectif, catégoriel). Les versements volontaires sur un PERcol (abondement employeur mis à part) consomment le même plafond que le PERin. L'intéressement et la participation versés sur un PERcol <strong>ne consomment pas</strong> le plafond de déduction PER — ils bénéficient d'une exonération propre. Le simulateur PER de simfinly.com calcule votre économie d'impôt exacte selon votre TMI et vos revenus.</p>`,
+  },
+  {
+    slug: 'epargne-precaution-combien-garder',
+    title: 'Épargne de précaution : combien garder sur son livret en 2026 ?',
+    category: 'Budget',
+    readTime: 5,
+    publishedAt: '2026-06-16T09:00:00Z',
+    intro: "3 mois ou 6 mois de dépenses ? Célibataire ou famille ? Salarié ou indépendant ? Le guide pour calibrer son épargne de précaution et savoir quand commencer à investir.",
+    content: `<h2>À quoi sert l'épargne de précaution ?</h2>
+<p>L'épargne de précaution est une réserve liquide destinée à faire face aux imprévus sans devoir vendre des placements à long terme (actions, immobilier) au mauvais moment. Exemples d'imprévus : perte d'emploi, réparation automobile, panne d'électroménager, frais médicaux, problème locatif.</p>
+<p>Sans épargne de précaution, le premier accident de la vie force à recourir au crédit conso (taux de 10-20 %) ou à liquider des placements à perte. C'est la base de toute gestion financière saine — avant tout investissement.</p>
+<h2>Combien faut-il mettre de côté ?</h2>
+<p>La règle courante : <strong>3 mois de dépenses fixes</strong> au minimum, <strong>6 mois</strong> en situation à risque élevé.</p>
+<ul>
+<li><strong>Salarié en CDI stable</strong> : 3 mois de dépenses fixes suffisent (délai moyen de retrouver un emploi).</li>
+<li><strong>Salarié en CDD ou intérimaire</strong> : 4-6 mois (période d'emploi plus volatile).</li>
+<li><strong>Indépendant, freelance, auto-entrepreneur</strong> : 6-12 mois (revenus variables, pas d'accès aux ASSEDIC en cas de faillite).</li>
+<li><strong>Propriétaire avec crédit immobilier</strong> : ajouter 2-3 mois pour couvrir les dépenses de copropriété ou entretien imprévus.</li>
+</ul>
+<h2>Où placer son épargne de précaution ?</h2>
+<p>L'épargne de précaution doit être <strong>disponible immédiatement</strong> et <strong>sans risque de perte</strong>. Les supports adaptés en 2026 :</p>
+<ul>
+<li><strong>Livret A</strong> : 2,4 % net, plafonné à 22 950 €, accessible immédiatement. Idéal pour la majorité des ménages.</li>
+<li><strong>LEP</strong> (si éligible) : 3,5 % net, plafonné à 10 000 €. Prioritaire si votre revenu fiscal de référence est sous le plafond.</li>
+<li><strong>LDDS</strong> : 2,4 % net, plafonné à 12 000 €. Bon complément.</li>
+</ul>
+<p>Les fonds euros d'assurance-vie (délai de retrait de 72h) peuvent servir de complément pour les montants dépassant les plafonds des livrets. Une fois votre épargne de précaution constituée, le reste peut être investi dans des supports plus rémunérateurs à long terme.</p>`,
+  },
+  {
+    slug: 'taux-remplacement-calcul-2026',
+    title: 'Taux de remplacement retraite 2026 : calcul et exemples selon la profession',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-06-17T09:00:00Z',
+    intro: "Le taux de remplacement mesure la baisse de revenu entre le dernier salaire et la première pension. Comment est-il calculé et que vaut-il selon votre statut et votre niveau de salaire ?",
+    content: `<h2>Définition du taux de remplacement</h2>
+<p>Le <strong>taux de remplacement</strong> est le ratio entre la première pension nette perçue et le dernier salaire net avant la retraite. Il exprime la baisse du revenu lors du passage à la retraite.</p>
+<p>Formule : Taux de remplacement = (Pension nette / Dernier salaire net) × 100</p>
+<p>Un taux de 70 % signifie que votre pension est égale à 70 % de votre dernier salaire net. Plus vous gagnez, plus le taux de remplacement est généralement bas (plafonnement des droits au PASS).</p>
+<h2>Les taux de remplacement moyens par profil (2026)</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Profil</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Taux de remplacement brut</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Taux net estimé</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Salarié SMIC, carrière complète</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~85 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~90 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Salarié 2× SMIC, carrière complète</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~73 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~75 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Cadre supérieur (60 000-80 000 €/an)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~55-65 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~60-70 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Fonctionnaire (traitement moyen)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~75 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~80 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Artisan/commerçant (revenu moyen)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~50-60 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~55-65 %</td></tr>
+</tbody></table>
+<h2>Pourquoi le taux de remplacement est plus faible pour les hauts revenus</h2>
+<p>Le régime général plafonne la retraite de base au PASS (47 100 € en 2026). Pour un cadre gagnant 80 000 €/an, la base de calcul de la CNAV est limitée à 47 100 €, mais l'Agirc-Arrco compense partiellement via les points accumulés sur la tranche B (PASS à 8×PASS). Malgré cela, le taux de remplacement brut reste inférieur à celui d'un salarié au SMIC.</p>
+<h2>Estimer son taux de remplacement</h2>
+<p>Le simulateur retraite de simfinly.com calcule le taux de remplacement brut et net selon votre salaire actuel, vos trimestres et votre âge de départ prévu. Identifiez le complément d'épargne nécessaire (PER, assurance-vie, SCPI) pour atteindre le niveau de revenu souhaité à la retraite.</p>`,
+  },
+
+  // === Vague 3 — Articles prioritaires (commit 4C) ===
+  {
+    slug: 'lmnp-regime-reel-amortissement-2026',
+    title: 'LMNP au régime réel en 2026 : amortissement, fiscalité et simulation',
+    category: 'Immobilier',
+    readTime: 7,
+    publishedAt: '2026-06-18T09:00:00Z',
+    intro: "Le régime réel LMNP permet d'amortir le bien immobilier et d'annuler l'impôt sur les loyers meublés pendant 10-15 ans. Mécanisme, conditions et calcul pas à pas.",
+    content: `<h2>LMNP : c'est quoi exactement ?</h2>
+<p>Le statut de <strong>Loueur Meublé Non Professionnel (LMNP)</strong> s'applique à tout propriétaire qui loue un bien meublé (avec équipements suffisants pour y vivre) et dont les recettes annuelles ne dépassent pas 23 000 € ou 50 % des revenus du foyer. Au-delà, c'est le statut LMP (professionnel).</p>
+<p>Le régime réel LMNP permet de déduire toutes les charges réelles <strong>ET d'amortir le bien immobilier</strong> comptablement, ce qui permet souvent d'afficher un résultat fiscal nul ou négatif pendant 10-20 ans — sans décaissement réel.</p>
+<h2>L'amortissement : le moteur fiscal du LMNP réel</h2>
+<p>En régime réel, vous pouvez amortir le prix d'achat du bien (hors terrain, qui représente environ 15-20 % de la valeur) et les meubles sur leur durée de vie estimée :</p>
+<ul>
+<li><strong>Gros œuvre (structure)</strong> : amortissement sur 50-80 ans</li>
+<li><strong>Façade et étanchéité</strong> : 25-30 ans</li>
+<li><strong>Équipements intérieurs (plomberie, électricité)</strong> : 15-20 ans</li>
+<li><strong>Mobilier</strong> : 5-10 ans</li>
+</ul>
+<p>Exemple : un appartement acheté 200 000 € (terrain estimé à 20 000 €). Le composant "structure" de 80 000 € est amorti sur 50 ans = 1 600 €/an. Les autres composants génèrent des dotations supplémentaires. Au total, les amortissements annuels peuvent atteindre 5 000-8 000 € sur ce bien.</p>
+<h2>Calcul du résultat LMNP réel</h2>
+<p>Résultat = Loyers − Charges réelles − Amortissements. Si le résultat est nul ou négatif, vous ne payez <strong>aucun IR ni prélèvements sociaux</strong> sur vos loyers meublés. Le déficit LMNP est reportable sur les bénéfices LMNP des 10 années suivantes (il n'est pas imputable sur le revenu global, contrairement au déficit foncier).</p>
+<h2>Avantages et pièges du LMNP réel</h2>
+<p>Avantages : neutralité fiscale totale pendant 10-15 ans, revenus locatifs nets d'impôts, plus-value à la vente calculée sans déduire les amortissements (retour à la plus-value classique). Principal piège : la comptabilité est obligatoire, avec bilan annuel et liasse fiscale (BIC réel) — faites appel à un expert-comptable spécialisé (coût : 500-1 200 €/an). Le simulateur rendement locatif de simfinly.com intègre l'amortissement LMNP pour calculer la rentabilité nette réelle.</p>`,
+  },
+  {
+    slug: 'retraite-auto-entrepreneur-ssi-calcul',
+    title: 'Retraite de l\'auto-entrepreneur 2026 : calcul SSI, trimestres et pension estimée',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-06-19T09:00:00Z',
+    intro: "Combien de trimestres un auto-entrepreneur valide-t-il avec son CA ? Quelle pension peut-il espérer ? Calcul détaillé selon le secteur d'activité et le niveau de chiffre d'affaires.",
+    content: `<h2>Les cotisations retraite de l'auto-entrepreneur en 2026</h2>
+<p>Un auto-entrepreneur cotise à la SSI sur son chiffre d'affaires déclaré. Les taux globaux de cotisations sociales incluent la part retraite :</p>
+<ul>
+<li><strong>Commerce/vente</strong> : 12,3 % du CA (dont ~6,5 % retraite de base + complémentaire)</li>
+<li><strong>Artisanat/services BIC</strong> : 21,2 % du CA</li>
+<li><strong>Professions libérales BNC</strong> : 21,1 % du CA</li>
+<li><strong>Libéraux CIPAV</strong> : 21,2 % du CA</li>
+</ul>
+<h2>Validation des trimestres : les seuils de CA</h2>
+<p>Un trimestre est validé pour chaque tranche de CA équivalente à 150 × SMIC horaire brut = ~1 690 € de revenus cotisés. Pour un auto-entrepreneur, on convertit le CA en revenu cotisé via un taux d'assiette.</p>
+<p>CA annuels nécessaires pour valider 4 trimestres (taux plein annuel) :</p>
+<ul>
+<li>Commerce : CA ≥ ~26 130 €/an</li>
+<li>Services BIC/artisanat : CA ≥ ~15 120 €/an</li>
+<li>Libéral CIPAV : CA ≥ ~14 800 €/an</li>
+</ul>
+<h2>Simulation de pension : exemple concret</h2>
+<p>Un auto-entrepreneur en services BIC avec 25 000 € de CA pendant 30 ans (de 35 à 65 ans) :</p>
+<ul>
+<li>Valide 4 trimestres/an → 120 trimestres total (sur 172 requis à taux plein pour la génération 1980)</li>
+<li>Trimestres manquants : 52 → départ avec décote ou attendre 67 ans</li>
+<li>SAM estimé (25 meilleures années de revenus cotisés réduits) : ~8 000-12 000 €/an</li>
+<li>Pension CNAV estimée : ~4 000-6 000 €/an brut (340-500 €/mois)</li>
+<li>Pension RCI complémentaire : ~200-350 €/mois</li>
+</ul>
+<h2>Comment améliorer ses droits en tant qu'auto-entrepreneur</h2>
+<p>Les solutions pour compenser la faiblesse des droits acquis : (1) Ouvrir un PER individuel et verser chaque mois pour compenser avec une rente ou un capital à la retraite. (2) Si vous cumulez micro-entreprise et emploi salarié, vos droits CNAV s'additionnent. (3) Passer au régime réel si votre activité le permet — assiette de cotisations plus favorable pour les charges réelles élevées. Le simulateur retraite auto-entrepreneur de simfinly.com calcule vos droits selon votre CA annuel et votre secteur.</p>`,
+  },
+  {
+    slug: 'risque-sequence-fire-rentier',
+    title: 'Risque de séquence FIRE : le piège des premières années de rente',
+    category: 'FIRE',
+    readTime: 6,
+    publishedAt: '2026-06-20T09:00:00Z',
+    intro: "Le risque de séquence est la principale menace pour un rentier FIRE : des mauvaises performances en début de retraite peuvent ruiner un portefeuille même mathématiquement viable. Comment s'en protéger ?",
+    content: `<h2>Qu'est-ce que le risque de séquence ?</h2>
+<p>Le risque de séquence (sequence of returns risk) désigne le danger lié à <strong>l'ordre dans lequel surviennent les performances boursières</strong>. Si les premières années de votre retraite coïncident avec un krach boursier, votre portefeuille peut se dégrader de façon irréversible — même si la performance moyenne sur 30 ans est identique à un scénario favorable.</p>
+<p>Exemple illustratif : Deux rentiers partent avec 500 000 €, retirent 20 000 €/an, ont la même performance moyenne de 5 % sur 30 ans. L'un connaît +20 % les 5 premières années puis −30 %, l'autre l'inverse. Le premier se retrouve à court après 22 ans, le second à plus de 1 000 000 € au bout de 30 ans.</p>
+<h2>Pourquoi les premières années sont critiques</h2>
+<p>En début de rente, votre capital est à son maximum. Un krach de 40 % sur un portefeuille de 500 000 € = −200 000 €. Si vous continuez à retirer 20 000 €/an pendant la baisse, votre capital ne se reconstitue jamais complètement lors du rebond, car la base d'actifs est réduite. Plus vous avez prélevé en période de baisse, moins les hausses suivantes profitent.</p>
+<h2>Stratégies pour réduire le risque de séquence</h2>
+<ul>
+<li><strong>Cash buffer (réserve liquide)</strong> : conserver 1-2 ans de dépenses sur livret. En cas de krach, prélevez sur le livret plutôt que de vendre des actions à la baisse.</li>
+<li><strong>Réduction temporaire des retraits</strong> : baisser ses dépenses de 10-15 % lors des années de forte baisse (si possible) pour laisser le portefeuille se reconstituer.</li>
+<li><strong>Allocation défensive en début de rente</strong> : maintenir 20-30 % de fonds euros ou obligations les 5 premières années pour amortir les chocs, puis rééquilibrer progressivement vers les actions.</li>
+<li><strong>Revenus alternatifs</strong> : si vous avez des revenus partiels (activités annexes, loyers, retraite obligatoire future), la pression sur le portefeuille est réduite pendant les phases de baisse.</li>
+</ul>
+<h2>Simulation avec Monte Carlo</h2>
+<p>Le simulateur FIRE de simfinly.com intègre une simulation Monte Carlo pour tester la robustesse de votre plan sur 10 000 scénarios historiques. Identifiez le taux de réussite de votre plan selon votre capital, vos dépenses et votre horizon — et ajustez si le taux de succès est inférieur à 90 %.</p>`,
+  },
+  {
+    slug: 'abattement-succession-enfants-2026',
+    title: 'Succession enfants en 2026 : abattements, barème et droits à payer',
+    category: 'Fiscalité',
+    readTime: 7,
+    publishedAt: '2026-06-21T09:00:00Z',
+    intro: "Chaque enfant bénéficie d'un abattement de 100 000 € sur la succession de chaque parent. Au-delà, le barème progressif s'applique. Calcul complet et stratégies pour réduire les droits.",
+    content: `<h2>L'abattement de 100 000 € par enfant et par parent</h2>
+<p>En France, la transmission aux enfants bénéficie d'un <strong>abattement de 100 000 €</strong> par enfant et par parent, renouvelé tous les 15 ans. Cet abattement s'applique à la fois aux successions et aux donations. Pour un couple avec 2 enfants, la transmission possible en franchise totale est :</p>
+<ul>
+<li>100 000 € × 2 parents × 2 enfants = <strong>400 000 €</strong> transmissibles sans droits</li>
+<li>Renouvelé tous les 15 ans : potentiel de 800 000 € sur 30 ans</li>
+</ul>
+<p>En plus, un <strong>don familial de sommes d'argent</strong> (don Sarkozy) permet 31 865 € supplémentaires, cumulable avec les 100 000 €, si le donateur a moins de 80 ans et le bénéficiaire au moins 18 ans.</p>
+<h2>Le barème des droits de succession en ligne directe</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Part nette taxable</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Taux</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Moins de 8 072 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">5 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 8 072 € à 12 109 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">10 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">De 12 109 € à 15 932 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">15 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 15 932 € à 552 324 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">20 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">De 552 324 € à 902 838 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">30 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 902 838 € à 1 805 677 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">40 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Plus de 1 805 677 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">45 %</td></tr>
+</tbody></table>
+<h2>Exemple de calcul : patrimoine de 500 000 €, deux enfants</h2>
+<p>Patrimoine net à transmettre : 500 000 €. Deux enfants reçoivent 250 000 € chacun. Abattement 100 000 € chacun → 150 000 € taxable chacun. Droits par enfant : 5 % × 8 072 € + 10 % × 4 037 € + 15 % × 3 823 € + 20 % × (150 000 − 15 932) € ≈ <strong>29 700 €</strong> chacun. Soit ~59 400 € au total.</p>
+<h2>Réduire les droits : stratégies disponibles</h2>
+<p>Anticiper les transmissions par donations (100 000 € tous les 15 ans), utiliser l'assurance-vie pour les versements avant 70 ans (152 500 € par bénéficiaire hors droits), ou le démembrement de propriété. Le simulateur de succession de simfinly.com calcule les droits selon la composition familiale, le patrimoine et les donations déjà effectuées.</p>`,
+  },
+  {
+    slug: 'retraite-militaire-calcul-pension',
+    title: 'Retraite militaire en 2026 : calcul de la pension SRE, durée et réversion',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-06-22T09:00:00Z',
+    intro: "Les militaires bénéficient d'un régime de retraite spécifique (SRE) permettant de partir dès 17 ans de service. Calcul de la pension, bonifications et droits à réversion.",
+    content: `<h2>Le régime de retraite militaire : le SRE</h2>
+<p>Les militaires relèvent du <strong>Service des Retraites de l'État (SRE)</strong>, régime distinct du régime général. Ses caractéristiques principales :</p>
+<ul>
+<li><strong>Départ anticipé possible</strong> : dès 17 ans de service pour les sous-officiers et hommes du rang, 27 ans pour les officiers.</li>
+<li><strong>Pas d'âge légal de départ</strong> fixe (contrairement au régime général) — la durée de service est le critère principal.</li>
+<li><strong>Limite d'âge</strong> : entre 59 et 67 ans selon le grade (les généraux peuvent servir jusqu'à 67 ans).</li>
+</ul>
+<h2>Calcul de la pension militaire</h2>
+<p>La pension militaire = <strong>Traitement brut de référence × Taux de liquidation</strong>.</p>
+<p>Le <strong>traitement de référence</strong> est le traitement indiciaire brut du dernier emploi perçu pendant au moins 6 mois. Le <strong>taux de liquidation</strong> est de 2 % par annuité de service, avec un maximum de 75 % (soit 37,5 annuités). Des bonifications s'ajoutent selon la nature du service.</p>
+<h2>Les bonifications : des annuités supplémentaires</h2>
+<ul>
+<li><strong>Services aériens et sous-marins</strong> : bonification de 1 mois par mois de vol ou de plongée.</li>
+<li><strong>Opérations extérieures (OPEX)</strong> : bonification de 1 mois par mois en opération depuis 2015.</li>
+<li><strong>Campagnes militaires</strong> : bonification historique, toujours applicable selon les textes.</li>
+<li><strong>Enfants</strong> : 1 an par enfant (max 3 ans) pour les militaires femmes et les couples depuis 2012.</li>
+</ul>
+<h2>La réversion et les droits des conjoints</h2>
+<p>La réversion militaire est de <strong>50 % de la pension du défunt</strong>, sans condition de ressources ni d'âge (contrairement au régime général). Le conjoint survivant perçoit 50 % de la pension dès le décès, quelle que soit son âge. En cas de remariage, la réversion est maintenue (contrairement au régime général). Le simulateur retraite militaire de simfinly.com calcule la pension selon le grade, les années de service et les bonifications applicables.</p>`,
+  },
+  {
+    slug: 'private-equity-investir-france',
+    title: 'Private equity en France en 2026 : comment investir et à partir de quel montant',
+    category: 'Finances',
+    readTime: 7,
+    publishedAt: '2026-06-23T09:00:00Z',
+    intro: "Le private equity (capital-investissement) était réservé aux institutionnels. Depuis 2024, il est accessible aux particuliers via les fonds ELTIF 2.0 et les FCPR. Rendements, risques et conditions d'accès.",
+    content: `<h2>Qu'est-ce que le private equity ?</h2>
+<p>Le <strong>private equity</strong> (capital-investissement) consiste à investir dans des entreprises non cotées en Bourse — des PME en croissance, des startups, ou des entreprises en restructuration. En contrepartie d'un blocage du capital (5-10 ans), les investisseurs visent des rendements supérieurs aux marchés cotés : historiquement <strong>10-15 % par an</strong> pour les meilleurs fonds sur longue période.</p>
+<p>Jusqu'à récemment réservé aux investisseurs institutionnels et fortunés, le private equity s'ouvre aux particuliers depuis la réforme ELTIF 2.0 (2024) et l'essor des plateformes d'accès démocratisé.</p>
+<h2>Comment investir en private equity en France</h2>
+<p>Les véhicules accessibles aux particuliers en 2026 :</p>
+<ul>
+<li><strong>FCPR</strong> (Fonds Commun de Placement à Risque) : fonds agréés AMF, accessible dès 1 000-10 000 € selon les plateformes. Exonération d'IR sur les plus-values après 5 ans (prélèvements sociaux dus).</li>
+<li><strong>ELTIF 2.0</strong> (European Long-Term Investment Fund) : format européen harmonisé, accessible dès 1 €, distribué par les banques et assureurs depuis 2024.</li>
+<li><strong>FIP / FCPI</strong> (Fonds d'Investissement de Proximité / d'Innovation) : réduction d'IR de 18-25 % à la souscription, mais performance historique très variable.</li>
+<li><strong>Via assurance-vie</strong> : certains contrats permettent d'accéder à des UC private equity (FCPR, fonds de co-investissement).</li>
+</ul>
+<h2>Risques et précautions</h2>
+<p>Le private equity comporte des risques spécifiques :</p>
+<ul>
+<li><strong>Illiquidité</strong> : le capital est bloqué 5-10 ans. Pas de sortie possible avant l'échéance.</li>
+<li><strong>Risque de perte en capital</strong> : les entreprises non cotées peuvent faire faillite. La diversification au sein du fonds atténue ce risque.</li>
+<li><strong>Frais élevés</strong> : 1,5-2 % de frais de gestion annuels + commission de performance (20-25 % des gains au-delà d'un hurdle rate).</li>
+</ul>
+<p>Recommandation : n'allouez pas plus de 5-10 % de votre patrimoine financier au private equity. Priorisez les fonds avec un track record éprouvé (>10 ans) et une politique de co-investissement claire. Le simulateur de patrimoine de simfinly.com intègre le private equity dans l'allocation globale avec projection selon les rendements attendus.</p>`,
+  },
+  {
+    slug: 'vefa-achat-neuf-plan-2026',
+    title: 'VEFA en 2026 : acheter sur plan, garanties et pièges à éviter',
+    category: 'Immobilier',
+    readTime: 7,
+    publishedAt: '2026-06-24T09:00:00Z',
+    intro: "La VEFA (Vente en l'état futur d'achèvement) permet d'acheter un bien immobilier neuf avant sa construction. Modalités de paiement, garanties légales et points de vigilance.",
+    content: `<h2>Comment fonctionne la VEFA ?</h2>
+<p>La <strong>VEFA</strong> (Vente en l'État Futur d'Achèvement) est le cadre légal de l'achat d'un bien immobilier neuf sur plan. L'acheteur signe un contrat de réservation puis l'acte de vente notarié, et paie le bien <strong>progressivement au fur et à mesure de l'avancement des travaux</strong>.</p>
+<p>L'échelonnement légal des appels de fonds :</p>
+<ul>
+<li>5 % à la signature du contrat de réservation</li>
+<li>25 % à l'achèvement des fondations</li>
+<li>50 % à la mise hors d'eau (toiture)</li>
+<li>70 % à l'achèvement des cloisons</li>
+<li>95 % à l'achèvement des travaux</li>
+<li>5 % (solde) à la livraison et levée des réserves</li>
+</ul>
+<h2>Les garanties légales de la VEFA</h2>
+<p>La VEFA offre un cadre protecteur pour l'acheteur :</p>
+<ul>
+<li><strong>Garantie financière d'achèvement (GFA)</strong> : obligatoire. En cas de défaillance du promoteur, un organisme garantit l'achèvement du bien ou le remboursement des sommes versées.</li>
+<li><strong>Garantie de parfait achèvement</strong> : 1 an après la livraison, le promoteur doit corriger tous les défauts signalés au procès-verbal de réception.</li>
+<li><strong>Garantie biennale (bon fonctionnement)</strong> : 2 ans pour les équipements (volets, robinetterie, portail…).</li>
+<li><strong>Garantie décennale</strong> : 10 ans pour les défauts compromettant la solidité du bâtiment.</li>
+</ul>
+<h2>Les avantages fiscaux du neuf</h2>
+<p>Acheter en VEFA présente des avantages financiers par rapport à l'ancien :</p>
+<ul>
+<li><strong>Frais de notaire réduits</strong> : 2-3 % dans le neuf vs 7-8 % dans l'ancien.</li>
+<li><strong>Exonération de taxe foncière</strong> : pendant 2 ans après l'achèvement du bien (dans la plupart des communes).</li>
+<li><strong>Éligibilité PTZ renforcée</strong> : quotité plus élevée pour les primo-accédants en zones tendues.</li>
+<li><strong>TVA réduite à 5,5 %</strong> dans les zones ANRU (Politique de la Ville) pour les primo-accédants sous plafonds de ressources.</li>
+</ul>
+<h2>Les pièges à éviter</h2>
+<p>Principaux risques de la VEFA : retards de livraison (prévoyez 6-12 mois de décalage), qualité inférieure aux promesses du promoteur (visitez des chantiers du même promoteur), modifications unilatérales des plans (vérifiez les clauses du contrat). Au procès-verbal de livraison, notez <strong>toutes les réserves</strong> par écrit — c'est le moment pour obtenir les corrections. Le simulateur emprunt immobilier de simfinly.com intègre le différé de remboursement pendant la période de construction VEFA.</p>`,
+  },
+  {
+    slug: 'location-meublee-lmnp-fiscalite',
+    title: 'Location meublée et LMNP en 2026 : micro-BIC ou régime réel, quel choix ?',
+    category: 'Immobilier',
+    readTime: 6,
+    publishedAt: '2026-06-25T09:00:00Z',
+    intro: "Louer en meublé ouvre le statut LMNP avec deux régimes fiscaux : micro-BIC (abattement de 50 %) ou régime réel (déduction des charges et amortissement). Quel régime choisir ?",
+    content: `<h2>LMNP : les deux régimes fiscaux</h2>
+<p>Un loueur meublé non professionnel (recettes < 23 000 € ou < 50 % des revenus du foyer) peut opter entre deux régimes :</p>
+<ul>
+<li><strong>Micro-BIC</strong> : abattement forfaitaire de 50 % sur les loyers bruts (71 % pour les meublés de tourisme classés). Simple, sans comptabilité, mais moins avantageux si les charges réelles dépassent 50 % des loyers.</li>
+<li><strong>Régime réel</strong> : déduction de toutes les charges réelles (intérêts d'emprunt, taxe foncière, assurances, travaux) + <strong>amortissement du bien et des meubles</strong>. Plus complexe (nécessite un expert-comptable) mais souvent très avantageux.</li>
+</ul>
+<h2>Quand le régime réel est-il plus avantageux ?</h2>
+<p>Le régime réel surpasse le micro-BIC si vos charges réelles (incluant les amortissements) dépassent 50 % des loyers. Dans la pratique, avec un crédit immobilier en cours, les intérêts + amortissement dépassent presque toujours 50 % sur les premières années — le régime réel est alors systématiquement optimal.</p>
+<p>Exemple : loyers annuels = 12 000 €. Charges réelles (intérêts, taxe foncière, assurance, copro) = 4 000 €. Amortissement annuel du bien = 5 000 €. Total = 9 000 €. Résultat imposable = 12 000 − 9 000 = 3 000 € (vs 6 000 € en micro-BIC). Économie d'impôt à 30 % de TMI : 900 €/an.</p>
+<h2>Le seuil de basculement micro/réel</h2>
+<p>Depuis 2023, le seuil du micro-BIC est à 77 700 € de loyers annuels (au-delà, le régime réel est obligatoire). En dessous, vous pouvez choisir. Le choix se fait sur la déclaration de revenus — l'option pour le réel est tacitement reconduite chaque année.</p>
+<h2>La question de l'expert-comptable</h2>
+<p>Le régime réel LMNP nécessite une déclaration 2031 (BIC réel) avec un bilan et un compte de résultat. Un expert-comptable spécialisé coûte 500-1 200 €/an mais optimise les amortissements, assure la conformité et gère les reports de déficits. Ce coût est lui-même déductible. Le simulateur rendement locatif de simfinly.com compare la rentabilité nette micro-BIC vs réel selon vos paramètres.</p>`,
+  },
+
+  // === Vague 3 — Complément pour atteindre 50 articles ===
+  {
+    slug: 'investir-bourse-long-terme-strategie',
+    title: 'Investir en Bourse sur le long terme : stratégies et erreurs à éviter',
+    category: 'Finances',
+    readTime: 7,
+    publishedAt: '2026-06-26T09:00:00Z',
+    intro: "Patience, diversification et discipline : les trois piliers de l'investissement boursier long terme. Comment construire un portefeuille résilient et éviter les pièges classiques.",
+    content: `<h2>Pourquoi l'horizon long terme change tout</h2>
+<p>Sur une période de 1-3 ans, les marchés boursiers peuvent perdre 40-50 % et mettre des années à se rétablir. Sur 20-30 ans, <strong>aucune période historique n'a jamais abouti à une perte</strong> sur un portefeuille diversifié (données MSCI World 1969-2026). C'est pourquoi l'horizon est le premier facteur d'une stratégie actions : ne misez en Bourse que les capitaux dont vous n'aurez pas besoin avant 10 ans minimum.</p>
+<p>L'effet des intérêts composés devient exponentiel sur de longues périodes. 10 000 € investis à 7 % annuel donnent : 19 671 € après 10 ans, 38 697 € après 20 ans, 76 123 € après 30 ans. Chaque décennie supplémentaire double (grossièrement) le capital.</p>
+<h2>La diversification : la seule règle absolue</h2>
+<p>La diversification réduit le risque sans sacrifier le rendement attendu. Les piliers :</p>
+<ul>
+<li><strong>Géographique</strong> : MSCI World (États-Unis + Europe + Japon) > CAC 40 seul</li>
+<li><strong>Sectorielle</strong> : technology + santé + industrie + finance > tech seule</li>
+<li><strong>Temporelle</strong> : investir chaque mois (DCA) > investir en une seule fois</li>
+<li><strong>Par classe d'actif</strong> : actions + immobilier (SCPI) + obligations > actions seules pour les profils défensifs</li>
+</ul>
+<h2>Les erreurs comportementales les plus coûteuses</h2>
+<p>Les études DALBAR (comportement des investisseurs) montrent que les particuliers obtiennent en moyenne 3-4 % de moins que le marché à cause d'erreurs comportementales :</p>
+<ul>
+<li><strong>Vendre lors des krachs</strong> : cristallise les pertes et rate le rebond. Les 10 meilleurs jours des 20 dernières années ont contribué à plus de 50 % de la performance totale.</li>
+<li><strong>Market timing</strong> : personne ne sait prévoir les marchés à court terme — même les professionnels.</li>
+<li><strong>Surpondérer son pays</strong> (home bias) : les Français sur-allouent au CAC 40 qui représente <2 % de la capitalisation mondiale.</li>
+</ul>
+<h2>La stratégie simple qui bat 90 % des gérants</h2>
+<p>Investir mensuellement dans un ETF MSCI World via un PEA, ne jamais vendre lors des baisses, rééquilibrer une fois par an. C'est tout. Cette stratégie passive bat historiquement 80-90 % des fonds actifs sur 10 ans, avec des frais 10× inférieurs. Le simulateur d'épargne de simfinly.com projette votre portefeuille selon cette approche avec différents rendements et horizons.</p>`,
+  },
+  {
+    slug: 'per-vs-assurance-vie-comparaison-2026',
+    title: 'PER vs assurance-vie en 2026 : quel placement choisir selon votre situation ?',
+    category: 'Épargne',
+    readTime: 7,
+    publishedAt: '2026-06-27T09:00:00Z',
+    intro: "PER et assurance-vie sont complémentaires plutôt que concurrents. Fiscalité à l'entrée vs à la sortie, disponibilité, succession : comment choisir selon votre profil et vos objectifs.",
+    content: `<h2>Le PER et l'assurance-vie : deux logiques différentes</h2>
+<p>Le <strong>PER</strong> (Plan d'Épargne Retraite) offre un avantage fiscal à l'<em>entrée</em> : les versements sont déductibles du revenu imposable. En contrepartie, les retraits à la retraite sont imposables (revenus + prélèvements sociaux sur les plus-values). Le PER est donc optimal si votre TMI actuelle est plus élevée que celle prévue à la retraite.</p>
+<p>L'<strong>assurance-vie</strong> offre un avantage fiscal à la <em>sortie</em> : pas de déduction à l'entrée, mais les retraits après 8 ans bénéficient d'un abattement annuel (4 600 €/personne) et d'une fiscalité réduite (7,5 % + 17,2 % PS). L'assurance-vie est plus flexible (retraits possibles à tout moment sans pénalité) et plus avantageuse en succession (abattement de 152 500 € par bénéficiaire).</p>
+<h2>Tableau comparatif PER vs assurance-vie</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Critère</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">PER</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Assurance-vie</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Avantage fiscal</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">À l'entrée (déduction IR)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">À la sortie (abattement + taux réduit)</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Disponibilité</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Bloqué jusqu'à la retraite (sauf cas légaux)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Disponible à tout moment</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Succession</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Droits de succession classiques</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">152 500 € par bénéficiaire hors droits</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Idéal pour</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">TMI élevée (≥ 30 %), retraite lointaine</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Flexibilité, transmission, TMI faible</td></tr>
+</tbody></table>
+<h2>La stratégie optimale selon votre situation</h2>
+<ul>
+<li><strong>TMI 30 % ou plus, retraite à 15+ ans</strong> : PER prioritaire, puis assurance-vie pour la liquidité et la succession.</li>
+<li><strong>TMI 11 %</strong> : assurance-vie privilégiée (l'avantage fiscal du PER est faible).</li>
+<li><strong>Objectif succession</strong> : assurance-vie pour les versements avant 70 ans (abattement de 152 500 €/bénéficiaire).</li>
+<li><strong>Retraite dans moins de 10 ans</strong> : les deux selon votre TMI, mais privilégiez la liquidité.</li>
+</ul>
+<h2>La complémentarité idéale</h2>
+<p>Dans une stratégie optimale : PER pour défiscaliser les années à fort salaire, assurance-vie pour la liquidité et la transmission. Ces deux enveloppes se complètent naturellement — la majorité des épargnants français en phase d'accumulation patrimoniale ont intérêt à ouvrir et alimenter les deux. Le comparateur simfinly.com simule l'économie fiscale et le capital final pour votre situation personnelle.</p>`,
+  },
+
 ];
 
 export const STATIC_BY_SLUG = Object.fromEntries(STATIC_ARTICLES.map(a => [a.slug, a]));

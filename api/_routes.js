@@ -315,6 +315,37 @@ export const BLOG_SLUGS = [
   '/blog/succession-enfants-abattement-droits-2026',
   // Vague 2 — épargne salariale
   '/blog/epargne-salariale-pee-perco-abondement-2026',
+  // Vague 3 — commit 4A (investissement, professions, cotisations)
+  '/blog/investir-bourse-debutant-2026',
+  '/blog/choisir-assurance-vie-2026',
+  '/blog/dpe-renovation-travaux-2026',
+  '/blog/retraite-medecin-liberal-carmf-2026',
+  '/blog/retraite-artisan-commercant-ssi-2026',
+  '/blog/comprendre-cotisations-sociales-2026',
+  '/blog/retraite-cadre-agirc-arrco-calcul',
+  '/blog/pea-comment-ouvrir-investir-2026',
+  '/blog/micro-entrepreneur-retraite-droits',
+  // Vague 3 — commit 4B (fiscalité, SCPI, budget, FIRE)
+  '/blog/loi-de-finances-2026-changements',
+  '/blog/scpi-investir-pierre-papier-2026',
+  '/blog/budget-50-30-20-methode',
+  '/blog/regle-4-pourcent-fire-france',
+  '/blog/donation-nue-propriete-strategie',
+  '/blog/plafond-per-deduction-2026',
+  '/blog/epargne-precaution-combien-garder',
+  '/blog/taux-remplacement-calcul-2026',
+  // Vague 3 — commit 4C (LMNP, retraites spécifiques, immobilier)
+  '/blog/lmnp-regime-reel-amortissement-2026',
+  '/blog/retraite-auto-entrepreneur-ssi-calcul',
+  '/blog/risque-sequence-fire-rentier',
+  '/blog/abattement-succession-enfants-2026',
+  '/blog/retraite-militaire-calcul-pension',
+  '/blog/private-equity-investir-france',
+  '/blog/vefa-achat-neuf-plan-2026',
+  '/blog/location-meublee-lmnp-fiscalite',
+  // Vague 3 — commit 4D (complément 50 articles)
+  '/blog/investir-bourse-long-terme-strategie',
+  '/blog/per-vs-assurance-vie-comparaison-2026',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
