@@ -116,6 +116,127 @@ export const SEO_CONTENT = {
     h1: "Simulateur : ma vie en semaines",
     intro: "Visualisez l'intégralité de votre vie sous forme de grille, une case par semaine. Combien de semaines avez-vous vécues, combien vous en reste-t-il ? Une perspective marquante sur le temps qui passe.",
   },
+  // Retraite par métier — 30 professions
+  '/retraite/fonctionnaire': {
+    h1: "Retraite du fonctionnaire 2026 — calcul de la pension, âge et taux",
+    intro: "Les fonctionnaires de l'État, des collectivités territoriales et de l'hôpital public bénéficient d'un régime spécial géré par le SRE ou la CNRACL. La pension est calculée sur le traitement indiciaire brut avec un taux maximum de 75 %, hors primes. L'âge légal est 64 ans en catégorie sédentaire et 59 ans en catégorie active (policiers, pompiers, infirmiers hospitaliers).",
+  },
+  '/retraite/infirmiere': {
+    h1: "Retraite infirmière 2026 — FPH, CARPIMKO ou CNAV selon votre statut",
+    intro: "La retraite d'une infirmière varie selon son statut : hospitalière publique FPH classée en catégorie active (départ à 59 ans avec 17 ans de services), libérale relevant de la CARPIMKO (taux plein à 67 ans ou 62 ans avec durée complète), ou salariée du privé cotisant au régime général CNAV et à Agirc-Arrco (départ à 64 ans).",
+  },
+  '/retraite/enseignant': {
+    h1: "Retraite enseignant 2026 — calcul sur l'indice, RAFP et âge légal",
+    intro: "Les enseignants de l'Éducation nationale (professeurs des écoles, certifiés, agrégés, MCF) sont des fonctionnaires de la FPE en catégorie sédentaire. Leur pension est calculée sur le traitement indiciaire brut (taux max 75 %), sans les primes, qui alimentent le RAFP. L'âge légal est progressivement porté à 64 ans pour les générations nées après 1968.",
+  },
+  '/retraite/agriculteur': {
+    h1: "Retraite agriculteur 2026 — MSA, RCO et revalorisation des petites pensions",
+    intro: "Les agriculteurs exploitants et salariés agricoles relèvent de la MSA (Mutualité Sociale Agricole). Le régime comprend une retraite de base et la Retraite Complémentaire Obligatoire (RCO). La loi Chassaigne a relevé les pensions minimales à 85 % du SMIC net, soit environ 1 130 €/mois en 2026 pour une carrière complète.",
+  },
+  '/retraite/medecin-liberal': {
+    h1: "Retraite médecin libéral 2026 — CARMF, ASV et stratégie d'épargne",
+    intro: "Les médecins libéraux cotisent à la CARMF qui gère trois régimes : la retraite de base CNAVPL, le régime complémentaire par points et l'Allocation Supplémentaire Vieillesse (ASV). L'ASV est particulièrement avantageuse en secteur 1 car l'Assurance maladie prend en charge deux tiers des cotisations. Le taux de remplacement est de 30 à 45 % des revenus libéraux.",
+  },
+  '/retraite/avocat': {
+    h1: "Retraite avocat 2026 — CNBF, part forfaitaire et complémentaire par points",
+    intro: "Les avocats disposent d'un régime autonome géré par la CNBF (Caisse Nationale des Barreaux Français). La retraite de base comprend une part forfaitaire et une part proportionnelle aux revenus. Le régime complémentaire fonctionne par points. L'âge légal de départ est fixé à 65 ans pour le taux plein automatique.",
+  },
+  '/retraite/artisan': {
+    h1: "Retraite artisan 2026 — SSI (ex-RSI), RCI et validation des trimestres",
+    intro: "Les artisans cotisent à la Sécurité Sociale des Indépendants (SSI, anciennement RSI). Le régime comprend une retraite de base SSI et une retraite complémentaire RCI par points. Pour valider 4 trimestres par an, le revenu doit dépasser 600 fois le SMIC horaire (~6 500 € en 2026). L'âge légal est 64 ans depuis la réforme 2023.",
+  },
+  '/retraite/commercant': {
+    h1: "Retraite commerçant 2026 — SSI, RCI et stratégie de cession du fonds",
+    intro: "Les commerçants relèvent du même régime que les artisans : SSI pour la retraite de base et RCI pour la complémentaire par points. L'âge légal est 64 ans. La cession du fonds de commerce constitue souvent le principal actif retraite, potentiellement exonérée de plus-value via l'article 151 septies du CGI.",
+  },
+  '/retraite/pharmacien': {
+    h1: "Retraite pharmacien libéral 2026 — CAVP, calcul et optimisation",
+    intro: "Les pharmaciens titulaires d'officine cotisent à la CAVP (Caisse d'Assurance Vieillesse des Pharmaciens) pour leur complémentaire par points, et à la CNAVPL pour la retraite de base. L'âge du taux plein est 67 ans ou 62 ans avec la durée requise. La cession de l'officine représente souvent plusieurs centaines de milliers d'euros d'actif retraite.",
+  },
+  '/retraite/chirurgien-dentiste': {
+    h1: "Retraite chirurgien-dentiste libéral 2026 — CARCDSF et cession de cabinet",
+    intro: "Les chirurgiens-dentistes libéraux cotisent à la CARCDSF pour leur complémentaire par points et à la CNAVPL pour la retraite de base. Le taux de remplacement est de 25 à 40 % des revenus libéraux. La cession du cabinet dentiste (400 000 à 1 000 000 € selon le CA) constitue le principal actif retraite pour beaucoup de praticiens.",
+  },
+  '/retraite/sage-femme': {
+    h1: "Retraite sage-femme 2026 — FPH catégorie active, CARCDSF et CNAV",
+    intro: "La retraite d'une sage-femme dépend de son statut : hospitalière publique FPH en catégorie active (départ à 59 ans), libérale relevant de la CARCDSF (taux plein à 67 ans ou 62 ans), ou salariée du privé (CNAV + Agirc-Arrco, départ à 64 ans). Les gardes de nuit donnent droit à des bonifications de durée d'assurance à la FPH.",
+  },
+  '/retraite/veterinaire': {
+    h1: "Retraite vétérinaire libéral 2026 — CARPV, calcul de pension et cession",
+    intro: "Les vétérinaires libéraux cotisent à la CARPV (Caisse Autonome de Retraite et de Prévoyance des Vétérinaires) pour leur complémentaire par points et à la CNAVPL pour la retraite de base. Le taux de remplacement est de 30 à 45 % des revenus libéraux. La cession de la clinique vétérinaire peut bénéficier d'exonérations fiscales.",
+  },
+  '/retraite/notaire': {
+    h1: "Retraite notaire 2026 — CRPCEN pour clercs, régime libéral pour titulaires",
+    intro: "Les clercs de notaire et salariés des offices relèvent de la CRPCEN (régime spécial avec âge de départ à 62 ans et taux max 75 %). Les notaires titulaires libéraux cotisent à la CNAVPL et au régime complémentaire du notariat. La distinction clercs/titulaires est fondamentale pour comprendre les droits à la retraite.",
+  },
+  '/retraite/expert-comptable': {
+    h1: "Retraite expert-comptable libéral 2026 — CAVEC et classes de cotisation",
+    intro: "Les experts-comptables libéraux cotisent à la CAVEC (Caisse d'Assurance Vieillesse des Experts-Comptables) pour leur complémentaire par points et à la CNAVPL pour la retraite de base. La CAVEC propose plusieurs classes de cotisation (A à H) qui déterminent les points acquis annuellement. Le taux de remplacement est de 30 à 45 %.",
+  },
+  '/retraite/architecte': {
+    h1: "Retraite architecte libéral 2026 — CIPAV, classes de cotisation et pension",
+    intro: "Les architectes libéraux cotisent à la CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) pour leur complémentaire par points et à la CNAVPL pour la retraite de base. La CIPAV propose des classes de cotisation A à H. L'âge du taux plein est 67 ans ou 62 ans avec la durée d'assurance complète.",
+  },
+  '/retraite/ingenieur-cadre': {
+    h1: "Retraite cadre ingénieur 2026 — CNAV + Agirc-Arrco et coefficient de solidarité",
+    intro: "Les ingénieurs et cadres du secteur privé cotisent au régime général CNAV et à Agirc-Arrco. Depuis 2019, un coefficient de solidarité de -10 % s'applique pendant 3 ans sur la pension Agirc-Arrco pour les cadres partant dès 64 ans. Pour l'éviter, il faut attendre 67 ans ou cotiser 4 trimestres supplémentaires après l'âge légal.",
+  },
+  '/retraite/policier': {
+    h1: "Retraite policier 2026 — CNRACL catégorie active, départ à 57 ans",
+    intro: "Les policiers nationaux relèvent de la CNRACL en catégorie active. Ils peuvent partir à 57 ans avec 17 ans minimum de services actifs. La bonification du cinquième leur accorde 1 an de durée d'assurance supplémentaire pour chaque 5 ans de services actifs. La pension est calculée sur le traitement indiciaire brut avec un taux maximum de 75 %.",
+  },
+  '/retraite/militaire': {
+    h1: "Retraite militaire 2026 — pension militaire et départ dès 17 ans de services",
+    intro: "Les militaires de carrière bénéficient d'un régime de pension militaire géré par le SRE. Les sous-officiers peuvent partir dès 17 ans de services, les officiers dès 27 ans ou à 52 ans. La pension est calculée sur la solde indiciaire brute avec des bonifications pour les campagnes OPEX et les services en zones difficiles.",
+  },
+  '/retraite/pompier': {
+    h1: "Retraite pompier professionnel 2026 — CNRACL, départ à 57 ans et bonification",
+    intro: "Les sapeurs-pompiers professionnels sont des fonctionnaires territoriaux classés en catégorie active de la CNRACL. Ils peuvent partir à 57 ans avec 17 ans de services actifs. La bonification du cinquième leur accorde 1 an supplémentaire pour chaque 5 ans de services. La pension est calculée sur le traitement indiciaire brut (taux max 75 %).",
+  },
+  '/retraite/gendarme': {
+    h1: "Retraite gendarme 2026 — pension militaire, départ anticipé et OPEX",
+    intro: "Les gendarmes sont des militaires relevant du Service des retraites de l'État. Les sous-officiers peuvent partir dès 17 ans de services, les officiers dès 27 ans ou à 52 ans. La pension est calculée sur la solde indiciaire brute avec des bonifications pour les opérations extérieures (OPEX) et les missions à risque.",
+  },
+  '/retraite/aide-soignante': {
+    h1: "Retraite aide-soignante 2026 — FPH catégorie active et C2P secteur privé",
+    intro: "Les aides-soignantes de l'hôpital public sont classées en catégorie active FPH et peuvent partir à 59 ans avec 17 ans de services actifs. Celles du secteur privé cotisent au régime général CNAV (départ à 64 ans) et peuvent bénéficier du Compte Professionnel de Prévention (C2P) pour les facteurs de pénibilité reconnus.",
+  },
+  '/retraite/magistrat': {
+    h1: "Retraite magistrat 2026 — FPE catégorie sédentaire, SRE et limite d'âge",
+    intro: "Les magistrats de l'ordre judiciaire sont des fonctionnaires de la FPE en catégorie sédentaire. Leur pension est gérée par le SRE et calculée sur le traitement indiciaire brut (taux max 75 %). L'âge légal est 64 ans depuis la réforme 2023. La limite d'âge (départ obligatoire) est fixée à 67 ans, avec possibilité d'un statut de magistrat honoraire.",
+  },
+  '/retraite/chauffeur-routier': {
+    h1: "Retraite chauffeur routier 2026 — C2P, carrières longues et pénibilité",
+    intro: "Les chauffeurs routiers cotisent au régime général CNAV et à Agirc-Arrco. Leur métier expose à plusieurs facteurs de pénibilité reconnus par le C2P (travail de nuit, vibrations, températures extrêmes). Avec suffisamment de points C2P, un départ jusqu'à 2 ans avant l'âge légal est possible. Le dispositif carrières longues permet de partir dès 58 ans.",
+  },
+  '/retraite/caissiere': {
+    h1: "Retraite caissière 2026 — carrières longues, C2P et impact du temps partiel",
+    intro: "Les caissières et employées de commerce cotisent au régime général CNAV et à Agirc-Arrco. Le dispositif carrières longues permet un départ dès 58 à 62 ans pour celles ayant commencé à travailler avant 20 ans. Le temps partiel peut pénaliser la validation des trimestres si le salaire annuel est inférieur à 600 fois le SMIC horaire.",
+  },
+  '/retraite/ouvrier-usine': {
+    h1: "Retraite ouvrier industrie 2026 — C2P, pénibilité et départ anticipé",
+    intro: "Les ouvriers industriels cotisent au régime général CNAV et à Agirc-Arrco. Leur métier expose à de nombreux facteurs de pénibilité reconnus par le C2P (travail de nuit, 3x8, vibrations, bruit, températures). Ces points permettent un départ jusqu'à 2 ans avant l'âge légal. Une incapacité permanente suite à un accident du travail permet de partir à 60 ou 62 ans.",
+  },
+  '/retraite/chef-entreprise': {
+    h1: "Retraite chef d'entreprise 2026 — TNS ou assimilé-salarié selon statut",
+    intro: "La retraite d'un chef d'entreprise dépend de son statut : gérant majoritaire de SARL (TNS, SSI, taux de remplacement 30-45 %) ou président de SAS/SASU (assimilé-salarié, CNAV + Agirc-Arrco, taux de remplacement 55-70 %). La cession de l'entreprise et le PER individuel sont les principaux leviers pour compenser un régime de base insuffisant.",
+  },
+  '/retraite/auto-entrepreneur': {
+    h1: "Retraite auto-entrepreneur 2026 — SSI, cotisations sur CA et droits accumulés",
+    intro: "Les auto-entrepreneurs cotisent à la SSI sur leur chiffre d'affaires brut. Les cotisations retraite représentent 12 à 22 % du CA selon l'activité. Pour valider 4 trimestres par an, le CA doit dépasser 18 500 € (services) ou 32 500 € (vente). Un CA faible génère peu de droits — le PER individuel est indispensable pour compenser.",
+  },
+  '/retraite/intermittent': {
+    h1: "Retraite intermittent du spectacle 2026 — CNAV, Audiens et périodes de chômage",
+    intro: "Les intermittents du spectacle cotisent au régime général CNAV et au régime complémentaire Audiens. Pour valider 1 trimestre, ils doivent percevoir 150 fois le SMIC horaire de cachets bruts. Les allocations chômage spécifiques (ARE intermittents) génèrent des trimestres assimilés mais n'entrent pas dans le calcul du salaire de référence.",
+  },
+  '/retraite/expatrie': {
+    h1: "Retraite expatrié français 2026 — CFE, conventions bilatérales et totalisation",
+    intro: "Les Français travaillant à l'étranger peuvent s'affilier volontairement à la CFE pour maintenir leurs droits à la retraite en France. La France a signé des conventions bilatérales avec plus de 40 pays permettant la totalisation des périodes cotisées. Sans convention ni CFE, les années à l'étranger ne génèrent aucun trimestre pour la retraite française.",
+  },
+  '/retraite/diplomate': {
+    h1: "Retraite diplomate fonctionnaire 2026 — SRE, bonifications et traitement indiciaire",
+    intro: "Les diplomates français sont des fonctionnaires de la FPE en catégorie sédentaire. Leur pension est calculée par le SRE sur le traitement indiciaire brut (taux max 75 %). Des bonifications de durée d'assurance s'ajoutent pour les services à l'étranger selon les zones et les missions. Les indemnités de résidence à l'étranger n'entrent pas dans la pension de base.",
+  },
   '/outils/qr-code': {
     h1: "Générateur de QR code personnalisé gratuit",
     intro: "Créez un QR code sur mesure : choisissez les couleurs, saisissez le texte ou le lien de votre choix et ajoutez votre logo ou un emoji au centre. Le code est généré dans votre navigateur — aucune donnée envoyée — et téléchargeable en PNG haute résolution, gratuitement et sans inscription.",
