@@ -470,6 +470,94 @@ export const COMPARATIFS = [
     sims: ['/simulateurs/assurance-vie', '/simulateurs/epargne'],
     terms: ['pea', 'assurance-vie', 'etf', 'pfu'],
   },
+  {
+    slug: 'pfu-vs-bareme',
+    title: 'PFU (flat tax) ou barème progressif : comment choisir pour vos revenus de capitaux ?',
+    shortTitle: 'PFU vs barème',
+    emoji: '📊',
+    category: 'Impôts',
+    intro: "Depuis 2018, les dividendes, plus-values mobilières et intérêts sont imposés par défaut au Prélèvement Forfaitaire Unique (PFU) de 30 % — porté à 31,4 % en 2026. Mais l'option pour le barème progressif peut être plus avantageuse selon votre situation fiscale. Comparatif complet pour bien choisir.",
+    a: {
+      name: 'PFU (flat tax)',
+      pour: ["Simplicité : prélèvement à la source automatique", "Taux fixe indépendant du revenu global", "Pas de démarche à la déclaration (option par défaut)"],
+      contre: ["31,4 % même si votre TMI est basse (0 % ou 11 %)", "Pas d'abattement de 40 % sur les dividendes", "Peut être sur-optimal pour les faibles revenus"],
+    },
+    b: {
+      name: 'Barème progressif',
+      pour: ["Avantageux si TMI ≤ 11 % (économie jusqu'à 20 points)", "Abattement de 40 % sur les dividendes bruts", "CSG de 6,8 % déductible sur les revenus de l'année N+1"],
+      contre: ["Option globale : s'applique à tous les revenus de capitaux de l'année", "Complexifie la déclaration d'impôt", "Défavorable si TMI ≥ 30 %"],
+    },
+    criteres: [
+      { label: "Taux effectif (dividendes, TMI 0 %)", a: "31,4 %", b: "≈ 17,2 % (PS uniquement)" },
+      { label: "Taux effectif (dividendes, TMI 30 %)", a: "31,4 %", b: "≈ 34,7 % (30 % × 60 % + 17,2 % − CSG ded.)" },
+      { label: "Abattement 40 % dividendes", a: "Non applicable", b: "Oui (réduit la base IR)" },
+      { label: "CSG déductible (6,8 %)", a: "Non", b: "Oui (sur l'année suivante)" },
+      { label: "Option globale / partielle", a: "Par défaut (inaction = PFU)", b: "Globale (tous les RCM de l'année)" },
+    ],
+    sections: [
+      {
+        h2: "Qui profite du PFU ?",
+        body: [
+          "Le PFU à 31,4 % est quasi optimal pour les foyers dont la tranche marginale est à 30 % ou plus. Le gain éventuel de l'option barème (abattement de 40 % sur les dividendes + CSG déductible) est généralement marginal et ne justifie pas la complexité administrative.",
+          "En revanche, pour les patrimoines à faibles revenus — retraités ou ménages en dessous de la tranche à 30 % — le PFU peut représenter une surtaxation significative. Un couple avec 20 000 € de dividendes et une TMI à 11 % peut économiser plus de 3 000 € en optant pour le barème.",
+        ],
+      },
+      {
+        h2: "L'abattement de 40 % : un avantage caché du barème",
+        body: [
+          "L'option barème permet de déduire 40 % des dividendes bruts avant imposition à l'IR. Concrètement : sur 10 000 € de dividendes, seuls 6 000 € sont soumis à l'IR (+ 17,2 % de PS sur le total). C'est le principal avantage du barème pour les actionnaires percevant des dividendes importants avec une TMI basse.",
+          "La CSG déductible (6,8 %) est une autre subtilité : elle réduit votre revenu imposable de l'année suivante. Sur un dividende de 10 000 €, cela représente 680 € de déduction, soit environ 200 € d'économie pour un foyer à 30 %.",
+        ],
+      },
+    ],
+    verdict: "Si votre TMI est à 0 % ou 11 %, optez systématiquement pour le barème : l'économie peut dépasser 15 points. À 30 % ou plus, le PFU est généralement optimal sauf situation particulière. Simulez les deux options avec votre situation réelle.",
+    sims: ['/simulateurs/flat-tax', '/simulateurs/impot-revenu'],
+    terms: ['pfu', 'tmi', 'dividende', 'plus-value-mobiliere', 'pea'],
+  },
+  {
+    slug: 'donation-vs-succession',
+    title: 'Donation de son vivant ou succession : quelle stratégie de transmission ?',
+    shortTitle: 'Donation vs succession',
+    emoji: '🎁',
+    category: 'Patrimoine',
+    intro: "Transmettre son patrimoine peut se faire de son vivant (donation) ou au décès (succession). Ces deux voies ne s'opposent pas — elles se combinent — mais leurs effets fiscaux et familiaux sont très différents. Voici comment arbitrer pour minimiser les droits et respecter vos volontés.",
+    a: {
+      name: 'Donation de son vivant',
+      pour: ["Abattements renouvelables tous les 15 ans (100 000 € par enfant par parent)", "Purge de la plus-value latente sur les biens donnés", "Organisation sereine de la transmission de son vivant", "Dons de sommes d'argent exonérés jusqu'à 80 724 € (< 80 ans, donataire majeur)"],
+      contre: ["Dessaisissement définitif (vous perdez la propriété du bien donné)", "Risque de conflits familiaux si le partage est inégal", "La réserve héréditaire peut être remise en cause à la succession"],
+    },
+    b: {
+      name: 'Succession',
+      pour: ["Vous conservez la pleine propriété jusqu'au décès", "Usufruit conservable (donation en nue-propriété)", "Aucun dessaisissement de votre vivant"],
+      contre: ["Abattement unique par bénéficiaire (non renouvelable)", "Droits potentiellement plus élevés si le patrimoine a grossi", "Règlements de succession parfois longs et conflictuels"],
+    },
+    criteres: [
+      { label: "Abattement enfant", a: "100 000 € / parent / 15 ans (renouvelable)", b: "100 000 € unique au décès" },
+      { label: "Purge de la plus-value", a: "Oui (le donataire repart du prix au jour du don)", b: "Non" },
+      { label: "Conservation du bien", a: "Non (ou nue-propriété)", b: "Oui jusqu'au décès" },
+      { label: "Conjoint survivant", a: "Exonéré de donation sous conditions", b: "Exonéré de succession depuis 2007" },
+      { label: "Planification", a: "Active (15 ans minimum d'horizon conseillé)", b: "Passive (exécutée au décès)" },
+    ],
+    sections: [
+      {
+        h2: "La force de la donation : le renouvellement des abattements",
+        body: [
+          "Le principal atout de la donation est la possibilité de renouveler les abattements tous les 15 ans. Un parent peut donner 100 000 € à chaque enfant en franchise de droits — répété deux fois sur 30 ans, cela représente 200 000 € transmis sans impôt par parent, soit 400 000 € pour un couple. Un patrimoine immobilier ou financier peut ainsi passer aux générations suivantes avec une charge fiscale minimale.",
+          "La donation de la nue-propriété est une technique puissante : vous donnez la nue-propriété (usuellement valorisée à 50-60 % de la valeur du bien) tout en conservant l'usufruit et les revenus. Les droits de donation sont calculés sur la valeur de la nue-propriété uniquement, et au décès de l'usufruitier, le donataire récupère la pleine propriété sans droits supplémentaires.",
+        ],
+      },
+      {
+        h2: "La succession : l'assurance-vie pour réduire les droits",
+        body: [
+          "L'assurance-vie est le grand outil de la transmission successorale : les capitaux versés avant 70 ans sont transmis hors succession dans la limite de 152 500 € par bénéficiaire — exonération totale jusqu'à ce plafond. Au-delà, le taux applicable est de 20 % puis 31,25 %, bien moins que les droits de succession pour les parents éloignés (45 à 60 %).",
+          "Combinée à des donations régulières, une stratégie bien construite permet de transmettre l'essentiel d'un patrimoine dans le cadre légal et fiscal le plus favorable.",
+        ],
+      },
+    ],
+    verdict: "Commencez à donner tôt et régulièrement pour tirer parti du renouvellement des abattements. Complétez avec une assurance-vie bien structurée. La succession ne sera alors qu'un complément, sur le patrimoine restant. Simulez vos droits ci-dessous.",
+    sims: ['/simulateurs/donation', '/simulateurs/succession', '/simulateurs/assurance-vie'],
+    terms: ['donation', 'succession', 'abattement', 'assurance-vie', 'reserve-hereditaire'],
+  },
 ];
 
 export const COMPARATIFS_BY_SLUG = Object.fromEntries(COMPARATIFS.map(c => [c.slug, c]));

@@ -184,7 +184,7 @@ export default function PlusValue() {
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/plus-value-immobiliere" size={34} />}
-          badge="Impôts · Simulation 2025"
+          badge="Impôts · Simulation 2026"
           title="Plus-value immobilière"
           desc="Calculez l'imposition de la plus-value lors de la vente d'un bien immobilier selon la durée de détention."
         />

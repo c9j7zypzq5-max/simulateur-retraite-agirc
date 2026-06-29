@@ -260,6 +260,8 @@ export default function App() {
         <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
         <Route path="/en/comparisons" element={<Comparatifs />} />
         <Route path="/en/comparisons/:slug" element={<Comparatif />} />
+        <Route path="/en/simulators/donation" element={<Donation />} />
+        <Route path="/en/simulators/pension-reversion" element={<PensionReversion />} />
         {/* Retraite */}
         <Route path="/simulateurs/agirc-arrco" element={<SimulateurRetraite />} />
         <Route path="/simulateurs/cnav" element={<Cnav />} />

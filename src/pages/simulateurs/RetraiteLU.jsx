@@ -107,7 +107,7 @@ export default function RetraiteLU() {
       <main id="main-content" style={{ maxWidth: 860, margin: "0 auto", padding: "0 20px 80px" }}>
         <SimulateurHeader
           icon="🇱🇺"
-          badge="Régime CNAP · Luxembourg 2025"
+          badge="Régime CNAP · Luxembourg 2026"
           title="Simulateur Retraite Luxembourg"
           subtitle="Frontaliers · Expatriés · Résidents"
           desc="Estimez votre pension du régime général luxembourgeois (CNAP) : carrière, salaire cotisé, âge de départ et majoration famille."

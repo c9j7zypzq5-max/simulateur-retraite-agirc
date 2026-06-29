@@ -211,10 +211,10 @@ export default function Ptz() {
       <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/ptz" size={34} />}
-          badge="Immobilier · Simulation 2025"
+          badge="Immobilier · Simulation 2026"
           title="Simulateur PTZ"
           subtitle="Prêt à Taux Zéro · Primo-accédant"
-          desc="Estimez le montant de votre Prêt à Taux Zéro selon votre zone, la composition de votre foyer et vos revenus. Tranche, quotité et montant finançable — barème 2025."
+          desc="Estimez le montant de votre Prêt à Taux Zéro selon votre zone, la composition de votre foyer et vos revenus. Tranche, quotité et montant finançable — barème 2026."
         />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "330px 1fr", gap: 24 }}>
@@ -399,7 +399,7 @@ export default function Ptz() {
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
-          Simulation indicative basée sur le barème 2025 (décret n° 2025-299) · Ne constitue pas un accord de prêt
+          Simulation indicative basée sur le barème 2026 (décret n° 2025-299) · Ne constitue pas un accord de prêt
         </p>
 
         {/* AdSense bas */}

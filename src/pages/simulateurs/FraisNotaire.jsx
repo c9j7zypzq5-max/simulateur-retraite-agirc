@@ -188,7 +188,7 @@ export default function FraisNotaire() {
       <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/frais-notaire" size={34} />}
-          badge="Immobilier · Simulation 2025"
+          badge="Immobilier · Simulation 2026"
           title="Simulateur frais de notaire"
           subtitle="Frais d'acquisition · Ancien & neuf"
           desc="Estimez les frais de notaire de votre achat immobilier : droits de mutation, émoluments du notaire, contribution de sécurité immobilière et débours. Calcul instantané pour l'ancien et le neuf."

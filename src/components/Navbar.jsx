@@ -8,6 +8,7 @@ import CurrencySelect from "./CurrencySelect.jsx";
 import CountrySwitch from "./CountrySwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
 import { canonicalPath } from "../i18n/paths.js";
+import { prefetchRoute } from "../utils/prefetch.js";
 import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode, User, LogIn } from "lucide-react";
 
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
@@ -495,7 +496,7 @@ export default function Navbar({ theme, setTheme }) {
                           padding: "7px 8px", borderRadius: 8, textDecoration: "none",
                           background: isCurrent ? "var(--primary-soft)" : "transparent",
                         }}
-                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                        onMouseEnter={e => { if (!isCurrent) e.currentTarget.style.background = "rgba(15,24,40,0.04)"; prefetchRoute(item.path); }}
                         onMouseLeave={e => { if (!isCurrent) e.currentTarget.style.background = "transparent"; }}
                       >
                         <span style={{ color: isCurrent ? "var(--primary)" : "var(--text-secondary)", display: "flex", flexShrink: 0 }}>

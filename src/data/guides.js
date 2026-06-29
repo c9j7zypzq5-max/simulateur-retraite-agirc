@@ -261,6 +261,85 @@ export const GUIDES = [
     terms: ['taeg', 'taux-endettement', 'amortissement', 'capacite-emprunt', 'pfu'],
     blogCats: ['Finances'],
   },
+  {
+    slug: 'flat-tax-ou-bareme',
+    title: 'Flat tax (PFU) ou barème progressif ?',
+    icon: 'Percent',
+    category: 'Impôts',
+    intro: "Depuis 2018, les revenus de capitaux mobiliers (dividendes, plus-values, intérêts) sont imposés par défaut au Prélèvement Forfaitaire Unique (PFU) de 30 % — ou 31,4 % en 2026. Mais l'option pour le barème progressif peut être plus avantageuse si votre tranche marginale est basse. Guide complet pour choisir.",
+    sections: [
+      {
+        h2: 'Le PFU : simple mais pas toujours optimal',
+        body: [
+          "Le Prélèvement Forfaitaire Unique agrège 12,8 % d'IR et 18,6 % de prélèvements sociaux (PS) depuis 2025, soit 31,4 % au total en 2026. Il s'applique automatiquement à tous vos revenus de capitaux mobiliers sans démarche particulière.",
+          "Son principal avantage : la simplicité. Il est prélevé à la source sur les revenus bancaires et vous n'avez aucune case à cocher lors de votre déclaration (sauf pour exercer l'option barème).",
+        ],
+      },
+      {
+        h2: "Quand l'option barème est-elle gagnante ?",
+        body: [
+          "Si votre tranche marginale d'imposition (TMI) est à 0 % ou 11 %, l'option barème est presque toujours plus avantageuse : votre taux d'IR est inférieur à 12,8 %. Pour les dividendes, l'abattement de 40 % réduit encore la base imposable.",
+          "À partir de 30 % de TMI, le PFU devient généralement optimal pour les dividendes et plus-values. Cependant, la CSG déductible de 6,8 % peut légèrement améliorer l'option barème pour les revenus élevés. Simulez les deux options pour comparer.",
+          "Attention : l'option barème est globale — elle s'applique à tous vos revenus de capitaux mobiliers de l'année. Impossible d'optimiser revenu par revenu.",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/flat-tax', '/simulateurs/impot-revenu', '/simulateurs/assurance-vie'],
+    terms: ['pfu', 'tmi', 'dividende', 'plus-value-mobiliere', 'pea'],
+    blogCats: ['Fiscalité'],
+  },
+  {
+    slug: 'donation-du-vivant',
+    title: 'Transmettre avec une donation de son vivant',
+    icon: 'Gift',
+    category: 'Patrimoine',
+    intro: "La donation de son vivant est l'un des outils de transmission les plus efficaces : abattements renouvelables tous les 15 ans, droits réduits, et possibilité d'organiser sereinement sa succession. Mode d'emploi.",
+    sections: [
+      {
+        h2: 'Les abattements : le cœur de l\'avantage fiscal',
+        body: [
+          "Chaque parent peut donner jusqu'à 100 000 € à chaque enfant en franchise de droits, tous les 15 ans. Un couple peut donc transmettre 200 000 € par enfant sans fiscalité. En commençant tôt, il est possible de transmettre un patrimoine significatif sur plusieurs cycles.",
+          "Des abattements spécifiques s'ajoutent : 31 865 € pour les petits-enfants, 5 310 € pour les arrière-petits-enfants. Le don familial de sommes d'argent (80 724 € entre 18 et 80 ans, donateur et donataire) offre une exonération supplémentaire.",
+        ],
+      },
+      {
+        h2: 'Donation vs succession : ce qu\'il faut comparer',
+        body: [
+          "Donner de son vivant permet de « purger » la plus-value latente sur certains actifs (immobilier, parts de société) car le donataire reprend le bien à sa valeur du jour de la donation, non au coût d'acquisition du donateur. C'est un avantage considérable pour les biens fortement valorisés.",
+          "La réserve héréditaire protège les enfants : toute donation dépouillant un héritier réservataire au-delà de la quotité disponible peut être remise en cause lors de la succession. Planifiez avec un notaire pour rester dans les limites légales.",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/donation', '/simulateurs/succession'],
+    terms: ['donation', 'succession', 'abattement', 'reserve-hereditaire', 'quotite-disponible'],
+    blogCats: ['Fiscalité'],
+  },
+  {
+    slug: 'retraite-anticipee',
+    title: 'Partir à la retraite anticipée',
+    icon: 'CalendarCheck',
+    category: 'Retraite',
+    intro: "La retraite anticipée permet de partir avant l'âge légal (64 ans depuis la réforme 2023) pour les assurés ayant commencé à travailler tôt ou validé un nombre élevé de trimestres. Conditions, calcul et impact sur la pension.",
+    sections: [
+      {
+        h2: 'Les deux régimes de retraite anticipée',
+        body: [
+          "La « carrière longue » (RACL) permet de partir avant 64 ans si vous avez commencé à travailler avant 21 ans et validé un nombre de trimestres supérieur à la durée requise pour votre génération. Quatre bornes d'âge s'appliquent (58, 60, 62, 63 ans) selon l'âge de début et les trimestres cotisés.",
+          "La retraite anticipée pour handicap (RAH) permet de partir à 55 ans avec un taux d'incapacité permanente ≥ 50 % et un nombre de trimestres cotisés réduit. La pension est calculée au taux plein sans décote.",
+        ],
+      },
+      {
+        h2: 'Impact sur le montant de la pension',
+        body: [
+          "Partir tôt réduit mécaniquement votre pension : moins de trimestres cotisés = salaire annuel moyen (SAM) calculé sur moins d'années, et une durée de versement plus longue que l'assureur doit couvrir. L'impact sur l'Agirc-Arrco peut être significatif si vous partez avant le taux plein.",
+          "Évaluez l'opportunité en comparant le cumul de pensions sur votre espérance de vie estimée : partir 2 ans plus tôt vous prive de 2 années de cotisations mais vous donne 2 années de pension de plus. Le simulateur calcule le point d'équilibre.",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/trimestres', '/simulateurs/retraite-anticipee', '/simulateurs/agirc-arrco', '/simulateurs/cnav'],
+    terms: ['racl', 'taux-plein', 'trimestre', 'decote', 'cnav', 'agirc-arrco'],
+    blogCats: ['Retraite'],
+  },
 ];
 
 export const GUIDES_BY_SLUG = Object.fromEntries(GUIDES.map(g => [g.slug, g]));

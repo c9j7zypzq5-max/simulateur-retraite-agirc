@@ -28,6 +28,8 @@ const EN_PATH_MAP = {
   '/merci':                          '/thank-you',
   '/merci-pro':                      '/thank-you-pro',
   '/comparatifs':                    '/comparisons',
+  '/simulateurs/donation':           '/simulators/donation',
+  '/simulateurs/pension-reversion':  '/simulators/pension-reversion',
 };
 
 // Sens inverse : segment EN → chemin canonique FR.

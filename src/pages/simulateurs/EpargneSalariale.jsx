@@ -159,7 +159,7 @@ export default function EpargneSalariale() {
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/epargne" size={34} />}
           title="Épargne salariale"
-          subtitle="PEE · PERCO · PERO — Simulation 2025"
+          subtitle="PEE · PERCO · PERO — Simulation 2026"
           desc="Estimez l'impact de l'abondement employeur sur votre capital final. Plafond légal 2025 : 3 844,80 € (8 % du PASS), exonéré d'impôt sur le revenu."
           badge="Épargne · Salarié"
         />

@@ -4,6 +4,7 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
+import JsonLd from "../components/JsonLd.jsx";
 import { ROUTE_META } from "../../api/_routes.js";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 
@@ -57,8 +58,23 @@ export default function LexiqueTerme() {
   const cat = entry ? (CATEGORY_COLORS[entry.category] || CATEGORY_COLORS["Finances"]) : null;
   const related = (entry?.related || []).map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean);
 
+  const faqLd = entry && entry.long?.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [{
+      '@type': 'Question',
+      name: `Qu'est-ce que ${entry.full || entry.term} ?`,
+      acceptedAnswer: { '@type': 'Answer', text: entry.short },
+    }, ...entry.long.slice(0, 2).map((p, i) => ({
+      '@type': 'Question',
+      name: i === 0 ? `Comment fonctionne ${entry.term} ?` : `Pourquoi utiliser ${entry.term} ?`,
+      acceptedAnswer: { '@type': 'Answer', text: p },
+    }))],
+  } : null;
+
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
+      {faqLd && <JsonLd data={faqLd} />}
       <Navbar theme={theme} setTheme={setTheme} />
 
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px 80px" }}>

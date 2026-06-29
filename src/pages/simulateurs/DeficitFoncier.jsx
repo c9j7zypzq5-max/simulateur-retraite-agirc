@@ -188,7 +188,7 @@ export default function DeficitFoncier() {
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/plus-value-immobiliere" size={34} />}
           title="Déficit foncier"
-          subtitle="Régime réel · Simulation 2025"
+          subtitle="Régime réel · Simulation 2026"
           desc="Estimez votre déficit foncier déductible du revenu global (plafond 10 700 €), le report sur 10 ans et l'économie d'impôt réelle (IR + prélèvements sociaux 17,2 %)."
           badge="Immobilier · Fiscalité"
         />
