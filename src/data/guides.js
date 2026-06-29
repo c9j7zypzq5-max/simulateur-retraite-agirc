@@ -30,6 +30,13 @@ export const GUIDES = [
     sims: ['/simulateurs/agirc-arrco', '/simulateurs/cnav', '/simulateurs/fonction-publique', '/simulateurs/per', '/simulateurs/retraite-progressive'],
     terms: ['cnav', 'agirc-arrco', 'taux-plein', 'decote', 'surcote', 'trimestre', 'per', 'reversion'],
     blogCats: ['Retraite'],
+    steps: [
+      { position: 1, name: 'Estimer ses pensions de base et complémentaire', text: 'Commencez par simuler votre pension CNAV (régime général) via le simulateur retraite de simfinly.com en renseignant votre salaire annuel moyen, votre nombre de trimestres et votre âge de départ souhaité. Ajoutez ensuite votre simulation Agirc-Arrco pour les salariés du privé.' },
+      { position: 2, name: 'Calculer le taux de remplacement', text: 'Divisez votre pension nette totale (CNAV + Agirc-Arrco + autres régimes) par votre dernier salaire net. Le taux de remplacement est souvent de 60 à 75 % pour les salariés du privé — identifiez le gap avec votre niveau de vie cible.' },
+      { position: 3, name: 'Estimer le gap d\'épargne complémentaire', text: 'Si votre taux de remplacement est insuffisant, calculez le capital supplémentaire nécessaire via le simulateur de rente. Un écart de 500 €/mois pendant 25 ans représente environ 100 000 à 150 000 € de capital selon les hypothèses.' },
+      { position: 4, name: 'Ouvrir et alimenter un PER', text: 'Le Plan d\'Épargne Retraite est l\'outil privilégié : déductible de l\'IR (jusqu\'à 37 680 €/an), bloqué jusqu\'à la retraite, et convertible en rente ou capital. Commencez le plus tôt possible pour bénéficier de l\'effet des intérêts composés.' },
+      { position: 5, name: 'Optimiser la date de départ', text: 'Comparez les scénarios 62, 64 et 67 ans : partir plus tôt donne moins de trimestres et une décote, partir plus tard donne une surcote (+1,25 %/trimestre). Le simulateur CNAV calcule le point d\'équilibre financier entre partir tôt (plus d\'années de pension) et tard (plus par an).' },
+    ],
   },
   {
     slug: 'acheter-sa-residence-principale',
@@ -184,6 +191,13 @@ export const GUIDES = [
     sims: ['/simulateurs/epargne', '/simulateurs/comparateur', '/simulateurs/patrimoine'],
     terms: ['etf', 'pea', 'assurance-vie', 'dca', 'diversification', 'volatilite', 'dividende', 'ter'],
     blogCats: ['Finances', 'Épargne'],
+    steps: [
+      { position: 1, name: 'Ouvrir le bon compte boursier', text: 'Pour la défiscalisation : PEA en banque en ligne (Boursorama, Fortuneo) pour les actions européennes et ETF monde. Pour la diversification élargie : assurance-vie en unités de compte. Pour une liberté totale : compte-titres ordinaire. La combinaison PEA + assurance-vie couvre 95 % des besoins d\'un investisseur particulier.' },
+      { position: 2, name: 'Choisir un ETF monde diversifié', text: 'Investissez dans un ETF MSCI World (ex : Amundi MSCI World UCITS ETF - accumulation) : 1 600 entreprises, frais ~0,20 %/an, disponible sur PEA. Cela évite la sélection d\'actions individuelles et diversifie instantanément. Le rendement historique du MSCI World est de ~7-8 %/an sur 30 ans.' },
+      { position: 3, name: 'Mettre en place un DCA mensuel', text: 'Programmez un achat automatique mensuel d\'un montant fixe, indépendamment du prix de l\'ETF. Cette technique de \'Dollar Cost Averaging\' lisse le prix d\'achat sur le temps et évite l\'erreur de market timing.' },
+      { position: 4, name: 'Rééquilibrer le portefeuille annuellement', text: 'Une fois par an (ou lors d\'un écart >5 % de votre allocation cible), rééquilibrez en vendant les actifs surpondérés et en achetant les sous-pondérés. Cela maintient votre profil de risque et discipline votre comportement d\'investisseur.' },
+      { position: 5, name: 'Ne jamais vendre lors des baisses', text: 'Les 10 meilleurs jours des marchés sur 20 ans représentent plus de 50 % de la performance totale. Ils surviennent souvent dans les 3 mois suivant un krach. Vendre lors d\'une baisse cristallise les pertes et rate le rebond. La seule raison légitime de vendre : avoir besoin des fonds pour un projet à court terme.' },
+    ],
   },
   {
     slug: 'maitriser-son-budget',
@@ -210,6 +224,13 @@ export const GUIDES = [
     sims: ['/simulateurs/budget', '/simulateurs/epargne', '/simulateurs/cout-en-heures'],
     terms: ['taux-epargne', 'reste-a-vivre', 'epargne-precaution', 'budget-50-30-20', 'livret-a', 'ldds'],
     blogCats: ['Budget'],
+    steps: [
+      { position: 1, name: 'Lister tous ses revenus et dépenses sur 3 mois', text: 'Exportez vos relevés bancaires des 3 derniers mois et catégorisez chaque dépense en : besoins fixes (loyer, abonnements, assurances), besoins variables (alimentation, transport), envies (restaurants, loisirs) et épargne. Utilisez le simulateur budget de simfinly pour cette analyse.' },
+      { position: 2, name: 'Appliquer la règle 50/30/20', text: 'Vérifiez que vos besoins ne dépassent pas 50 % du revenu net, vos envies 30 %, et que 20 % minimum vont à l\'épargne. En Île-de-France, adaptez à 55/25/20 si le loyer dépasse 30 % du revenu. L\'essentiel est de fixer l\'épargne en premier.' },
+      { position: 3, name: 'Automatiser l\'épargne le jour du salaire', text: 'Programmez un virement automatique vers votre Livret A le 1er de chaque mois (ou le jour du salaire). Montant cible : 20 % du revenu net. Une fois l\'épargne \'en sécurité\', le reste peut être dépensé sans calcul constant ni culpabilité.' },
+      { position: 4, name: 'Identifier et éliminer les dépenses silencieuses', text: 'Abonnements oubliés, frais bancaires évitables, assurances redondantes : listez tous vos prélèvements automatiques et supprimez ce que vous n\'utilisez pas. Ces \'fuites\' représentent souvent 100-300 €/mois invisibles.' },
+      { position: 5, name: 'Réévaluer le budget trimestriellement', text: 'Chaque trimestre, revoyez votre budget : les revenus ont-ils changé ? Des charges fixes ont-elles évolué ? Ajustez les montants des virements automatiques en conséquence. Un budget qui n\'évolue pas devient progressivement inexact et décourageant.' },
+    ],
   },
   {
     slug: 'investissement-locatif',
@@ -236,6 +257,13 @@ export const GUIDES = [
     sims: ['/simulateurs/rendement-locatif', '/simulateurs/emprunt-immobilier', '/simulateurs/plus-value-immobiliere'],
     terms: ['rendement-locatif', 'effet-levier', 'micro-foncier', 'deficit-foncier', 'lmnp', 'sci', 'plus-value-immobiliere', 'garantie-loyers-impayes'],
     blogCats: ['Immobilier'],
+    steps: [
+      { position: 1, name: 'Calculer le rendement brut et net du bien', text: 'Rendement brut = loyers annuels / prix d\'achat total (y compris frais de notaire). Rendement net = (loyers - charges - taxe foncière - impôts) / prix d\'achat. Visez un rendement net > 3 % minimum en zone tendue, > 5 % en province. Le simulateur rendement locatif de simfinly intègre toutes ces variables.' },
+      { position: 2, name: 'Choisir son régime fiscal', text: 'Location nue < 15 000 €/an : micro-foncier (abattement 30 %, simple). Au-delà ou si les charges dépassent 30 % : régime réel (déduction charges + intérêts + amortissements en LMNP). En meublé (LMNP régime réel), l\'amortissement du bien peut effacer fiscalement les revenus pendant 15-20 ans.' },
+      { position: 3, name: 'Estimer l\'effet de levier du crédit', text: 'Un bien à 5 % de rendement net financé à 70 % par crédit à 3,5 % génère un rendement sur fonds propres de ~10-12 %. C\'est l\'effet de levier. Vérifiez que le loyer couvre au moins 70-80 % de la mensualité (reste à charge net positif ou neutre).' },
+      { position: 4, name: 'Anticiper la gestion et les risques', text: 'Charges de copropriété, taxe foncière, travaux imprévus (10 % du prix sur 10 ans en moyenne), vacance locative (1-2 mois/an), impayés : provisionnez ces risques dans votre calcul de rentabilité. Une assurance loyers impayés (GLI, ~2,5-4 % des loyers) peut sécuriser les revenus.' },
+      { position: 5, name: 'Préparer la sortie (revente ou transmission)', text: 'Calculez la plus-value immobilière potentielle à la revente (exonérée après 22 ans de détention pour l\'IR, 30 ans pour les prélèvements sociaux). Si l\'objectif est la transmission, le démembrement ou une SCI peut optimiser la fiscalité successorale.' },
+    ],
   },
   {
     slug: 'comprendre-sa-retraite-complementaire',
@@ -262,6 +290,13 @@ export const GUIDES = [
     sims: ['/simulateurs/agirc-arrco', '/simulateurs/cnav', '/simulateurs/retraite-progressive'],
     terms: ['agirc-arrco', 'points-retraite', 'pass', 'taux-plein', 'decote', 'surcote', 'sam', 'cumul-emploi-retraite'],
     blogCats: ['Retraite'],
+    steps: [
+      { position: 1, name: 'Vérifier son relevé de points Agirc-Arrco', text: 'Accédez à votre espace personnel sur agirc-arrco.fr pour consulter votre relevé de points. Vérifiez chaque année que les points cotisés correspondent à votre salaire et signalez toute anomalie dans les 3 ans.' },
+      { position: 2, name: 'Calculer sa pension complémentaire estimée', text: 'Utilisez le simulateur Agirc-Arrco de simfinly : entrez votre nombre de points actuels, votre salaire et votre âge de départ cible. La pension = points × valeur du point (1,4107 € en 2026). Additionnez votre CNAV pour obtenir la retraite totale.' },
+      { position: 3, name: 'Comprendre le coefficient de solidarité', text: 'Si vous partez dès que vous avez votre taux plein CNAV (sans travailler 1 à 4 trimestres de plus), un malus de -10 % s\'applique sur votre pension Agirc-Arrco pendant 3 ans. Simulez l\'impact de travailler quelques trimestres supplémentaires pour éviter ce malus.' },
+      { position: 4, name: 'Évaluer le bonus de fidélité', text: 'Travailler 1 à 3+ trimestres après votre taux plein donne un bonus temporaire de +10 à +30 % sur 1 an. Si vous hésitez à partir, comparez le coût de travailler encore (salaire - avantages perdus) avec le gain du bonus sur votre pension.' },
+      { position: 5, name: 'Planifier le moment de départ optimal', text: 'Le meilleur âge de départ au regard de l\'Agirc-Arrco dépend de votre situation personnelle. Le simulateur calcule automatiquement la pension selon 3 scénarios : départ immédiat (avec malus), départ avec 1 trimestre de plus (sans malus), et départ avec bonus.' },
+    ],
   },
   {
     slug: 'gerer-ses-credits',
@@ -288,6 +323,13 @@ export const GUIDES = [
     sims: ['/simulateurs/credit-conso', '/simulateurs/emprunt-immobilier', '/simulateurs/comparateur'],
     terms: ['taeg', 'taux-endettement', 'amortissement', 'capacite-emprunt', 'pfu'],
     blogCats: ['Finances'],
+    steps: [
+      { position: 1, name: 'Inventorier tous ses crédits et leurs taux', text: 'Listez chaque crédit avec son capital restant dû, son taux (TAEG), sa mensualité et sa durée restante. Classez-les du plus cher au moins cher. Prêt renouvelable/crédit conso : souvent 10-20 % TAEG. Prêt immo : souvent 3-5 %. Découvert bancaire : 15-20 %.' },
+      { position: 2, name: 'Rembourser par ordre de taux (méthode avalanche)', text: 'Concentrez tout excédent budgétaire sur le crédit au taux le plus élevé. Une fois remboursé, reportez la mensualité libérée sur le crédit suivant. Cette méthode minimise le coût total en intérêts, même si la méthode \'boule de neige\' (plus petit solde en premier) est plus motivante psychologiquement.' },
+      { position: 3, name: 'Renégocier ou faire racheter son crédit immobilier', text: 'Si les taux de marché sont inférieurs d\'au moins 0,5-0,7 % à votre taux actuel et qu\'il vous reste plus de 10 ans de crédit, une renégociation est rentable. Calculez le gain net après frais de remboursement anticipé (IRA, plafonnées à 6 mois d\'intérêts ou 3 % du capital restant).' },
+      { position: 4, name: 'Éviter le crédit renouvelable et les découverts', text: 'Un découvert bancaire facturé en agios peut coûter 15-20 % TAEG. Mettez en place une autorisation de découvert à taux réduit ou un virement automatique d\'un livret pour couvrir les fins de mois tendues. Le crédit renouvelable doit être résilié dès que le solde est remboursé.' },
+      { position: 5, name: 'Simuler l\'impact d\'un remboursement anticipé', text: 'Utilisez le simulateur de crédit de simfinly pour calculer l\'économie d\'un remboursement anticipé partiel (ex : placer 5 000 € en remboursement vs investir en bourse). Le remboursement anticipé est rentable si le taux du crédit est supérieur au rendement attendu de l\'investissement alternatif.' },
+    ],
   },
   {
     slug: 'flat-tax-ou-bareme',
@@ -315,6 +357,13 @@ export const GUIDES = [
     sims: ['/simulateurs/flat-tax', '/simulateurs/impot-revenu', '/simulateurs/assurance-vie'],
     terms: ['pfu', 'tmi', 'dividende', 'plus-value-mobiliere', 'pea'],
     blogCats: ['Fiscalité'],
+    steps: [
+      { position: 1, name: 'Identifier ses revenus de capitaux mobiliers', text: 'Listez tous vos revenus concernés : dividendes (actions, ETF, SCPI), intérêts (obligations, livrets non réglementés), plus-values de cession de valeurs mobilières, gains sur contrats d\'assurance-vie. Les revenus de PEA après 5 ans et de Livret A sont exonérés et hors calcul.' },
+      { position: 2, name: 'Calculer son TMI pour l\'année en cours', text: 'Utilisez le simulateur d\'impôt sur le revenu de simfinly pour connaître votre Tranche Marginale d\'Imposition (TMI). Si votre TMI est à 0 % ou 11 %, l\'option barème est avantageuse. À 30 %, le PFU (12,8 % + 17,2 % PS = 30 %) est équivalent. Au-delà, le PFU est généralement optimal.' },
+      { position: 3, name: 'Comparer PFU vs barème pour les dividendes', text: 'Pour les dividendes, l\'option barème s\'applique avec un abattement de 40 % avant IR — ce qui réduit la base imposable. Exemple : 5 000 € de dividendes au barème à 30 % = 5 000 × 60 % × 30 % = 900 € d\'IR + PS. Au PFU : 5 000 × 12,8 % = 640 €. Dans ce cas, le PFU gagne. Simulez votre situation précise.' },
+      { position: 4, name: 'Exercer l\'option barème si avantageuse', text: 'L\'option barème se cocher en case 2OP de votre déclaration de revenus (formulaire 2042). Elle est globale et irrévocable pour l\'année — elle s\'applique à tous vos revenus de capitaux mobiliers. Calculez avant de cocher : si vous avez des PEA ou assurance-vie, vérifiez que les gains concernés sont bien inclus dans votre calcul.' },
+      { position: 5, name: 'Optimiser pour les années suivantes', text: 'Si vous anticipez de gros gains imposables, ouvrez un PEA (exonération après 5 ans) ou une assurance-vie (fiscalité réduite après 8 ans). Ces enveloppes permettent de différer ou d\'éviter la fiscalité sur les plus-values, quelle que soit l\'option retenue.' },
+    ],
   },
   {
     slug: 'donation-du-vivant',
@@ -341,6 +390,13 @@ export const GUIDES = [
     sims: ['/simulateurs/donation', '/simulateurs/succession'],
     terms: ['abattement', 'assurance-vie', 'tmi'],
     blogCats: ['Fiscalité'],
+    steps: [
+      { position: 1, name: 'Faire le point sur son patrimoine transmissible', text: 'Inventoriez ce que vous souhaitez transmettre : liquidités, valeurs mobilières, biens immobiliers, parts de société. Pour chaque actif, estimez la valeur et la plus-value latente. La donation \'purge\' cette plus-value pour les biens non-immobiliers (le donataire reprend à la valeur du jour).' },
+      { position: 2, name: 'Vérifier les abattements disponibles', text: 'Abattements en ligne directe (parent → enfant) : 100 000 € par parent par enfant, renouvelables tous les 15 ans. Ajoutez le don familial de sommes d\'argent (80 724 € en franchise, donateur < 80 ans, donataire majeur). Calculez le total disponible pour chaque bénéficiaire.' },
+      { position: 3, name: 'Choisir le type de donation', text: 'Donation simple (pleine propriété) : la plus courante. Donation avec réserve d\'usufruit (nue-propriété) : le donateur conserve l\'usage du bien, les droits sont calculés sur une valeur réduite selon l\'âge. Donation-partage : partage anticipé entre plusieurs héritiers, figé à la valeur du jour de la donation.' },
+      { position: 4, name: 'Faire appel à un notaire pour l\'acte', text: 'Tout donation immobilière ou d\'une valeur > 15 000 € nécessite un acte notarié. Les dons manuels (argent, valeurs mobilières) peuvent se faire sans notaire mais doivent être déclarés (formulaire 2735) pour déclencher le délai de 15 ans.' },
+      { position: 5, name: 'Déclarer et payer les droits', text: 'Après signature de l\'acte, le notaire dépose la déclaration et calcule les droits éventuels. Avec un abattement de 100 000 €, il n\'y a souvent rien à payer. Si des droits sont dus (barème de 5 % à 45 % en ligne directe), ils sont payables immédiatement ou sur 12 mois sur demande.' },
+    ],
   },
   {
     slug: 'retraite-anticipee',
@@ -367,6 +423,13 @@ export const GUIDES = [
     sims: ['/simulateurs/trimestres', '/simulateurs/retraite-anticipee', '/simulateurs/agirc-arrco', '/simulateurs/cnav'],
     terms: ['taux-plein', 'trimestre', 'decote', 'cnav', 'agirc-arrco'],
     blogCats: ['Retraite'],
+    steps: [
+      { position: 1, name: 'Vérifier son éligibilité à la carrière longue', text: 'La retraite anticipée carrière longue (RACL) nécessite d\'avoir commencé à travailler avant 21 ans (pour partir à 63 ans) ou avant 18 ans (62 ans), voire avant 16 ans (58-60 ans). Vérifiez sur votre relevé de carrière Info Retraite que vos trimestres avant 21 ans sont bien enregistrés.' },
+      { position: 2, name: 'Calculer ses trimestres cotisés et requis', text: 'Pour chaque borne d\'âge de la carrière longue, un nombre minimal de trimestres cotisés est requis (trimestres assimilés partiellement). Utilisez le simulateur trimestres de simfinly pour connaître exactement votre situation et identifier si vous manquez quelques trimestres rachetables.' },
+      { position: 3, name: 'Simuler l\'impact financier d\'un départ anticipé', text: 'Comparez le cumul pension sur l\'espérance de vie entre : partir à 60 ans (moins par mois, mais pendant plus longtemps) vs partir à 64 ans (plus par mois, moins longtemps). Le \'point d\'équilibre\' est généralement autour de 75-80 ans — si vous vivez au-delà, partir tard est financièrement gagnant.' },
+      { position: 4, name: 'Anticiper l\'Agirc-Arrco en cas de départ anticipé', text: 'Partir en retraite anticipée peut déclencher le coefficient d\'abattement Agirc-Arrco (-10 % pendant 3 ans) si vous n\'avez pas atteint un certain seuil de trimestres. Vérifiez ce point avec le simulateur Agirc-Arrco de simfinly.' },
+      { position: 5, name: 'Déposer sa demande 4 mois à l\'avance', text: 'La demande de retraite doit être déposée au minimum 4 mois avant la date de départ souhaitée, auprès de la CNAV (info-retraite.fr) et de toutes les caisses complémentaires concernées. Préparez les justificatifs : bulletins de salaire anciens, attestation employeur, relevé de carrière.' },
+    ],
   },
   {
     slug: 'investir-son-premier-10k',
