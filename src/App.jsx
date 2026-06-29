@@ -124,6 +124,7 @@ const GuidePensionReversion  = lazy(() => import("./pages/GuidePensionReversion.
 const GuideFraisNotaire      = lazy(() => import("./pages/GuideFraisNotaire.jsx"));
 const GuideRetraite2026      = lazy(() => import("./pages/GuideRetraite2026.jsx"));
 const GuideImpotRevenu       = lazy(() => import("./pages/GuideImpotRevenu.jsx"));
+const GuidePER2026           = lazy(() => import("./pages/GuidePER2026.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -374,6 +375,7 @@ export default function App() {
         <Route path="/retraite/calcul-pension-reversion" element={<GuidePensionReversion />} />
         <Route path="/immobilier/frais-notaire" element={<GuideFraisNotaire />} />
         <Route path="/impots/simulateur-impot-revenu" element={<GuideImpotRevenu />} />
+        <Route path="/epargne/guide-per-2026" element={<GuidePER2026 />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

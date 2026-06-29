@@ -257,6 +257,10 @@ export const SEO_CONTENT = {
     h1: "Retraite parent au foyer 2026 — MDA, AVPF et droits",
     intro: "Les parents au foyer bénéficient de deux dispositifs retraite : la Majoration de Durée d'Assurance (4 trimestres par enfant) et l'Assurance Vieillesse des Parents au Foyer (AVPF) versée par la CAF. Comprendre ces droits est essentiel pour ne pas sacrifier sa pension.",
   },
+  '/epargne/guide-per-2026': {
+    h1: "PER 2026 : guide complet du Plan d'Épargne Retraite",
+    intro: "Tout sur le PER en 2026 : déduction fiscale jusqu'à 35 194 €, 3 types (PERIN, PERCOL, PERO), sortie en capital ou rente, 6 cas de déblocage anticipé (dont résidence principale) et comparatif détaillé PER vs assurance-vie avec simulateur gratuit.",
+  },
   '/impots/simulateur-impot-revenu': {
     h1: "Impôt sur le revenu 2026 : barème, calcul et réductions",
     intro: "Barème IR 2026 complet : 5 tranches de 0 % à 45 %. Comment calculer son impôt en 4 étapes, comprendre la tranche marginale d'imposition (TMI), le quotient familial, et réduire sa note fiscale avec PER, dons et emploi à domicile. Simulateur gratuit.",
