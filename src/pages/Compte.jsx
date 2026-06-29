@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
+import { useNoIndex } from "../hooks/useNoIndex.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import OnboardingModal, { shouldShowOnboarding } from "../components/OnboardingModal.jsx";
@@ -18,6 +19,7 @@ const NAV_ITEMS = [
 
 export default function Compte() {
   const navigate = useNavigate();
+  useNoIndex();
   const { user, loading, isPro, profile, signOut, getAccessToken } = useAuth();
   const { getHistory } = useSimHistory();
   const { t, locale } = useTranslation();

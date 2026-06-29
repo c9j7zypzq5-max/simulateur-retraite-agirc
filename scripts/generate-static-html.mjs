@@ -6,6 +6,7 @@ import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from 
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
+import { STATIC_BY_SLUG } from '../api/_static-articles.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -125,12 +126,17 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
 async function blogEntries() {
   const url = process.env.UPSTASH_REDIS_REST_URL;
   const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return BLOG_SLUGS.map(route => ({ route }));
+  const staticFallback = BLOG_SLUGS.map(route => {
+    const slug = route.replace('/blog/', '');
+    const a = STATIC_BY_SLUG[slug];
+    return a ? { route, title: a.title, description: a.intro, publishedAt: a.publishedAt, content: a.content } : { route };
+  });
+  if (!url || !token) return staticFallback;
   try {
     const { Redis } = await import('@upstash/redis');
     const redis = new Redis({ url, token });
     const slugs = await redis.zrange('blog:slugs', 0, -1, { rev: true });
-    if (!Array.isArray(slugs) || !slugs.length) return BLOG_SLUGS.map(route => ({ route }));
+    if (!Array.isArray(slugs) || !slugs.length) return staticFallback;
     const entries = [];
     for (const slug of slugs) {
       const route = slug.startsWith('/blog/') ? slug : `/blog/${slug}`;
@@ -144,7 +150,7 @@ async function blogEntries() {
     }
     return entries;
   } catch {
-    return BLOG_SLUGS.map(route => ({ route }));
+    return staticFallback;
   }
 }
 

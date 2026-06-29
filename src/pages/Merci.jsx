@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useTranslation } from "../i18n/index.js";
+import { useNoIndex } from "../hooks/useNoIndex.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -9,6 +10,7 @@ const SS_KEY = "pending_pro_pdf";
 
 export default function Merci() {
   const [theme, setTheme] = useTheme();
+  useNoIndex();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get("session_id") || "";
   const back = searchParams.get("back") || "/";

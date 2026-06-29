@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
+import { useNoIndex } from "../hooks/useNoIndex.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -55,6 +56,7 @@ const NAV_ITEMS = [
 ];
 
 export default function MesSimulations() {
+  useNoIndex();
   const { isPro, user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

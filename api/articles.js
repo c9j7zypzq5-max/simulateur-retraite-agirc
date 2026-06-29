@@ -1,7 +1,14 @@
 import { Redis } from '@upstash/redis';
 import { BASE } from './_routes.js';
+import { STATIC_ARTICLES } from './_static-articles.js';
 
 const SITE = BASE;
+
+function staticSummaries() {
+  return STATIC_ARTICLES.map(({ slug, title, intro, category, readTime, publishedAt }) => ({
+    slug, title, intro, category, readTime, publishedAt,
+  })).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+}
 
 export default async function handler(req, res) {
   const format = req.query?.format;
@@ -9,8 +16,9 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=300, stale-while-revalidate=600');
 
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
-    if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml'); return res.status(200).send(emptyRss()); }
-    return res.status(200).json([]);
+    const articles = staticSummaries();
+    if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8'); return res.status(200).send(buildRss(articles)); }
+    return res.status(200).json(articles);
   }
 
   try {
@@ -22,8 +30,9 @@ export default async function handler(req, res) {
     // 20 articles les plus récents (score = timestamp)
     const slugs = await redis.zrange('blog:slugs', 0, 19, { rev: true });
     if (!slugs || !slugs.length) {
-      if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml'); return res.status(200).send(emptyRss()); }
-      return res.status(200).json([]);
+      const articles = staticSummaries();
+      if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8'); return res.status(200).send(buildRss(articles)); }
+      return res.status(200).json(articles);
     }
 
     const SLUG_RE = /^[a-z0-9-]{1,120}$/;
@@ -53,16 +62,13 @@ export default async function handler(req, res) {
 
     res.status(200).json(articles);
   } catch {
-    if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml'); return res.status(200).send(emptyRss()); }
-    res.status(200).json([]);
+    const articles = staticSummaries();
+    if (format === 'rss') { res.setHeader('Content-Type', 'application/rss+xml; charset=utf-8'); return res.status(200).send(buildRss(articles)); }
+    res.status(200).json(articles);
   }
 }
 
 function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
-
-function emptyRss() {
-  return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Simfinly — Blog</title><link>${SITE}/blog</link><description>Actualités finances personnelles</description></channel></rss>`;
-}
 
 function buildRss(articles) {
   const items = articles.map(a => {
