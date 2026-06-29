@@ -357,6 +357,13 @@ export const BLOG_SLUGS = [
   '/blog/per-vs-assurance-vie-comparaison-2026',
 ];
 
+// Articles de blog en anglais (/en/blog/:slug) — ciblent les expatriés et anglophones.
+export const EN_BLOG_SLUGS = [
+  '/en/blog/french-pension-system-explained-2026',
+  '/en/blog/fire-movement-france-2026',
+  '/en/blog/french-income-tax-explained-2026',
+];
+
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
 export const LEXIQUE_SLUGS = GLOSSARY.map(t => `/lexique/${t.slug}`);
 

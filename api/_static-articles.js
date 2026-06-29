@@ -1431,4 +1431,136 @@ export const STATIC_ARTICLES = [
 
 ];
 
+
+  // EN articles — targeting English-speaking expats and anglophones
+  {
+    slug: 'french-pension-system-explained-2026',
+    title: 'French Pension System Explained 2026 — Complete Guide for Expats',
+    category: 'Retraite',
+    readTime: 8,
+    publishedAt: '2026-01-15T10:00:00Z',
+    intro: "France has one of the world's most complex pension systems. This guide explains the three-tier structure (CNAV, Agirc-Arrco, optional savings), retirement ages, qualifying conditions, and how to calculate your French pension as an expat or salaried employee.",
+    content: `<h2>How the French Pension System Works</h2>
+<p>France operates a <strong>pay-as-you-go (répartition)</strong> pension system: current workers' contributions fund today's retirees. There is no individual savings account — your pension is a collective promise backed by the state and social partners.</p>
+<p>The system has <strong>three tiers</strong>:</p>
+<ul>
+<li><strong>Tier 1 — CNAV (basic pension)</strong>: For private-sector employees. Maximum pension is 50% of your average salary over your 25 best years, capped at the PASS ceiling (€47,100 in 2026).</li>
+<li><strong>Tier 2 — Agirc-Arrco (complementary pension)</strong>: Points-based system for private employees. You accumulate points throughout your career; each point is worth €1.4159/year in 2026.</li>
+<li><strong>Tier 3 — Voluntary savings (PER)</strong>: Tax-deductible retirement savings account. Contributions reduce your taxable income in the year they are made.</li>
+</ul>
+<h2>Retirement Age in France (2026)</h2>
+<p>Following the controversial 2023 reform (loi Borne), the legal retirement age is being progressively raised from 62 to <strong>64 years</strong> for those born in 1968 or later. The key dates:</p>
+<ul>
+<li>Born before 1 September 1961: legal retirement age = 62</li>
+<li>Born 1961–1967: progressive increase (+3 months per generation)</li>
+<li>Born 1968 and later: legal retirement age = <strong>64 years</strong></li>
+</ul>
+<p>However, the legal age alone does not guarantee a full pension. You must also have accumulated the required number of quarters (<em>trimestres</em>) — 172 quarters (43 years) for those born in 1968+.</p>
+<h2>How Your French Pension Is Calculated</h2>
+<p>The CNAV basic pension formula is: <strong>Pension = SAM × rate × (validated quarters / required quarters)</strong></p>
+<ul>
+<li><strong>SAM</strong> (Salaire Annuel Moyen): average of your 25 highest earnings years, capped at the PASS each year</li>
+<li><strong>Rate</strong>: maximum 50% (full rate / taux plein). Reduced by 1.25% per missing quarter (décote), or increased by 1.25% per extra quarter after full rate (surcote)</li>
+<li><strong>Pro-rata</strong>: quarters validated vs. quarters required for your generation</li>
+</ul>
+<p>Example: SAM €35,000 × 50% × (168/172) = €16,860/year = <strong>€1,405/month</strong> before social contributions.</p>
+<h2>What Counts as a Quarter (Trimestre)?</h2>
+<p>You validate one quarter for every €1,940 earned (2026), up to 4 quarters per year regardless of when you earned them. Periods that also count as quarters include: unemployment benefits (up to 4/year), maternity/paternity leave, sick leave, military service, and disability.</p>
+<h2>Rights for Expats and Cross-Border Workers</h2>
+<p>France has bilateral social security agreements with 40+ countries including the US, UK, Canada, and all EU member states. These agreements allow <em>totalization</em>: periods worked in both countries are combined to determine eligibility, though each country pays its own pension separately.</p>
+<p>If you worked in France and another EU country, your rights are protected under EU regulation 883/2004. Use our <a href="/simulateurs/cnav">CNAV simulator</a> to estimate your French pension based on years worked in France.</p>
+<h2>How to Check Your French Pension Rights</h2>
+<p>Create an account on <strong>info-retraite.fr</strong> — this official portal aggregates your pension rights across all French regimes. You can view your career record (relevé de carrière), correct errors, and simulate your future pension for different retirement ages.</p>`,
+    faqs: [
+      { q: "At what age can I retire in France if I was born in 1970?", a: "If you were born in 1970, your legal retirement age in France is 64 years (since the 2023 Borne reform). You will need 172 quarters (43 years) of contributions for the full pension rate. Without 172 quarters, a reduction (décote) of 1.25% per missing quarter applies until the automatic full rate at age 67." },
+      { q: "Can I receive a French pension if I only worked in France for 10 years?", a: "Yes. France has no minimum period for accumulating pension rights — every quarter worked counts. For 10 years (40 quarters) worked in France, you would receive a pro-rated French pension based on 40/172 quarters. If your home country has a bilateral agreement with France, the periods may be combined to determine eligibility age." },
+      { q: "What is the difference between CNAV and Agirc-Arrco?", a: "CNAV is the basic (tier 1) pension for private-sector employees — calculated as a percentage of your average salary. Agirc-Arrco is the mandatory complementary (tier 2) pension — calculated in points accumulated throughout your career. Both are paid in retirement and together represent the bulk of a French salaried employee's pension income." },
+      { q: "How much will I get from the French pension system?", a: "The average total pension in France is around €1,500/month gross (DREES 2024 data). For cadres (managers), the median is closer to €2,100/month. The replacement rate (pension vs. final salary) averages 63% across all workers. Use the simfinly.com CNAV simulator to get a personal estimate based on your specific career." },
+    ],
+  },
+  {
+    slug: 'fire-movement-france-2026',
+    title: 'FIRE Movement in France 2026 — Financial Independence Guide',
+    category: 'FIRE',
+    readTime: 7,
+    publishedAt: '2026-02-10T10:00:00Z',
+    intro: "How to achieve Financial Independence and Retire Early (FIRE) in France: the 4% rule adapted to French taxes, the best tax-efficient wrappers (PEA, assurance-vie, PER), and realistic FIRE numbers for French residents.",
+    content: `<h2>What Is FIRE and Why France Changes the Math</h2>
+<p>The FIRE movement — Financial Independence, Retire Early — aims to accumulate a portfolio large enough that investment returns cover living expenses indefinitely. The classic rule: save 25× your annual expenses, then withdraw 4% per year.</p>
+<p>In France, several factors require adjusting the standard formula:</p>
+<ul>
+<li><strong>Social contributions (prélèvements sociaux)</strong>: 17.2% on investment income and capital gains — higher than most countries</li>
+<li><strong>Income tax on gains</strong>: 12.8% flat tax (PFU) or progressive income tax scale — your choice</li>
+<li><strong>Longer life expectancy</strong>: French men live to 80, women to 85+ — a 40-year early retirement is realistic, requiring a more conservative withdrawal rate</li>
+</ul>
+<p>For France, most FIRE practitioners target a <strong>3 to 3.5% withdrawal rate</strong> rather than 4%, meaning a portfolio of 28–33× annual expenses instead of 25×.</p>
+<h2>The Best French Tax Wrappers for FIRE</h2>
+<p><strong>PEA (Plan d'Épargne en Actions)</strong>: After 5 years, capital gains and dividends are exempt from income tax (only 17.2% social contributions remain). Annual contribution ceiling: €150,000. Best for equity investing. The PEA is arguably the most tax-efficient long-term equity wrapper in Europe.</p>
+<p><strong>Assurance-vie</strong>: After 8 years, withdrawals benefit from a €4,600 annual allowance (€9,200 for couples) on gains — fully tax-exempt up to this amount. Gains above this pay 7.5% income tax + 17.2% social contributions. No contribution ceiling. Best for asset diversification and estate planning.</p>
+<p><strong>PER (Plan d'Épargne Retraite)</strong>: Contributions are tax-deductible (up to ~10% of income). Withdrawals at retirement are taxed as income. Best for high earners in their 40s-50s who want to lower their tax bill now.</p>
+<h2>Calculating Your FIRE Number in France</h2>
+<p>Step 1 — Estimate your annual expenses in retirement. Include: rent/mortgage, food, transport, health, travel, and a buffer for taxes on withdrawals.</p>
+<p>Step 2 — Multiply by 28–33 (conservative FIRE for France). Example: €30,000/year expenses × 30 = <strong>€900,000 portfolio target</strong>.</p>
+<p>Step 3 — Factor in the French state pension. Even if you retire at 45, you accumulate pension rights until you stop working. The state pension received at 64+ reduces how much you need to draw from your portfolio — effectively lowering your FIRE number.</p>
+<p>Use the <a href="/simulateurs/fire">simfinly FIRE simulator</a> to calculate your personal FIRE number with French tax assumptions built in.</p>
+<h2>FIRE Strategies That Work in France</h2>
+<p><strong>Lean FIRE</strong>: Target €20,000–25,000/year (frugal lifestyle), FIRE number ~€600,000–750,000. Achievable in 12–18 years with a 50% savings rate from a median salary.</p>
+<p><strong>Fat FIRE</strong>: Target €50,000–80,000/year, FIRE number €1.5M–2.5M. Typically requires a high income or very long accumulation phase.</p>
+<p><strong>Barista FIRE</strong>: Partial independence — cover 60–70% of expenses from portfolio, supplement with part-time income. Dramatically reduces the required portfolio size and preserves French social benefits (health insurance, pension rights).</p>`,
+    faqs: [
+      { q: "What is the 4% rule and does it work in France?", a: "The 4% rule (Trinity study, 1998) says a portfolio of 25× annual expenses should last 30 years with 4% annual withdrawals. In France, the effective withdrawal rate after French social contributions (17.2%) and income tax is lower. Most French FIRE practitioners use 3–3.5% (i.e., 28–33× expenses) for a 40+ year retirement horizon." },
+      { q: "Which is better for FIRE in France: PEA or assurance-vie?", a: "Both complement each other. The PEA is better for equity-heavy portfolios (lower cost, tax-free after 5 years). Assurance-vie is better for diversified allocations including bonds, real estate (SCPIs), and for estate planning. An optimal French FIRE portfolio typically uses both: PEA maxed first for equities, then assurance-vie for the remainder." },
+      { q: "Can I retire early in France and still receive a French state pension later?", a: "Yes. If you stop working at 40, you keep all the pension quarters already validated. You will simply receive a smaller French pension at 64 (or 67 for full rate without enough quarters) proportional to the quarters you accumulated. Many FIRE practitioners in France count on the state pension as a safety net that reduces sequence-of-returns risk in their 60s onward." },
+    ],
+  },
+  {
+    slug: 'french-income-tax-explained-2026',
+    title: 'French Income Tax 2026 — Complete Guide for Expats and Residents',
+    category: 'Fiscalité',
+    readTime: 7,
+    publishedAt: '2026-03-05T10:00:00Z',
+    intro: "How French income tax works in 2026: progressive tax brackets, the quotient familial system, deductions available to expats, and how to use simfinly's free income tax simulator to calculate your exact bill.",
+    content: `<h2>How French Income Tax Works</h2>
+<p>France uses a <strong>progressive income tax</strong> (impôt sur le revenu, IR) with 5 brackets. Unlike many countries, France taxes the household (<em>foyer fiscal</em>) rather than the individual. The tax base is divided by a family quotient (number of "parts") before the rate is applied, then multiplied back — this system benefits families with children and significantly reduces tax for couples.</p>
+<h2>2026 Income Tax Brackets</h2>
+<table>
+<tr><th>Taxable income per part</th><th>Tax rate</th></tr>
+<tr><td>Up to €11,497</td><td>0%</td></tr>
+<tr><td>€11,497 – €29,315</td><td>11%</td></tr>
+<tr><td>€29,315 – €83,823</td><td>30%</td></tr>
+<tr><td>€83,823 – €180,294</td><td>41%</td></tr>
+<tr><td>Above €180,294</td><td>45%</td></tr>
+</table>
+<p>These rates apply to your <em>net taxable income per part</em>. Your marginal rate (TMI — Taux Marginal d'Imposition) is the rate applied to your last euro of income. Your average rate is always lower than your TMI.</p>
+<h2>The Quotient Familial — Why Couples and Families Pay Less</h2>
+<p>A single person = 1 part. A married or PACS couple = 2 parts. Each child adds 0.5 parts (first two children) or 1 part (from the third child). This significantly reduces tax:</p>
+<ul>
+<li>Single, €60,000 income: income/1 part = €60,000 → pays ~€10,000 tax</li>
+<li>Married couple, same €60,000 combined: income/2 parts = €30,000/part → pays ~€3,600 total tax</li>
+</ul>
+<h2>Social Contributions (Prélèvements Sociaux)</h2>
+<p>In addition to income tax, France levies social contributions on investment income and capital gains (but not on earned salary, which is covered separately via payroll contributions):</p>
+<ul>
+<li><strong>CSG</strong>: 9.2% on capital gains and investment income</li>
+<li><strong>CRDS</strong>: 0.5%</li>
+<li><strong>Solidarity levy</strong>: 7.5%</li>
+<li><strong>Total prélèvements sociaux</strong>: <strong>17.2%</strong></li>
+</ul>
+<p>These are separate from income tax. Capital gains on equities are taxed at 12.8% income tax + 17.2% social contributions = 30% flat (PFU — Prélèvement Forfaitaire Unique). You can opt for the progressive income tax scale instead if it is more favorable.</p>
+<h2>Key Deductions Available</h2>
+<p><strong>10% professional expenses deduction</strong>: Applied automatically before calculating your taxable income (capped at €14,426). Most employees benefit from this without filing anything.</p>
+<p><strong>PER contributions</strong>: Deductible from income up to 10% of your net professional income (max ~€35,000 for 2026). A major tax lever for high earners.</p>
+<p><strong>Charitable donations</strong>: 66–75% tax credit on eligible donations.</p>
+<p><strong>Energy renovation tax credits</strong> (MaPrimeRénov): Direct subsidies, not deductions, for home energy improvements.</p>
+<h2>How to File Your French Income Tax Return</h2>
+<p>French residents must file their return online at impots.gouv.fr. The deadline is typically in late May–June, with the exact date varying by département. First-time filers and new arrivals in France must create an account on impots.gouv.fr and declare their worldwide income if they are French tax residents.</p>
+<p>Use the <a href="/simulateurs/impot-revenu">simfinly income tax simulator</a> to calculate your French tax bill, effective rate, and marginal rate for 2026 based on your specific household situation.</p>`,
+    faqs: [
+      { q: "At what income level do you start paying income tax in France?", a: "In 2026, a single person (1 tax part) starts paying income tax when their net taxable income exceeds €11,497. In practice, after the automatic 10% professional expenses deduction, a gross salary of approximately €12,800/year triggers income tax for a single person." },
+      { q: "How much income tax will I pay on €50,000 salary in France?", a: "A single employee earning €50,000 gross salary pays approximately €4,000–5,500 in income tax (after the 10% professional deduction, quotient of 1 part). The exact amount depends on other deductions (PER, childcare, etc.). Use the simfinly income tax simulator for a precise calculation including marginal rate and quotient." },
+      { q: "Do expats pay French income tax on foreign income?", a: "If you are a French tax resident (living in France for more than 183 days/year, or with your main economic interests in France), you are taxed on your worldwide income. However, France has double-tax treaties with 130+ countries to prevent being taxed twice. Income earned in your home country is typically reported in France but credited with foreign tax paid." },
+      { q: "What is the PFU (flat tax) in France?", a: "The PFU (Prélèvement Forfaitaire Unique), also called flat tax, is a 30% combined rate applied to investment income: 12.8% income tax + 17.2% social contributions (prélèvements sociaux). It applies to dividends, interest, and capital gains from securities. You can opt out of the flat tax and use the progressive income tax scale if your marginal rate is below 30%." },
+    ],
+  },
+
 export const STATIC_BY_SLUG = Object.fromEntries(STATIC_ARTICLES.map(a => [a.slug, a]));

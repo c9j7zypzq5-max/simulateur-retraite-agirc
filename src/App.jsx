@@ -314,6 +314,7 @@ export default function App() {
         {/* Blog */}
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<Article />} />
+        <Route path="/en/blog/:slug" element={<Article />} />
         {/* Lexique */}
         <Route path="/lexique" element={<Lexique />} />
         <Route path="/lexique/:slug" element={<LexiqueTerme />} />
