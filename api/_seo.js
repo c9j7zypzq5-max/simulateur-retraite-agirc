@@ -257,6 +257,18 @@ export const SEO_CONTENT = {
     h1: "Retraite parent au foyer 2026 — MDA, AVPF et droits",
     intro: "Les parents au foyer bénéficient de deux dispositifs retraite : la Majoration de Durée d'Assurance (4 trimestres par enfant) et l'Assurance Vieillesse des Parents au Foyer (AVPF) versée par la CAF. Comprendre ces droits est essentiel pour ne pas sacrifier sa pension.",
   },
+  '/retraite/points-agirc-arrco': {
+    h1: "Points Agirc-Arrco 2026 : valeur du point, calcul et malus",
+    intro: "Le point Agirc-Arrco vaut 1,4107 € en 2026 (+2,2 %). Votre pension complémentaire = nombre de points × valeur du point. Guide complet : comment s'accumulent les points, coefficient de solidarité (-10 %), bonus de fidélité (+10 à +30 %) et simulateur gratuit.",
+  },
+  '/retraite/calcul-pension-reversion': {
+    h1: "Pension de réversion 2026 : calcul, taux et conditions",
+    intro: "La pension de réversion représente 54 % de la retraite de base (CNAV) et 60 % de la complémentaire Agirc-Arrco. Qui y a droit, à quel âge, sous quelles conditions de ressources ? Guide complet avec simulateur pour estimer votre montant.",
+  },
+  '/immobilier/frais-notaire': {
+    h1: "Frais de notaire 2026 : taux, calcul et comment les réduire",
+    intro: "Les frais de notaire représentent 7 à 8 % du prix d'un bien ancien (2 à 3 % dans le neuf). Décomposition exacte des postes, tableau par tranches de prix et 3 stratégies légales pour les minimiser. Simulateur de calcul gratuit.",
+  },
   '/widgets': {
     h1: "Widgets embarquables gratuits — simulateurs financiers à intégrer",
     intro: "Intégrez gratuitement les simulateurs de simfinly.com sur votre site ou blog en quelques secondes. Cinq widgets disponibles : épargne et intérêts composés, emprunt immobilier, indépendance financière (FIRE), budget 50/30/20 et retraite CNAV. Copiez-collez le code HTML et c'est tout — aucune inscription, aucune limite d'utilisation.",
