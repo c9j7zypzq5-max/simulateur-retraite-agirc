@@ -333,11 +333,11 @@ function breadcrumb(items) {
 export function structuredData(route, extra = {}) {
   const url = `${BASE}${route}`;
 
-  // Fiche du lexique → DefinedTerm
+  // Fiche du lexique → DefinedTerm + FAQPage si le terme a des faqs
   if (route.startsWith('/lexique/')) {
     const t = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)];
     if (!t) return [];
-    return [
+    const schemas = [
       breadcrumb([['Accueil', `${BASE}/`], ['Lexique', `${BASE}/lexique`], [t.term, url]]),
       {
         '@context': 'https://schema.org', '@type': 'DefinedTerm',
@@ -345,6 +345,16 @@ export function structuredData(route, extra = {}) {
         inDefinedTermSet: `${BASE}/lexique`,
       },
     ];
+    if (t.faqs && t.faqs.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: t.faqs.map(({ q, a }) => ({
+          '@type': 'Question', name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      });
+    }
+    return schemas;
   }
 
   // Guide thématique → fil d'Ariane + Article

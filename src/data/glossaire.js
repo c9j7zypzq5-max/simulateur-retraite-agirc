@@ -26,6 +26,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/credit-conso'],
     related: ['taea', 'taux-endettement', 'amortissement'],
+    faqs: [
+      { q: "Quelle est la différence entre TAEG et taux nominal ?", a: "Le taux nominal est le taux d'intérêt pur du prêt. Le TAEG inclut en plus l'assurance emprunteur, les frais de dossier et de garantie. C'est le TAEG qui reflète le coût réel total et qui doit être comparé entre offres." },
+      { q: "Le TAEG peut-il dépasser le taux d'usure ?", a: "Non. Le taux d'usure est le plafond légal fixé chaque trimestre par la Banque de France. Tout prêt avec un TAEG supérieur au taux d'usure est illégal. Si votre assurance fait dépasser ce seuil, la banque doit refuser le dossier." },
+      { q: "Comment réduire son TAEG ?", a: "Trois leviers : négocier le taux nominal, déléguer l'assurance emprunteur (contrat externe moins cher), et limiter les frais de garantie (caution plutôt qu'hypothèque). La délégation d'assurance est souvent le levier le plus puissant." },
+    ],
   },
   {
     slug: 'taea', term: 'TAEA', full: "Taux Annuel Effectif de l'Assurance",
@@ -48,6 +53,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/ptz', '/simulateurs/emprunt-immobilier'],
     related: ['taeg', 'apport', 'frais-notaire'],
+    faqs: [
+      { q: "Qui peut bénéficier du PTZ en 2026 ?", a: "Le PTZ est réservé aux primo-accédants (n'ayant pas été propriétaires de leur résidence principale au cours des 2 dernières années), sous conditions de ressources. Depuis le 1er avril 2025, il est accessible dans toutes les zones géographiques, y compris les zones rurales." },
+      { q: "Quel est le montant maximum du PTZ en 2026 ?", a: "Le PTZ peut financer jusqu'à 50 % du prix d'achat pour un logement neuf en zone A/A bis, et jusqu'à 40 % pour un logement neuf en zones B et C ou dans l'ancien. Le montant est plafonné selon la zone et la composition du foyer." },
+      { q: "Le PTZ est-il cumulable avec d'autres prêts ?", a: "Oui, le PTZ est un prêt complémentaire qui s'ajoute à un prêt principal. Il ne peut pas financer la totalité d'un achat. Il est cumulable avec un prêt bancaire classique, un PEL, un prêt Action Logement, etc." },
+    ],
   },
   {
     slug: 'taux-endettement', term: "Taux d'endettement", full: "Taux d'endettement",
@@ -138,6 +148,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/impot-revenu', '/simulateurs/per'],
     related: ['ir', 'quotient-familial', 'per'],
+    faqs: [
+      { q: "Quelle est ma TMI si je gagne 45 000 € nets imposables ?", a: "Pour un célibataire avec un revenu imposable de 45 000 €, la TMI est de 30 % en 2026 (tranche de 29 315 € à 83 823 €). Cela ne signifie pas que vous payez 30 % sur tout votre revenu, mais seulement sur la fraction au-dessus de 29 315 €." },
+      { q: "Quelle différence entre TMI et taux moyen d'imposition ?", a: "La TMI est le taux appliqué au dernier euro de revenu. Le taux moyen est le rapport entre l'impôt total et le revenu imposable : il est toujours inférieur à la TMI. Le taux moyen indique ce que vous payez réellement en moyenne." },
+      { q: "Pourquoi la TMI est-elle importante pour les décisions financières ?", a: "La TMI détermine l'économie fiscale d'une déduction : verser 1 000 € sur un PER économise 300 € d'impôt à 30 % de TMI, ou 410 € à 41 %. Elle influence aussi le choix entre PFU (31,4 %) et barème progressif pour les revenus du capital." },
+    ],
   },
   {
     slug: 'ir', term: 'IR', full: 'Impôt sur le Revenu',
@@ -282,6 +297,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'],
     related: ['decote', 'surcote', 'trimestre'],
+    faqs: [
+      { q: "À quel âge obtient-on le taux plein automatiquement ?", a: "Le taux plein s'obtient automatiquement à 67 ans pour toutes les générations, quelle que soit la durée de cotisation. Avant 67 ans, il faut avoir validé le nombre de trimestres requis (167 à 172 selon la génération)." },
+      { q: "Que se passe-t-il si je pars à la retraite sans le taux plein ?", a: "Une décote s'applique : 0,625 % par trimestre manquant (soit 2,5 % par an manquant), dans la limite de 20 trimestres (25 % de réduction maximum). Cette décote est définitive et s'applique toute la vie." },
+      { q: "Le taux plein Agirc-Arrco est-il le même que pour le régime général ?", a: "Non. L'Agirc-Arrco n'a pas de notion de 'taux plein' au sens du régime général. En revanche, un mécanisme de bonus-malus s'applique : partir sans avoir le taux plein CNAV entraîne un coefficient de solidarité de -10 % pendant 3 ans sur la pension Agirc-Arrco." },
+    ],
   },
   {
     slug: 'decote', term: 'Décote', full: 'Décote de retraite',
@@ -323,6 +343,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/cnav'],
     related: ['cnav', 'taux-plein', 'trimestre'],
+    faqs: [
+      { q: "Comment est calculé le SAM ?", a: "Le SAM (Salaire Annuel Moyen) est la moyenne de vos 25 meilleures années de salaire brut, plafonné chaque année au PASS (47 100 € en 2026). Les années avec un salaire inférieur ou les années sans revenus ne sont pas retenues si vous avez 25 années meilleures." },
+      { q: "Le SAM inclut-il les primes et les heures supplémentaires ?", a: "Oui, le SAM est calculé sur le salaire brut soumis à cotisations, qui inclut primes et heures supplémentaires dans la limite du plafond annuel de la Sécurité sociale. En revanche, certaines indemnités exonérées de cotisations ne sont pas prises en compte." },
+      { q: "Comment améliorer son SAM avant la retraite ?", a: "Le SAM étant une moyenne des 25 meilleures années, les stratégies pour l'améliorer sont : demander une augmentation ou une promotion en fin de carrière, éviter une période à temps partiel subi en fin de carrière, et racheter des années d'études (qui peuvent remplacer des années à faible salaire dans le calcul)." },
+    ],
   },
   {
     slug: 'points-retraite', term: 'Points de retraite', full: 'Points de retraite',
@@ -345,6 +370,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/per'],
     related: ['tmi', 'pass', 'assurance-vie'],
+    faqs: [
+      { q: "Quel est le plafond de déduction du PER en 2026 ?", a: "Pour un salarié, le plafond est de 10 % des revenus professionnels de l'année N-1, dans la limite de 10 % de 8 PASS (soit 37 680 € maximum en 2026). Le plancher est de 4 710 € (10 % d'1 PASS). Les plafonds non utilisés des 3 années précédentes sont reportables." },
+      { q: "À partir de quelle TMI le PER est-il intéressant ?", a: "Le PER est particulièrement avantageux dès la TMI de 30 % : chaque 1 000 € versés économise 300 € d'impôt immédiatement. À 41 %, l'économie est de 410 €. À 11 %, l'avantage est limité et l'assurance-vie peut être plus souple." },
+      { q: "Peut-on sortir du PER avant la retraite ?", a: "Oui, dans certains cas exceptionnels : acquisition de la résidence principale, invalidité, décès du conjoint, surendettement, expiration des droits au chômage, liquidation judiciaire. Ces cas permettent un déblocage anticipé en franchise d'impôt sur les versements volontaires." },
+    ],
   },
   {
     slug: 'smic', term: 'SMIC', full: 'Salaire Minimum Interprofessionnel de Croissance',
@@ -368,6 +398,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/comparateur', '/simulateurs/epargne'],
     related: ['etf', 'assurance-vie', 'pfu'],
+    faqs: [
+      { q: "Quelle est la fiscalité du PEA après 5 ans ?", a: "Après 5 ans, les gains du PEA sont exonérés d'impôt sur le revenu lors des retraits. Les prélèvements sociaux restent dus (18,6 % en 2026). Un retrait avant 5 ans entraîne la clôture du PEA et une imposition des gains au PFU (31,4 %)." },
+      { q: "Quel est le plafond de versement du PEA ?", a: "Le plafond de versements est de 150 000 € pour un PEA classique. Votre capital peut dépasser ce plafond grâce aux gains accumulés. Le PEA-PME permet des versements complémentaires jusqu'à 225 000 € au total (PEA + PEA-PME)." },
+      { q: "PEA ou assurance-vie : que choisir ?", a: "Le PEA est idéal pour investir en actions européennes à long terme avec une exonération d'IR optimale. L'assurance-vie est plus souple (pas de plafond strict, fonds euros disponibles, transmission avantageuse). Les deux sont complémentaires : PEA pour les actions, assurance-vie pour la diversification et la transmission." },
+    ],
   },
   {
     slug: 'assurance-vie', term: 'Assurance-vie', full: 'Assurance-vie',
@@ -379,6 +414,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/assurance-vie'],
     related: ['abattement', 'pfu', 'pea'],
+    faqs: [
+      { q: "Quand la fiscalité de l'assurance-vie devient-elle avantageuse ?", a: "Après 8 ans de détention du contrat, vous bénéficiez d'un abattement annuel de 4 600 € (seul) ou 9 200 € (couple) sur les gains lors des rachats. Les gains sont alors taxés à 7,5 % d'impôt + 17,2 % de prélèvements sociaux, contre 12,8 % + 17,2 % avant 8 ans." },
+      { q: "L'assurance-vie est-elle transmissible hors succession ?", a: "Oui. Les capitaux transmis via une assurance-vie au décès ne font pas partie de la succession et bénéficient d'un régime fiscal propre : abattement de 152 500 € par bénéficiaire pour les primes versées avant 70 ans. C'est un des meilleurs outils de transmission patrimoniale." },
+      { q: "Peut-on retirer de l'argent d'une assurance-vie avant 8 ans ?", a: "Oui, à tout moment (c'est un rachat partiel ou total). Mais avant 8 ans, les gains sont imposés au PFU (30 %) ou au barème progressif selon option. Il n'y a aucun blocage légal des fonds, contrairement au PEE ou au PER." },
+    ],
   },
   {
     slug: 'etf', term: 'ETF', full: 'Exchange Traded Fund (tracker)',
