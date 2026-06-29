@@ -1,7 +1,7 @@
 // Route à ajouter dans src/App.jsx :
 //   <Route path="/ch/simulateurs/lpp-deuxieme-pilier" element={<LppDeuxiemePilier />} />
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -19,6 +19,7 @@ import {
 } from "../../components/ui.jsx";
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import ShareBar from "../../components/ShareBar.jsx";
 
 // ─── Paramètres LPP 2025 ─────────────────────────────────────────────────────
 const DEDUCTION_COORDINATION = 25_725;   // CHF (2025)
@@ -114,6 +115,7 @@ export default function LppDeuxiemePilier() {
 
   const vals = { salaireBrut, age };
   const res  = useMemo(() => calcLPP(vals), [salaireBrut, age]); // eslint-disable-line react-hooks/exhaustive-deps
+  const resultsRef = useRef(null);
 
 
   usePageMeta({
@@ -193,7 +195,7 @@ export default function LppDeuxiemePilier() {
           </div>
 
           {/* ─── Résultats ─── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div ref={resultsRef} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {/* Hero avoir */}
             <div style={{ ...card, background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.2)", textAlign: "center", padding: "28px 22px" }}>
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
@@ -291,6 +293,8 @@ export default function LppDeuxiemePilier() {
             </div>
           </div>
         </div>
+
+        <ShareBar params={toParams(vals)} resultsRef={resultsRef} name="lpp-deuxieme-pilier" />
 
         <AdUnit slot="lpp-ch-mid" style={{ margin: "24px 0" }} />
 

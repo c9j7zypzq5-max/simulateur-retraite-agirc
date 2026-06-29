@@ -311,7 +311,7 @@ export const GUIDES = [
       },
     ],
     sims: ['/simulateurs/donation', '/simulateurs/succession'],
-    terms: ['donation', 'succession', 'abattement', 'reserve-hereditaire', 'quotite-disponible'],
+    terms: ['abattement', 'assurance-vie', 'tmi'],
     blogCats: ['Fiscalité'],
   },
   {
@@ -337,7 +337,7 @@ export const GUIDES = [
       },
     ],
     sims: ['/simulateurs/trimestres', '/simulateurs/retraite-anticipee', '/simulateurs/agirc-arrco', '/simulateurs/cnav'],
-    terms: ['racl', 'taux-plein', 'trimestre', 'decote', 'cnav', 'agirc-arrco'],
+    terms: ['taux-plein', 'trimestre', 'decote', 'cnav', 'agirc-arrco'],
     blogCats: ['Retraite'],
   },
 ];

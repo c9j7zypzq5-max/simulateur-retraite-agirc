@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { track } from "@vercel/analytics";
+import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
@@ -82,22 +83,23 @@ export default function FlatTax() {
   const [theme, setTheme] = useTheme();
   const isMobile = useIsMobile();
   const resultsRef = useRef(null);
+  const { tmi: profileTmi, setTmi: setProfileTmi } = useFiscalProfile();
 
   const init = useMemo(() => {
     const shared = readShareParams();
-    if (!shared) return { dividendes: null, interets: null, plusValues: null, tmi: 0.30 };
+    if (!shared) return { dividendes: null, interets: null, plusValues: null, tmi: null };
     return {
       dividendes: shared.d != null ? Number(shared.d) : null,
       interets:   shared.i != null ? Number(shared.i) : null,
       plusValues: shared.p != null ? Number(shared.p) : null,
-      tmi:        shared.t != null ? Number(shared.t) : 0.30,
+      tmi:        shared.t != null ? Number(shared.t) : null,
     };
   }, []);
 
   const [dividendes, setDividendes] = useState(init.dividendes);
   const [interets,   setInterets]   = useState(init.interets);
   const [plusValues, setPlusValues] = useState(init.plusValues);
-  const [tmi,        setTmi]        = useState(init.tmi);
+  const [tmi,        setTmi]        = useState(init.tmi ?? profileTmi / 100);
 
   usePageMeta(
     "Simulateur flat tax 2026 — PFU 31,4 % ou option barème ?",
@@ -247,7 +249,7 @@ export default function FlatTax() {
                   return (
                     <button
                       key={opt.value}
-                      onClick={() => { setTmi(opt.value); track("flat_tax_tmi", { tmi: opt.label }); }}
+                      onClick={() => { setTmi(opt.value); setProfileTmi(Math.round(opt.value * 100)); track("flat_tax_tmi", { tmi: opt.label }); }}
                       aria-pressed={active}
                       style={{
                         padding: "10px 14px", borderRadius: 10, cursor: "pointer",

@@ -1,7 +1,7 @@
 // Route à ajouter dans src/App.jsx :
 //   <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -11,6 +11,7 @@ import { FAQS } from '../../data/faqs.js';
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import ShareBar from "../../components/ShareBar.jsx";
 
 // ─── Règles AVANT réforme (système pré-2023) ────────────────────────────────
 function getAvantReforme(anneeNaissance) {
@@ -270,6 +271,8 @@ export default function ComparaisonReforme() {
     "Comparez l'impact de la réforme des retraites 2023 (loi Borne) sur votre profil : âge de départ, trimestres manquants, pension estimée. Avant vs Après en un coup d'oeil."
   );
 
+  const resultsRef = useRef(null);
+
   const res = useMemo(
     () => calcComparaison({ anneeNaissance, trimestres, sam }),
     [anneeNaissance, trimestres, sam]
@@ -345,6 +348,7 @@ export default function ComparaisonReforme() {
         </div>
 
         {/* Comparaison Avant / Après */}
+        <div ref={resultsRef}>
         {res ? (
           <>
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "stretch" }}>
@@ -465,6 +469,8 @@ export default function ComparaisonReforme() {
             </p>
           </div>
         )}
+        </div>
+        <ShareBar params={{ an: anneeNaissance, tr: trimestres, s: sam }} resultsRef={resultsRef} name="comparaison-reforme" />
 
         {/* Ad */}
         <div style={{ margin: "28px 0" }}>

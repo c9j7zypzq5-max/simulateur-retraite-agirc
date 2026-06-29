@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { PS_CAPITAL } from "../../config/constants.js";
+import { useFiscalProfile } from "../../hooks/useFiscalProfile.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -132,7 +133,14 @@ const FAQ = FAQS['/simulateurs/deficit-foncier'];
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function DeficitFoncier() {
   const [theme, setTheme] = useTheme();
-  const init = useMemo(() => fromParams(readShareParams()), []);
+  const { tmi: profileTmi, setTmi: setProfileTmi } = useFiscalProfile();
+  const init = useMemo(() => {
+    const p = readShareParams();
+    const base = fromParams(p);
+    // Pré-remplir le TMI depuis le profil fiscal si pas de partage URL
+    if (!p || p.tmi == null) base.tmi = profileTmi;
+    return base;
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [loyersBruts,     setLoyersBruts]     = useState(init.loyersBruts);
   const [interetsEmprunt, setInteretsEmprunt] = useState(init.interetsEmprunt);
@@ -264,7 +272,7 @@ export default function DeficitFoncier() {
                 {TMI_OPTIONS.map(t => (
                   <button
                     key={t}
-                    onClick={() => { setTmi(t); track("deficit_foncier_tmi", { tmi: t }); }}
+                    onClick={() => { setTmi(t); setProfileTmi(t); track("deficit_foncier_tmi", { tmi: t }); }}
                     style={{
                       padding: "8px 14px",
                       borderRadius: 10,

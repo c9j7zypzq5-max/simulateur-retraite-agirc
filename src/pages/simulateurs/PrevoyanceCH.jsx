@@ -1,7 +1,7 @@
 // Route à ajouter dans src/App.jsx :
 //   <Route path="/ch/simulateurs/prevoyance-ch" element={<PrevoyanceCH />} />
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -19,6 +19,7 @@ import {
 } from "../../components/ui.jsx";
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import ShareBar from "../../components/ShareBar.jsx";
 
 // ─── Paramètres pilier 3a 2025 ────────────────────────────────────────────────
 const PLAFOND_SALARIE     = 7_056;   // CHF/an — salarié affilié LPP (2025)
@@ -105,6 +106,7 @@ export default function PrevoyanceCH() {
 
   const vals = { age, versementAnnuel, rendement, statut, revenuNet };
   const res  = useMemo(() => calcPrevoyance(vals), [age, versementAnnuel, rendement, statut, revenuNet]); // eslint-disable-line react-hooks/exhaustive-deps
+  const resultsRef = useRef(null);
 
 
   usePageMeta({
@@ -225,7 +227,7 @@ export default function PrevoyanceCH() {
           </div>
 
           {/* ─── Résultats ─── */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          <div ref={resultsRef} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {/* Hero capital */}
             <div style={{ ...card, background: "rgba(43,92,230,0.05)", border: "1px solid rgba(43,92,230,0.2)", textAlign: "center", padding: "28px 22px" }}>
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
@@ -304,6 +306,8 @@ export default function PrevoyanceCH() {
             </div>
           </div>
         </div>
+
+        <ShareBar params={toParams(vals)} resultsRef={resultsRef} name="prevoyance-ch" />
 
         <AdUnit slot="prevoyance-ch-mid" style={{ margin: "24px 0" }} />
 
