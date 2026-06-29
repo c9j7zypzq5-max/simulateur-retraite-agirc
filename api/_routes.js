@@ -362,6 +362,8 @@ export const EN_BLOG_SLUGS = [
   '/en/blog/french-pension-system-explained-2026',
   '/en/blog/fire-movement-france-2026',
   '/en/blog/french-income-tax-explained-2026',
+  '/en/blog/buying-property-france-expat-guide-2026',
+  '/en/blog/assurance-vie-france-complete-guide-2026',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.

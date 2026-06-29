@@ -1563,4 +1563,138 @@ export const STATIC_ARTICLES = [
     ],
   },
 
+  {
+    slug: 'buying-property-france-expat-guide-2026',
+    title: 'Buying Property in France as an Expat (2026 Guide)',
+    intro: 'A comprehensive guide for foreigners and expats looking to buy real estate in France — from notaire fees to mortgage rules.',
+    category: 'Immobilier',
+    readTime: 9,
+    publishedAt: '2026-03-10',
+    lang: 'en',
+    body: `<p>France consistently attracts foreign buyers — from British retirees to American professionals relocating for work. But buying property here as a non-resident comes with specific rules, costs, and processes that differ significantly from the UK, US, or other markets. This guide covers everything you need to know to buy property in France in 2026.</p>
+<h2>Can Foreigners Buy Property in France?</h2>
+<p>Yes, there are <strong>no restrictions on foreigners buying property in France</strong>, whether EU citizens or non-EU nationals. You do not need residency, a visa, or a work permit to purchase property. The same legal process and protections apply to all buyers regardless of nationality.</p>
+<h2>The Buying Process: Step by Step</h2>
+<p><strong>Step 1 — Find a property and make an offer.</strong> Once your offer is accepted verbally, you move to a preliminary contract.</p>
+<p><strong>Step 2 — Compromis de vente (preliminary contract).</strong> This legally binding document locks in the price and conditions. You typically pay a 5–10% deposit. You have a 10-day cooling-off period after signing.</p>
+<p><strong>Step 3 — Mortgage approval (if financed).</strong> French banks require mortgage approval before the final sale can proceed. This typically takes 6–8 weeks.</p>
+<p><strong>Step 4 — Acte authentique (final deed).</strong> Signed before a notaire (a public officer, not a private lawyer). Ownership transfers at this moment, and you receive the keys.</p>
+<p>The total process typically takes <strong>3 to 4 months</strong> from offer to completion.</p>
+<h2>Notaire Fees (Frais de Notaire)</h2>
+<p>In France, the buyer pays the notaire fees, which include government transfer taxes and registration fees. For existing (old) properties, these fees run <strong>7–8% of the purchase price</strong>. For new-build properties (less than 5 years old), fees are much lower: <strong>2–3%</strong>.</p>
+<p>On a €300,000 existing property, expect to pay €21,000–24,000 in notaire fees on top of the purchase price. Use the <a href="/simulateurs/frais-notaire">simfinly notaire fees simulator</a> for an exact calculation.</p>
+<h2>Getting a French Mortgage as a Foreigner</h2>
+<p>French banks do lend to foreigners, but conditions differ:</p>
+<ul>
+<li><strong>Non-residents</strong>: Many French banks require a 20–30% down payment (vs 10% for residents). Some specialist lenders go to 80% LTV for non-residents.</li>
+<li><strong>Income documentation</strong>: French banks assess your total debt-to-income ratio. Your monthly total debt repayments (including the new mortgage) should not exceed 35% of your net income.</li>
+<li><strong>Currency risk</strong>: If you earn in non-euro currency, banks may apply a haircut to your income when calculating eligibility.</li>
+<li><strong>Life insurance</strong>: French mortgages require life insurance (assurance décès-invalidité). This adds 0.1–0.4% per year to your effective borrowing cost.</li>
+</ul>
+<p>Specialist brokers (like CAFPI, Pretto, or Meilleurtaux) can negotiate across multiple lenders, which is particularly useful for foreign buyers. Use the <a href="/simulateurs/credit-immobilier">simfinly mortgage simulator</a> to model your repayments.</p>
+<h2>Property Taxes You Will Pay</h2>
+<p><strong>Taxe foncière</strong>: Annual property tax paid by the owner, regardless of whether you rent it out. Varies widely by commune — roughly €1,500–4,000/year for a typical apartment in a major city.</p>
+<p><strong>Taxe d'habitation</strong>: Abolished for primary residences as of 2023. Still applies to secondary residences and holiday homes — at up to 60% surcharge in "zone tendue" (high-demand areas).</p>
+<p><strong>IFI (Impôt sur la Fortune Immobilière)</strong>: Applies if your net real estate assets in France exceed €1.3 million. Rates range from 0.5% to 1.5%.</p>
+<h2>Buying to Let: Rental Income Taxation</h2>
+<p>Non-residents who rent out French property are taxed in France on rental income:</p>
+<ul>
+<li><strong>Unfurnished rental (location nue)</strong>: Income taxed under "revenus fonciers". Micro-foncier regime (flat 30% deduction) available if gross rent ≤ €15,000/year. Otherwise régime réel (deduct actual expenses, mortgage interest, works).</li>
+<li><strong>Furnished rental (LMNP)</strong>: More favorable. Régime micro-BIC (50% deduction) or régime réel (depreciate the property and furniture). Very popular with foreign investors.</li>
+<li><strong>Non-residents</strong> pay a minimum 20% income tax rate on French rental income, plus 17.2% social contributions (reduced to 7.5% for EU/EEA residents covered by a social security system).</li>
+</ul>
+<h2>Key Mistakes Foreign Buyers Make</h2>
+<ul>
+<li>Forgetting notaire fees in their budget (7–8% is a big addition)</li>
+<li>Not getting a French bank account early (required for mortgage and utility setup)</li>
+<li>Skipping the DPE energy rating check (new 2025 rules prohibit renting properties rated G)</li>
+<li>Underestimating the taxe d'habitation for secondary residences in tourist zones</li>
+</ul>
+<p>Ready to model your purchase? Use the <a href="/simulateurs/frais-notaire">notaire fees calculator</a> and the <a href="/simulateurs/credit-immobilier">mortgage simulator</a> to build your full buying budget.</p>`,
+    faqs: [
+      { q: "Can a British citizen buy property in France after Brexit?", a: "Yes. Brexit did not change property ownership rights for British nationals in France. UK citizens can still buy freely, own property, and rent it out. The main change is that UK citizens can now spend a maximum of 90 days in any 180-day period in France without a visa — this affects how long you can stay, not your right to own property." },
+      { q: "How much does it cost to buy a property in France?", a: "On top of the purchase price, budget 7–8% for notaire fees (transfer taxes + legal fees) for existing properties, or 2–3% for new-build properties under 5 years old. You also need a bank account, and possibly a mortgage arrangement fee (0.5–1% of loan amount). The simfinly notaire fees simulator gives exact figures by property price and type." },
+      { q: "Do I need a French bank account to buy property?", a: "Yes, a French bank account is effectively required for the property purchase process — payments to the notaire must come from a French account. You should open an account several months before you plan to buy. BNP Paribas, Société Générale, and Crédit Agricole all offer non-resident accounts. Some challenger banks (N26, Wise) also have IBAN that can be accepted." },
+      { q: "What is the role of the notaire in a French property transaction?", a: "The notaire is a state-appointed legal officer (not a private lawyer) who oversees property transfers in France. Unlike in the UK where solicitors work adversarially, a single notaire can represent both buyer and seller. The notaire verifies title, checks for mortgages or liens, collects and distributes funds, and registers the new ownership with the land registry (Service de la Publicité Foncière). Their fees are regulated by law." },
+    ],
+  },
+  {
+    slug: 'assurance-vie-france-complete-guide-2026',
+    title: 'French Assurance-Vie: The Complete Guide for Expats (2026)',
+    intro: 'Assurance-vie is France\'s most popular savings vehicle — with unique tax benefits after 8 years. Here\'s how it works for expats and foreign investors.',
+    category: 'Épargne',
+    readTime: 8,
+    publishedAt: '2026-04-05',
+    lang: 'en',
+    body: `<p>Assurance-vie is the most widely held financial product in France, with over €1,900 billion in assets under management. Despite the name ("life insurance"), it functions primarily as an investment account with exceptional tax advantages — especially after 8 years. For expats living in France, understanding assurance-vie is essential for tax-efficient wealth management.</p>
+<h2>What Is an Assurance-Vie?</h2>
+<p>An assurance-vie is a contract between you (the subscriber) and an insurance company. You invest money, which grows tax-deferred inside the contract. You can invest in:</p>
+<ul>
+<li><strong>Fonds en euros</strong>: A guaranteed capital fund that earns roughly 2.5–4% per year (2026 rate varies by insurer). Zero risk — capital is guaranteed.</li>
+<li><strong>Unités de compte (UC)</strong>: Investment units linked to equities, bonds, real estate (SCPI), ETFs. Higher return potential, no capital guarantee.</li>
+<li><strong>Mixed allocation</strong>: Most modern contracts let you split between fonds en euros and UC.</li>
+</ul>
+<p>You can withdraw at any time — assurance-vie is not a locked product. But the tax treatment changes dramatically based on how long you've held the contract.</p>
+<h2>The Tax Advantage: Why 8 Years Matters</h2>
+<p>When you withdraw money from assurance-vie, only the <em>gains</em> portion is taxed (not your invested capital). The tax rate depends on the contract's age:</p>
+<table>
+<thead><tr><th>Contract age</th><th>Tax on gains</th><th>Social contributions</th><th>Total</th></tr></thead>
+<tbody>
+<tr><td>Under 4 years</td><td>12.8% (PFU)</td><td>17.2%</td><td>30%</td></tr>
+<tr><td>4–8 years</td><td>12.8% (PFU)</td><td>17.2%</td><td>30%</td></tr>
+<tr><td>Over 8 years</td><td>7.5% above allowance</td><td>17.2%</td><td>24.7%</td></tr>
+</tbody>
+</table>
+<p><strong>After 8 years</strong>, you also benefit from an annual tax allowance on gains: <strong>€4,600/year</strong> for a single person, <strong>€9,200/year</strong> for a couple. This means you can withdraw gains up to this amount completely tax-free (still subject to 17.2% social contributions).</p>
+<h2>Succession Benefits</h2>
+<p>Assurance-vie is exceptional for estate planning in France:</p>
+<ul>
+<li>For funds invested <strong>before age 70</strong>: each beneficiary receives up to <strong>€152,500 free of succession tax</strong>. Above this, a flat rate of 20% applies (31.25% above €700,000).</li>
+<li>For funds invested <strong>after age 70</strong>: €30,500 total allowance shared across all beneficiaries; gains remain tax-free regardless.</li>
+<li>The contract <strong>bypasses the normal inheritance rules</strong> (réserve héréditaire) to a significant extent, allowing you to leave money to non-family members or step-children without inheritance tax penalties.</li>
+</ul>
+<h2>Assurance-Vie vs PEA vs PER</h2>
+<table>
+<thead><tr><th></th><th>Assurance-Vie</th><th>PEA</th><th>PER</th></tr></thead>
+<tbody>
+<tr><td>Contribution limit</td><td>None</td><td>€150,000</td><td>~10% of income</td></tr>
+<tr><td>Investment universe</td><td>Fonds €, UC (global)</td><td>European equities only</td><td>Fonds €, UC (global)</td></tr>
+<tr><td>Tax-free after</td><td>8 years</td><td>5 years</td><td>Retirement (locked until then)</td></tr>
+<tr><td>Withdrawals</td><td>Any time</td><td>Any time (after 5y: tax-free gains)</td><td>Locked until retirement</td></tr>
+<tr><td>Tax deduction on contributions</td><td>No</td><td>No</td><td>Yes (reduces taxable income)</td></tr>
+<tr><td>Succession advantage</td><td>Excellent (€152,500/beneficiary)</td><td>Standard inheritance rules</td><td>Good (similar to AV for beneficiaries)</td></tr>
+</tbody>
+</table>
+<p>Use the <a href="/simulateurs/per">simfinly PER vs Assurance-vie simulator</a> to model which vehicle makes more sense for your tax situation.</p>
+<h2>How to Open an Assurance-Vie in France</h2>
+<p>You need to be a French tax resident to open most assurance-vie contracts in France (some insurers accept non-residents, but terms are restrictive). The major platforms are:</p>
+<ul>
+<li><strong>Online insurers</strong>: Linxea, Yomoni, Nalo, Goodvest — low fees (0.5–1.3%/year total), good fund selection</li>
+<li><strong>Bank-based contracts</strong>: BNP Paribas Cardif, Société Générale, Crédit Agricole — higher fees (1.5–2.5%/year), more hands-on service</li>
+<li><strong>Minimum investment</strong>: typically €500–1,000 to open a contract</li>
+</ul>
+<h2>Assurance-Vie for Non-Residents</h2>
+<p>If you hold an assurance-vie contract and then move abroad (become a non-French tax resident), the contract continues to run. However:</p>
+<ul>
+<li>Tax on withdrawals shifts to the rules of your new country of residence (or a double-tax treaty applies)</li>
+<li>The 17.2% prélèvements sociaux do not apply to non-residents on most income (including assurance-vie gains)</li>
+<li>French succession rules still apply to the contract at death if you are domiciled in France at the time of death</li>
+</ul>
+<h2>Key Numbers for 2026</h2>
+<ul>
+<li>Average fonds en euros yield: 2.6–3.8% (depending on insurer)</li>
+<li>Tax-free annual withdrawal allowance after 8 years: €4,600 (single) / €9,200 (couple)</li>
+<li>Succession allowance per beneficiary (pre-70 investments): €152,500</li>
+<li>Flat tax (PFU) on gains under 8 years: 12.8%</li>
+<li>Reduced tax on gains over 8 years: 7.5% (above annual allowance)</li>
+</ul>
+<p>Open your assurance-vie as early as possible — the 8-year clock starts the day you open the contract, even if you invest very little initially. Use the <a href="/simulateurs/epargne">simfinly savings simulator</a> to model your long-term growth.</p>`,
+    faqs: [
+      { q: "Is assurance-vie really life insurance?", a: "Despite the name, assurance-vie in France is primarily an investment savings vehicle, not traditional life insurance. It does include a death benefit (your beneficiaries receive the contract value at your death), but its main appeal is tax-deferred investment growth and favorable succession tax treatment. It bears little resemblance to term life insurance." },
+      { q: "Can I withdraw from assurance-vie at any time?", a: "Yes — assurance-vie contracts in France have no lock-in period. You can withdraw (partial or full surrender) at any time. However, the tax on gains is much more favorable after 8 years, so most investors wait. Withdrawals within the first 8 years are taxed at 30% on the gains portion (12.8% income tax + 17.2% social contributions)." },
+      { q: "What happens to my assurance-vie if I leave France?", a: "The contract continues to exist even if you become a non-French tax resident. Your country of residence at withdrawal will determine the applicable tax (subject to any France double-tax treaty). The 17.2% prélèvements sociaux generally do not apply to non-residents. The contract remains valid and grows tax-deferred regardless of where you live." },
+      { q: "How does assurance-vie compare to an ISA in the UK?", a: "Both are tax-advantaged savings accounts. Key differences: (1) AV has no annual contribution limit (ISA: £20,000/year); (2) AV is tax-deferred (pay tax on withdrawal), ISA is tax-exempt permanently; (3) AV has exceptional succession benefits (€152,500/beneficiary free of inheritance tax); (4) AV fonds en euros offer capital-guaranteed returns unavailable in an ISA; (5) ISA gains are completely tax-free, while AV gains after 8 years are taxed at just 7.5% above a €4,600 annual allowance." },
+    ],
+  },
+
 export const STATIC_BY_SLUG = Object.fromEntries(STATIC_ARTICLES.map(a => [a.slug, a]));
