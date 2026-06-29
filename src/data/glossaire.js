@@ -102,6 +102,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/emprunt-immobilier'],
     related: ['apport', 'plus-value-immobiliere'],
+    faqs: [
+      { q: "Quel est le montant des frais de notaire pour un achat dans l'ancien ?", a: "Les frais de notaire dans l'ancien représentent environ 7 à 8 % du prix d'achat. Ils se décomposent en : droits de mutation (~5,8 % en Île-de-France, ~5,1 % dans certains départements), débours (~0,5-1 %), émoluments du notaire (~0,8 %) et autres taxes. Sur un bien à 300 000 €, comptez environ 21 000-24 000 €." },
+      { q: "Les frais de notaire sont-ils négociables ?", a: "Partiellement. Les émoluments du notaire (sa rémunération propre) sont réglementés mais il peut consentir une remise sur la partie qui dépasse 100 000 €, dans la limite de 20 %. En revanche, les droits de mutation (la plus grande part) sont fixes et versés à l'État et aux collectivités — non négociables." },
+      { q: "Peut-on déduire les frais de notaire de sa déclaration d'impôts ?", a: "Non, pas pour une résidence principale. Pour un investissement locatif en régime réel, les frais de notaire peuvent être déduits des revenus fonciers l'année de l'acquisition (ou amortis si c'est du LMNP). Pour une résidence principale revendue, ils peuvent s'ajouter au prix d'achat pour réduire la plus-value imposable, mais celle-ci est de toute façon exonérée." },
+    ],
   },
   {
     slug: 'amortissement', term: 'Amortissement', full: 'Amortissement du capital',
@@ -135,6 +140,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/rendement-locatif'],
     related: ['rendement-locatif', 'abattement'],
+    faqs: [
+      { q: "Quelle est la différence entre LMNP et LMP ?", a: "Le statut LMP (Loueur Meublé Professionnel) s'applique quand les recettes meublées dépassent 23 000 €/an ET représentent plus de 50 % des revenus du foyer. En dessous de l'un de ces seuils, c'est le LMNP. Le LMP permet d'imputer les déficits sur le revenu global sans plafond, et offre une exonération des plus-values après 5 ans d'activité." },
+      { q: "Comment s'applique l'amortissement en LMNP régime réel ?", a: "En LMNP régime réel, vous pouvez amortir le bien immobilier (hors terrain, sur 30-40 ans) et le mobilier (sur 5-10 ans). Cet amortissement réduit le résultat imposable sans sortie de cash, créant souvent un résultat fiscal proche de zéro malgré des loyers perçus. L'amortissement non utilisé est reportable indéfiniment." },
+      { q: "Le LMNP est-il menacé par des réformes fiscales ?", a: "Oui, partiellement. La loi de finances 2025 a restreint les avantages du LMNP en cas de revente : les amortissements déduits sont désormais réintégrés dans le calcul de la plus-value imposable. Le régime demeure néanmoins avantageux pendant la phase de location. Il est conseillé de vérifier les règles en vigueur avant tout investissement." },
+    ],
   },
 
   // ── Impôts / fiscalité ─────────────────────────────────────────────────────
@@ -254,6 +264,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/agirc-arrco'],
     related: ['cnav', 'points-retraite', 'taux-plein'],
+    faqs: [
+      { q: "Comment calculer sa pension Agirc-Arrco ?", a: "Pension Agirc-Arrco = nombre de points accumulés × valeur de service du point (1,4196 €/point/an en 2026). Vos points s'accumulent chaque année : salaire brut × taux de cotisation Agirc-Arrco ÷ prix d'achat du point. Consultez votre relevé de points sur agirc-arrco.fr pour connaître vos droits actuels." },
+      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une minoration temporaire de 10 % appliquée pendant 3 ans sur la pension Agirc-Arrco si vous partez à l'âge légal de départ (64 ans pour les générations 1968+). Pour l'éviter, vous devez retarder votre départ d'un an au-delà de cet âge. Ce malus est définitivement supprimé après 3 ans ou à 67 ans." },
+      { q: "Les points Agirc-Arrco sont-ils perdus si je change d'employeur ?", a: "Non. Les points Agirc-Arrco sont attachés à vous, pas à votre employeur. Chaque emploi salarié dans le privé génère des points qui s'accumulent tout au long de votre carrière, indépendamment des changements d'employeur. Vous pouvez suivre vos points sur le site agirc-arrco.fr." },
+    ],
   },
   {
     slug: 'cnav', term: 'CNAV', full: "Caisse Nationale d'Assurance Vieillesse",
@@ -265,6 +280,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/cnav'],
     related: ['agirc-arrco', 'sam', 'taux-plein', 'trimestre'],
+    faqs: [
+      { q: "Comment est calculée la retraite de base CNAV ?", a: "Pension CNAV = SAM (Salaire Annuel Moyen des 25 meilleures années) × taux (jusqu'à 50 % au taux plein) × (trimestres validés ÷ trimestres requis). Exemple : SAM = 30 000 €, taux plein, carrière complète → pension de base = 15 000 €/an soit 1 250 €/mois." },
+      { q: "Quelles années sont prises en compte pour calculer le SAM ?", a: "Les 25 meilleures années de revenus bruts plafonnés au PASS (plafond annuel de la Sécurité sociale). Les années à faibles revenus (temps partiel, maladie, chômage partiel) ne figurent pas parmi les 25 meilleures si vous en avez eu davantage de bonnes années. En cas de carrière courte, toutes les années sont prises en compte." },
+      { q: "Peut-on cumuler la retraite CNAV avec une activité professionnelle ?", a: "Oui, sous conditions. Le cumul emploi-retraite libéral (revenus illimités) est possible à partir du taux plein. Le cumul emploi-retraite plafonné s'applique avant le taux plein. Depuis 2023, les nouvelles cotisations versées lors d'un cumul emploi-retraite ouvrent des droits à une 'surcote différée'." },
+    ],
   },
   {
     slug: 'ircantec', term: 'IRCANTEC', full: 'Institution de Retraite Complémentaire des Agents Non Titulaires',
@@ -474,6 +494,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/fire'],
     related: ['swr', 'taux-epargne', 'interets-composes'],
+    faqs: [
+      { q: "Quel capital faut-il pour atteindre l'indépendance financière en France ?", a: "Selon la règle des 4 % : capital FIRE = dépenses annuelles × 25. Pour vivre avec 2 000 €/mois (24 000 €/an), il faut environ 600 000 € de capital investi. Ce montant varie selon votre âge de retraite ciblé (plus conservateur pour 40 ans, la règle des 4 % est calculée sur 30 ans), votre niveau de vie et la fiscalité française sur les revenus de capitaux." },
+      { q: "Quelle différence entre FIRE et retraite classique ?", a: "La retraite classique est financée par les cotisations sociales accumulées sur une carrière (système par répartition). Le FIRE consiste à accumuler un capital personnel suffisant pour vivre de ses revenus passifs, indépendamment du système public. Les deux ne s'excluent pas : une personne FIRE à 45 ans touchera quand même sa retraite légale à 64 ans." },
+      { q: "Par où commencer pour atteindre le FIRE en France ?", a: "Les 5 étapes : (1) calculer son taux d'épargne actuel et l'objectif FIRE, (2) ouvrir un PEA pour les actions (fiscalité allégée après 5 ans), (3) utiliser les livrets réglementés pour l'épargne de précaution, (4) investir en ETF MSCI World en DCA mensuel, (5) optimiser la fiscalité via PER si TMI ≥ 30 %. La discipline dans la durée prime sur le rendement." },
+    ],
   },
   {
     slug: 'swr', term: 'Règle des 4 %', full: 'Taux de retrait sûr (règle des 4 %)',
@@ -509,6 +534,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/epargne', '/simulateurs/budget'],
     related: ['ldds', 'inflation', 'taux-epargne'],
+    faqs: [
+      { q: "Quel est le taux du Livret A en 2026 ?", a: "Le taux du Livret A est de 2,4 % depuis le 1er août 2025 (après avoir été de 3 % de 2023 à mi-2025). Il est révisé par le gouverneur de la Banque de France en janvier et août, sur la base d'une formule tenant compte de l'inflation et des taux interbancaires." },
+      { q: "Le Livret A est-il vraiment sans risque ?", a: "Oui, le Livret A est l'un des seuls placements totalement sans risque : capital garanti par l'État français, intérêts nets d'impôt et de prélèvements sociaux, et disponible à tout moment. Son seul risque est l'érosion par l'inflation si son taux est inférieur à l'inflation — ce qui était le cas entre 2021 et 2023." },
+      { q: "Peut-on avoir plusieurs Livrets A ?", a: "Non. Chaque personne physique ne peut détenir qu'un seul Livret A, quelle que soit la banque. En revanche, chaque membre d'un foyer fiscal peut avoir le sien (conjoint, enfants mineurs). Ouvrir un deuxième Livret A est illégal et entraîne la fermeture du deuxième compte et une imposition des intérêts perçus." },
+    ],
   },
   {
     slug: 'ldds', term: 'LDDS', full: 'Livret de Développement Durable et Solidaire',
@@ -564,6 +594,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/rendement-locatif', '/simulateurs/patrimoine'],
     related: ['rendement-locatif', 'unites-de-compte', 'deficit-foncier'],
+    faqs: [
+      { q: "Quel est le rendement moyen d'une SCPI en 2026 ?", a: "Le taux de distribution moyen des SCPI (anciennement TDVM) était d'environ 4,7 % en 2024. Les meilleures SCPI spécialisées (santé, logistique, diversifiées européennes) ont distribué 5-6 %. Les SCPI de bureaux et retail ont subi des baisses de valeur en 2023-2024, réduisant le rendement global pour les détenteurs." },
+      { q: "Comment investir en SCPI depuis une assurance-vie ?", a: "De nombreux contrats d'assurance-vie proposent des SCPI comme unités de compte. L'avantage : les revenus locatifs sont capitalisés (réinvestis) sans fiscalité immédiate, et la sortie bénéficie de la fiscalité avantageuse de l'assurance-vie après 8 ans. L'inconvénient : les frais de gestion du contrat s'ajoutent aux frais de la SCPI." },
+      { q: "Les parts de SCPI sont-elles liquides ?", a: "Non, les SCPI sont peu liquides. Pour revendre des parts, il faut un acheteur (marché secondaire organisé par la société de gestion). En période de stress (comme en 2023), certaines SCPI ont suspendu ou ralenti les retraits. Il faut considérer les SCPI comme un placement à horizon 8-15 ans minimum." },
+    ],
   },
   {
     slug: 'dca', term: 'DCA', full: 'Dollar Cost Averaging (investissement programmé)',
@@ -676,6 +711,11 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/rendement-locatif'],
     related: ['rendement-locatif', 'abattement'],
+    faqs: [
+      { q: "Quel est le plafond annuel du déficit foncier déductible du revenu global ?", a: "Le déficit foncier imputable sur le revenu global est plafonné à 10 700 €/an (21 400 € pour certains travaux énergétiques d'envergure depuis 2023). La fraction liée aux intérêts d'emprunt n'est pas imputable sur le revenu global, seulement sur les revenus fonciers des 10 années suivantes." },
+      { q: "Le déficit foncier s'applique-t-il à la location meublée ?", a: "Non. Le déficit foncier ne concerne que la location nue (revenus fonciers). En location meublée, les charges déductibles génèrent un déficit BIC qui obéit à des règles différentes. En LMNP régime réel, le déficit peut être reporté sur les bénéfices BIC des années suivantes, mais pas imputé sur le revenu global." },
+      { q: "Quels travaux créent un déficit foncier ?", a: "Les travaux d'entretien, de réparation et d'amélioration (isolation, changement de fenêtres, réfection de toiture, remise aux normes électriques). Exclus : les travaux de construction, reconstruction ou agrandissement. Les dépenses doivent être réelles, justifiées par des factures, et le bien doit rester loué pendant 3 ans après imputation." },
+    ],
   },
   {
     slug: 'usufruit', term: 'Usufruit', full: 'Usufruit',
@@ -979,6 +1019,11 @@ export const GLOSSARY = [
       "Au régime général, elle est soumise à une condition de ressources. À l'Agirc-Arrco, elle n'est versée qu'aux conjoints mariés et sans condition de ressources, mais les concubins et partenaires de PACS en sont exclus.",
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
+    faqs: [
+      { q: "À combien s'élève la pension de réversion en 2026 ?", a: "Au régime général (CNAV), la pension de réversion est égale à 54 % de la retraite de base du défunt, sous condition de ressources (max 23 441 €/an pour une personne seule en 2026). À l'Agirc-Arrco, la réversion est de 60 % de la pension complémentaire, sans condition de ressources mais réservée aux conjoints mariés." },
+      { q: "Les concubins ont-ils droit à la pension de réversion ?", a: "Non. Ni le concubinage ni le PACS ne donnent droit à la pension de réversion au régime général ou à l'Agirc-Arrco. Seul le mariage ouvre ce droit. En cas de divorce, l'ex-conjoint peut bénéficier d'une réversion si le défunt n'était pas remarié (CNAV) ou proportionnellement à la durée de mariage (certains régimes)." },
+      { q: "La pension de réversion est-elle imposable ?", a: "Oui. La pension de réversion est imposée comme un revenu de remplacement. Elle est soumise à l'impôt sur le revenu après l'abattement de 10 % sur les pensions (plafonné à 4 321 € par foyer en 2026) et aux prélèvements sociaux (CSG 8,3 %, CRDS 0,5 % — exonération possible sous conditions de ressources)." },
+    ],
   },
   {
     slug: 'droits-derives', term: 'Droits dérivés', full: 'Droits dérivés à la retraite',
