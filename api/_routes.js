@@ -383,12 +383,12 @@ export function structuredData(route, extra = {}) {
     return schemas;
   }
 
-  // Guide thématique → fil d'Ariane + Article
+  // Guide thématique → fil d'Ariane + Article (+ HowTo si steps définis)
   if (route.startsWith('/guides/')) {
     const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
     if (!g) return [];
     const ogImg = ogImageForRoute(route);
-    return [
+    const schemas = [
       breadcrumb([['Accueil', `${BASE}/`], ['Guides', `${BASE}/guides`], [g.title, url]]),
       {
         '@context': 'https://schema.org', '@type': 'Article',
@@ -398,6 +398,14 @@ export function structuredData(route, extra = {}) {
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
       },
     ];
+    if (g.steps && g.steps.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org', '@type': 'HowTo',
+        name: g.title, description: g.intro,
+        step: g.steps.map(s => ({ '@type': 'HowToStep', position: s.position, name: s.name, text: s.text })),
+      });
+    }
+    return schemas;
   }
 
   // Page comparative → fil d'Ariane + Article
