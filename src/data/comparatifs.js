@@ -558,6 +558,200 @@ export const COMPARATIFS = [
     sims: ['/simulateurs/donation', '/simulateurs/succession', '/simulateurs/assurance-vie'],
     terms: ['donation', 'succession', 'abattement', 'assurance-vie', 'reserve-hereditaire'],
   },
+  {
+    slug: 'deficit-foncier-vs-micro-foncier',
+    title: 'Déficit foncier ou micro-foncier : quel régime choisir ?',
+    shortTitle: 'Déficit foncier vs micro-foncier',
+    emoji: '🏗️',
+    category: 'Immobilier',
+    intro: "Si vous louez un bien nu, vous avez le choix entre deux régimes fiscaux : le micro-foncier (simple, abattement de 30 %) et le régime réel (déduction de toutes les charges, création possible d'un déficit foncier). Le bon choix peut vous économiser plusieurs milliers d'euros d'impôt chaque année.",
+    a: {
+      name: 'Micro-foncier',
+      pour: ["Déclaration simplifiée : aucune comptabilité", "Abattement forfaitaire de 30 % sur les loyers", "Idéal si les charges réelles sont inférieures à 30 %"],
+      contre: ["Impossible si charges réelles > 30 % des loyers", "Limité à 15 000 €/an de revenus fonciers", "Pas de déficit foncier possible"],
+    },
+    b: {
+      name: 'Régime réel (déficit foncier)',
+      pour: ["Déduction de toutes les charges réelles (travaux, intérêts, taxes)", "Déficit reportable sur le revenu global (max 10 700 €/an)", "Obligatoire si recettes > 15 000 €/an"],
+      contre: ["Comptabilité requise, justificatifs à conserver", "Plus complexe en déclaration (formulaire 2044)", "Option irrévocable pendant 3 ans"],
+    },
+    criteres: [
+      { label: "Déduction des charges", a: "Forfaitaire : 30 % des loyers", b: "Réelle : charges justifiées déductibles" },
+      { label: "Travaux importants", a: "Non rentable (inclus dans le forfait 30 %)", b: "Oui, crée un déficit foncier déductible" },
+      { label: "Revenus fonciers > 15 000 €", a: "Impossible", b: "Obligatoire" },
+      { label: "Complexité", a: "Très simple", b: "Comptabilité requise" },
+      { label: "Optimal si charges réelles", a: "< 30 % des loyers", b: "> 30 % des loyers" },
+    ],
+    sections: [
+      {
+        h2: "Le micro-foncier : la simplicité pour les revenus légers",
+        body: [
+          "Le régime micro-foncier s'applique automatiquement si vos revenus locatifs nus ne dépassent pas 15 000 € par an. L'administration applique un abattement forfaitaire de 30 % sur les loyers, sans justificatif. Vous déclarez uniquement le montant brut des loyers en case 4BE : l'impôt est calculé sur 70 % de ce montant.",
+          "Ce régime est intéressant si vos charges réelles sont inférieures à 30 % des loyers. En pratique, cela correspond à un bien récent sans travaux, avec peu d'intérêts d'emprunt (crédit remboursé) et une taxe foncière modérée.",
+        ],
+      },
+      {
+        h2: "Le régime réel : rentable dès que les charges dépassent 30 %",
+        body: [
+          "Si vous réalisez des travaux, avez encore un crédit en cours, ou si votre taxe foncière est élevée, le régime réel vous permet de déduire ces charges dans leur intégralité. Quand les dépenses dépassent les recettes, vous créez un déficit foncier.",
+          "Ce déficit s'impute sur votre revenu global dans la limite de 10 700 € par an (21 400 € pour des travaux de rénovation énergétique d'envergure depuis 2023). Le solde non utilisé se reporte sur les revenus fonciers des 10 années suivantes. C'est un levier puissant pour les contribuables à haute TMI qui investissent dans l'ancien avec travaux.",
+        ],
+      },
+      {
+        h2: "Exemple chiffré : rénovation d'un appartement parisien",
+        body: [
+          "Loyers annuels : 12 000 €. Charges réelles : intérêts (3 000 €) + travaux (15 000 €) + taxes et assurances (1 500 €) = 19 500 €. Déficit foncier = 7 500 €. En micro-foncier, vous auriez payé l'impôt sur 8 400 € (12 000 × 70 %). Au régime réel, vous imputez 7 500 € sur votre revenu global, économisant (7 500 € × TMI). Pour une TMI à 30 %, l'économie est de 2 250 €.",
+        ],
+      },
+    ],
+    verdict: "Si vos loyers ne dépassent pas 15 000 €/an et que vos charges sont limitées, restez en micro-foncier. Dès que vous faites des travaux ou que vos charges réelles dépassent 30 % des loyers, optez pour le régime réel. Une fois l'option exercée, elle est irrévocable 3 ans.",
+    sims: ['/simulateurs/deficit-foncier', '/simulateurs/rendement-locatif'],
+    terms: ['deficit-foncier', 'micro-foncier', 'regime-reel-foncier', 'rendement-locatif', 'tmi'],
+  },
+  {
+    slug: 'rente-viagere-vs-retrait-programme',
+    title: 'Rente viagère ou retrait programmé : comment sortir du PER ?',
+    shortTitle: 'Rente vs retrait programmé',
+    emoji: '💰',
+    category: 'Retraite',
+    intro: "À la retraite, convertir votre PER en rente viagère vous garantit un revenu à vie, tandis que le retrait programmé (ou en capital) conserve la liberté et le contrôle du capital. Ces deux modes de sortie ont des implications fiscales, patrimoniales et successorales très différentes.",
+    a: {
+      name: 'Rente viagère',
+      pour: ["Revenu garanti jusqu'au décès (quel que soit l'âge)", "Protège contre le risque de longévité", "Peut inclure une réversion au conjoint"],
+      contre: ["Capital définitivement perdu à la conversion", "Fiscalité selon l'âge (30-70 % imposable)", "Rendement calculé sur une espérance de vie moyenne"],
+    },
+    b: {
+      name: 'Retrait en capital / programmé',
+      pour: ["Capital conservé et transmissible aux héritiers", "Flexibilité totale sur les montants et la fréquence", "Versements déductibles imposés au barème, gains au PFU"],
+      contre: ["Risque de vivre plus longtemps que le capital", "Gestion active du portefeuille nécessaire", "Risque de séquence en cas de krach en début de retraite"],
+    },
+    criteres: [
+      { label: "Durée garantie", a: "À vie, illimitée", b: "Limitée au capital disponible" },
+      { label: "Transmission", a: "Capital perdu au décès (sauf annuités garanties)", b: "Capital transmissible aux héritiers" },
+      { label: "Fiscalité à la sortie", a: "Fraction imposable 30-70 % selon l'âge", b: "Versements déduits : barème IR ; gains : PFU 30 %" },
+      { label: "Gestion", a: "Aucune (revenu automatique)", b: "Gestion active nécessaire" },
+      { label: "Risque de longévité", a: "Nul (couvert par l'assureur)", b: "Élevé si on vit très longtemps" },
+    ],
+    sections: [
+      {
+        h2: "La rente viagère : la sécurité absolue",
+        body: [
+          "En convertissant tout ou partie de votre PER en rente viagère, vous achetez la certitude d'un revenu régulier jusqu'à votre dernier jour. L'assureur mutualise les risques de longévité sur l'ensemble des rentiers. Si vous vivez jusqu'à 95 ans, la rente continue, même si vous avez largement « récupéré » votre capital.",
+          "La fraction imposable varie selon l'âge à la conversion : 70 % avant 50 ans, 50 % entre 50 et 59 ans, 40 % entre 60 et 69 ans, 30 % à 70 ans ou plus. C'est pourquoi il est souvent plus avantageux de convertir après 70 ans. La rente avec réversion (60-80 % reversée au conjoint) réduit le montant mensuel mais protège le ménage.",
+        ],
+      },
+      {
+        h2: "Le retrait en capital : liberté et transmission",
+        body: [
+          "Depuis la loi PACTE, les PER permettent une sortie intégrale en capital. Vous pouvez retirer tout le capital en une fois (attention à l'impact sur votre TMI cette année-là) ou par fractions (retrait programmé). Les versements déduits à l'entrée sont imposés au barème IR à la sortie ; les gains sont soumis au PFU de 30 %.",
+          "Cette option conserve la maîtrise totale : vous pouvez moduler les retraits selon vos besoins, réinvestir une partie, et transmettre le capital restant à vos héritiers. Elle est préférable si vous avez d'autres revenus sécurisés (pension, revenus locatifs) et une bonne tolérance au risque de longévité.",
+        ],
+      },
+      {
+        h2: "La solution mixte : le meilleur des deux mondes",
+        body: [
+          "Il n'est pas obligatoire de tout convertir d'un seul côté. Une stratégie fréquente : convertir 30-40 % du capital en rente pour couvrir les dépenses fixes incompressibles (alimentation, santé, logement), et garder le reste en retrait programmé pour les dépenses variables et les projets. Cette approche protège contre le risque de longévité tout en conservant de la flexibilité.",
+        ],
+      },
+    ],
+    verdict: "Choisissez la rente si vous craignez de manquer d'argent en vieillissant (protection longevité) et que votre conjoint bénéficierait de la réversion. Optez pour le retrait en capital si vous avez d'autres revenus stables et souhaitez transmettre à vos enfants. La solution mixte est souvent la plus équilibrée.",
+    sims: ['/simulateurs/rente-capital', '/simulateurs/per'],
+    terms: ['rente-viagere', 'per', 'risque-sequence', 'regle-4-pourcent', 'assurance-vie'],
+  },
+  {
+    slug: 'micro-entrepreneur-vs-portage-salarial',
+    title: 'Micro-entrepreneur ou portage salarial : quel statut choisir ?',
+    shortTitle: 'Micro-entrepreneur vs portage salarial',
+    emoji: '💼',
+    category: 'Budget',
+    intro: "Vous souhaitez exercer une activité indépendante : deux statuts s'opposent. Le micro-entrepreneur est simple et peu coûteux en charges, mais sans protection sociale. Le portage salarial coûte plus cher en cotisations mais vous donne le statut de salarié avec chômage et retraite complète.",
+    a: {
+      name: 'Micro-entrepreneur',
+      pour: ["Charges sociales faibles (12 à 22 % du CA)", "Création en 24h, zéro comptabilité", "Possibilité de cumul avec un emploi salarié"],
+      contre: ["Pas d'allocation chômage", "Retraite moins bien protégée", "Pas de déduction des charges réelles"],
+    },
+    b: {
+      name: 'Portage salarial',
+      pour: ["Statut salarié : chômage, retraite, mutuelle", "Aucune gestion administrative ni comptabilité", "Protection sociale équivalente à un CDI"],
+      contre: ["Charges sociales ~45 % du CA + frais de gestion (5-15 %)", "Revenu net inférieur à revenus équivalents en micro", "Non accessible aux activités réglementées"],
+    },
+    criteres: [
+      { label: "Droit au chômage", a: "Non", b: "Oui (ARE entre missions)" },
+      { label: "Retraite complémentaire", a: "Partielle (SSI)", b: "Complète (Agirc-Arrco cadre)" },
+      { label: "Charges sur 100 € de CA", a: "~22 € (services)", b: "~55-60 € (cotisations + frais de gestion)" },
+      { label: "Comptabilité", a: "Livre des recettes uniquement", b: "Aucune (société de portage gère tout)" },
+      { label: "Ticket d'entrée", a: "Aucun", b: "Contrat avec société de portage" },
+    ],
+    sections: [
+      {
+        h2: "Micro-entrepreneur : idéal pour tester ou compléter",
+        body: [
+          "Le micro-entrepreneur est la porte d'entrée la plus simple dans l'indépendance. Les charges sociales sont de 12,3 % du CA pour la vente et 21,2 % pour les services — prélevées uniquement sur le chiffre d'affaires réel, rien si vous ne facturez rien. La création est quasi instantanée sur autoentrepreneur.urssaf.fr.",
+          "Limite majeure : si vous êtes au chômage entre deux missions et que vous êtes micro-entrepreneur, Pôle Emploi déduit vos revenus de votre allocation. Surtout, si votre activité s'arrête, vous ne touchez pas d'ARE. Pour une activité principale durable, la protection sociale insuffisante peut être un vrai problème.",
+        ],
+      },
+      {
+        h2: "Portage salarial : la sécurité du salariat pour les consultants",
+        body: [
+          "En portage salarial, une société de portage vous embauche et facture vos clients à votre place. Elle prélève ses frais de gestion (5 à 15 %) et verse les charges patronales et salariales (~45 % du CA restant). En échange, vous bénéficiez d'un bulletin de salaire, cotisez à l'Agirc-Arrco cadre, et pouvez prétendre à l'ARE en cas de fin de mission.",
+          "Le portage est économiquement plus coûteux : pour 10 000 € HT facturés, le net porté reçoit environ 4 000-4 500 €. En micro-entreprise, le même CA génère ~7 800 € de net. Mais cette différence se compense en partie par les droits ouverts (chômage, retraite plus élevée).",
+        ],
+      },
+      {
+        h2: "Quand choisir l'un ou l'autre ?",
+        body: [
+          "Choisissez le micro-entrepreneur si : vous démarrez et souhaitez tester votre marché sans frais fixes, vous avez une activité complémentaire à côté d'un CDI, votre CA est inférieur à 30 000 €/an, ou vous avez un autre filet de sécurité (conjoint en CDI, patrimoine disponible).",
+          "Choisissez le portage salarial si : vous êtes consultant senior avec des missions régulières (CA > 50 000 €/an), vous avez besoin de droits chômage entre les missions, vous souhaitez préserver votre retraite complémentaire, ou vous travaillez pour des grands comptes qui préfèrent facturer une société.",
+        ],
+      },
+    ],
+    verdict: "Pour démarrer ou tester : micro-entrepreneur. Pour une activité principale durable avec besoin de protection sociale complète : portage salarial. Au-delà de 70-80k€ de CA et si la société veut vous donner des parts ou associer des collègues, envisagez une SASU ou EURL.",
+    sims: ['/simulateurs/impot-revenu'],
+    terms: ['micro-entrepreneur', 'portage-salarial', 'tmi', 'interessement'],
+  },
+  {
+    slug: 'dpe-travaux-ou-vendre',
+    title: 'Passoire thermique : rénover ou vendre avant les interdictions ?',
+    shortTitle: 'Rénover vs vendre une passoire thermique',
+    emoji: '🔥',
+    category: 'Immobilier',
+    intro: "Avec les interdictions progressives de location des logements F et G (2025-2028), les propriétaires de passoires thermiques doivent décider : engager des travaux de rénovation coûteux pour conserver le bien ou vendre avant que la valeur ne chute davantage.",
+    a: {
+      name: 'Rénover',
+      pour: ["Conserver le bien et ses revenus locatifs", "MaPrimeRénov' finance une partie des travaux", "Valorisation du bien après rénovation"],
+      contre: ["Coût élevé (20 000 à 60 000 € pour passer de G à C)", "Travaux perturbent la location (locataire à reloger)", "Délai de retour sur investissement long (7-15 ans)"],
+    },
+    b: {
+      name: 'Vendre maintenant',
+      pour: ["Éviter la contrainte des travaux et des interdictions", "Liquider avant que les prix ne baissent davantage", "Libérer du capital pour d'autres investissements"],
+      contre: ["Décote de marché croissante sur les passoires (10-20 %)", "Perte des revenus locatifs futurs", "Plus-value imposable (hors résidence principale)"],
+    },
+    criteres: [
+      { label: "Coût immédiat", a: "20 000 à 60 000 € de travaux", b: "Décote de 10-20 % sur le prix de vente" },
+      { label: "Revenus futurs", a: "Loyers conservés après rénovation", b: "Capital libéré à réinvestir" },
+      { label: "Risque réglementaire", a: "Éliminé après rénovation", b: "Transféré à l'acheteur" },
+      { label: "Durée de rentabilité", a: "7-15 ans selon les travaux et loyers", b: "Immédiate (capital libéré)" },
+      { label: "Aides disponibles", a: "MaPrimeRénov', CEE, éco-PTZ", b: "Aucune" },
+    ],
+    sections: [
+      {
+        h2: "Le calendrier des interdictions : ce qui est interdit et quand",
+        body: [
+          "En France métropolitaine : depuis 2025, les logements classés G (> 420 kWh EP/m²/an) sont interdits à la location pour les nouveaux contrats, et le loyer des G déjà loués est gelé. En 2028, ce sera au tour des logements F. En 2034, les E. Concrètement : si vous possédez un F ou G, vous avez jusqu'à 2028 pour rénover ou vendre.",
+          "Les aides à la rénovation : MaPrimeRénov' finance 25-70 % du coût des travaux selon les revenus (jusqu'à 90 % pour les ménages très modestes). Les Certificats d'Économies d'Énergie (CEE) sont cumulables. L'éco-PTZ permet d'emprunter jusqu'à 50 000 € sans intérêts pour un bouquet de travaux.",
+        ],
+      },
+      {
+        h2: "Le calcul de rentabilité de la rénovation",
+        body: [
+          "Exemple : appartement de 50 m² classé G, loyer actuel 700 €/mois. Coût de rénovation pour passer en C : 35 000 €. Aides reçues : 15 000 €. Coût net : 20 000 €. Gain mensuel post-rénovation : loyer augmenté à 800 € (car meilleur DPE) = +100 €/mois. Retour sur investissement net : 200 mois (16 ans). Conclusion : si vous êtes investisseur long terme et que la localisation est bonne, rénover est rentable. Si vous envisagez de revendre dans 5 ans, vendre maintenant est plus rationnel.",
+        ],
+      },
+    ],
+    verdict: "Rénover est rentable si vous conservez le bien plus de 10 ans dans une localisation tendue. Vendre est préférable si vous êtes proche de la retraite, si le bien est dans une zone peu dynamique, ou si vous souhaitez récupérer du capital pour d'autres projets. Dans tous les cas, agissez avant 2028 pour les F.",
+    sims: ['/simulateurs/rendement-locatif', '/simulateurs/emprunt-immobilier'],
+    terms: ['dpe', 'deficit-foncier', 'rendement-locatif', 'lmnp', 'vefa'],
+  },
 ];
 
 export const COMPARATIFS_BY_SLUG = Object.fromEntries(COMPARATIFS.map(c => [c.slug, c]));

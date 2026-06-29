@@ -340,6 +340,166 @@ export const GUIDES = [
     terms: ['taux-plein', 'trimestre', 'decote', 'cnav', 'agirc-arrco'],
     blogCats: ['Retraite'],
   },
+  {
+    slug: 'investir-son-premier-10k',
+    title: 'Comment investir ses premiers 10 000 €',
+    icon: 'Sprout',
+    category: 'Finances',
+    intro: "Vous avez épargné 10 000 € et vous vous demandez comment les faire fructifier intelligemment ? Ce guide vous donne une méthode concrète, des enveloppes aux supports, pour investir votre premier capital sans erreur de débutant.",
+    sections: [
+      {
+        h2: "Étape 1 : constituer son épargne de précaution (0-3 000 €)",
+        body: [
+          "Avant tout investissement, conservez l'équivalent de 3 à 6 mois de dépenses sur un livret réglementé (Livret A ou LDDS). C'est votre coussin de sécurité : si une dépense imprévue survient, vous n'aurez pas à vendre vos placements à un mauvais moment. Pour un train de vie de 2 000 €/mois, visez 6 000-12 000 € en réserve avant d'investir.",
+          "Avec 10 000 €, si vous n'avez pas encore votre épargne de précaution, commencez par y allouer 3 000-5 000 €. Le reste peut partir en investissement long terme.",
+        ],
+      },
+      {
+        h2: "Étape 2 : choisir les bonnes enveloppes fiscales",
+        body: [
+          "En France, deux enveloppes fiscales sont incontournables : le PEA (exonération d'IR sur les plus-values après 5 ans, plafond 150 000 €) et l'assurance-vie (fiscalité douce après 8 ans, outil de transmission). Pour un premier investissement de 5 000-7 000 €, ouvrez dès maintenant un PEA (même avec 100 €) pour démarrer le compteur de 5 ans — vous ne pouvez pas rétroactivement bénéficier de l'ancienneté.",
+          "Si votre TMI est élevée (30 % ou plus), alimentez également un PER pour défiscaliser : chaque euro versé vous rembourse 30 centimes d'impôt immédiatement.",
+        ],
+      },
+      {
+        h2: "Étape 3 : investir en ETF avec la méthode DCA",
+        body: [
+          "Pour votre capital actions, les ETF indiciels (trackers MSCI World, S&P 500) sont le support le plus recommandé par les études académiques pour un investisseur particulier : frais très bas (0,07-0,30 %/an), diversification mondiale instantanée, performance proche du marché. Évitez de tout investir d'un coup — utilisez le DCA (investissement régulier mensuel) pour lisser le risque d'entrer au mauvais moment.",
+          "Exemple de répartition pour 10 000 € : 3 000 € en Livret A (épargne de précaution), 5 000 € en ETF MSCI World sur PEA (investis en 5 fois, 1 000 €/mois), 2 000 € en assurance-vie fonds euros (réserve disponible). Cette répartition simple et diversifiée est efficace pour commencer.",
+        ],
+      },
+      {
+        h2: "Étape 4 : les erreurs à éviter",
+        body: [
+          "Les pièges classiques du débutant : investir en Bourse des fonds dont vous avez besoin dans moins de 5 ans (la Bourse peut baisser de 40 % et mettre 3-5 ans à se rétablir), acheter des actions individuelles sans diversification, suivre les « tuyaux » de réseaux sociaux, ou vendre lors des baisses par panique.",
+          "La règle d'or : investissez seulement les fonds dont vous n'aurez pas besoin avant 5-10 ans minimum. Tout le reste doit rester liquide (livret, compte courant).",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/epargne', '/simulateurs/patrimoine', '/simulateurs/per', '/simulateurs/comparateur'],
+    terms: ['etf', 'dca', 'pea', 'assurance-vie', 'livret-a', 'taux-epargne', 'interets-composes', 'diversification'],
+    blogCats: ['Épargne', 'Finances'],
+  },
+  {
+    slug: 'comprendre-impot-revenu-2026',
+    title: "Comprendre l'impôt sur le revenu en 2026",
+    icon: 'Receipt',
+    category: 'Impôts',
+    intro: "Barème, tranches, quotient familial, taux marginal, taux moyen : l'impôt sur le revenu est complexe mais ses mécanismes sont logiques. Ce guide vous explique comment est calculé votre IR 2026 et comment vous pouvez légalement en réduire le montant.",
+    sections: [
+      {
+        h2: "Le barème 2026 : comment fonctionnent les tranches ?",
+        body: [
+          "L'impôt sur le revenu français est progressif : chaque tranche de revenu est imposée à un taux différent. En 2026 (sur les revenus 2025), les taux sont : 0 % jusqu'à 11 497 €, 11 % de 11 497 à 29 315 €, 30 % de 29 315 à 83 823 €, 41 % de 83 823 à 180 294 €, 45 % au-delà.",
+          "Ces taux s'appliquent par tranche, pas sur la totalité du revenu. Un contribuable avec 50 000 € de revenu imposable ne paie pas 30 % sur 50 000 €, mais 0 % sur les premiers 11 497 €, 11 % de 11 497 à 29 315 €, et 30 % de 29 315 à 50 000 €. Son taux marginal (TMI) est 30 %, mais son taux moyen est environ 16 %.",
+        ],
+      },
+      {
+        h2: "Le quotient familial : l'avantage des enfants",
+        body: [
+          "L'impôt n'est pas calculé sur les revenus bruts mais sur les revenus divisés par le nombre de parts : 1 part pour un célibataire, 2 pour un couple, +0,5 part par enfant (1 part pour le 3e enfant). Ce quotient familial réduit l'impôt en faisant « glisser » une partie des revenus vers des tranches plus basses.",
+          "L'avantage fiscal du quotient familial est plafonné : en 2026, le gain par demi-part supplémentaire est limité à 1 759 € d'impôt économisé. Au-delà, le plafonnement s'applique et l'avantage est réduit.",
+        ],
+      },
+      {
+        h2: "Le prélèvement à la source : comment ça marche ?",
+        body: [
+          "Depuis 2019, l'impôt est prélevé directement sur vos revenus chaque mois par votre employeur. Le taux de prélèvement affiché sur votre bulletin de paie est calculé par l'administration fiscale en fonction de votre dernière déclaration. Vous déclarez vos revenus en avril-mai, et l'administration ajuste (remboursement ou complément) en septembre.",
+          "Vous pouvez opter pour un taux neutre (confidentiel vis-à-vis de l'employeur, mais vous payez la différence directement à l'administration) ou un taux individualisé pour les couples.",
+        ],
+      },
+      {
+        h2: "Les principaux leviers de réduction de l'impôt",
+        body: [
+          "Déductions du revenu imposable : versements PER (10 % des revenus, max 37 094 € en 2026), pension alimentaire versée, frais réels professionnels si supérieurs à l'abattement de 10 %. Réductions d'impôt : investissement Pinel, dons aux associations (66 % ou 75 %). Crédits d'impôt : garde d'enfants (50 % des dépenses), emploi à domicile (50 %), transition énergétique.",
+          "La différence clé : une déduction réduit le revenu imposable (économie = déduction × TMI), tandis qu'une réduction ou un crédit s'impute directement sur l'impôt dû (économie = montant de la réduction).",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/impot-revenu', '/simulateurs/per'],
+    terms: ['tmi', 'taux-moyen-imposition', 'quotient-familial', 'ir', 'rfr', 'prelevement-source', 'credit-impot', 'per', 'optimisation-fiscale'],
+    blogCats: ['Fiscalité'],
+  },
+  {
+    slug: 'preparer-retraite-50-ans',
+    title: 'Préparer sa retraite à 50 ans : le guide complet',
+    icon: 'CalendarClock',
+    category: 'Retraite',
+    intro: "À 50 ans, vous avez encore 14-18 ans de cotisations devant vous — et c'est exactement le bon moment pour agir. Les leviers sont encore nombreux et les effets sont puissants. Ce guide détaille les priorités pour préparer au mieux votre retraite.",
+    sections: [
+      {
+        h2: "Faire le point sur ses droits acquis",
+        body: [
+          "Commencez par télécharger votre relevé de carrière sur info-retraite.fr. Vérifiez chaque ligne : les trimestres sont-ils tous validés ? Votre salaire annuel moyen (SAM) reflète-t-il bien vos 25 meilleures années ? Des erreurs existent parfois (stages, premier emploi, service national) et peuvent être corrigées jusqu'à 3 ans avant l'âge légal.",
+          "Calculez votre projection : combien de trimestres aurez-vous à 64 ans ? Avez-vous le taux plein ou manquerez-vous de trimestres ? La réponse conditionne toutes vos décisions.",
+        ],
+      },
+      {
+        h2: "Alimenter un PER : l'ultime fenêtre d'optimisation",
+        body: [
+          "À 50-55 ans, votre TMI est souvent à son maximum (30-41 % ou plus pour les cadres). C'est le moment où le PER est le plus avantageux : chaque euro versé vous rembourse immédiatement 30-41 centimes d'impôt. À la retraite, votre TMI sera probablement plus faible — c'est là que vous récupérerez les fonds avec moins de fiscalité.",
+          "Vous avez probablement des plafonds non utilisés des 3 dernières années reportables. Consultez votre avis d'imposition pour connaître votre enveloppe disponible. Un versement important cette année peut générer une économie fiscale substantielle.",
+        ],
+      },
+      {
+        h2: "Racheter des trimestres : est-ce rentable ?",
+        body: [
+          "Si vous manquez de trimestres pour le taux plein, le rachat de trimestres (VFR) est une option. Le coût augmente avec l'âge : il est plus élevé à 50 ans qu'à 40 ans, mais le délai de retour est aussi plus court (vous êtes plus proche de la retraite). En règle générale, le rachat est rentable si vous vivez au moins 8-10 ans après la retraite.",
+          "Demandez une simulation à votre caisse de retraite avant de vous engager. Comparez le coût du rachat (déductible de l'impôt) à l'augmentation mensuelle de pension obtenue sur votre espérance de vie.",
+        ],
+      },
+      {
+        h2: "Préparer la transition : la retraite progressive",
+        body: [
+          "La retraite progressive (disponible à partir de 60 ans avec 150 trimestres) permet de réduire progressivement votre activité tout en touchant une fraction de votre pension. C'est une option intermédiaire qui peut réduire le stress du travail, maintenir des revenus et continuer à cotiser pour améliorer la pension finale.",
+          "Si vous êtes artisan, commerçant ou profession libérale, vérifiez les spécificités de votre régime (SSI, CARMF, CIPAV…) — les règles et le taux de remplacement sont différents du régime général.",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco', '/simulateurs/per', '/simulateurs/trimestres', '/simulateurs/retraite-progressive'],
+    terms: ['taux-remplacement', 'sam', 'taux-plein', 'rachat-trimestres', 'per', 'plafond-epargne-retraite', 'retraite-progressive', 'tmi'],
+    blogCats: ['Retraite'],
+  },
+  {
+    slug: 'optimiser-transmission-patrimoine',
+    title: 'Optimiser la transmission de son patrimoine',
+    icon: 'Gift',
+    category: 'Impôts',
+    intro: "Transmettre son patrimoine sans payer des droits de succession excessifs est possible — à condition de planifier suffisamment tôt. Donations, assurance-vie, démembrement de propriété : les outils sont nombreux et complémentaires.",
+    sections: [
+      {
+        h2: "Commencer à donner tôt : la stratégie des 15 ans",
+        body: [
+          "L'arme la plus puissante de la transmission est le renouvellement des abattements tous les 15 ans. Chaque parent peut donner 100 000 € à chaque enfant sans impôt, et ce tous les 15 ans. Un couple avec deux enfants peut ainsi transmettre 400 000 € en franchise totale de droits sur 15 ans — et potentiellement 800 000 € sur 30 ans.",
+          "Le don Sarkozy (don familial de sommes d'argent) permet en plus une exonération de 31 865 € supplémentaires si le donateur a moins de 80 ans et le donataire au moins 18 ans. Ces deux dispositifs se cumulent.",
+        ],
+      },
+      {
+        h2: "L'assurance-vie : l'outil de transmission par excellence",
+        body: [
+          "Les capitaux versés dans une assurance-vie avant 70 ans bénéficient d'une fiscalité hors succession : chaque bénéficiaire désigné reçoit jusqu'à 152 500 € en franchise totale de droits (puis 20 % jusqu'à 700 000 € et 31,25 % au-delà). Le conjoint ou partenaire de PACS est totalement exonéré.",
+          "Cette exemption s'applique à chaque bénéficiaire : si vous désignez 3 enfants comme bénéficiaires, chacun reçoit 152 500 € sans impôt, soit 457 500 € transmis en franchise totale. La rédaction de la clause bénéficiaire est cruciale — ne vous contentez pas de la clause standard de l'assureur.",
+        ],
+      },
+      {
+        h2: "Le démembrement de propriété : donner sans se démunir",
+        body: [
+          "Le démembrement consiste à donner la nue-propriété d'un bien à ses enfants tout en conservant l'usufruit (droit d'usage et de jouissance). Les droits de donation sont calculés sur la valeur de la nue-propriété uniquement — environ 50-60 % de la valeur du bien selon l'âge de l'usufruitier. Au décès, les enfants récupèrent la pleine propriété sans aucun droit supplémentaire.",
+          "Exemple : un immeuble valant 400 000 €, donné en nue-propriété à 60 ans. La valeur de la nue-propriété est de 60 % × 400 000 = 240 000 €. Droits de donation calculés sur 240 000 € (et non 400 000 €), avec abattement de 100 000 €, soit droits sur 140 000 €.",
+        ],
+      },
+      {
+        h2: "La SCI familiale : faciliter la transmission de l'immobilier",
+        body: [
+          "Une Société Civile Immobilière (SCI) familiale permet de détenir un bien immobilier à plusieurs et d'en transmettre des parts progressivement. Les parts de SCI sont valorisées avec une décote de liquidité de 10-15 % par rapport à la valeur des murs (car les parts sont moins liquides qu'un appartement). Cette décote réduit mécaniquement les droits.",
+          "La SCI facilite aussi la gestion successorale : au lieu d'un indivision conflictuelle, les héritiers sont associés dans une structure avec des règles clairement définies dans les statuts.",
+        ],
+      },
+    ],
+    sims: ['/simulateurs/donation', '/simulateurs/succession', '/simulateurs/assurance-vie'],
+    terms: ['droits-succession', 'abattement-donation', 'assurance-vie-transmission', 'clause-beneficiaire', 'donation-partage', 'usufruit', 'nue-propriete', 'sci'],
+    blogCats: ['Fiscalité', 'Immobilier'],
+  },
 ];
 
 export const GUIDES_BY_SLUG = Object.fromEntries(GUIDES.map(g => [g.slug, g]));
