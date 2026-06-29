@@ -106,6 +106,7 @@ export const ROUTE_META_EN = {
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
   '/simulateurs/retraite-luxembourg': { title: 'Luxembourg State Pension Calculator (CNAP) 2025 — Estimate Your Pension', description: 'Estimate your Luxembourg CNAP pension based on your career length, salary and departure age. Also covers cross-border workers and expats.' },
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
+  '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
 };
 
 // Méta suisses (title + description) pour le HTML statique /ch/...

@@ -328,6 +328,7 @@ export default function App() {
         <Route path="/embed/budget" element={<EmbedBudget />} />
         <Route path="/embed/retraite" element={<EmbedRetraite />} />
         <Route path="/widgets" element={<Widgets />} />
+        <Route path="/en/widgets" element={<Widgets />} />
         <Route path="/simulateurs" element={<Simulateurs />} />
         {/* Pages utilitaires */}
         <Route path="/rapport/:id" element={<RapportPartage />} />
