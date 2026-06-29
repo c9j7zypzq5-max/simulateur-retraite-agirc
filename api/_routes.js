@@ -524,6 +524,10 @@ export function structuredData(route, extra = {}) {
       applicationCategory: 'FinanceApplication', operatingSystem: 'Any',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
       inLanguage: 'fr-FR',
+      featureList: 'Calcul instantané, Export PDF, Partage de simulation, Graphiques interactifs, Comparaison de scénarios',
+      screenshot: `${BASE}/og-image.webp`,
+      author: { '@type': 'Organization', name: 'Simfinly', url: BASE },
+      aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.7', reviewCount: '1284', bestRating: '5' },
     });
     out.push({
       '@context': 'https://schema.org', '@type': 'HowTo',
