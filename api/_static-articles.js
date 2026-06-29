@@ -1434,6 +1434,203 @@ export const STATIC_ARTICLES = [
 
   // EN articles — targeting English-speaking expats and anglophones
   {
+    slug: 'taux-remplacement-calcul-2026',
+    title: 'Taux de remplacement retraite 2026 : calcul, perspectives et optimisation',
+    intro: 'Le taux de remplacement mesure le rapport entre votre pension et votre dernier salaire. En France, il varie de 50 % à 85 % selon votre régime et votre carrière.',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-01-28',
+    body: `<p>Le <strong>taux de remplacement</strong> est l'un des indicateurs les plus importants pour préparer sa retraite : il mesure le rapport entre la pension que vous percevrez et le revenu que vous gagniez en fin de carrière. En France en 2026, ce taux varie considérablement selon votre régime de retraite, votre niveau de salaire et votre durée de cotisation.</p>
+<h2>Définition et calcul du taux de remplacement</h2>
+<p>Le taux de remplacement se calcule ainsi :</p>
+<p><strong>Taux de remplacement = Pension mensuelle nette / Dernier salaire net × 100</strong></p>
+<p>Exemple : si votre dernier salaire net était de 3 000 €/mois et que vous percevez une pension de 1 920 €/mois, votre taux de remplacement est de 64 %.</p>
+<p>Attention aux deux variantes utilisées : le taux "brut" (avant déductions sociales) et le taux "net" (après déductions). Le taux net est toujours légèrement supérieur au taux brut, car les pensions de retraite supportent moins de cotisations sociales que les salaires (pas de cotisations chômage ni de retraite).</p>
+<h2>Taux de remplacement moyen en France par régime (2026)</h2>
+<p>Les taux de remplacement varient fortement selon le statut :</p>
+<ul>
+<li><strong>Fonctionnaire d'État</strong> : 70–85 % (pension calculée sur les 6 derniers mois, pas de plafonnement)</li>
+<li><strong>Salarié du privé au SMIC</strong> : 85–90 % (retraite de base + Agirc-Arrco à faible plafonnement)</li>
+<li><strong>Salarié du privé à salaire moyen (2 500 €)</strong> : 65–75 %</li>
+<li><strong>Cadre à haut salaire (6 000 €+)</strong> : 45–55 % (plafonné par le régime général)</li>
+<li><strong>Travailleur indépendant (TNS)</strong> : 40–55 % (selon le régime : SSI, CIPAV, CARMF...)</li>
+</ul>
+<h2>Pourquoi le taux de remplacement diminue avec le salaire ?</h2>
+<p>Le régime général (CNAV) est <strong>plafonné au Plafond de la Sécurité Sociale</strong> (3 925 €/mois en 2026). Au-delà, les cotisations retraite sont plus faibles et les droits proportionnellement moindres. Un cadre gagnant 8 000 €/mois ne cotise pleinement que sur 3 925 € pour la retraite de base.</p>
+<p>L'Agirc-Arrco compense partiellement mais ne couvre que jusqu'à 8 fois le plafond SS. Au-delà, aucune retraite obligatoire n'est constituée.</p>
+<h2>Comment améliorer son taux de remplacement ?</h2>
+<p>Plusieurs leviers permettent d'augmenter son futur taux de remplacement :</p>
+<ul>
+<li><strong>PER (Plan d'Épargne Retraite)</strong> : permet de constituer une épargne déductible des impôts, convertible en rente à la retraite. Très efficace pour les cadres avec un taux marginal d'imposition élevé.</li>
+<li><strong>Assurance-vie</strong> : épargne flexible sans plafond, optimale après 8 ans. Permet de créer un capital complémentaire.</li>
+<li><strong>Immobilier locatif</strong> : un loyer perçu à la retraite agit comme un complément de pension non imposé (si en LMNP).</li>
+<li><strong>Rachat de trimestres</strong> : pour améliorer la pension de base, particulièrement utile si vous avez des trous dans votre carrière.</li>
+</ul>
+<p>Utilisez le <a href="/simulateurs/cnav">simulateur retraite CNAV</a> et le <a href="/simulateurs/agirc-arrco">simulateur Agirc-Arrco</a> pour estimer votre taux de remplacement personnalisé.</p>`,
+    faqs: [
+      { q: "Quel est le taux de remplacement moyen en France ?", a: "Le taux de remplacement net moyen en France est d'environ 66 % pour un salarié du privé à salaire médian, selon le COR (Conseil d'Orientation des Retraites). Ce taux est l'un des plus élevés d'Europe, mais il masque de fortes disparités : les hauts revenus ont des taux de 45–55 %, les bas revenus de 80–90 %." },
+      { q: "Comment calculer son taux de remplacement personnalisé ?", a: "Utilisez le simulateur retraite de simfinly : renseignez votre salaire, votre régime (salarié privé, fonctionnaire, TNS) et votre durée de carrière pour obtenir une estimation de votre pension et de votre taux de remplacement. Vous pouvez comparer plusieurs scénarios (départ à 62, 64 ou 67 ans)." },
+    ],
+  },
+  {
+    slug: 'budget-50-30-20-methode',
+    title: 'Méthode 50/30/20 : gérer son budget simplement et efficacement',
+    intro: 'La règle 50/30/20 divise votre revenu net en trois catégories : 50 % pour les besoins essentiels, 30 % pour les envies, 20 % pour l\'épargne. Simple, flexible et efficace.',
+    category: 'Budget',
+    readTime: 6,
+    publishedAt: '2026-02-12',
+    body: `<p>La méthode budgétaire 50/30/20 est l'une des plus populaires au monde pour sa simplicité. Popularisée par la sénatrice américaine Elizabeth Warren dans son livre "All Your Worth", elle propose une division claire et universelle de vos revenus nets.</p>
+<h2>Les 3 catégories de la règle 50/30/20</h2>
+<p><strong>50 % — Les besoins (needs)</strong></p>
+<p>Ce sont les dépenses incontournables : loyer/remboursement de prêt, alimentation de base, transports pour le travail, assurances obligatoires, factures d'énergie, abonnements téléphoniques. Si cette catégorie dépasse 50 %, vous devez revoir votre logement ou vos frais fixes.</p>
+<p><strong>30 % — Les envies (wants)</strong></p>
+<p>Les dépenses non essentielles mais qui améliorent votre qualité de vie : restaurants, cinéma, abonnements streaming, vêtements au-delà du strict nécessaire, voyages, loisirs. C'est la catégorie la plus flexible et la première à ajuster en cas de difficulté.</p>
+<p><strong>20 % — L'épargne (savings)</strong></p>
+<p>Ce poste comprend : remboursement de dettes au-delà du minimum, épargne d'urgence (3 à 6 mois de dépenses), épargne retraite (PER, assurance-vie), investissements (PEA, SCPI). C'est le poste le plus important pour votre futur financier.</p>
+<h2>Comment appliquer la méthode en France ?</h2>
+<p>Calculez d'abord votre revenu net mensuel après impôts et charges sociales. Ensuite :</p>
+<ul>
+<li>Revenu net 2 000 € → 1 000 € besoins / 600 € envies / 400 € épargne</li>
+<li>Revenu net 3 000 € → 1 500 € besoins / 900 € envies / 600 € épargne</li>
+<li>Revenu net 4 500 € → 2 250 € besoins / 1 350 € envies / 900 € épargne</li>
+</ul>
+<p>En France, les charges fixes (loyer à Paris = souvent 40–50 % du salaire seul) peuvent rendre la règle difficile à respecter strictement. Adaptez les ratios à votre situation : 60/20/20 ou 55/25/20 sont des variantes acceptables.</p>
+<h2>Les limites de la méthode 50/30/20</h2>
+<ul>
+<li><strong>Inadaptée aux très hauts revenus</strong> : épargner 20 % de 10 000 € (2 000 €/mois) est excellent, mais les hauts revenus peuvent et doivent épargner davantage pour compenser un taux de remplacement retraite plus faible.</li>
+<li><strong>Trop simpliste pour certaines situations</strong> : remboursement de dette étudiante, enfants à charge, soins médicaux importants — ces situations nécessitent une approche plus personnalisée.</li>
+<li><strong>Ne dit pas où investir l'épargne</strong> : la règle 50/30/20 dit combien épargner, pas comment (Livret A, PEA, assurance-vie, PER...).</li>
+</ul>
+<p>Utilisez le <a href="/simulateurs/budget">simulateur budget 50/30/20</a> de simfinly pour adapter la règle à vos revenus et catégories de dépenses réelles.</p>`,
+    faqs: [
+      { q: "La règle 50/30/20 s'applique-t-elle au salaire brut ou net ?", a: "La règle s'applique au revenu net après impôts — c'est-à-dire ce que vous recevez réellement sur votre compte bancaire. En France, pour un salarié, c'est le salaire net après cotisations sociales et prélèvement à la source. Ne partez pas du brut, car les cotisations ne sont pas une dépense que vous maîtrisez." },
+      { q: "Que faire si mon loyer dépasse déjà 50 % de mon salaire ?", a: "C'est malheureusement courant dans les grandes villes françaises (Paris, Lyon, Bordeaux). Si votre loyer seul représente 45 % de votre salaire, votre budget 'besoins' total va facilement dépasser 50 %. Options : réduire d'autres postes fixes (voiture, abonnements), augmenter votre revenu (prime, promotion), ou envisager un déménagement à terme. Adaptez la règle : 60/20/20 peut être une transition réaliste." },
+    ],
+  },
+  {
+    slug: 'regle-4-pourcent-fire-france',
+    title: 'Règle des 4 % : s\'applique-t-elle en France pour la retraite anticipée FIRE ?',
+    intro: 'La règle des 4 % stipule que vous pouvez retirer 4 % de votre patrimoine par an sans l\'épuiser sur 30 ans. Mais est-elle valide en France avec la fiscalité et les rendements actuels ?',
+    category: 'FIRE',
+    readTime: 8,
+    publishedAt: '2026-02-25',
+    body: `<p>La règle des 4 % est le pilier de la communauté FIRE (Financial Independence, Retire Early). Formulée dans l'étude Trinity de 1998, elle stipule que vous pouvez retirer 4 % de votre portefeuille initial (indexé sur l'inflation chaque année) sans jamais l'épuiser sur une période de 30 ans, avec un portefeuille 60 % actions / 40 % obligations.</p>
+<h2>Comment fonctionne la règle des 4 % ?</h2>
+<p>La logique est simple :</p>
+<ul>
+<li>Si vous dépensez 30 000 €/an, vous avez besoin d'un patrimoine de 30 000 / 0,04 = <strong>750 000 €</strong></li>
+<li>Si vous dépensez 40 000 €/an : 40 000 / 0,04 = <strong>1 000 000 €</strong></li>
+<li>Si vous dépensez 50 000 €/an : 50 000 / 0,04 = <strong>1 250 000 €</strong></li>
+</ul>
+<p>Le portefeuille croît à un rythme suffisant pour compenser les retraits annuels et l'inflation. L'étude Trinity a montré que sur des horizons de 30 ans, un portefeuille 60/40 avec retrait de 4 %/an survit dans ~95 % des cas historiques (données américaines 1926-1995).</p>
+<h2>La règle des 4 % est-elle valide en France ?</h2>
+<p>Plusieurs ajustements s'imposent pour le contexte français :</p>
+<p><strong>1. La fiscalité des gains</strong><br>
+En France, les gains en capital sont soumis au PFU de 30 % (12,8 % IR + 17,2 % prélèvements sociaux) sauf dans des enveloppes fiscales (PEA, assurance-vie). Après 8 ans d'assurance-vie, le taux effectif tombe à ~24,7 % au-delà de 4 600 €/an d'abattement.</p>
+<p>Pour contourner cette fiscalité : accumuler son patrimoine FIRE dans une assurance-vie (capital garanti + UC) et retirer 4 600 €/an de gains sans impôt (9 200 € pour un couple).</p>
+<p><strong>2. La durée d'horizon plus longue</strong><br>
+Si vous partez à 40 ans, votre horizon est de 50 ans, pas 30. Pour un horizon 50 ans, les études montrent que le taux de retrait sûr tombe à 3,5 % environ. Pour 750 000 € à 40 ans : retrait sécurisé de 26 250 €/an.</p>
+<p><strong>3. Les rendements obligataires français</strong><br>
+L'étude Trinity est basée sur les rendements historiques américains, qui sont plus élevés que les rendements européens. Pour un portefeuille investi en ETF monde (MSCI World), les rendements historiques sont comparables.</p>
+<h2>Règle des 4 % vs Règle des 3,5 % pour la France</h2>
+<ul>
+<li>Horizon 30 ans → taux 4 % acceptable avec portefeuille 60/40</li>
+<li>Horizon 40–50 ans (FIRE à 35–40 ans) → taux 3,5 % recommandé</li>
+<li>Horizon indéfini (laisser un héritage) → taux 3 % prudent</li>
+</ul>
+<p>Utilisez le <a href="/simulateurs/fire">simulateur FIRE</a> de simfinly pour calculer votre "FIRE number" personnalisé selon votre niveau de dépenses et votre taux de retrait cible.</p>`,
+    faqs: [
+      { q: "La règle des 4 % a-t-elle été validée en dehors des États-Unis ?", a: "La règle des 4 % provient de l'étude Trinity basée sur des données de marché américaines. Des études équivalentes sur les marchés européens suggèrent un taux sûr légèrement inférieur : 3,5 % pour l'Europe, en raison de rendements historiques plus faibles. Pour un portefeuille investi en ETF monde (MSCI World), un taux de 3,5–4 % reste raisonnable sur 30 ans." },
+      { q: "Que se passe-t-il si le marché s'effondre juste après mon départ en FIRE ?", a: "C'est le 'risque de séquence de rendements' — le risque que les mauvaises années surviennent en début de retraite, quand le patrimoine est au plus haut. Pour le mitiger : conserver 1–2 ans de dépenses en cash ou livrets, réduire les retraits en cas de mauvaise année, ou avoir un revenu d'appoint flexible (travail à temps partiel, freelance). La règle des 3,5 % est également plus robuste face à ce risque." },
+    ],
+  },
+  {
+    slug: 'plafond-per-deduction-2026',
+    title: 'Plafond PER et déduction fiscale 2026 : comment maximiser votre économie d\'impôts',
+    intro: 'En 2026, vous pouvez déduire jusqu\'à 35 194 € de vos revenus en versant sur un PER. Ce plafond de déductibilité dépend de votre revenu net imposable et de votre situation professionnelle.',
+    category: 'Épargne',
+    readTime: 6,
+    publishedAt: '2026-03-15',
+    body: `<p>Le Plan d'Épargne Retraite (PER) est l'un des rares placements qui permet de réduire directement vos impôts : les versements volontaires sont déductibles de votre revenu imposable, dans la limite d'un plafond annuel. En 2026, ce plafond a légèrement augmenté suite à la revalorisation du plafond de la Sécurité Sociale.</p>
+<h2>Le plafond de déductibilité PER en 2026</h2>
+<p>Pour un <strong>salarié</strong>, le plafond annuel de déductibilité est le plus élevé des deux montants suivants :</p>
+<ul>
+<li><strong>10 % du revenu professionnel net imposable</strong> de l'année N-1, dans la limite de 10 % de 8 fois le PASS (Plafond Annuel de la Sécurité Sociale). En 2026 : maximum <strong>35 194 €</strong></li>
+<li><strong>10 % du PASS</strong> de l'année N (plancher) : soit environ <strong>4 399 €</strong> minimum</li>
+</ul>
+<p>Ce plafond est <strong>individuel</strong> et figure sur votre avis d'imposition (ligne "Plafond épargne retraite"). Il est cumulable sur 3 ans si non utilisé — vous pouvez donc utiliser les plafonds non consommés des 3 années précédentes.</p>
+<h2>Plafond PER pour les travailleurs non-salariés (TNS)</h2>
+<p>Les travailleurs indépendants (artisans, commerçants, professions libérales) bénéficient d'un plafond majoré :</p>
+<ul>
+<li>10 % du bénéfice imposable (BIC, BNC, BA) + 15 % supplémentaires sur la fraction comprise entre 1 et 8 PASS</li>
+<li>Maximum 2026 : environ <strong>76 102 €</strong> de déductibilité totale</li>
+</ul>
+<p>C'est l'un des avantages fiscaux les plus puissants disponibles pour les indépendants à hauts revenus.</p>
+<h2>Exemple concret d'économie d'impôts</h2>
+<p>Pour un salarié avec un revenu net imposable de 60 000 €/an :</p>
+<ul>
+<li>Plafond PER = 10 % × 60 000 = 6 000 €</li>
+<li>Tranche marginale d'imposition (TMI) = 30 %</li>
+<li>Économie d'impôts = 6 000 × 30 % = <strong>1 800 €</strong></li>
+</ul>
+<p>Pour un cadre avec 100 000 € de revenu imposable (TMI 41 %) :</p>
+<ul>
+<li>Plafond PER = 10 % × 100 000 = 10 000 €</li>
+<li>Économie d'impôts = 10 000 × 41 % = <strong>4 100 €</strong></li>
+</ul>
+<h2>Versements PER : combien et quand ?</h2>
+<p>Il n'y a pas de montant minimum imposé pour les versements PER individuels. Vous pouvez verser :</p>
+<ul>
+<li>En une seule fois en fin d'année (pour optimiser la déduction sur l'année fiscale en cours)</li>
+<li>En versements réguliers mensuels (discipline épargne automatique)</li>
+<li>En utilisant les plafonds non consommés des années N-1, N-2, N-3</li>
+</ul>
+<p>Attention : les fonds versés dans un PER sont bloqués jusqu'à la retraite (sauf déblocages anticipés exceptionnels : achat résidence principale, invalidité, décès du conjoint, surendettement, expiration des droits chômage, liquidation judiciaire).</p>
+<p>Utilisez le <a href="/simulateurs/per">simulateur PER</a> de simfinly pour calculer votre économie d'impôts et comparer PER vs assurance-vie selon votre situation.</p>`,
+    faqs: [
+      { q: "Où trouver mon plafond PER déductible 2026 ?", a: "Votre plafond individuel de déductibilité PER figure sur votre dernier avis d'imposition sur le revenu, dans la section 'Plafonds épargne retraite'. Il tient compte des plafonds non utilisés des 3 années précédentes (report possible). Si vous êtes marié ou pacsé, chaque membre du foyer a son propre plafond, mais vous pouvez choisir de mutualiser." },
+      { q: "Vaut-il mieux verser sur un PER ou une assurance-vie ?", a: "Cela dépend de votre tranche marginale d'imposition (TMI). Si votre TMI actuelle est de 30 % ou plus, le PER est généralement avantageux (économie immédiate d'impôts). Si votre TMI actuelle est de 11 % ou moins, ou si vous voulez de la flexibilité (retraits avant la retraite), l'assurance-vie est préférable. Le simulateur PER vs assurance-vie de simfinly modélise les deux scénarios sur votre durée d'épargne." },
+    ],
+  },
+  {
+    slug: 'epargne-precaution-combien-garder',
+    title: 'Épargne de précaution 2026 : combien garder sur son compte ou Livret A ?',
+    intro: 'L\'épargne de précaution doit couvrir 3 à 6 mois de dépenses courantes. Ni trop peu (risque de découvert), ni trop (manque à gagner). Voici comment calibrer le bon montant.',
+    category: 'Budget',
+    readTime: 5,
+    publishedAt: '2026-04-15',
+    body: `<p>L'épargne de précaution est le cousin prudent de l'investissement : son rôle n'est pas de faire fructifier votre argent, mais de vous protéger contre les imprévus (perte d'emploi, panne de voiture, frais médicaux, réparation urgente). Sans elle, le moindre aléa vous oblige à puiser dans vos investissements ou à contracter un crédit conso coûteux.</p>
+<h2>Combien d'épargne de précaution avez-vous besoin ?</h2>
+<p>La règle classique est de conserver <strong>3 à 6 mois de dépenses courantes</strong> en épargne liquide. "Dépenses courantes" = charges fixes + alimentation + transports (excluez l'épargne elle-même et les dépenses exceptionnelles).</p>
+<p>Exemples :</p>
+<ul>
+<li>Dépenses mensuelles de 2 000 € → épargne de précaution cible : 6 000 à 12 000 €</li>
+<li>Dépenses mensuelles de 3 000 € → cible : 9 000 à 18 000 €</li>
+</ul>
+<p>Pourquoi cette fourchette large ? Elle dépend de votre situation :</p>
+<ul>
+<li><strong>3 mois</strong> : adapté si vous êtes en CDI stable, sans enfants, avec peu de charges fixes et un réseau de sécurité (famille, propriétaire compréhensif)</li>
+<li><strong>6 mois</strong> : recommandé si vous êtes indépendant, avez des enfants à charge, des mensualités importantes (prêt immobilier, crédit voiture), ou êtes dans un secteur avec forte volatilité de l'emploi</li>
+</ul>
+<h2>Où placer son épargne de précaution ?</h2>
+<p>L'épargne de précaution doit être <strong>disponible immédiatement</strong> (pas de frais de sortie, pas de délai) et <strong>sans risque de perte en capital</strong>. Vos options en 2026 :</p>
+<ul>
+<li><strong>Livret A</strong> : 2,4 % net d'impôt (depuis le 1er février 2025), plafond 22 950 €, disponible à tout moment. C'est le choix numéro 1 pour la précaution.</li>
+<li><strong>LDDS</strong> (Livret de Développement Durable et Solidaire) : mêmes caractéristiques que le Livret A, plafond 12 000 €. Complémentaire au Livret A.</li>
+<li><strong>Livret d'épargne populaire (LEP)</strong> : 3,5 % depuis le 1er août 2024, plafond 10 000 €. Réservé aux foyers sous conditions de ressources — à utiliser en priorité si vous y êtes éligible.</li>
+<li><strong>Compte courant</strong> : zéro rémunération. Ne laissez que 1 à 2 mois de dépenses sur votre compte courant ; le reste sur Livret A.</li>
+</ul>
+<h2>L'erreur à éviter : une épargne de précaution trop importante</h2>
+<p>Garder 50 000 € sur Livret A quand vos dépenses mensuelles sont de 2 500 € (soit 20 mois de précaution) est une erreur financière. À 2,4 %, vous perdez face à l'inflation à long terme et vous privez votre argent d'une meilleure rentabilité (PEA, assurance-vie, immobilier).</p>
+<p>La bonne stratégie : <strong>constituez d'abord votre épargne de précaution, puis investissez le surplus</strong>. Ne raisonnez pas dans l'autre sens.</p>
+<p>Utilisez le <a href="/simulateurs/budget">simulateur budget</a> de simfinly pour calculer vos dépenses mensuelles et déterminer votre cible d'épargne de précaution.</p>`,
+    faqs: [
+      { q: "Faut-il garder son épargne de précaution sur le Livret A ou un compte courant ?", a: "Préférez le Livret A pour la grande majorité de votre épargne de précaution : il est disponible à tout moment (virement reçu en 24–48h), garanti par l'État, et rapporte 2,4 % net d'impôt en 2026. Sur votre compte courant, ne conservez que 1 à 2 mois de dépenses — assez pour absorber les dépenses immédiates sans attendre un virement depuis le Livret A." },
+      { q: "L'épargne de précaution doit-elle être séparée de l'épargne retraite ?", a: "Oui, absolument. Votre épargne de précaution est votre coussin de sécurité à court terme — elle ne doit jamais être investie dans des supports risqués ou peu liquides (actions, PEA, PER). Constituez d'abord votre épargne de précaution (Livret A + LDDS), puis commencez à investir le surplus long terme. Mélanger les deux objectifs dans le même compte mène à des erreurs : soit vous investissez trop peu, soit vous vendez des placements en mauvais moment pour couvrir un imprévu." },
+    ],
+  },
+
+  {
     slug: 'french-pension-system-explained-2026',
     title: 'French Pension System Explained 2026 — Complete Guide for Expats',
     category: 'Retraite',
