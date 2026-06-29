@@ -257,6 +257,10 @@ export const SEO_CONTENT = {
     h1: "Retraite parent au foyer 2026 — MDA, AVPF et droits",
     intro: "Les parents au foyer bénéficient de deux dispositifs retraite : la Majoration de Durée d'Assurance (4 trimestres par enfant) et l'Assurance Vieillesse des Parents au Foyer (AVPF) versée par la CAF. Comprendre ces droits est essentiel pour ne pas sacrifier sa pension.",
   },
+  '/impots/simulateur-impot-revenu': {
+    h1: "Impôt sur le revenu 2026 : barème, calcul et réductions",
+    intro: "Barème IR 2026 complet : 5 tranches de 0 % à 45 %. Comment calculer son impôt en 4 étapes, comprendre la tranche marginale d'imposition (TMI), le quotient familial, et réduire sa note fiscale avec PER, dons et emploi à domicile. Simulateur gratuit.",
+  },
   '/retraite/guide-complet-2026': {
     h1: "Guide complet retraite 2026 : calcul, simulateurs et optimisation",
     intro: "Tout comprendre sur la retraite en 2026 : âge légal 64 ans (génération 1968+), calcul CNAV (SAM × 50 % × trimestres) et Agirc-Arrco (points × 1,4107 €), décote et surcote, rachat de trimestres, taux de remplacement. Guides par profession inclus.",

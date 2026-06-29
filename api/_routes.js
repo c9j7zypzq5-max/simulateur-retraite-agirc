@@ -284,6 +284,7 @@ export const ROUTE_META = {
   '/retraite/points-agirc-arrco':           { title: 'Points Agirc-Arrco 2026 — valeur du point, calcul et malus',             emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/retraite/calcul-pension-reversion':     { title: 'Pension de réversion 2026 — calcul, taux et conditions',                 emoji: '💞', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/immobilier/frais-notaire':              { title: 'Frais de notaire 2026 — taux, calcul et comment les réduire',            emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
+  '/impots/simulateur-impot-revenu':        { title: "Impôt sur le revenu 2026 — barème, calcul et réductions | simfinly",     emoji: '💰', cat: 'Fiscalité',  prio: '0.9', freq: 'monthly' },
   // Contenu éditorial
   '/blog':                                { title: 'Blog finances personnelles — retraite, immobilier, épargne, FIRE',     emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions TAEG, PER, TMI, FIRE…',               emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
