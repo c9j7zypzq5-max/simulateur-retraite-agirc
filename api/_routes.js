@@ -274,6 +274,11 @@ export const ROUTE_META = {
   '/retraite/intermittent':          { title: 'Retraite intermittent du spectacle 2026 — CNAV, Audiens et calcul',      emoji: '🎭', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   '/retraite/expatrie':              { title: "Retraite expatrié français 2026 — CFE, conventions bilatérales et droits", emoji: '✈️', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   '/retraite/diplomate':             { title: "Retraite diplomate fonctionnaire 2026 — SRE, bonifications et calcul",   emoji: '🏳️', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  // Retraite par situation de vie
+  '/retraite/a-40-ans':              { title: 'Préparer sa retraite à 40 ans 2026 — PER, épargne et stratégie',          emoji: '🕐', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/a-50-ans':              { title: 'Préparer sa retraite à 50 ans 2026 — bilan, rachats, PER',                emoji: '📅', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/carriere-longue':       { title: 'Retraite carrière longue 2026 — conditions, âge de départ et calcul',     emoji: '⏩', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
+  '/retraite/parent-au-foyer':       { title: "Retraite parent au foyer 2026 — MDA, AVPF et droits complets",           emoji: '👶', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   // Contenu éditorial
   '/blog':                                { title: 'Blog finances personnelles — retraite, immobilier, épargne, FIRE',     emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions TAEG, PER, TMI, FIRE…',               emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
@@ -479,17 +484,27 @@ export function structuredData(route, extra = {}) {
 
   const meta = ROUTE_META[route];
   if (!meta) return [];
-  // Page d'accueil → WebSite + SiteLinksSearchBox
+  // Page d'accueil → WebSite + SiteLinksSearchBox + Organization
   if (route === '/') {
-    return [{
-      '@context': 'https://schema.org', '@type': 'WebSite',
-      name: 'Simfinly', url: `${BASE}/`,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: { '@type': 'EntryPoint', urlTemplate: `${BASE}/recherche?q={search_term_string}` },
-        'query-input': 'required name=search_term_string',
+    return [
+      {
+        '@context': 'https://schema.org', '@type': 'WebSite',
+        name: 'Simfinly', url: `${BASE}/`,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: { '@type': 'EntryPoint', urlTemplate: `${BASE}/recherche?q={search_term_string}` },
+          'query-input': 'required name=search_term_string',
+        },
       },
-    }];
+      {
+        '@context': 'https://schema.org', '@type': 'Organization',
+        name: 'Simfinly', url: `${BASE}/`,
+        logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` },
+        description: 'Simulateurs financiers gratuits : retraite Agirc-Arrco, PER, immobilier, FIRE, impôt sur le revenu et patrimoine. Calculs instantanés, sans inscription.',
+        sameAs: [],
+        contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', availableLanguage: ['French', 'English'] },
+      },
+    ];
   }
   const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
   if (route.startsWith('/simulateurs/')) {

@@ -237,6 +237,22 @@ export const SEO_CONTENT = {
     h1: "Retraite diplomate fonctionnaire 2026 — SRE, bonifications et traitement indiciaire",
     intro: "Les diplomates français sont des fonctionnaires de la FPE en catégorie sédentaire. Leur pension est calculée par le SRE sur le traitement indiciaire brut (taux max 75 %). Des bonifications de durée d'assurance s'ajoutent pour les services à l'étranger selon les zones et les missions. Les indemnités de résidence à l'étranger n'entrent pas dans la pension de base.",
   },
+  '/retraite/a-40-ans': {
+    h1: "Préparer sa retraite à 40 ans — guide 2026",
+    intro: "À 40 ans, vous disposez encore de 24 ans de capitalisation avant l'âge légal de 64 ans. C'est la période optimale pour ouvrir un PER, vérifier vos trimestres et poser les bases d'une retraite solide. Guide complet : PER, immobilier locatif, bilan de carrière et stratégie d'épargne.",
+  },
+  '/retraite/a-50-ans': {
+    h1: "Préparer sa retraite à 50 ans — guide 2026",
+    intro: "À 50 ans, il reste environ 14 ans avant la retraite. C'est le moment du bilan de carrière, des décisions sur le rachat de trimestres et de l'optimisation du PER avant 55 ans. Découvrez comment maximiser votre pension et simuler votre date de départ optimale.",
+  },
+  '/retraite/carriere-longue': {
+    h1: "Retraite carrière longue 2026 — conditions et âge de départ",
+    intro: "Le dispositif carrière longue permet de partir à la retraite avant 64 ans si vous avez commencé à travailler tôt. En 2026, les âges de départ varient de 58 à 63 ans selon votre génération et le nombre de trimestres cotisés. Découvrez les conditions précises et simulez votre départ anticipé.",
+  },
+  '/retraite/parent-au-foyer': {
+    h1: "Retraite parent au foyer 2026 — MDA, AVPF et droits",
+    intro: "Les parents au foyer bénéficient de deux dispositifs retraite : la Majoration de Durée d'Assurance (4 trimestres par enfant) et l'Assurance Vieillesse des Parents au Foyer (AVPF) versée par la CAF. Comprendre ces droits est essentiel pour ne pas sacrifier sa pension.",
+  },
   '/widgets': {
     h1: "Widgets embarquables gratuits — simulateurs financiers à intégrer",
     intro: "Intégrez gratuitement les simulateurs de simfinly.com sur votre site ou blog en quelques secondes. Cinq widgets disponibles : épargne et intérêts composés, emprunt immobilier, indépendance financière (FIRE), budget 50/30/20 et retraite CNAV. Copiez-collez le code HTML et c'est tout — aucune inscription, aucune limite d'utilisation.",

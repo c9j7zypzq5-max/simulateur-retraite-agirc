@@ -6,6 +6,7 @@ import JsonLd from "../components/JsonLd.jsx";
 import { FaqSection } from "../components/ui.jsx";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 import { METIERS, METIERS_LIST } from "../data/metiers.js";
+import { SITUATIONS, SITUATIONS_LIST } from "../data/situations.js";
 
 
 function ProfessionStats({ stats }) {
@@ -49,7 +50,7 @@ function ProfessionSection({ title, content }) {
 export default function RetraiteMetier() {
   const { metier } = useParams();
   const [theme, setTheme] = useTheme();
-  const data = METIERS[metier];
+  const data = METIERS[metier] || SITUATIONS[metier];
 
   usePageMeta(
     data ? data.metaTitle : "Retraite par métier — simfinly.com",
@@ -162,9 +163,14 @@ export default function RetraiteMetier() {
 
         {/* Liens vers d'autres métiers */}
         <div style={{ marginTop: 40, padding: "20px 24px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14 }}>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 600, color: "var(--text)", marginBottom: 12 }}>Autres guides retraite par métier</div>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 600, color: "var(--text)", marginBottom: 12 }}>Autres guides retraite par métier et situation</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            {METIERS_LIST.filter(m => m.slug !== metier).slice(0, 12).map(m => (
+            {SITUATIONS_LIST.filter(s => s.slug !== metier).map(s => (
+              <Link key={s.slug} to={`/retraite/${s.slug}`} style={{ fontSize: 13, color: "var(--primary)", textDecoration: "none", padding: "6px 14px", borderRadius: 20, border: "1px solid var(--border)", background: "var(--bg)" }}>
+                {s.icon} {s.title}
+              </Link>
+            ))}
+            {METIERS_LIST.filter(m => m.slug !== metier).slice(0, 10).map(m => (
               <Link key={m.slug} to={`/retraite/${m.slug}`} style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", padding: "6px 14px", borderRadius: 20, border: "1px solid var(--border-gold)", background: "rgba(184,147,74,0.07)" }}>
                 {m.icon} {m.title}
               </Link>
