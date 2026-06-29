@@ -115,9 +115,10 @@ const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
 // Guides retraite par métier
 const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
 // Pages contenu
-const ProConseiller    = lazy(() => import("./pages/ProConseiller.jsx"));
-const BarometreRetraite = lazy(() => import("./pages/BarometreRetraite.jsx"));
-const Recherche         = lazy(() => import("./pages/Recherche.jsx"));
+const ProConseiller        = lazy(() => import("./pages/ProConseiller.jsx"));
+const BarometreRetraite    = lazy(() => import("./pages/BarometreRetraite.jsx"));
+const Recherche            = lazy(() => import("./pages/Recherche.jsx"));
+const CalendrierGenerations = lazy(() => import("./pages/CalendrierGenerations.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -361,6 +362,7 @@ export default function App() {
         {/* Pages contenu */}
         <Route path="/pro-conseiller" element={<ProConseiller />} />
         <Route path="/barometre-retraite" element={<BarometreRetraite />} />
+        <Route path="/retraite/calendrier-generations" element={<CalendrierGenerations />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

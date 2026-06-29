@@ -237,6 +237,10 @@ export const SEO_CONTENT = {
     h1: "Retraite diplomate fonctionnaire 2026 — SRE, bonifications et traitement indiciaire",
     intro: "Les diplomates français sont des fonctionnaires de la FPE en catégorie sédentaire. Leur pension est calculée par le SRE sur le traitement indiciaire brut (taux max 75 %). Des bonifications de durée d'assurance s'ajoutent pour les services à l'étranger selon les zones et les missions. Les indemnités de résidence à l'étranger n'entrent pas dans la pension de base.",
   },
+  '/retraite/calendrier-generations': {
+    h1: "Âge de départ à la retraite par année de naissance — tableau complet 2026",
+    intro: "Retrouvez l'âge légal de départ, la durée de cotisation requise et l'âge du taux plein automatique pour toutes les générations nées entre 1955 et 1968, après les réformes de 2010 (Woerth), 2014 (Touraine) et 2023 (Borne). Sources officielles CNAV et COR.",
+  },
   '/retraite/a-40-ans': {
     h1: "Préparer sa retraite à 40 ans — guide 2026",
     intro: "À 40 ans, vous disposez encore de 24 ans de capitalisation avant l'âge légal de 64 ans. C'est la période optimale pour ouvrir un PER, vérifier vos trimestres et poser les bases d'une retraite solide. Guide complet : PER, immobilier locatif, bilan de carrière et stratégie d'épargne.",
