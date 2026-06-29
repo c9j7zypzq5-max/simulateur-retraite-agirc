@@ -130,6 +130,7 @@ export default function Article() {
         link.href = `https://www.simfinly.com/blog/${slug}`;
         // Article JSON-LD for Google Discover
         document.getElementById('article-jsonld')?.remove();
+        document.getElementById('article-faqjsonld')?.remove();
         const ld = {
           '@context': 'https://schema.org',
           '@type': 'Article',
@@ -147,9 +148,26 @@ export default function Article() {
         s.type = 'application/ld+json';
         s.textContent = JSON.stringify(ld);
         document.head.appendChild(s);
+        // FAQPage JSON-LD — People Also Ask rich results
+        if (data.faqs && data.faqs.length > 0) {
+          const faqLd = {
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: data.faqs.map(({ q, a }) => ({
+              '@type': 'Question',
+              name: q,
+              acceptedAnswer: { '@type': 'Answer', text: a },
+            })),
+          };
+          const sf = document.createElement('script');
+          sf.id = 'article-faqjsonld';
+          sf.type = 'application/ld+json';
+          sf.textContent = JSON.stringify(faqLd);
+          document.head.appendChild(sf);
+        }
       })
       .catch(() => { clearTimeout(timer); setNotFound(true); setLoading(false); });
-    return () => { clearTimeout(timer); controller.abort(); document.getElementById('article-jsonld')?.remove(); };
+    return () => { clearTimeout(timer); controller.abort(); document.getElementById('article-jsonld')?.remove(); document.getElementById('article-faqjsonld')?.remove(); };
   }, [slug]);
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;

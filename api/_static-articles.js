@@ -26,6 +26,12 @@ export const STATIC_ARTICLES = [
 <p>Un mécanisme de <em>coefficient de solidarité</em> (−10 % pendant 3 ans) s'applique si vous partez juste après le taux plein CNAV : retarder votre départ d'un an y échappe et vous fait gagner un <em>bonus</em> de 10 %.</p>
 <h2>Comment estimer dès maintenant</h2>
 <p>La simulation la plus fiable reste celle de votre relevé de carrière sur info-retraite.fr, qui agrège tous vos régimes. Simfinly.com vous permet de tester rapidement différents scénarios (âge de départ, revalorisation, rachat de trimestres) pour visualiser l'impact sur votre pension avant de consulter un conseiller.</p>`,
+    faqs: [
+      { q: "Comment calculer le montant de ma retraite de base ?", a: "La pension CNAV = SAM × taux × (trimestres validés / trimestres requis). Le SAM est la moyenne de vos 25 meilleures années de revenus bruts plafonnés au PASS (47 100 € en 2026). Le taux maximum est de 50 % au taux plein, obtenu si vous avez validé tous vos trimestres requis (entre 167 et 172 selon votre génération)." },
+      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans si vous partez juste à l'âge du taux plein CNAV. Pour l'éviter, décalez votre départ d'au moins un an après le taux plein — vous échappez à la réduction et bénéficiez même d'un bonus de 10 %." },
+      { q: "Comment obtenir le taux plein à la retraite ?", a: "Le taux plein (50 % du SAM) nécessite deux conditions : atteindre l'âge légal de départ (entre 62 et 64 ans selon la génération) ET avoir validé le nombre de trimestres requis. Si vous n'avez pas tous vos trimestres, vous pouvez attendre 67 ans pour bénéficier du taux plein automatique, quelle que soit votre durée d'assurance." },
+      { q: "Qu'est-ce que le Salaire Annuel Moyen (SAM) et comment est-il calculé ?", a: "Le SAM est la moyenne de vos 25 meilleures années de revenus bruts, chacune plafonnée au PASS (47 100 € en 2026). Seules les années avec au moins un trimestre validé entrent dans le calcul. Maximiser ses meilleures années de carrière est donc la clé pour obtenir un SAM élevé et donc une meilleure pension." },
+    ],
   },
   {
     slug: 'fire-france-independance-financiere',
@@ -130,6 +136,12 @@ export const STATIC_ARTICLES = [
 <p>Pour éviter un effet de seuil trop brutal à la sortie de la première tranche, une <em>décote</em> s'applique aux foyers à revenu modeste. En pratique, un célibataire dont l'impôt brut est inférieur à environ 1 929 € bénéficie d'une réduction qui peut annuler totalement son impôt.</p>
 <h2>Calculez en quelques secondes</h2>
 <p>Le simulateur d'impôt sur le revenu de simfinly.com calcule votre impôt net, votre TMI et votre taux moyen selon votre revenu imposable, votre situation familiale et vos éventuelles réductions. Testez l'impact d'un versement PER ou d'une déduction pour optimiser votre déclaration.</p>`,
+    faqs: [
+      { q: "Quelles sont les tranches d'imposition en 2026 ?", a: "Le barème 2026 (revenus 2025) comporte 5 tranches : 0 % jusqu'à 11 497 €, 11 % de 11 497 € à 29 315 €, 30 % de 29 315 € à 83 823 €, 41 % de 83 823 € à 180 294 €, et 45 % au-delà. Ces seuils s'appliquent au revenu net imposable par part du quotient familial." },
+      { q: "Quelle est la différence entre TMI et taux moyen d'imposition ?", a: "La TMI (Tranche Marginale d'Imposition) est le taux appliqué à votre dernier euro de revenu — elle sert à évaluer l'impact d'une décision fiscale (versement PER, dividende). Le taux moyen est le ratio impôt total / revenu total, toujours inférieur à la TMI. Un revenu imposable de 40 000 € (célibataire) donne une TMI de 30 % mais un taux moyen d'environ 12 %." },
+      { q: "Comment fonctionne la décote fiscale ?", a: "La décote réduit l'impôt des foyers modestes pour éviter un effet de seuil brutal. En 2026, un célibataire dont l'impôt brut est inférieur à environ 1 929 € bénéficie d'une décote calculée automatiquement par l'administration, pouvant aller jusqu'à l'annulation totale de l'impôt. Elle est déjà intégrée dans le calcul de l'impôt sur le revenu net." },
+      { q: "Le quotient familial réduit-il vraiment l'impôt ?", a: "Oui, le quotient familial divise le revenu imposable par le nombre de parts (2 pour un couple, +0,5 par enfant). L'impôt calculé sur la part est multiplié par le nombre de parts. Cette mécanique réduit l'impôt grâce à la progressivité du barème, mais l'avantage fiscal par demi-part est plafonné à 1 771 € en 2026." },
+    ],
   },
   {
     slug: 'epargne-reglementee-2026-livret-a-lep',
@@ -232,6 +244,12 @@ export const STATIC_ARTICLES = [
 <p>Un versement de 5 000 € sur un PER réduit votre revenu imposable de 5 000 €. À 41 % de TMI, l'économie d'impôt est de <strong>2 050 €</strong> l'année même. Ce capital est ensuite investi et bénéficie des intérêts composés. À la retraite, si votre TMI est tombée à 11 ou 30 %, la sortie en capital sera fiscalement avantageuse — et la sortie en rente, partiellement exonérée.</p>
 <h2>Simulez votre économie</h2>
 <p>Le simulateur PER de simfinly.com calcule l'économie d'impôt immédiate, la projection du capital à la retraite et la comparaison avant/après impôt pour différents scénarios de sortie (capital, rente, mixte).</p>`,
+    faqs: [
+      { q: "Quel est le plafond de déduction PER en 2026 ?", a: "Pour un salarié, le plafond 2026 est le plus élevé entre 10 % de vos revenus professionnels N-1 (dans la limite de 8 PASS, soit 37 680 €) et 10 % de 1 PASS (plancher à 4 710 €). Les plafonds non utilisés des 3 dernières années sont reportables — consultez votre avis d'imposition rubrique 'Plafonds épargne retraite'." },
+      { q: "À partir de quelle tranche d'imposition le PER est-il rentable ?", a: "Le PER est particulièrement rentable à partir d'une TMI de 30 % : chaque 1 000 € versés génèrent 300 € d'économie d'impôt immédiate. À 41 % ou 45 %, l'avantage est encore plus fort. À 11 % de TMI, l'avantage fiscal est plus faible et l'assurance-vie peut être une alternative plus souple selon les objectifs." },
+      { q: "Peut-on sortir du PER en capital avant la retraite ?", a: "Oui, mais uniquement dans des cas de déblocage anticipé légaux : achat de la résidence principale, invalidité de 2e ou 3e catégorie, décès du conjoint ou partenaire PACS, surendettement, fin de droits au chômage, cessation d'activité non salariée suite à liquidation judiciaire. Hors ces cas, le capital est bloqué jusqu'à la retraite." },
+      { q: "Quelle est la différence entre PERin, PERcol et PERcat ?", a: "Le PERin (individuel) est ouvert à titre personnel auprès d'une banque ou assureur. Le PERcol (collectif) est proposé par l'employeur et peut recevoir l'intéressement et la participation. Le PERcat (obligatoire) est réservé à des catégories de salariés. Tous bénéficient de la même déductibilité fiscale à l'entrée, mais diffèrent par leurs sources d'alimentation." },
+    ],
   },
   {
     slug: 'calcul-trimestres-retraite-guide-complet',
@@ -403,6 +421,12 @@ export const STATIC_ARTICLES = [
 <p>Travailler au-delà de l'âge légal après avoir atteint la durée requise permet d'obtenir une <strong>surcote</strong> de 1,25 % par trimestre supplémentaire (5 % par an). Un départ 2 ans après le taux plein augmente la pension de 10 %, définitivement.</p>
 <h2>Simulez votre départ optimal</h2>
 <p>Le simulateur CNAV de simfinly.com calcule pour votre génération l'âge de départ, la pension avec et sans décote, et compare les scénarios de 60 à 70 ans pour vous aider à choisir le moment optimal.</p>`,
+    faqs: [
+      { q: "À quel âge puis-je partir à la retraite si je suis né en 1965 ?", a: "Si vous êtes né en 1965, votre âge légal de départ est de 63 ans et 3 mois. Vous avez besoin de 170 trimestres (42,5 ans) pour obtenir le taux plein. Si vous n'avez pas ces trimestres à cet âge, vous pouvez attendre 67 ans pour bénéficier du taux plein automatique, quelle que soit votre durée d'assurance." },
+      { q: "Qu'est-ce que la décote et comment la calculer ?", a: "La décote est une réduction permanente de 0,625 % par trimestre manquant (2,5 % par an) si vous partez avant d'avoir tous vos trimestres requis. Elle est définitive. La décote maximale est de 25 % (40 trimestres manquants). À l'inverse, la surcote est un bonus de 1,25 % par trimestre supplémentaire travaillé après le taux plein." },
+      { q: "Puis-je partir à la retraite avant 64 ans en 2026 ?", a: "Oui, sous certaines conditions. Les carrières longues (début avant 16, 18 ou 20 ans) permettent de partir entre 58 et 63 ans. L'inaptitude au travail permet un départ à 62 ans. Le compte professionnel de prévention (C2P) pour pénibilité peut également ouvrir des droits anticipés. La retraite progressive permet de percevoir une fraction de pension dès 60 ans." },
+      { q: "Qu'est-ce que l'âge du taux plein automatique à 67 ans ?", a: "À 67 ans, la décote est effacée automatiquement quelle que soit la durée d'assurance. Un assuré ayant peu de trimestres validés peut tout de même toucher 50 % de son SAM en attendant cet âge. Les 67 ans s'appliquent à toutes les générations — c'est le filet de sécurité du système de retraite français." },
+    ],
   },
   {
     slug: 'pension-reversion-calcul-conditions-2026',
@@ -438,6 +462,12 @@ export const STATIC_ARTICLES = [
 <p>En cas de <strong>remariage</strong>, la pension de réversion CNAV est <strong>suspendue</strong> depuis 2003. En revanche, la réversion Agirc-Arrco est <strong>maintenue même en cas de remariage</strong> pour les pensions acquises avant 2017.</p>
 <h2>Estimez votre pension de réversion</h2>
 <p>Le simulateur de réversion de simfinly.com calcule la pension de réversion CNAV et Agirc-Arrco selon la retraite du défunt, votre âge et vos ressources. Il vérifie si le plafond est dépassé et calcule la réversion nette mensuelle.</p>`,
+    faqs: [
+      { q: "Qui a droit à la pension de réversion en France ?", a: "La pension de réversion CNAV est réservée aux personnes ayant été mariées avec le défunt — le PACS et le concubinage n'ouvrent pas droit. Il faut également avoir au moins 55 ans (sauf si des enfants à charge sont présents). La durée du mariage n'est pas une condition d'éligibilité au régime général." },
+      { q: "Quel est le montant de la pension de réversion au régime général ?", a: "La pension de réversion CNAV est égale à 54 % de la pension brute de base du défunt. Elle est ensuite réduite si vos revenus annuels dépassent 23 441 € (personne seule, 2026). Au-delà de ce plafond, la réversion est réduite proportionnellement. La réversion Agirc-Arrco (complémentaire) est de 60 % sans condition de ressources." },
+      { q: "Peut-on cumuler la réversion avec sa propre retraite ?", a: "Oui, la réversion CNAV est cumulable avec vos propres droits à la retraite, mais dans la limite du plafond de ressources (23 441 € par an pour une personne seule en 2026). La réversion Agirc-Arrco est intégralement cumulable avec vos propres droits, sans plafond de ressources." },
+      { q: "La pension de réversion est-elle maintenue en cas de remariage ?", a: "Non pour la CNAV : la pension de réversion est suspendue depuis 2003 en cas de remariage ou vie en couple. En revanche, la réversion Agirc-Arrco est maintenue même en cas de remariage pour les pensions acquises avant 2017. Vérifiez bien les règles de chaque caisse dont dépendait le défunt." },
+    ],
   },
   {
     slug: 'retraite-progressive-mode-emploi-2026',
