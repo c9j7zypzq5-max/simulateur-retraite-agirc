@@ -383,6 +383,8 @@ export default function TableauDeBord() {
     }
   }
 
+  const { score: healthScore, details: scoreDetails, missing: scoreMissing } = useMemo(() => calcHealthScore(history), [history]);
+
   if (loading || !user) return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       Chargement…
@@ -391,7 +393,6 @@ export default function TableauDeBord() {
 
   const categories = [...new Set(history.map(e => categoryFromPath(e.shareUrl?.split("?")[0])))];
   const recent = history.slice(0, 8);
-  const { score: healthScore, details: scoreDetails, missing: scoreMissing } = useMemo(() => calcHealthScore(history), [history]);
 
   // Category counts for chart and insights
   const catCounts = {};
