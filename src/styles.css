@@ -77,6 +77,24 @@ html, body {
   max-width: 100%;
 }
 
+/* ── Skip link (accessibilité clavier) ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 8px;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 14px;
+  border-radius: 0 0 8px 8px;
+  text-decoration: none;
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 /* ── Focus visible ── */
 *:focus { outline: none; }
 *:focus-visible {
