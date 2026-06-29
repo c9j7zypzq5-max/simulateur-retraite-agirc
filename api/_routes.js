@@ -277,6 +277,18 @@ export const BLOG_SLUGS = [
   '/blog/retraite-enseignant-education-nationale-calcul',
   '/blog/retraite-agriculteur-msa-exploitant',
   '/blog/droits-succession-suisse-cantons-heritiers',
+  // Vague 2 — retraite : requêtes à fort volume (5 000-15 000/mois)
+  '/blog/age-depart-retraite-generation-2026',
+  '/blog/pension-reversion-calcul-conditions-2026',
+  '/blog/retraite-progressive-mode-emploi-2026',
+  '/blog/partir-retraite-avant-64-ans-carriere-longue-2026',
+  // Vague 2 — fiscalité et immobilier (3 000-5 000/mois)
+  '/blog/donation-abattement-100000-euros-2026',
+  '/blog/frais-notaire-achat-immobilier-calcul-2026',
+  '/blog/deficit-foncier-travaux-deductibles-2026',
+  '/blog/succession-enfants-abattement-droits-2026',
+  // Vague 2 — épargne salariale
+  '/blog/epargne-salariale-pee-perco-abondement-2026',
 ];
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.

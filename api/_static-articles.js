@@ -262,6 +262,402 @@ export const STATIC_ARTICLES = [
 <h2>Calculez votre durée d'assurance</h2>
 <p>Le simulateur de trimestres de simfinly.com additionne toutes vos périodes (emploi, chômage, maladie, maternité, MDA, service militaire…) et compare votre total à la durée requise pour votre génération. Il vous indique le nombre de trimestres manquants et l'âge estimé du taux plein.</p>`,
   },
+  {
+    slug: 'retraite-infirmiere-fonctionnaire-hospitalier',
+    title: 'Retraite infirmière à l\'hôpital (FPH) en 2026 : âge, calcul CNRACL et RAFP',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-03-20T10:00:00Z',
+    intro: "Infirmière titulaire de la FPH ou contractuelle ? L'âge de départ, le calcul de la pension CNRACL et les spécificités du régime de la fonction publique hospitalière décryptés.",
+    content: `<h2>Le régime CNRACL : spécificités de la fonction publique hospitalière</h2>
+<p>Les infirmières titulaires de la Fonction Publique Hospitalière (FPH) sont affiliées à la <strong>CNRACL</strong> (Caisse Nationale de Retraite des Agents des Collectivités Locales), un régime spécial distinct du régime général. La réforme de 2023 les rapproche progressivement du droit commun mais les particularités propres au statut de la FPH perdurent.</p>
+<h2>Catégorie active ou sédentaire : la distinction clé</h2>
+<p>L'âge légal de départ dépend directement de la catégorie d'appartenance :</p>
+<ul>
+<li><strong>Catégorie active</strong> (ayant exercé au moins 17 ans en services actifs avant la réforme 2023) : départ possible dès <strong>57 ans</strong> pour les générations nées avant 1975. Pour les générations suivantes, l'âge remonte progressivement jusqu'à 59 ans pour les nées en 1978 et après.</li>
+<li><strong>Catégorie sédentaire</strong> (infirmières ayant intégré le corps des ISGS depuis 2012, reclassées en catégorie B) : régime aligné sur le droit commun, départ à <strong>64 ans</strong> pour les générations 1968 et après.</li>
+</ul>
+<p>La distinction est cruciale. Vérifiez votre catégorie auprès de votre établissement ou sur MaCNRACL.fr avant toute planification de départ.</p>
+<h2>La formule de calcul de la pension CNRACL</h2>
+<p>La pension annuelle CNRACL se calcule ainsi : <strong>Traitement indiciaire brut × 75 % × (trimestres validés / trimestres requis)</strong>.</p>
+<ul>
+<li>Le <strong>traitement de référence</strong> est le traitement soumis à retenue pour pension, calculé sur les 6 derniers mois. Il exclut les primes et indemnités.</li>
+<li>Le <strong>taux maximum</strong> est de 75 % (contre 50 % pour le régime général).</li>
+<li>La <strong>durée requise</strong> est identique au régime général : 167 à 172 trimestres selon la génération.</li>
+</ul>
+<p>Important : les primes représentent souvent 20-30 % du salaire brut d'une infirmière hospitalière mais ne sont pas intégrées dans la base de calcul CNRACL. C'est la source principale de l'écart entre salaire en activité et pension.</p>
+<h2>Le RAFP : compensation partielle des primes</h2>
+<p>Le <strong>RAFP</strong> (Régime Additionnel de la Fonction Publique) est un régime par points dont la base de cotisation comprend les éléments non soumis à retenue pour pension — primes, indemnités, heures supplémentaires — dans la limite de 20 % du traitement indiciaire. Il génère une rente mensuelle de 100 à 250 € selon la carrière, qui vient partiellement compenser la non-prise en compte des primes dans la pension principale.</p>
+<h2>Infirmière contractuelle : régime général + Agirc-Arrco</h2>
+<p>Les infirmières <strong>contractuelles</strong> de la FPH n'ont pas la qualité de fonctionnaire titulaire : elles relèvent du régime général (CNAV) et de l'Agirc-Arrco. L'âge légal est celui de la réforme 2023 (64 ans pour les générations 1968+). En cas de titularisation ultérieure, les périodes contractuelles peuvent être prises en compte sous conditions.</p>
+<h2>Estimez votre pension</h2>
+<p>Le simulateur retraite infirmière de simfinly.com distingue catégorie active et sédentaire, calcule la pension CNRACL sur la base de votre indice de rémunération et y additionne la rente RAFP estimée. Comparez différents âges de départ pour mesurer le coût d'un départ anticipé.</p>`,
+  },
+  {
+    slug: 'retraite-enseignant-education-nationale-calcul',
+    title: 'Retraite enseignant Éducation nationale en 2026 : CNRACL, RAFP et calcul',
+    category: 'Retraite',
+    readTime: 7,
+    publishedAt: '2026-03-25T10:00:00Z',
+    intro: "Les enseignants titulaires du public relèvent de la CNRACL. Comment se calcule leur pension, quelle est la place du RAFP et quelle différence avec les enseignants du privé sous contrat ?",
+    content: `<h2>Le régime des enseignants titulaires : CNRACL</h2>
+<p>Les enseignants titulaires de l'Éducation nationale (professeurs des écoles, certifiés, agrégés, PLP…) relèvent de la <strong>CNRACL</strong> pour leur pension principale, complétée par le <strong>RAFP</strong> pour les primes. Ils sont classés en <em>catégorie sédentaire</em> : pas de départ anticipé au titre de la pénibilité.</p>
+<h2>Âge de départ : 64 ans pour les générations 1968+</h2>
+<p>Depuis la réforme de 2023, l'âge légal est progressivement porté à <strong>64 ans</strong> pour les enseignants nés à partir de 1968. L'âge du taux plein automatique reste fixé à 67 ans pour toutes les générations. La durée requise atteint 172 trimestres (43 ans) pour les générations nées à partir de 1965.</p>
+<h2>La formule de calcul</h2>
+<p><strong>Pension = Traitement indiciaire brut des 6 derniers mois × taux × prorata</strong></p>
+<ul>
+<li><strong>Traitement indiciaire brut</strong> : traitement soumis à cotisation retraite, hors NBI, primes et indemnités.</li>
+<li><strong>Taux maximum</strong> : 75 %. Un enseignant avec la durée requise complète touche 75 % de son dernier traitement indiciaire.</li>
+<li><strong>Prorata</strong> : trimestres validés CNRACL / trimestres requis pour le taux plein.</li>
+</ul>
+<p>Pour un professeur certifié en fin de carrière, le traitement indiciaire brut est d'environ 3 400-3 800 € mensuels (hors primes). La pension CNRACL correspondrait à environ 2 550-2 850 € bruts.</p>
+<h2>Le RAFP : les primes converties en rente</h2>
+<p>Le <strong>RAFP</strong> est alimenté par les cotisations sur les primes et indemnités (HSA, HSE, ISOE, prime REP…) dans la limite de 20 % du traitement indiciaire. Il génère une rente mensuelle supplémentaire de 100 à 300 € selon la carrière. Pour un enseignant en fin de carrière, l'ensemble pension CNRACL + rente RAFP représente généralement 70-80 % du revenu net total en activité (salaire + primes).</p>
+<h2>Enseignants du privé sous contrat : régime général</h2>
+<p>Les enseignants du <strong>privé sous contrat</strong> (établissements catholiques, laïcs…) sont rémunérés par l'État mais relèvent du régime général (CNAV) et de l'Agirc-Arrco. L'âge légal et les règles de calcul sont ceux du droit commun. Leurs droits sont souvent inférieurs à ceux de leurs collègues du public à salaire indiciaire équivalent, en raison du plafonnement du SAM au PASS.</p>
+<h2>Calculez votre pension</h2>
+<p>Le simulateur retraite enseignant de simfinly.com calcule votre pension CNRACL selon votre indice de rémunération, votre durée de service et votre génération. Comparez les scénarios de départ à 62 ans (carrière longue si applicable), 64 ans et 67 ans pour chiffrer le gain ou la perte selon votre situation.</p>`,
+  },
+  {
+    slug: 'retraite-agriculteur-msa-exploitant',
+    title: 'Retraite agriculteur exploitant en 2026 : MSA, RCO et revalorisation',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-04-02T10:00:00Z',
+    intro: "Les agriculteurs exploitants cotisent à la MSA. Comment fonctionne leur retraite de base et complémentaire agricole (RCO), et quel est l'impact de la revalorisation des petites retraites agricoles ?",
+    content: `<h2>Le régime MSA : base et complémentaire</h2>
+<p>Les agriculteurs non-salariés (exploitants, aides familiaux) relèvent de la <strong>Mutualité Sociale Agricole (MSA)</strong>. Leur retraite se compose de deux étages :</p>
+<ul>
+<li><strong>Retraite de base MSA</strong> : calculée en points depuis 1994 (en annuités pour les périodes antérieures). Chaque année de cotisation génère des points proportionnels au revenu professionnel.</li>
+<li><strong>Retraite Complémentaire Obligatoire (RCO)</strong> : régime par points obligatoire créé en 2003, qui s'ajoute à la base pour tous les chefs d'exploitation.</li>
+</ul>
+<h2>La revalorisation des petites retraites agricoles</h2>
+<p>Historiquement, les pensions des agriculteurs étaient très basses. Deux lois ont corrigé la situation :</p>
+<ul>
+<li><strong>Loi Chassaigne 2021</strong> : retraite minimale portée à 85 % du SMIC net pour les chefs d'exploitation avec carrière complète, soit environ 1 035 € nets en 2026.</li>
+<li><strong>Loi Chassaigne 2 (2023)</strong> : extension aux aides familiaux et conjoints collaborateurs d'exploitation.</li>
+</ul>
+<p>Si votre carrière est complète et que votre pension calculée est inférieure au plancher, elle est automatiquement relevée à ce minimum garanti.</p>
+<h2>Calcul de la retraite de base MSA</h2>
+<p>La pension de base MSA est égale au <strong>nombre de points accumulés × valeur du point</strong>. Les points sont attribués chaque année en fonction du revenu professionnel agricole déclaré. Les années de faibles revenus génèrent peu de points, ce qui explique les petites pensions dans la profession.</p>
+<p>Pour les périodes antérieures à 1994, le système des annuités s'appliquait. Ces deux sous-systèmes cohabitent dans le calcul global de chaque retraité agricole.</p>
+<h2>La RCO : retraite complémentaire obligatoire</h2>
+<p>La RCO a été rendue obligatoire en 2003. Elle génère des points sur la base d'une assiette forfaitaire ou des revenus professionnels réels. À la retraite, le capital de points est converti en rente selon la valeur de service du point, revalorisée chaque année par arrêté ministériel.</p>
+<h2>L'âge de départ et les spécificités agricoles</h2>
+<p>L'âge légal s'aligne progressivement sur le droit commun (64 ans pour les générations 1968+). Les exploitants ayant commencé à travailler très jeune (avant 18 ans) peuvent bénéficier du dispositif <em>carrières longues</em> pour partir avant l'âge légal. Les trimestres de service militaire et les périodes d'aide familiale dûment déclarées sont pris en compte.</p>
+<h2>Simulez votre retraite agricole</h2>
+<p>Le simulateur retraite agricole de simfinly.com calcule votre pension MSA de base, votre rente RCO estimée et vérifie si vous avez droit au minimum garanti. Intégrez vos périodes d'aide familiale, de service militaire et vos années d'installation pour obtenir une estimation complète.</p>`,
+  },
+  {
+    slug: 'droits-succession-suisse-cantons-heritiers',
+    title: 'Droits de succession en Suisse en 2026 : impôts par canton et exonérations',
+    category: 'Fiscalité',
+    readTime: 6,
+    publishedAt: '2026-04-08T10:00:00Z',
+    intro: "La Suisse n'a pas d'impôt fédéral sur les successions : chaque canton fixe ses propres taux. Tour d'horizon des règles cantonales et des exonérations pour les héritiers directs.",
+    content: `<h2>Pas d'impôt fédéral sur les successions en Suisse</h2>
+<p>Contrairement à la France, la Suisse ne dispose d'<strong>aucun impôt fédéral sur les successions</strong>. La matière fiscale est entièrement déléguée aux cantons. Chaque canton — et parfois chaque commune — fixe ses propres taux, abattements et exonérations. Cette diversité peut conduire à des différences considérables selon le lieu de résidence du défunt.</p>
+<h2>Les cantons sans impôt en ligne directe</h2>
+<p>La grande majorité des cantons suisses exonèrent totalement les héritiers en <strong>ligne directe</strong> (enfants, petits-enfants, parents) : Zurich, Berne, Lucerne, Zoug, Fribourg, Soleure, Bâle-Ville, Bâle-Campagne, Schaffhouse, Saint-Gall, Grisons, Argovie, Thurgovie, Tessin, Valais et Jura appliquent un taux de <strong>0 %</strong> pour les descendants directs. Quelques exceptions notables : Vaud taxe les enfants à 3,5 % au-delà d'un abattement, et Neuchâtel applique un taux progressif.</p>
+<h2>Conjoints et partenaires enregistrés : exonération totale</h2>
+<p>Dans tous les cantons sans exception, les <strong>conjoints mariés</strong> et partenaires enregistrés (équivalent suisse du PACS) bénéficient d'une exonération totale des droits de succession. Le mariage reste donc le moyen le plus sûr de transmettre un patrimoine sans impôt entre partenaires en Suisse.</p>
+<h2>Les héritiers éloignés : des taux pouvant atteindre 50 %</h2>
+<p>La situation est radicalement différente pour les héritiers non liés par le sang direct :</p>
+<ul>
+<li><strong>Frères et sœurs</strong> : taux variables de 6 % (Berne) à 25 % (Genève).</li>
+<li><strong>Neveux, nièces</strong> : taux de 12 % à 40 % selon le canton.</li>
+<li><strong>Héritiers non apparentés</strong> (concubins non pacsés, amis) : taux pouvant atteindre <strong>40-50 %</strong> dans certains cantons comme Genève ou Vaud.</li>
+</ul>
+<h2>La résidence du défunt détermine le droit applicable</h2>
+<p>En Suisse, c'est le <strong>dernier domicile du défunt</strong> qui détermine le canton compétent — à l'exception des immeubles, soumis au droit du canton où ils sont situés. Un résident genevois laissant un immeuble à Zurich verra son immeuble taxé selon le droit zurichois (0 % pour les enfants) mais ses avoirs mobiliers selon le droit genevois.</p>
+<h2>Simulez les droits de succession suisses</h2>
+<p>Le simulateur droits de succession Suisse de simfinly.com calcule l'impôt dû canton par canton selon le lien de parenté, le montant de l'héritage et la nature des biens. Comparez plusieurs cantons pour des successions impliquant des biens dans des cantons différents.</p>`,
+  },
+  {
+    slug: 'age-depart-retraite-generation-2026',
+    title: 'Âge de départ à la retraite par génération en 2026 : le tableau complet',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-04-15T10:00:00Z',
+    intro: "Né en 1960, 1965 ou 1975 ? L'âge légal de départ, la durée requise pour le taux plein et l'âge du taux plein automatique diffèrent selon votre année de naissance. Le tableau complet 2026.",
+    content: `<h2>Le calendrier complet génération par génération</h2>
+<p>La réforme des retraites de 2023 (loi Borne) a modifié l'âge légal et la durée de cotisation requise. Voici le tableau officiel pour les générations de 1958 à 1968 et après :</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Génération</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Âge légal</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Trimestres requis</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Taux plein auto.</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Avant 1958</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">62 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">167</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">1961</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">62 ans 3 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">169</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">1962</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">62 ans 6 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">169</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">1963</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">62 ans 9 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">169</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">1964</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">63 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">170</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">1965</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">63 ans 3 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">170</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">1966</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">63 ans 6 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">171</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">1967</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">63 ans 9 mois</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">171</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb"><strong>1968 et après</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>64 ans</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>172</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">67 ans</td></tr>
+</tbody></table>
+<h2>Âge légal vs âge du taux plein automatique</h2>
+<p>L'<strong>âge légal</strong> est l'âge minimum pour partir à la retraite. Mais partir à l'âge légal sans avoir tous ses trimestres entraîne une <em>décote</em> permanente de 0,625 % par trimestre manquant (soit 2,5 % par an, jusqu'à 25 % pour 10 ans manquants).</p>
+<p>L'<strong>âge du taux plein automatique</strong> (67 ans pour toutes les générations) est l'âge auquel la décote est effacée automatiquement, même sans avoir tous les trimestres requis. Partir à 67 ans garantit 50 % du SAM sur la retraite de base quels que soient les trimestres validés.</p>
+<h2>La surcote : l'avantage de travailler plus longtemps</h2>
+<p>Travailler au-delà de l'âge légal après avoir atteint la durée requise permet d'obtenir une <strong>surcote</strong> de 1,25 % par trimestre supplémentaire (5 % par an). Un départ 2 ans après le taux plein augmente la pension de 10 %, définitivement.</p>
+<h2>Simulez votre départ optimal</h2>
+<p>Le simulateur CNAV de simfinly.com calcule pour votre génération l'âge de départ, la pension avec et sans décote, et compare les scénarios de 60 à 70 ans pour vous aider à choisir le moment optimal.</p>`,
+  },
+  {
+    slug: 'pension-reversion-calcul-conditions-2026',
+    title: 'Pension de réversion en 2026 : calcul, conditions et taux selon le régime',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-04-22T10:00:00Z',
+    intro: "La pension de réversion est versée au conjoint survivant d'un retraité décédé. Taux de 54 % au régime général, 60 % à l'Agirc-Arrco, mais sous conditions d'âge et de ressources.",
+    content: `<h2>Qu'est-ce que la pension de réversion ?</h2>
+<p>La <strong>pension de réversion</strong> est une fraction de la retraite du défunt versée au conjoint survivant. Elle existe dans presque tous les régimes français mais avec des règles différentes selon les caisses. Elle n'est pas automatique : il faut en faire la demande auprès de chaque caisse concernée.</p>
+<h2>Le régime général (CNAV) : 54 % sous conditions de ressources</h2>
+<p>Au régime général, la pension de réversion est égale à <strong>54 % de la pension brute</strong> du défunt. Conditions :</p>
+<ul>
+<li><strong>Avoir été marié</strong> : le PACS et le concubinage n'ouvrent pas droit à la réversion CNAV.</li>
+<li><strong>Avoir au moins 55 ans</strong> (pas de condition d'âge pour les veuves avec enfants à charge).</li>
+<li><strong>Plafond de ressources</strong> : vos revenus annuels ne doivent pas dépasser 23 441 € (personne seule, 2026). En cas de remariage ou cohabitation, les ressources du partenaire s'ajoutent.</li>
+</ul>
+<p>La réversion est <strong>cumulable avec vos propres droits à la retraite</strong> dans la limite du plafond de ressources. Au-delà du plafond, elle est réduite proportionnellement.</p>
+<h2>L'Agirc-Arrco : 60 % sans condition de ressources</h2>
+<ul>
+<li>Taux de <strong>60 %</strong> des points Agirc-Arrco du défunt.</li>
+<li><strong>Pas de condition de ressources</strong> pour la réversion complémentaire.</li>
+<li>Condition d'âge : <strong>55 ans minimum</strong>.</li>
+<li>Condition de mariage : même règle que le régime général.</li>
+</ul>
+<h2>Les régimes spéciaux</h2>
+<ul>
+<li><strong>CNRACL (fonctionnaires)</strong> : 50 % de la pension, sans condition de ressources, avec condition d'âge à 60 ans.</li>
+<li><strong>MSA agricole</strong> : taux de 54 % comme le régime général.</li>
+<li><strong>SSI (indépendants)</strong> : 54 % pour la base, plus réversion complémentaire.</li>
+</ul>
+<h2>Réversion et remariage</h2>
+<p>En cas de <strong>remariage</strong>, la pension de réversion CNAV est <strong>suspendue</strong> depuis 2003. En revanche, la réversion Agirc-Arrco est <strong>maintenue même en cas de remariage</strong> pour les pensions acquises avant 2017.</p>
+<h2>Estimez votre pension de réversion</h2>
+<p>Le simulateur de réversion de simfinly.com calcule la pension de réversion CNAV et Agirc-Arrco selon la retraite du défunt, votre âge et vos ressources. Il vérifie si le plafond est dépassé et calcule la réversion nette mensuelle.</p>`,
+  },
+  {
+    slug: 'retraite-progressive-mode-emploi-2026',
+    title: 'Retraite progressive en 2026 : mode d\'emploi, conditions et simulation',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-04-29T10:00:00Z',
+    intro: "La retraite progressive permet de toucher une fraction de sa retraite tout en continuant à travailler à temps partiel. Conditions d'accès, calcul de la fraction et avantages du dispositif.",
+    content: `<h2>Qu'est-ce que la retraite progressive ?</h2>
+<p>La <strong>retraite progressive</strong> permet de percevoir une fraction de sa retraite tout en continuant à exercer une activité à temps partiel. Ce n'est pas une préretraite : vous continuez à cotiser, ce qui améliore votre future pension définitive. C'est un dispositif peu connu mais très avantageux pour lisser la transition entre vie active et retraite complète.</p>
+<h2>Conditions pour y accéder en 2026</h2>
+<p>Trois conditions simultanées :</p>
+<ul>
+<li><strong>Avoir au moins 60 ans</strong> (soit 2 ans avant l'âge légal de 62 ans, maintenu après réforme 2023 pour ce dispositif).</li>
+<li><strong>Avoir validé au moins 150 trimestres</strong> (37,5 ans) de durée d'assurance tous régimes confondus.</li>
+<li><strong>Exercer à temps partiel</strong> entre 40 % et 80 % d'un temps plein.</li>
+</ul>
+<p>Les travailleurs indépendants (artisans, commerçants, professions libérales) y ont accès depuis 2022 sous conditions légèrement différentes.</p>
+<h2>Le calcul de la fraction de pension</h2>
+<p>La fraction de pension versée est proportionnelle au temps non travaillé :</p>
+<ul>
+<li>Vous travaillez à <strong>60 %</strong> d'un temps plein → vous percevez <strong>40 %</strong> de votre retraite estimée.</li>
+<li>Vous travaillez à <strong>80 %</strong> → vous percevez <strong>20 %</strong> de votre retraite estimée.</li>
+</ul>
+<p>La retraite estimée est calculée au moment de la demande comme si vous partiez ce jour-là, avec vos trimestres actuels. Plus vous avez de trimestres validés, plus la fraction reçue est élevée en valeur absolue.</p>
+<h2>Les avantages du dispositif</h2>
+<ol>
+<li><strong>Revenus maintenus</strong> : la fraction de retraite + le salaire à temps partiel permettent souvent de maintenir un revenu global proche du plein temps.</li>
+<li><strong>Droits qui continuent d'augmenter</strong> : les cotisations sur le salaire partiel s'ajoutent aux droits acquis. La pension définitive sera recalculée à la hausse.</li>
+<li><strong>Flexibilité</strong> : vous pouvez mettre fin à la retraite progressive à tout moment pour reprendre à temps plein ou partir définitivement.</li>
+</ol>
+<h2>Simulez votre retraite progressive</h2>
+<p>Le simulateur de retraite progressive de simfinly.com calcule la fraction de pension selon votre quotité de travail, vos trimestres et votre salaire. Comparez le revenu total (salaire partiel + pension progressive) à votre salaire actuel pour décider si le dispositif est avantageux.</p>`,
+  },
+  {
+    slug: 'partir-retraite-avant-64-ans-carriere-longue-2026',
+    title: 'Partir à la retraite avant 64 ans en 2026 : carrière longue et dispositifs',
+    category: 'Retraite',
+    readTime: 6,
+    publishedAt: '2026-06-24T10:00:00Z',
+    intro: "La réforme 2023 fixe l'âge légal à 64 ans pour les générations 1968+, mais des dispositifs permettent de partir avant. Carrière longue, pénibilité, inaptitude : conditions et simulations.",
+    content: `<h2>Le dispositif carrières longues : le plus courant</h2>
+<p>Le dispositif <strong>carrières longues</strong> permet aux assurés ayant commencé à travailler jeune de partir avant l'âge légal de 64 ans. Depuis la réforme 2023, il est organisé en quatre bornes :</p>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Début de carrière avant</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Départ possible dès</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Trimestres requis</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">16 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>58 ans</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Durée requise + 8</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">18 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>60 ans</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Durée requise + 8</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">20 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>62 ans</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Durée requise</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">21 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb"><strong>63 ans</strong></td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Durée requise</td></tr>
+</tbody></table>
+<p>La notion de <em>trimestres cotisés</em> est stricte ici : seuls les trimestres effectivement cotisés (hors assimilés) sont retenus, à l'exception du chômage involontaire (2 trimestres maximum).</p>
+<h2>La retraite pour inaptitude au travail</h2>
+<p>Les assurés reconnus <strong>inaptes au travail</strong> (incapacité permanente ≥ 50 %, pension d'invalidité 2e ou 3e catégorie) peuvent partir à <strong>62 ans</strong> avec le taux plein automatique, même si leur durée de cotisation est incomplète.</p>
+<h2>La pénibilité via le Compte Professionnel de Prévention (C2P)</h2>
+<p>Les facteurs de pénibilité (travail de nuit, travail répétitif, températures extrêmes, bruit…) génèrent des <strong>points C2P</strong> permettant d'anticiper son départ d'un trimestre par point, jusqu'à 8 trimestres (2 ans) d'anticipation maximum.</p>
+<h2>La retraite anticipée pour handicap</h2>
+<p>Les assurés avec un taux d'incapacité d'au moins 50 % peuvent partir à partir de <strong>55 ans</strong>, sous conditions de durée de cotisation et d'incapacité permanente reconnue par la MDPH.</p>
+<h2>Calculez votre départ anticipé possible</h2>
+<p>Le simulateur de départ anticipé de simfinly.com vérifie si vous remplissez les conditions pour le dispositif carrières longues selon votre année de naissance, l'âge de début de carrière et vos trimestres cotisés. Il calcule la pension que vous percevriez selon différents âges de départ.</p>`,
+  },
+  {
+    slug: 'donation-abattement-100000-euros-2026',
+    title: 'Donation parents-enfants 2026 : abattement 100 000 € et calcul des droits',
+    category: 'Fiscalité',
+    readTime: 6,
+    publishedAt: '2026-05-06T10:00:00Z',
+    intro: "Donner à ses enfants jusqu'à 100 000 € tous les 15 ans sans payer de droits. Comment fonctionne l'abattement légal, les dons manuels et la donation-partage pour transmettre son patrimoine.",
+    content: `<h2>L'abattement de 100 000 € : le socle de la donation</h2>
+<p>Chaque parent peut donner à chacun de ses enfants jusqu'à <strong>100 000 €</strong> en exonération totale de droits de donation, tous les 15 ans. Cet abattement se recharge intégralement au bout de 15 ans. Une famille avec deux enfants peut ainsi transmettre jusqu'à 400 000 € tous les 15 ans sans payer un centime de droits. Il s'applique à toutes les formes de donations : argent, bien immobilier, actions, parts de société.</p>
+<h2>Le don familial de sommes d'argent : 31 865 € supplémentaires</h2>
+<p>En plus de l'abattement général, un <strong>abattement spécifique de 31 865 €</strong> s'applique aux dons de sommes d'argent (chèque, virement), cumulable avec l'abattement de 100 000 €, sous conditions :</p>
+<ul>
+<li>Le donateur doit avoir moins de <strong>80 ans</strong>.</li>
+<li>Le bénéficiaire doit être majeur.</li>
+</ul>
+<p>Cumulé, un parent de moins de 80 ans peut donner <strong>131 865 €</strong> à chaque enfant sans droits.</p>
+<h2>Le barème des droits au-delà des abattements</h2>
+<ul>
+<li>Jusqu'à 8 072 € : <strong>5 %</strong></li>
+<li>De 8 072 € à 15 932 € : <strong>10-15 %</strong></li>
+<li>De 15 932 € à 552 324 € : <strong>20 %</strong></li>
+<li>De 552 324 € à 902 838 € : <strong>30 %</strong></li>
+<li>Au-delà : <strong>40-45 %</strong></li>
+</ul>
+<h2>La donation-partage : l'outil privilégié pour les familles</h2>
+<p>La <strong>donation-partage</strong> permet de répartir son patrimoine entre plusieurs enfants en une seule opération notariée. Les biens donnés sont évalués au jour de la donation, pas au décès : les plus-values ultérieures profitent aux bénéficiaires sans droits supplémentaires. Elle prévient aussi les conflits entre héritiers.</p>
+<h2>Déclaration obligatoire au-delà de 15 000 €</h2>
+<p>Toute donation supérieure à <strong>15 000 €</strong> doit être déclarée à l'administration fiscale dans le mois suivant (formulaire 2735). En dessous, la déclaration est recommandée pour faire courir le délai de rappel des 15 ans.</p>
+<h2>Simulez votre donation</h2>
+<p>Le simulateur de donation de simfinly.com calcule les droits selon le montant, le lien de parenté et les abattements déjà utilisés sur les 15 dernières années. Il compare donation simple, don de sommes d'argent et donation-partage pour optimiser la transmission.</p>`,
+  },
+  {
+    slug: 'frais-notaire-achat-immobilier-calcul-2026',
+    title: 'Frais de notaire 2026 : calcul détaillé dans l\'ancien et le neuf',
+    category: 'Immobilier',
+    readTime: 5,
+    publishedAt: '2026-05-13T10:00:00Z',
+    intro: "Lors d'un achat immobilier, les frais de notaire représentent 7-8 % dans l'ancien et 2-3 % dans le neuf. Composition détaillée et calcul précis pour anticiper votre budget.",
+    content: `<h2>Les frais de notaire : trois composantes distinctes</h2>
+<p>L'expression "frais de notaire" désigne l'ensemble des sommes versées au notaire, dont la grande majorité ne lui revient pas. Ils se décomposent en :</p>
+<ul>
+<li><strong>Droits de mutation</strong> (taxe départementale + communale) : environ 5,8 % du prix dans l'ancien, reversés à la collectivité. C'est la part la plus importante.</li>
+<li><strong>Émoluments du notaire</strong> : rémunération réglementée selon barème officiel, environ 0,8-1 % du prix.</li>
+<li><strong>Débours et formalités</strong> : frais administratifs, publications, cadastre. Environ 0,5-0,8 % du prix.</li>
+</ul>
+<h2>L'ancien : 7 à 8 % du prix</h2>
+<p>Pour un bien ancien (plus de 5 ans), les droits de mutation s'élèvent à <strong>5,80 %</strong> dans la quasi-totalité des départements. S'y ajoutent émoluments et débours pour un total de 7-8 %.</p>
+<p>Exemple pour un appartement à <strong>300 000 €</strong> :</p>
+<ul>
+<li>Droits de mutation : ≈ 17 400 €</li>
+<li>Émoluments notaire : ≈ 3 000 €</li>
+<li>Débours : ≈ 1 500 €</li>
+<li><strong>Total : environ 21 900 €</strong></li>
+</ul>
+<h2>Le neuf : 2 à 3 % du prix</h2>
+<p>Pour un logement neuf (premier acquéreur, TVA incluse dans le prix), les droits de mutation sont réduits à <strong>0,715 %</strong>. Les frais totaux se limitent à 2-3 % du prix, une économie significative justifiant en partie le prix au m² souvent plus élevé dans le neuf.</p>
+<h2>Peut-on réduire les frais de notaire ?</h2>
+<p>Les droits de mutation ne se négocient pas. Le notaire peut accorder une remise jusqu'à 20 % sur la partie de son émolument dépassant 150 000 €. La seule véritable économie courante : déduire la valeur du <em>mobilier</em> du prix de vente (meubles valorisés dans le compromis réduisent l'assiette des droits de mutation).</p>
+<h2>Calculez vos frais de notaire</h2>
+<p>Le simulateur frais de notaire de simfinly.com calcule précisément droits de mutation, émoluments et débours selon le prix, le département et le type de bien. Intégrez les frais d'agence et le PTZ pour avoir une vision complète de votre financement.</p>`,
+  },
+  {
+    slug: 'deficit-foncier-travaux-deductibles-2026',
+    title: 'Déficit foncier en 2026 : travaux déductibles, plafond 10 750 € et calcul',
+    category: 'Fiscalité',
+    readTime: 6,
+    publishedAt: '2026-05-20T10:00:00Z',
+    intro: "Le déficit foncier permet de déduire les travaux de rénovation de votre revenu global à hauteur de 10 750 €/an. Conditions, plafonds et calcul pour optimiser votre investissement locatif.",
+    content: `<h2>Qu'est-ce que le déficit foncier ?</h2>
+<p>Le <strong>déficit foncier</strong> est le mécanisme fiscal qui permet à un propriétaire bailleur en régime réel d'imputer les charges (notamment les travaux) dépassant les loyers perçus, non seulement sur les revenus fonciers futurs, mais aussi sur son <em>revenu global</em> (salaires, pensions…). C'est l'un des rares outils permettant de réduire l'impôt au-delà des revenus locatifs.</p>
+<h2>Quels travaux sont déductibles ?</h2>
+<ul>
+<li><strong>Travaux déductibles</strong> : entretien, réparation et amélioration. Exemples : ravalement de façade, remplacement de chaudière, réfection toiture, mise aux normes électrique, isolation thermique.</li>
+<li><strong>Travaux non déductibles</strong> : construction, reconstruction, agrandissement. Ils s'incorporent au prix d'acquisition pour le calcul de la plus-value à la revente.</li>
+</ul>
+<h2>Le plafond de 10 750 € sur le revenu global</h2>
+<p>Fonctionnement de l'imputation :</p>
+<ol>
+<li>Les charges (travaux + intérêts d'emprunt + autres) sont déduites des loyers bruts.</li>
+<li>Si déficit : la fraction due aux <strong>intérêts d'emprunt</strong> est reportée sur les revenus fonciers des 10 années suivantes uniquement.</li>
+<li>La fraction due aux <strong>autres charges (travaux)</strong> est imputable sur le revenu global dans la limite de <strong>10 750 € par an</strong>. L'excédent est reportable sur les revenus fonciers des 10 années suivantes.</li>
+</ol>
+<h2>Exemple chiffré</h2>
+<p>Loyers perçus : 8 000 €/an. Travaux : 20 000 €. Charges totales : 18 000 €. Déficit : <strong>10 000 €</strong>.</p>
+<p>Imputation sur revenu global : 10 000 € (inférieur au plafond de 10 750 €). À 30 % de TMI, économie d'impôt : <strong>3 000 €</strong>.</p>
+<h2>La condition de conservation du bien (3 ans)</h2>
+<p>Pour bénéficier du déficit foncier sur le revenu global, le bien doit rester <strong>en location non meublée pendant au moins 3 ans</strong> suivant la dernière imputation. Vente ou passage en location meublée avant ce délai entraîne la réintégration du déficit imputé.</p>
+<h2>Calculez votre déficit foncier</h2>
+<p>Le simulateur de déficit foncier de simfinly.com calcule l'économie d'impôt selon vos loyers, charges, travaux et TMI. Il visualise l'impact annuel et le report sur les 10 prochaines années pour calibrer votre plan de rénovation.</p>`,
+  },
+  {
+    slug: 'succession-enfants-abattement-droits-2026',
+    title: 'Droits de succession enfants en 2026 : abattement 100 000 € et barème',
+    category: 'Fiscalité',
+    readTime: 6,
+    publishedAt: '2026-05-27T10:00:00Z',
+    intro: "En ligne directe, l'abattement est de 100 000 € par enfant tous les 15 ans. Au-delà, un barème progressif de 5 à 45 % s'applique. Calcul complet et stratégies pour réduire la facture fiscale.",
+    content: `<h2>L'abattement de 100 000 € par enfant</h2>
+<p>Chaque enfant héritant d'un parent bénéficie d'un <strong>abattement de 100 000 €</strong> sur sa part nette. Cet abattement est personnel et se recharge tous les 15 ans : une donation effectuée plus de 15 ans avant le décès ne vient pas réduire l'abattement disponible sur la succession.</p>
+<h2>Le barème des droits en ligne directe</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#EAF0FF"><th style="padding:8px;text-align:left;border:1px solid #d6e2fb">Part taxable après abattement</th><th style="padding:8px;text-align:center;border:1px solid #d6e2fb">Taux</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Jusqu'à 8 072 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">5 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 8 072 € à 12 109 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">10 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">De 12 109 € à 15 932 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">15 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">De 15 932 € à 552 324 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">20 %</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">De 552 324 € à 902 838 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">30 %</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Au-delà de 902 838 €</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">40-45 %</td></tr>
+</tbody></table>
+<h2>Exemple : succession de 500 000 € avec deux enfants</h2>
+<p>Part de chaque enfant : 250 000 €. Abattement : 100 000 €. Part taxable : <strong>150 000 €</strong>.</p>
+<p>Droits sur 150 000 € : 5 % × 8 072 € + 10 % × 4 037 € + 15 % × 3 823 € + 20 % × 134 068 € = <strong>28 195 € par enfant</strong> (56 390 € au total).</p>
+<h2>Le conjoint survivant : exonéré depuis 2007</h2>
+<p>Le conjoint survivant est <strong>totalement exonéré</strong> de droits de succession depuis la loi TEPA de 2007, quelle que soit la valeur de l'héritage. Le partenaire pacsé bénéficie de la même exonération. Le concubin, en revanche, est taxé à 60 % (après abattement de 1 594 €).</p>
+<h2>Les stratégies pour réduire les droits</h2>
+<ul>
+<li><strong>Donations régulières</strong> : utiliser l'abattement de 100 000 € tous les 15 ans + le don de sommes d'argent (31 865 €).</li>
+<li><strong>Assurance-vie</strong> : abattement spécifique de 152 500 € par bénéficiaire pour les primes versées avant 70 ans.</li>
+<li><strong>Démembrement de propriété</strong> : donner la nue-propriété tout en conservant l'usufruit. Au décès, la pleine propriété revient aux enfants sans droits supplémentaires.</li>
+</ul>
+<h2>Calculez les droits de succession</h2>
+<p>Le simulateur de succession de simfinly.com calcule les droits selon l'actif net, le nombre d'enfants, les donations antérieures et le régime matrimonial. Il intègre l'abattement assurance-vie et compare plusieurs scénarios de transmission.</p>`,
+  },
+  {
+    slug: 'epargne-salariale-pee-perco-abondement-2026',
+    title: 'Épargne salariale 2026 : PEE, PERcol et abondement — mode d\'emploi',
+    category: 'Épargne',
+    readTime: 6,
+    publishedAt: '2026-06-17T10:00:00Z',
+    intro: "Intéressement, participation, PEE et PERcol : l'épargne salariale permet d'investir avec des exonérations fiscales et l'abondement de l'employeur. Mode d'emploi complet 2026.",
+    content: `<h2>Les quatre piliers de l'épargne salariale</h2>
+<ul>
+<li><strong>Intéressement</strong> : prime liée aux résultats de l'entreprise, exonérée d'impôt si investie en PEE ou PERcol.</li>
+<li><strong>Participation</strong> : redistribution obligatoire d'une fraction des bénéfices pour les entreprises de 50+ salariés. Exonérée d'IR si bloquée 5 ans.</li>
+<li><strong>PEE</strong> (Plan d'Épargne Entreprise) : enveloppe d'investissement sur 5 ans minimum, exonérée d'IR à la sortie.</li>
+<li><strong>PERcol / PERECO</strong> (Plan d'Épargne Retraite Collectif) : successeur du PERCO, dédié à la retraite.</li>
+</ul>
+<h2>L'abondement : l'argent gratuit de l'employeur</h2>
+<p>L'<strong>abondement</strong> est la contribution de l'employeur qui complète votre versement volontaire dans le PEE ou PERcol :</p>
+<ul>
+<li>Jusqu'à <strong>300 % de votre versement volontaire</strong>.</li>
+<li>Plafonné à 8 % du PASS/an pour le PEE (<strong>3 768 €</strong> en 2026) et 16 % du PASS pour le PERcol (<strong>7 536 €</strong>).</li>
+<li>L'abondement est <strong>exonéré de charges sociales et d'impôt sur le revenu</strong> : c'est du salaire défiscalisé.</li>
+</ul>
+<p>Exemple : si votre employeur abonde à 100 % jusqu'à 1 500 €, verser 1 500 € sur le PEE vous rapporte 3 000 € investis pour 1 500 € déboursés — avant tout rendement.</p>
+<h2>PEE vs PERcol : les différences clés</h2>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<thead><tr style="background:#dcfce7"><th style="padding:8px;text-align:left;border:1px solid #bbf7d0">Critère</th><th style="padding:8px;text-align:center;border:1px solid #bbf7d0">PEE</th><th style="padding:8px;text-align:center;border:1px solid #bbf7d0">PERcol</th></tr></thead>
+<tbody>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Blocage</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">5 ans</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Jusqu'à la retraite</td></tr>
+<tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Fiscalité sortie</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Exonéré d'IR (PS dus)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">IR sur capital (si déductible)</td></tr>
+<tr><td style="padding:8px;border:1px solid #e5e7eb">Déblocage anticipé</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">8 cas légaux</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">Achat résidence principale</td></tr>
+</tbody></table>
+<h2>Les 8 cas de déblocage anticipé du PEE</h2>
+<p>Mariage/PACS, naissance du 3e enfant, divorce avec garde, invalidité, décès, création d'entreprise, acquisition de la résidence principale, rupture du contrat de travail.</p>
+<h2>Projeter son épargne salariale</h2>
+<p>Le simulateur d'épargne salariale de simfinly.com calcule la valeur de votre PEE ou PERcol selon vos versements, l'abondement et un rendement estimé. Comparez la performance nette avec un livret A ou une assurance-vie.</p>`,
+  },
 ];
 
 export const STATIC_BY_SLUG = Object.fromEntries(STATIC_ARTICLES.map(a => [a.slug, a]));
