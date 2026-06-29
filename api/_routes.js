@@ -281,6 +281,7 @@ export const ROUTE_META = {
   '/comparatifs':                         { title: 'Comparatifs financiers — PER, achat vs location, freelance',          emoji: '⚖️', cat: '',          prio: '0.7', freq: 'monthly' },
   '/methodologie':                        { title: 'Méthodologie & sources — calculs simfinly.com',                        emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
   '/widgets':                             { title: 'Widgets gratuits à intégrer — simulateurs embarquables',               emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
+  '/recherche':                           { title: 'Recherche — simulateurs, guides et articles | simfinly.com',            emoji: '🔍', cat: '',          prio: '0.3', freq: 'weekly'  },
   '/a-propos':                            { title: 'À propos — simfinly.com',                                             emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
   '/mentions-legales':                    { title: 'Mentions légales — simfinly.com',                                      emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
   '/politique-de-confidentialite':        { title: 'Politique de confidentialité — simfinly.com',                         emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
@@ -476,7 +477,19 @@ export function structuredData(route, extra = {}) {
   }
 
   const meta = ROUTE_META[route];
-  if (!meta || route === '/') return [];
+  if (!meta) return [];
+  // Page d'accueil → WebSite + SiteLinksSearchBox
+  if (route === '/') {
+    return [{
+      '@context': 'https://schema.org', '@type': 'WebSite',
+      name: 'Simfinly', url: `${BASE}/`,
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: `${BASE}/recherche?q={search_term_string}` },
+        'query-input': 'required name=search_term_string',
+      },
+    }];
+  }
   const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
   if (route.startsWith('/simulateurs/')) {
     const seoIntro = SEO_CONTENT[route]?.intro;

@@ -117,6 +117,7 @@ const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
 // Pages contenu
 const ProConseiller    = lazy(() => import("./pages/ProConseiller.jsx"));
 const BarometreRetraite = lazy(() => import("./pages/BarometreRetraite.jsx"));
+const Recherche         = lazy(() => import("./pages/Recherche.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -329,6 +330,8 @@ export default function App() {
         <Route path="/embed/retraite" element={<EmbedRetraite />} />
         <Route path="/widgets" element={<Widgets />} />
         <Route path="/en/widgets" element={<Widgets />} />
+        <Route path="/recherche" element={<Recherche />} />
+        <Route path="/en/recherche" element={<Recherche />} />
         <Route path="/simulateurs" element={<Simulateurs />} />
         {/* Pages utilitaires */}
         <Route path="/rapport/:id" element={<RapportPartage />} />
