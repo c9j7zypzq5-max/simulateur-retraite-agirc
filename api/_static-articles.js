@@ -536,6 +536,10 @@ export const STATIC_ARTICLES = [
 <p>Les assurés avec un taux d'incapacité d'au moins 50 % peuvent partir à partir de <strong>55 ans</strong>, sous conditions de durée de cotisation et d'incapacité permanente reconnue par la MDPH.</p>
 <h2>Calculez votre départ anticipé possible</h2>
 <p>Le simulateur de départ anticipé de simfinly.com vérifie si vous remplissez les conditions pour le dispositif carrières longues selon votre année de naissance, l'âge de début de carrière et vos trimestres cotisés. Il calcule la pension que vous percevriez selon différents âges de départ.</p>`,
+    faqs: [
+      { q: "Peut-on partir à la retraite avant 64 ans en 2026 ?", a: "Oui, sous trois conditions principales : (1) Carrières longues (RACL) : si vous avez commencé à travailler avant 21 ans et validé suffisamment de trimestres, vous pouvez partir à 60-63 ans selon votre âge de début de carrière ; (2) Incapacité permanente : taux ≥ 50 % permet un départ à 62 ans au taux plein ; (3) Pénibilité via le C2P (compte professionnel de prévention) : des droits convertibles en trimestres anticipés pour les expositions aux 6 facteurs de pénibilité." },
+      { q: "Combien de trimestres faut-il pour la carrière longue ?", a: "Pour partir à 60 ans (début avant 16 ans), il faut avoir validé au minimum 4 trimestres avant 16 ans ET atteindre la durée requise pour le taux plein (172 trimestres pour les générations 1968+) augmentée de 8 trimestres. Pour partir à 62 ans (début avant 18 ans), il faut 5 trimestres avant 18 ans + durée du taux plein. Pour 63 ans (début avant 21 ans) : 5 trimestres avant 21 ans + durée du taux plein." },
+    ],
   },
   {
     slug: 'donation-abattement-100000-euros-2026',
@@ -773,6 +777,10 @@ export const STATIC_ARTICLES = [
 <p>Pour les débutants ou les personnes peu disponibles, la gestion pilotée est recommandée — à condition que les frais totaux restent raisonnables (moins de 1,5 % par an tout compris).</p>
 <h2>La fiscalité après 8 ans</h2>
 <p>Après 8 ans de détention, les retraits bénéficient d'un <strong>abattement annuel de 4 600 € (célibataire) ou 9 200 € (couple)</strong> sur les gains. Au-delà, les gains sont taxés à 7,5 % d'IR + 17,2 % de prélèvements sociaux (contre 30 % avant 8 ans). L'assurance-vie est aussi un outil de transmission : chaque bénéficiaire désigné reçoit jusqu'à 152 500 € en franchise de droits de succession.</p>`,
+    faqs: [
+      { q: "Comment choisir une assurance-vie en 2026 ?", a: "Les 4 critères clés : (1) Rendement du fonds euros — optez pour un assureur dont le fonds euros a rapporté > 2,5 % en 2025 (Garance, Spirica, Apicil sont parmi les meilleurs) ; (2) Frais — préférez une assurance-vie sans frais d'entrée, avec des frais de gestion sur UC < 0,85 %/an ; (3) Diversité des UC — accès aux ETF actions monde, aux SCPI, aux fonds thématiques ; (4) Gestion pilotée vs libre — si vous débutez, la gestion pilotée allocue automatiquement selon votre profil de risque." },
+      { q: "Faut-il déclarer son assurance-vie au fisc chaque année ?", a: "Non, les plus-values et revenus générés dans une assurance-vie ne sont pas imposables tant que vous ne faites pas de rachat (retrait). Vous déclarez uniquement la fraction imposable lors des retraits. Depuis 2018, les gains sur versements post-27/09/2017 sont imposés au PFU (30 %) si le rachat a lieu dans les 8 ans, ou à 17,5 % au-delà (7,5 % IR + 9,7 % PS sur la fraction > 150 000 €). Vous déclarez le montant des contrats dépassant 7 500 € aux services fiscaux lors de votre déclaration annuelle." },
+    ],
   },
   {
     slug: 'dpe-renovation-travaux-2026',
@@ -928,6 +936,10 @@ export const STATIC_ARTICLES = [
 </ul>
 <h2>Retrait et fiscalité</h2>
 <p>Avant 5 ans, tout retrait <strong>clôture le PEA</strong> et les gains sont taxés à 30 % (flat tax). Après 5 ans, les retraits partiels sont possibles sans clôture, et les gains ne supportent que les 17,2 % de prélèvements sociaux. Il est possible de convertir le PEA en rente viagère défiscalisée après 5 ans. Le simulateur d'épargne de simfinly.com projette la valeur de votre PEA et l'économie fiscale selon l'horizon et le rendement.</p>`,
+    faqs: [
+      { q: "Quelle est la différence entre un PEA bancaire et un PEA assurance ?", a: "Le PEA bancaire (ouvert en banque ou courtier) est le plus courant : vous détenez directement des actions et ETF dans un compte-titres. Le PEA-assurance (ouvert auprès d'un assureur) fonctionne comme une assurance-vie investie en unités de compte — il offre plus de flexibilité dans les supports disponibles mais avec des frais souvent plus élevés. Les deux plafonds sont identiques (150 000 €) et partagent les mêmes avantages fiscaux après 5 ans." },
+      { q: "Peut-on investir dans des ETF monde avec un PEA ?", a: "Oui, c'est possible grâce aux ETF monde de synthèse (réplication indirecte). Des ETF comme l'Amundi MSCI World UCITS ETF ou le Lyxor MSCI World ETF sont éligibles au PEA bien que l'indice MSCI World contienne des actions non-européennes. Ils utilisent des swaps de performance pour répliquer l'indice tout en détenant des actions européennes. Ces ETF offrent une exposition mondiale (États-Unis, Europe, Japon...) dans une enveloppe fiscalement avantageuse." },
+    ],
   },
   {
     slug: 'micro-entrepreneur-retraite-droits',
@@ -956,6 +968,10 @@ export const STATIC_ARTICLES = [
 <p>Les auto-entrepreneurs bénéficient d'un <strong>régime complémentaire obligatoire</strong> (RCI pour artisans/commerçants, ou régime spécifique pour libéraux). Les points accumulés dépendent du CA déclaré et du taux de cotisation. Sur un CA de 30 000 €/an pendant 20 ans en prestations de services, la pension complémentaire peut atteindre 200-400 €/mois.</p>
 <h2>Compléter sa retraite en tant qu'auto-entrepreneur</h2>
 <p>Les droits accumulés par les micro-entrepreneurs sont souvent insuffisants pour une retraite confortable si l'auto-entreprise est l'unique activité sur toute la carrière. Les solutions : ouvrir un PER individuel (déductible si TMI ≥ 30 %), valider des trimestres manquants via un rachat, ou combiner micro-entreprise et emploi salarié pendant une partie de la carrière. Le simulateur retraite de simfinly.com calcule vos droits SSI selon votre CA annuel et votre secteur.</p>`,
+    faqs: [
+      { q: "Un auto-entrepreneur cotise-t-il vraiment pour la retraite ?", a: "Oui, mais à un taux et sur une base différents des salariés. En 2026, un auto-entrepreneur (micro-entrepreneur) verse des cotisations sociales de 12,3 % (prestations de services) ou 6,4 % (activité libérale relevant du régime micro-BNC). Une fraction de ces cotisations alimente le régime de retraite SSI (Sécurité Sociale des Indépendants). Problème : pour valider 4 trimestres par an, il faut réaliser un chiffre d'affaires minimum (~8 000 € en services, ~16 000 € en ventes)." },
+      { q: "Comment améliorer sa retraite en tant qu'auto-entrepreneur ?", a: "Deux leviers principaux : (1) Ouvrir un PER (Plan d'Épargne Retraite) : les versements sont déductibles du bénéfice imposable, c'est la stratégie la plus efficace pour les micro-entrepreneurs avec un CA conséquent ; (2) Vérifier et compléter ses trimestres manquants via le rachat de trimestres si nécessaire. À terme, si le CA dépasse les plafonds micro (77 700 € en services / 188 700 € en ventes), passer au régime réel optimise généralement les droits retraite." },
+    ],
   },
 
   // === Vague 3 — Articles prioritaires (commit 4B) ===
@@ -1014,6 +1030,10 @@ export const STATIC_ARTICLES = [
 </ul>
 <h2>Fiscalité des SCPI</h2>
 <p>Les revenus de SCPI sont des revenus fonciers : ils s'ajoutent à vos revenus imposables et sont taxés à votre TMI + 17,2 % de prélèvements sociaux. Pour alléger la fiscalité, il est possible de loger ses parts de SCPI dans une assurance-vie ou un PER — la fiscalité de l'enveloppe s'applique alors, souvent plus avantageuse. Le simulateur d'investissement locatif de simfinly.com calcule le rendement net de fiscalité selon votre TMI et le mode de détention.</p>`,
+    faqs: [
+      { q: "Quel est le rendement moyen d'une SCPI en 2026 ?", a: "Le rendement moyen des SCPI (Taux de Distribution sur Valeur de Marché — TDVM) s'établit autour de 4,5-5 % en 2026 selon les typologies. Les SCPI bureaux historiques ont subi des baisses de valeurs de parts en 2023-2024, mais les SCPI diversifiées, de santé et de logistique maintiennent de bons rendements. Ce rendement brut ne tient pas compte de la fiscalité applicable selon votre situation (revenus fonciers soumis à l'IR et aux PS)." },
+      { q: "SCPI en direct, en assurance-vie ou en démembrement : quelle est la meilleure option ?", a: "En direct : accès à toutes les SCPI, mais revenus soumis à l'IR + 17,2 % PS (taux marginal élevé). En assurance-vie : les loyers capitalisent dans l'enveloppe sans imposition immédiate, fiscalité douce à la sortie après 8 ans — idéal pour TMI 30 %+. En démembrement (nue-propriété) : achat à prix réduit (10-40 % selon durée), reconstitution automatique à terme, rendement potentiel élevé sans revenus imposables pendant la durée du démembrement — excellent pour les hauts TMI voulant se constituer un capital retraite." },
+    ],
   },
   {
     slug: 'budget-50-30-20-methode',
@@ -1450,6 +1470,10 @@ export const STATIC_ARTICLES = [
 </ul>
 <h2>La stratégie simple qui bat 90 % des gérants</h2>
 <p>Investir mensuellement dans un ETF MSCI World via un PEA, ne jamais vendre lors des baisses, rééquilibrer une fois par an. C'est tout. Cette stratégie passive bat historiquement 80-90 % des fonds actifs sur 10 ans, avec des frais 10× inférieurs. Le simulateur d'épargne de simfinly.com projette votre portefeuille selon cette approche avec différents rendements et horizons.</p>`,
+    faqs: [
+      { q: "Quelle est la meilleure stratégie d'investissement en bourse sur le long terme ?", a: "La stratégie passive avec DCA (investissement mensuel régulier) dans des ETF indiciels diversifiés bat historiquement 80-90 % des fonds gérés activement sur 10+ ans, avec des frais 10× inférieurs. Concrètement : ouvrir un PEA + assurance-vie, investir mensuellement dans un ETF MSCI World et un ETF obligataire selon son allocation cible, rééquilibrer annuellement, ne jamais vendre en cas de krach. L'horizon est la variable la plus importante : au-delà de 10 ans, la probabilité de gain est supérieure à 95 % sur indices diversifiés." },
+      { q: "Comment éviter les principales erreurs des investisseurs débutants ?", a: "Les 4 erreurs les plus courantes : (1) Vendre lors des baisses — les marchés se reprennent toujours, et les 10 meilleurs jours des 20 dernières années représentent 50 %+ de la performance totale ; (2) Trop concentrer sur une action ou un secteur — un ETF monde évite ce piège ; (3) Market timing — personne ne sait prévoir les marchés à court terme ; (4) Frais trop élevés — un ETF à 0,2 % l'an vs un fonds actif à 2 % fait une différence de 50 000 € sur 100 000 € investis sur 20 ans à 7 % annuel." },
+    ],
   },
   {
     slug: 'per-vs-assurance-vie-comparaison-2026',
@@ -1479,6 +1503,10 @@ export const STATIC_ARTICLES = [
 </ul>
 <h2>La complémentarité idéale</h2>
 <p>Dans une stratégie optimale : PER pour défiscaliser les années à fort salaire, assurance-vie pour la liquidité et la transmission. Ces deux enveloppes se complètent naturellement — la majorité des épargnants français en phase d'accumulation patrimoniale ont intérêt à ouvrir et alimenter les deux. Le comparateur simfinly.com simule l'économie fiscale et le capital final pour votre situation personnelle.</p>`,
+    faqs: [
+      { q: "PER ou assurance-vie : lequel choisir en 2026 ?", a: "La réponse dépend de votre TMI et de vos objectifs : si votre TMI est ≥ 30 % et que vous n'avez pas besoin des fonds avant la retraite, le PER est généralement supérieur (déduction fiscale immédiate = économie de 30-45 % sur chaque euro versé). Si vous avez besoin de flexibilité, si votre TMI est faible (0-11 %), ou si la transmission est un objectif clé, l'assurance-vie est préférable (disponibilité permanente, abattement de 152 500 € par bénéficiaire). La combinaison PER + assurance-vie est souvent la stratégie optimale." },
+      { q: "Peut-on sortir d'un PER avant la retraite ?", a: "Oui, dans 6 cas de déblocage anticipé légaux : (1) Acquisition de la résidence principale — le plus utilisé ; (2) Invalidité (2e ou 3e catégorie) du titulaire, du conjoint ou des enfants ; (3) Décès du conjoint ou du partenaire PACS ; (4) Liquidation judiciaire de l'entreprise (TNS) ; (5) Situation de surendettement ; (6) Expiration des droits à l'assurance chômage. En dehors de ces cas, le PER est bloqué jusqu'à la retraite." },
+    ],
   },
 
 
