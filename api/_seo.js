@@ -257,6 +257,10 @@ export const SEO_CONTENT = {
     h1: "Retraite parent au foyer 2026 — MDA, AVPF et droits",
     intro: "Les parents au foyer bénéficient de deux dispositifs retraite : la Majoration de Durée d'Assurance (4 trimestres par enfant) et l'Assurance Vieillesse des Parents au Foyer (AVPF) versée par la CAF. Comprendre ces droits est essentiel pour ne pas sacrifier sa pension.",
   },
+  '/retraite/guide-complet-2026': {
+    h1: "Guide complet retraite 2026 : calcul, simulateurs et optimisation",
+    intro: "Tout comprendre sur la retraite en 2026 : âge légal 64 ans (génération 1968+), calcul CNAV (SAM × 50 % × trimestres) et Agirc-Arrco (points × 1,4107 €), décote et surcote, rachat de trimestres, taux de remplacement. Guides par profession inclus.",
+  },
   '/retraite/points-agirc-arrco': {
     h1: "Points Agirc-Arrco 2026 : valeur du point, calcul et malus",
     intro: "Le point Agirc-Arrco vaut 1,4107 € en 2026 (+2,2 %). Votre pension complémentaire = nombre de points × valeur du point. Guide complet : comment s'accumulent les points, coefficient de solidarité (-10 %), bonus de fidélité (+10 à +30 %) et simulateur gratuit.",

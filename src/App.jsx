@@ -122,6 +122,7 @@ const CalendrierGenerations  = lazy(() => import("./pages/CalendrierGenerations.
 const GuideAgircArrco        = lazy(() => import("./pages/GuideAgircArrco.jsx"));
 const GuidePensionReversion  = lazy(() => import("./pages/GuidePensionReversion.jsx"));
 const GuideFraisNotaire      = lazy(() => import("./pages/GuideFraisNotaire.jsx"));
+const GuideRetraite2026      = lazy(() => import("./pages/GuideRetraite2026.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -367,6 +368,7 @@ export default function App() {
         <Route path="/pro-conseiller" element={<ProConseiller />} />
         <Route path="/barometre-retraite" element={<BarometreRetraite />} />
         <Route path="/retraite/calendrier-generations" element={<CalendrierGenerations />} />
+        <Route path="/retraite/guide-complet-2026" element={<GuideRetraite2026 />} />
         <Route path="/retraite/points-agirc-arrco" element={<GuideAgircArrco />} />
         <Route path="/retraite/calcul-pension-reversion" element={<GuidePensionReversion />} />
         <Route path="/immobilier/frais-notaire" element={<GuideFraisNotaire />} />
