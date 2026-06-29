@@ -75,12 +75,34 @@ export default function BarometreRetraite() {
   const [theme, setTheme] = useTheme();
 
   useEffect(() => {
-    document.title = "Baromètre Retraite 2024 — Chiffres clés et tendances | simfinly.com";
+    document.title = "Baromètre Retraite 2026 — Chiffres clés et tendances | simfinly.com";
     const desc = document.querySelector('meta[name="description"]');
-    if (desc) desc.setAttribute("content", "Pension moyenne en France, taux de remplacement, âge de départ, projections démographiques : tous les chiffres clés de la retraite en 2024 et les actions concrètes pour préparer la vôtre.");
+    if (desc) desc.setAttribute("content", "Pension moyenne en France, taux de remplacement, âge de départ, projections démographiques : tous les chiffres clés de la retraite en 2026 et les actions concrètes pour préparer la vôtre.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
     link.href = "https://www.simfinly.com/barometre-retraite";
+
+    const dataset = {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Baromètre Retraite France 2026 — Chiffres clés",
+      "description": "Statistiques de retraite en France : pensions moyennes par régime, taux de remplacement moyen, âge moyen de départ et projections démographiques jusqu'en 2050. Données agrégées issues de la DREES, du Conseil d'Orientation des Retraites (COR) et de l'INSEE.",
+      "url": "https://www.simfinly.com/barometre-retraite",
+      "creator": { "@type": "Organization", "name": "Simfinly", "url": "https://www.simfinly.com" },
+      "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+      "dateModified": "2026-06",
+      "keywords": ["retraite France", "pension moyenne", "taux de remplacement", "DREES", "COR", "âge départ retraite"],
+      "spatialCoverage": "France",
+      "temporalCoverage": "2024/2026",
+    };
+    document.getElementById('barometre-dataset-ld')?.remove();
+    const s = document.createElement("script");
+    s.id = "barometre-dataset-ld";
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(dataset);
+    document.head.appendChild(s);
+
+    return () => { document.getElementById('barometre-dataset-ld')?.remove(); };
   }, []);
 
   return (
@@ -91,7 +113,7 @@ export default function BarometreRetraite() {
         {/* Hero */}
         <div style={{ marginBottom: 52 }}>
           <div style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "var(--primary)", background: "var(--primary-soft)", padding: "5px 14px", borderRadius: 20, marginBottom: 16, letterSpacing: "0.03em" }}>
-            Édition 2024
+            Édition 2026
           </div>
           <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(26px, 5vw, 42px)", fontWeight: 700, lineHeight: 1.2, letterSpacing: "-0.02em", marginBottom: 14 }}>
             Baromètre Retraite France
@@ -104,7 +126,7 @@ export default function BarometreRetraite() {
         {/* Stats grid */}
         <section style={{ marginBottom: 60 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 700, marginBottom: 20, letterSpacing: "-0.01em" }}>
-            Chiffres clés 2024
+            Chiffres clés 2026
           </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 16 }}>
             {STATS.map(s => (

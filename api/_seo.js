@@ -241,6 +241,10 @@ export const SEO_CONTENT = {
     h1: "Widgets embarquables gratuits — simulateurs financiers à intégrer",
     intro: "Intégrez gratuitement les simulateurs de simfinly.com sur votre site ou blog en quelques secondes. Cinq widgets disponibles : épargne et intérêts composés, emprunt immobilier, indépendance financière (FIRE), budget 50/30/20 et retraite CNAV. Copiez-collez le code HTML et c'est tout — aucune inscription, aucune limite d'utilisation.",
   },
+  '/barometre-retraite': {
+    h1: "Baromètre Retraite France 2026 — Chiffres clés et tendances",
+    intro: "Pension moyenne en France, taux de remplacement par régime, âge moyen de départ à la retraite et projections démographiques jusqu'en 2050 : toutes les données essentielles pour comprendre votre futur système de retraite. Sources : DREES, Conseil d'Orientation des Retraites (COR), INSEE.",
+  },
   '/recherche': {
     h1: "Recherche — simulateurs, guides et articles financiers",
     intro: "Recherchez parmi les simulateurs financiers, guides thématiques et définitions du lexique de simfinly.com. Trouvez rapidement le bon outil ou la bonne explication pour vos questions sur la retraite, l'épargne, l'immobilier ou la fiscalité.",
