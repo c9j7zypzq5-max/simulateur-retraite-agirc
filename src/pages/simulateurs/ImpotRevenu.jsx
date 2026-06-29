@@ -366,6 +366,17 @@ export default function ImpotRevenu() {
                 items.push({ icon: "🏠", label: "Déduisez des charges foncières", description: "Si vous percevez des loyers, le régime réel vous permet de déduire charges et intérêts d'emprunt de vos revenus.", to: "/simulateurs/rendement-locatif", cta: "Simuler →" });
                 return <SimRecommendations items={items.slice(0, 3)} title="Optimisez votre fiscalité" />;
               })()}
+
+              {/* Guide associé */}
+              <a href="/impots/simulateur-impot-revenu" style={{ display: "flex", alignItems: "center", gap: 12, background: "var(--primary-soft, rgba(212,175,55,0.08))", border: "1px solid var(--border-gold, rgba(212,175,55,0.3))", borderRadius: 12, padding: "14px 18px", marginTop: 20, textDecoration: "none", color: "var(--text)" }}>
+                <span style={{ fontSize: 24, flexShrink: 0 }}>💰</span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>Guide barème impôt sur le revenu 2026</div>
+                  <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>5 tranches, quotient familial, décote et 5 leviers pour réduire votre impôt</div>
+                </div>
+                <span style={{ marginLeft: "auto", fontSize: 18, color: "var(--text-secondary)", flexShrink: 0 }}>›</span>
+              </a>
+
               <ScenarioCompare
                 name="impot-revenu"
                 base={{ revenuBrut, nbEnfants }}
