@@ -203,8 +203,8 @@ export default function GuideImpotRevenu() {
         <div style={s.body}>
           <p>La décote protège les contribuables à revenus modestes. En 2026 :</p>
           <ul>
-            <li><strong>Personne seule</strong> : si l'impôt brut < 1 840 €, la décote = 873 − (impôt brut × 45,25 %). L'impôt net = impôt brut − décote.</li>
-            <li><strong>Couple</strong> : si l'impôt brut < 3 045 €, décote = 1 444 − (impôt brut × 45,25 %).</li>
+            <li><strong>Personne seule</strong> : si l'impôt brut &lt; 1 840 €, la décote = 873 − (impôt brut × 45,25 %). L'impôt net = impôt brut − décote.</li>
+            <li><strong>Couple</strong> : si l'impôt brut &lt; 3 045 €, décote = 1 444 − (impôt brut × 45,25 %).</li>
           </ul>
           <p>Cette décote supprime en pratique l'impôt pour environ 40 % des foyers fiscaux.</p>
         </div>
