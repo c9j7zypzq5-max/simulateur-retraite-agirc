@@ -54,13 +54,13 @@ export const STATIC_ARTICLES = [
 <p>Plus que le rendement de vos placements, c'est votre <strong>taux d'épargne</strong> qui détermine la vitesse d'accumulation. Avec 10 % d'épargne, l'indépendance financière prend plusieurs dizaines d'années. À 50 %, la trajectoire peut se réduire à une quinzaine d'années.</p>
 <p>Les intérêts composés jouent sur la durée : 500 € épargnés mensuellement à 6 % pendant 25 ans donnent un capital d'environ 346 000 €. Commencer tôt et réinvestir systématiquement les gains est le moteur de la méthode.</p>
 <h2>Par où commencer ?</h2>
-<p>Calculez d'abord vos dépenses annuelles réelles, puis déterminez votre objectif FIRE. Estimez ensuite le nombre d'années nécessaires selon votre épargne mensuelle et un rendement réaliste (4-7 % pour un portefeuille ETF diversifié, après inflation). Le simulateur FIRE de simfinly.com intègre l'inflation, la fiscalité française et la règle de retrait pour vous donner une trajectoire personnalisée.</p>`
+<p>Calculez d'abord vos dépenses annuelles réelles, puis déterminez votre objectif FIRE. Estimez ensuite le nombre d'années nécessaires selon votre épargne mensuelle et un rendement réaliste (4-7 % pour un portefeuille ETF diversifié, après inflation). Le simulateur FIRE de simfinly.com intègre l'inflation, la fiscalité française et la règle de retrait pour vous donner une trajectoire personnalisée.</p>`,
   faqs: [
     { q: "Combien faut-il épargner pour atteindre l'indépendance financière en France ?", a: "La règle des 4 % recommande d'accumuler 25 fois vos dépenses annuelles. Avec 2 000 €/mois de dépenses, il faut 600 000 €. En France, prévoyez 28-30 fois vos dépenses pour tenir compte de la fiscalité (PFU 30 % sur les gains) et de l'inflation." },
     { q: "Quel placement utiliser pour le FIRE en France ?", a: "La combinaison la plus courante : assurance-vie (fonds euros + UC) pour la liquidité fiscalement avantageuse après 8 ans, PEA pour les actions européennes (exonération après 5 ans), et PER pour défiscaliser pendant la phase d'accumulation. L'immobilier locatif (LMNP) complète souvent le portefeuille." },
     { q: "La retraite anticipée est-elle possible avant 50 ans en France ?", a: "Oui, mais sans accès aux retraites obligatoires (CNAV, Agirc-Arrco) avant l'âge légal. Le FIRE avant 50 ans repose entièrement sur un patrimoine financier suffisant. En pratique, la plupart des FIRE français visent 45-55 ans avec un patrimoine de 600 000 à 1,5 M€." },
     { q: "Comment gérer la fiscalité des retraits en phase FIRE ?", a: "En France, optimisez l'ordre des retraits : d'abord l'assurance-vie (abattement annuel 4 600 €/9 200 €), puis le PEA (exonéré d'IR après 5 ans), enfin le compte-titres ordinaire. Planifiez pour rester sous les tranches marginales d'imposition élevées." },
-  ],,
+  ],
   },
   {
     slug: 'simuler-emprunt-immobilier',
@@ -88,13 +88,13 @@ export const STATIC_ARTICLES = [
 <li><strong>PTZ</strong> : si vous êtes primo-accédant et éligible aux conditions de ressources, le Prêt à Taux Zéro peut couvrir jusqu'à 50 % de l'achat dans le neuf en zones tendues.</li>
 </ul>
 <h2>Simulez avant de négocier</h2>
-<p>Le simulateur d'emprunt immobilier de simfinly.com calcule la mensualité, le coût total du crédit, le taux d'endettement et le tableau d'amortissement à partir de votre montant, taux et durée. Comparez plusieurs scénarios (durée, apport, assurance déléguée) pour aborder la négociation bancaire avec tous les arguments.</p>`
+<p>Le simulateur d'emprunt immobilier de simfinly.com calcule la mensualité, le coût total du crédit, le taux d'endettement et le tableau d'amortissement à partir de votre montant, taux et durée. Comparez plusieurs scénarios (durée, apport, assurance déléguée) pour aborder la négociation bancaire avec tous les arguments.</p>`,
   faqs: [
     { q: "Quelle mensualité pour un emprunt de 200 000 € sur 20 ans en 2026 ?", a: "À un taux de 3,5 % (taux moyen 2026 pour 20 ans), la mensualité hors assurance est d'environ 1 160 €/mois. Le coût total des intérêts sur 20 ans représente environ 78 000 €. Utilisez le simulateur emprunt de simfinly.com pour obtenir le calcul exact selon votre taux." },
     { q: "Quel apport faut-il pour un crédit immobilier en 2026 ?", a: "Les banques exigent en général 10 % du prix d'achat en apport personnel minimum, pour couvrir au moins les frais de notaire (7-8 % dans l'ancien, 2-3 % dans le neuf). Un apport de 20-30 % obtient les meilleurs taux et améliore votre dossier bancaire." },
     { q: "Le taux d'endettement maximum est-il de 35 % en 2026 ?", a: "Oui, depuis 2021 la Banque de France recommande un taux d'endettement maximum de 35 % (mensualités / revenus nets), assurance emprunteur incluse. Les banques peuvent déroger à cette règle pour 20 % des dossiers, principalement en faveur des primo-accédants et des résidences principales." },
     { q: "Faut-il choisir un taux fixe ou variable en 2026 ?", a: "En 2026, avec des taux qui se stabilisent après la hausse de 2022-2023, le taux fixe reste privilégié pour la sécurité et la visibilité. Le taux variable (capé) peut être intéressant si vous envisagez de revendre dans moins de 7 ans, car le spread initial est souvent plus faible." },
-  ],,
+  ],
   },
   {
     slug: 'reforme-retraites-suspension-2026',
@@ -123,13 +123,13 @@ export const STATIC_ARTICLES = [
 <li><strong>Pénibilité (C2P)</strong> : des points acquis via le compte professionnel de prévention permettent toujours de partir plus tôt.</li>
 </ul>
 <h2>Quel impact sur ma pension ?</h2>
-<p>Si la réforme repousse votre âge légal, elle augmente aussi mécaniquement le nombre de trimestres que vous pourrez valider avant de partir. Cela peut légèrement améliorer le montant de votre pension. L'outil de comparaison avant/après réforme de simfinly.com vous permet de chiffrer cet écart pour votre génération et votre niveau de salaire.</p>`
+<p>Si la réforme repousse votre âge légal, elle augmente aussi mécaniquement le nombre de trimestres que vous pourrez valider avant de partir. Cela peut légèrement améliorer le montant de votre pension. L'outil de comparaison avant/après réforme de simfinly.com vous permet de chiffrer cet écart pour votre génération et votre niveau de salaire.</p>`,
   faqs: [
     { q: "La réforme des retraites de 2023 est-elle toujours en vigueur en 2026 ?", a: "La réforme de 2023 (âge légal à 64 ans) reste officiellement en vigueur en 2026, malgré les tentatives politiques d'abrogation. La loi n'a pas été modifiée. L'âge légal de départ reste 64 ans pour les générations nées à partir de 1968, avec une montée en charge progressive depuis septembre 2023." },
     { q: "Peut-on encore partir à 62 ans à la retraite en 2026 ?", a: "Oui, si vous remplissez les conditions de carrière longue (LCAR) : avoir commencé à travailler avant 20 ans et disposer du nombre de trimestres requis (168-172 selon l'année de naissance). Le départ reste possible à 58, 60, ou 62 ans selon les dispositifs carrière longue. Utilisez le simulateur CNAV de simfinly.com pour vérifier votre éligibilité." },
     { q: "Que change la réforme pour les fonctionnaires ?", a: "Les fonctionnaires de la catégorie active (infirmiers, policiers, pompiers...) voient leur âge légal décalé de 2 ans également. Les catégories actives passent de 57 à 59 ans. Les fonctionnaires sédentaires de 62 à 64 ans. Les bonifications d'ancienneté et de service sont maintenues." },
     { q: "Qu'est-ce que la pension minimum à 1 200 € promise par la réforme ?", a: "La réforme de 2023 a revalorisé la pension minimum à 85 % du SMIC net pour une carrière complète, soit environ 1 200 €/mois en 2026. En pratique, seuls les assurés ayant eu de faibles salaires toute leur carrière et disposant de tous leurs trimestres bénéficient de cette revalorisation." },
-  ],,
+  ],
   },
   {
     slug: 'bareme-impot-revenu-2026',
@@ -181,13 +181,13 @@ export const STATIC_ARTICLES = [
 <h2>Remplir son Livret A et son LDDS avant d'aller ailleurs</h2>
 <p>La logique d'allocation classique : LEP d'abord (si éligible), puis Livret A, puis LDDS pour le financement de projets durables. Ces enveloppes défiscalisées constituent l'épargne de précaution idéale (3 à 6 mois de charges). Au-delà des plafonds, les placements à long terme (PEA, assurance-vie, PER) prennent le relais avec un potentiel de rendement supérieur, mais avec plus de risque.</p>
 <h2>Projeter son épargne réglementée</h2>
-<p>Le simulateur d'épargne de simfinly.com vous permet de comparer l'accumulation sur Livret A, assurance-vie ou ETF sur différents horizons. Intégrez l'inflation pour visualiser votre rendement réel et décider du bon moment pour diversifier vers des supports plus dynamiques.</p>`
+<p>Le simulateur d'épargne de simfinly.com vous permet de comparer l'accumulation sur Livret A, assurance-vie ou ETF sur différents horizons. Intégrez l'inflation pour visualiser votre rendement réel et décider du bon moment pour diversifier vers des supports plus dynamiques.</p>`,
   faqs: [
     { q: "Quel est le taux du Livret A en 2026 ?", a: "Le taux du Livret A est fixé à 2,4 % en 2026, après la baisse de février 2025 (il était à 3 % en 2024). Ce taux est net d'impôts et de prélèvements sociaux car les intérêts du Livret A sont entièrement exonérés. Le plafond reste de 22 950 €." },
     { q: "Qui peut ouvrir un LEP (Livret d'Épargne Populaire) en 2026 ?", a: "Le LEP est réservé aux personnes dont le revenu fiscal de référence ne dépasse pas un plafond (environ 22 400 € pour une personne seule en 2026). Son taux est supérieur au Livret A (3 % en 2026) et son plafond est de 10 000 €. Si vous y êtes éligible, le LEP doit être votre priorité avant le Livret A." },
     { q: "Peut-on avoir plusieurs Livrets A ?", a: "Non, un seul Livret A par personne physique est autorisé par la loi. Ouvrir plusieurs Livrets A est interdit et expose à des pénalités fiscales (imposition des intérêts). Le plafond familial peut être atteint en ouvrant un Livret A pour chaque membre du foyer (y compris les enfants mineurs) et en complétant avec le LDDS." },
     { q: "Faut-il remplir son Livret A avant d'investir en Bourse ?", a: "La règle classique : constituez d'abord une épargne de précaution de 3-6 mois de dépenses en Livret A (ou LEP) avant tout investissement en actions. Cette épargne doit être liquide et sans risque. Au-delà de cette réserve, les placements à long terme (PEA, assurance-vie, PER) offrent des rendements espérés supérieurs." },
-  ],,
+  ],
   },
   {
     slug: 'ptz-2026-elargi-tout-le-territoire',
@@ -214,13 +214,13 @@ export const STATIC_ARTICLES = [
 <h2>Les conditions de ressources</h2>
 <p>Le PTZ est soumis à des plafonds de revenus (revenu fiscal de référence N-2). Ces plafonds varient selon la zone et la composition du foyer. Au-delà, le prêt n'est pas accessible. En dessous, les revenus les plus faibles bénéficient du différé de remboursement le plus long.</p>
 <h2>Vérifiez votre éligibilité</h2>
-<p>Le simulateur PTZ de simfinly.com calcule votre montant potentiel selon votre zone, vos revenus et la composition de votre foyer. Intégrez-le à votre plan de financement pour mesurer l'économie réelle sur le coût total de l'acquisition.</p>`
+<p>Le simulateur PTZ de simfinly.com calcule votre montant potentiel selon votre zone, vos revenus et la composition de votre foyer. Intégrez-le à votre plan de financement pour mesurer l'économie réelle sur le coût total de l'acquisition.</p>`,
   faqs: [
     { q: "Qui peut bénéficier du PTZ en 2026 ?", a: "Le PTZ 2026 (élargi à tout le territoire pour les logements neufs) est réservé aux primo-accédants (n'avoir pas été propriétaire de sa résidence principale dans les 2 dernières années) avec des revenus sous les plafonds zonés (ex : zone A bis, couple sans enfant : 88 000 €). Le logement doit devenir la résidence principale dans les 12 mois." },
     { q: "Quel est le montant maximum du PTZ en 2026 ?", a: "Le PTZ peut représenter jusqu'à 50 % du coût total de l'opération pour les zones A bis et A, 40 % pour la zone B1, et 20 % pour les zones B2 et C. Le montant maximum dépend du nombre de personnes et de la zone. Pour un 3 pièces en zone A bis (4 personnes), le montant PTZ peut atteindre 138 000 €." },
     { q: "Peut-on cumuler PTZ et prêt Action Logement ?", a: "Oui, le PTZ est cumulable avec le prêt Action Logement (ex-1 % logement, jusqu'à 30 000 € à taux réduit), un éco-PTZ si l'opération est performante énergétiquement, et les aides locales (certaines régions ont leurs propres prêts à 0 %). Vous pouvez donc cumuler plusieurs prêts bonifiés pour réduire le coût total." },
     { q: "Le PTZ doit-il être remboursé en cas de revente ?", a: "Si vous revendez avant la fin du PTZ, le capital restant dû devient immédiatement exigible. Vous devrez rembourser la partie restante du PTZ lors de la vente, ce qui est généralement couvert par le produit de vente si la valeur du bien a maintenu ou augmenté. Les conditions de remboursement anticipé sont sans pénalité sur le PTZ." },
-  ],,
+  ],
   },
   {
     slug: 'assurance-vie-2026-fonds-euros-fiscalite',
@@ -246,13 +246,13 @@ export const STATIC_ARTICLES = [
 <li><strong>Horizon long (10 ans et plus)</strong> : 60-80 % d'UC peut être pertinent pour un profil dynamique.</li>
 </ul>
 <h2>Calculez votre projection</h2>
-<p>Le simulateur d'assurance-vie de simfinly.com projette votre capital selon le taux, les versements et la durée, et calcule la fiscalité à la sortie avant et après 8 ans pour vous aider à optimiser vos rachats.</p>`
+<p>Le simulateur d'assurance-vie de simfinly.com projette votre capital selon le taux, les versements et la durée, et calcule la fiscalité à la sortie avant et après 8 ans pour vous aider à optimiser vos rachats.</p>`,
   faqs: [
     { q: "Quel est le rendement des fonds euros en 2026 ?", a: "Les fonds euros affichent en moyenne 2,6 à 3,8 % de rendement net en 2026 (selon les assureurs et les contrats). Les meilleurs contrats distribués en ligne dépassent 3,5 %. Ce rendement est net de frais de gestion mais avant prélèvements sociaux (17,2 %) qui sont prélevés annuellement sur les intérêts." },
     { q: "Quelle fiscalité s'applique aux retraits d'assurance-vie après 8 ans ?", a: "Après 8 ans, les gains retirés bénéficient d'un abattement annuel de 4 600 € (célibataire) ou 9 200 € (couple). Au-delà de cet abattement, le taux d'imposition sur les gains est de 7,5 % (+ 17,2 % de prélèvements sociaux) pour les versements avant 150 000 €, et 12,8 % au-delà." },
     { q: "Peut-on retirer son argent d'une assurance-vie à tout moment ?", a: "Oui, les retraits (rachats partiels ou totaux) sont possibles à tout moment, sans condition. Il n'y a pas de blocage. La fiscalité varie selon l'ancienneté du contrat : plus avantageuse après 8 ans. En cas de besoin urgent, le délai de traitement est généralement de 5-10 jours ouvrés après la demande de rachat." },
     { q: "Quelle est la différence entre assurance-vie et PER pour préparer la retraite ?", a: "L'assurance-vie est plus flexible (rachats à tout moment), la fiscalité à 8 ans est avantageuse pour tous. Le PER bloque l'épargne jusqu'à la retraite (sauf cas exceptionnels) mais offre une déductibilité fiscale des versements (jusqu'à 10 % des revenus). PER = levier fiscal pendant l'activité. Assurance-vie = flexibilité et transmission optimisée." },
-  ],,
+  ],
   },
   {
     slug: 'per-2026-plafonds-deduction-nouveautes',
@@ -349,13 +349,13 @@ export const STATIC_ARTICLES = [
 <h2>Infirmière contractuelle : régime général + Agirc-Arrco</h2>
 <p>Les infirmières <strong>contractuelles</strong> de la FPH n'ont pas la qualité de fonctionnaire titulaire : elles relèvent du régime général (CNAV) et de l'Agirc-Arrco. L'âge légal est celui de la réforme 2023 (64 ans pour les générations 1968+). En cas de titularisation ultérieure, les périodes contractuelles peuvent être prises en compte sous conditions.</p>
 <h2>Estimez votre pension</h2>
-<p>Le simulateur retraite infirmière de simfinly.com distingue catégorie active et sédentaire, calcule la pension CNRACL sur la base de votre indice de rémunération et y additionne la rente RAFP estimée. Comparez différents âges de départ pour mesurer le coût d'un départ anticipé.</p>`
+<p>Le simulateur retraite infirmière de simfinly.com distingue catégorie active et sédentaire, calcule la pension CNRACL sur la base de votre indice de rémunération et y additionne la rente RAFP estimée. Comparez différents âges de départ pour mesurer le coût d'un départ anticipé.</p>`,
   faqs: [
     { q: "À quel âge une infirmière hospitalière peut-elle partir à la retraite en 2026 ?", a: "Une infirmière fonctionnaire hospitalière (catégorie active) peut partir à 59 ans depuis la réforme de 2023 (ancien âge : 57 ans). Pour partir à 59 ans, elle doit justifier de 17 ans de services actifs. Le maintien en catégorie active exige d'exercer effectivement des soins auprès des patients." },
     { q: "Comment est calculée la pension de retraite d'une infirmière fonctionnaire ?", a: "La pension CNRACL se calcule : (traitement indiciaire de base × 75 %) × (durée des services / durée de référence). La durée de référence est 172 trimestres pour la génération 1968. Le traitement de base est le dernier traitement brut des 6 derniers mois. La NBI (nouvelle bonification indiciaire) n'entre pas dans le calcul." },
     { q: "Une infirmière peut-elle cumuler pension FPH et revenus d'activité libérale ?", a: "Oui, le cumul emploi-retraite est possible. Après liquidation de la pension CNRACL, une infirmière peut exercer en libéral ou salarié. Les revenus sont soumis à cotisations sociales normales. Si elle reprend une activité de fonctionnaire, la pension peut être suspendue selon les conditions de cumul." },
     { q: "Quelle est la différence entre retraite CNRACL et retraite CNAVTS pour les infirmières ?", a: "Les infirmières hospitalières titulaires relèvent de la CNRACL (Caisse nationale de retraite des agents des collectivités locales). Les infirmières libérales cotisent à la CNAVTS (sécurité sociale) + CARPIMKO (caisse professionnelle). Les non-titulaires hospitaliers (contractuels) relèvent du régime général (CNAV)." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-enseignant-education-nationale-calcul',
@@ -381,13 +381,13 @@ export const STATIC_ARTICLES = [
 <h2>Enseignants du privé sous contrat : régime général</h2>
 <p>Les enseignants du <strong>privé sous contrat</strong> (établissements catholiques, laïcs…) sont rémunérés par l'État mais relèvent du régime général (CNAV) et de l'Agirc-Arrco. L'âge légal et les règles de calcul sont ceux du droit commun. Leurs droits sont souvent inférieurs à ceux de leurs collègues du public à salaire indiciaire équivalent, en raison du plafonnement du SAM au PASS.</p>
 <h2>Calculez votre pension</h2>
-<p>Le simulateur retraite enseignant de simfinly.com calcule votre pension CNRACL selon votre indice de rémunération, votre durée de service et votre génération. Comparez les scénarios de départ à 62 ans (carrière longue si applicable), 64 ans et 67 ans pour chiffrer le gain ou la perte selon votre situation.</p>`
+<p>Le simulateur retraite enseignant de simfinly.com calcule votre pension CNRACL selon votre indice de rémunération, votre durée de service et votre génération. Comparez les scénarios de départ à 62 ans (carrière longue si applicable), 64 ans et 67 ans pour chiffrer le gain ou la perte selon votre situation.</p>`,
   faqs: [
     { q: "Quel est l'âge de retraite d'un enseignant fonctionnaire en 2026 ?", a: "Un enseignant de l'Éducation nationale (catégorie sédentaire) part à la retraite à 64 ans minimum depuis la réforme de 2023. La durée de cotisation requise est 172 trimestres (génération 1968 et après). Un enseignant ayant commencé à 24 ans devra travailler jusqu'à 67 ans s'il n'a pas ses 172 trimestres à 64 ans." },
     { q: "Comment est calculée la pension de retraite d'un professeur ?", a: "Pension SFP = traitement indiciaire brut × taux de liquidation × coefficient de proratisation. Le taux maximum est 75 % pour une carrière complète. Les primes (ISOE, ISAE) ne sont pas intégrées dans la pension SFP mais compensées partiellement par la RAFP (Retraite Additionnelle de la Fonction Publique, env. 50-150 €/mois)." },
     { q: "La RAFP (retraite additionnelle) est-elle significative pour les enseignants ?", a: "La RAFP représente en général 50 à 200 €/mois pour un enseignant avec une carrière complète, selon son taux de primes. Elle est liquidée sous forme de capital si les droits sont faibles (moins de 4 points/an pendant moins de 15 ans) ou de rente. Elle est versée en plus de la pension SFP." },
     { q: "Un enseignant peut-il racheter des trimestres pour partir plus tôt ?", a: "Oui, les rachats de trimestres (années d'études, années incomplètes) sont possibles pour les enseignants fonctionnaires, dans la limite de 12 trimestres. Le coût est calculé selon un barème officiel lié à l'âge et au traitement. Les rachats effectués tôt dans la carrière sont moins coûteux." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-agriculteur-msa-exploitant',
@@ -417,13 +417,13 @@ export const STATIC_ARTICLES = [
 <h2>L'âge de départ et les spécificités agricoles</h2>
 <p>L'âge légal s'aligne progressivement sur le droit commun (64 ans pour les générations 1968+). Les exploitants ayant commencé à travailler très jeune (avant 18 ans) peuvent bénéficier du dispositif <em>carrières longues</em> pour partir avant l'âge légal. Les trimestres de service militaire et les périodes d'aide familiale dûment déclarées sont pris en compte.</p>
 <h2>Simulez votre retraite agricole</h2>
-<p>Le simulateur retraite agricole de simfinly.com calcule votre pension MSA de base, votre rente RCO estimée et vérifie si vous avez droit au minimum garanti. Intégrez vos périodes d'aide familiale, de service militaire et vos années d'installation pour obtenir une estimation complète.</p>`
+<p>Le simulateur retraite agricole de simfinly.com calcule votre pension MSA de base, votre rente RCO estimée et vérifie si vous avez droit au minimum garanti. Intégrez vos périodes d'aide familiale, de service militaire et vos années d'installation pour obtenir une estimation complète.</p>`,
   faqs: [
     { q: "Quel est l'âge de retraite des agriculteurs exploitants en 2026 ?", a: "L'âge légal de retraite des agriculteurs affiliés à la MSA est 64 ans depuis la réforme de 2023 (62 ans auparavant). Des dispositifs de départ anticipé existent pour carrière longue (début avant 20 ans) et pour pénibilité. La pension complète nécessite 172 trimestres (génération 1968)." },
     { q: "Comment est calculée la retraite d'un agriculteur exploitant MSA ?", a: "La pension MSA se compose de deux parties : (1) la retraite de base proportionnelle aux revenus (identique au régime général CNAV), et (2) la retraite complémentaire (RCO) obligatoire depuis 2003. La pension minimale garantie est en cours de revalorisation vers 85 % du SMIC pour une carrière complète." },
     { q: "Qu'est-ce que la retraite complémentaire obligatoire (RCO) agricole ?", a: "La RCO est une retraite complémentaire par points obligatoire pour les non-salariés agricoles (chef d'exploitation, aide familiale). Les cotisations ouvrent des droits à points depuis 2003. Pour les agriculteurs plus anciens, une compensation en points a été attribuée pour les années antérieures à 2003 (mais dans des conditions variables)." },
     { q: "Un agriculteur peut-il cumuler retraite et exploitation en 2026 ?", a: "Oui, depuis la loi 2023, le cumul emploi-retraite est assoupli. Un retraité agricole peut maintenir une activité d'exploitant limitée et percevoir intégralement sa pension. Au-delà d'un certain seuil de revenus, des cotisations supplémentaires sont dues sans créer de nouveaux droits à retraite." },
-  ],,
+  ],
   },
   {
     slug: 'droits-succession-suisse-cantons-heritiers',
@@ -448,13 +448,13 @@ export const STATIC_ARTICLES = [
 <h2>La résidence du défunt détermine le droit applicable</h2>
 <p>En Suisse, c'est le <strong>dernier domicile du défunt</strong> qui détermine le canton compétent — à l'exception des immeubles, soumis au droit du canton où ils sont situés. Un résident genevois laissant un immeuble à Zurich verra son immeuble taxé selon le droit zurichois (0 % pour les enfants) mais ses avoirs mobiliers selon le droit genevois.</p>
 <h2>Simulez les droits de succession suisses</h2>
-<p>Le simulateur droits de succession Suisse de simfinly.com calcule l'impôt dû canton par canton selon le lien de parenté, le montant de l'héritage et la nature des biens. Comparez plusieurs cantons pour des successions impliquant des biens dans des cantons différents.</p>`
+<p>Le simulateur droits de succession Suisse de simfinly.com calcule l'impôt dû canton par canton selon le lien de parenté, le montant de l'héritage et la nature des biens. Comparez plusieurs cantons pour des successions impliquant des biens dans des cantons différents.</p>`,
   faqs: [
     { q: "Y a-t-il un impôt de succession entre époux en Suisse ?", a: "Non, dans tous les cantons suisses, la transmission entre époux est exonérée de droits de succession (et dans la grande majorité des cantons, entre parents et enfants aussi). Les Cantons de Vaud, Genève, Neuchâtel et quelques autres exemptent également les enfants directs. La Suisse est globalement bien plus favorable que la France en matière de succession." },
     { q: "Quel canton suisse est le plus favorable pour la succession ?", a: "Les cantons de Zoug, Schwyz, Uri, et Obwald n'ont pas du tout d'impôt sur les successions entre non-proches. Pour les héritiers non-apparentés (comme les concubins), les taux varient de 10 à 50 % selon le canton. Genève et Vaud appliquent des taux progressifs pour les héritiers éloignés." },
     { q: "La Suisse taxe-t-elle les héritages reçus de l'étranger ?", a: "Un héritier résident en Suisse reçoit un héritage étranger : la Suisse ne taxe pas cet héritage dans la plupart des cas (elle impose en fonction du domicile du défunt ou du bien, pas du bénéficiaire). Mais si le défunt était Suisse résidant en France, l'héritage peut être taxé par la France. Il faut vérifier la convention fiscale franco-suisse." },
     { q: "Comment éviter les droits de succession en Suisse pour les non-proches ?", a: "En Suisse, les stratégies courantes incluent : les donations du vivant (pas imposées entre proches et peu taxées entre tiers dans de nombreux cantons), la constitution d'une fondation privée (pour patrimoines importants), et le choix du canton de résidence (Zoug, Schwyz offrent une grande latitude). Un notaire suisse et un fiscaliste sont indispensables." },
-  ],,
+  ],
   },
   {
     slug: 'age-depart-retraite-generation-2026',
@@ -774,13 +774,13 @@ export const STATIC_ARTICLES = [
 <h2>Les 8 cas de déblocage anticipé du PEE</h2>
 <p>Mariage/PACS, naissance du 3e enfant, divorce avec garde, invalidité, décès, création d'entreprise, acquisition de la résidence principale, rupture du contrat de travail.</p>
 <h2>Projeter son épargne salariale</h2>
-<p>Le simulateur d'épargne salariale de simfinly.com calcule la valeur de votre PEE ou PERcol selon vos versements, l'abondement et un rendement estimé. Comparez la performance nette avec un livret A ou une assurance-vie.</p>`
+<p>Le simulateur d'épargne salariale de simfinly.com calcule la valeur de votre PEE ou PERcol selon vos versements, l'abondement et un rendement estimé. Comparez la performance nette avec un livret A ou une assurance-vie.</p>`,
   faqs: [
     { q: "Que vaut le PEE (Plan d'Épargne Entreprise) en 2026 ?", a: "Le PEE est un placement collectif bloqué 5 ans (sauf déblocage exceptionnel) sur lequel l'entreprise verse un abondement (jusqu'à 3 fois les versements volontaires, dans la limite de 8 % du PASS = 3 768 € en 2026). Les investissements sont exonérés d'IR à la sortie (mais soumis aux prélèvements sociaux 17,2 %)." },
     { q: "Quand peut-on débloquer son PEE de manière anticipée ?", a: "Les cas de déblocage anticipé du PEE (sans attendre 5 ans) incluent : mariage/PACS, naissance/adoption du 3e enfant, divorce/séparation, invalidité, décès, rupture du contrat de travail (licenciement, démission), création d'entreprise, achat de la résidence principale. Ces cas permettent de récupérer les sommes sans pénalité fiscale." },
     { q: "Quelle différence entre PERCO et PER collectif (PERECO) en 2026 ?", a: "Depuis 2019, les PERCO ont été transformés en PER collectifs (PERECO). Le principe reste similaire : épargne retraite collective avec abondement entreprise. La principale différence est que le PER collectif permet une sortie en capital à la retraite (contrairement au PERCO qui imposait une sortie en rente par défaut). Les versements volontaires dans un PERECO sont déductibles du revenu imposable." },
     { q: "L'abondement de l'entreprise est-il toujours exonéré de charges ?", a: "L'abondement versé par l'entreprise est exonéré de charges sociales dans la limite de 8 % du PASS (3 768 € en 2026) pour le PEE, et de 16 % du PASS pour le PERECO. Il est toutefois soumis à la CSG/CRDS (9,7 %). Pour le salarié, l'abondement reçu est exonéré d'impôt sur le revenu, c'est donc un avantage net très significatif." },
-  ],,
+  ],
   },
   // === Vague 3 — Articles prioritaires (commit 4A) ===
   {
@@ -873,13 +873,13 @@ export const STATIC_ARTICLES = [
 <p>Isoler ses combles (coût : 2 000-6 000 €) permet d'économiser en moyenne 15-20 % sur la facture de chauffage annuelle. Pour une maison à 2 500 €/an de chauffage, l'économie est de 375-500 €/an. Le retour sur investissement (sans aide) est de 4-16 ans. Avec les aides (30-70 %), le ROI tombe à 2-5 ans pour les foyers modestes.</p>
 <p>Pour les propriétaires bailleurs, rénover un F ou G en D ou E permet de relever les loyers de 3-8 % et d'éviter l'interdiction de location. L'investissement se rentabilise via les loyers supplémentaires et l'évitement des pénalités.</p>
 <h2>Comment simuler le bénéfice d'une rénovation ?</h2>
-<p>Commencez par un audit énergétique (obligatoire pour les passoires thermiques vendues) qui chiffre précisément les gains possibles par type de travaux. Les simulateurs France Rénov' et de simfinly.com permettent d'estimer l'aide disponible selon vos revenus, le type de logement et les travaux envisagés.</p>`
+<p>Commencez par un audit énergétique (obligatoire pour les passoires thermiques vendues) qui chiffre précisément les gains possibles par type de travaux. Les simulateurs France Rénov' et de simfinly.com permettent d'estimer l'aide disponible selon vos revenus, le type de logement et les travaux envisagés.</p>`,
   faqs: [
     { q: "Quelle aide pour rénover un logement classé F ou G en 2026 ?", a: "Pour les passoires thermiques (étiquettes F/G), MaPrimeRénov' 2026 finance jusqu'à 70 % des travaux de rénovation globale (ménages très modestes). Le reste à charge peut être couvert par l'éco-PTZ (jusqu'à 50 000 €, sans intérêts). Les CEE (Certificats d'Économies d'Énergie) apportent un bonus supplémentaire selon les travaux." },
     { q: "La vente d'une passoire thermique est-elle interdite en 2026 ?", a: "Non, la vente de logements F/G n'est pas interdite en 2026. En revanche, leur location à de nouveaux locataires est progressivement encadrée : les G les plus énergivores (G+) ne peuvent plus être mis en location depuis 2025. L'interdiction s'étend aux G en 2025 et aux F à partir de 2028." },
     { q: "Combien coûte un DPE en 2026 ?", a: "Un DPE (Diagnostic de Performance Énergétique) réalisé par un diagnostiqueur certifié coûte entre 100 et 250 € selon la taille du bien et la région. Il est obligatoire pour toute vente ou location depuis 2006, et sa validité est de 10 ans (sauf si des travaux importants ont été réalisés depuis). Les DPE réalisés avant 2021 sont caducs depuis le 1er janvier 2025." },
     { q: "Quels travaux permettent de passer d'étiquette G à D ou C ?", a: "Les travaux les plus efficaces pour améliorer l'étiquette DPE : isolation des combles (gain de 1-2 lettres), isolation des murs (gain de 1-2 lettres), remplacement de la chaudière fioul par une pompe à chaleur (gain de 1-3 lettres), et remplacement des fenêtres simples vitrage (gain partiel). Un audit énergétique préalable (obligatoire pour F/G) identifie les priorités." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-medecin-liberal-carmf-2026',
@@ -902,13 +902,13 @@ export const STATIC_ARTICLES = [
 <p>Les médecins libéraux relèvent du régime des professions libérales — l'âge légal est identique au régime général : <strong>64 ans</strong> pour les générations nées à partir de 1968. La durée requise pour le taux plein varie selon la génération (168-172 trimestres).</p>
 <p>Particularité : un médecin peut continuer à exercer et cotiser au-delà de 64 ans et bénéficier d'une <em>surcote</em> sur les régimes CARMF. Il est aussi possible de liquidier l'ASV à partir de 62 ans tout en continuant à exercer (cumul emploi-retraite libéral).</p>
 <h2>Estimer sa pension CARMF et ASV</h2>
-<p>La pension totale d'un médecin libéral à taux plein est typiquement de <strong>4 000-7 000 €/mois brut</strong> selon le niveau de revenus et la durée de carrière. Le simulateur retraite médecin libéral de simfinly.com projette vos droits CARMF et ASV selon votre spécialité, secteur et revenus annuels BNC.</p>`
+<p>La pension totale d'un médecin libéral à taux plein est typiquement de <strong>4 000-7 000 €/mois brut</strong> selon le niveau de revenus et la durée de carrière. Le simulateur retraite médecin libéral de simfinly.com projette vos droits CARMF et ASV selon votre spécialité, secteur et revenus annuels BNC.</p>`,
   faqs: [
     { q: "Comment fonctionne la retraite des médecins libéraux via la CARMF ?", a: "La CARMF (Caisse Autonome de Retraite des Médecins de France) gère trois régimes : (1) le régime de base aligné sur le régime général (CNAV), (2) le régime complémentaire ASV (Allocation Supplémentaire de Vieillesse, spécifique aux conventionnés), et (3) le régime de prévoyance. Les cotisations sont calculées sur les revenus nets BNC." },
     { q: "Quel est l'âge de retraite d'un médecin libéral en 2026 ?", a: "Un médecin libéral peut partir à la retraite à 64 ans (âge légal post-réforme 2023). Pour une pension à taux plein CARMF, il faut 172 trimestres (génération 1968). Les médecins peuvent continuer à exercer au-delà de 70 ans (pas de limite d'âge en libéral) et cumuler pension et revenus." },
     { q: "Qu'est-ce que l'ASV (Allocation Supplémentaire de Vieillesse) pour les médecins ?", a: "L'ASV est une retraite complémentaire spécifique aux médecins conventionnés secteurs 1 et 2. Elle est financée à 2/3 par l'Assurance Maladie et 1/3 par le médecin. Les cotisations ASV ouvrent des droits à points. Un médecin généraliste avec une carrière complète reçoit environ 800-1 200 €/mois d'ASV en plus de la retraite de base." },
     { q: "Comment optimiser sa retraite de médecin libéral ?", a: "Les stratégies principales : ouvrir un PER Madelin le plus tôt possible (déductible des BNC, jusqu'à 85 % du PASS soit ~40 000 €/an), maximiser les versements volontaires CARMF, envisager une SELARL pour lisser les revenus et cotiser plus efficacement, et planifier la cession de patientèle (valorisée 30-80 k€) comme complément de capital." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-artisan-commercant-ssi-2026',
@@ -930,13 +930,13 @@ export const STATIC_ARTICLES = [
 <p>Le taux de remplacement (ratio pension/dernier revenu) est souvent plus faible pour les artisans et commerçants que pour les salariés. Raison principale : les revenus déclarés (bénéfice net) sont parfois inférieurs au chiffre d'affaires réel, car les charges professionnelles sont déduites. La pension de retraite est calculée sur ces revenus nets.</p>
 <p>Pour compenser, les indépendants ont accès à une épargne retraite déductible plus généreuse via le <strong>PER TNS</strong> : jusqu'à 85 780 € de versements déductibles par an (10 % du bénéfice imposable + 15 % de la fraction entre 1 et 8 PASS).</p>
 <h2>Préparer sa sortie d'activité</h2>
-<p>Un artisan/commerçant peut opter pour la <strong>retraite progressive</strong> s'il réduit son activité, ou céder son entreprise (exonérations de plus-values sous conditions). La cession du fonds de commerce peut générer une plus-value partiellement défiscalisée qui complète la retraite. Le simulateur retraite artisan de simfinly.com projette votre pension SSI selon vos revenus annuels BIC et votre âge de départ.</p>`
+<p>Un artisan/commerçant peut opter pour la <strong>retraite progressive</strong> s'il réduit son activité, ou céder son entreprise (exonérations de plus-values sous conditions). La cession du fonds de commerce peut générer une plus-value partiellement défiscalisée qui complète la retraite. Le simulateur retraite artisan de simfinly.com projette votre pension SSI selon vos revenus annuels BIC et votre âge de départ.</p>`,
   faqs: [
     { q: "Comment fonctionne le SSI (ex-RSI) pour la retraite des artisans et commerçants ?", a: "Le SSI (Sécurité Sociale des Indépendants), intégré au régime général depuis 2020, gère les cotisations retraite des artisans et commerçants. Ils cotisent au régime de base (CNAV, comme les salariés) et au régime complémentaire SSI (RCI). Les taux de cotisation sont calculés sur le revenu professionnel net." },
     { q: "Quel est le montant de la retraite d'un artisan ou commerçant ?", a: "Un artisan/commerçant avec 40 ans de carrière et un revenu moyen de 30 000 €/an reçoit environ 1 200-1 600 €/mois de pension totale (base CNAV + complémentaire RCI). Le taux de remplacement est d'environ 50-60 %, moins élevé que les salariés en raison de revenus déclarés souvent plus faibles." },
     { q: "Un artisan à la retraite peut-il continuer à exercer ?", a: "Oui, le cumul emploi-retraite est possible pour les artisans. Depuis 2023, il est plus avantageux : les cotisations versées après la liquidation ouvrent de nouveaux droits à retraite. L'artisan peut exercer à titre accessoire et percevoir sa pension complète dès lors que sa pension est liquidée à taux plein." },
     { q: "Quelle est la différence de retraite entre artisan et auto-entrepreneur ?", a: "Un auto-entrepreneur cotise un pourcentage forfaitaire de son CA (12,3 % pour les activités de vente, 22 % pour les services). Ces cotisations sont souvent insuffisantes pour des droits retraite significatifs. Un artisan en régime réel BIC cotise sur ses bénéfices réels et peut déduire ses charges, générant généralement de meilleurs droits retraite à revenus équivalents." },
-  ],,
+  ],
   },
   {
     slug: 'comprendre-cotisations-sociales-2026',
@@ -964,13 +964,13 @@ export const STATIC_ARTICLES = [
 <tr style="background:#f9fafb"><td style="padding:8px;border:1px solid #e5e7eb">Chômage (Assédic)</td><td style="padding:8px;border:1px solid #e5e7eb">Allocation chômage en cas de perte d'emploi</td></tr>
 </tbody></table>
 <h2>Simuler son revenu net</h2>
-<p>Pour calculer votre salaire net à partir d'un brut, ou votre coût total employeur, le simulateur de simfinly.com intègre les taux 2026 selon le statut (cadre ou non-cadre) et prend en compte les allègements de cotisations patronales sur les bas salaires (allègement Fillon).</p>`
+<p>Pour calculer votre salaire net à partir d'un brut, ou votre coût total employeur, le simulateur de simfinly.com intègre les taux 2026 selon le statut (cadre ou non-cadre) et prend en compte les allègements de cotisations patronales sur les bas salaires (allègement Fillon).</p>`,
   faqs: [
     { q: "Quelle est la différence entre cotisations salariales et patronales ?", a: "Les cotisations salariales sont prélevées sur le salaire brut du salarié (environ 22-25 % pour un cadre) et réduisent son salaire net. Les cotisations patronales sont à la charge de l'employeur (environ 42-45 % du salaire brut) et s'ajoutent au coût total du travail. Le total représente environ 65-70 % du salaire net pour le coût employeur." },
     { q: "À quoi servent les cotisations sociales en France ?", a: "Les cotisations sociales financent : la retraite (CNAV, Agirc-Arrco), la maladie (remboursements soins, indemnités journalières), la famille (allocations familiales, congé parental), le chômage (ARE, allocation de retour à l'emploi), et la dépendance (CASA). En France, le système est contributif : plus on cotise, plus on a de droits." },
     { q: "Combien coûtent les cotisations sociales d'un TNS (travailleur non-salarié) ?", a: "Un TNS (artisan, commerçant, profession libérale) cotise environ 45 % de son revenu net professionnel (contre 65-70 % du salaire net pour un salarié+employeur). Les TNS bénéficient de taux légèrement plus bas mais ont des prestations moins élevées (pas de chômage, prévoyance plus faible). L'auto-entrepreneur cotise moins mais reçoit aussi moins de droits." },
     { q: "Peut-on réduire ses cotisations sociales légalement ?", a: "Oui, plusieurs dispositifs légaux permettent de réduire la base de cotisation : en SELARL ou SAS pour les professions libérales (optimisation de la rémunération vs dividendes), le régime micro-entrepreneur (forfait fixe), les exonérations pour les créateurs d'entreprise (ACRE les premières années). Ces stratégies doivent être validées par un expert-comptable." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-cadre-agirc-arrco-calcul',
@@ -1093,13 +1093,13 @@ export const STATIC_ARTICLES = [
 <h2>Les mesures concernant l'immobilier</h2>
 <p>La loi de finances 2026 maintient le PTZ élargi (décret 2025) à tout le territoire y compris dans l'ancien. Le dispositif de déficit foncier reste plafonné à 10 700 €/an sur le revenu global (21 400 € pour rénovation énergétique). Aucune modification du régime des plus-values immobilières (exonération après 22 ans de propriété, 30 ans pour les prélèvements sociaux).</p>
 <h2>Retraite et cotisations</h2>
-<p>Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 est fixé à 47 100 € (+3,5 % vs 2025). Ce plafond conditionne de nombreux calculs : cotisations retraite, plafonds PER, prestations sociales. Le simulateur IR de simfinly.com intègre le barème 2026 actualisé pour calculer votre impôt sur les revenus 2025.</p>`
+<p>Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 est fixé à 47 100 € (+3,5 % vs 2025). Ce plafond conditionne de nombreux calculs : cotisations retraite, plafonds PER, prestations sociales. Le simulateur IR de simfinly.com intègre le barème 2026 actualisé pour calculer votre impôt sur les revenus 2025.</p>`,
   faqs: [
     { q: "Quel est le nouveau barème de l'impôt sur le revenu 2026 ?", a: "Le barème IR 2026 a été revalorisé de +1,6 % pour tenir compte de l'inflation. Les tranches 2026 : 0 % jusqu'à 11 294 €, 11 % de 11 294 à 28 797 €, 30 % de 28 797 à 82 341 €, 41 % de 82 341 à 177 106 €, 45 % au-delà. La déclaration des revenus 2025 est effectuée avec ce barème." },
     { q: "Le PTZ a-t-il été élargi par la loi de finances 2026 ?", a: "Oui, la loi de finances 2026 a pérennisé et élargi le PTZ à l'ensemble du territoire pour les logements neufs (y compris les zones B2 et C qui étaient exclues). Les plafonds de ressources ont été légèrement relevés et le taux peut atteindre 50 % en zone tendue pour les ménages modestes." },
     { q: "Quel est le PASS 2026 et pourquoi est-il important ?", a: "Le Plafond Annuel de la Sécurité Sociale (PASS) 2026 est fixé à 47 100 € (contre 46 368 € en 2025, soit +1,6 %). Il sert de base de calcul pour les plafonds de cotisation retraite (PER : 10 % du PASS = 4 710 €), les seuils du régime micro-social, les indemnités journalières, et de nombreuses autres prestations sociales." },
     { q: "Quelles sont les principales mesures fiscales de la LFI 2026 pour les ménages ?", a: "Principales mesures 2026 : (1) Revalorisation barème IR +1,6 % ; (2) Crédit d'impôt pour rénovation énergétique maintenu (MaPrimeRénov') ; (3) Exonération de plus-values immobilières pour les cessions à des bailleurs sociaux prorogée ; (4) Plafond de déduction PER revalorisé à 37 680 € (8 × PASS). Consultez le simulateur impôt de simfinly.com pour vos simulations." },
-  ],,
+  ],
   },
   {
     slug: 'scpi-investir-pierre-papier-2026',
@@ -1216,13 +1216,13 @@ export const STATIC_ARTICLES = [
 <h2>Exemple concret à 60 ans</h2>
 <p>Un parent de 60 ans donne la nue-propriété d'un appartement valant 300 000 € à son enfant. La nue-propriété représente 50 % = 150 000 €. Avec l'abattement de 100 000 € par parent par enfant, les droits de donation s'appliquent sur 50 000 €. Au barème des donations en ligne directe, cela donne environ <strong>4 194 € de droits</strong> — contre ~30 000 € si la pleine propriété avait été donnée.</p>
 <h2>Points d'attention</h2>
-<p>La donation en nue-propriété est irrévocable (sauf accord mutuel). L'usufruitier reste redevable de la taxe foncière et des charges de copropriété courantes. Les travaux "gros œuvre" sont à la charge du nu-propriétaire. Un acte notarié est obligatoire. Simulez les droits avec le calculateur de donation de simfinly.com avant de consulter un notaire.</p>`
+<p>La donation en nue-propriété est irrévocable (sauf accord mutuel). L'usufruitier reste redevable de la taxe foncière et des charges de copropriété courantes. Les travaux "gros œuvre" sont à la charge du nu-propriétaire. Un acte notarié est obligatoire. Simulez les droits avec le calculateur de donation de simfinly.com avant de consulter un notaire.</p>`,
   faqs: [
     { q: "Qu'est-ce que la donation en nue-propriété et comment fonctionne-t-elle ?", a: "La donation en nue-propriété consiste à donner la nue-propriété d'un bien à ses héritiers tout en conservant l'usufruit (droit d'usage et de perception des revenus) sa vie durant. Le donateur continue de vivre dans le bien ou d'en percevoir les loyers. À son décès, l'héritier récupère la pleine propriété sans payer de droits de succession supplémentaires." },
     { q: "Pourquoi la donation en démembrement est-elle fiscalement avantageuse ?", a: "La taxation porte uniquement sur la valeur de la nue-propriété (et non la pleine propriété), déterminée selon un barème lié à l'âge du donateur. Plus le donateur est jeune, plus la nue-propriété est faible (ex : à 55 ans, la nue-propriété vaut 50 % de la valeur totale). Les droits de donation sont donc calculés sur une base réduite." },
     { q: "Quel est le barème de l'usufruit selon l'âge du donateur ?", a: "Selon l'article 669 du CGI, la valeur de l'usufruit et de la nue-propriété varie selon l'âge de l'usufruitier : moins de 21 ans (usufruit : 90 %, nue-propriété : 10 %), 31-40 ans (70 %/30 %), 41-50 ans (60 %/40 %), 51-60 ans (50 %/50 %), 61-70 ans (40 %/60 %), 71-80 ans (30 %/70 %), plus de 90 ans (10 %/90 %)." },
     { q: "Quels risques comporte la donation en démembrement ?", a: "Les principaux risques : (1) le nu-propriétaire ne peut pas vendre sans l'accord de l'usufruitier (indivision forcée sur les décisions importantes) ; (2) en cas de dégradation de l'usufruit ou de conflit familial, la gestion devient complexe ; (3) si le donateur a besoin de liquidités, il ne peut pas vendre le bien sans l'accord de ses héritiers. Prévoir ces aspects dans un pacte de famille notarié." },
-  ],,
+  ],
   },
   {
     slug: 'plafond-per-deduction-2026',
@@ -1341,13 +1341,13 @@ export const STATIC_ARTICLES = [
 <h2>Calcul du résultat LMNP réel</h2>
 <p>Résultat = Loyers − Charges réelles − Amortissements. Si le résultat est nul ou négatif, vous ne payez <strong>aucun IR ni prélèvements sociaux</strong> sur vos loyers meublés. Le déficit LMNP est reportable sur les bénéfices LMNP des 10 années suivantes (il n'est pas imputable sur le revenu global, contrairement au déficit foncier).</p>
 <h2>Avantages et pièges du LMNP réel</h2>
-<p>Avantages : neutralité fiscale totale pendant 10-15 ans, revenus locatifs nets d'impôts, plus-value à la vente calculée sans déduire les amortissements (retour à la plus-value classique). Principal piège : la comptabilité est obligatoire, avec bilan annuel et liasse fiscale (BIC réel) — faites appel à un expert-comptable spécialisé (coût : 500-1 200 €/an). Le simulateur rendement locatif de simfinly.com intègre l'amortissement LMNP pour calculer la rentabilité nette réelle.</p>`
+<p>Avantages : neutralité fiscale totale pendant 10-15 ans, revenus locatifs nets d'impôts, plus-value à la vente calculée sans déduire les amortissements (retour à la plus-value classique). Principal piège : la comptabilité est obligatoire, avec bilan annuel et liasse fiscale (BIC réel) — faites appel à un expert-comptable spécialisé (coût : 500-1 200 €/an). Le simulateur rendement locatif de simfinly.com intègre l'amortissement LMNP pour calculer la rentabilité nette réelle.</p>`,
   faqs: [
     { q: "Comment fonctionne l'amortissement en LMNP régime réel ?", a: "En LMNP régime réel, vous amortissez le bien immobilier (hors terrain, non amortissable) sur 25-40 ans et les meubles sur 5-10 ans. Un bien de 200 000 € (dont 20 000 € de terrain) donne 180 000 € amortissables : à 3,3 %/an = 5 940 €/an de charge déductible sans décaissement. C'est cet amortissement qui crée souvent un déficit BIC fictif." },
     { q: "Peut-on créer un déficit en LMNP et le reporter ?", a: "En LMNP régime réel, le déficit BIC (pertes > loyers) n'est pas imputable sur le revenu global mais est reportable indéfiniment sur les futurs bénéfices BIC du même bien. En pratique, pendant 10-15 ans avec un emprunt, le LMNP réel produit souvent un déficit reportable, rendant les loyers entièrement défiscalisés." },
     { q: "Faut-il un expert-comptable pour le LMNP régime réel ?", a: "La déclaration 2031 (BIC réel) est techniquement complexe : bilan, compte de résultat, tableau d'amortissement. Un expert-comptable spécialisé LMNP coûte 500-1 200 €/an, est lui-même déductible, et optimise les amortissements (composants : structure, toiture, installations...). Pour 1-2 biens, le logiciel spécialisé (JD2M, Dext) peut suffire." },
     { q: "La vente d'un bien en LMNP déclenche-t-elle une plus-value professionnelle ?", a: "Non, si vous restez en statut LMNP (non-professionnel), la plus-value à la revente est une plus-value des particuliers, avec abattement pour durée de détention (exonération totale après 22 ans pour l'IR, 30 ans pour les prélèvements sociaux). En revanche, si vous basculez en LMP (professionnel), la plus-value devient professionnelle avec une règle de réintégration des amortissements déduits." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-auto-entrepreneur-ssi-calcul',
@@ -1382,13 +1382,13 @@ export const STATIC_ARTICLES = [
 <li>Pension RCI complémentaire : ~200-350 €/mois</li>
 </ul>
 <h2>Comment améliorer ses droits en tant qu'auto-entrepreneur</h2>
-<p>Les solutions pour compenser la faiblesse des droits acquis : (1) Ouvrir un PER individuel et verser chaque mois pour compenser avec une rente ou un capital à la retraite. (2) Si vous cumulez micro-entreprise et emploi salarié, vos droits CNAV s'additionnent. (3) Passer au régime réel si votre activité le permet — assiette de cotisations plus favorable pour les charges réelles élevées. Le simulateur retraite auto-entrepreneur de simfinly.com calcule vos droits selon votre CA annuel et votre secteur.</p>`
+<p>Les solutions pour compenser la faiblesse des droits acquis : (1) Ouvrir un PER individuel et verser chaque mois pour compenser avec une rente ou un capital à la retraite. (2) Si vous cumulez micro-entreprise et emploi salarié, vos droits CNAV s'additionnent. (3) Passer au régime réel si votre activité le permet — assiette de cotisations plus favorable pour les charges réelles élevées. Le simulateur retraite auto-entrepreneur de simfinly.com calcule vos droits selon votre CA annuel et votre secteur.</p>`,
   faqs: [
     { q: "Un auto-entrepreneur cotise-t-il vraiment pour la retraite ?", a: "Oui, mais souvent peu. L'auto-entrepreneur verse un pourcentage forfaitaire de son CA (12,3 % pour la vente, 22 % pour les services) qui inclut les cotisations retraite. Avec un CA de 20 000 €/an (services), il cotise environ 4 400 €, dont seulement une partie va à la retraite — ce qui génère environ 5 à 7 trimestres validés et peu de points retraite." },
     { q: "Combien de trimestres valide un auto-entrepreneur par an ?", a: "Un auto-entrepreneur valide 4 trimestres/an s'il atteint le seuil minimal de revenus : environ 6 570 €/an de CA (pour les activités de services en 2026). En dessous, le nombre de trimestres validés est proportionnel. Avec un petit CA (sous le seuil), des années entières peuvent ne valider aucun trimestre de retraite." },
     { q: "Quelle retraite complémentaire pour les auto-entrepreneurs professions libérales ?", a: "Les auto-entrepreneurs exerçant une profession libérale cotisent à la CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) pour leur retraite complémentaire. Les cotisations CIPAV sont calculées sur le CA avec un taux fixe. La retraite complémentaire CIPAV est souvent modeste : prévoir un PER ou une assurance-vie pour compléter." },
     { q: "Comment améliorer sa future retraite quand on est auto-entrepreneur ?", a: "Stratégies pour compléter une retraite auto-entrepreneur insuffisante : (1) ouvrir un PER (déductible dans la limite de 10 % des revenus) ; (2) investir dans l'immobilier locatif pour des revenus complémentaires à la retraite ; (3) envisager de basculer en EURL ou SASU pour avoir un statut salarié et des droits retraite plus élevés si votre CA le justifie." },
-  ],,
+  ],
   },
   {
     slug: 'risque-sequence-fire-rentier',
@@ -1410,13 +1410,13 @@ export const STATIC_ARTICLES = [
 <li><strong>Revenus alternatifs</strong> : si vous avez des revenus partiels (activités annexes, loyers, retraite obligatoire future), la pression sur le portefeuille est réduite pendant les phases de baisse.</li>
 </ul>
 <h2>Simulation avec Monte Carlo</h2>
-<p>Le simulateur FIRE de simfinly.com intègre une simulation Monte Carlo pour tester la robustesse de votre plan sur 10 000 scénarios historiques. Identifiez le taux de réussite de votre plan selon votre capital, vos dépenses et votre horizon — et ajustez si le taux de succès est inférieur à 90 %.</p>`
+<p>Le simulateur FIRE de simfinly.com intègre une simulation Monte Carlo pour tester la robustesse de votre plan sur 10 000 scénarios historiques. Identifiez le taux de réussite de votre plan selon votre capital, vos dépenses et votre horizon — et ajustez si le taux de succès est inférieur à 90 %.</p>`,
   faqs: [
     { q: "Qu'est-ce que le risque de séquence de rendements (sequence of returns risk) ?", a: "Le risque de séquence désigne le danger que des rendements négatifs surviennent en début de retraite (quand le patrimoine est au maximum) plutôt qu'en fin. Retirer 4 % d'un portefeuille qui chute de 30 % la première année, c'est vendre des actifs décotés et réduire définitivement la base de croissance future — un effet bien plus dévastateur qu'une baisse 10 ans plus tard." },
     { q: "Comment protéger son portefeuille FIRE du risque de séquence ?", a: "Les stratégies classiques : (1) bucket strategy (2-3 ans de dépenses en cash/fonds euros, isolés de la volatilité) ; (2) allocation glide path (augmenter progressivement les obligations/fonds euros autour de la date de FIRE) ; (3) taux de retrait flexible (réduire les retraits en cas de baisse des marchés) ; (4) revenus alternatifs (location, freelance) pour éviter de puiser dans le portefeuille les mauvaises années." },
     { q: "La règle des 4 % est-elle sûre en France face au risque de séquence ?", a: "La règle des 4 % a été calculée sur données US (1926-1994, portefeuille 50/50 actions/obligations, horizon 30 ans). En France, avec la fiscalité (PFU 30 %), une inflation historiquement plus variable, et un horizon de retraite potentiellement de 40+ ans, beaucoup de planificateurs FIRE français utilisent un taux plus conservateur de 3-3,5 %." },
     { q: "Un FIRE raté peut-il être récupéré ?", a: "Oui, si votre portefeuille s'épuise plus vite que prévu (mauvaise séquence), plusieurs options : reprendre une activité partielle (barista FIRE), réduire les dépenses temporairement, vendre l'immobilier pour rentrer du capital, ou accéder plus tôt aux retraites obligatoires (à 64 ans). Le FIRE n'est pas irréversible — un 'plan B' prévu dès le départ réduit considérablement le risque psychologique." },
-  ],,
+  ],
   },
   {
     slug: 'abattement-succession-enfants-2026',
@@ -1447,13 +1447,13 @@ export const STATIC_ARTICLES = [
 <h2>Exemple de calcul : patrimoine de 500 000 €, deux enfants</h2>
 <p>Patrimoine net à transmettre : 500 000 €. Deux enfants reçoivent 250 000 € chacun. Abattement 100 000 € chacun → 150 000 € taxable chacun. Droits par enfant : 5 % × 8 072 € + 10 % × 4 037 € + 15 % × 3 823 € + 20 % × (150 000 − 15 932) € ≈ <strong>29 700 €</strong> chacun. Soit ~59 400 € au total.</p>
 <h2>Réduire les droits : stratégies disponibles</h2>
-<p>Anticiper les transmissions par donations (100 000 € tous les 15 ans), utiliser l'assurance-vie pour les versements avant 70 ans (152 500 € par bénéficiaire hors droits), ou le démembrement de propriété. Le simulateur de succession de simfinly.com calcule les droits selon la composition familiale, le patrimoine et les donations déjà effectuées.</p>`
+<p>Anticiper les transmissions par donations (100 000 € tous les 15 ans), utiliser l'assurance-vie pour les versements avant 70 ans (152 500 € par bénéficiaire hors droits), ou le démembrement de propriété. Le simulateur de succession de simfinly.com calcule les droits selon la composition familiale, le patrimoine et les donations déjà effectuées.</p>`,
   faqs: [
     { q: "Quel est l'abattement en ligne directe sur les successions en 2026 ?", a: "Chaque enfant (et chaque parent) bénéficie d'un abattement de 100 000 € sur la part d'héritage reçue, tous les 15 ans. Au-delà de cet abattement, le barème progressif s'applique : 5 % jusqu'à 8 072 €, 10 % de 8 072 à 12 109 €, 15 % jusqu'à 15 932 €, 20 % jusqu'à 552 324 €, 30 %, 40 %, puis 45 % au-delà de 1 805 677 €." },
     { q: "Comment utiliser la donation pour réduire les droits de succession ?", a: "Chaque parent peut donner 100 000 € à chaque enfant sans droits, tous les 15 ans (abattement donation en ligne directe). Un couple avec 2 enfants peut donc transmettre 400 000 € tous les 15 ans sans aucun impôt. En donnant tôt (à 55-60 ans), il est possible de réaliser 2 séries de donations avant le décès." },
     { q: "Y a-t-il un abattement spécial pour les handicapés en matière de succession ?", a: "Oui, les héritiers atteints d'une infirmité qui les empêche de travailler dans des conditions normales bénéficient d'un abattement supplémentaire de 159 325 € en 2026, qui s'ajoute à l'abattement de droit commun (100 000 € en ligne directe). Cet abattement est cumulable et s'applique aussi sur les donations." },
     { q: "L'assurance-vie échappe-t-elle aux droits de succession ?", a: "Oui, l'assurance-vie versée avant 70 ans bénéficie d'un abattement de 152 500 € par bénéficiaire, hors droits de succession (prélèvement de 20 % au-delà, puis 31,25 % au-delà de 700 000 €). Les versements effectués après 70 ans bénéficient d'un abattement global de 30 500 € (tous bénéficiaires confondus), les intérêts étant exonérés. L'assurance-vie est donc un outil de transmission puissant, complémentaire aux donations." },
-  ],,
+  ],
   },
   {
     slug: 'retraite-militaire-calcul-pension',
@@ -1480,13 +1480,13 @@ export const STATIC_ARTICLES = [
 <li><strong>Enfants</strong> : 1 an par enfant (max 3 ans) pour les militaires femmes et les couples depuis 2012.</li>
 </ul>
 <h2>La réversion et les droits des conjoints</h2>
-<p>La réversion militaire est de <strong>50 % de la pension du défunt</strong>, sans condition de ressources ni d'âge (contrairement au régime général). Le conjoint survivant perçoit 50 % de la pension dès le décès, quelle que soit son âge. En cas de remariage, la réversion est maintenue (contrairement au régime général). Le simulateur retraite militaire de simfinly.com calcule la pension selon le grade, les années de service et les bonifications applicables.</p>`
+<p>La réversion militaire est de <strong>50 % de la pension du défunt</strong>, sans condition de ressources ni d'âge (contrairement au régime général). Le conjoint survivant perçoit 50 % de la pension dès le décès, quelle que soit son âge. En cas de remariage, la réversion est maintenue (contrairement au régime général). Le simulateur retraite militaire de simfinly.com calcule la pension selon le grade, les années de service et les bonifications applicables.</p>`,
   faqs: [
     { q: "Comment est calculée la pension de retraite d'un militaire ?", a: "La pension militaire = traitement brut de base × (nombre d'annuités liquidables / nombre d'annuités maximum) × coefficient. Les militaires du rang et sous-officiers ont un taux de liquidation de 2 %/annuité, avec un plafond à 75 %. Des bonifications (pensions de retraite supplémentaires pour OPEX, service actif) s'ajoutent. La durée minimum de service est 17 ans pour une pension à vie." },
     { q: "À quel âge part à la retraite un militaire en France ?", a: "L'âge de retraite varie selon le grade : militaires du rang (soldats, caporaux) : 52 ans ; sous-officiers : 57 ans ; officiers subalternes : 57 ans ; officiers supérieurs : 59-62 ans selon le grade. Ces âges sont généralement inférieurs aux fonctionnaires civils en raison des contraintes spécifiques (mobilité, disponibilité, OPEX)." },
     { q: "Qu'est-ce que la bonification OPEX pour la retraite militaire ?", a: "Les militaires engagés en Opérations Extérieures (OPEX) bénéficient d'une bonification de 1 mois supplémentaire par mois de service actif en OPEX (dans la limite fixée par arrêté). Ces bonifications s'ajoutent aux annuités de base et permettent d'atteindre le maximum plus rapidement, ou d'obtenir une pension supérieure." },
     { q: "Un militaire retraité peut-il cumuler sa pension et un emploi civil ?", a: "Oui, le cumul emploi-retraite est possible pour les militaires. Un militaire retraité peut exercer une activité privée ou fonctionnaire civile sans restriction (depuis 2015 pour les pensions à jouissance immédiate). Les revenus d'activité et la pension s'additionnent sans plafond de cumul pour les pensions à taux plein. C'est un avantage notable par rapport à d'autres régimes." },
-  ],,
+  ],
   },
   {
     slug: 'private-equity-investir-france',
@@ -1513,13 +1513,13 @@ export const STATIC_ARTICLES = [
 <li><strong>Risque de perte en capital</strong> : les entreprises non cotées peuvent faire faillite. La diversification au sein du fonds atténue ce risque.</li>
 <li><strong>Frais élevés</strong> : 1,5-2 % de frais de gestion annuels + commission de performance (20-25 % des gains au-delà d'un hurdle rate).</li>
 </ul>
-<p>Recommandation : n'allouez pas plus de 5-10 % de votre patrimoine financier au private equity. Priorisez les fonds avec un track record éprouvé (>10 ans) et une politique de co-investissement claire. Le simulateur de patrimoine de simfinly.com intègre le private equity dans l'allocation globale avec projection selon les rendements attendus.</p>`
+<p>Recommandation : n'allouez pas plus de 5-10 % de votre patrimoine financier au private equity. Priorisez les fonds avec un track record éprouvé (>10 ans) et une politique de co-investissement claire. Le simulateur de patrimoine de simfinly.com intègre le private equity dans l'allocation globale avec projection selon les rendements attendus.</p>`,
   faqs: [
     { q: "Comment un particulier peut-il investir en private equity en France ?", a: "En France, les particuliers accèdent au private equity via : (1) les FCPR (Fonds Communs de Placement à Risques) et FPCI (Fonds Professionnels de Capital Investissement, >100 000 €) ; (2) les unités de compte private equity dans l'assurance-vie (ticket d'entrée 5 000-10 000 €) ; (3) les plateformes de crowdfunding equity (participations directes, risque plus élevé)." },
     { q: "Quels sont les rendements historiques du private equity en France ?", a: "Le private equity affiche historiquement des rendements supérieurs aux marchés cotés : 12-18 % par an en moyenne selon les millésimes et les fonds. Mais ces chiffres moyens masquent une dispersion énorme : les meilleurs fonds peuvent faire 25-30 %, les moins bons 5-8 %. La sélection du fonds est cruciale et les petits investisseurs n'ont accès qu'aux fonds de moindre qualité en général." },
     { q: "Quelle est la fiscalité du private equity en France ?", a: "La fiscalité dépend du véhicule : FCPR via assurance-vie (fiscalité AV standard après 8 ans) ; FCPR en compte-titres (PFU 30 % sur les plus-values) ; FPCI pour professionnels (régime des plus-values professionnelles ou particuliers selon le cadre). Certains FCPR éligibles 'FCPR fiscal' permettent une exonération d'IR sous conditions de conservation 5 ans." },
     { q: "Quelle liquidité offre le private equity ?", a: "Le private equity est fondamentalement illiquide : les fonds ont une durée fixe de 8-12 ans (période d'investissement 3-5 ans, puis cession progressive). Les investisseurs ne peuvent généralement pas récupérer leur capital avant la fin du fonds. Des marchés secondaires existent (cession de parts) mais avec une décote de 10-30 %. Il faut n'investir que du capital dont on n'a pas besoin à court terme." },
-  ],,
+  ],
   },
   {
     slug: 'vefa-achat-neuf-plan-2026',
@@ -1556,13 +1556,13 @@ export const STATIC_ARTICLES = [
 <li><strong>TVA réduite à 5,5 %</strong> dans les zones ANRU (Politique de la Ville) pour les primo-accédants sous plafonds de ressources.</li>
 </ul>
 <h2>Les pièges à éviter</h2>
-<p>Principaux risques de la VEFA : retards de livraison (prévoyez 6-12 mois de décalage), qualité inférieure aux promesses du promoteur (visitez des chantiers du même promoteur), modifications unilatérales des plans (vérifiez les clauses du contrat). Au procès-verbal de livraison, notez <strong>toutes les réserves</strong> par écrit — c'est le moment pour obtenir les corrections. Le simulateur emprunt immobilier de simfinly.com intègre le différé de remboursement pendant la période de construction VEFA.</p>`
+<p>Principaux risques de la VEFA : retards de livraison (prévoyez 6-12 mois de décalage), qualité inférieure aux promesses du promoteur (visitez des chantiers du même promoteur), modifications unilatérales des plans (vérifiez les clauses du contrat). Au procès-verbal de livraison, notez <strong>toutes les réserves</strong> par écrit — c'est le moment pour obtenir les corrections. Le simulateur emprunt immobilier de simfinly.com intègre le différé de remboursement pendant la période de construction VEFA.</p>`,
   faqs: [
     { q: "Qu'est-ce qu'une VEFA et quelles sont les garanties de l'acheteur ?", a: "La Vente en l'État Futur d'Achèvement (VEFA) est un contrat par lequel l'acheteur acquiert un bien sur plan, avant ou pendant sa construction. Les garanties légales obligatoires : garantie de parfait achèvement (1 an), garantie biennale (2 ans pour les équipements), garantie décennale (10 ans pour la structure), et garantie de livraison hors prix à la date convenue (GFA)." },
     { q: "Quels frais de notaire pour un achat en VEFA ?", a: "Les frais de notaire pour un logement neuf (VEFA) sont réduits par rapport à l'ancien : environ 2 à 3 % du prix d'achat (contre 7-8 % dans l'ancien). Ces frais incluent les droits de mutation (0,715 % en neuf vs 5,81 % en ancien), la rémunération du notaire, et les émoluments. Cette économie est un avantage majeur du neuf vs l'ancien." },
     { q: "Quelles sont les étapes de paiement en VEFA ?", a: "Le paiement en VEFA est échelonné selon l'avancement des travaux : 35 % à l'achèvement des fondations, 70 % à la mise hors d'eau (toiture posée), 95 % à l'achèvement des travaux, 100 % à la livraison (sous réserve de levée des réserves). Si des réserves importantes sont constatées à la livraison, 5 % peuvent être consignés chez notaire." },
     { q: "Peut-on se rétracter après avoir signé un contrat VEFA ?", a: "Oui, pour un logement destiné à la résidence principale, l'acheteur bénéficie d'un délai de rétractation de 10 jours après signature du contrat de réservation. Pendant ce délai, l'acheteur peut se désister sans motif ni pénalité. Après ce délai, la rétractation n'est possible que dans les cas prévus au contrat (non-obtention du prêt, modification substantielle du projet)." },
-  ],,
+  ],
   },
   {
     slug: 'location-meublee-lmnp-fiscalite',
@@ -1583,13 +1583,13 @@ export const STATIC_ARTICLES = [
 <h2>Le seuil de basculement micro/réel</h2>
 <p>Depuis 2023, le seuil du micro-BIC est à 77 700 € de loyers annuels (au-delà, le régime réel est obligatoire). En dessous, vous pouvez choisir. Le choix se fait sur la déclaration de revenus — l'option pour le réel est tacitement reconduite chaque année.</p>
 <h2>La question de l'expert-comptable</h2>
-<p>Le régime réel LMNP nécessite une déclaration 2031 (BIC réel) avec un bilan et un compte de résultat. Un expert-comptable spécialisé coûte 500-1 200 €/an mais optimise les amortissements, assure la conformité et gère les reports de déficits. Ce coût est lui-même déductible. Le simulateur rendement locatif de simfinly.com compare la rentabilité nette micro-BIC vs réel selon vos paramètres.</p>`
+<p>Le régime réel LMNP nécessite une déclaration 2031 (BIC réel) avec un bilan et un compte de résultat. Un expert-comptable spécialisé coûte 500-1 200 €/an mais optimise les amortissements, assure la conformité et gère les reports de déficits. Ce coût est lui-même déductible. Le simulateur rendement locatif de simfinly.com compare la rentabilité nette micro-BIC vs réel selon vos paramètres.</p>`,
   faqs: [
     { q: "Quels meubles obligatoires pour louer en meublé en France ?", a: "La liste légale des meubles obligatoires (décret 2015) comprend : literie avec couette/couverture, volets/rideaux occultants dans les chambres, plaques de cuisson, four (micro-ondes accepté), réfrigérateur avec compartiment congélateur, vaisselle, ustensiles de cuisine, table, sièges, étagères de rangement, luminaires, matériel d'entretien. Toute location sans ces éléments est juridiquement une location nue." },
     { q: "Quel bail utilise-t-on pour une location meublée ?", a: "La location meublée utilise un bail de 1 an renouvelable (contre 3 ans en vide). Pour les étudiants, le bail peut être de 9 mois. Le préavis du locataire est de 1 mois seulement (contre 3 mois en vide), ce qui offre plus de flexibilité au locataire. Le propriétaire doit donner 3 mois de préavis pour reprendre le bien." },
     { q: "Le statut LMNP est-il cumulable avec une activité salariée ?", a: "Oui, le statut LMNP est parfaitement compatible avec une activité salariée principale. Les recettes locatives meublées (BIC) sont déclarées séparément des salaires. En régime réel, les déficits BIC (charges + amortissement > loyers) sont reportables sur les futurs BIC mais non imputables sur les salaires. Le seuil LMNP (< 23 000 € de loyers ou < 50 % des revenus) doit être respecté." },
     { q: "Quelle est la différence entre LMNP et LMP (Loueur Meublé Professionnel) ?", a: "Le LMP (Loueur Meublé Professionnel) s'applique si les recettes meublées dépassent 23 000 €/an ET représentent plus de 50 % des revenus du foyer. Le LMP offre : imputation des déficits sur le revenu global (pas seulement les BIC futurs), exonération d'IFI sous conditions, et régime des plus-values professionnelles à la vente. Mais le LMP génère des cotisations sociales TNS (environ 40 % des bénéfices)." },
-  ],,
+  ],
   },
 
   // === Vague 3 — Complément pour atteindre 50 articles ===
