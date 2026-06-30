@@ -113,6 +113,7 @@ const GuidesCH      = lazy(() => import("./pages/simulateurs/GuidesCH.jsx"));
 const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
 const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
 // Guides retraite par métier
+const RetraiteIndex  = lazy(() => import("./pages/RetraiteIndex.jsx"));
 const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
 // Pages contenu
 const ProConseiller        = lazy(() => import("./pages/ProConseiller.jsx"));
@@ -348,6 +349,7 @@ export default function App() {
         <Route path="/simulateurs/succession-ch" element={<SuccessionCH />} />
         <Route path="/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
         {/* Retraite par métier */}
+        <Route path="/retraite" element={<RetraiteIndex />} />
         <Route path="/retraite/:metier" element={<RetraiteMetier />} />
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />

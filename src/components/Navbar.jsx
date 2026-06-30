@@ -9,7 +9,7 @@ import CountrySwitch from "./CountrySwitch.jsx";
 import { CURRENCY_AWARE_ROUTES } from "../i18n/currencyRoutes.js";
 import { canonicalPath } from "../i18n/paths.js";
 import { prefetchRoute } from "../utils/prefetch.js";
-import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode, User, LogIn } from "lucide-react";
+import { Landmark, House, Receipt, Wallet, Clock, Newspaper, BookOpen, Library, QrCode, User, LogIn, Briefcase } from "lucide-react";
 
 const GROUP_ICONS = { retraite: Landmark, immobilier: House, impots: Receipt, finances: Wallet, "vie-temps": Clock, outils: QrCode };
 
@@ -405,6 +405,22 @@ export default function Navbar({ theme, setTheme }) {
               </Link>
             )}
 
+            {/* Métiers (FR uniquement) */}
+            {showBlog && (
+              <Link
+                to="/retraite"
+                style={{
+                  padding: "8px 12px", borderRadius: 8, textDecoration: "none",
+                  fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 14, fontWeight: 500,
+                  color: pathname === "/retraite" || (pathname.startsWith("/retraite/") && !pathname.startsWith("/retraite/guide") && !pathname.startsWith("/retraite/calendrier") && !pathname.startsWith("/retraite/points") && !pathname.startsWith("/retraite/calcul")) ? "var(--primary)" : "var(--text-secondary)",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.color = "var(--text)"; e.currentTarget.style.background = "rgba(15,24,40,0.04)"; }}
+                onMouseLeave={e => { const active = pathname === "/retraite" || (pathname.startsWith("/retraite/") && !pathname.startsWith("/retraite/guide") && !pathname.startsWith("/retraite/calendrier") && !pathname.startsWith("/retraite/points") && !pathname.startsWith("/retraite/calcul")); e.currentTarget.style.color = active ? "var(--primary)" : "var(--text-secondary)"; e.currentTarget.style.background = "transparent"; }}
+              >
+                Métiers
+              </Link>
+            )}
+
             {/* Lexique (FR + CH + BE) */}
             {showContent && (
               <Link
@@ -670,6 +686,29 @@ export default function Navbar({ theme, setTheme }) {
                 <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>{txt.blogSubtitle}</div>
               </div>
               {pathname.startsWith("/blog") && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
+            </Link>
+          )}
+
+          {/* Métiers (FR uniquement) */}
+          {showBlog && (
+            <Link
+              to="/retraite" onClick={close}
+              style={{
+                display: "flex", alignItems: "center", gap: 10,
+                padding: "9px 10px", borderRadius: 9,
+                textDecoration: "none", marginBottom: 6,
+                background: pathname === "/retraite" || (pathname.startsWith("/retraite/") && !pathname.startsWith("/retraite/guide") && !pathname.startsWith("/retraite/calendrier") && !pathname.startsWith("/retraite/points") && !pathname.startsWith("/retraite/calcul")) ? "rgba(43,92,230,0.08)" : "transparent",
+                border: `1px solid ${pathname === "/retraite" || (pathname.startsWith("/retraite/") && !pathname.startsWith("/retraite/guide") && !pathname.startsWith("/retraite/calendrier") && !pathname.startsWith("/retraite/points") && !pathname.startsWith("/retraite/calcul")) ? "var(--primary-soft)" : "transparent"}`,
+              }}
+              onMouseEnter={e => { if (pathname !== "/retraite") e.currentTarget.style.background = "var(--hover-bg)"; }}
+              onMouseLeave={e => { if (pathname !== "/retraite") e.currentTarget.style.background = "transparent"; }}
+            >
+              <span style={{ width: 26, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, color: pathname === "/retraite" ? "var(--primary)" : "var(--text-secondary)" }}><Briefcase size={18} /></span>
+              <div>
+                <div style={{ fontSize: "0.88rem", fontWeight: pathname === "/retraite" ? 500 : 400, color: pathname === "/retraite" ? "var(--primary)" : "var(--text)" }}>Métiers</div>
+                <div style={{ fontSize: "0.72rem", color: "var(--text-secondary)" }}>Retraite par profession</div>
+              </div>
+              {pathname === "/retraite" && <span style={{ marginLeft: "auto", fontSize: 8, color: "var(--primary)" }}>●</span>}
             </Link>
           )}
 

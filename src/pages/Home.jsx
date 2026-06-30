@@ -12,6 +12,9 @@ import { useTranslation } from "../i18n/index.js";
 import { LocaleLink, useCountry } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
+import { METIERS_LIST } from "../data/metiers.js";
+
+const TOP_METIERS = METIERS_LIST.slice(0, 12);
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -601,7 +604,56 @@ export default function Home() {
         )}
       </section>
 
-      {/* Pro CTA removed */}
+      {/* ── Retraite par métier (FR only) ── */}
+      {locale !== 'en' && country === 'fr' && (
+        <section className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 64px", padding: "0 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)" }}>
+              Retraite par métier
+            </div>
+            <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+            <Link to="/retraite" style={{ fontSize: 13, color: "var(--primary)", textDecoration: "none", fontWeight: 500, whiteSpace: "nowrap" }}>
+              Voir les 30 professions →
+            </Link>
+          </div>
+          <p style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 18, lineHeight: 1.6 }}>
+            Chaque profession a ses propres règles de retraite. Retrouvez le guide adapté à votre statut.
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            {TOP_METIERS.map(m => (
+              <Link
+                key={m.slug}
+                to={`/retraite/${m.slug}`}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 7,
+                  padding: "9px 16px", borderRadius: 24,
+                  background: "var(--card-bg)", border: "1px solid var(--border)",
+                  textDecoration: "none", color: "var(--text)",
+                  fontSize: 14, fontWeight: 500,
+                  transition: "border-color 0.18s, background 0.18s",
+                }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.background = "var(--primary-soft)"; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.background = "var(--card-bg)"; }}
+              >
+                <span>{m.icon}</span>
+                <span>{m.title.replace(/^Retraite (du|de la|de l'|des|de|du\s+)?/i, "").trim()}</span>
+              </Link>
+            ))}
+            <Link
+              to="/retraite"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 7,
+                padding: "9px 16px", borderRadius: 24,
+                background: "transparent", border: "1px dashed var(--border)",
+                textDecoration: "none", color: "var(--primary)",
+                fontSize: 14, fontWeight: 500,
+              }}
+            >
+              + 18 autres métiers →
+            </Link>
+          </div>
+        </section>
+      )}
 
       <Footer />
     </div>
