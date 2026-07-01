@@ -1,12 +1,10 @@
 import { Redis } from '@upstash/redis';
-import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT } from './_routes.js';
+import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
 
 // Sitemap dynamique : routes statiques (source unique _routes.js) + slugs des
 // articles de blog lus depuis Redis, afin que les nouveaux articles publiés
 // apparaissent sans redéploiement. Fallback sur BLOG_SLUGS si Redis indisponible.
 export default async function handler(req, res) {
-  const today = new Date().toISOString().slice(0, 10);
-
   let blogSlugs = BLOG_SLUGS;
   if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     try {
@@ -71,9 +69,10 @@ export default async function handler(req, res) {
   const urls = allUrls.map(u => {
     const route = u.loc.replace(/^\/(en|ch|be)/, '') || '/';
     const imgTag = imageTagForRoute(route);
+    const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
     return `  <url>
     <loc>${BASE}${u.loc}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${u.freq}</changefreq>
     <priority>${u.prio}</priority>${imgTag}
   </url>`;

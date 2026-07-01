@@ -74,7 +74,9 @@ function ogImageUrl(route, extra) {
 function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   const { title, description } = seoForRoute(route, extra, locale, country);
   const ogImg = ogImageUrl(route, extra);
-  const ld = structuredDataScripts(route, extra);
+  // La page d'accueil porte déjà WebSite + Organization en dur dans index.html :
+  // on n'injecte pas de JSON-LD supplémentaire pour elle (évite le doublon).
+  const ld = route === '/' ? '' : structuredDataScripts(route, extra);
   const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale, country);
   let urlPath;
   if (extra.urlPath) urlPath = extra.urlPath;
@@ -174,6 +176,11 @@ for (const entry of routes) {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, entry.route, entry, 'fr'));
 }
+
+// Page d'accueil : la boucle ci-dessus exclut '/'. On patche donc explicitement le
+// index.html racine (canonical, hreflang, og:url et bloc #root pré-rendu). Ce même
+// fichier sert aussi de fallback SPA (rewrite /(.*) → /index.html dans vercel.json).
+fs.writeFileSync(path.join(distDir, 'index.html'), patchHtml(indexHtml, '/', {}, 'fr'));
 
 // ── Pages EN (routes universelles disponibles en anglais) ──────────────────────
 const EN_ARRAY = Array.from(EN_ROUTES);

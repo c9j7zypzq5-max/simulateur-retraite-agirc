@@ -16,6 +16,18 @@ export const BASE = 'https://www.simfinly.com';
 // la locale par défaut (servie à la racine) ; l'anglais est préfixé (/en/...).
 export const I18N = { defaultLocale: 'fr', locales: ['fr', 'en'] };
 
+// Date de dernière révision de contenu, STABLE d'un déploiement à l'autre. Ne PAS
+// la remplacer par new Date() dans le sitemap : un <lastmod> qui change à chaque
+// build est un faux signal que Google finit par ignorer. À bumper lors d'une
+// révision réelle des contenus / barèmes.
+export const SITE_LASTMOD = '2026-06-15';
+
+// Surcharges de <lastmod> par route (révision plus récente que SITE_LASTMOD).
+// Clé = route canonique FR (sans préfixe /en, /ch, /be).
+export const ROUTE_DATES = {
+  '/': '2026-06-15',
+};
+
 // Routes disponibles en version anglaise (/en/...).
 export const EN_ROUTES = [
   '/',

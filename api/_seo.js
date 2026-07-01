@@ -6,8 +6,24 @@
 //
 // Clé = chemin de route. Intro = 2-3 phrases factuelles et descriptives.
 import { COMPARATIFS } from '../src/data/comparatifs.js';
+import { METIERS_BY_SLUG } from '../src/data/metiers.js';
+import { FAQS } from '../src/data/faqs.js';
 
 export const SEO_CONTENT = {
+  '/': {
+    h1: "Simulateurs financiers gratuits : retraite, immobilier, impôts, épargne",
+    intro: "simfinly.com réunit plus de 35 simulateurs 100 % gratuits pour estimer votre retraite (Agirc-Arrco, CNAV, fonction publique), votre prêt immobilier, vos impôts, votre épargne et votre indépendance financière. Calculs instantanés, sans inscription et sans donnée conservée.",
+    links: [
+      ['/simulateurs/agirc-arrco', 'Simulateur retraite complémentaire Agirc-Arrco'],
+      ['/simulateurs/cnav', 'Retraite de base CNAV (régime général)'],
+      ['/simulateurs/fonction-publique', 'Retraite de la fonction publique'],
+      ['/simulateurs/emprunt-immobilier', 'Simulateur de prêt immobilier'],
+      ['/simulateurs/impot-revenu', 'Calculateur d’impôt sur le revenu'],
+      ['/simulateurs/epargne', 'Épargne & intérêts composés'],
+      ['/simulateurs/fire', 'Indépendance financière (FIRE)'],
+      ['/retraite/guide-complet-2026', 'Guide complet de la retraite 2026'],
+    ],
+  },
   '/simulateurs/agirc-arrco': {
     h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
     intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, le coefficient de solidarité (bonus-malus), la GMP des cadres et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
@@ -586,10 +602,41 @@ function escapeHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-// Bloc placé dans #root (remplacé par React au montage). Visuellement masqué
-// (motif accessibilité) pour éviter tout flash avant le rendu, mais bien présent
-// dans le HTML brut pour les crawlers et le rendu sans JS.
+// Bloc placé dans #root (remplacé par React au montage côté client).
+// seoHtmlForArticle garde le masquage historique (SR_ONLY) ; seoHtmlForRoute
+// rend désormais son contenu VISIBLE (SEO_WRAP). Le contenu enrichi ci-dessous
+// (FAQ, sections métier) est identique à ce que l'app affiche une fois montée :
+// le masquer par CSS (clip-rect) alors qu'il est volumineux s'apparenterait à du
+// texte caché (risque de pénalité). Wrapper neutre, lisible même sans JS.
 const SR_ONLY = 'position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+const SEO_WRAP = 'max-width:820px;margin:0 auto;padding:24px 20px;line-height:1.6';
+
+// Rendu léger d'un texte (échappé) : paragraphes séparés par les doubles sauts de
+// ligne, **gras** converti, sauts simples en <br>. Utilisé pour les sections métier.
+function renderRichText(text) {
+  return escapeHtml(text)
+    .split(/\n{2,}/)
+    .map(p => `<p>${p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>')}</p>`)
+    .join('');
+}
+
+// Contenu enrichi d'une page métier (/retraite/:slug) : chiffres clés, sections et
+// FAQ déjà rédigés dans src/data/metiers.js (invisibles sans JS jusqu'ici).
+function metierBodyHtml(m) {
+  let out = '';
+  if (Array.isArray(m.stats) && m.stats.length) {
+    out += '<ul>' + m.stats.map(s =>
+      `<li><strong>${escapeHtml(s.label)} :</strong> ${escapeHtml(s.value)}${s.note ? ' ' + escapeHtml(s.note) : ''}</li>`
+    ).join('') + '</ul>';
+  }
+  if (Array.isArray(m.sections)) {
+    out += m.sections.map(s => `<h2>${escapeHtml(s.title)}</h2>${renderRichText(s.content)}`).join('');
+  }
+  if (Array.isArray(m.faq)) {
+    out += m.faq.map(f => `<h2>${escapeHtml(f.q)}</h2><p>${escapeHtml(f.a)}</p>`).join('');
+  }
+  return out;
+}
 
 export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
   let dict;
@@ -599,7 +646,29 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
   else dict = SEO_CONTENT;
   const c = dict[route];
   if (!c) return '';
-  return `<div id="seo-prerender" style="${SR_ONLY}"><h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p></div>`;
+
+  let body = `<h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p>`;
+
+  // Liens internes (page d'accueil) : maillage crawlable vers les pages phares.
+  if (Array.isArray(c.links) && c.links.length) {
+    body += '<ul>' + c.links.map(([href, label]) =>
+      `<li><a href="${escapeHtml(href)}">${escapeHtml(label)}</a></li>`
+    ).join('') + '</ul>';
+  }
+
+  // Contenu approfondi propre au FR (le même texte alimente déjà l'app et le JSON-LD).
+  if (locale === 'fr' && country === 'fr') {
+    if (route.startsWith('/retraite/')) {
+      const m = METIERS_BY_SLUG[route.slice('/retraite/'.length)];
+      if (m) body += metierBodyHtml(m);
+    }
+    const faq = FAQS[route];
+    if (Array.isArray(faq) && faq.length) {
+      body += faq.map(f => `<h2>${escapeHtml(f.q)}</h2><p>${escapeHtml(f.a)}</p>`).join('');
+    }
+  }
+
+  return `<div id="seo-prerender" style="${SEO_WRAP}">${body}</div>`;
 }
 
 // Nettoyage défensif du HTML d'article avant injection statique. Les articles ne
