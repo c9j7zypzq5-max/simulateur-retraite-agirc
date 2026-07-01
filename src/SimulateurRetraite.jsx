@@ -8,6 +8,7 @@ import { useTheme } from "./hooks/useTheme.js";
 import ShareBar from "./components/ShareBar.jsx";
 import SimRecommendations from "./components/SimRecommendations.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
+import { FAQS } from "./data/faqs.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 48_060;
@@ -329,16 +330,9 @@ const EDITORIAL = [
   { title: "Complémentaire et retraite de base : un duo indissociable", text: "La retraite Agirc-Arrco vient en complément de la retraite de base versée par la CNAV. Pour un salarié type, elle représente entre 30 % et 60 % du total de sa pension. Plus la carrière est longue et le salaire élevé, plus la part complémentaire est significative. La gestion est assurée paritairement par les organisations syndicales de salariés et les organisations patronales — sans intervention de l'État." },
 ];
 
-const FAQ_ITEMS = [
-  { q: "Quand est versée la retraite complémentaire Agirc-Arrco ?", a: "La pension complémentaire est versée mensuellement, à compter du premier jour du mois suivant la date d'effet de votre retraite. Elle est versée simultanément à votre retraite de base (CNAV). Comptez 3 à 6 mois entre la demande et les premiers paiements, le temps de la liquidation du dossier." },
-  { q: "Puis-je partir à la retraite avant 67 ans avec l'Agirc-Arrco ?", a: "Oui, dès 62 ans (ou 60 ans en carrière longue). Mais sans avoir atteint le taux plein, un coefficient de solidarité de −10 % s'applique pendant 3 ans sur votre pension complémentaire. Pour l'éviter : attendre 67 ans, ou différer votre départ d'un an pour bénéficier d'un bonus de +10 % pendant 1 an. Exceptions : inaptes, invalides, bénéficiaires de l'AAH ou ayant au moins 4 trimestres de chômage non indemnisé." },
-  { q: "Comment sont revalorisés les points Agirc-Arrco chaque année ?", a: "Chaque novembre, les partenaires sociaux (syndicats et patronat) révisent la valeur de service du point. Elle évolue en principe comme l'inflation (indice des prix à la consommation hors tabac) pour préserver le pouvoir d'achat des retraités. En 2026, la valeur de service est fixée à 1,4098 €/point." },
-  { q: "Qu'est-ce que le coefficient de solidarité de −10 % ?", a: "Introduit en 2019, c'est une minoration temporaire de votre pension complémentaire pendant 3 ans si vous partez sans avoir atteint le taux plein. Son objectif est d'inciter les salariés à travailler au moins un trimestre de plus. Il ne s'applique pas aux personnes inaptes, invalides, bénéficiaires de l'AAH ou ayant au moins 4 trimestres de chômage non indemnisé." },
-  { q: "Les fonctionnaires cotisent-ils à l'Agirc-Arrco ?", a: "Non. L'Agirc-Arrco est exclusivement réservé aux salariés du secteur privé et aux contractuels de droit privé. Les fonctionnaires titulaires relèvent du RAFP (Régime de retraite additionnelle de la Fonction Publique), qui fonctionne aussi par points mais est géré séparément." },
-  { q: "Puis-je cumuler emploi et retraite Agirc-Arrco ?", a: "Oui. En cumul emploi-retraite total (toutes retraites liquidées), aucun plafond de revenus ne s'applique et les nouvelles cotisations génèrent des droits supplémentaires depuis 2023. En cumul partiel (retraite anticipée sans taux plein), vos revenus cumulés ne doivent pas dépasser 160 % du SMIC ou votre dernier salaire." },
-  { q: "Comment consulter mes points Agirc-Arrco accumulés ?", a: "Sur info-retraite.fr (Relevé de Situation Individuelle gratuit) ou directement sur agirc-arrco.fr après création d'un espace personnel. Un relevé vous est automatiquement envoyé tous les 5 ans à partir de 35 ans." },
-  { q: "La retraite complémentaire Agirc-Arrco est-elle imposable ?", a: "Oui, elle est soumise à l'impôt sur le revenu comme la retraite de base. Les prélèvements sociaux s'élèvent à environ 10,1 % pour la plupart des retraités : CSG (8,3 %), CRDS (0,5 %), Casa (0,3 %) et cotisation maladie (1 %). C'est pourquoi notre simulateur affiche une pension nette à 83 % de la pension brute." },
-];
+// FAQ centralisée dans src/data/faqs.js : alimente aussi le JSON-LD FAQPage
+// (api/_routes.js) et le bloc pré-rendu statique (api/_seo.js).
+const FAQ_ITEMS = FAQS['/simulateurs/agirc-arrco'];
 
 function FaqItem({ q, a }) {
   const [open, setOpen] = useState(false);
