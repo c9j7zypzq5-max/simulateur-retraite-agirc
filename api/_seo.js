@@ -24,6 +24,10 @@ export const SEO_CONTENT = {
       ['/retraite/guide-complet-2026', 'Guide complet de la retraite 2026'],
     ],
   },
+  '/contact': {
+    h1: "Contacter simfinly.com",
+    intro: "Une question sur un simulateur, une erreur à signaler, une demande de partenariat ou de presse ? Écrivez-nous à contact@simfinly.com — nous répondons généralement sous 48 h ouvrées.",
+  },
   '/simulateurs/agirc-arrco': {
     h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
     intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, le coefficient de solidarité (bonus-malus), la GMP des cadres et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
@@ -535,6 +539,10 @@ export const SEO_CONTENT_BE = {
 
 // Contenu SEO en anglais (H1 + intro) pour les pages /en/...
 export const SEO_CONTENT_EN = {
+  '/contact': {
+    h1: "Contact simfinly.com",
+    intro: "A question about a calculator, an error to report, a partnership or press enquiry? Write to us at contact@simfinly.com — we usually reply within 48 business hours.",
+  },
   '/': {
     h1: "Free Financial Calculators",
     intro: "Online financial calculators to plan your savings, reach financial independence, optimise your budget and more. Instant results, no sign-up required.",

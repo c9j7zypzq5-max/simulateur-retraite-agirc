@@ -21,6 +21,7 @@ const SimulateurRetraite      = lazy(() => import("./SimulateurRetraite.jsx"));
 const MentionsLegales         = lazy(() => import("./pages/MentionsLegales.jsx"));
 const PolitiqueConfidentialite = lazy(() => import("./pages/PolitiqueConfidentialite.jsx"));
 const APropos                 = lazy(() => import("./pages/APropos.jsx"));
+const Contact                 = lazy(() => import("./pages/Contact.jsx"));
 const Blog                    = lazy(() => import("./pages/Blog.jsx"));
 const Article                 = lazy(() => import("./pages/Article.jsx"));
 const Lexique                 = lazy(() => import("./pages/Lexique.jsx"));
@@ -267,6 +268,7 @@ export default function App() {
         <Route path="/en/tools/qr-code" element={<QrCode />} />
         <Route path="/en/legal-notice" element={<MentionsLegales />} />
         <Route path="/en/privacy-policy" element={<PolitiqueConfidentialite />} />
+        <Route path="/en/contact" element={<Contact />} />
         <Route path="/en/comparisons" element={<Comparatifs />} />
         <Route path="/en/comparisons/:slug" element={<Comparatif />} />
         <Route path="/en/simulators/donation" element={<Donation />} />
@@ -382,6 +384,7 @@ export default function App() {
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         <Route path="/a-propos" element={<APropos />} />
+        <Route path="/contact" element={<Contact />} />
         {/* 404 — attrape-tout */}
         <Route path="*" element={<NotFound />} />
       </Routes>

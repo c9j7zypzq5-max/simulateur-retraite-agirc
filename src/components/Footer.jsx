@@ -287,9 +287,9 @@ export default function Footer() {
           <LocaleLink to="/politique-de-confidentialite" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.confidentialite")}
           </LocaleLink>
-          <a href="mailto:contact@simfinly.com" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+          <LocaleLink to="/contact" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("nav.contact")}
-          </a>
+          </LocaleLink>
         </nav>
         <p style={{ fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
           {t("footer.rights")}
