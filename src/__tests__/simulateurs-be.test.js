@@ -250,7 +250,7 @@ describe("Succession belge — droits régionaux", () => {
 // ─── AGIRC-Arrco ─────────────────────────────────────────────────────────────
 const PASS          = 48_060;
 const VALEUR_ACHAT  = 7.46;
-const VALEUR_SERVICE = 1.4098;
+const VALEUR_SERVICE = 1.4386;
 const TAUX_T1       = 0.0787;
 const TAUX_T2       = 0.2159;
 const GMP_MIN_PTS   = 120;

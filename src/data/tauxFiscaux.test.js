@@ -78,13 +78,13 @@ describe('BAREME_IR 2026', () => {
 });
 
 describe('PASS et PER', () => {
-  it('PASS_2026 = 47 100 €', () => {
-    expect(PASS_2026).toBe(47_100);
+  it('PASS_2026 = 48 060 €', () => {
+    expect(PASS_2026).toBe(48_060);
   });
 
-  it('PLAFOND_PER_MAX = 10 % de 8 PASS = 37 680 €', () => {
+  it('PLAFOND_PER_MAX = 10 % de 8 PASS = 38 448 €', () => {
     expect(PLAFOND_PER_MAX).toBeCloseTo(PASS_2026 * 8 * 0.10, 5);
-    expect(PLAFOND_PER_MAX).toBe(37_680);
+    expect(PLAFOND_PER_MAX).toBe(38_448);
   });
 });
 

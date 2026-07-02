@@ -51,11 +51,11 @@ export const ABATT_PVI_PS = [
 ];
 
 // ── PASS (Plafond Annuel de la Sécurité Sociale) 2026 ────────────────────────
-export const PASS_2026 = 47_100;
+export const PASS_2026 = 48_060;
 
 // ── Plafonds PER (déduction des versements) ───────────────────────────────────
 // 10 % des revenus professionnels N-1, plafonné à 10 % de 8 PASS
-export const PLAFOND_PER_MAX = PASS_2026 * 8 * 0.10; // ≈ 37 680 €
+export const PLAFOND_PER_MAX = PASS_2026 * 8 * 0.10; // ≈ 38 448 €
 
 // ── Droits de succession / donation (barème général) ─────────────────────────
 export const BAREME_SUCCESSION_LIGNE_DIRECTE = [

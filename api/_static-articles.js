@@ -14,7 +14,7 @@ export const STATIC_ARTICLES = [
     content: `<h2>Les trois piliers du calcul CNAV</h2>
 <p>La pension de base du régime général repose sur une formule simple : <strong>SAM × taux × prorata</strong>. Comprendre chacun de ces facteurs est indispensable pour anticiper votre future retraite.</p>
 <ul>
-<li><strong>Le SAM</strong> (Salaire Annuel Moyen) est la moyenne de vos 25 meilleures années de revenus bruts, plafonnée chaque année au PASS (Plafond Annuel de la Sécurité Sociale, soit 47 100 € en 2026).</li>
+<li><strong>Le SAM</strong> (Salaire Annuel Moyen) est la moyenne de vos 25 meilleures années de revenus bruts, plafonnée chaque année au PASS (Plafond Annuel de la Sécurité Sociale, soit 48 060 € en 2026).</li>
 <li><strong>Le taux</strong> est de 50 % au maximum (taux plein). Il est réduit en cas de décote si vous partez avant d'avoir tous vos trimestres, ou majoré d'une surcote si vous travaillez au-delà.</li>
 <li><strong>Le prorata</strong> compare vos trimestres validés au nombre requis pour votre génération (entre 167 et 172 selon l'année de naissance).</li>
 </ul>
@@ -22,15 +22,15 @@ export const STATIC_ARTICLES = [
 <p>On distingue les <em>trimestres cotisés</em> (travail salarié ou indépendant) et les <em>trimestres assimilés</em> (chômage indemnisé, maladie longue durée, maternité, invalidité, service militaire). Ces deux catégories s'additionnent pour former votre durée d'assurance totale, qui conditionne le taux plein et l'âge de départ.</p>
 <p>Depuis la réforme de 2023, l'âge légal monte progressivement de 62 à 64 ans selon la génération. Mais l'âge légal ne suffit pas : il faut aussi avoir le bon nombre de trimestres, ou accepter une décote définitive de 0,625 % par trimestre manquant.</p>
 <h2>La complémentaire Agirc-Arrco : les points</h2>
-<p>Pour les salariés du privé, la retraite complémentaire Agirc-Arrco s'exprime en <strong>points</strong> accumulés tout au long de la carrière. La pension annuelle est égale au nombre de points multiplié par la <em>valeur de service du point</em> (1,4159 € en 2026). Elle s'ajoute à la pension CNAV pour former votre revenu de retraite global.</p>
+<p>Pour les salariés du privé, la retraite complémentaire Agirc-Arrco s'exprime en <strong>points</strong> accumulés tout au long de la carrière. La pension annuelle est égale au nombre de points multiplié par la <em>valeur de service du point</em> (1,4386 € en 2026). Elle s'ajoute à la pension CNAV pour former votre revenu de retraite global.</p>
 <p>Un mécanisme de <em>coefficient de solidarité</em> (−10 % pendant 3 ans) s'applique si vous partez juste après le taux plein CNAV : retarder votre départ d'un an y échappe et vous fait gagner un <em>bonus</em> de 10 %.</p>
 <h2>Comment estimer dès maintenant</h2>
 <p>La simulation la plus fiable reste celle de votre relevé de carrière sur info-retraite.fr, qui agrège tous vos régimes. Simfinly.com vous permet de tester rapidement différents scénarios (âge de départ, revalorisation, rachat de trimestres) pour visualiser l'impact sur votre pension avant de consulter un conseiller.</p>`,
     faqs: [
-      { q: "Comment calculer le montant de ma retraite de base ?", a: "La pension CNAV = SAM × taux × (trimestres validés / trimestres requis). Le SAM est la moyenne de vos 25 meilleures années de revenus bruts plafonnés au PASS (47 100 € en 2026). Le taux maximum est de 50 % au taux plein, obtenu si vous avez validé tous vos trimestres requis (entre 167 et 172 selon votre génération)." },
+      { q: "Comment calculer le montant de ma retraite de base ?", a: "La pension CNAV = SAM × taux × (trimestres validés / trimestres requis). Le SAM est la moyenne de vos 25 meilleures années de revenus bruts plafonnés au PASS (48 060 € en 2026). Le taux maximum est de 50 % au taux plein, obtenu si vous avez validé tous vos trimestres requis (entre 167 et 172 selon votre génération)." },
       { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans si vous partez juste à l'âge du taux plein CNAV. Pour l'éviter, décalez votre départ d'au moins un an après le taux plein — vous échappez à la réduction et bénéficiez même d'un bonus de 10 %." },
       { q: "Comment obtenir le taux plein à la retraite ?", a: "Le taux plein (50 % du SAM) nécessite deux conditions : atteindre l'âge légal de départ (entre 62 et 64 ans selon la génération) ET avoir validé le nombre de trimestres requis. Si vous n'avez pas tous vos trimestres, vous pouvez attendre 67 ans pour bénéficier du taux plein automatique, quelle que soit votre durée d'assurance." },
-      { q: "Qu'est-ce que le Salaire Annuel Moyen (SAM) et comment est-il calculé ?", a: "Le SAM est la moyenne de vos 25 meilleures années de revenus bruts, chacune plafonnée au PASS (47 100 € en 2026). Seules les années avec au moins un trimestre validé entrent dans le calcul. Maximiser ses meilleures années de carrière est donc la clé pour obtenir un SAM élevé et donc une meilleure pension." },
+      { q: "Qu'est-ce que le Salaire Annuel Moyen (SAM) et comment est-il calculé ?", a: "Le SAM est la moyenne de vos 25 meilleures années de revenus bruts, chacune plafonnée au PASS (48 060 € en 2026). Seules les années avec au moins un trimestre validé entrent dans le calcul. Maximiser ses meilleures années de carrière est donc la clé pour obtenir un SAM élevé et donc une meilleure pension." },
     ],
   },
   {
@@ -262,7 +262,7 @@ export const STATIC_ARTICLES = [
     publishedAt: '2026-02-24T10:00:00Z',
     intro: "Le plafond PER 2026 atteint 37 680 € pour les salariés. Comment maximiser la déduction fiscale selon votre TMI et combiner PER individuel, PERcol et PERin pour préparer sa retraite ?",
     content: `<h2>Le plafond de déduction PER en 2026</h2>
-<p>Les versements sur un Plan d'Épargne Retraite (PER) individuel ou collectif sont déductibles du revenu imposable dans la limite d'un <strong>plafond annuel</strong> calculé à partir du PASS (Plafond Annuel de la Sécurité Sociale, 47 100 € en 2026).</p>
+<p>Les versements sur un Plan d'Épargne Retraite (PER) individuel ou collectif sont déductibles du revenu imposable dans la limite d'un <strong>plafond annuel</strong> calculé à partir du PASS (Plafond Annuel de la Sécurité Sociale, 48 060 € en 2026).</p>
 <p>Pour un salarié, le plafond PER est égal au plus grand des deux montants suivants :</p>
 <ul>
 <li>10 % des revenus professionnels de l'année N-1, dans la limite de 10 % de 8 PASS = <strong>37 680 €</strong></li>
@@ -983,7 +983,7 @@ export const STATIC_ARTICLES = [
 <p>Un cadre salarié accumule des droits dans deux régimes :</p>
 <ul>
 <li><strong>CNAV (régime général)</strong> : pension de base calculée sur le SAM (25 meilleures années, plafonnées au PASS) × taux × prorata. Maximum : 50 % du PASS, soit ~1 963 €/mois brut en 2026.</li>
-<li><strong>Agirc-Arrco (complémentaire)</strong> : points accumulés tout au long de la carrière. Valeur du point : 1,4159 € en 2026. Un cadre avec un salaire de 60 000 €/an pendant 30 ans peut accumuler 30 000-50 000 points, soit ~3 500-5 800 €/mois de pension complémentaire.</li>
+<li><strong>Agirc-Arrco (complémentaire)</strong> : points accumulés tout au long de la carrière. Valeur du point : 1,4386 € en 2026. Un cadre avec un salaire de 60 000 €/an pendant 30 ans peut accumuler 30 000-50 000 points, soit ~3 600-6 000 €/mois de pension complémentaire.</li>
 </ul>
 <p>La pension totale cadre typique est de <strong>2 500-5 000 €/mois brut</strong> selon la carrière et le niveau de salaire.</p>
 <h2>Le coefficient de solidarité Agirc-Arrco : le piège à éviter</h2>
@@ -997,7 +997,7 @@ export const STATIC_ARTICLES = [
 <p>Pour un cadre né en 1965 (taux plein à 63 ans 3 mois, 170 trimestres requis), le scénario optimal est souvent de partir à <strong>64 ans 3 mois</strong> : un an de décalage efface le coefficient de solidarité et génère une surcote CNAV de 5 %. Sur une espérance de vie de 20 ans après la retraite, ce délai d'un an peut valoir 50 000-80 000 € de pensions supplémentaires.</p>
 <p>Le simulateur cadre de simfinly.com calcule la pension totale CNAV + Agirc-Arrco et compare les scénarios de départ entre 62 et 67 ans pour votre génération et votre niveau de salaire.</p>`,
     faqs: [
-      { q: "Comment est calculée la retraite Agirc-Arrco pour un cadre ?", a: "La retraite Agirc-Arrco est calculée en points : chaque année, vos cotisations (tranche A : 0-PASS, tranche B : 1×PASS à 8×PASS, ancienne tranche C : >8×PASS) achètent des points au prix d\'acquisition (19,763 € en 2026 pour la tranche A). À la retraite, votre total de points est multiplié par la valeur du point (1,4107 € en 2026). Un cadre ayant accumulé 3 000 points touchera 3 000 × 1,4107 = 4 232 €/mois de complémentaire." },
+      { q: "Comment est calculée la retraite Agirc-Arrco pour un cadre ?", a: "La retraite Agirc-Arrco est calculée en points : chaque année, vos cotisations (tranche A : 0-PASS, tranche B : 1×PASS à 8×PASS, ancienne tranche C : >8×PASS) achètent des points au prix d\'acquisition (19,763 € en 2026 pour la tranche A). À la retraite, votre total de points est multiplié par la valeur du point (1,4386 € en 2026). Un cadre ayant accumulé 3 000 points touchera 3 000 × 1,4386 ≈ 4 316 €/an, soit environ 360 €/mois de complémentaire." },
       { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans, pour les assurés qui partent dès l\'âge légal en ayant leurs trimestres. Il peut être évité en travaillant 1 à 4 trimestres de plus selon le profil. En contrepartie, travailler après l\'âge légal permet d\'obtenir un bonus de fidélité de +10 % (1 trimestre de plus), +20 % (2 trimestres) ou +30 % (3 trimestres et plus). La décision de partir ou non affecte donc la pension Agirc-Arrco de manière significative." },
     ],
   },
@@ -1093,11 +1093,11 @@ export const STATIC_ARTICLES = [
 <h2>Les mesures concernant l'immobilier</h2>
 <p>La loi de finances 2026 maintient le PTZ élargi (décret 2025) à tout le territoire y compris dans l'ancien. Le dispositif de déficit foncier reste plafonné à 10 700 €/an sur le revenu global (21 400 € pour rénovation énergétique). Aucune modification du régime des plus-values immobilières (exonération après 22 ans de propriété, 30 ans pour les prélèvements sociaux).</p>
 <h2>Retraite et cotisations</h2>
-<p>Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 est fixé à 47 100 € (+3,5 % vs 2025). Ce plafond conditionne de nombreux calculs : cotisations retraite, plafonds PER, prestations sociales. Le simulateur IR de simfinly.com intègre le barème 2026 actualisé pour calculer votre impôt sur les revenus 2025.</p>`,
+<p>Le PASS (Plafond Annuel de la Sécurité Sociale) 2026 est fixé à 48 060 € (+2,0 % vs 2025). Ce plafond conditionne de nombreux calculs : cotisations retraite, plafonds PER, prestations sociales. Le simulateur IR de simfinly.com intègre le barème 2026 actualisé pour calculer votre impôt sur les revenus 2025.</p>`,
   faqs: [
     { q: "Quel est le nouveau barème de l'impôt sur le revenu 2026 ?", a: "Le barème IR 2026 a été revalorisé de +1,6 % pour tenir compte de l'inflation. Les tranches 2026 : 0 % jusqu'à 11 294 €, 11 % de 11 294 à 28 797 €, 30 % de 28 797 à 82 341 €, 41 % de 82 341 à 177 106 €, 45 % au-delà. La déclaration des revenus 2025 est effectuée avec ce barème." },
     { q: "Le PTZ a-t-il été élargi par la loi de finances 2026 ?", a: "Oui, la loi de finances 2026 a pérennisé et élargi le PTZ à l'ensemble du territoire pour les logements neufs (y compris les zones B2 et C qui étaient exclues). Les plafonds de ressources ont été légèrement relevés et le taux peut atteindre 50 % en zone tendue pour les ménages modestes." },
-    { q: "Quel est le PASS 2026 et pourquoi est-il important ?", a: "Le Plafond Annuel de la Sécurité Sociale (PASS) 2026 est fixé à 47 100 € (contre 46 368 € en 2025, soit +1,6 %). Il sert de base de calcul pour les plafonds de cotisation retraite (PER : 10 % du PASS = 4 710 €), les seuils du régime micro-social, les indemnités journalières, et de nombreuses autres prestations sociales." },
+    { q: "Quel est le PASS 2026 et pourquoi est-il important ?", a: "Le Plafond Annuel de la Sécurité Sociale (PASS) 2026 est fixé à 48 060 € (contre 47 100 € en 2025, soit +2,0 %). Il sert de base de calcul pour les plafonds de cotisation retraite (PER : 10 % du PASS = 4 806 €), les seuils du régime micro-social, les indemnités journalières, et de nombreuses autres prestations sociales." },
     { q: "Quelles sont les principales mesures fiscales de la LFI 2026 pour les ménages ?", a: "Principales mesures 2026 : (1) Revalorisation barème IR +1,6 % ; (2) Crédit d'impôt pour rénovation énergétique maintenu (MaPrimeRénov') ; (3) Exonération de plus-values immobilières pour les cessions à des bailleurs sociaux prorogée ; (4) Plafond de déduction PER revalorisé à 37 680 € (8 × PASS). Consultez le simulateur impôt de simfinly.com pour vos simulations." },
   ],
   },
@@ -1232,7 +1232,7 @@ export const STATIC_ARTICLES = [
     publishedAt: '2026-06-15T09:00:00Z',
     intro: "En 2026, le plafond de déduction PER atteint 37 680 € pour les salariés. Comment calculer son enveloppe disponible, utiliser les plafonds reportés et optimiser sa déduction ?",
     content: `<h2>Comment est calculé le plafond PER en 2026 ?</h2>
-<p>Le plafond de déduction des versements PER est calculé sur la base du PASS (47 100 € en 2026). Pour un salarié, le plafond est le plus élevé de :</p>
+<p>Le plafond de déduction des versements PER est calculé sur la base du PASS (48 060 € en 2026). Pour un salarié, le plafond est le plus élevé de :</p>
 <ul>
 <li><strong>10 % des revenus professionnels N-1</strong>, dans la limite de 10 % × 8 PASS = <strong>37 680 €</strong> maximum</li>
 <li><strong>10 % du PASS = 4 710 €</strong> (plancher, même sans revenus importants)</li>
@@ -1309,7 +1309,7 @@ export const STATIC_ARTICLES = [
 <tr><td style="padding:8px;border:1px solid #e5e7eb">Artisan/commerçant (revenu moyen)</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~50-60 %</td><td style="padding:8px;text-align:center;border:1px solid #e5e7eb">~55-65 %</td></tr>
 </tbody></table>
 <h2>Pourquoi le taux de remplacement est plus faible pour les hauts revenus</h2>
-<p>Le régime général plafonne la retraite de base au PASS (47 100 € en 2026). Pour un cadre gagnant 80 000 €/an, la base de calcul de la CNAV est limitée à 47 100 €, mais l'Agirc-Arrco compense partiellement via les points accumulés sur la tranche B (PASS à 8×PASS). Malgré cela, le taux de remplacement brut reste inférieur à celui d'un salarié au SMIC.</p>
+<p>Le régime général plafonne la retraite de base au PASS (48 060 € en 2026). Pour un cadre gagnant 80 000 €/an, la base de calcul de la CNAV est limitée à 48 060 €, mais l'Agirc-Arrco compense partiellement via les points accumulés sur la tranche B (PASS à 8×PASS). Malgré cela, le taux de remplacement brut reste inférieur à celui d'un salarié au SMIC.</p>
 <h2>Estimer son taux de remplacement</h2>
 <p>Le simulateur retraite de simfinly.com calcule le taux de remplacement brut et net selon votre salaire actuel, vos trimestres et votre âge de départ prévu. Identifiez le complément d'épargne nécessaire (PER, assurance-vie, SCPI) pour atteindre le niveau de revenu souhaité à la retraite.</p>`,
     faqs: [
@@ -1672,7 +1672,7 @@ export const STATIC_ARTICLES = [
 <p>The system has <strong>three tiers</strong>:</p>
 <ul>
 <li><strong>Tier 1 — CNAV (basic pension)</strong>: For private-sector employees. Maximum pension is 50% of your average salary over your 25 best years, capped at the PASS ceiling (€47,100 in 2026).</li>
-<li><strong>Tier 2 — Agirc-Arrco (complementary pension)</strong>: Points-based system for private employees. You accumulate points throughout your career; each point is worth €1.4159/year in 2026.</li>
+<li><strong>Tier 2 — Agirc-Arrco (complementary pension)</strong>: Points-based system for private employees. You accumulate points throughout your career; each point is worth €1.4386/year in 2026.</li>
 <li><strong>Tier 3 — Voluntary savings (PER)</strong>: Tax-deductible retirement savings account. Contributions reduce your taxable income in the year they are made.</li>
 </ul>
 <h2>Retirement Age in France (2026)</h2>

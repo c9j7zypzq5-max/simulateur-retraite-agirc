@@ -11,7 +11,7 @@ const STATS = [
   { value: "64 ans", label: "Âge légal 2026", note: "Pour les nés après le 1er sept. 1961" },
   { value: "172 trimestres", label: "Taux plein générations 1965+", note: "43 années de cotisation" },
   { value: "50 %", label: "Taux de liquidation CNAV", note: "Taux plein sur le SAM (25 meilleures années)" },
-  { value: "1,4107 €", label: "Valeur point Agirc-Arrco 2026", note: "Retraite complémentaire salariés privés" },
+  { value: "1,4386 €", label: "Valeur point Agirc-Arrco 2026", note: "Retraite complémentaire salariés privés" },
 ];
 
 const FAQ = [
@@ -106,7 +106,7 @@ export default function GuideRetraite2026() {
   useEffect(() => {
     document.title = "Guide retraite 2026 : calcul, simulateurs et optimisation | simfinly";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Tout sur la retraite 2026 : âge légal 64 ans, calcul CNAV (50 % × SAM × trimestres) et Agirc-Arrco (points × 1,4107 €), taux de remplacement, rachat de trimestres et PER.");
+      "Tout sur la retraite 2026 : âge légal 64 ans, calcul CNAV (50 % × SAM × trimestres) et Agirc-Arrco (points × 1,4386 €), taux de remplacement, rachat de trimestres et PER.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
     link.href = `${BASE}/retraite/guide-complet-2026`;

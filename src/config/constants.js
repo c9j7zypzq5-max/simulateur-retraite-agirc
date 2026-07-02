@@ -23,7 +23,7 @@ export const FISCAL_VERSION = "2026";
 export const FISCAL_CHANGES = [
   { label: "PASS 2026", value: "48 060 €", prev: "46 368 €", delta: "+3,6 %", icon: "📊" },
   { label: "PMSS 2026", value: "3 864 €/mois", prev: "3 864 €/mois", delta: "+3,6 %", icon: "💼" },
-  { label: "Point Agirc-Arrco", value: "1,4098 €", prev: "1,3802 €", delta: "+2,1 %", icon: "⭐" },
+  { label: "Point Agirc-Arrco", value: "1,4386 €", prev: "1,3802 €", delta: "+4,2 %", icon: "⭐" },
   { label: "SMIC horaire", value: "11,88 €", prev: "11,65 €", delta: "+2,0 %", icon: "💶" },
   { label: "Tranche IR 11 %", value: "11 600 € – 29 579 €", prev: "11 295 € – 28 797 €", delta: "revalorisation", icon: "🏛️" },
 ];

@@ -265,7 +265,7 @@ export const GLOSSARY = [
     sims: ['/simulateurs/agirc-arrco'],
     related: ['cnav', 'points-retraite', 'taux-plein'],
     faqs: [
-      { q: "Comment calculer sa pension Agirc-Arrco ?", a: "Pension Agirc-Arrco = nombre de points accumulés × valeur de service du point (1,4196 €/point/an en 2026). Vos points s'accumulent chaque année : salaire brut × taux de cotisation Agirc-Arrco ÷ prix d'achat du point. Consultez votre relevé de points sur agirc-arrco.fr pour connaître vos droits actuels." },
+      { q: "Comment calculer sa pension Agirc-Arrco ?", a: "Pension Agirc-Arrco = nombre de points accumulés × valeur de service du point (1,4386 €/point/an en 2026). Vos points s'accumulent chaque année : salaire brut × taux de cotisation Agirc-Arrco ÷ prix d'achat du point. Consultez votre relevé de points sur agirc-arrco.fr pour connaître vos droits actuels." },
       { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une minoration temporaire de 10 % appliquée pendant 3 ans sur la pension Agirc-Arrco si vous partez à l'âge légal de départ (64 ans pour les générations 1968+). Pour l'éviter, vous devez retarder votre départ d'un an au-delà de cet âge. Ce malus est définitivement supprimé après 3 ans ou à 67 ans." },
       { q: "Les points Agirc-Arrco sont-ils perdus si je change d'employeur ?", a: "Non. Les points Agirc-Arrco sont attachés à vous, pas à votre employeur. Chaque emploi salarié dans le privé génère des points qui s'accumulent tout au long de votre carrière, indépendamment des changements d'employeur. Vous pouvez suivre vos points sur le site agirc-arrco.fr." },
     ],
@@ -364,7 +364,7 @@ export const GLOSSARY = [
     sims: ['/simulateurs/cnav'],
     related: ['cnav', 'taux-plein', 'trimestre'],
     faqs: [
-      { q: "Comment est calculé le SAM ?", a: "Le SAM (Salaire Annuel Moyen) est la moyenne de vos 25 meilleures années de salaire brut, plafonné chaque année au PASS (47 100 € en 2026). Les années avec un salaire inférieur ou les années sans revenus ne sont pas retenues si vous avez 25 années meilleures." },
+      { q: "Comment est calculé le SAM ?", a: "Le SAM (Salaire Annuel Moyen) est la moyenne de vos 25 meilleures années de salaire brut, plafonné chaque année au PASS (48 060 € en 2026). Les années avec un salaire inférieur ou les années sans revenus ne sont pas retenues si vous avez 25 années meilleures." },
       { q: "Le SAM inclut-il les primes et les heures supplémentaires ?", a: "Oui, le SAM est calculé sur le salaire brut soumis à cotisations, qui inclut primes et heures supplémentaires dans la limite du plafond annuel de la Sécurité sociale. En revanche, certaines indemnités exonérées de cotisations ne sont pas prises en compte." },
       { q: "Comment améliorer son SAM avant la retraite ?", a: "Le SAM étant une moyenne des 25 meilleures années, les stratégies pour l'améliorer sont : demander une augmentation ou une promotion en fin de carrière, éviter une période à temps partiel subi en fin de carrière, et racheter des années d'études (qui peuvent remplacer des années à faible salaire dans le calcul)." },
     ],
@@ -1240,8 +1240,8 @@ export const GLOSSARY = [
     short: "Unité de compte du régime complémentaire Agirc-Arrco : vos cotisations achètent des points, chaque point vaut un montant annuel de pension.",
     long: [
       "Le système Agirc-Arrco fonctionne en points : vos cotisations retraite complémentaire sont converties en points au moment du versement, puis à la retraite, vos points sont multipliés par la « valeur de service du point » pour calculer votre pension annuelle.",
-      "En 2026, le prix d'achat d'un point est de 17,7848 € et la valeur de service est de 1,4196 €/an. Ces deux paramètres évoluent chaque année en fonction de l'inflation et des négociations entre partenaires sociaux.",
-      "Pour estimer votre pension Agirc-Arrco : récupérez votre relevé de points sur le site Agirc-Arrco, puis multipliez par la valeur de service. Exemple : 50 000 points × 1,4196 €/an = 70 980 €/an de pension complémentaire brute.",
+      "En 2026, la valeur de service du point est de 1,4386 €/an. Le prix d'achat et la valeur de service évoluent chaque année en fonction de l'inflation et des négociations entre partenaires sociaux.",
+      "Pour estimer votre pension Agirc-Arrco : récupérez votre relevé de points sur le site Agirc-Arrco, puis multipliez par la valeur de service. Exemple : 50 000 points × 1,4386 €/an = 71 930 €/an de pension complémentaire brute.",
     ],
     sims: ['/simulateurs/agirc-arrco'],
     related: ['agirc-arrco', 'points-retraite', 'retraite-complementaire', 'taux-plein'],

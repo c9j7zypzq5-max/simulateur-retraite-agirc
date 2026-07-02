@@ -8,7 +8,7 @@ import JsonLd from "../components/JsonLd.jsx";
 const BASE = "https://www.simfinly.com";
 
 const STATS = [
-  { value: "1,4107 €", label: "Valeur du point 2026", note: "Revalorisé de +2,2 % en nov. 2025" },
+  { value: "1,4386 €", label: "Valeur du point 2026", note: "Revalorisé en nov. 2025" },
   { value: "37 M", label: "Bénéficiaires", note: "Actifs et retraités couverts" },
   { value: "60–35 %", label: "Part de la retraite", note: "Complémentaire / total (cadres)" },
   { value: "4 500 pts", label: "Carrière moyenne", note: "~530 €/mois à la liquidation" },
@@ -17,7 +17,7 @@ const STATS = [
 const FAQ = [
   {
     q: "Quelle est la valeur du point Agirc-Arrco en 2026 ?",
-    a: "La valeur de service du point Agirc-Arrco est de 1,4107 € en 2026, revalorisée au 1er novembre 2025 (+2,2 % vs 2024). Votre pension annuelle = nombre de points × 1,4107 €.",
+    a: "La valeur de service du point Agirc-Arrco est de 1,4386 € en 2026, revalorisée au 1er novembre 2025. Votre pension annuelle = nombre de points × 1,4386 €.",
   },
   {
     q: "Comment éviter le malus Agirc-Arrco de -10 % ?",
@@ -42,7 +42,7 @@ const schemas = [
     "@context": "https://schema.org",
     "@type": "Article",
     headline: "Points Agirc-Arrco 2026 : valeur du point, calcul et simulateur",
-    description: "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4107 €, malus/bonus, comment calculer sa pension complémentaire et simuler ses droits.",
+    description: "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, malus/bonus, comment calculer sa pension complémentaire et simuler ses droits.",
     author: { "@type": "Organization", name: "Simfinly", url: BASE },
     publisher: { "@type": "Organization", name: "Simfinly", logo: { "@type": "ImageObject", url: `${BASE}/logo-mark.svg` } },
     url: `${BASE}/retraite/points-agirc-arrco`,
@@ -77,7 +77,7 @@ export default function GuideAgircArrco() {
   useEffect(() => {
     document.title = "Points Agirc-Arrco 2026 — valeur du point, calcul et simulateur | simfinly";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4107 €, coefficient de solidarité (malus), bonus de fidélité, et simulateur de pension complémentaire gratuit.");
+      "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, coefficient de solidarité (malus), bonus de fidélité, et simulateur de pension complémentaire gratuit.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
     link.href = `${BASE}/retraite/points-agirc-arrco`;
@@ -162,7 +162,7 @@ export default function GuideAgircArrco() {
 
           <h2 style={s.h2}>La valeur du point Agirc-Arrco en 2026</h2>
           <div style={s.body}>
-            <p>Depuis le <strong>1er novembre 2025</strong>, la valeur de service du point est fixée à <strong>1,4107 €</strong> par point et par an, soit une revalorisation de +2,2 % par rapport à novembre 2024 (1,3799 €). Cette indexation est alignée sur l'évolution des prix à la consommation pour préserver le pouvoir d'achat des retraités.</p>
+            <p>Depuis le <strong>1er novembre 2025</strong>, la valeur de service du point est fixée à <strong>1,4386 €</strong> par point et par an, soit une revalorisation de +4,3 % par rapport à novembre 2024 (1,3799 €). Cette indexation est alignée sur l'évolution des prix à la consommation pour préserver le pouvoir d'achat des retraités.</p>
             <table style={s.table}>
               <thead>
                 <tr>
@@ -176,7 +176,7 @@ export default function GuideAgircArrco() {
                   ["1er novembre 2022", "1,2841 €", "+5,12 %"],
                   ["1er novembre 2023", "1,3498 €", "+4,9 %"],
                   ["1er novembre 2024", "1,3799 €", "+2,2 %"],
-                  ["1er novembre 2025", "1,4107 €", "+2,2 %"],
+                  ["1er novembre 2025", "1,4386 €", "+4,3 %"],
                 ].map(([d, v, h], i) => (
                   <tr key={i}>
                     <td style={s.td}>{d}</td>
@@ -192,11 +192,11 @@ export default function GuideAgircArrco() {
           <div style={s.body}>
             <p>La formule est simple :</p>
             <p style={{ background: "var(--primary-soft)", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "14px 20px", fontWeight: 600, color: "var(--text)" }}>
-              Pension annuelle = Nombre de points × 1,4107 €
+              Pension annuelle = Nombre de points × 1,4386 €
             </p>
             <p style={{ marginTop: 16 }}>Exemple : avec 4 500 points accumulés sur une carrière, la pension complémentaire sera de :</p>
             <ul>
-              <li>4 500 × 1,4107 € = <strong>6 348 €/an</strong>, soit <strong>529 €/mois</strong></li>
+              <li>4 500 × 1,4386 € = <strong>6 474 €/an</strong>, soit <strong>539 €/mois</strong></li>
             </ul>
             <p>Pour accumuler des points, vous cotisez via votre employeur sur deux tranches :</p>
             <table style={s.table}>
