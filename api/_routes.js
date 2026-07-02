@@ -4,7 +4,7 @@
 //
 // Préfixe « _ » : Vercel ne traite pas ce fichier comme une route serverless.
 
-import { BASE, ROUTE_META } from './_meta.js';
+import { BASE, ROUTE_META, ogImageForRoute } from './_meta.js';
 export { BASE, ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, ogImageForRoute } from './_meta.js';
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
