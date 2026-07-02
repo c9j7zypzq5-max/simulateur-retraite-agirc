@@ -271,6 +271,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     }
     const title = `${report?.title || name} · simfinly.com`;
     const text = t("common.shareText");
+    track("share", { simulateur: name, method: navigator.share ? "native" : "clipboard" });
     try {
       if (navigator.share) {
         try { await navigator.share({ title, text, url }); return; } catch { /* annulé */ }

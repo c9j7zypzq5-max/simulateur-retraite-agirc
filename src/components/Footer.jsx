@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { track } from "@vercel/analytics";
 import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
@@ -7,6 +8,7 @@ import { ROUTE_META } from "../../api/_meta.js";
 import { sourcesForRoute } from "../data/sourcesOfficielles.js";
 import { useTranslation } from "../i18n/index.js";
 import { usePwaInstall } from "../hooks/usePwaInstall.js";
+import NewsletterSignup from "./NewsletterSignup.jsx";
 
 // Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
 const BLOG_CATS_FOR_SIM = {
@@ -55,7 +57,9 @@ function RelatedSimulators() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 12 }}>
         {related.map(item => (
-          <Link key={item.path} to={item.path} style={{
+          <Link key={item.path} to={item.path}
+            onClick={() => track("related_click", { type: "simulator", to: item.path })}
+            style={{
             display: "flex", alignItems: "center", gap: 10,
             padding: "12px 14px", borderRadius: 12, textDecoration: "none",
             background: "var(--card-bg)", border: "1px solid var(--border)",
@@ -95,7 +99,9 @@ function RelatedTerms() {
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
         {terms.map(t => (
-          <Link key={t.slug} to={`/lexique/${t.slug}`} title={t.short} style={{
+          <Link key={t.slug} to={`/lexique/${t.slug}`} title={t.short}
+            onClick={() => track("related_click", { type: "lexique", to: t.slug })}
+            style={{
             display: "inline-flex", alignItems: "center", gap: 6,
             padding: "8px 14px", borderRadius: 20, textDecoration: "none",
             background: "var(--card-bg)", border: "1px solid var(--border)",
@@ -137,7 +143,9 @@ function RelatedGuides() {
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
         {guides.map(g => (
-          <Link key={g.slug} to={`/guides/${g.slug}`} style={{
+          <Link key={g.slug} to={`/guides/${g.slug}`}
+            onClick={() => track("related_click", { type: "guide", to: g.slug })}
+            style={{
             display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderRadius: 12, textDecoration: "none",
             background: "var(--surface)", border: "1px solid var(--border)", transition: "border-color 0.2s",
           }}
@@ -258,6 +266,7 @@ function PwaInstallBanner() {
 
 export default function Footer() {
   const { t, locale } = useTranslation();
+  const { pathname } = useLocation();
   const isEn = locale === "en";
   return (
     <>
@@ -268,6 +277,7 @@ export default function Footer() {
     <RelatedTerms />
     <RelatedArticles />
     <OfficialSources />
+    <NewsletterSignup source={pathname.startsWith("/simulateurs/") ? "simulateur" : "footer"} />
     <footer style={{
       background: "var(--surface)",
       borderTop: "1px solid var(--border)",
