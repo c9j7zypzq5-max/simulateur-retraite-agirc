@@ -10,6 +10,7 @@ import { METIERS_BY_SLUG } from '../src/data/metiers.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { FAQS } from '../src/data/faqs.js';
+import { EDITORIAL_BY_ROUTE } from '../src/data/editorial.js';
 import { sourcesForRoute } from '../src/data/sourcesOfficielles.js';
 import { ROUTE_META } from './_meta.js';
 
@@ -735,6 +736,11 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
     if (route.startsWith('/retraite/')) {
       const m = METIERS_BY_SLUG[route.slice('/retraite/'.length)];
       if (m) body += metierBodyHtml(m);
+    }
+    // Éditorial « À propos » (même contenu que le composant) rendu crawlable.
+    const editorial = EDITORIAL_BY_ROUTE[route];
+    if (Array.isArray(editorial) && editorial.length) {
+      body += editorial.map(s => `<h2>${escapeHtml(s.title)}</h2><p>${escapeHtml(s.text)}</p>`).join('');
     }
     const faq = FAQS[route];
     if (Array.isArray(faq) && faq.length) {
