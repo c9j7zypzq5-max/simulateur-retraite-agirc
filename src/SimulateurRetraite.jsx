@@ -10,20 +10,22 @@ import SimRecommendations from "./components/SimRecommendations.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
 import { FAQS } from "./data/faqs.js";
 import Breadcrumbs from "./components/Breadcrumbs.jsx";
+import { PASS_2026, AGIRC_ARRCO_2026 } from "./data/baremesRetraite.js";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const PASS          = 48_060;
-const VALEUR_ACHAT  = 20.1877; // prix d'achat du point 2026
-const VALEUR_SERVICE = 1.4386;  // valeur de service du point 2026
-// Seul le taux contractuel génère des points ; le taux d'appel (127 %) est
-// cotisé mais non générateur de droits.
-const TAUX_T1_ACQ   = 0.0620;
-const TAUX_T2_ACQ   = 0.1700;
+// Valeurs Agirc-Arrco centralisées dans data/baremesRetraite.js (source unique,
+// partagée avec le test miroir). Taux de cotisation salarié/employeur : ne servent
+// qu'à l'affichage du détail des cotisations, pas à l'acquisition de points.
+const PASS          = PASS_2026;
+const VALEUR_ACHAT  = AGIRC_ARRCO_2026.valeurAchat;
+const VALEUR_SERVICE = AGIRC_ARRCO_2026.valeurService;
+const TAUX_T1_ACQ   = AGIRC_ARRCO_2026.tauxAcqT1;
+const TAUX_T2_ACQ   = AGIRC_ARRCO_2026.tauxAcqT2;
+const GMP_MIN_PTS   = AGIRC_ARRCO_2026.gmpMinPts;
 const TAUX_T1_SAL   = 0.0315;
 const TAUX_T1_PAT   = 0.0472;
 const TAUX_T2_SAL   = 0.0864;
 const TAUX_T2_PAT   = 0.1295;
-const GMP_MIN_PTS   = 120;
 
 const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
 const getCoef      = age => COEF_TABLE[age] ?? 1.00;

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { PASS_2026, AGIRC_ARRCO_2026 } from "../data/baremesRetraite.js";
 
 // ─── IPP belge (ImpotRevenuBE) ────────────────────────────────────────────────
 const BAREME_BE = [
@@ -248,12 +249,14 @@ describe("Succession belge — droits régionaux", () => {
 });
 
 // ─── AGIRC-Arrco ─────────────────────────────────────────────────────────────
-const PASS          = 48_060;
-const VALEUR_ACHAT  = 20.1877;
-const VALEUR_SERVICE = 1.4386;
-const TAUX_T1       = 0.0620;
-const TAUX_T2       = 0.1700;
-const GMP_MIN_PTS   = 120;
+// Constantes tirées de la source unique (baremesRetraite.js) : ce test miroir ne
+// peut plus diverger du simulateur sur les valeurs du point.
+const PASS          = PASS_2026;
+const VALEUR_ACHAT  = AGIRC_ARRCO_2026.valeurAchat;
+const VALEUR_SERVICE = AGIRC_ARRCO_2026.valeurService;
+const TAUX_T1       = AGIRC_ARRCO_2026.tauxAcqT1;
+const TAUX_T2       = AGIRC_ARRCO_2026.tauxAcqT2;
+const GMP_MIN_PTS   = AGIRC_ARRCO_2026.gmpMinPts;
 const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
 const getCoef = age => COEF_TABLE[age] ?? 1.00;
 
