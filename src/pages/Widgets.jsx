@@ -93,7 +93,7 @@ export default function Widgets() {
           </select>
           {(() => {
             const label = ALL_SIMULATORS.find(s => s.path === selectedSim)?.label || "";
-            const code = `<iframe src="https://www.simfinly.com${selectedSim}" width="100%" height="700" style="border:1px solid #e5e7eb;border-radius:12px;max-width:720px" title="${label} — simfinly.com" loading="lazy"></iframe>`;
+            const code = `<iframe src="https://www.simfinly.com${selectedSim}" width="100%" height="700" style="border:1px solid #e5e7eb;border-radius:12px;max-width:720px" title="${label} — simfinly.com" loading="lazy"></iframe>\n<p style="font-size:12px;margin:6px 0 0;font-family:sans-serif"><a href="https://www.simfinly.com${selectedSim}" target="_blank" rel="noopener">Simulateur proposé par simfinly.com</a></p>`;
             return (
               <>
                 <pre style={{ margin: 0, overflowX: "auto", background: "var(--input-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 14px", fontSize: 12, color: "var(--text-secondary)", whiteSpace: "pre-wrap", wordBreak: "break-all", fontFamily: "ui-monospace, monospace", marginBottom: 12 }}>{code}</pre>

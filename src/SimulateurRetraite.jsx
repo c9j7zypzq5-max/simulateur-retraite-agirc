@@ -9,6 +9,7 @@ import ShareBar from "./components/ShareBar.jsx";
 import SimRecommendations from "./components/SimRecommendations.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
 import { FAQS } from "./data/faqs.js";
+import Breadcrumbs from "./components/Breadcrumbs.jsx";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 48_060;
@@ -469,8 +470,13 @@ export default function SimulateurRetraite() {
       <Navbar theme={theme} setTheme={setTheme} />
 
       {/* ── Header ── */}
-      <div style={{ maxWidth: 760, margin: "0 auto", padding: "40px 0 32px", animation: "fadeUp .5s ease both" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18 }}>
+      <div style={{ maxWidth: 760, margin: "0 auto", padding: "16px 0 32px", animation: "fadeUp .5s ease both" }}>
+        <Breadcrumbs items={[
+          { label: "Accueil", to: "/" },
+          { label: "Simulateurs retraite", to: "/simulateurs" },
+          { label: "Agirc-Arrco" },
+        ]} />
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 18, marginTop: 16 }}>
           <div style={{ width: 36, height: 2, background: "linear-gradient(90deg,var(--gold-mid),var(--gold))" }} aria-hidden="true" />
           <span style={{ fontSize: 11, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--gold-mid)" }}>Simulation gratuite · Données 2026</span>
         </div>

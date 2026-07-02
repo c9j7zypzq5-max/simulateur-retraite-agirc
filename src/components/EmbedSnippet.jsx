@@ -6,6 +6,16 @@ const SIZES = [
   { label: "Pleine largeur", width: "100%", height: 680, maxWidth: "100%" },
 ];
 
+// Page complète correspondant à chaque widget /embed/* : cible du lien
+// d'attribution sous l'iframe (une iframe seule ne crée aucun lien crawlable).
+const EMBED_PAGE = {
+  "/embed/epargne":  "/simulateurs/epargne",
+  "/embed/emprunt":  "/simulateurs/emprunt-immobilier",
+  "/embed/fire":     "/simulateurs/fire",
+  "/embed/budget":   "/simulateurs/budget",
+  "/embed/retraite": "/simulateurs/cnav",
+};
+
 // Encart « Intégrer ce simulateur » : code iframe avec prévisualisation et options.
 export default function EmbedSnippet({ path = "/embed/epargne", label = "ce simulateur", showPreview = true }) {
   const [copied, setCopied]     = useState(false);
@@ -18,9 +28,11 @@ export default function EmbedSnippet({ path = "/embed/epargne", label = "ce simu
   // Build embed URL with options
   const embedUrl = `https://www.simfinly.com${path}${theme !== "auto" ? `?theme=${theme}` : ""}`;
 
-  // Build iframe code
+  // Build iframe code + lien d'attribution (condition d'intégration : c'est ce
+  // lien, pas l'iframe, qui crédite la source)
   const maxW = maxWidth === "100%" ? "100%" : `${maxWidth}px`;
-  const code = `<iframe\n  src="${embedUrl}"\n  width="${width}"\n  height="${height}"\n  style="border:1px solid #e5e7eb;border-radius:12px;max-width:${maxW}"\n  title="${label.replace(/^ce /, "Simulateur ")} — simfinly.com"\n  loading="lazy"\n  allow="clipboard-write"\n></iframe>`;
+  const pageUrl = `https://www.simfinly.com${EMBED_PAGE[path] || path.replace("/embed/", "/simulateurs/")}`;
+  const code = `<iframe\n  src="${embedUrl}"\n  width="${width}"\n  height="${height}"\n  style="border:1px solid #e5e7eb;border-radius:12px;max-width:${maxW}"\n  title="${label.replace(/^ce /, "Simulateur ")} — simfinly.com"\n  loading="lazy"\n  allow="clipboard-write"\n></iframe>\n<p style="font-size:12px;margin:6px 0 0;font-family:sans-serif">\n  <a href="${pageUrl}" target="_blank" rel="noopener">Simulateur proposé par simfinly.com</a>\n</p>`;
 
   function copy() {
     navigator.clipboard?.writeText(code).then(() => {
@@ -38,7 +50,8 @@ export default function EmbedSnippet({ path = "/embed/epargne", label = "ce simu
             Intégrer {label} sur votre site
           </h3>
           <p style={{ fontSize: 12, color: "var(--text-secondary)", margin: 0, lineHeight: 1.5 }}>
-            Gratuit et sans publicité intrusive — un lien vers simfinly.com est inclus.
+            Gratuit et sans publicité intrusive. Seule condition d'intégration : conserver
+            le lien d'attribution « Simulateur proposé par simfinly.com » inclus dans le code.
           </p>
         </div>
         <button
