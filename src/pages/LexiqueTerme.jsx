@@ -5,7 +5,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import JsonLd from "../components/JsonLd.jsx";
-import { ROUTE_META } from "../../api/_routes.js";
+import { ROUTE_META } from "../../api/_meta.js";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 
 const CATEGORY_COLORS = {

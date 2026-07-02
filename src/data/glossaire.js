@@ -1727,6 +1727,50 @@ export const GLOSSARY = [
     sims: ['/simulateurs/patrimoine'],
     related: ['allocation-actifs', 'reequilibrage', 'diversification'],
   },
+  {
+    slug: 'obligations', term: 'Obligations', full: 'Obligations (titres de créance)',
+    aliases: ['obligation', 'marché obligataire', 'fonds obligataire'], category: 'Finances',
+    short: "Titres de créance émis par un État ou une entreprise : l'investisseur prête de l'argent contre un intérêt (coupon) et le remboursement à l'échéance. Classe d'actifs moins volatile que les actions.",
+    long: [
+      "Une obligation est un prêt titrisé : en l'achetant, vous prêtez à un État (OAT françaises, Treasuries américains) ou à une entreprise, qui vous verse un intérêt périodique (le coupon) puis vous rembourse le nominal à l'échéance. Le risque principal est le défaut de l'émetteur — quasi nul pour les grands États, plus élevé pour les entreprises fragiles (obligations « high yield »).",
+      "Le prix d'une obligation varie en sens inverse des taux d'intérêt : quand les taux montent, les obligations déjà émises (aux coupons plus faibles) perdent de la valeur, et inversement. C'est pourquoi même les fonds obligataires « sûrs » peuvent baisser, comme en 2022.",
+      "Dans un patrimoine, les obligations jouent le rôle d'amortisseur : moins rémunératrices que les actions sur le long terme, mais moins volatiles. On y accède le plus souvent via des fonds ou ETF obligataires, ou indirectement via le fonds en euros de l'assurance-vie, largement investi en obligations.",
+    ],
+    sims: ['/simulateurs/patrimoine', '/simulateurs/comparateur'],
+    related: ['allocation-actifs', 'diversification', 'etf', 'fonds-euros'],
+  },
+  {
+    slug: 'retraite-complementaire', term: 'Retraite complémentaire', full: 'Retraite complémentaire obligatoire (Agirc-Arrco, Ircantec, RCI…)',
+    aliases: ['retraite complémentaire', 'régime complémentaire', 'complémentaire retraite', 'pension complémentaire'], category: 'Retraite',
+    short: "Deuxième étage obligatoire de la retraite, versé en plus de la retraite de base : Agirc-Arrco pour les salariés du privé, Ircantec pour les contractuels publics, RCI pour les indépendants.",
+    long: [
+      "En France, la retraite obligatoire comporte deux étages : la retraite de base (CNAV, MSA, SSI…) et la retraite complémentaire. Contrairement à une idée reçue, la complémentaire n'est pas optionnelle : les cotisations sont prélevées automatiquement sur le salaire ou le revenu professionnel.",
+      "Chaque statut a son régime : Agirc-Arrco pour les salariés du privé (cadres et non-cadres depuis la fusion de 2019), Ircantec pour les agents publics non titulaires, RCI pour les artisans et commerçants, et des sections professionnelles (CIPAV, CARMF, CARPIMKO…) pour les libéraux. La plupart fonctionnent par points : les cotisations achètent des points, convertis en pension via une valeur de service.",
+      "Pour un salarié du privé, la complémentaire représente typiquement 25 à 60 % de la pension totale — d'autant plus que le salaire est élevé, car la base est plafonnée. L'estimer est donc indispensable pour connaître sa future retraite réelle.",
+    ],
+    sims: ['/simulateurs/agirc-arrco', '/simulateurs/ircantec', '/simulateurs/synthese-retraite'],
+    related: ['agirc-arrco', 'point-agirc', 'points-retraite', 'cnav', 'taux-plein'],
+    faqs: [
+      { q: "La retraite complémentaire est-elle obligatoire ?", a: "Oui. Pour tous les salariés et la plupart des indépendants, les cotisations aux régimes complémentaires (Agirc-Arrco, Ircantec, RCI…) sont prélevées automatiquement, au même titre que celles de la retraite de base. Elle ne doit pas être confondue avec la retraite supplémentaire (PER, article 83), qui est facultative." },
+      { q: "Quelle part de ma pension vient de la complémentaire ?", a: "Pour un salarié non-cadre, la complémentaire Agirc-Arrco représente environ 25 à 35 % de la pension totale. Pour un cadre dont le salaire dépasse le plafond de la Sécurité sociale, elle peut dépasser 50 %, car la retraite de base est calculée sur un salaire plafonné." },
+    ],
+  },
+  {
+    slug: 'clause-beneficiaire', term: 'Clause bénéficiaire', full: "Clause bénéficiaire d'un contrat d'assurance-vie",
+    aliases: ['clause bénéficiaire', 'bénéficiaire assurance-vie', 'désignation de bénéficiaire'], category: 'Impôts',
+    short: "Disposition d'un contrat d'assurance-vie qui désigne la ou les personnes recevant le capital au décès de l'assuré — la clé de la transmission hors succession.",
+    long: [
+      "La clause bénéficiaire désigne qui recevra les capitaux de votre assurance-vie à votre décès. Elle est totalement libre : enfants, conjoint, concubin, ami, association… y compris des personnes qui seraient lourdement taxées dans une succession classique. Les capitaux transmis échappent en grande partie aux droits de succession (abattement de 152 500 € par bénéficiaire pour les primes versées avant 70 ans).",
+      "La rédaction compte énormément. La clause standard (« mon conjoint, à défaut mes enfants, à défaut mes héritiers ») convient à la majorité des situations, mais une clause personnalisée permet de démembrer le capital (usufruit au conjoint, nue-propriété aux enfants), de répartir en pourcentages ou de protéger un enfant vulnérable.",
+      "Une clause mal rédigée ou jamais mise à jour est l'erreur la plus fréquente : ex-conjoint resté désigné, bénéficiaire décédé sans « à défaut », désignation trop vague. Relisez-la après chaque événement de vie (mariage, divorce, naissance) — elle se modifie gratuitement par simple avenant.",
+    ],
+    sims: ['/simulateurs/succession', '/simulateurs/assurance-vie'],
+    related: ['assurance-vie', 'assurance-vie-transmission', 'droits-succession'],
+    faqs: [
+      { q: "Puis-je changer la clause bénéficiaire de mon assurance-vie ?", a: "Oui, à tout moment et gratuitement, par simple demande à votre assureur — sauf si le bénéficiaire a formellement « accepté » le contrat (acceptation notifiée à l'assureur), auquel cas son accord devient nécessaire. C'est pourquoi il est déconseillé de faire accepter la clause de son vivant sans réflexion." },
+      { q: "Que se passe-t-il sans clause bénéficiaire valable ?", a: "Si aucun bénéficiaire ne peut être identifié au décès, le capital réintègre la succession : il est alors partagé selon les règles successorales classiques et soumis aux droits de succession, faisant perdre tout l'avantage fiscal de l'assurance-vie." },
+    ],
+  },
 ];
 
 // ── Index dérivés ────────────────────────────────────────────────────────────

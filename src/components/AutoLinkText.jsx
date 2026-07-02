@@ -1,5 +1,5 @@
 import Terme from "./Terme.jsx";
-import { TERM_MATCHERS } from "../data/glossaire.js";
+import { useGlossaire } from "../hooks/useLazyData.js";
 
 // Auto-liaison des termes du lexique dans une chaîne de texte (FAQ, intros,
 // descriptions…). Rend la PREMIÈRE occurrence de chaque terme sous forme de
@@ -13,7 +13,7 @@ import { TERM_MATCHERS } from "../data/glossaire.js";
 
 const isBoundary = (ch) => ch === undefined || !/[\p{L}\p{N}]/u.test(ch);
 
-function linkify(text) {
+function linkify(text, matchers) {
   const linked = new Set();
   const out = [];
   let buffer = "";
@@ -23,7 +23,7 @@ function linkify(text) {
     let hit = null;
 
     if (isBoundary(text[i - 1])) {
-      for (const m of TERM_MATCHERS) {
+      for (const m of matchers) {
         if (linked.has(m.slug)) continue;
         const len = m.match.length;
         const slice = text.substr(i, len);
@@ -52,7 +52,12 @@ function linkify(text) {
 }
 
 export default function AutoLinkText({ children }) {
+  // Glossaire chargé en différé : texte brut tant qu'il n'est pas disponible,
+  // puis re-rendu avec les liens (amélioration progressive, aucun décalage de
+  // mise en page — le texte reste identique).
+  const glossaire = useGlossaire(typeof children === "string" && !!children);
   // N'agit que sur du texte brut ; tout autre contenu est rendu tel quel.
   if (typeof children !== "string" || !children) return children ?? null;
-  return <>{linkify(children)}</>;
+  if (!glossaire) return children;
+  return <>{linkify(children, glossaire.TERM_MATCHERS)}</>;
 }

@@ -6,15 +6,13 @@ import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import SimIcon from "../data/simIcons.jsx";
 import { prefetchRoute } from "../utils/prefetch.js";
-import { GLOSSARY } from "../data/glossaire.js";
 import { Search, X, LayoutGrid, Clock, ShieldCheck } from "lucide-react";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink, useCountry } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
-import { METIERS_LIST } from "../data/metiers.js";
+import { useGlossaire, useMetiers } from "../hooks/useLazyData.js";
 
-const TOP_METIERS = METIERS_LIST.slice(0, 12);
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
@@ -401,6 +399,12 @@ export default function Home() {
     try { return new URLSearchParams(window.location.search).get("q") || ""; } catch { return ""; }
   });
   const [scores, setScores] = useState({});
+  // Données de contenu chargées en différé (hors bundle initial de l'accueil) :
+  // glossaire seulement quand l'utilisateur tape une recherche, métiers après
+  // le montage (section sous la ligne de flottaison).
+  const glossaire = useGlossaire(!!query.trim());
+  const metiersMod = useMetiers();
+  const topMetiers = metiersMod ? metiersMod.METIERS_LIST.slice(0, 12) : [];
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);
   const [articles, setArticles] = useState([]);
@@ -459,8 +463,8 @@ export default function Home() {
 
   const allCards = [featured, ...regular].filter(Boolean);
 
-  const lexMatches = (locale === 'fr' && nq)
-    ? GLOSSARY.filter(t => norm(`${t.term} ${t.full} ${t.short} ${(t.aliases || []).join(" ")}`).includes(nq)).slice(0, 8)
+  const lexMatches = (locale === 'fr' && nq && glossaire)
+    ? glossaire.GLOSSARY.filter(t => norm(`${t.term} ${t.full} ${t.short} ${(t.aliases || []).join(" ")}`).includes(nq)).slice(0, 8)
     : [];
   const artMatches = (locale === 'fr' && nq)
     ? articles.filter(a => norm(`${a.title} ${a.intro || ""} ${a.category || ""}`).includes(nq)).slice(0, 6)
@@ -620,7 +624,7 @@ export default function Home() {
             Chaque profession a ses propres règles de retraite. Retrouvez le guide adapté à votre statut.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            {TOP_METIERS.map(m => (
+            {topMetiers.map(m => (
               <Link
                 key={m.slug}
                 to={`/retraite/${m.slug}`}

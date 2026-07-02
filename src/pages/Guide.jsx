@@ -4,7 +4,7 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
-import { ROUTE_META } from "../../api/_routes.js";
+import { ROUTE_META } from "../../api/_meta.js";
 import { GUIDES_BY_SLUG } from "../data/guides.js";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 

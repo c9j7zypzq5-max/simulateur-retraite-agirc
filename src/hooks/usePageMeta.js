@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, BASE } from "../../api/_routes.js";
+import { ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, BASE } from "../../api/_meta.js";
 
 // Met à jour les métadonnées de la page lors de la navigation côté client (SPA).
 // Le HTML statique pré-rendu (scripts/generate-static-html.mjs) couvre déjà les

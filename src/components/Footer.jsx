@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
-import { GLOSSARY } from "../data/glossaire.js";
-import { GUIDES } from "../data/guides.js";
-import { ROUTE_META } from "../../api/_routes.js";
+import { useGlossaire, useGuides } from "../hooks/useLazyData.js";
+import { ROUTE_META } from "../../api/_meta.js";
 import { useTranslation } from "../i18n/index.js";
 import { usePwaInstall } from "../hooks/usePwaInstall.js";
 
@@ -82,8 +81,10 @@ function RelatedSimulators() {
 function RelatedTerms() {
   const { pathname } = useLocation();
   const { t: tr } = useTranslation();
-  if (!pathname.startsWith("/simulateurs/")) return null;
-  const terms = GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
+  const onSim = pathname.startsWith("/simulateurs/");
+  const glossaire = useGlossaire(onSim); // données chargées en différé, hors bundle initial
+  if (!onSim || !glossaire) return null;
+  const terms = glossaire.GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
   if (terms.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={tr("sections.usefulDefinitions")}>
@@ -122,8 +123,10 @@ function RelatedTerms() {
 function RelatedGuides() {
   const { pathname } = useLocation();
   const { t } = useTranslation();
-  if (!pathname.startsWith("/simulateurs/")) return null;
-  const guides = GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
+  const onSim = pathname.startsWith("/simulateurs/");
+  const guidesMod = useGuides(onSim); // données chargées en différé, hors bundle initial
+  if (!onSim || !guidesMod) return null;
+  const guides = guidesMod.GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
   if (guides.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedGuides")}>

@@ -3,7 +3,7 @@ import BaremeUpdateBadge from "./BaremeUpdateBadge.jsx";
 import { Home, ChevronRight } from "lucide-react";
 import { Link, useLocation } from "../lib/router.jsx";
 import { useExporting } from "../utils/exportMode.js";
-import { ROUTE_META } from "../../api/_routes.js";
+import { ROUTE_META } from "../../api/_meta.js";
 import AutoLinkText from "./AutoLinkText.jsx";
 import JsonLd from "./JsonLd.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { track } from "@vercel/analytics";
 import { buildShareUrl } from "../hooks/useShareableUrl.js";
 import { setExporting } from "../utils/exportMode.js";
-import { ROUTE_META } from "../../api/_routes.js";
+import { ROUTE_META } from "../../api/_meta.js";
 import { useAuth } from "../hooks/useAuth.js";
 import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useToast } from "../context/ToastContext.jsx";
