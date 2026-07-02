@@ -4,12 +4,13 @@
 //
 // Préfixe « _ » : Vercel ne traite pas ce fichier comme une route serverless.
 
-import { BASE, ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, ogImageForRoute } from './_meta.js';
+import { BASE, ROUTE_META } from './_meta.js';
 export { BASE, ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, ogImageForRoute } from './_meta.js';
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
+import { BAREMES_DATES } from '../src/data/baremesDates.js';
 import { SEO_CONTENT } from './_seo.js';
 
 
@@ -25,7 +26,13 @@ export const SITE_LASTMOD = '2026-06-15';
 
 // Surcharges de <lastmod> par route (révision plus récente que SITE_LASTMOD).
 // Clé = route canonique FR (sans préfixe /en, /ch, /be).
+// Dérivées de BAREMES_DATES (source unique : badge « Barèmes YYYY » côté UI et
+// lastmod du sitemap racontent la même histoire), complétées de surcharges manuelles.
+const MOIS_NUM = { janvier: '01', février: '02', mars: '03', avril: '04', mai: '05', juin: '06', juillet: '07', août: '08', septembre: '09', octobre: '10', novembre: '11', décembre: '12' };
 export const ROUTE_DATES = {
+  ...Object.fromEntries(Object.entries(BAREMES_DATES).map(([route, { annee, mois }]) =>
+    [route, `${annee}-${MOIS_NUM[mois] || '01'}-01`]
+  )),
   '/': '2026-06-15',
 };
 

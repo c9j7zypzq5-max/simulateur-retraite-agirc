@@ -8,6 +8,8 @@
 import { COMPARATIFS } from '../src/data/comparatifs.js';
 import { METIERS_BY_SLUG } from '../src/data/metiers.js';
 import { FAQS } from '../src/data/faqs.js';
+import { sourcesForRoute } from '../src/data/sourcesOfficielles.js';
+import { ROUTE_META } from './_meta.js';
 
 export const SEO_CONTENT = {
   '/': {
@@ -681,6 +683,16 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
     const faq = FAQS[route];
     if (Array.isArray(faq) && faq.length) {
       body += faq.map(f => `<h2>${escapeHtml(f.q)}</h2><p>${escapeHtml(f.a)}</p>`).join('');
+    }
+    // Sources officielles (E-E-A-T) : mêmes références que la section affichée
+    // par le Footer côté client.
+    if (route.startsWith('/simulateurs/') || route.startsWith('/retraite/')) {
+      const sources = sourcesForRoute(route, ROUTE_META[route]?.cat);
+      if (sources.length) {
+        body += `<h2>Sources officielles</h2><ul>` + sources.map(s =>
+          `<li><a href="${escapeHtml(s.url)}" rel="noopener">${escapeHtml(s.name)}</a></li>`
+        ).join('') + `</ul>`;
+      }
     }
   }
 

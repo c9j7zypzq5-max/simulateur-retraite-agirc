@@ -4,6 +4,7 @@ import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { useGlossaire, useGuides } from "../hooks/useLazyData.js";
 import { ROUTE_META } from "../../api/_meta.js";
+import { sourcesForRoute } from "../data/sourcesOfficielles.js";
 import { useTranslation } from "../i18n/index.js";
 import { usePwaInstall } from "../hooks/usePwaInstall.js";
 
@@ -152,6 +153,41 @@ function RelatedGuides() {
   );
 }
 
+// Sources officielles de la page courante (caisses, administrations) : signal de
+// confiance E-E-A-T essentiel pour du contenu financier. Liens externes normaux
+// (pas de nofollow) vers des institutions.
+function OfficialSources() {
+  const { pathname } = useLocation();
+  if (!pathname.startsWith("/simulateurs/") && !pathname.startsWith("/retraite/")) return null;
+  const sources = sourcesForRoute(pathname, ROUTE_META[pathname]?.cat);
+  if (!sources.length) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Sources officielles">
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.1rem", fontWeight: 600, color: "var(--text)", marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
+        Sources officielles
+        <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
+      </div>
+      <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>
+        Les barèmes et règles utilisés par ce simulateur s'appuient sur les références suivantes :
+      </p>
+      <ul style={{ listStyle: "none", padding: 0, display: "flex", flexWrap: "wrap", gap: 10 }}>
+        {sources.map(s => (
+          <li key={s.url}>
+            <a href={s.url} target="_blank" rel="noopener" style={{
+              display: "inline-flex", alignItems: "center", gap: 6,
+              padding: "8px 14px", borderRadius: 20, textDecoration: "none",
+              background: "var(--card-bg)", border: "1px solid var(--border)",
+              color: "var(--text-secondary)", fontSize: 13,
+            }}>
+              🏛 {s.name} ↗
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 // Articles de blog liés à la thématique de la page simulateur courante.
 function RelatedArticles() {
   const { pathname } = useLocation();
@@ -231,6 +267,7 @@ export default function Footer() {
     <RelatedGuides />
     <RelatedTerms />
     <RelatedArticles />
+    <OfficialSources />
     <footer style={{
       background: "var(--surface)",
       borderTop: "1px solid var(--border)",
