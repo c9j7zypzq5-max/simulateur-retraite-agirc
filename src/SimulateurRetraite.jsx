@@ -13,10 +13,12 @@ import Breadcrumbs from "./components/Breadcrumbs.jsx";
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const PASS          = 48_060;
-const VALEUR_ACHAT  = 7.46;
-const VALEUR_SERVICE = 1.4386;
-const TAUX_T1       = 0.0787;
-const TAUX_T2       = 0.2159;
+const VALEUR_ACHAT  = 20.1877; // prix d'achat du point 2026
+const VALEUR_SERVICE = 1.4386;  // valeur de service du point 2026
+// Seul le taux contractuel génère des points ; le taux d'appel (127 %) est
+// cotisé mais non générateur de droits.
+const TAUX_T1_ACQ   = 0.0620;
+const TAUX_T2_ACQ   = 0.1700;
 const TAUX_T1_SAL   = 0.0315;
 const TAUX_T1_PAT   = 0.0472;
 const TAUX_T2_SAL   = 0.0864;
@@ -52,7 +54,7 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
   const salAnnActuel = sal * 12;
   const t1p = Math.min(salAnnActuel, PASS);
   const t2p = Math.max(0, Math.min(salAnnActuel, 8 * PASS) - PASS);
-  let ptsParAn = ((t1p * TAUX_T1) + (t2p * TAUX_T2)) / VALEUR_ACHAT;
+  let ptsParAn = ((t1p * TAUX_T1_ACQ) + (t2p * TAUX_T2_ACQ)) / VALEUR_ACHAT;
   if (estCadre && salAnnActuel < PASS) ptsParAn = Math.max(ptsParAn, GMP_MIN_PTS);
   const pointsAcquis = ptsParAn * af;
   const cotSalPassé  = (t1p * TAUX_T1_SAL + t2p * TAUX_T2_SAL) * af;
@@ -64,7 +66,7 @@ function calcResult({ salaire, anneesFaites, anneesRestantes,
     const salAnn = salCourant * 12;
     const t1 = Math.min(salAnn, PASS);
     const t2 = Math.max(0, Math.min(salAnn, 8 * PASS) - PASS);
-    let pts = ((t1 * TAUX_T1) + (t2 * TAUX_T2)) / VALEUR_ACHAT;
+    let pts = ((t1 * TAUX_T1_ACQ) + (t2 * TAUX_T2_ACQ)) / VALEUR_ACHAT;
     if (estCadre && salAnn < PASS) pts = Math.max(pts, GMP_MIN_PTS);
     pointsFuturs  += pts;
     cotSalFutur   += t1 * TAUX_T1_SAL + t2 * TAUX_T2_SAL;
@@ -327,7 +329,7 @@ function AccordionSection({ title, subtitle, children, gold = false, defaultOpen
 const EDITORIAL = [
   { title: "Un régime par points pour tous les salariés du privé", text: "L'Agirc-Arrco est le régime de retraite complémentaire obligatoire de l'ensemble des salariés du secteur privé en France. Il fonctionne par accumulation de points : chaque année, une fraction de vos cotisations salariales et patronales est convertie en points de retraite. Au moment de votre départ, le total de vos points est multiplié par la valeur de service du point pour calculer votre pension complémentaire annuelle." },
   { title: "Tranche 1 et Tranche 2 : une cotisation progressive", text: "Vos cotisations sont calculées sur deux tranches définies par rapport au Plafond Annuel de la Sécurité Sociale (PASS, 48 060 € en 2026, soit 4 005 €/mois). La Tranche 1 couvre la part de salaire jusqu'au PASS, avec un taux global de 7,87 %. La Tranche 2 s'applique sur la part entre 1 et 8 PASS, avec un taux de 21,59 %. Cette progressivité explique que les hauts salaires accumulent proportionnellement plus de points chaque année." },
-  { title: "Valeur d'achat et valeur de service : deux piliers du système", text: "Le mécanisme repose sur deux valeurs distinctes. La valeur d'achat (7,46 € en 2026) est le coût d'un point : elle détermine combien de points vous accumulez par euro de cotisation. La valeur de service (1,4386 €/point en 2026) est ce que vaut un point lors du versement de votre pension. Ces deux paramètres sont révisés chaque novembre par les partenaires sociaux pour tenir compte de l'inflation et de l'évolution des salaires." },
+  { title: "Valeur d'achat et valeur de service : deux piliers du système", text: "Le mécanisme repose sur deux valeurs distinctes. La valeur d'achat (20,1877 € en 2026) est le coût d'un point : elle détermine combien de points vous accumulez par euro de cotisation. La valeur de service (1,4386 €/point en 2026) est ce que vaut un point lors du versement de votre pension. Ces deux paramètres sont révisés chaque novembre par les partenaires sociaux pour tenir compte de l'inflation et de l'évolution des salaires." },
   { title: "Complémentaire et retraite de base : un duo indissociable", text: "La retraite Agirc-Arrco vient en complément de la retraite de base versée par la CNAV. Pour un salarié type, elle représente entre 30 % et 60 % du total de sa pension. Plus la carrière est longue et le salaire élevé, plus la part complémentaire est significative. La gestion est assurée paritairement par les organisations syndicales de salariés et les organisations patronales — sans intervention de l'État." },
 ];
 

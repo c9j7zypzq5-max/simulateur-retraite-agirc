@@ -5,8 +5,10 @@
 // client (rendu client, pas d'hydratation → aucun risque d'incohérence).
 //
 // Clé = chemin de route. Intro = 2-3 phrases factuelles et descriptives.
-import { COMPARATIFS } from '../src/data/comparatifs.js';
+import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { METIERS_BY_SLUG } from '../src/data/metiers.js';
+import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
+import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { FAQS } from '../src/data/faqs.js';
 import { sourcesForRoute } from '../src/data/sourcesOfficielles.js';
 import { ROUTE_META } from './_meta.js';
@@ -656,6 +658,42 @@ function metierBodyHtml(m) {
   return out;
 }
 
+// Blocs pré-rendus des pages de contenu (lexique, guides, comparatifs) : générés
+// depuis leurs données — ces routes n'ont pas d'entrée SEO_CONTENT et livraient
+// jusqu'ici un #root vide aux crawlers.
+function lexiqueBodyHtml(t) {
+  let out = `<h1>${escapeHtml(t.term)} : définition</h1><p>${escapeHtml(t.short)}</p>`;
+  out += (t.long || []).map(p => `<p>${escapeHtml(p)}</p>`).join('');
+  out += (t.faqs || []).map(f => `<h2>${escapeHtml(f.q)}</h2><p>${escapeHtml(f.a)}</p>`).join('');
+  return out;
+}
+
+function guideBodyHtml(g) {
+  let out = `<h1>${escapeHtml(g.title)}</h1><p>${escapeHtml(g.intro)}</p>`;
+  if (Array.isArray(g.steps) && g.steps.length) {
+    out += '<ol>' + g.steps.map(s => `<li><strong>${escapeHtml(s.name)}.</strong> ${escapeHtml(s.text)}</li>`).join('') + '</ol>';
+  }
+  out += (g.sections || []).map(s =>
+    `<h2>${escapeHtml(s.h2)}</h2>` + (s.body || []).map(p => `<p>${escapeHtml(p)}</p>`).join('')
+  ).join('');
+  return out;
+}
+
+function comparatifBodyHtml(c) {
+  let out = `<h1>${escapeHtml(c.title)}</h1><p>${escapeHtml(c.intro)}</p>`;
+  for (const side of [c.a, c.b]) {
+    if (!side) continue;
+    out += `<h2>${escapeHtml(side.name)} : points forts et limites</h2>`;
+    if (side.pour?.length)   out += '<ul>' + side.pour.map(p => `<li>✔ ${escapeHtml(p)}</li>`).join('') + '</ul>';
+    if (side.contre?.length) out += '<ul>' + side.contre.map(p => `<li>✘ ${escapeHtml(p)}</li>`).join('') + '</ul>';
+  }
+  out += (c.sections || []).map(s =>
+    `<h2>${escapeHtml(s.h2)}</h2>` + (s.body || []).map(p => `<p>${escapeHtml(p)}</p>`).join('')
+  ).join('');
+  if (c.verdict) out += `<h2>Verdict</h2><p>${escapeHtml(c.verdict)}</p>`;
+  return out;
+}
+
 export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
   let dict;
   if (locale === 'en') dict = SEO_CONTENT_EN;
@@ -663,7 +701,25 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
   else if (country === 'be') dict = SEO_CONTENT_BE;
   else dict = SEO_CONTENT;
   const c = dict[route];
-  if (!c) return '';
+
+  // Pages de contenu sans entrée SEO_CONTENT : bloc généré depuis les données (FR).
+  if (!c) {
+    if (locale === 'fr' && country === 'fr') {
+      if (route.startsWith('/lexique/')) {
+        const t = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)];
+        if (t) return `<div id="seo-prerender" style="${SEO_WRAP}">${lexiqueBodyHtml(t)}</div>`;
+      }
+      if (route.startsWith('/guides/')) {
+        const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
+        if (g) return `<div id="seo-prerender" style="${SEO_WRAP}">${guideBodyHtml(g)}</div>`;
+      }
+      if (route.startsWith('/comparatifs/')) {
+        const cp = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
+        if (cp) return `<div id="seo-prerender" style="${SEO_WRAP}">${comparatifBodyHtml(cp)}</div>`;
+      }
+    }
+    return '';
+  }
 
   let body = `<h1>${escapeHtml(c.h1)}</h1><p>${escapeHtml(c.intro)}</p>`;
 

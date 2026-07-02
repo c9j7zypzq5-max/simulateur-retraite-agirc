@@ -249,10 +249,10 @@ describe("Succession belge — droits régionaux", () => {
 
 // ─── AGIRC-Arrco ─────────────────────────────────────────────────────────────
 const PASS          = 48_060;
-const VALEUR_ACHAT  = 7.46;
+const VALEUR_ACHAT  = 20.1877;
 const VALEUR_SERVICE = 1.4386;
-const TAUX_T1       = 0.0787;
-const TAUX_T2       = 0.2159;
+const TAUX_T1       = 0.0620;
+const TAUX_T2       = 0.1700;
 const GMP_MIN_PTS   = 120;
 const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
 const getCoef = age => COEF_TABLE[age] ?? 1.00;

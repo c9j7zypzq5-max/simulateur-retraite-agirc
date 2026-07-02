@@ -1240,7 +1240,7 @@ export const GLOSSARY = [
     short: "Unité de compte du régime complémentaire Agirc-Arrco : vos cotisations achètent des points, chaque point vaut un montant annuel de pension.",
     long: [
       "Le système Agirc-Arrco fonctionne en points : vos cotisations retraite complémentaire sont converties en points au moment du versement, puis à la retraite, vos points sont multipliés par la « valeur de service du point » pour calculer votre pension annuelle.",
-      "En 2026, la valeur de service du point est de 1,4386 €/an. Le prix d'achat et la valeur de service évoluent chaque année en fonction de l'inflation et des négociations entre partenaires sociaux.",
+      "En 2026, le prix d'achat d'un point est de 20,1877 € et la valeur de service de 1,4386 €/an. Ces deux paramètres évoluent chaque année en fonction de l'inflation et des négociations entre partenaires sociaux.",
       "Pour estimer votre pension Agirc-Arrco : récupérez votre relevé de points sur le site Agirc-Arrco, puis multipliez par la valeur de service. Exemple : 50 000 points × 1,4386 €/an = 71 930 €/an de pension complémentaire brute.",
     ],
     sims: ['/simulateurs/agirc-arrco'],
