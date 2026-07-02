@@ -409,7 +409,9 @@ export function structuredData(route, extra = {}) {
       featureList: 'Calcul instantané, Export PDF, Partage de simulation, Graphiques interactifs, Comparaison de scénarios',
       screenshot: `${BASE}/og-image.webp`,
       author: { '@type': 'Organization', name: 'Simfinly', url: BASE },
-      aggregateRating: { '@type': 'AggregateRating', ratingValue: '4.7', reviewCount: '1284', bestRating: '5' },
+      // Pas d'aggregateRating : aucun système d'avis réel n'alimente cette note.
+      // Un rich snippet d'avis fabriqué viole les règles Google (risque de
+      // sanction manuelle) — à réintroduire uniquement avec de vrais avis vérifiables.
     });
     out.push({
       '@context': 'https://schema.org', '@type': 'HowTo',
