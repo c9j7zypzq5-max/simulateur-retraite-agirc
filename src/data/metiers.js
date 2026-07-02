@@ -254,7 +254,7 @@ export const METIERS = {
     sections: [
       {
         title: "Comment valider des trimestres en tant qu'artisan ?",
-        content: "Pour valider 4 trimestres dans une année, un artisan doit percevoir un revenu d'au moins **600 fois le SMIC horaire** (~6 500 € en 2026). Ce seuil est bien inférieur au CA réel.\n\nEn dessous du seuil, les trimestres sont proratisés (1 trimestre pour 150 × SMIC horaire).",
+        content: "Pour valider 4 trimestres dans une année, un artisan doit percevoir un revenu d'au moins **600 fois le SMIC horaire** (~7 128 € en 2026). Ce seuil est bien inférieur au CA réel.\n\nEn dessous du seuil, les trimestres sont proratisés (1 trimestre pour 150 × SMIC horaire).",
       },
       {
         title: 'La retraite complémentaire RCI des artisans',
@@ -1054,7 +1054,7 @@ export const METIERS = {
     sections: [
       {
         title: 'Comment valider des trimestres en intermittence ?',
-        content: "Pour valider 1 trimestre, un intermittent doit percevoir des **cachets ou salaires bruts équivalents à 150 fois le SMIC horaire** (environ 1 625 € brut en 2026). Pour 4 trimestres par an, il faut donc 6 500 € brut de cachets annuels.\n\nLes **allocations chômage** (allocation d'aide au retour à l'emploi, ARE) versées par Unédic au titre du régime spécifique intermittents ne génèrent pas de trimestres cotisés — elles génèrent des trimestres assimilés.",
+        content: "Pour valider 1 trimestre, un intermittent doit percevoir des **cachets ou salaires bruts équivalents à 150 fois le SMIC horaire** (environ 1 782 € brut en 2026). Pour 4 trimestres par an, il faut donc 7 128 € brut de cachets annuels.\n\nLes **allocations chômage** (allocation d'aide au retour à l'emploi, ARE) versées par Unédic au titre du régime spécifique intermittents ne génèrent pas de trimestres cotisés — elles génèrent des trimestres assimilés.",
       },
       {
         title: 'Audiens : la caisse de retraite complémentaire du spectacle',

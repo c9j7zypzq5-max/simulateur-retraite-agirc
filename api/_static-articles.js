@@ -297,7 +297,7 @@ export const STATIC_ARTICLES = [
     content: `<h2>Trimestres cotisés vs trimestres assimilés</h2>
 <p>La durée d'assurance se compose de deux catégories qui s'additionnent pour atteindre le taux plein :</p>
 <ul>
-<li><strong>Trimestres cotisés</strong> : validés grâce à une activité professionnelle (salarié, indépendant). Un trimestre est acquis par tranche de 150 SMIC horaires bruts, soit environ 1 690 € brut en 2026. On peut en valider au maximum 4 par année civile.</li>
+<li><strong>Trimestres cotisés</strong> : validés grâce à une activité professionnelle (salarié, indépendant). Un trimestre est acquis par tranche de 150 SMIC horaires bruts, soit environ 1 782 € brut en 2026. On peut en valider au maximum 4 par année civile.</li>
 <li><strong>Trimestres assimilés</strong> : validés sans cotisation directe. Ils couvrent le chômage indemnisé (1 trimestre par période de 50 jours), les arrêts maladie longue durée, les congés maternité et paternité, l'invalidité et le service militaire.</li>
 </ul>
 <h2>Les Majorations de Durée d'Assurance (MDA)</h2>
@@ -316,7 +316,7 @@ export const STATIC_ARTICLES = [
 <h2>Calculez votre durée d'assurance</h2>
 <p>Le simulateur de trimestres de simfinly.com additionne toutes vos périodes (emploi, chômage, maladie, maternité, MDA, service militaire…) et compare votre total à la durée requise pour votre génération. Il vous indique le nombre de trimestres manquants et l'âge estimé du taux plein.</p>`,
     faqs: [
-      { q: "Combien de trimestres faut-il pour partir à la retraite en 2026 ?", a: "Pour les générations nées à partir de 1968 (âge légal 64 ans), il faut 172 trimestres (43 ans) pour obtenir le taux plein. Pour les générations précédentes, ce nombre varie de 167 à 172 trimestres. Chaque année travaillée en tant que salarié valide jusqu\'à 4 trimestres (un trimestre tous les 150 SMIC horaires, soit ~1 690 € bruts en 2026)." },
+      { q: "Combien de trimestres faut-il pour partir à la retraite en 2026 ?", a: "Pour les générations nées à partir de 1968 (âge légal 64 ans), il faut 172 trimestres (43 ans) pour obtenir le taux plein. Pour les générations précédentes, ce nombre varie de 167 à 172 trimestres. Chaque année travaillée en tant que salarié valide jusqu\'à 4 trimestres (un trimestre tous les 150 SMIC horaires, soit ~1 782 € bruts en 2026)." },
       { q: "Peut-on valider des trimestres sans travailler ?", a: "Oui. Les trimestres \'assimilés\' comptent comme des trimestres cotisés : chômage indemnisé (50 jours = 1 trimestre), maladie/maternité/accident de travail indemnisé, service national, invalidité. Les enfants permettent aussi de valider des trimestres (AVPF, majoration de durée d\'assurance). Ces trimestres assimilés n\'améliorent pas le SAM (salaire de référence) mais permettent d\'atteindre la durée requise pour le taux plein." },
     ],
   },
@@ -924,7 +924,7 @@ export const STATIC_ARTICLES = [
 <li><strong>Retraite complémentaire obligatoire (RCI)</strong> : à points, spécifique aux artisans et commerçants. Taux de cotisation : environ 7 % du revenu professionnel au-delà du PASS.</li>
 </ul>
 <h2>Les particularités du calcul de la retraite SSI</h2>
-<p>Le principal enjeu pour un artisan/commerçant est de <strong>valider ses trimestres</strong> : un trimestre est validé pour chaque tranche de revenus égale à 150 SMIC horaires (environ 1 690 € brut en 2026). Avec un revenu annuel de 6 760 €, vous validez 4 trimestres — le minimum pour une année pleine.</p>
+<p>Le principal enjeu pour un artisan/commerçant est de <strong>valider ses trimestres</strong> : un trimestre est validé pour chaque tranche de revenus égale à 150 SMIC horaires (environ 1 782 € brut en 2026). Avec un revenu annuel de 7 128 €, vous validez 4 trimestres — le minimum pour une année pleine.</p>
 <p>Les années avec des revenus très faibles (début d'activité, difficultés) peuvent ne valider que 1 ou 2 trimestres, ce qui impacte le prorata de la pension finale. Le SAM est calculé sur les 25 meilleures années de revenus, comme au régime général.</p>
 <h2>Taux de remplacement : un défi pour les indépendants</h2>
 <p>Le taux de remplacement (ratio pension/dernier revenu) est souvent plus faible pour les artisans et commerçants que pour les salariés. Raison principale : les revenus déclarés (bénéfice net) sont parfois inférieurs au chiffre d'affaires réel, car les charges professionnelles sont déduites. La pension de retraite est calculée sur ces revenus nets.</p>
@@ -1047,7 +1047,7 @@ export const STATIC_ARTICLES = [
 </ul>
 <p>Ces taux incluent toutes les cotisations sociales (maladie, CSG/CRDS, allocations familiales, retraite). La part retraite est environ <strong>30-35 % du total des cotisations</strong>.</p>
 <h2>Validation des trimestres : le point critique</h2>
-<p>Pour valider un trimestre, un micro-entrepreneur doit avoir généré un CA minimum correspondant à <strong>150 × SMIC horaire</strong> (≈ 1 690 € en 2026). En cas d'activité à temps plein, les seuils à atteindre pour valider 4 trimestres :</p>
+<p>Pour valider un trimestre, un micro-entrepreneur doit avoir généré un CA minimum correspondant à <strong>150 × SMIC horaire</strong> (≈ 1 782 € en 2026). En cas d'activité à temps plein, les seuils à atteindre pour valider 4 trimestres :</p>
 <ul>
 <li>Vente de marchandises : CA ≥ <strong>26 130 €/an</strong></li>
 <li>Prestations de services : CA ≥ <strong>15 120 €/an</strong></li>
@@ -1365,7 +1365,7 @@ export const STATIC_ARTICLES = [
 <li><strong>Libéraux CIPAV</strong> : 21,2 % du CA</li>
 </ul>
 <h2>Validation des trimestres : les seuils de CA</h2>
-<p>Un trimestre est validé pour chaque tranche de CA équivalente à 150 × SMIC horaire brut = ~1 690 € de revenus cotisés. Pour un auto-entrepreneur, on convertit le CA en revenu cotisé via un taux d'assiette.</p>
+<p>Un trimestre est validé pour chaque tranche de CA équivalente à 150 × SMIC horaire brut = ~1 782 € de revenus cotisés. Pour un auto-entrepreneur, on convertit le CA en revenu cotisé via un taux d'assiette.</p>
 <p>CA annuels nécessaires pour valider 4 trimestres (taux plein annuel) :</p>
 <ul>
 <li>Commerce : CA ≥ ~26 130 €/an</li>
