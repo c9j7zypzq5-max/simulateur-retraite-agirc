@@ -11,7 +11,8 @@ import AdUnit from '../../components/AdUnit.jsx';
 import JsonLd from '../../components/JsonLd.jsx';
 import { downloadCSV, downloadXLSX } from '../../utils/export.js';
 import { ASSET_PRESETS, ASSET_COLORS } from '../../data/assetPresets.js';
-import { SimulateurHeader } from '../../components/ui.jsx';
+import { SimulateurHeader, FaqSection } from '../../components/ui.jsx';
+import { FAQS } from '../../data/faqs.js';
 import { useMoney } from '../../i18n/CurrencyContext.jsx';
 import { fmtCur, activeSymbol } from '../../i18n/currency.js';
 import { useTranslation } from "../../i18n/index.js";
@@ -1336,6 +1337,8 @@ export default function Comparateur() {
             <p>{txt.aboutP3}</p>
           </div>
         </div>
+
+        {locale === 'fr' && <FaqSection items={FAQS['/simulateurs/comparateur']} />}
 
         <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
       </div>

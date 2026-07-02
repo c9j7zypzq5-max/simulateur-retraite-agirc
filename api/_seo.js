@@ -24,6 +24,14 @@ export const SEO_CONTENT = {
       ['/retraite/guide-complet-2026', 'Guide complet de la retraite 2026'],
     ],
   },
+  '/simulateurs/flat-tax': {
+    h1: "Simulateur flat tax (PFU) 2026 — ou option barème ?",
+    intro: "Comparez l'imposition de vos revenus du capital — dividendes, intérêts, plus-values mobilières — entre la flat tax (PFU à 31,4 % en 2026 : 12,8 % d'impôt + 18,6 % de prélèvements sociaux) et l'option pour le barème progressif avec abattement de 40 % sur les dividendes et CSG déductible. Le simulateur identifie l'option la plus avantageuse selon votre taux marginal d'imposition.",
+  },
+  '/methodologie': {
+    h1: "Méthodologie de calcul des simulateurs",
+    intro: "Comment simfinly.com calcule ses estimations : formules utilisées, barèmes officiels 2026 (retraite, impôt, prélèvements sociaux), sources de données et limites de chaque simulateur. Tous les calculs s'exécutent dans votre navigateur, sans transmission de vos données.",
+  },
   '/contact': {
     h1: "Contacter simfinly.com",
     intro: "Une question sur un simulateur, une erreur à signaler, une demande de partenariat ou de presse ? Écrivez-nous à contact@simfinly.com — nous répondons généralement sous 48 h ouvrées.",
