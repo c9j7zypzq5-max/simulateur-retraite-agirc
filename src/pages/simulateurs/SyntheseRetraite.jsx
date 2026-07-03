@@ -113,6 +113,22 @@ export default function SyntheseRetraite() {
       }));
   }, [vals, hasResult]);
 
+  // Barre empilée : composition du brut par régime, comparée au net estimé.
+  const brutVsNetBars = useMemo(() => {
+    if (!hasResult) return [];
+    const brutSegments = REGIMES
+      .filter(r => (vals[r.key] ?? 0) > 0)
+      .map((r, i) => ({
+        value: vals[r.key],
+        color: REGIME_COLORS[i % REGIME_COLORS.length],
+        label: SHORT_LABELS[r.key] ?? r.key,
+      }));
+    return [
+      { label: "Brut", segments: brutSegments },
+      { label: "Net estimé", segments: [{ value: totalNet, color: "var(--gold)", label: "Net" }] },
+    ];
+  }, [vals, hasResult, totalNet]);
+
   const netAnim = useAnimatedNumber(totalNet);
 
   const report = {
@@ -127,7 +143,7 @@ export default function SyntheseRetraite() {
     ] : [],
     notes: hasResult ? [
       `Pension agrégée sur ${nbRegimes} régime${nbRegimes > 1 ? "s" : ""}.`,
-      "Net estimé après prélèvements sociaux (~10,1 %), hors impôt sur le revenu.",
+      `Net estimé après prélèvements sociaux (${(tauxPrelevement * 100).toFixed(1)} %), hors impôt sur le revenu.`,
     ] : undefined,
   };
 
@@ -257,8 +273,20 @@ export default function SyntheseRetraite() {
                 })}
               </div>
 
+              {brutVsNetBars.length > 1 && (
+                <div style={{ marginBottom: 24 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Composition du brut par régime, vs net estimé</div>
+                  <BarChart
+                    bars={brutVsNetBars}
+                    yFmt={v => `${Math.round(v)} €`}
+                    aria="Composition de la pension brute par régime, comparée au net estimé"
+                  />
+                </div>
+              )}
+
               {regimesBars.length > 1 && (
                 <div style={{ marginBottom: 20 }}>
+                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>Pension brute par régime</div>
                   <BarChart
                     bars={regimesBars}
                     yFmt={v => `${Math.round(v)} €`}
@@ -268,7 +296,7 @@ export default function SyntheseRetraite() {
               )}
 
               <div role="note" style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6, marginTop: 16 }}>
-                ⚠️ <strong>Estimation indicative.</strong> Le total net applique un taux moyen de prélèvements sociaux (~10,1 %) et n'inclut pas l'impôt sur le revenu. Le taux exact dépend de votre revenu fiscal de référence.
+                ⚠️ <strong>Estimation indicative.</strong> Le total net applique un taux de prélèvements sociaux de {(tauxPrelevement * 100).toFixed(1)} % {rfr ? "(calculé sur votre revenu fiscal de référence)" : "(taux médian par défaut — renseignez votre RFR ci-dessus pour un taux réel)"} et n'inclut pas l'impôt sur le revenu.
                 Pour l'impôt, utilisez le <Link to="/simulateurs/impot-revenu" style={{ color: "var(--gold-mid)" }}>simulateur d'impôt sur le revenu</Link>.
               </div>
             </>
