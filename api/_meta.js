@@ -104,7 +104,7 @@ export const ROUTE_META = {
   '/retraite/carriere-longue':       { title: 'Retraite carrière longue 2026 — conditions, âge de départ et calcul',     emoji: '⏩', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
   '/retraite/parent-au-foyer':              { title: "Retraite parent au foyer 2026 — MDA, AVPF et droits complets",           emoji: '👶', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
   '/retraite/guide-complet-2026':           { title: 'Guide retraite 2026 — calcul, simulateurs et optimisation complète',     emoji: '📖', cat: 'Retraite',   prio: '1.0', freq: 'monthly' },
-  '/retraite/points-agirc-arrco':           { title: 'Points Agirc-Arrco 2026 — valeur du point, calcul et malus',             emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
+  '/retraite/points-agirc-arrco':           { title: 'Points Agirc-Arrco 2026 — valeur du point et calcul de la pension',       emoji: '🏆', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/retraite/calcul-pension-reversion':     { title: 'Pension de réversion 2026 — calcul, taux et conditions',                 emoji: '💞', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/immobilier/frais-notaire':              { title: 'Frais de notaire 2026 — taux, calcul et comment les réduire',            emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/impots/simulateur-impot-revenu':        { title: "Impôt sur le revenu 2026 — barème, calcul et réductions | simfinly",     emoji: '💰', cat: 'Fiscalité',  prio: '0.9', freq: 'monthly' },

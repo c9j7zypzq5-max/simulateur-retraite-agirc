@@ -43,7 +43,7 @@ export const SEO_CONTENT = {
   },
   '/simulateurs/agirc-arrco': {
     h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
-    intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, le coefficient de solidarité (bonus-malus), la GMP des cadres et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
+    intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, la GMP des cadres, la majoration de 10 % pour 3 enfants et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
   },
   '/simulateurs/cnav': {
     h1: "Simulateur retraite de base CNAV — régime général",
@@ -211,8 +211,8 @@ export const SEO_CONTENT = {
     intro: "Les architectes libéraux cotisent à la CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) pour leur complémentaire par points et à la CNAVPL pour la retraite de base. La CIPAV propose des classes de cotisation A à H. L'âge du taux plein est 67 ans ou 62 ans avec la durée d'assurance complète.",
   },
   '/retraite/ingenieur-cadre': {
-    h1: "Retraite cadre ingénieur 2026 — CNAV + Agirc-Arrco et coefficient de solidarité",
-    intro: "Les ingénieurs et cadres du secteur privé cotisent au régime général CNAV et à Agirc-Arrco. Depuis 2019, un coefficient de solidarité de -10 % s'applique pendant 3 ans sur la pension Agirc-Arrco pour les cadres partant dès 64 ans. Pour l'éviter, il faut attendre 67 ans ou cotiser 4 trimestres supplémentaires après l'âge légal.",
+    h1: "Retraite cadre ingénieur 2026 — CNAV + Agirc-Arrco",
+    intro: "Les ingénieurs et cadres du secteur privé cotisent au régime général CNAV et à Agirc-Arrco. Le coefficient de solidarité qui minorait la pension Agirc-Arrco en cas de départ anticipé a été supprimé en avril 2024 — seule la pension CNAV de base reste soumise à une décote si le cadre part sans ses trimestres.",
   },
   '/retraite/policier': {
     h1: "Retraite policier 2026 — CNRACL catégorie active, départ à 57 ans",
@@ -303,8 +303,8 @@ export const SEO_CONTENT = {
     intro: "Tout comprendre sur la retraite en 2026 : âge légal 64 ans (génération 1968+), calcul CNAV (SAM × 50 % × trimestres) et Agirc-Arrco (points × 1,4386 €), décote et surcote, rachat de trimestres, taux de remplacement. Guides par profession inclus.",
   },
   '/retraite/points-agirc-arrco': {
-    h1: "Points Agirc-Arrco 2026 : valeur du point, calcul et malus",
-    intro: "Le point Agirc-Arrco vaut 1,4386 € en 2026. Votre pension complémentaire = nombre de points × valeur du point. Guide complet : comment s'accumulent les points, coefficient de solidarité (-10 %), bonus de fidélité (+10 à +30 %) et simulateur gratuit.",
+    h1: "Points Agirc-Arrco 2026 : valeur du point et calcul de la pension",
+    intro: "Le point Agirc-Arrco vaut 1,4386 € en 2026. Votre pension complémentaire = nombre de points × valeur du point. Guide complet : comment s'accumulent les points, la GMP des cadres, la majoration 3 enfants et simulateur gratuit.",
   },
   '/retraite/calcul-pension-reversion': {
     h1: "Pension de réversion 2026 : calcul, taux et conditions",

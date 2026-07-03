@@ -23,12 +23,12 @@ export const STATIC_ARTICLES = [
 <p>Depuis la réforme de 2023, l'âge légal monte progressivement de 62 à 64 ans selon la génération. Mais l'âge légal ne suffit pas : il faut aussi avoir le bon nombre de trimestres, ou accepter une décote définitive de 0,625 % par trimestre manquant.</p>
 <h2>La complémentaire Agirc-Arrco : les points</h2>
 <p>Pour les salariés du privé, la retraite complémentaire Agirc-Arrco s'exprime en <strong>points</strong> accumulés tout au long de la carrière. La pension annuelle est égale au nombre de points multiplié par la <em>valeur de service du point</em> (1,4386 € en 2026). Elle s'ajoute à la pension CNAV pour former votre revenu de retraite global.</p>
-<p>Un mécanisme de <em>coefficient de solidarité</em> (−10 % pendant 3 ans) s'applique si vous partez juste après le taux plein CNAV : retarder votre départ d'un an y échappe et vous fait gagner un <em>bonus</em> de 10 %.</p>
+<p>Le <em>coefficient de solidarité</em> (−10 % pendant 3 ans en cas de départ dès le taux plein CNAV) qui s'appliquait entre 2019 et 2024 a été supprimé : il ne concerne plus les retraites liquidées depuis le 1er avril 2024. Votre pension Agirc-Arrco n'est donc plus affectée par votre âge de départ, au-delà de son effet normal sur le nombre de points accumulés.</p>
 <h2>Comment estimer dès maintenant</h2>
 <p>La simulation la plus fiable reste celle de votre relevé de carrière sur info-retraite.fr, qui agrège tous vos régimes. Simfinly.com vous permet de tester rapidement différents scénarios (âge de départ, revalorisation, rachat de trimestres) pour visualiser l'impact sur votre pension avant de consulter un conseiller.</p>`,
     faqs: [
       { q: "Comment calculer le montant de ma retraite de base ?", a: "La pension CNAV = SAM × taux × (trimestres validés / trimestres requis). Le SAM est la moyenne de vos 25 meilleures années de revenus bruts plafonnés au PASS (48 060 € en 2026). Le taux maximum est de 50 % au taux plein, obtenu si vous avez validé tous vos trimestres requis (entre 167 et 172 selon votre génération)." },
-      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans si vous partez juste à l'âge du taux plein CNAV. Pour l'éviter, décalez votre départ d'au moins un an après le taux plein — vous échappez à la réduction et bénéficiez même d'un bonus de 10 %." },
+      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "C'était une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans en cas de départ dès l'âge du taux plein CNAV, appliquée entre 2019 et 2024. Ce dispositif a été supprimé : il ne s'applique plus aux retraites liquidées depuis le 1er avril 2024." },
       { q: "Comment obtenir le taux plein à la retraite ?", a: "Le taux plein (50 % du SAM) nécessite deux conditions : atteindre l'âge légal de départ (entre 62 et 64 ans selon la génération) ET avoir validé le nombre de trimestres requis. Si vous n'avez pas tous vos trimestres, vous pouvez attendre 67 ans pour bénéficier du taux plein automatique, quelle que soit votre durée d'assurance." },
       { q: "Qu'est-ce que le Salaire Annuel Moyen (SAM) et comment est-il calculé ?", a: "Le SAM est la moyenne de vos 25 meilleures années de revenus bruts, chacune plafonnée au PASS (48 060 € en 2026). Seules les années avec au moins un trimestre validé entrent dans le calcul. Maximiser ses meilleures années de carrière est donc la clé pour obtenir un SAM élevé et donc une meilleure pension." },
     ],
@@ -974,31 +974,26 @@ export const STATIC_ARTICLES = [
   },
   {
     slug: 'retraite-cadre-agirc-arrco-calcul',
-    title: 'Retraite du cadre en 2026 : calcul CNAV + Agirc-Arrco et coefficient de solidarité',
+    title: 'Retraite du cadre en 2026 : calcul CNAV + Agirc-Arrco',
     category: 'Retraite',
     readTime: 7,
     publishedAt: '2026-06-07T09:00:00Z',
-    intro: "Les cadres cotisent à la fois au régime général CNAV et à l'Agirc-Arrco. Comment calculer sa pension complète, optimiser le timing du départ et éviter le coefficient de solidarité de -10 % ?",
+    intro: "Les cadres cotisent à la fois au régime général CNAV et à l'Agirc-Arrco. Comment calculer sa pension complète et optimiser le timing du départ ?",
     content: `<h2>La structure de la retraite cadre : deux régimes superposés</h2>
 <p>Un cadre salarié accumule des droits dans deux régimes :</p>
 <ul>
-<li><strong>CNAV (régime général)</strong> : pension de base calculée sur le SAM (25 meilleures années, plafonnées au PASS) × taux × prorata. Maximum : 50 % du PASS, soit ~1 963 €/mois brut en 2026.</li>
+<li><strong>CNAV (régime général)</strong> : pension de base calculée sur le SAM (25 meilleures années, plafonnées au PASS) × taux × prorata. Maximum : 50 % du PASS, soit ~2 003 €/mois brut en 2026.</li>
 <li><strong>Agirc-Arrco (complémentaire)</strong> : points accumulés tout au long de la carrière. Valeur du point : 1,4386 € en 2026. Un cadre avec un salaire de 60 000 €/an pendant 30 ans peut accumuler 30 000-50 000 points, soit ~3 600-6 000 €/mois de pension complémentaire.</li>
 </ul>
 <p>La pension totale cadre typique est de <strong>2 500-5 000 €/mois brut</strong> selon la carrière et le niveau de salaire.</p>
-<h2>Le coefficient de solidarité Agirc-Arrco : le piège à éviter</h2>
-<p>Si vous liquidez votre retraite exactement à l'âge du taux plein CNAV, Agirc-Arrco applique un <strong>coefficient de solidarité de −10 %</strong> pendant 3 ans sur la pension complémentaire. Pour une pension complémentaire de 3 000 €/mois, cela représente une perte de 300 €/mois × 36 mois = <strong>10 800 € perdus</strong>.</p>
-<p>Solutions pour l'éviter :</p>
-<ul>
-<li><strong>Retarder d'un an</strong> : partir un an après le taux plein efface la pénalité et déclenche un bonus de +10 % pendant un an.</li>
-<li><strong>Retraite progressive</strong> : réduire progressivement son activité dès 60 ans tout en accumulant des points Agirc-Arrco.</li>
-</ul>
+<h2>Le coefficient de solidarité Agirc-Arrco : un dispositif aboli</h2>
+<p>Entre 2019 et 2024, un <strong>coefficient de solidarité de −10 %</strong> s'appliquait pendant 3 ans sur la pension complémentaire en cas de départ dès le taux plein CNAV. Ce mécanisme a été supprimé : il ne s'applique plus aux retraites liquidées depuis le 1er avril 2024. Votre pension Agirc-Arrco n'est donc plus affectée par votre âge de départ — seuls les points effectivement accumulés comptent.</p>
 <h2>Optimiser le timing de départ</h2>
-<p>Pour un cadre né en 1965 (taux plein à 63 ans 3 mois, 170 trimestres requis), le scénario optimal est souvent de partir à <strong>64 ans 3 mois</strong> : un an de décalage efface le coefficient de solidarité et génère une surcote CNAV de 5 %. Sur une espérance de vie de 20 ans après la retraite, ce délai d'un an peut valoir 50 000-80 000 € de pensions supplémentaires.</p>
+<p>Le seul levier qui reste sensible au timing est la pension CNAV de base. Pour un cadre né en 1965 (taux plein à 63 ans 3 mois avec 170 trimestres requis), partir un an plus tard génère une surcote CNAV de +5 % (1,25 %/trimestre) tout en accumulant des points Agirc-Arrco supplémentaires. Sur une espérance de vie de 20 ans après la retraite, ce délai d'un an peut représenter plusieurs dizaines de milliers d'euros de pensions cumulées en plus.</p>
 <p>Le simulateur cadre de simfinly.com calcule la pension totale CNAV + Agirc-Arrco et compare les scénarios de départ entre 62 et 67 ans pour votre génération et votre niveau de salaire.</p>`,
     faqs: [
-      { q: "Comment est calculée la retraite Agirc-Arrco pour un cadre ?", a: "La retraite Agirc-Arrco est calculée en points : chaque année, vos cotisations (tranche A : 0-PASS, tranche B : 1×PASS à 8×PASS, ancienne tranche C : >8×PASS) achètent des points au prix d\'acquisition (20,1877 € en 2026). À la retraite, votre total de points est multiplié par la valeur du point (1,4386 € en 2026). Un cadre ayant accumulé 3 000 points touchera 3 000 × 1,4386 ≈ 4 316 €/an, soit environ 360 €/mois de complémentaire." },
-      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans, pour les assurés qui partent dès l\'âge légal en ayant leurs trimestres. Il peut être évité en travaillant 1 à 4 trimestres de plus selon le profil. En contrepartie, travailler après l\'âge légal permet d\'obtenir un bonus de fidélité de +10 % (1 trimestre de plus), +20 % (2 trimestres) ou +30 % (3 trimestres et plus). La décision de partir ou non affecte donc la pension Agirc-Arrco de manière significative." },
+      { q: "Comment est calculée la retraite Agirc-Arrco pour un cadre ?", a: "La retraite Agirc-Arrco est calculée en points : chaque année, vos cotisations (tranche 1 : 0-PASS, tranche 2 : 1×PASS à 8×PASS) achètent des points au prix d\'acquisition (20,1877 € en 2026). À la retraite, votre total de points est multiplié par la valeur du point (1,4386 € en 2026). Un cadre ayant accumulé 3 000 points touchera 3 000 × 1,4386 ≈ 4 316 €/an, soit environ 360 €/mois de complémentaire." },
+      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "C'était une réduction temporaire de 10 % sur la pension Agirc-Arrco pendant 3 ans, pour les assurés partant dès l\'âge légal en ayant leurs trimestres. Ce dispositif, en vigueur de 2019 à 2024, a été définitivement supprimé pour les retraites liquidées depuis le 1er avril 2024 : il n\'affecte plus la pension Agirc-Arrco, quel que soit l\'âge de départ." },
     ],
   },
   {
