@@ -26,6 +26,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { simulateMonteCarlo } from '../../utils/monteCarlo.js';
 
 // ─── Translations ─────────────────────────────────────────────────────────────
 const TXT = {
@@ -176,6 +177,14 @@ const TXT = {
     liberteFinanciere: "Liberté financière",
     ageAns: (age) => `${age} ans`,
     ageUnit: "ans",
+    // Monte Carlo
+    mcToggleLabel: "Simulation probabiliste (historique S&P 500)",
+    mcToggleDesc: "Remplace le taux fixe par un tirage aléatoire parmi les rendements annuels réels du S&P 500 (1928–2024), sur 1000 trajectoires simulées.",
+    mcLegendP10: "Scénario défavorable (10 %)",
+    mcLegendP50: "Scénario médian (50 %)",
+    mcLegendP90: "Scénario favorable (90 %)",
+    mcProbabilite: (pct, years) => `Probabilité d'atteindre votre capital cible sous ${years} ans : ${pct.toFixed(0)} %`,
+    mcDisclaimer: "Simulation basée sur un ré-échantillonnage (bootstrap) des rendements annuels réels du S&P 500 entre 1928 et 2024. Les performances passées ne préjugent pas des performances futures.",
     // MilestonesTable age cell
     milesAgeSuffix: (age) => `${age} ans`,
     milesAgeMax: "> 80 ans",
@@ -353,6 +362,14 @@ const TXT = {
     liberteFinanciere: "Financial freedom",
     ageAns: (age) => `Age ${age}`,
     ageUnit: "yrs",
+    // Monte Carlo
+    mcToggleLabel: "Probabilistic simulation (S&P 500 history)",
+    mcToggleDesc: "Replaces the fixed rate with a random draw from real S&P 500 annual returns (1928–2024), across 1,000 simulated trajectories.",
+    mcLegendP10: "Downside scenario (10%)",
+    mcLegendP50: "Median scenario (50%)",
+    mcLegendP90: "Upside scenario (90%)",
+    mcProbabilite: (pct, years) => `Probability of reaching your target net worth within ${years} years: ${pct.toFixed(0)}%`,
+    mcDisclaimer: "Simulation based on resampling (bootstrap) of real S&P 500 annual returns between 1928 and 2024. Past performance does not guarantee future results.",
     // MilestonesTable age cell
     milesAgeSuffix: (age) => `Age ${age}`,
     milesAgeMax: "> age 80",
@@ -465,7 +482,7 @@ function calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel,
 }
 
 // ─── Courbe SVG ──────────────────────────────────────────────────────────────
-function GrowthCurve({ projectionData, patrimoineCible, txt }) {
+function GrowthCurve({ projectionData, patrimoineCible, txt, mcYearly }) {
   const svgRef = useRef(null);
   const [hoverIdx, setHoverIdx] = useState(null);
   const animKey = useMemo(() => {
@@ -481,7 +498,8 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
   const iW = W - PAD.left - PAD.right;
   const iH = H - PAD.top - PAD.bottom;
 
-  const maxP = Math.max(...projectionData.map(d => d.patrimoine), patrimoineCible) * 1.1;
+  const mcMax = mcYearly && mcYearly.length ? Math.max(...mcYearly.map(d => d.p90)) : 0;
+  const maxP = Math.max(...projectionData.map(d => d.patrimoine), patrimoineCible, mcMax) * 1.1;
   const maxA = projectionData[projectionData.length - 1].annee || 1;
 
   const x = a => PAD.left + (a / maxA) * iW;
@@ -558,6 +576,20 @@ function GrowthCurve({ projectionData, patrimoineCible, txt }) {
       onTouchEnd={() => setHoverIdx(null)}
     >
       <defs><style>{css}</style></defs>
+
+      {/* Bande d'incertitude Monte Carlo (P10-P90) + ligne médiane */}
+      {mcYearly && mcYearly.length > 1 && (() => {
+        const upperPts = mcYearly.map(d => `${x(d.annee).toFixed(1)},${y(d.p90).toFixed(1)}`);
+        const lowerPts = [...mcYearly].reverse().map(d => `${x(d.annee).toFixed(1)},${y(d.p10).toFixed(1)}`);
+        const bandPts = [...upperPts, ...lowerPts].join(" ");
+        const p50Pts = mcYearly.map(d => `${x(d.annee).toFixed(1)},${y(d.p50).toFixed(1)}`).join(" ");
+        return (
+          <>
+            <polygon points={bandPts} fill="var(--gold)" opacity="0.12" />
+            <polyline points={p50Pts} fill="none" stroke="var(--gold)" strokeWidth="1.5" strokeDasharray="3,3" opacity="0.7" />
+          </>
+        );
+      })()}
 
       {/* Zone remplie */}
       <polygon className={`gcArea_${animKey}`} points={fillPts} fill="var(--primary)" />
@@ -972,6 +1004,7 @@ export default function Fire() {
   const [ageCoast, setAgeCoast]           = useState(AGE_COAST_DEFAUT);
   const [now] = useState(() => Date.now());
   const [historySaved, setHistorySaved] = useState(false);
+  const [modeProbabiliste, setModeProbabiliste] = useState(false);
 
   const resultsRef = useRef(null);
   const chartRef = useRef(null);
@@ -1036,6 +1069,18 @@ export default function Fire() {
   const tauxImpotEff = fiscaliteOn ? tauxImpot : 0;
   const res = calcFire({ ageActuel, capitalActuel, epargneMensuelle, rendementAnnuel, depensesAnnuelles, tauxRetrait, tauxImpot: tauxImpotEff });
   const patrimoineAnim = useAnimatedNumber(res.patrimoineCible);
+
+  const nbAnneesMc = res.projectionData.length > 1 ? res.projectionData[res.projectionData.length - 1].annee : 0;
+  const mcResult = useMemo(() => {
+    if (!modeProbabiliste || !nbAnneesMc || res.patrimoineCible <= 0) return { yearly: [], probabiliteAtteinte: null };
+    return simulateMonteCarlo({
+      capitalInitial: capitalActuel || 0,
+      epargneMensuelle: epargneMensuelle || 0,
+      nbAnnees: nbAnneesMc,
+      target: res.patrimoineCible,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [modeProbabiliste, capitalActuel, epargneMensuelle, nbAnneesMc, res.patrimoineCible]);
 
   const hasResult     = (depensesAnnuelles || 0) > 0;
   const isAlreadyFire = res.anneesRestantes === 0 && hasResult;
@@ -1276,12 +1321,36 @@ export default function Fire() {
               {/* Courbe SVG */}
               {res.projectionData.length >= 2 && (
                 <div style={{ marginBottom: 20 }}>
-                  <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
-                    {txt.courbeCroissance}
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8, marginBottom: 8 }}>
+                    <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)" }}>
+                      {txt.courbeCroissance}
+                    </div>
+                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                      <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{txt.mcToggleLabel}</span>
+                      <Toggle checked={modeProbabiliste} onChange={setModeProbabiliste} />
+                    </label>
                   </div>
+                  {modeProbabiliste && (
+                    <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 10, lineHeight: 1.5 }}>{txt.mcToggleDesc}</div>
+                  )}
                   <ZoomableChart innerRef={chartRef}>
-                    <GrowthCurve projectionData={res.projectionData} patrimoineCible={res.patrimoineCible} txt={txt} />
+                    <GrowthCurve projectionData={res.projectionData} patrimoineCible={res.patrimoineCible} txt={txt}
+                      mcYearly={modeProbabiliste ? mcResult.yearly : null} />
                   </ZoomableChart>
+                  {modeProbabiliste && mcResult.yearly.length > 1 && (
+                    <div style={{ marginTop: 10 }}>
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 14, fontSize: 11, color: "var(--text-secondary)", marginBottom: 8 }}>
+                        <span><span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: "var(--gold)", opacity: 0.3, marginRight: 5, verticalAlign: "middle" }} />{txt.mcLegendP10} – {txt.mcLegendP90}</span>
+                        <span><span style={{ display: "inline-block", width: 10, height: 2, background: "var(--gold)", marginRight: 5, verticalAlign: "middle" }} />{txt.mcLegendP50}</span>
+                      </div>
+                      {mcResult.probabiliteAtteinte != null && (
+                        <div style={{ fontSize: 13, fontWeight: 600, color: mcResult.probabiliteAtteinte >= 70 ? "#4ade80" : mcResult.probabiliteAtteinte >= 40 ? "var(--gold)" : "#f87171", marginBottom: 6 }}>
+                          {txt.mcProbabilite(mcResult.probabiliteAtteinte, nbAnneesMc)}
+                        </div>
+                      )}
+                      <div style={{ fontSize: 10.5, color: "var(--text-secondary)", opacity: 0.8 }}>{txt.mcDisclaimer}</div>
+                    </div>
+                  )}
                 </div>
               )}
 
