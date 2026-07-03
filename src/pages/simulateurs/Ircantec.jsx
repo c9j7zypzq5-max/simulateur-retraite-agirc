@@ -37,8 +37,8 @@ const TAUX_TB_PAT = 0.1320;
 const TAUX_TB     = TAUX_TB_SAL + TAUX_TB_PAT; // 19.90 %
 
 // Valeur du point IRCANTEC 2026
-const VALEUR_ACHAT   = 8.06;   // €/point
-const VALEUR_SERVICE = 0.54076; // €/point/an
+const VALEUR_ACHAT   = 5.787;   // €/point (salaire de référence, 1er janvier 2026)
+const VALEUR_SERVICE = 0.56053; // €/point/an (1er janvier 2026)
 
 function calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, tauxReval }) {
   if (!salaire) return {
@@ -194,7 +194,7 @@ export default function Ircantec() {
 
         {/* Réassurance */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
-          {["✓ Valeur d'achat : 8,06 €/point", "✓ Valeur de service : 0,54076 €/pt/an", "✓ Tranche A + Tranche B"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
+          {["✓ Valeur d'achat : 5,787 €/point", "✓ Valeur de service : 0,56053 €/pt/an", "✓ Tranche A + Tranche B"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
@@ -236,7 +236,7 @@ export default function Ircantec() {
             label="Taux de revalorisation annuel estimé"
             value={tauxReval} onChange={setTauxReval}
             min={0} max={3} step={0.5} unit=" %"
-            hint={tauxReval !== null && tauxReval > 0 ? `Valeur de service projetée : ${res.valServProj.toFixed(5)} €/pt` : "Valeur de service 2026 fixe : 0,54076 €/pt"}
+            hint={tauxReval !== null && tauxReval > 0 ? `Valeur de service projetée : ${res.valServProj.toFixed(5)} €/pt` : "Valeur de service 2026 fixe : 0,56053 €/pt"}
             tooltip="La valeur de service IRCANTEC est revalorisée chaque année par décret selon l'inflation."
           />
         </AccordionSection>
@@ -336,7 +336,7 @@ export default function Ircantec() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime des agents non titulaires de l'État</h3>
             <p style={{ marginBottom: 16 }}>L'IRCANTEC (Institution de Retraite Complémentaire des Agents Non Titulaires de l'État et des Collectivités) est le régime de retraite complémentaire obligatoire des agents contractuels de la fonction publique. Il couvre les contractuels de l'État, des collectivités territoriales, des hôpitaux publics et de nombreux organismes parapublics, soit environ 4 millions de cotisants actifs.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un système de points, comme l'Agirc-Arrco</h3>
-            <p style={{ marginBottom: 16 }}>L'IRCANTEC est un régime par points. Chaque année, vos cotisations sont converties en points : votre salaire brut est multiplié par un taux global (5,50 % jusqu'au PASS en 2026, 11,35 % au-delà), puis divisé par la valeur d'achat du point. En 2026, la valeur de service du point IRCANTEC est de 0,5204 € et la valeur d'achat de 12,516 €. À la liquidation, vos points accumulés sont multipliés par la valeur de service pour obtenir votre pension annuelle complémentaire.</p>
+            <p style={{ marginBottom: 16 }}>L'IRCANTEC est un régime par points. Chaque année, vos cotisations sont converties en points : l'assiette est multipliée par le taux de cotisation applicable, puis divisée par la valeur d'achat du point (salaire de référence). Au 1er janvier 2026, la valeur d'achat du point IRCANTEC est de 5,787 € et la valeur de service de 0,56053 €. À la liquidation, vos points accumulés sont multipliés par la valeur de service pour obtenir votre pension annuelle complémentaire.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions de liquidation</h3>
             <p>La pension IRCANTEC suit les mêmes règles d'âge que le régime général (64 ans pour les générations 1965+). Aucun taux plein n'est requis pour liquider : la pension est calculée proportionnellement aux points acquis, quel que soit l'âge ou la durée de cotisation. Les droits IRCANTEC s'ajoutent à la pension de base du régime général pour les agents qui y ont également cotisé.</p>
           </div>

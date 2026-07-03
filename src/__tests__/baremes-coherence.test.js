@@ -30,6 +30,10 @@ const STALE = [
   "47 100 € en 2026", "47 100 €en 2026",
   // Ancien seuil de validation d'un trimestre (150 × SMIC périmé)
   "1 690 €", "1 625 € brut",
+  // Anciennes valeurs IRCANTEC (achat/service) — corrigées vers 5,787 / 0,56053
+  "8,06 €", "0,54076", "12,516", "0,5204 €",
+  // Anciennes valeurs RCI indépendants — corrigées vers 19,394 / 1,335
+  "17,763", "0,6331",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

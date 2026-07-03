@@ -30,8 +30,8 @@ const DUREE_REQUISE_BASE = 172; // trimestres (nés 1965+)
 // Complémentaire SSI artisans/commerçants (RCI 2026)
 const TAUX_RCI_T1  = 0.07; // 7 % jusqu'au PASS
 const TAUX_RCI_T2  = 0.08; // 8 % de 1 à 4 PASS
-const VALEUR_ACHAT_RCI   = 17.763; // €/point (2026 approx.)
-const VALEUR_SERVICE_RCI = 0.6331; // €/point/an (2026 approx.)
+const VALEUR_ACHAT_RCI   = 19.394; // €/point (valeur 2026)
+const VALEUR_SERVICE_RCI = 1.335; // €/point/an (valeur 2026)
 
 function calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite }) {
   if (!revenu) return {
@@ -180,7 +180,7 @@ export default function Independants() {
 
         {/* Réassurance */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: 14, background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 20px", marginBottom: 20, fontSize: 13, color: "var(--text-secondary)" }}>
-          {["✓ Base SSI alignée sur CNAV", "✓ Complémentaire RCI incluse", "✓ Valeur service : 0,6331 €/pt"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
+          {["✓ Base SSI alignée sur CNAV", "✓ Complémentaire RCI incluse", "✓ Valeur service : 1,335 €/pt"].map((t, i) => <span key={i} style={{ whiteSpace: "nowrap" }}>{t}</span>)}
         </div>
 
         {/* Formulaire */}
