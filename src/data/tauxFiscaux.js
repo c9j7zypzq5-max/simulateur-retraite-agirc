@@ -2,13 +2,17 @@
 // Source de vérité centralisée pour tous les simulateurs. Importer depuis ce
 // fichier plutôt que de dupliquer les constantes dans chaque composant.
 
-// ── Barème IR 2026 (revenus 2025, revalorisation +0,9 %) ─────────────────────
+// ── Barème IR 2026 (revenus 2025) ────────────────────────────────────────────
+// NB : le simulateur src/pages/simulateurs/ImpotRevenu.jsx possède sa propre
+// copie de ce barème. Ces valeurs étaient périmées (revenus 2023) alors que le
+// simulateur était à jour — réalignées ici. À terme, faire importer ce barème
+// par le simulateur pour éliminer la duplication.
 export const BAREME_IR = [
-  { min: 0,       max: 11_294,  taux: 0 },
-  { min: 11_294,  max: 28_797,  taux: 0.11 },
-  { min: 28_797,  max: 82_341,  taux: 0.30 },
-  { min: 82_341,  max: 177_106, taux: 0.41 },
-  { min: 177_106, max: Infinity, taux: 0.45 },
+  { min: 0,       max: 11_600,  taux: 0 },
+  { min: 11_600,  max: 29_579,  taux: 0.11 },
+  { min: 29_579,  max: 84_577,  taux: 0.30 },
+  { min: 84_577,  max: 181_917, taux: 0.41 },
+  { min: 181_917, max: Infinity, taux: 0.45 },
 ];
 
 // ── Flat tax / Prélèvement Forfaitaire Unique (PFU) 2026 ─────────────────────
