@@ -34,6 +34,8 @@ const STALE = [
   "8,06 €", "0,54076", "12,516", "0,5204 €",
   // Anciennes valeurs RCI indépendants — corrigées vers 19,394 / 1,335
   "17,763", "0,6331",
+  // Anciennes valeurs base CNAVPL — régime désormais modélisé par points (0,6599)
+  "0,5714", "7,04 €",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

@@ -26,15 +26,19 @@ import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres IRCANTEC 2026 ────────────────────────────────────────────────
 
-// Tranche A (≤ PASS) : taux global salarié+patronal
+// IMPORTANT — deux jeux de taux distincts (comme à l'Agirc-Arrco) :
+// • Les POINTS de retraite sont acquis avec les TAUX THÉORIQUES (2026 : TA 5,60 %,
+//   TB 15,60 %). Utiliser le taux d'appel ici surestimerait la pension.
+// • Les COTISATIONS réellement payées (affichage) suivent le taux d'appel (127 %
+//   en 2026), réparti part agent / part employeur.
+const TAUX_TA = 0.0560; // taux théorique tranche A (≤ PASS) → calcul des points
+const TAUX_TB = 0.1560; // taux théorique tranche B (PASS à 8×PASS) → calcul des points
+
+// Taux d'appel payés (pour l'affichage des cotisations), part agent / employeur
 const TAUX_TA_SAL = 0.0224;
 const TAUX_TA_PAT = 0.0441;
-const TAUX_TA     = TAUX_TA_SAL + TAUX_TA_PAT; // 6.65 %
-
-// Tranche B (PASS à 8×PASS) : taux global
 const TAUX_TB_SAL = 0.0670;
 const TAUX_TB_PAT = 0.1320;
-const TAUX_TB     = TAUX_TB_SAL + TAUX_TB_PAT; // 19.90 %
 
 // Valeur du point IRCANTEC 2026
 const VALEUR_ACHAT   = 5.787;   // €/point (salaire de référence, 1er janvier 2026)

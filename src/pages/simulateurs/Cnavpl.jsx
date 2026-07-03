@@ -19,17 +19,28 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { PASS_2026 } from '../../data/baremesRetraite.js';
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
-const PASS = 47_100; // Plafond annuel 2026
-const TAUX_PLEIN = 0.50;
+const PASS = PASS_2026; // 48 060 € (source centrale)
 const DURÉE_REQUISE = 172; // trimestres pour générations 1965+
 
+// Régime de BASE CNAVPL : régime par POINTS (réforme 2023). On acquiert jusqu'à
+// 557 points/an en tranche 1 (revenu ≤ PASS) et 25 points/an en tranche 2
+// (revenu du PASS à 5×PASS), au prorata du revenu. Pension = points × valeur de
+// service (0,6599 € en 2026), minorée par la décote éventuelle.
+const VALEUR_SERVICE_BASE = 0.6599; // €/point/an (2026)
+const POINTS_MAX_T1 = 557;
+const POINTS_MAX_T2 = 25;
+
 // ─── CIPAV : Classes de cotisation et points ────────────────────────────────
+// Barème CIPAV connu pour 2025 (valeurs 2026 non encore publiées) : on garde
+// donc son propre plafond de référence, distinct du PASS 2026 du régime de base.
+const PASS_CIPAV = 47_100;
 
 function getClasseCIPAV(revenu) {
-  const p = PASS;
+  const p = PASS_CIPAV;
   if (revenu < 0.85 * p) return { classe: 1, points: 222, cotisation: 1528, label: "< 40 035 €" };
   if (revenu < 1 * p) return { classe: 2, points: 333, cotisation: 2292, label: "40 035 – 47 100 €" };
   if (revenu < 1.5 * p) return { classe: 3, points: 444, cotisation: 3056, label: "47 100 – 70 650 €" };
@@ -54,28 +65,33 @@ function calcCnavpl({
       dureeRequise: DURÉE_REQUISE,
       tauxEffectif: 0,
       decote: 0,
-      sam: 0,
-      samPlafonné: 0,
+      totalPointsBase: 0,
       trimestresManquants: 0,
       totalPointsCipav: 0,
     };
   }
 
-  // ─── Régime de base (SSI / ancien CNAV) ────────────────────────────────
-  const trimestresTotal = ((anneesFaites ?? 0) + (anneesRestantes ?? 0)) * 4;
-  const sam = revenuAnnuel; // SAM simplifié = revenu actuel (en réalité : moyenne 25 meilleures années)
-  const samPlafonné = Math.min(sam, PASS);
-
+  // ─── Régime de base CNAVPL (par points depuis 2023) ────────────────────
+  const anneesCotisees = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
+  const trimestresTotal = anneesCotisees * 4;
   const trimestresManquants = Math.max(0, DURÉE_REQUISE - trimestresTotal);
   const ageDép = ageDépart ?? 65;
 
+  // Décote = coefficient de minoration (0,625 %/trimestre manquant, plafonné à
+  // 20 trimestres). Au taux plein, le coefficient de liquidation vaut 1.
   let decote = 0;
   if (ageDép < 67 && trimestresManquants > 0) {
     decote = Math.min(trimestresManquants, 20) * 0.00625;
   }
+  const tauxEffectif = Math.max(0, 1 - decote); // coefficient de liquidation (≤ 1)
 
-  const tauxEffectif = Math.max(0, TAUX_PLEIN - decote);
-  const pensionBaseBrute = (samPlafonné * tauxEffectif) / 12;
+  // Points acquis, au prorata du revenu dans chaque tranche.
+  const pointsBaseT1 = POINTS_MAX_T1 * Math.min(revenuAnnuel, PASS) / PASS;
+  const pointsBaseT2 = POINTS_MAX_T2 * Math.min(Math.max(0, revenuAnnuel - PASS), 4 * PASS) / (4 * PASS);
+  const totalPointsBase = (pointsBaseT1 + pointsBaseT2) * anneesCotisees;
+
+  const pensionBaseAnnuelle = totalPointsBase * VALEUR_SERVICE_BASE * tauxEffectif;
+  const pensionBaseBrute = pensionBaseAnnuelle / 12; // mensuelle brute
   const pensionBaseNette = pensionBaseBrute * 0.93;
 
   // ─── CIPAV : Régime complémentaire ────────────────────────────────────
@@ -95,8 +111,7 @@ function calcCnavpl({
     dureeRequise: DURÉE_REQUISE,
     tauxEffectif,
     decote,
-    sam,
-    samPlafonné,
+    totalPointsBase,
     trimestresManquants,
     totalPointsCipav,
   };
@@ -310,7 +325,7 @@ export default function Cnavpl() {
             color: "var(--text-secondary)",
           }}
         >
-          {["✓ PASS 2026 : 47 100 €", "✓ Taux plein : 50 %", "✓ Régime base + CIPAV"].map((t, i) => (
+          {["✓ PASS 2026 : 48 060 €", "✓ Base par points (0,6599 €)", "✓ Régime base + CIPAV"].map((t, i) => (
             <span key={i} style={{ whiteSpace: "nowrap" }}>
               {t}
             </span>
@@ -392,7 +407,7 @@ export default function Cnavpl() {
             max={70}
             unit=" ans"
             hint="Avant 67 ans sans taux plein : décote appliquée"
-            tooltip="À 67 ans, décote annulée. Le taux plein 50 % est automatique."
+            tooltip="À 67 ans, la décote est annulée : le taux plein (coefficient 1, sans minoration) est automatique."
           />
 
           {/* Récapitulatif */}
@@ -569,7 +584,7 @@ export default function Cnavpl() {
                 <Chip label="Classe CIPAV" value={`${res.classCipav.classe}`} />
                 <Chip label="Points CIPAV totaux" value={`${fmt(res.totalPointsCipav)}`} accent />
                 <Chip label="Cotisation CIPAV/an" value={`${fmtEur(res.classCipav.cotisation)}`} />
-                <Chip label="SAM plafonné" value={`${fmtEur(res.samPlafonné)}`} accent />
+                <Chip label="Points base acquis" value={`${fmt(Math.round(res.totalPointsBase))} pts`} accent />
               </div>
 
               <ProgressBar
