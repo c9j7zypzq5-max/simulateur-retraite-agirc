@@ -4,6 +4,12 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
+// Date de dernière révision des barèmes affichés sur le site — à mettre à jour
+// MANUELLEMENT à chaque révision de barème (PASS, IR, Agirc-Arrco, calendrier
+// retraite...). Ne pas utiliser new Date() ici : cela affichait la date du
+// jour de consultation, pas une vraie date de révision.
+const DERNIERE_REVISION = "juillet 2026";
+
 const SECTIONS = [
   {
     h2: "Notre objectif",
@@ -50,8 +56,6 @@ export default function Methodologie() {
     link.href = 'https://www.simfinly.com/methodologie';
   }, []);
 
-  const today = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric" }).format(new Date());
-
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
@@ -69,7 +73,7 @@ export default function Methodologie() {
               Méthodologie & sources
             </h1>
           </div>
-          <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>Dernière mise à jour : {today}</p>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)" }}>Dernière mise à jour : {DERNIERE_REVISION}</p>
         </div>
 
         {SECTIONS.map((sec, i) => (

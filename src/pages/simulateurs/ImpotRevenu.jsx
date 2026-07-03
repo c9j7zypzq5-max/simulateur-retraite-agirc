@@ -21,15 +21,7 @@ import {
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import BarChart from "../../components/charts/BarChart.jsx";
 import { FAQS } from '../../data/faqs.js';
-
-// ─── Barème IR 2026 (revenus 2025, revalorisé +0,9 %) ─────────────────────────
-const BAREME = [
-  { min: 0,       max: 11_600,  taux: 0    },
-  { min: 11_600,  max: 29_579,  taux: 0.11 },
-  { min: 29_579,  max: 84_577,  taux: 0.30 },
-  { min: 84_577,  max: 181_917, taux: 0.41 },
-  { min: 181_917, max: Infinity, taux: 0.45 },
-];
+import { BAREME_IR as BAREME } from '../../data/tauxFiscaux.js';
 
 function calcParts(situation, nbEnfants) {
   const base = situation === "marie" ? 2 : 1;

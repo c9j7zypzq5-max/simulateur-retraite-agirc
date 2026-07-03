@@ -3,10 +3,7 @@
 // fichier plutôt que de dupliquer les constantes dans chaque composant.
 
 // ── Barème IR 2026 (revenus 2025) ────────────────────────────────────────────
-// NB : le simulateur src/pages/simulateurs/ImpotRevenu.jsx possède sa propre
-// copie de ce barème. Ces valeurs étaient périmées (revenus 2023) alors que le
-// simulateur était à jour — réalignées ici. À terme, faire importer ce barème
-// par le simulateur pour éliminer la duplication.
+// Source unique — importé par src/pages/simulateurs/ImpotRevenu.jsx.
 export const BAREME_IR = [
   { min: 0,       max: 11_600,  taux: 0 },
   { min: 11_600,  max: 29_579,  taux: 0.11 },
