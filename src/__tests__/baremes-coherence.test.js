@@ -38,6 +38,8 @@ const STALE = [
   "0,5714", "7,04 €",
   // Ancienne valeur de service CIPAV (estimation non couplée à un achat officiel)
   "0.4753", "0,4753",
+  // Ancien modèle RCO (achat/service fabriqués, mutuellement calibrés)
+  "0.0196", "0,0196",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { PASS } from "../../config/constants.js";
+import { PASS, SMIC_HORAIRE } from "../../config/constants.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -25,11 +25,15 @@ import { RECOMMENDATIONS } from '../../data/recommendations.js';
 // ─── Paramètres MSA 2026 ──────────────────────────────────────────────────────
 const TAUX_PLEIN = 0.50;
 
-// Retraite Complémentaire Obligatoire (RCO) pour exploitants
-const TAUX_RCO_T1 = 0.03; // 3 % sur tranche ≤ PASS
-const TAUX_RCO_T2 = 0.06; // 6 % sur tranche PASS à 3PASS
-const VALEUR_ACHAT_RCO = 0.65; // €/point (2026 estimate)
-const VALEUR_SERVICE_RCO = 0.0196; // €/point/an (2026 estimate)
+// Retraite Complémentaire Obligatoire (RCO) pour exploitants agricoles.
+// Le nombre de points annuels n'est PAS acquis via un prix d'achat publié (il
+// n'existe pas de valeur d'achat officielle unique pour le RCO) mais via une
+// formule directe sur le revenu professionnel, ancrée sur un fait vérifié :
+// à l'assiette minimale (1 820 × SMIC horaire), on acquiert exactement 100
+// points/an. Formule : points = revenu professionnel × 100 ÷ (1 820 × SMIC
+// horaire), plafonnée à l'assiette maximale du régime (non modélisée ici).
+const RCO_ASSIETTE_MIN = 1820 * SMIC_HORAIRE;
+const VALEUR_SERVICE_RCO = 0.3919; // €/point/an (2026, confirmé sur plusieurs sources)
 
 function getDureeRequise(anneeNaissance) {
   if (!anneeNaissance || anneeNaissance <= 1960) return 167;
@@ -54,7 +58,7 @@ function calcMsaExploitant({ revenu, anneesFaites, anneesRestantes, ageDépart, 
     trimestresTotal: 0, dureeRequise: getDureeRequise(anneeNaissance),
     tauxEffectif: 0, proratisation: 0, decote: 0, surcote: 0,
     totalPoints: 0, trimestresManquants: 0, trimestresSuppl: 0,
-    cotisationAnnuelle: 0, ptsParAn: 0,
+    revAnn: 0, ptsParAn: 0,
   };
 
   const dureeRequise = getDureeRequise(anneeNaissance);
@@ -85,10 +89,7 @@ function calcMsaExploitant({ revenu, anneesFaites, anneesRestantes, ageDépart, 
 
   // Retraite Complémentaire Obligatoire (RCO) for exploitants
   const annéesTotales = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
-  const cotT1 = Math.min(revAnn, PASS) * TAUX_RCO_T1;
-  const cotT2 = Math.max(0, Math.min(revAnn, 3 * PASS) - PASS) * TAUX_RCO_T2;
-  const cotisationAnnuelle = cotT1 + cotT2;
-  const ptsParAn = cotisationAnnuelle / VALEUR_ACHAT_RCO;
+  const ptsParAn = (revAnn * 100) / RCO_ASSIETTE_MIN;
   const totalPoints = ptsParAn * annéesTotales;
   const pensionRCOAnnuelle = totalPoints * VALEUR_SERVICE_RCO;
   const pensionRCO = pensionRCOAnnuelle * 0.93 / 12;
@@ -100,7 +101,7 @@ function calcMsaExploitant({ revenu, anneesFaites, anneesRestantes, ageDépart, 
     trimestresTotal, dureeRequise,
     tauxEffectif, proratisation, decote, surcote,
     totalPoints, trimestresManquants, trimestresSuppl,
-    cotisationAnnuelle, ptsParAn,
+    revAnn, ptsParAn,
   };
 }
 
@@ -393,7 +394,7 @@ export default function Msa() {
               {isExploitant && (
                 <AccordionSection title="Points RCO" subtitle="Retraite Complémentaire Obligatoire — Cotisation et points">
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
-                    <Chip label="Cotisation annuelle" value={fmtEur(res.cotisationAnnuelle)} />
+                    <Chip label="Revenu annuel retenu" value={fmtEur(res.revAnn)} />
                     <Chip label="Points par an" value={fmt(res.ptsParAn)} />
                   </div>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
@@ -401,7 +402,7 @@ export default function Msa() {
                     <Chip label="Valeur service" value={`${VALEUR_SERVICE_RCO} €/pt` } />
                   </div>
                   <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "13px 16px", fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                    <strong>Calcul RCO :</strong> Cotisation annuelle = 3 % × revenu jusqu'au PASS + 6 % × (revenu jusqu'à 3 PASS − PASS). Points annuels = cotisation / 0,65 € (valeur d'achat). Pension RCO = points × {VALEUR_SERVICE_RCO} €/an.
+                    <strong>Calcul RCO :</strong> Points annuels = revenu professionnel × 100 ÷ (1 820 × SMIC horaire) — à l'assiette minimale, cela donne exactement 100 points/an. Pension RCO = points accumulés × {VALEUR_SERVICE_RCO} €/an (valeur de service 2026).
                   </div>
                 </AccordionSection>
               )}
