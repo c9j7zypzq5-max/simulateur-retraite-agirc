@@ -306,7 +306,7 @@ export const METIERS = {
     faq: [
       { q: "La retraite d'un commerçant est-elle différente de celle d'un artisan ?", a: "Non. Artisans et commerçants cotisent tous à la SSI et à la RCI selon les mêmes barèmes. La différence tient à la nature de l'activité déclarée au guichet des formalités, pas au régime de retraite." },
       { q: "Un gérant de SARL commerçant est-il TNS ou assimilé-salarié ?", a: "Un gérant majoritaire (> 50 % des parts) est TNS et cotise à la SSI. Un gérant minoritaire ou égalitaire est assimilé-salarié et cotise au régime général CNAV + Agirc-Arrco." },
-      { q: "Comment la retraite est-elle calculée si mon revenu fluctue beaucoup ?", a: "La base SSI est calculée sur les 25 meilleures années de revenus (dans la limite du PASS). Les années à faibles revenus ne pèsent pas si vous avez plus de 25 années cotisées. Les forts revenus sont plafonnés au PASS (46 368 € en 2026)." },
+      { q: "Comment la retraite est-elle calculée si mon revenu fluctue beaucoup ?", a: "La base SSI est calculée sur les 25 meilleures années de revenus (dans la limite du PASS). Les années à faibles revenus ne pèsent pas si vous avez plus de 25 années cotisées. Les forts revenus sont plafonnés au PASS (48 060 € en 2026)." },
       { q: "Quel est le montant moyen de retraite pour un commerçant ?", a: "Entre 850 et 1 200 €/mois au total (base + RCI) pour une carrière complète, selon les revenus. Ce montant souligne l'importance d'une épargne retraite complémentaire dès le début de l'activité." },
     ],
   },
@@ -584,8 +584,8 @@ export const METIERS = {
     title: 'Retraite ingénieur et cadre',
     subtitle: 'CNAV + Agirc-Arrco · Régime salarié du secteur privé',
     metaTitle: 'Retraite cadre ingénieur 2026 — Agirc-Arrco, calcul et pension nette',
-    metaDesc: "Guide retraite cadre ingénieur 2026 : CNAV (régime de base) + Agirc-Arrco (complémentaire), coefficient de solidarité, âge 64 ans, GMP et simulation de pension nette.",
-    intro: "Les ingénieurs et cadres du secteur privé cotisent au régime général CNAV et à Agirc-Arrco. Depuis la fusion Agirc-Arrco en 2019, il n'existe plus de régime spécifique cadres — tous les salariés du privé cotisent au même régime, avec des règles communes sur les points et le coefficient de solidarité.",
+    metaDesc: "Guide retraite cadre ingénieur 2026 : CNAV (régime de base) + Agirc-Arrco (complémentaire), âge 64 ans, GMP et simulation de pension nette.",
+    intro: "Les ingénieurs et cadres du secteur privé cotisent au régime général CNAV et à Agirc-Arrco. Depuis la fusion Agirc-Arrco en 2019, il n'existe plus de régime spécifique cadres — tous les salariés du privé cotisent au même régime, avec des règles communes sur les points.",
     simulateurPath: '/simulateurs/agirc-arrco',
     simulateurLabel: 'Simulateur Retraite Agirc-Arrco',
     stats: [
@@ -600,8 +600,8 @@ export const METIERS = {
         content: "**CNAV (retraite de base)** : calculée sur le salaire annuel moyen des 25 meilleures années, dans la limite du PASS. Le taux est de 50 % en cas de taux plein. Pour un cadre supérieur, la part du revenu au-delà du PASS n'est pas prise en compte dans la CNAV — d'où l'importance d'Agirc-Arrco.\n\n**Agirc-Arrco (complémentaire)** : régime par points sur l'ensemble du salaire. Chaque année, les cotisations (salarié + employeur) achètent des points dont la valeur de service est revalorisée annuellement.",
       },
       {
-        title: 'Le coefficient de solidarité Agirc-Arrco',
-        content: "Depuis 2019, un **coefficient de solidarité de -10 %** s'applique pendant 3 ans sur la pension Agirc-Arrco si le cadre part dès 64 ans (ou l'âge légal). Pour éviter cette minoration, il faut attendre 67 ans ou cotiser 4 trimestres supplémentaires après 64 ans.\n\nCette règle est spécifique à Agirc-Arrco et n'affecte pas la pension CNAV de base.",
+        title: 'Le coefficient de solidarité Agirc-Arrco : supprimé depuis 2024',
+        content: "Un **coefficient de solidarité de -10 %** s'appliquait pendant 3 ans sur la pension Agirc-Arrco entre 2019 et 2024 en cas de départ dès l'âge légal sans taux plein. Ce dispositif a été supprimé (retraites prenant effet à partir du 1er décembre 2023, et pour tous depuis le 1er avril 2024) : il ne s'applique plus.\n\nSeule la pension CNAV de base reste soumise à une éventuelle décote selon l'âge de départ et les trimestres validés.",
       },
       {
         title: 'Optimiser la retraite d\'un cadre : PER et épargne salariale',
@@ -609,7 +609,7 @@ export const METIERS = {
       },
     ],
     faq: [
-      { q: "Un cadre doit-il attendre 67 ans pour avoir sa pleine retraite Agirc-Arrco ?", a: "Pas nécessairement. Le coefficient de solidarité de -10 % s'applique 3 ans si le cadre part à 64 ans (l'âge légal). Il peut l'éviter en attendant 67 ans, ou en travaillant au moins 4 trimestres supplémentaires après l'âge légal." },
+      { q: "Un cadre doit-il attendre 67 ans pour avoir sa pleine retraite Agirc-Arrco ?", a: "Non. Le coefficient de solidarité de -10 % qui s'appliquait entre 2019 et 2024 a été supprimé (avril 2024). La pension Agirc-Arrco n'est plus minorée selon l'âge de départ ; seule la pension CNAV de base reste soumise à une éventuelle décote." },
       { q: "Comment sont calculés les points Agirc-Arrco pour un cadre ?", a: "Les points sont calculés sur la totalité du salaire brut (tranche 1 dans la limite du PASS + tranche 2 au-delà). Les taux de cotisation sont différents selon les tranches. Les points s'accumulent chaque année et sont multipliés par la valeur du point au moment de la liquidation." },
       { q: "Qu'est-ce que la GMP (Garantie Minimale de Points) ?", a: "La GMP a été supprimée lors de la fusion Agirc-Arrco en 2019. Elle garantissait un minimum de points aux cadres dont le salaire était inférieur à un certain seuil. Depuis 2019, toutes les tranches s'appliquent uniformément sans garantie minimale." },
       { q: "Quel est le taux de remplacement net d'un cadre ingénieur ?", a: "Pour un cadre au salaire moyen (~50 000 €/an), le taux de remplacement net (pension nette / dernier salaire net) est d'environ 60–70 % avec une carrière complète. Ce taux baisse pour les très hauts salaires car la CNAV est plafonnée au PASS." },

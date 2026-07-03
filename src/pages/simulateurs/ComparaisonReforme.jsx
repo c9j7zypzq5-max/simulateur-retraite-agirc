@@ -12,8 +12,10 @@ import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } fr
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import ShareBar from "../../components/ShareBar.jsx";
+import { PASS_2026, getAgeLegal, getDureeRequise, getDecote } from "../../data/baremesRetraite.js";
+import { getTauxPrelevementPension } from "../../data/tauxFiscaux.js";
 
-// ─── Règles AVANT réforme (système pré-2023) ────────────────────────────────
+// ─── Règles AVANT réforme (système pré-2023, non affecté par le gel 2026) ───
 function getAvantReforme(anneeNaissance) {
   // Âge légal : 62 ans pour tous (avant la loi Borne)
   const ageLegal = 62;
@@ -36,43 +38,32 @@ function getAvantReforme(anneeNaissance) {
   return { ageLegal, duree, label: "Avant réforme (système pré-2023)" };
 }
 
-// ─── Règles APRÈS réforme (Loi Borne 2023, en vigueur progressivement) ──────
+// ─── Règles APRÈS réforme ────────────────────────────────────────────────────
+// Reflète le calendrier ACTUELLEMENT EN VIGUEUR (Loi Borne 2023, gelé pour les
+// générations 1964-1968 par la LFSS 2026 — cf. src/data/baremesRetraite.js).
+function ageLegalLabelFrom(ageLegalAns) {
+  const ans = Math.floor(ageLegalAns);
+  const mois = Math.round((ageLegalAns - ans) * 12);
+  return mois > 0 ? `${ans} ans ${mois} mois` : `${ans} ans`;
+}
+
 function getApresReforme(anneeNaissance) {
-  // Âge légal progressif
-  let ageLegalAns, ageLegalLabel;
-  if (anneeNaissance <= 1961) { ageLegalAns = 62; ageLegalLabel = "62 ans"; }
-  else if (anneeNaissance === 1962) { ageLegalAns = 62 + 3/12; ageLegalLabel = "62 ans 3 mois"; }
-  else if (anneeNaissance === 1963) { ageLegalAns = 62 + 6/12; ageLegalLabel = "62 ans 6 mois"; }
-  else if (anneeNaissance === 1964) { ageLegalAns = 63; ageLegalLabel = "63 ans"; }
-  else if (anneeNaissance === 1965) { ageLegalAns = 63 + 3/12; ageLegalLabel = "63 ans 3 mois"; }
-  else if (anneeNaissance === 1966) { ageLegalAns = 63 + 6/12; ageLegalLabel = "63 ans 6 mois"; }
-  else { ageLegalAns = 64; ageLegalLabel = "64 ans"; }
-
-  // Durée pour taux plein — barème post-réforme
-  let duree;
-  if (anneeNaissance <= 1961) duree = 167;
-  else if (anneeNaissance === 1962) duree = 168;
-  else if (anneeNaissance === 1963) duree = 169;
-  else if (anneeNaissance === 1964) duree = 169;
-  else if (anneeNaissance === 1965) duree = 170;
-  else if (anneeNaissance === 1966) duree = 171;
-  else duree = 172;
-
-  return { ageLegalAns, ageLegal: ageLegalAns, ageLegalLabel, duree };
+  const ageLegalAns = getAgeLegal(anneeNaissance);
+  const duree = getDureeRequise(anneeNaissance);
+  return { ageLegalAns, ageLegal: ageLegalAns, ageLegalLabel: ageLegalLabelFrom(ageLegalAns), duree };
 }
 
 // ─── Calcul de pension simplifié CNAV ────────────────────────────────────────
 // pension = SAM × 50 % × min(1, trimestres / durée_requise)
-function calcPension(sam, trimestres, duree) {
-  const PASS = 48_060; // plafond annuel 2026
-  const samPlafonné = Math.min(sam, PASS);
+function calcPension(sam, trimestres, duree, rfr, nbParts) {
+  const samPlafonné = Math.min(sam, PASS_2026);
   const prorata = Math.min(trimestres / duree, 1);
   const pensionBrute = (samPlafonné * 0.5 * prorata) / 12;
-  return { pensionBrute, pensionNette: pensionBrute * 0.93, prorata };
+  return { pensionBrute, pensionNette: pensionBrute * (1 - getTauxPrelevementPension({ rfr, nbParts })), prorata };
 }
 
 // ─── Calcul comparatif complet ────────────────────────────────────────────────
-function calcComparaison({ anneeNaissance, trimestres, sam }) {
+function calcComparaison({ anneeNaissance, trimestres, sam, rfr, nbParts }) {
   if (!anneeNaissance || !trimestres || !sam) return null;
 
   const avant = getAvantReforme(anneeNaissance);
@@ -85,18 +76,16 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
   // Pension si départ à 62 ans (avec éventuelle décote)
   let pensionAvant62;
   if (trimsManquantsAvant > 0) {
-    // Décote : 0.625% par trim manquant, max 20 trim
-    const decote = Math.min(trimsManquantsAvant, 20) * 0.00625;
+    const decote = getDecote(trimsManquantsAvant);
     const prorata = Math.min(trimestres / avant.duree, 1);
-    const PASS = 48_060;
-    const samPlafonné = Math.min(sam, PASS);
-    pensionAvant62 = ((samPlafonné * (0.5 - decote) * prorata) / 12) * 0.93;
+    const samPlafonné = Math.min(sam, PASS_2026);
+    pensionAvant62 = ((samPlafonné * (0.5 - decote) * prorata) / 12) * (1 - getTauxPrelevementPension({ rfr, nbParts }));
   } else {
-    pensionAvant62 = calcPension(sam, trimestres, avant.duree).pensionNette;
+    pensionAvant62 = calcPension(sam, trimestres, avant.duree, rfr, nbParts).pensionNette;
   }
 
   // Pension taux plein avant réforme
-  const { pensionNette: pensionAvantTauxPlein, prorata: prorataAvant } = calcPension(sam, trimestres, avant.duree);
+  const { pensionNette: pensionAvantTauxPlein, prorata: prorataAvant } = calcPension(sam, trimestres, avant.duree, rfr, nbParts);
 
   // Trimestres manquants avant réforme
 
@@ -115,7 +104,7 @@ function calcComparaison({ anneeNaissance, trimestres, sam }) {
   const agePossibleParTrimestres = anneeNaissance + 62 + moisRestantsApres / 12; // âge actuel + attente
   const ageTauxPleinApres = Math.max(apres.ageLegalAns, 62 + moisRestantsApres / 12);
 
-  const { pensionNette: pensionApresTauxPlein, prorata: prorataApres } = calcPension(sam, trimestres, apres.duree);
+  const { pensionNette: pensionApresTauxPlein, prorata: prorataApres } = calcPension(sam, trimestres, apres.duree, rfr, nbParts);
 
   // Écarts
   const diffMoisLegal = Math.round((apres.ageLegalAns - avant.ageLegal) * 12);
@@ -265,6 +254,8 @@ export default function ComparaisonReforme() {
   const [anneeNaissance, setAnneeNaissance] = useState(1970);
   const [trimestres, setTrimestres]         = useState(120);
   const [sam, setSam]                       = useState(36000);
+  const [rfr, setRfr]                       = useState(null);
+  const [nbParts, setNbParts]               = useState(1);
 
   usePageMeta(
     "Comparateur Réforme Retraite 2023 — Avant / Après loi Borne | simfinly.com",
@@ -274,8 +265,8 @@ export default function ComparaisonReforme() {
   const resultsRef = useRef(null);
 
   const res = useMemo(
-    () => calcComparaison({ anneeNaissance, trimestres, sam }),
-    [anneeNaissance, trimestres, sam]
+    () => calcComparaison({ anneeNaissance, trimestres, sam, rfr, nbParts }),
+    [anneeNaissance, trimestres, sam, rfr, nbParts]
   );
 
   const card = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 16, padding: "22px 20px" };
@@ -344,7 +335,21 @@ export default function ComparaisonReforme() {
               hint="Moyenne des 25 meilleures années · Plafonné au PASS (48 060 €)"
               tooltip="Le SAM est la moyenne de vos 25 meilleures années de salaire brut, plafonnée au PASS. Si vous ne le connaissez pas, utilisez votre salaire annuel brut actuel."
             />
+            <NumInput
+              id="rfr-comparaison"
+              label="Revenu fiscal de référence du foyer"
+              value={rfr}
+              onChange={setRfr}
+              unit="€"
+              min={0}
+              max={200000}
+              hint="Optionnel — détermine le taux réel de CSG/CRDS/CASA (sinon taux médian 7,4 %)"
+            />
+            <StepperInput label="Nombre de parts fiscales" value={nbParts} onChange={setNbParts} min={1} max={5} step={0.5} />
           </div>
+          <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 14, lineHeight: 1.6 }}>
+            ⚠️ Le calendrier « après réforme » reflète la situation actuellement en vigueur : la loi de financement de la Sécurité sociale 2026 a gelé la montée en charge de la réforme Borne 2023 pour les générations 1964-1968 jusqu'au 1er janvier 2028.
+          </p>
         </div>
 
         {/* Comparaison Avant / Après */}

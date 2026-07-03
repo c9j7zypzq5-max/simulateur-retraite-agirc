@@ -4,6 +4,7 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import { getPmssMensuel } from "../data/baremesRetraite.js";
 
 const BASE = "https://www.simfinly.com";
 
@@ -20,16 +21,12 @@ const FAQ = [
     a: "La valeur de service du point Agirc-Arrco est de 1,4386 € en 2026, revalorisée au 1er novembre 2025. Votre pension annuelle = nombre de points × 1,4386 €.",
   },
   {
-    q: "Comment éviter le malus Agirc-Arrco de -10 % ?",
-    a: "Le coefficient de solidarité de -10 % s'applique si vous partez dès votre âge légal. Pour l'éviter : attendez 67 ans (taux plein automatique), différez d'1 an votre départ, ou bénéficiez d'une exonération (inaptitude, carrière longue, chômage longue durée).",
+    q: "Le malus Agirc-Arrco de -10 % existe-t-il encore ?",
+    a: "Non. Ce coefficient de solidarité temporaire a été supprimé pour les retraites prenant effet à compter du 1er décembre 2023, et pour tous les autres retraités depuis le 1er avril 2024. Votre pension Agirc-Arrco n'est plus minorée ni majorée selon votre âge de départ.",
   },
   {
     q: "Comment connaître mon nombre de points Agirc-Arrco ?",
     a: "Connectez-vous à votre espace sur agirc-arrco.fr ou consultez votre relevé de carrière sur info-retraite.fr. Tous les points acquis chez tous vos employeurs privés sont regroupés sur un seul compte.",
-  },
-  {
-    q: "Le malus Agirc-Arrco s'applique-t-il à tout le monde ?",
-    a: "Non. Le malus ne s'applique pas en cas d'inaptitude, d'invalidité, de carrière longue, de chômage longue durée, de bénéficiaire de l'ASPA, ou d'aidant familial. Il ne s'applique pas non plus à partir de 67 ans.",
   },
   {
     q: "Combien de points Agirc-Arrco accumule-t-on par an ?",
@@ -42,7 +39,7 @@ const schemas = [
     "@context": "https://schema.org",
     "@type": "Article",
     headline: "Points Agirc-Arrco 2026 : valeur du point, calcul et simulateur",
-    description: "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, malus/bonus, comment calculer sa pension complémentaire et simuler ses droits.",
+    description: "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, comment calculer sa pension complémentaire et simuler ses droits. Le malus/bonus a été supprimé en avril 2024.",
     author: { "@type": "Organization", name: "Simfinly", url: BASE },
     publisher: { "@type": "Organization", name: "Simfinly", logo: { "@type": "ImageObject", url: `${BASE}/logo-mark.svg` } },
     url: `${BASE}/retraite/points-agirc-arrco`,
@@ -73,11 +70,12 @@ const schemas = [
 
 export default function GuideAgircArrco() {
   const { theme, setTheme } = useTheme();
+  const pmss = getPmssMensuel();
 
   useEffect(() => {
     document.title = "Points Agirc-Arrco 2026 — valeur du point, calcul et simulateur | simfinly";
     document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, coefficient de solidarité (malus), bonus de fidélité, et simulateur de pension complémentaire gratuit.");
+      "Tout comprendre sur les points Agirc-Arrco 2026 : valeur 1,4386 €, calcul de la pension complémentaire (le malus/bonus a été supprimé en avril 2024), et simulateur gratuit.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement("link"); link.rel = "canonical"; document.head.appendChild(link); }
     link.href = `${BASE}/retraite/points-agirc-arrco`;
@@ -131,7 +129,7 @@ export default function GuideAgircArrco() {
         {/* Hero */}
         <div style={s.hero}>
           <span style={s.badge}>Retraite complémentaire</span>
-          <h1 style={s.h1}>Points Agirc-Arrco 2026 : valeur du point, calcul et malus</h1>
+          <h1 style={s.h1}>Points Agirc-Arrco 2026 : valeur du point et calcul de la pension</h1>
           <p style={s.sub}>
             La retraite complémentaire Agirc-Arrco représente 30 à 65 % de la pension totale des salariés du privé.
             Comprendre comment fonctionnent vos points est essentiel pour optimiser votre départ.
@@ -209,8 +207,8 @@ export default function GuideAgircArrco() {
               </thead>
               <tbody>
                 {[
-                  ["Tranche 1", "0 à 1 PMSS (3 925 €/mois)", "7,87 %"],
-                  ["Tranche 2", "1 à 8 PMSS (31 400 €/mois)", "21,59 %"],
+                  ["Tranche 1", `0 à 1 PMSS (${Math.round(pmss).toLocaleString("fr-FR")} €/mois)`, "7,87 %"],
+                  ["Tranche 2", `1 à 8 PMSS (${Math.round(pmss * 8).toLocaleString("fr-FR")} €/mois)`, "21,59 %"],
                 ].map(([t, a, tx], i) => (
                   <tr key={i}><td style={s.td}>{t}</td><td style={s.td}>{a}</td><td style={s.td}>{tx}</td></tr>
                 ))}
@@ -218,17 +216,11 @@ export default function GuideAgircArrco() {
             </table>
           </div>
 
-          <h2 style={s.h2}>Coefficient de solidarité (malus) et bonus de fidélité</h2>
+          <h2 style={s.h2}>Coefficient de solidarité (malus) : supprimé depuis avril 2024</h2>
           <div style={s.body}>
-            <p>Depuis 2019, un système d'incitation au maintien en activité s'applique :</p>
-            <ul>
-              <li><strong>Malus de -10 %</strong> pendant 3 ans (ou jusqu'à 67 ans) si vous liquidez dès votre âge légal de départ</li>
-              <li><strong>Bonus de +10 %</strong> pendant 1 an si vous travaillez 1 an de plus que votre âge de taux plein</li>
-              <li><strong>Bonus de +20 %</strong> pendant 1 an pour 2 années supplémentaires</li>
-              <li><strong>Bonus de +30 %</strong> pendant 1 an pour 3 années supplémentaires</li>
-            </ul>
-            <p>Le malus <strong>ne s'applique pas</strong> si vous avez : 67 ans, l'inaptitude ou l'invalidité, une carrière longue, été au chômage longue durée, ou êtes aidant familial. Il ne s'applique pas non plus aux conjoints survivants (réversion).</p>
-            <p>Ce mécanisme peut représenter une différence significative : sur une pension de 600 €/mois, le malus coûte 60 €/mois pendant 3 ans, soit 2 160 € au total.</p>
+            <p><strong>Ce dispositif n'existe plus.</strong> De 2019 à 2024, un système de bonus-malus s'appliquait : -10 % pendant 3 ans si vous liquidiez votre retraite complémentaire en même temps que le taux plein CNAV, ou un bonus de +10 % à +30 % en différant votre départ d'1 à 3 ans.</p>
+            <p>Les partenaires sociaux gestionnaires de l'Agirc-Arrco ont mis fin à ce coefficient temporaire : il ne s'applique plus aux retraites prenant effet à compter du 1er décembre 2023, et a été supprimé le 1er avril 2024 pour l'ensemble des retraités déjà liquidés avant cette date. La réforme des retraites 2023, qui relève progressivement l'âge légal de 62 à 64 ans, a rendu ce dispositif obsolète.</p>
+            <p>Concrètement : votre pension complémentaire Agirc-Arrco ne varie plus selon votre âge de départ (au-delà de son effet normal sur le nombre de points accumulés). Aucune minoration ni majoration temporaire ne s'applique plus.</p>
           </div>
 
           <h2 style={s.h2}>Combien de points ai-je accumulés ?</h2>
@@ -258,11 +250,11 @@ export default function GuideAgircArrco() {
 
           <h2 style={s.h2}>Agirc-Arrco et stratégie de départ</h2>
           <div style={s.body}>
-            <p>Votre stratégie optimale dépend de l'articulation entre retraite de base (CNAV) et complémentaire (Agirc-Arrco) :</p>
+            <p>Depuis la suppression du malus Agirc-Arrco (avril 2024), seule votre retraite de base (CNAV) reste soumise à une décote ou une surcote selon votre âge de départ et vos trimestres :</p>
             <ul>
-              <li>Si vous partez dès l'âge légal (62–64 ans selon votre génération) <strong>sans avoir tous vos trimestres</strong> pour le taux plein CNAV, vous subissez une décote CNAV ET un malus Agirc-Arrco. Double pénalité.</li>
-              <li>Si vous partez à <strong>67 ans</strong> (taux plein automatique CNAV), le malus Agirc-Arrco disparaît, même si vous n'avez pas tous vos trimestres.</li>
-              <li>Travailler 1 an de plus après le taux plein donne un <strong>bonus Agirc-Arrco de +10 %</strong> ET éventuellement une surcote CNAV (+1,25 %/trimestre).</li>
+              <li>Si vous partez dès l'âge légal (62–64 ans selon votre génération) <strong>sans avoir tous vos trimestres</strong> pour le taux plein CNAV, seule votre pension de base subit une décote (0,625 %/trimestre manquant, jusqu'à 12,5 % max). Votre pension Agirc-Arrco n'est plus pénalisée.</li>
+              <li>Si vous partez à <strong>67 ans</strong> (taux plein automatique CNAV), la décote CNAV disparaît, même sans tous vos trimestres.</li>
+              <li>Travailler plus longtemps augmente votre pension Agirc-Arrco uniquement via les points supplémentaires accumulés (plus de cotisations = plus de points), et peut donner une surcote CNAV (+1,25 %/trimestre au-delà du taux plein).</li>
             </ul>
             <p>Utilisez le simulateur Agirc-Arrco de simfinly pour comparer précisément plusieurs scénarios de départ.</p>
           </div>
@@ -283,8 +275,8 @@ export default function GuideAgircArrco() {
         <div style={s.ctaBox}>
           <div style={s.ctaBoxTitle}>Calculez votre retraite Agirc-Arrco en 2 minutes</div>
           <p style={s.ctaBoxSub}>
-            Renseignez votre salaire, votre année de naissance et obtenez une estimation de votre pension
-            complémentaire avec et sans malus, selon différents âges de départ.
+            Renseignez votre salaire et votre carrière pour obtenir une estimation de votre pension
+            complémentaire, brute et nette, selon différents âges de départ.
           </p>
           <Link to="/simulateurs/agirc-arrco" style={{ ...s.cta, marginBottom: 0 }}>
             Lancer le simulateur gratuit →

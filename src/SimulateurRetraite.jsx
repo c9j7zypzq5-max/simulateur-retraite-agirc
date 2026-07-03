@@ -12,94 +12,13 @@ import { FAQS } from "./data/faqs.js";
 import { EDITORIAL_BY_ROUTE } from "./data/editorial.js";
 import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import { PASS_2026, AGIRC_ARRCO_2026 } from "./data/baremesRetraite.js";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-// Valeurs Agirc-Arrco centralisées dans data/baremesRetraite.js (source unique,
-// partagée avec le test miroir). Taux de cotisation salarié/employeur : ne servent
-// qu'à l'affichage du détail des cotisations, pas à l'acquisition de points.
-const PASS          = PASS_2026;
-const VALEUR_ACHAT  = AGIRC_ARRCO_2026.valeurAchat;
-const VALEUR_SERVICE = AGIRC_ARRCO_2026.valeurService;
-const TAUX_T1_ACQ   = AGIRC_ARRCO_2026.tauxAcqT1;
-const TAUX_T2_ACQ   = AGIRC_ARRCO_2026.tauxAcqT2;
-const GMP_MIN_PTS   = AGIRC_ARRCO_2026.gmpMinPts;
-const TAUX_T1_SAL   = 0.0315;
-const TAUX_T1_PAT   = 0.0472;
-const TAUX_T2_SAL   = 0.0864;
-const TAUX_T2_PAT   = 0.1295;
-
-const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
-const getCoef      = age => COEF_TABLE[age] ?? 1.00;
-const getCoefLabel = age =>
-  !age ? "—" :
-  age < 67  ? "−10 % (solidarité · 3 ans)" :
-  age === 67 ? "Aucun — taux plein" :
-               `+${(age - 67) * 10} % (bonus fidélité · 1 an)`;
+import { calcResult, PASS, VALEUR_ACHAT, VALEUR_SERVICE, GMP_MIN_PTS,
+         TAUX_T1_SAL, TAUX_T1_PAT, TAUX_T2_SAL, TAUX_T2_PAT } from "./utils/calculAgircArrco.js";
+import { getTauxPrelevementPension } from "./data/tauxFiscaux.js";
 
 const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
 const fmtEur = n => fmt(n) + " €";
 const signFmt = n => (n > 0 ? "+" : "") + fmtEur(n);
-// ─── Calcul principal ─────────────────────────────────────────────────────────
-function calcResult({ salaire, anneesFaites, anneesRestantes,
-                      evolutionSalaire = 2, tauxReval = 1,
-                      ageDépart = 65, bonus3Enfants = false, estCadre = false }) {
-  if (!salaire && salaire !== 0) return {
-    pensionNette: 0, pensionBrute: 0, totalPoints: 0, pointsAcquis: 0, pointsFuturs: 0,
-    ptsParAn: 0, pensionBruteSansReval: 0, pensionNetteSansReval: 0,
-    valServProj: VALEUR_SERVICE, salaireDépart: 0,
-    coefAge: 1, coefEnfants: 1, coefTotal: 1, cotSalTotal: 0, cotPatTotal: 0,
-  };
-
-  const sal = Math.max(0, salaire);
-  const af  = Math.max(0, anneesFaites ?? 0);
-  const ar  = Math.max(0, anneesRestantes ?? 0);
-
-  const salAnnActuel = sal * 12;
-  const t1p = Math.min(salAnnActuel, PASS);
-  const t2p = Math.max(0, Math.min(salAnnActuel, 8 * PASS) - PASS);
-  let ptsParAn = ((t1p * TAUX_T1_ACQ) + (t2p * TAUX_T2_ACQ)) / VALEUR_ACHAT;
-  if (estCadre && salAnnActuel < PASS) ptsParAn = Math.max(ptsParAn, GMP_MIN_PTS);
-  const pointsAcquis = ptsParAn * af;
-  const cotSalPassé  = (t1p * TAUX_T1_SAL + t2p * TAUX_T2_SAL) * af;
-  const cotPatPassé  = (t1p * TAUX_T1_PAT + t2p * TAUX_T2_PAT) * af;
-
-  let pointsFuturs = 0, cotSalFutur = 0, cotPatFutur = 0;
-  let salCourant = sal;
-  for (let i = 0; i < ar; i++) {
-    const salAnn = salCourant * 12;
-    const t1 = Math.min(salAnn, PASS);
-    const t2 = Math.max(0, Math.min(salAnn, 8 * PASS) - PASS);
-    let pts = ((t1 * TAUX_T1_ACQ) + (t2 * TAUX_T2_ACQ)) / VALEUR_ACHAT;
-    if (estCadre && salAnn < PASS) pts = Math.max(pts, GMP_MIN_PTS);
-    pointsFuturs  += pts;
-    cotSalFutur   += t1 * TAUX_T1_SAL + t2 * TAUX_T2_SAL;
-    cotPatFutur   += t1 * TAUX_T1_PAT + t2 * TAUX_T2_PAT;
-    salCourant    *= (1 + (evolutionSalaire ?? 2) / 100);
-  }
-  const salaireDépart = sal * Math.pow(1 + (evolutionSalaire ?? 2) / 100, ar);
-  const totalPoints   = pointsAcquis + pointsFuturs;
-
-  const coefAge     = getCoef(ageDépart ?? 65);
-  const coefEnfants = bonus3Enfants ? 1.10 : 1.00;
-  const coefTotal   = coefAge * coefEnfants;
-
-  const valServProj = VALEUR_SERVICE * Math.pow(1 + (tauxReval ?? 1) / 100, ar);
-  const pensionBrute = (totalPoints * valServProj / 12) * coefTotal;
-  const pensionNette = pensionBrute * 0.83;
-
-  const pensionBruteSansReval = (totalPoints * VALEUR_SERVICE / 12) * coefTotal;
-  const pensionNetteSansReval = pensionBruteSansReval * 0.83;
-
-  return {
-    pointsAcquis, pointsFuturs, totalPoints, ptsParAn,
-    pensionBrute, pensionNette,
-    pensionBruteSansReval, pensionNetteSansReval,
-    valServProj, salaireDépart,
-    coefAge, coefEnfants, coefTotal,
-    cotSalTotal: cotSalPassé + cotSalFutur,
-    cotPatTotal: cotPatPassé + cotPatFutur,
-  };
-}
 
 // ─── Animated number hook ────────────────────────────────────────────────────
 function useAnimatedNumber(target, duration = 700) {
@@ -385,6 +304,8 @@ export default function SimulateurRetraite() {
   const [tauxReval, setTauxReval]               = useState(null);
   const [estCadre, setEstCadre]                 = useState(false);
   const [bonus3Enfants, setBonus3Enfants]       = useState(false);
+  const [rfr, setRfr]                           = useState(null);
+  const [nbParts, setNbParts]                   = useState(1);
   // Scénario B
   const [salaireB, setSalaireB]     = useState(null);
   const [ageDépartB, setAgeDépartB] = useState(null);
@@ -406,21 +327,20 @@ export default function SimulateurRetraite() {
     window.history.replaceState(null, '', buildShareUrl({ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }));
   }, [salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre]);
 
-  const inputs = { salaire, anneesFaites, anneesRestantes, evolutionSalaire, tauxReval, ageDépart, bonus3Enfants, estCadre };
+  const inputs = { salaire, anneesFaites, anneesRestantes, evolutionSalaire, tauxReval, bonus3Enfants, estCadre, rfr, nbParts };
   const res = calcResult(inputs);
   const anneesRestantesB = anneesRestantes !== null && ageDépartB !== null && ageDépart !== null
     ? Math.max(0, anneesRestantes + (ageDépartB - ageDépart))
     : 0;
-  const resB = calcResult({ ...inputs, salaire: salaireB, ageDépart: ageDépartB, anneesRestantes: anneesRestantesB });
+  const resB = calcResult({ ...inputs, salaire: salaireB, anneesRestantes: anneesRestantesB });
 
   const pensionAnimée = useAnimatedNumber(res.pensionNette);
   const totalAnnees   = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
 
   const coefGt1 = res.coefTotal > 1.001;
-  const coefLt1 = res.coefTotal < 0.999;
-  const coefBg  = coefGt1 ? "rgba(34,197,94,0.08)"  : coefLt1 ? "rgba(239,68,68,0.08)"  : "var(--card-bg)";
-  const coefBd  = coefGt1 ? "rgba(34,197,94,0.25)"  : coefLt1 ? "rgba(239,68,68,0.25)"  : "var(--border)";
-  const coefClr = coefGt1 ? "#4ade80" : coefLt1 ? "#f87171" : "var(--text-secondary)";
+  const coefBg  = coefGt1 ? "rgba(34,197,94,0.08)" : "var(--card-bg)";
+  const coefBd  = coefGt1 ? "rgba(34,197,94,0.25)" : "var(--border)";
+  const coefClr = coefGt1 ? "#4ade80" : "var(--text-secondary)";
 
   const diffB = resB.pensionNette - res.pensionNette;
 
@@ -435,12 +355,14 @@ export default function SimulateurRetraite() {
       { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
       { label: "Statut", value: estCadre ? "Cadre" : "Non-cadre" },
       { label: "Évolution salaire", value: evolutionSalaire !== null ? `${evolutionSalaire} %/an` : "—" },
+      { label: "Revenu fiscal de référence", value: rfr ? fmtEur(rfr) : "Non renseigné (taux médian appliqué)" },
     ],
     results: hasResult ? [
       { label: "Pension nette mensuelle", value: fmtEur(res.pensionNette), strong: true },
       { label: "Pension brute mensuelle", value: fmtEur(res.pensionBrute) },
       { label: "Total points acquis", value: fmt(res.totalPoints) },
-      { label: "Coefficient (âge de départ)", value: `${(res.coefTotal * 100).toFixed(0)} %` },
+      { label: "Majoration (3 enfants ou +)", value: coefGt1 ? "+10 %" : "Aucune" },
+      { label: "Taux prélèvements sociaux", value: `${(res.tauxPS * 100).toFixed(1)} %` },
       { label: "Valeur du point", value: `${VALEUR_SERVICE} €` },
     ] : [],
     notes: hasResult ? [
@@ -513,7 +435,7 @@ export default function SimulateurRetraite() {
             id="salaire"
             label="Salaire brut mensuel"
             value={salaire} onChange={setSalaire} unit="€" min={500} max={40000}
-            hint={salaire ? `PASS 2026 : 3 925 €/mois · ${salaire * 12 > PASS ? "Tranche 2 activée" : "Tranche 1 uniquement"}` : "PASS 2026 : 3 925 €/mois"}
+            hint={salaire ? `PASS 2026 : ${Math.round(PASS / 12).toLocaleString("fr-FR")} €/mois · ${salaire * 12 > PASS ? "Tranche 2 activée" : "Tranche 1 uniquement"}` : `PASS 2026 : ${Math.round(PASS / 12).toLocaleString("fr-FR")} €/mois`}
             tooltip="Tranche 1 : salaire jusqu'au PASS (48 060 €/an). Tranche 2 : part entre 1× et 8× le PASS. Chaque tranche a un taux de cotisation différent."
           />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
@@ -551,12 +473,15 @@ export default function SimulateurRetraite() {
           <StepperInput
             label="Âge de départ prévu"
             value={ageDépart} onChange={setAgeDépart} min={62} max={70} unit=" ans"
-            hint={anneesRestantes !== null ? `Départ prévu en ${2026 + anneesRestantes} — ajustez selon votre stratégie` : "Ajustez selon votre stratégie"}
-            tooltip="Coefficient de minoration : partir avant 67 ans sans taux plein applique −10 % pendant 3 ans. Partir après 67 ans donne un bonus de +10 % par année supplémentaire."
+            hint={anneesRestantes !== null ? `Départ prévu en ${2026 + anneesRestantes} — utilisé pour comparer des scénarios ci-dessous` : "Utilisé pour comparer des scénarios ci-dessous"}
+            tooltip="Depuis avril 2024, le coefficient de solidarité (malus/bonus selon l'âge de départ) a été supprimé : votre pension Agirc-Arrco n'est plus affectée par l'âge auquel vous la liquidez. Seule votre pension de base (CNAV) reste soumise à une décote ou surcote."
           />
-          <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 10, padding: "12px 16px", marginBottom: 22, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-            <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>Coefficient : {getCoefLabel(ageDépart)}</span>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 700, color: coefClr }}>× {res.coefAge.toFixed(2)}</span>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <NumInput id="rfr" label="Revenu fiscal de référence du foyer" value={rfr} onChange={setRfr} unit="€" min={0} max={200000}
+              hint="Optionnel — détermine votre taux réel de CSG/CRDS/CASA"
+              tooltip="Sans cette information, un taux médian (7,4 %) est utilisé par défaut."
+            />
+            <StepperInput label="Nombre de parts fiscales" value={nbParts} onChange={setNbParts} min={1} max={5} step={0.5} />
           </div>
 
           <StepperInput
@@ -616,23 +541,22 @@ export default function SimulateurRetraite() {
                   {pensionAnimée.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
-                  soit <span>{fmtEur(res.pensionBrute)}/mois brut</span> avant prélèvements sociaux (~17 %)
+                  soit <span>{fmtEur(res.pensionBrute)}/mois brut</span> avant prélèvements sociaux (CSG/CRDS{rfr ? "" : "/CASA, taux médian estimé"} : {(res.tauxPS * 100).toFixed(1)} %)
                 </div>
               </>
             )}
           </div>
 
-          {/* Coefficient banner */}
-          <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 12, padding: "13px 18px", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
-            <div>
-              <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Coefficient appliqué</div>
-              <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                {getCoefLabel(ageDépart)}
-                {bonus3Enfants && <span style={{ marginLeft: 10, color: "#4ade80" }}>+ 10 % (3 enfants)</span>}
+          {/* Majoration enfants banner (le malus/bonus selon l'âge a été supprimé en 2024) */}
+          {bonus3Enfants && (
+            <div style={{ background: coefBg, border: `1px solid ${coefBd}`, borderRadius: 12, padding: "13px 18px", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+              <div>
+                <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Majoration appliquée</div>
+                <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>+ 10 % (3 enfants ou plus élevés)</div>
               </div>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: coefClr }}>× {res.coefTotal.toFixed(2)}</span>
             </div>
-            <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: coefClr }}>× {res.coefTotal.toFixed(2)}</span>
-          </div>
+          )}
 
           {/* Chips points */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 20 }}>
@@ -703,10 +627,10 @@ export default function SimulateurRetraite() {
           if (res.pensionNette < 800) {
             items.push({ icon: "🏦", label: "Boostez votre retraite avec un PER", description: `Votre complémentaire estimée (${fmtEur(Math.round(res.pensionNette))}/mois) est faible. Un Plan d'Épargne Retraite peut combler l'écart.`, to: "/simulateurs/per", cta: "Simuler le PER →" });
           }
-          if (ageDépart !== null && ageDépart < 67) {
-            const gainDelai = calcResult({ salaire, anneesFaites, anneesRestantes: (anneesRestantes ?? 0) + 1, evolutionSalaire, tauxReval, ageDépart: ageDépart + 1, bonus3Enfants: false, estCadre }).pensionNette - res.pensionNette;
+          if (ageDépart !== null && ageDépart < 70) {
+            const gainDelai = calcResult({ salaire, anneesFaites, anneesRestantes: (anneesRestantes ?? 0) + 1, evolutionSalaire, tauxReval, bonus3Enfants, estCadre, rfr, nbParts }).pensionNette - res.pensionNette;
             if (gainDelai > 30) {
-              items.push({ icon: "⏳", label: "Travailler 1 an de plus : +" + fmtEur(Math.round(gainDelai)) + "/mois", description: `Partir à ${ageDépart + 1} ans plutôt qu'à ${ageDépart} ans vous rapporterait ${fmtEur(Math.round(gainDelai * 12))} de plus par an.`, to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" });
+              items.push({ icon: "⏳", label: "Travailler 1 an de plus : +" + fmtEur(Math.round(gainDelai)) + "/mois", description: `Cotiser 1 an de plus vous rapporterait ${fmtEur(Math.round(gainDelai * 12))} de plus par an, grâce aux points supplémentaires accumulés.`, to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" });
             }
           }
           items.push({ icon: "🧾", label: "Estimez votre retraite de base (CNAV)", description: "La retraite complémentaire Agirc-Arrco s'ajoute à la pension de base Assurance Retraite (CNAV). Calculez les deux pour une vision complète.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" });

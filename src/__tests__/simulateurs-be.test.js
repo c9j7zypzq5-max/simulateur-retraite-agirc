@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-import { PASS_2026, AGIRC_ARRCO_2026 } from "../data/baremesRetraite.js";
 
 // ─── IPP belge (ImpotRevenuBE) ────────────────────────────────────────────────
 const BAREME_BE = [
@@ -249,46 +248,10 @@ describe("Succession belge — droits régionaux", () => {
 });
 
 // ─── AGIRC-Arrco ─────────────────────────────────────────────────────────────
-// Constantes tirées de la source unique (baremesRetraite.js) : ce test miroir ne
-// peut plus diverger du simulateur sur les valeurs du point.
-const PASS          = PASS_2026;
-const VALEUR_ACHAT  = AGIRC_ARRCO_2026.valeurAchat;
-const VALEUR_SERVICE = AGIRC_ARRCO_2026.valeurService;
-const TAUX_T1       = AGIRC_ARRCO_2026.tauxAcqT1;
-const TAUX_T2       = AGIRC_ARRCO_2026.tauxAcqT2;
-const GMP_MIN_PTS   = AGIRC_ARRCO_2026.gmpMinPts;
-const COEF_TABLE = { 62:0.90, 63:0.90, 64:0.90, 65:0.90, 66:0.90, 67:1.00, 68:1.10, 69:1.20, 70:1.30 };
-const getCoef = age => COEF_TABLE[age] ?? 1.00;
-
-function calcAgirc({ salaire, anneesFaites, anneesRestantes = 0, ageDépart = 67, bonus3Enfants = false, estCadre = false, evolutionSalaire = 2, tauxReval = 1 }) {
-  const sal = Math.max(0, salaire);
-  const salAnnActuel = sal * 12;
-  const t1p = Math.min(salAnnActuel, PASS);
-  const t2p = Math.max(0, Math.min(salAnnActuel, 8 * PASS) - PASS);
-  let ptsParAn = ((t1p * TAUX_T1) + (t2p * TAUX_T2)) / VALEUR_ACHAT;
-  if (estCadre && salAnnActuel < PASS) ptsParAn = Math.max(ptsParAn, GMP_MIN_PTS);
-  const pointsAcquis = ptsParAn * anneesFaites;
-
-  let pointsFuturs = 0;
-  let salCourant = sal;
-  for (let i = 0; i < anneesRestantes; i++) {
-    const salAnn = salCourant * 12;
-    const t1 = Math.min(salAnn, PASS);
-    const t2 = Math.max(0, Math.min(salAnn, 8 * PASS) - PASS);
-    let pts = ((t1 * TAUX_T1) + (t2 * TAUX_T2)) / VALEUR_ACHAT;
-    if (estCadre && salAnn < PASS) pts = Math.max(pts, GMP_MIN_PTS);
-    pointsFuturs += pts;
-    salCourant *= (1 + evolutionSalaire / 100);
-  }
-  const totalPoints = pointsAcquis + pointsFuturs;
-  const coefAge = getCoef(ageDépart);
-  const coefEnfants = bonus3Enfants ? 1.10 : 1.00;
-  const coefTotal = coefAge * coefEnfants;
-  const valServProj = VALEUR_SERVICE * Math.pow(1 + tauxReval / 100, anneesRestantes);
-  const pensionBrute = (totalPoints * valServProj / 12) * coefTotal;
-  const pensionNette = pensionBrute * 0.83;
-  return { totalPoints, pointsAcquis, pointsFuturs, ptsParAn, pensionBrute, pensionNette, coefAge, coefTotal };
-}
+// Importe directement la fonction de calcul réelle (src/utils/calculAgircArrco.js),
+// utilisée par le simulateur ET par ce test : plus de copie manuelle qui pouvait
+// diverger silencieusement du vrai calcul.
+import { calcResult as calcAgirc, GMP_MIN_PTS } from "../utils/calculAgircArrco.js";
 
 describe("AGIRC-Arrco — calcul de points et pension", () => {
   it("salaire nul → 0 points et 0 € de pension", () => {
@@ -297,30 +260,25 @@ describe("AGIRC-Arrco — calcul de points et pension", () => {
     expect(res.pensionBrute).toBe(0);
   });
 
-  it("coefficient à 67 ans = 1.00 (taux plein)", () => {
-    expect(getCoef(67)).toBe(1.00);
-  });
-
-  it("départ à 65 ans → coefficient 0.90 (malus -10 %)", () => {
-    const res = calcAgirc({ salaire: 3_000, anneesFaites: 30, ageDépart: 65 });
-    expect(res.coefAge).toBe(0.90);
-  });
-
-  it("départ à 68 ans → coefficient 1.10 (bonus +10 %)", () => {
-    const res = calcAgirc({ salaire: 3_000, anneesFaites: 30, ageDépart: 68 });
-    expect(res.coefAge).toBe(1.10);
+  // Le coefficient de solidarité (malus -10 % / bonus +10 à +30 % selon l'âge de
+  // départ) a été supprimé par les partenaires sociaux Agirc-Arrco (retraites
+  // liquidées depuis le 1er avril 2024) : la pension ne doit plus varier avec
+  // l'âge de départ, seule la carrière (points accumulés) doit changer le résultat.
+  it("le coefficient d'âge n'existe plus : coefTotal = 1 sans bonus enfants", () => {
+    const res = calcAgirc({ salaire: 3_000, anneesFaites: 30, anneesRestantes: 0 });
+    expect(res.coefTotal).toBe(1.00);
   });
 
   it("bonus 3 enfants → coef multiplicateur 1.10", () => {
-    const sans = calcAgirc({ salaire: 3_000, anneesFaites: 30, ageDépart: 67 });
-    const avec = calcAgirc({ salaire: 3_000, anneesFaites: 30, ageDépart: 67, bonus3Enfants: true });
+    const sans = calcAgirc({ salaire: 3_000, anneesFaites: 30 });
+    const avec = calcAgirc({ salaire: 3_000, anneesFaites: 30, bonus3Enfants: true });
     expect(avec.coefTotal).toBe(sans.coefTotal * 1.10);
     expect(avec.pensionBrute).toBeCloseTo(sans.pensionBrute * 1.10, 1);
   });
 
-  it("pension nette ≈ 83 % de la pension brute", () => {
-    const res = calcAgirc({ salaire: 3_000, anneesFaites: 30 });
-    expect(res.pensionNette).toBeCloseTo(res.pensionBrute * 0.83, 1);
+  it("pension nette calculée selon le taux de prélèvement social réel (RFR)", () => {
+    const res = calcAgirc({ salaire: 3_000, anneesFaites: 30, rfr: 40_000, nbParts: 1 });
+    expect(res.pensionNette).toBeCloseTo(res.pensionBrute * (1 - 0.091), 1);
   });
 
   it("plus d'années = plus de points = pension plus élevée", () => {

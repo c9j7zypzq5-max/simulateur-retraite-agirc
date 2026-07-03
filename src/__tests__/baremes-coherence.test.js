@@ -40,6 +40,10 @@ const STALE = [
   "0.4753", "0,4753",
   // Ancien modèle RCO (achat/service fabriqués, mutuellement calibrés)
   "0.0196", "0,0196",
+  // PASS/PMSS 2025 présentés comme la valeur 2026 (incident de divergence
+  // découvert lors de l'unification des barèmes retraite — 4 valeurs
+  // différentes du PASS/PMSS coexistaient dans le repo)
+  "46 368 € en 2026", "43 992 € en 2024", "3 925 €/mois", "PMSS 2025 est de 3 864",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

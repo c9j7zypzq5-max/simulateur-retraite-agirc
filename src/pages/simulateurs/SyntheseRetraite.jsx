@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { PS_RETRAITE } from "../../config/constants.js";
+import { getTauxPrelevementPension } from "../../data/tauxFiscaux.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { Link } from "../../lib/router.jsx";
@@ -10,7 +10,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import {
-  NumInput, AccordionSection, Chip, useAnimatedNumber,
+  NumInput, StepperInput, AccordionSection, Chip, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
   FaqItem,
 } from "../../components/ui.jsx";
@@ -35,8 +35,9 @@ const REGIMES = [
   { key: "cipav",    label: "CIPAV",                  sub: "Professions libérales",          path: "/simulateurs/cnavpl" },
 ];
 
-// Prélèvements sociaux retraités (CSG 8,3 + CRDS 0,5 + CASA 0,3 + maladie 1,0).
-// Estimation : le taux exact dépend du revenu fiscal de référence.
+// Prélèvements sociaux (CSG/CRDS/CASA) : cf. src/data/tauxFiscaux.js —
+// calculés selon le revenu fiscal de référence (RFR) si renseigné, sinon
+// taux médian par défaut.
 
 const FAQ = FAQS['/simulateurs/synthese-retraite'];
 
@@ -46,6 +47,8 @@ export default function SyntheseRetraite() {
   const [vals, setVals] = useState({});
   const [salaire, setSalaire] = useState(null);
   const [salaireFromWizard, setSalaireFromWizard] = useState(false);
+  const [rfr, setRfr] = useState(null);
+  const [nbParts, setNbParts] = useState(1);
   const setVal = (k, v) => setVals(s => ({ ...s, [k]: v }));
 
   const resultsRef = useRef(null);
@@ -91,7 +94,8 @@ export default function SyntheseRetraite() {
 
   // ── Calculs ──
   const totalBrut = REGIMES.reduce((s, r) => s + (vals[r.key] ?? 0), 0);
-  const totalNet = totalBrut * (1 - PS_RETRAITE);
+  const tauxPrelevement = getTauxPrelevementPension({ rfr, nbParts });
+  const totalNet = totalBrut * (1 - tauxPrelevement);
   const totalAnnuel = totalBrut * 12;
   const tauxRemplacement = salaire > 0 ? (totalNet / salaire) * 100 : null;
   const nbRegimes = REGIMES.filter(r => (vals[r.key] ?? 0) > 0).length;
@@ -197,6 +201,12 @@ export default function SyntheseRetraite() {
           <NumInput id="dernier-salaire" label="Dernier salaire net mensuel" value={salaire} onChange={v => { setSalaire(v); setSalaireFromWizard(false); }} unit="€" min={0} max={50000}
             hint={tauxRemplacement ? `Taux de remplacement : ${tauxRemplacement.toFixed(0)} % de votre dernier salaire net` : "Pour calculer le rapport pension nette / dernier salaire"}
           />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <NumInput id="rfr-synthese" label="Revenu fiscal de référence du foyer" value={rfr} onChange={setRfr} unit="€" min={0} max={200000}
+              hint={`Optionnel — taux de prélèvements sociaux appliqué : ${(tauxPrelevement * 100).toFixed(1)} % ${rfr ? "" : "(taux médian par défaut)"}`}
+            />
+            <StepperInput label="Nombre de parts fiscales" value={nbParts} onChange={setNbParts} min={1} max={5} step={0.5} />
+          </div>
         </AccordionSection>
 
         {/* Résultats */}

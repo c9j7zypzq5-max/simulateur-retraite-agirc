@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { PASS } from "../../config/constants.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../../data/tauxFiscaux.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import ZoomableChart from "../../components/ZoomableChart.jsx";
@@ -74,7 +75,7 @@ function calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, taux
   const valServProj = VALEUR_SERVICE * Math.pow(1 + reval / 100, ar);
 
   const pensionBrute    = totalPoints * valServProj; // annuelle
-  const pensionNette    = pensionBrute * 0.93;
+  const pensionNette    = pensionBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
   const pensionMensuelle = pensionNette / 12;
 
   const cotSalTotal = (ta * TAUX_TA_SAL + tb * TAUX_TB_SAL) * annéesTotales;

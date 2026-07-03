@@ -8,25 +8,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
-
-// Durée d'assurance requise selon l'année de naissance (réforme 2023)
-function getDureeRequise(annee) {
-  if (!annee || annee <= 1960) return 167;
-  if (annee === 1961) return 168;
-  if (annee === 1962) return 169;
-  if (annee === 1963) return 170;
-  if (annee === 1964) return 171;
-  return 172;
-}
-
-function getAgeLegal(annee) {
-  if (!annee || annee <= 1960) return 62;
-  if (annee === 1961) return 62.5;
-  if (annee === 1962) return 63;
-  if (annee === 1963) return 63.25;
-  if (annee === 1964) return 63.5;
-  return 64;
-}
+import { getDureeRequise, getAgeLegal } from "../../data/baremesRetraite.js";
 
 // Trimestres cotisés par type de période
 const PERIODES = [

@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PASS } from "../../config/constants.js";
+import { getDecote, getSurcote, AGE_TAUX_PLEIN_AUTOMATIQUE } from "../../data/baremesRetraite.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../../data/tauxFiscaux.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -52,13 +54,13 @@ function calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite }
   const ageDép = ageDépart ?? 64;
 
   let decote = 0, surcote = 0;
-  if (ageDép < 67 && trimManquants > 0) decote = Math.min(trimManquants, 20) * 0.00625;
-  if (trim >= DUREE_REQUISE_BASE && ageDép >= 64) surcote = trimSuppl * 0.0125;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimManquants > 0) decote = getDecote(trimManquants);
+  if (trim >= DUREE_REQUISE_BASE && ageDép >= 64) surcote = getSurcote(trimSuppl);
 
   const tauxBase    = Math.max(0, TAUX_PLEIN - decote + surcote);
   const prorat      = Math.min(trim / DUREE_REQUISE_BASE, 1);
   const baseBrute   = (samPlafonné * tauxBase * prorat) / 12;
-  const baseNetteMensuelle = baseBrute * 0.93;
+  const baseNetteMensuelle = baseBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
 
   // ── Régime complémentaire RCI (artisans/commerçants) ──
   const annéesTotales = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
@@ -69,13 +71,13 @@ function calcTNS({ revenu, anneesFaites, anneesRestantes, ageDépart, activite }
     pointsRci  += (t1cot + t2cot) / VALEUR_ACHAT_RCI;
   }
   const rciAnnuelle    = pointsRci * VALEUR_SERVICE_RCI;
-  const rciNetteMensuelle = rciAnnuelle * 0.93 / 12;
+  const rciNetteMensuelle = rciAnnuelle * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT) / 12;
 
   const totalNette = baseNetteMensuelle + rciNetteMensuelle;
 
   return {
-    baseNette: baseBrute * 0.93 * 12, baseNetteMensuelle,
-    rciNette: rciAnnuelle * 0.93, rciNetteMensuelle,
+    baseNette: baseBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT) * 12, baseNetteMensuelle,
+    rciNette: rciAnnuelle * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT), rciNetteMensuelle,
     totalNette,
     trimestresTotal: trim, dureeRequise: DUREE_REQUISE_BASE,
     pointsRci, tauxEffectif: tauxBase, decote, surcote, prorat,

@@ -260,13 +260,13 @@ export const GLOSSARY = [
     short: "Retraite complémentaire obligatoire des salariés du privé, fonctionnant par points.",
     long: [
       "L'Agirc-Arrco est le régime complémentaire obligatoire des salariés du secteur privé. Vos cotisations sont converties en points ; à la retraite, la pension = nombre de points × valeur du point.",
-      "Elle s'ajoute à la retraite de base de la CNAV. Un coefficient de solidarité (bonus-malus) peut s'appliquer selon l'âge de départ.",
+      "Elle s'ajoute à la retraite de base de la CNAV. Le coefficient de solidarité (bonus-malus) qui s'appliquait auparavant selon l'âge de départ a été supprimé en avril 2024.",
     ],
     sims: ['/simulateurs/agirc-arrco'],
     related: ['cnav', 'points-retraite', 'taux-plein'],
     faqs: [
       { q: "Comment calculer sa pension Agirc-Arrco ?", a: "Pension Agirc-Arrco = nombre de points accumulés × valeur de service du point (1,4386 €/point/an en 2026). Vos points s'accumulent chaque année : salaire brut × taux de cotisation Agirc-Arrco ÷ prix d'achat du point. Consultez votre relevé de points sur agirc-arrco.fr pour connaître vos droits actuels." },
-      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "Le coefficient de solidarité est une minoration temporaire de 10 % appliquée pendant 3 ans sur la pension Agirc-Arrco si vous partez à l'âge légal de départ (64 ans pour les générations 1968+). Pour l'éviter, vous devez retarder votre départ d'un an au-delà de cet âge. Ce malus est définitivement supprimé après 3 ans ou à 67 ans." },
+      { q: "Qu'est-ce que le coefficient de solidarité Agirc-Arrco ?", a: "C'était une minoration temporaire de 10 % appliquée pendant 3 ans sur la pension Agirc-Arrco en cas de départ sans taux plein CNAV. Ce dispositif, en vigueur de 2019 à 2024, a été définitivement supprimé : il ne s'applique plus aux retraites liquidées depuis le 1er avril 2024." },
       { q: "Les points Agirc-Arrco sont-ils perdus si je change d'employeur ?", a: "Non. Les points Agirc-Arrco sont attachés à vous, pas à votre employeur. Chaque emploi salarié dans le privé génère des points qui s'accumulent tout au long de votre carrière, indépendamment des changements d'employeur. Vous pouvez suivre vos points sur le site agirc-arrco.fr." },
     ],
   },
@@ -319,8 +319,8 @@ export const GLOSSARY = [
     related: ['decote', 'surcote', 'trimestre'],
     faqs: [
       { q: "À quel âge obtient-on le taux plein automatiquement ?", a: "Le taux plein s'obtient automatiquement à 67 ans pour toutes les générations, quelle que soit la durée de cotisation. Avant 67 ans, il faut avoir validé le nombre de trimestres requis (167 à 172 selon la génération)." },
-      { q: "Que se passe-t-il si je pars à la retraite sans le taux plein ?", a: "Une décote s'applique : 0,625 % par trimestre manquant (soit 2,5 % par an manquant), dans la limite de 20 trimestres (25 % de réduction maximum). Cette décote est définitive et s'applique toute la vie." },
-      { q: "Le taux plein Agirc-Arrco est-il le même que pour le régime général ?", a: "Non. L'Agirc-Arrco n'a pas de notion de 'taux plein' au sens du régime général. En revanche, un mécanisme de bonus-malus s'applique : partir sans avoir le taux plein CNAV entraîne un coefficient de solidarité de -10 % pendant 3 ans sur la pension Agirc-Arrco." },
+      { q: "Que se passe-t-il si je pars à la retraite sans le taux plein ?", a: "Une décote s'applique : 0,625 % par trimestre manquant, dans la limite de 20 trimestres (12,5 % de réduction maximum). Cette décote est définitive et s'applique toute la vie." },
+      { q: "Le taux plein Agirc-Arrco est-il le même que pour le régime général ?", a: "Non. L'Agirc-Arrco n'a pas de notion de 'taux plein' au sens du régime général : la pension complémentaire dépend uniquement des points accumulés. Un coefficient de solidarité de -10 % s'appliquait entre 2019 et 2024 en cas de départ sans taux plein CNAV, mais ce dispositif a été supprimé (avril 2024)." },
     ],
   },
   {
@@ -1682,11 +1682,11 @@ export const GLOSSARY = [
   {
     slug: 'plafond-annuel-securite-sociale', term: 'PASS', full: 'Plafond Annuel de la Sécurité Sociale',
     aliases: ['PASS', 'plafond annuel de la sécurité sociale', 'plafond sécurité sociale'], category: 'Finances',
-    short: "Référence légale de la Sécurité sociale (46 368 € en 2026) qui sert de base au calcul de nombreux plafonds de cotisations et avantages sociaux.",
+    short: "Référence légale de la Sécurité sociale (48 060 € en 2026) qui sert de base au calcul de nombreux plafonds de cotisations et avantages sociaux.",
     long: [
-      "Le Plafond Annuel de la Sécurité Sociale (PASS) est une valeur de référence réévaluée chaque année (46 368 € en 2026, 43 992 € en 2024). Il sert de base à de nombreux calculs : plafond des cotisations retraite, plafond du Livret A (pas de lien direct mais souvent confondu), calcul des allocations chômage, etc.",
+      "Le Plafond Annuel de la Sécurité Sociale (PASS) est une valeur de référence réévaluée chaque année (48 060 € en 2026, 46 368 € en 2025). Il sert de base à de nombreux calculs : plafond des cotisations retraite, plafond du Livret A (pas de lien direct mais souvent confondu), calcul des allocations chômage, etc.",
       "Le PASS intervient dans le calcul des points Agirc-Arrco : les cotisations sur la tranche A (0 à 1 PASS) et la tranche B (1 à 8 PASS) ne génèrent pas les mêmes points. Il fixe aussi le plafond de déductibilité des versements PER.",
-      "Valeurs dérivées courantes : 1 PASS/mois = 3 864 €, 1/4 PASS/mois = 966 €. Ces seuils conditionnent l'éligibilité à certaines aides (APL, minimum contributif, etc.).",
+      "Valeurs dérivées courantes : 1 PASS/mois = 4 005 €, 1/4 PASS/mois = 1 001 €. Ces seuils conditionnent l'éligibilité à certaines aides (APL, minimum contributif, etc.).",
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco', '/simulateurs/per'],
     related: ['agirc-arrco', 'cnav', 'per', 'pass'],

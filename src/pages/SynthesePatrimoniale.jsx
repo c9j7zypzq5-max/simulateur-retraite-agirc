@@ -12,6 +12,8 @@ import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import { fmtEur, SimulateurHeader } from "../components/ui.jsx";
 import { Lock, TrendingUp, Home, PiggyBank, Shield, ArrowRight, AlertCircle } from "lucide-react";
+import { PASS_2026 } from "../data/baremesRetraite.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../data/tauxFiscaux.js";
 
 // ─── Catégorisation des simulations ─────────────────────────────────────────
 const CATEGORIES = {
@@ -333,11 +335,11 @@ export default function SynthesePatrimoniale() {
       // cnav : salaire disponible → estimation grossière
       if (data.path.includes("cnav") && p.salaire) {
         const sam = Number(p.salaire) * 12;
-        const samPlafonné = Math.min(sam, 48060);
+        const samPlafonné = Math.min(sam, PASS_2026);
         const duree = 172;
         const trimFaits = (Number(p.anneesFaites || 35) + Number(p.anneesRestantes || 0)) * 4;
         const prorata = Math.min(trimFaits / duree, 1);
-        pensionMensuelle = (samPlafonné * 0.5 * prorata) / 12 * 0.93;
+        pensionMensuelle = (samPlafonné * 0.5 * prorata) / 12 * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
         pensionSource = entry.label;
         // Ne break pas : on préfère une synthèse si elle existe
       }

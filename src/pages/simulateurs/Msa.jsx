@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PASS, SMIC_HORAIRE } from "../../config/constants.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../../data/tauxFiscaux.js";
+import { getDureeRequise, getAgeLegal, getDecote, getSurcote, AGE_TAUX_PLEIN_AUTOMATIQUE } from "../../data/baremesRetraite.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -35,22 +37,7 @@ const TAUX_PLEIN = 0.50;
 const RCO_ASSIETTE_MIN = 1820 * SMIC_HORAIRE;
 const VALEUR_SERVICE_RCO = 0.3919; // €/point/an (2026, confirmé sur plusieurs sources)
 
-function getDureeRequise(anneeNaissance) {
-  if (!anneeNaissance || anneeNaissance <= 1960) return 167;
-  if (anneeNaissance <= 1962) return 169;
-  if (anneeNaissance === 1963) return 170;
-  if (anneeNaissance === 1964) return 171;
-  return 172;
-}
-
-function getAgeLegal(anneeNaissance) {
-  if (!anneeNaissance || anneeNaissance <= 1960) return 62;
-  if (anneeNaissance === 1961) return 62.5;
-  if (anneeNaissance === 1962) return 63;
-  if (anneeNaissance === 1963) return 63.25;
-  if (anneeNaissance === 1964) return 63.5;
-  return 64;
-}
+// Durée requise, âge légal, décote et surcote : cf. src/data/baremesRetraite.js
 
 function calcMsaExploitant({ revenu, anneesFaites, anneesRestantes, ageDépart, anneeNaissance }) {
   if (!revenu) return {
@@ -74,25 +61,25 @@ function calcMsaExploitant({ revenu, anneesFaites, anneesRestantes, ageDépart, 
   const ageDép = ageDépart ?? 64;
 
   let decote = 0, surcote = 0;
-  if (ageDép < 67 && trimestresManquants > 0) {
-    decote = Math.min(trimestresManquants, 20) * 0.00625;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimestresManquants > 0) {
+    decote = getDecote(trimestresManquants);
   }
   if (trimestresTotal >= dureeRequise && ageDép >= ageLegal) {
-    surcote = trimestresSuppl * 0.0125;
+    surcote = getSurcote(trimestresSuppl);
   }
 
   const tauxEffectif = Math.max(0, TAUX_PLEIN - decote + surcote);
   const proratisation = Math.min(trimestresTotal / dureeRequise, 1);
 
   const pensionBaseBrute = (samBA * tauxEffectif * proratisation) / 12;
-  const pensionBaseNette = pensionBaseBrute * 0.93;
+  const pensionBaseNette = pensionBaseBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
 
   // Retraite Complémentaire Obligatoire (RCO) for exploitants
   const annéesTotales = (anneesFaites ?? 0) + (anneesRestantes ?? 0);
   const ptsParAn = (revAnn * 100) / RCO_ASSIETTE_MIN;
   const totalPoints = ptsParAn * annéesTotales;
   const pensionRCOAnnuelle = totalPoints * VALEUR_SERVICE_RCO;
-  const pensionRCO = pensionRCOAnnuelle * 0.93 / 12;
+  const pensionRCO = pensionRCOAnnuelle * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT) / 12;
 
   const pensionTotale = pensionBaseNette + pensionRCO;
 
@@ -126,18 +113,18 @@ function calcMsaSalarie({ salaire, anneesFaites, anneesRestantes, ageDépart, an
   const ageDép = ageDépart ?? 64;
 
   let decote = 0, surcote = 0;
-  if (ageDép < 67 && trimestresManquants > 0) {
-    decote = Math.min(trimestresManquants, 20) * 0.00625;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimestresManquants > 0) {
+    decote = getDecote(trimestresManquants);
   }
   if (trimestresTotal >= dureeRequise && ageDép >= ageLegal) {
-    surcote = trimestresSuppl * 0.0125;
+    surcote = getSurcote(trimestresSuppl);
   }
 
   const tauxEffectif = Math.max(0, TAUX_PLEIN - decote + surcote);
   const proratisation = Math.min(trimestresTotal / dureeRequise, 1);
 
   const pensionBrute = (samPlafonné * tauxEffectif * proratisation) / 12;
-  const pensionBaseNette = pensionBrute * 0.93;
+  const pensionBaseNette = pensionBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
 
   return {
     pensionBaseNette, trimestresTotal, dureeRequise,
@@ -350,7 +337,7 @@ export default function Msa() {
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
-                  soit <strong>{isExploitant ? fmtEur((res.pensionBaseNette / 0.93) + (res.pensionRCO / 0.93)) : fmtEur(res.pensionBaseNette / 0.93)}/mois brut</strong> avant prélèvements (~7 %)
+                  soit <strong>{isExploitant ? fmtEur((res.pensionBaseNette + res.pensionRCO) / (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT)) : fmtEur(res.pensionBaseNette / (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT))}/mois brut</strong> avant prélèvements sociaux (~{(TAUX_PRELEVEMENT_PENSION_DEFAUT * 100).toFixed(1)} %, taux médian estimé)
                 </div>
               </>
             )}

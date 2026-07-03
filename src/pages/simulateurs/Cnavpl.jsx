@@ -19,7 +19,8 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
-import { PASS_2026 } from '../../data/baremesRetraite.js';
+import { PASS_2026, getDecote, AGE_TAUX_PLEIN_AUTOMATIQUE } from '../../data/baremesRetraite.js';
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from '../../data/tauxFiscaux.js';
 
 // ─── Paramètres CNAVPL 2026 ──────────────────────────────────────────────────
 
@@ -97,11 +98,11 @@ function calcCnavpl({
   const trimestresManquants = Math.max(0, DURÉE_REQUISE - trimestresTotal);
   const ageDép = ageDépart ?? 65;
 
-  // Décote = coefficient de minoration (0,625 %/trimestre manquant, plafonné à
-  // 20 trimestres). Au taux plein, le coefficient de liquidation vaut 1.
+  // Décote : cf. src/data/baremesRetraite.js. Au taux plein, le coefficient de
+  // liquidation vaut 1.
   let decote = 0;
-  if (ageDép < 67 && trimestresManquants > 0) {
-    decote = Math.min(trimestresManquants, 20) * 0.00625;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimestresManquants > 0) {
+    decote = getDecote(trimestresManquants);
   }
   const tauxEffectif = Math.max(0, 1 - decote); // coefficient de liquidation (≤ 1)
 
@@ -112,7 +113,7 @@ function calcCnavpl({
 
   const pensionBaseAnnuelle = totalPointsBase * VALEUR_SERVICE_BASE * tauxEffectif;
   const pensionBaseBrute = pensionBaseAnnuelle / 12; // mensuelle brute
-  const pensionBaseNette = pensionBaseBrute * 0.93;
+  const pensionBaseNette = pensionBaseBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
 
   // ─── CIPAV : Régime complémentaire ────────────────────────────────────
   const classCipav = getClasseCIPAV(revenuAnnuel);

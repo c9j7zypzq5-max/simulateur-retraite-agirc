@@ -84,3 +84,44 @@ export const DELAI_RAPPEL_ANS = 15;
 // ── Taux cotisations sociales approximatifs (usage : freelance vs salarié) ────
 export const COTIS_SALARIE_TAUX = 0.22;   // part salariale approximative
 export const COTIS_PATRON_TAUX  = 0.42;   // part patronale approximative
+
+// ── Prélèvements sociaux sur les pensions de retraite (CSG/CRDS/CASA) 2026 ────
+// SOURCE UNIQUE pour tous les simulateurs retraite. Avant cette fonction, 3
+// taux forfaitaires différents coexistaient dans le repo (17 %, 7 %, 10,1 %)
+// sans lien avec le revenu réel du foyer. Seuils RFR (année N-2) par nombre de
+// parts fiscales, sources : lassuranceretraite.fr / service-public.fr, seuils
+// 2026 indexés +1,8 %. Au-delà de 2 parts, seuils extrapolés linéairement par
+// part supplémentaire (le barème officiel réel a une granularité plus fine par
+// quart de part, négligée ici).
+const SEUILS_RFR_PENSION = {
+  exonere: { p1: 13_048, p2: 20_016 },
+  reduit:  { p1: 16_005, p2: 24_537 },
+  median:  { p1: 24_813, p2: 38_051 },
+};
+
+function seuilParParts(seuil, nbParts) {
+  const parts = Math.max(nbParts || 1, 1);
+  if (parts <= 1) return seuil.p1;
+  if (parts === 2) return seuil.p2;
+  return seuil.p2 + (seuil.p2 - seuil.p1) * (parts - 2);
+}
+
+/**
+ * Taux total de prélèvements sociaux (CSG + CRDS + CASA) sur une pension de
+ * retraite, selon le revenu fiscal de référence (RFR) du foyer et son nombre
+ * de parts fiscales.
+ * @param {{ rfr?: number, nbParts?: number }} params
+ * @returns {number} taux total (0, 0.043, 0.074 ou 0.091)
+ */
+export function getTauxPrelevementPension({ rfr, nbParts = 1 } = {}) {
+  if (rfr == null) return TAUX_PRELEVEMENT_PENSION_DEFAUT;
+  if (rfr <= seuilParParts(SEUILS_RFR_PENSION.exonere, nbParts)) return 0;
+  if (rfr <= seuilParParts(SEUILS_RFR_PENSION.reduit, nbParts)) return 0.038 + 0.005; // CSG réduite + CRDS
+  if (rfr <= seuilParParts(SEUILS_RFR_PENSION.median, nbParts)) return 0.066 + 0.005 + 0.003; // CSG médiane + CRDS + CASA
+  return 0.083 + 0.005 + 0.003; // CSG normale + CRDS + CASA
+}
+
+// Taux par défaut utilisé quand le RFR n'est pas renseigné (simulateurs sans
+// champ RFR, ou champ laissé vide) : taux médian, hypothèse raisonnable pour
+// une pension moyenne.
+export const TAUX_PRELEVEMENT_PENSION_DEFAUT = 0.066 + 0.005 + 0.003;

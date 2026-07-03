@@ -8,33 +8,15 @@ import Footer from "../components/Footer.jsx";
 import { NumInput, fmtEur } from "../components/ui.jsx";
 import { usePageMeta } from "../hooks/usePageMeta.js";
 import { Link } from "../lib/router.jsx";
+import { PASS_2026, getAgeLegal, getDureeRequise } from "../data/baremesRetraite.js";
 
-// ─── Règles retraite (Loi Borne 2023) ────────────────────────────────────────
-
-function getAgeLegal(annee) {
-  if (!annee || annee <= 1961) return 62;
-  if (annee === 1962) return 62.25;   // 62 ans 3 mois
-  if (annee === 1963) return 62.5;    // 62 ans 6 mois
-  if (annee === 1964) return 63;
-  if (annee === 1965) return 63.25;   // 63 ans 3 mois
-  if (annee === 1966) return 63.5;    // 63 ans 6 mois
-  return 64;
-}
-
+// Âge légal / durée requise : cf. src/data/baremesRetraite.js (source unique,
+// reflète le calendrier gelé par la LFSS 2026 pour les générations 1964-1968).
 function getAgeLegalLabel(annee) {
-  if (!annee || annee <= 1961) return "62 ans";
-  if (annee === 1962) return "62 ans 3 mois";
-  if (annee === 1963) return "62 ans 6 mois";
-  if (annee === 1964) return "63 ans";
-  if (annee === 1965) return "63 ans 3 mois";
-  if (annee === 1966) return "63 ans 6 mois";
-  return "64 ans";
-}
-
-function getDureeRequise(annee) {
-  if (!annee || annee <= 1964) return 168;
-  const extra = Math.min(annee - 1964, 9);
-  return 168 + extra; // 169 (1965) → 172 (1968+) — progression 1 trim/an jusqu'à 172 max
+  const age = getAgeLegal(annee);
+  const ans = Math.floor(age);
+  const mois = Math.round((age - ans) * 12);
+  return mois > 0 ? `${ans} ans ${mois} mois` : `${ans} ans`;
 }
 
 // ─── Statuts professionnels ───────────────────────────────────────────────────
@@ -100,7 +82,7 @@ function estimePension(statut, anneeNaissance, trimestres, salaireAnnuel) {
   const prorat = Math.min((trimestres || 0) / duree, 1);
 
   if (statut === "salarie") {
-    const PASS = 48060;
+    const PASS = PASS_2026;
     const sam = Math.min(salaireAnnuel, PASS);
     const cnavMensuel = (sam * 0.50 * prorat) / 12;
     const agircMensuel = salaireAnnuel * 0.0060 * Math.max(trimestres, 0) / 12; // ~6 pts/an × valeur pt 1.4319 €
@@ -111,7 +93,7 @@ function estimePension(statut, anneeNaissance, trimestres, salaireAnnuel) {
     return { base: Math.round(pension), total: Math.round(pension) };
   }
   if (statut === "independant" || statut === "agriculteur" || statut === "liberal") {
-    const PASS = 48060;
+    const PASS = PASS_2026;
     const sam = Math.min(salaireAnnuel, PASS);
     const pension = (sam * 0.50 * prorat) / 12;
     return { base: Math.round(pension), total: Math.round(pension) };

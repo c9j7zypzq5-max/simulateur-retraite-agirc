@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { PASS } from "../../config/constants.js";
+import { getDureeRequise, getAgeLegal, getDecote, getSurcote, AGE_TAUX_PLEIN_AUTOMATIQUE } from "../../data/baremesRetraite.js";
+import { getTauxPrelevementPension } from "../../data/tauxFiscaux.js";
 import SimIcon from "../../data/simIcons.jsx";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
@@ -25,26 +27,11 @@ import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
 // ─── Paramètres CNAV 2026 ────────────────────────────────────────────────────
+// Durée requise, âge légal, décote et surcote : cf. src/data/baremesRetraite.js
+// (source unique, plus de table locale — anciennes valeurs ici obsolètes/erronées).
 const TAUX_PLEIN = 0.50;
 
-function getDureeRequise(anneeNaissance) {
-  if (!anneeNaissance || anneeNaissance <= 1960) return 167;
-  if (anneeNaissance <= 1962) return 169;
-  if (anneeNaissance === 1963) return 170;
-  if (anneeNaissance === 1964) return 171;
-  return 172;
-}
-
-function getAgeLegal(anneeNaissance) {
-  if (!anneeNaissance || anneeNaissance <= 1960) return 62;
-  if (anneeNaissance === 1961) return 62.5;
-  if (anneeNaissance === 1962) return 63;
-  if (anneeNaissance === 1963) return 63.25;
-  if (anneeNaissance === 1964) return 63.5;
-  return 64;
-}
-
-function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance }) {
+function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, rfr, nbParts }) {
   if (!salaire) return {
     pensionBrute: 0, pensionNette: 0, trimestresTotal: 0,
     dureeRequise: getDureeRequise(anneeNaissance), tauxEffectif: 0,
@@ -64,18 +51,18 @@ function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNai
   const ageDép = ageDépart ?? 64;
 
   let decote = 0, surcote = 0;
-  if (ageDép < 67 && trimestresManquants > 0) {
-    decote = Math.min(trimestresManquants, 20) * 0.00625;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimestresManquants > 0) {
+    decote = getDecote(trimestresManquants);
   }
   if (trimestresTotal >= dureeRequise && ageDép >= ageLegal) {
-    surcote = trimestresSuppl * 0.0125;
+    surcote = getSurcote(trimestresSuppl);
   }
 
   const tauxEffectif = Math.max(0, TAUX_PLEIN - decote + surcote);
   const proratisation = Math.min(trimestresTotal / dureeRequise, 1);
 
   const pensionBrute = (samPlafonné * tauxEffectif * proratisation) / 12;
-  const pensionNette = pensionBrute * 0.93;
+  const pensionNette = pensionBrute * (1 - getTauxPrelevementPension({ rfr, nbParts }));
 
   return {
     pensionBrute, pensionNette, trimestresTotal, dureeRequise,
@@ -94,6 +81,8 @@ export default function Cnav() {
   const [anneesFaites, setAnneesFaites]   = useState(null);
   const [anneesRestantes, setAnneesRest]  = useState(null);
   const [ageDépart, setAgeDépart]         = useState(null);
+  const [rfr, setRfr]                     = useState(null);
+  const [nbParts, setNbParts]             = useState(1);
 
   const resultsRef = useRef(null);
 
@@ -125,7 +114,7 @@ export default function Cnav() {
 
 
 
-  const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance });
+  const res = calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, rfr, nbParts });
   const pensionAnim = useAnimatedNumber(res.pensionNette);
   const dureeRequise = getDureeRequise(anneeNaissance);
 
@@ -136,10 +125,10 @@ export default function Cnav() {
     if (!hasResult) return [];
     return [62, 63, 64, 65, 66, 67, 68, 69, 70].map(age => ({
       age,
-      pension: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).pensionNette,
-      tauxPlein: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance }).decote === 0,
+      pension: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance, rfr, nbParts }).pensionNette,
+      tauxPlein: calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart: age, anneeNaissance, rfr, nbParts }).decote === 0,
     }));
-  }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, hasResult]);
+  }, [salaire, anneesFaites, anneesRestantes, anneeNaissance, rfr, nbParts, hasResult]);
 
   const pensionParAge = ageComparisons.map(c => ({ x: c.age, y: c.pension }));
 
@@ -152,6 +141,7 @@ export default function Cnav() {
       { label: "Années déjà cotisées", value: anneesFaites !== null ? `${anneesFaites} ans` : "—" },
       { label: "Années restantes", value: anneesRestantes !== null ? `${anneesRestantes} ans` : "—" },
       { label: "Âge de départ prévu", value: ageDépart ? `${ageDépart} ans` : "—" },
+      { label: "Revenu fiscal de référence", value: rfr ? fmtEur(rfr) : "Non renseigné (taux médian appliqué)" },
     ],
     results: hasResult ? [
       { label: "Pension nette mensuelle", value: fmtEur(res.pensionNette), strong: true },
@@ -159,6 +149,7 @@ export default function Cnav() {
       { label: "Taux de liquidation", value: `${(res.tauxEffectif * 100).toFixed(2)} %` },
       { label: "Trimestres validés", value: `${res.trimestresTotal} / ${res.dureeRequise}` },
       { label: "Proratisation", value: `${(res.proratisation * 100).toFixed(0)} %` },
+      { label: "Taux prélèvements sociaux", value: `${(getTauxPrelevementPension({ rfr, nbParts }) * 100).toFixed(1)} %` },
     ] : [],
     notes: hasResult ? [
       res.decote > 0 ? `Décote de ${(res.decote * 100).toFixed(2)} % appliquée (${Math.min(res.trimestresManquants, 20)} trimestres manquants).`
@@ -231,13 +222,20 @@ export default function Cnav() {
         </div>
 
         {/* Paramètres avancés */}
-        <AccordionSection title="Paramètres avancés" subtitle="Âge de départ, décote/surcote">
+        <AccordionSection title="Paramètres avancés" subtitle="Âge de départ, décote/surcote, prélèvements sociaux">
           <StepperInput
             label="Âge de départ prévu"
             value={ageDépart} onChange={setAgeDépart} min={62} max={70} unit=" ans"
             hint={anneeNaissance ? `Âge légal : ${getAgeLegal(anneeNaissance)} ans · Âge d'annulation décote : 67 ans` : "Âge légal de départ en 2026 : 64 ans (nés 1965+)"}
             tooltip="Partir avant l'âge légal sans taux plein entraîne une décote. À 67 ans, le taux plein est automatique quelle que soit la durée cotisée."
           />
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            <NumInput id="rfr" label="Revenu fiscal de référence du foyer" value={rfr} onChange={setRfr} unit="€" min={0} max={200000}
+              hint="Optionnel — détermine votre taux réel de CSG/CRDS/CASA sur la pension"
+              tooltip="Sans cette information, un taux médian (7,4 %) est utilisé par défaut."
+            />
+            <StepperInput label="Nombre de parts fiscales" value={nbParts} onChange={setNbParts} min={1} max={5} step={0.5} />
+          </div>
         </AccordionSection>
 
         {/* Résultats */}
@@ -255,7 +253,7 @@ export default function Cnav() {
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
-                  soit <strong>{fmtEur(res.pensionBrute)}/mois brut</strong> avant prélèvements (~7 %)
+                  soit <strong>{fmtEur(res.pensionBrute)}/mois brut</strong> avant prélèvements sociaux (CSG/CRDS{rfr ? "" : "/CASA, taux médian estimé"} : {(getTauxPrelevementPension({ rfr, nbParts }) * 100).toFixed(1)} %)
                 </div>
               </>
             )}
@@ -322,7 +320,7 @@ export default function Cnav() {
                 { key: "ageDépart", label: "Âge de départ", type: "step", min: 62, max: 70, step: 1, unit: "ans" },
                 { key: "anneesRestantes", label: "Années restantes", type: "num", unit: "ans", min: 0, max: 50 },
               ]}
-              compute={(v) => calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, ...v })}
+              compute={(v) => calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNaissance, rfr, nbParts, ...v })}
               metrics={[{ label: "Pension nette", get: r => r.pensionNette, fmt: fmtEur, higherBetter: true }]}
             />
           </div>

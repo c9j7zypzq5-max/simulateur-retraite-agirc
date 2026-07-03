@@ -3,49 +3,37 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useTheme } from "../hooks/useTheme.js";
+import { getAgeLegal, getDureeRequise, AGE_TAUX_PLEIN_AUTOMATIQUE } from "../data/baremesRetraite.js";
 
-// Données officielles : réforme 2023 (loi 2023-270 du 14 avril 2023)
-// Âge légal progressivement relevé de 62 à 64 ans, durée cotisation de 166 à 172 trimestres
-const GENERATIONS = [
-  { naissance: "avant 1955",  ageLegal: "60 ans",  duree: "160 trim.", tauxPleinAuto: "65 ans", regime: "Avant réforme Woerth (2010)" },
-  { naissance: "1955",        ageLegal: "62 ans",  duree: "166 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2010 (Woerth)" },
-  { naissance: "1956",        ageLegal: "62 ans",  duree: "166 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2010" },
-  { naissance: "1957",        ageLegal: "62 ans",  duree: "166 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2010" },
-  { naissance: "1958",        ageLegal: "62 ans",  duree: "167 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014 (Touraine)" },
-  { naissance: "1959",        ageLegal: "62 ans",  duree: "167 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1960",        ageLegal: "62 ans",  duree: "167 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1961",        ageLegal: "62 ans",  duree: "168 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1962",        ageLegal: "62 ans",  duree: "168 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1963",        ageLegal: "62 ans",  duree: "168 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1er janv. – 31 août 1961", ageLegal: "62 ans",  duree: "168 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014", note: true },
-  { naissance: "1964",        ageLegal: "62 ans",  duree: "169 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1965",        ageLegal: "62 ans",  duree: "170 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1966",        ageLegal: "62 ans",  duree: "171 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1967",        ageLegal: "62 ans",  duree: "171 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2014" },
-  { naissance: "1er sept. – 31 déc. 1961", ageLegal: "62 ans 3 mois", duree: "168 trim.", tauxPleinAuto: "67 ans 3 mois", regime: "Réforme 2023 (Borne)", note: true },
-  { naissance: "1962",        ageLegal: "62 ans 6 mois", duree: "168 trim.", tauxPleinAuto: "67 ans 6 mois", regime: "Réforme 2023" },
-  { naissance: "1963",        ageLegal: "62 ans 9 mois", duree: "169 trim.", tauxPleinAuto: "67 ans 9 mois", regime: "Réforme 2023" },
-  { naissance: "1964",        ageLegal: "63 ans",  duree: "169 trim.", tauxPleinAuto: "68 ans", regime: "Réforme 2023" },
-  { naissance: "1965",        ageLegal: "63 ans 3 mois", duree: "170 trim.", tauxPleinAuto: "68 ans 3 mois", regime: "Réforme 2023" },
-  { naissance: "1966",        ageLegal: "63 ans 6 mois", duree: "171 trim.", tauxPleinAuto: "68 ans 6 mois", regime: "Réforme 2023" },
-  { naissance: "1967",        ageLegal: "63 ans 9 mois", duree: "171 trim.", tauxPleinAuto: "68 ans 9 mois", regime: "Réforme 2023" },
-  { naissance: "1968 et après", ageLegal: "64 ans", duree: "172 trim.", tauxPleinAuto: "67 ans", regime: "Réforme 2023", highlight: true },
-];
+// Table générée depuis src/data/baremesRetraite.js (source unique) — reflète
+// le calendrier ACTUELLEMENT EN VIGUEUR, y compris le gel de la réforme Borne
+// 2023 pour les générations 1964-1968 décidé par la LFSS 2026 (promulguée le
+// 16/12/2025, effective au 1er septembre 2026, jusqu'au 1er janvier 2028).
+// Sources : lassuranceretraite.fr, service-public.fr, Décret n° 2023-436.
+function ageLabel(age) {
+  const ans = Math.floor(age);
+  const mois = Math.round((age - ans) * 12);
+  return mois > 0 ? `${ans} ans ${mois} mois` : `${ans} ans`;
+}
+function dureeLabel(duree) {
+  return `${duree} trim. (${(duree / 4).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} ans)`;
+}
+const TAUX_PLEIN_AUTO = `${AGE_TAUX_PLEIN_AUTOMATIQUE} ans`;
 
-// Table simplifiée sans les doublons (version lisible)
 const TABLE = [
-  { naissance: "Avant 1955", ageLegal: "60 ans", duree: "160 trim. (40 ans)", taux: "65 ans" },
-  { naissance: "1955–1957",  ageLegal: "62 ans", duree: "166 trim. (41,5 ans)", taux: "67 ans" },
-  { naissance: "1958–1960",  ageLegal: "62 ans", duree: "167 trim. (41,75 ans)", taux: "67 ans" },
-  { naissance: "1961 (1er janv.–31 août)", ageLegal: "62 ans", duree: "168 trim. (42 ans)", taux: "67 ans" },
-  { naissance: "1961 (1er sept.–31 déc.)", ageLegal: "62 ans 3 mois", duree: "168 trim. (42 ans)", taux: "67 ans 3 mois" },
-  { naissance: "1962",       ageLegal: "62 ans 6 mois", duree: "168 trim. (42 ans)", taux: "67 ans 6 mois" },
-  { naissance: "1963",       ageLegal: "62 ans 9 mois", duree: "169 trim. (42,25 ans)", taux: "67 ans 9 mois" },
-  { naissance: "1964",       ageLegal: "63 ans", duree: "169 trim. (42,25 ans)", taux: "68 ans" },
-  { naissance: "1965",       ageLegal: "63 ans 3 mois", duree: "170 trim. (42,5 ans)", taux: "68 ans 3 mois" },
-  { naissance: "1966",       ageLegal: "63 ans 6 mois", duree: "171 trim. (42,75 ans)", taux: "68 ans 6 mois" },
-  { naissance: "1967",       ageLegal: "63 ans 9 mois", duree: "171 trim. (42,75 ans)", taux: "68 ans 9 mois" },
-  { naissance: "1968 et après", ageLegal: "64 ans", duree: "172 trim. (43 ans)", taux: "67 ans", highlight: true },
+  { naissance: "Avant 1955", ageLegal: ageLabel(getAgeLegal(1954)), duree: dureeLabel(getDureeRequise(1954)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1955–1957",  ageLegal: ageLabel(getAgeLegal(1956)), duree: dureeLabel(getDureeRequise(1956)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1958–1960",  ageLegal: ageLabel(getAgeLegal(1959)), duree: dureeLabel(getDureeRequise(1959)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1961 (1er janv.–31 août)", ageLegal: ageLabel(getAgeLegal(1961, 6)), duree: dureeLabel(getDureeRequise(1961, 6)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1961 (1er sept.–31 déc.)", ageLegal: ageLabel(getAgeLegal(1961, 10)), duree: dureeLabel(getDureeRequise(1961, 10)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1962",       ageLegal: ageLabel(getAgeLegal(1962)), duree: dureeLabel(getDureeRequise(1962)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1963",       ageLegal: ageLabel(getAgeLegal(1963)), duree: dureeLabel(getDureeRequise(1963)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1964",       ageLegal: ageLabel(getAgeLegal(1964)), duree: dureeLabel(getDureeRequise(1964)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1965",       ageLegal: ageLabel(getAgeLegal(1965, 10)), duree: dureeLabel(getDureeRequise(1965, 10)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1966",       ageLegal: ageLabel(getAgeLegal(1966)), duree: dureeLabel(getDureeRequise(1966)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1967",       ageLegal: ageLabel(getAgeLegal(1967)), duree: dureeLabel(getDureeRequise(1967)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1968",       ageLegal: ageLabel(getAgeLegal(1968)), duree: dureeLabel(getDureeRequise(1968)), taux: TAUX_PLEIN_AUTO },
+  { naissance: "1969 et après", ageLegal: ageLabel(getAgeLegal(1969)), duree: dureeLabel(getDureeRequise(1969)), taux: TAUX_PLEIN_AUTO, highlight: true },
 ];
 
 export default function CalendrierGenerations() {
@@ -74,10 +62,10 @@ export default function CalendrierGenerations() {
       "@context": "https://schema.org",
       "@type": "FAQPage",
       mainEntity: [
-        { "@type": "Question", name: "À quel âge puis-je partir à la retraite si je suis né en 1965 ?", acceptedAnswer: { "@type": "Answer", text: "Si vous êtes né en 1965, votre âge légal de départ est de 63 ans et 3 mois depuis la réforme 2023. Vous avez besoin de 170 trimestres (42,5 ans) pour bénéficier du taux plein. À défaut, le taux plein automatique s'applique à 68 ans et 3 mois." } },
-        { "@type": "Question", name: "Combien de trimestres faut-il pour les nés en 1968 ?", acceptedAnswer: { "@type": "Answer", text: "Les personnes nées en 1968 et après doivent valider 172 trimestres (43 ans de cotisation) pour obtenir le taux plein. L'âge légal de départ est de 64 ans. Sans 172 trimestres, une décote de 1,25 % par trimestre manquant s'applique jusqu'au taux plein automatique à 67 ans." } },
-        { "@type": "Question", name: "Quelle est la différence entre âge légal et taux plein automatique ?", acceptedAnswer: { "@type": "Answer", text: "L'âge légal (62-64 ans selon génération) est le plus tôt auquel vous pouvez partir, mais votre pension peut être réduite par une décote si vous n'avez pas vos trimestres. L'âge du taux plein automatique (67-68 ans) est l'âge à partir duquel aucune décote n'est appliquée, quel que soit votre nombre de trimestres." } },
-        { "@type": "Question", name: "Quel impact la réforme 2023 a-t-elle eu sur les générations nées avant 1968 ?", acceptedAnswer: { "@type": "Answer", text: "La réforme Borne de 2023 a relevé progressivement l'âge légal à partir des nés en septembre 1961 : +3 mois par génération jusqu'à 64 ans pour les nés en 1968. Les générations nées avant septembre 1961 conservent leurs droits sous les règles antérieures (62 ans)." } },
+        { "@type": "Question", name: "À quel âge puis-je partir à la retraite si je suis né en 1965 ?", acceptedAnswer: { "@type": "Answer", text: "Si vous êtes né entre avril et décembre 1965, votre âge légal de départ est de 63 ans (calendrier gelé par la LFSS 2026). Vous avez besoin de 171 trimestres pour bénéficier du taux plein. À défaut, le taux plein automatique s'applique à 67 ans quel que soit votre nombre de trimestres." } },
+        { "@type": "Question", name: "Combien de trimestres faut-il pour les nés en 1968 ?", acceptedAnswer: { "@type": "Answer", text: "Les personnes nées en 1968 doivent valider 172 trimestres pour obtenir le taux plein, avec un âge légal de départ fixé à 63 ans et 9 mois (calendrier gelé par la LFSS 2026 jusqu'au 1er janvier 2028). Sans 172 trimestres, une décote de 0,625 % par trimestre manquant s'applique (plafonnée à 12,5 %), jusqu'au taux plein automatique à 67 ans." } },
+        { "@type": "Question", name: "Quelle est la différence entre âge légal et taux plein automatique ?", acceptedAnswer: { "@type": "Answer", text: "L'âge légal (62 à 64 ans selon génération) est le plus tôt auquel vous pouvez partir, mais votre pension peut être réduite par une décote si vous n'avez pas vos trimestres. L'âge du taux plein automatique, fixé à 67 ans pour toutes les générations, est l'âge à partir duquel aucune décote n'est appliquée, quel que soit votre nombre de trimestres." } },
+        { "@type": "Question", name: "La réforme des retraites 2023 s'applique-t-elle encore telle quelle en 2026 ?", acceptedAnswer: { "@type": "Answer", text: "Non : la loi de financement de la Sécurité sociale pour 2026 a gelé la montée en charge de la réforme Borne 2023 pour les générations nées entre 1964 et 1968, pour les retraites prenant effet à compter du 1er septembre 2026, et ce jusqu'au 1er janvier 2028. Les générations 1964 et 1965 (jusqu'à mars) gagnent sur l'âge légal et la durée requise ; les générations 1966 à 1968 ne gagnent que 3 mois sur l'âge légal." } },
       ],
     };
     const breadcrumbLd = {
@@ -150,7 +138,7 @@ export default function CalendrierGenerations() {
             </table>
           </div>
           <p style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 10 }}>
-            Sources : Décret n° 2023-436 du 3 juin 2023, CNAV, COR rapport 2024. Les âges intermédiaires s'appliquent par décrets successifs en application de la loi du 14 avril 2023.
+            Sources : lassuranceretraite.fr, service-public.fr, loi n° 2023-270 du 14 avril 2023. Pour les générations 1964-1968, le tableau reflète le gel temporaire décidé par la loi de financement de la Sécurité sociale 2026 (effective au 1er septembre 2026, jusqu'au 1er janvier 2028).
           </p>
         </section>
 
@@ -163,7 +151,8 @@ export default function CalendrierGenerations() {
             {[
               { annee: "2010 — Réforme Woerth", couleur: "var(--text-secondary)", impact: "Passage de l'âge légal de 60 à 62 ans. Touche les générations nées à partir du 1er juillet 1951. La durée de cotisation reste à 162 trimestres pour les nés en 1952-1957, puis monte progressivement." },
               { annee: "2014 — Réforme Touraine", couleur: "var(--warning)", impact: "Augmentation progressive de la durée de cotisation : de 166 trimestres (nés en 1955) à 172 trimestres (nés en 1973). Pas de changement de l'âge légal. Les générations nées en 1960-1967 sont particulièrement impactées (+1 à +6 trimestres)." },
-              { annee: "2023 — Réforme Borne", couleur: "var(--negative)", impact: "Relèvement progressif de l'âge légal de 62 à 64 ans à raison de +3 mois par génération, à partir des nés en septembre 1961. Les nés en 1968 et après devront travailler jusqu'à 64 ans avec 172 trimestres. C'est la réforme la plus contestée depuis 1995." },
+              { annee: "2023 — Réforme Borne", couleur: "var(--negative)", impact: "Relèvement progressif de l'âge légal de 62 à 64 ans à raison de +3 mois par génération, à partir des nés en septembre 1961. Les nés en 1969 et après travaillent jusqu'à 64 ans avec 172 trimestres. C'est la réforme la plus contestée depuis 1995." },
+              { annee: "2026 — Gel temporaire (LFSS 2026)", couleur: "var(--warning)", impact: "La loi de financement de la Sécurité sociale 2026 gèle la montée en charge de la réforme Borne pour les générations 1964-1968, à compter du 1er septembre 2026 et jusqu'au 1er janvier 2028. Ce n'est pas une abrogation : la trajectoire vers 64 ans reprendra ensuite, sauf nouvelle loi." },
             ].map(r => (
               <div key={r.annee} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "18px 20px", display: "flex", gap: 16 }}>
                 <div style={{ flexShrink: 0, fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, fontWeight: 700, color: r.couleur, minWidth: 140 }}>{r.annee}</div>
@@ -182,19 +171,19 @@ export default function CalendrierGenerations() {
             <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px" }}>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "var(--negative)", marginBottom: 8 }}>Décote</div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>
-                <strong>−1,25 % par trimestre manquant</strong> (plafonné à −25 % max). S'applique si vous partez avant d'avoir vos trimestres et avant 67 ans. Définitive — elle ne disparaît pas avec le temps.
+                <strong>−0,625 % par trimestre manquant</strong> (plafonné à −12,5 % max, soit 20 trimestres). S'applique si vous partez avant d'avoir vos trimestres et avant 67 ans. Définitive — elle ne disparaît pas avec le temps.
               </div>
             </div>
             <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px" }}>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "var(--positive)", marginBottom: 8 }}>Surcote</div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>
-                <strong>+1,25 % par trimestre supplémentaire</strong> travaillé après le taux plein ET après 64 ans. Plafonné à +20 trimestres. Chaque trimestre de surcote augmente définitivement la pension CNAV.
+                <strong>+1,25 % par trimestre supplémentaire</strong> travaillé après le taux plein et après l'âge légal. Sans plafond. Chaque trimestre de surcote augmente définitivement la pension CNAV.
               </div>
             </div>
             <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "20px" }}>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 700, color: "var(--primary)", marginBottom: 8 }}>Taux plein auto.</div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>
-                À <strong>67 ans</strong> (nés avant 1964) ou <strong>68 ans</strong> (nés 1964-1967), aucune décote n'est appliquée, même sans trimestres suffisants. C'est le filet de sécurité pour les carrières incomplètes.
+                À <strong>67 ans</strong>, pour toutes les générations, aucune décote n'est appliquée, même sans trimestres suffisants. C'est le filet de sécurité pour les carrières incomplètes.
               </div>
             </div>
           </div>
@@ -206,10 +195,10 @@ export default function CalendrierGenerations() {
             Questions fréquentes
           </h2>
           {[
-            { q: "À quel âge puis-je partir à la retraite si je suis né en 1965 ?", a: "Votre âge légal est 63 ans et 3 mois depuis la réforme 2023. Vous avez besoin de 170 trimestres (42,5 ans) pour le taux plein. Sans ces trimestres, le taux plein automatique s'applique à 68 ans et 3 mois." },
-            { q: "Les nés en 1968 doivent-ils partir à 64 ans ?", a: "Oui, sauf s'ils bénéficient d'un dispositif de départ anticipé : carrière longue (début avant 20 ans), inaptitude, ou pénibilité (compte C2P). Avec 172 trimestres à 64 ans, ils touchent le taux plein (50 % du SAM). Avant 64 ans, la décote s'applique." },
-            { q: "Qu'est-ce que le taux plein automatique à 67 ans ?", a: "C'est l'âge à partir duquel aucune décote n'est appliquée, quel que soit votre nombre de trimestres. Utile pour les personnes ayant des carrières hachées (années d'études longues, parentalité, chômage). Mais attention : le montant de pension reste calculé sur votre SAM — avoir peu de trimestres ne réduit que via la proratisation, pas la décote." },
-            { q: "Comment savoir si je suis concerné par la réforme 2023 ?", a: "Si vous êtes né avant septembre 1961 : vos droits sont calculés sous les règles antérieures (62 ans, réformes 2010/2014). Si vous êtes né à partir de septembre 1961 : la réforme 2023 décale progressivement votre âge légal jusqu'à 64 ans pour les nés en 1968+. Consultez votre relevé individuel sur info-retraite.fr pour votre date précise." },
+            { q: "À quel âge puis-je partir à la retraite si je suis né en 1965 ?", a: "Si vous êtes né entre avril et décembre 1965, votre âge légal est 63 ans (calendrier gelé par la LFSS 2026). Vous avez besoin de 171 trimestres pour le taux plein. Sans ces trimestres, le taux plein automatique s'applique à 67 ans." },
+            { q: "Les nés en 1968 doivent-ils partir à 64 ans ?", a: "Non, pas encore : la LFSS 2026 gèle leur âge légal à 63 ans et 9 mois jusqu'au 1er janvier 2028 (au lieu de 64 ans prévus par la réforme Borne 2023). Avec 172 trimestres à cet âge, ils touchent le taux plein (50 % du SAM). Avant, la décote s'applique." },
+            { q: "Qu'est-ce que le taux plein automatique à 67 ans ?", a: "C'est l'âge, identique pour toutes les générations depuis 2010, à partir duquel aucune décote n'est appliquée, quel que soit votre nombre de trimestres. Utile pour les personnes ayant des carrières hachées (années d'études longues, parentalité, chômage). Mais attention : le montant de pension reste calculé sur votre SAM — avoir peu de trimestres ne réduit que via la proratisation, pas la décote." },
+            { q: "Comment savoir si je suis concerné par la réforme 2023 ?", a: "Si vous êtes né avant septembre 1961 : vos droits sont calculés sous les règles antérieures (62 ans, réformes 2010/2014). Si vous êtes né à partir de septembre 1961 : la réforme 2023 décale progressivement votre âge légal, jusqu'à un palier définitif de 64 ans pour les nés à partir de 1969. Pour les générations 1964 à 1968, ce palier est temporairement gelé (LFSS 2026, jusqu'au 1er janvier 2028) : consultez votre relevé individuel sur info-retraite.fr pour votre date précise." },
           ].map((item, i) => (
             <details key={i} style={{ marginBottom: 10, background: "var(--card)", border: "1px solid var(--border)", borderRadius: 10, padding: "14px 18px" }}>
               <summary style={{ fontWeight: 600, fontSize: 14, cursor: "pointer", color: "var(--text)", listStyle: "none" }}>

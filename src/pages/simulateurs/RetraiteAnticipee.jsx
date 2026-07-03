@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { PMSS } from "../../config/constants.js";
+import { getAgeLegal, getDureeRequise, getDecote, getSurcote } from "../../data/baremesRetraite.js";
 import { track } from "@vercel/analytics";
 import { useTheme } from "../../hooks/useTheme.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
@@ -20,37 +21,21 @@ import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
-// ─── Plafond mensuel de la sécurité sociale (PMSS 2025) ─────────────────────
-
-// ─── Âge légal selon génération (réforme 2023 — Loi Borne) ──────────────────
+// Âge légal / durée requise : cf. src/data/baremesRetraite.js (source unique,
+// reflète le calendrier gelé par la LFSS 2026 pour les générations 1964-1968).
 function ageLegalAns(anneeNaissance) {
-  if (anneeNaissance <= 1961) return 62;
-  if (anneeNaissance === 1962) return 62 + 3 / 12;
-  if (anneeNaissance === 1963) return 62 + 6 / 12;
-  if (anneeNaissance === 1964) return 63;
-  if (anneeNaissance === 1965) return 63 + 3 / 12;
-  if (anneeNaissance === 1966) return 63 + 6 / 12;
-  return 64; // 1967+
+  return getAgeLegal(anneeNaissance);
 }
 
 function ageLegalLabel(anneeNaissance) {
-  if (anneeNaissance <= 1961) return "62 ans";
-  if (anneeNaissance === 1962) return "62 ans 3 mois";
-  if (anneeNaissance === 1963) return "62 ans 6 mois";
-  if (anneeNaissance === 1964) return "63 ans";
-  if (anneeNaissance === 1965) return "63 ans 3 mois";
-  if (anneeNaissance === 1966) return "63 ans 6 mois";
-  return "64 ans";
+  const age = getAgeLegal(anneeNaissance);
+  const ans = Math.floor(age);
+  const mois = Math.round((age - ans) * 12);
+  return mois > 0 ? `${ans} ans ${mois} mois` : `${ans} ans`;
 }
 
-// ─── Durée de cotisation requise pour le taux plein ──────────────────────────
 function dureeRequise(anneeNaissance) {
-  if (anneeNaissance <= 1957) return 166;
-  if (anneeNaissance <= 1960) return 168;
-  if (anneeNaissance <= 1963) return 169;
-  if (anneeNaissance <= 1965) return 170;
-  if (anneeNaissance <= 1967) return 171;
-  return 172; // 1968+
+  return getDureeRequise(anneeNaissance);
 }
 
 // ─── Éligibilité carrières longues (RACL) ────────────────────────────────────
@@ -96,13 +81,14 @@ function calcRetraiteAnticipee({
   let decotePct = 0;
   let surcotePct = 0;
   if (ecartTrims < 0) {
-    // Décote : -1.25% par trimestre manquant, max -25% (20 trim)
-    const trimsManquants = Math.min(Math.abs(ecartTrims), 20);
-    decotePct = trimsManquants * 1.25;
+    // Décote CNAV : 0,625 %/trimestre manquant, max -12,5 % (20 trim) — cf.
+    // src/data/baremesRetraite.js. Ce fichier appliquait par erreur 1,25 %
+    // (taux de la surcote, à ne pas confondre avec la décote).
+    decotePct = getDecote(Math.abs(ecartTrims)) * 100;
     coef = 1 - decotePct / 100;
   } else if (ecartTrims > 0) {
-    // Surcote : +1.25% par trimestre supplémentaire (pas de max légal)
-    surcotePct = ecartTrims * 1.25;
+    // Surcote : +1,25 % par trimestre supplémentaire (pas de max légal)
+    surcotePct = getSurcote(ecartTrims) * 100;
     coef = 1 + surcotePct / 100;
   }
 
@@ -358,7 +344,7 @@ export default function RetraiteAnticipee() {
               </div>
               {isDecote && (
                 <div style={{ marginTop: 12, fontSize: 12, color: "#ef4444", background: "rgba(239,68,68,0.08)", borderRadius: 8, padding: "8px 12px" }}>
-                  Décote de {res.decotePct.toFixed(2)} % ({Math.round(res.decotePct / 1.25)} trim manquants)
+                  Décote de {res.decotePct.toFixed(2)} % ({Math.round(res.decotePct / 0.625)} trim manquants)
                 </div>
               )}
               {isSurcote && (
@@ -466,7 +452,7 @@ export default function RetraiteAnticipee() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>L'impact de la réforme 2023 par génération</h3>
             <p style={{ marginBottom: 14 }}>La réforme 2023 a progressivement relevé l'âge légal à 64 ans et allongé la durée de cotisation jusqu'à 172 trimestres (43 ans) pour les générations nées à partir de 1968. Pour chaque génération, l'âge légal et la durée requise sont différents : consultez votre relevé de carrière sur <strong>info-retraite.fr</strong> pour connaître vos droits exacts.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)", marginTop: 16, marginBottom: 10 }}>Décote, surcote et pension CNAV</h3>
-            <p>La <strong>pension de base CNAV</strong> est calculée selon la formule : salaire annuel moyen (25 meilleures années, plafonné au PMSS) × 50 % × prorata de trimestres × coefficient de décote ou surcote. Chaque trimestre manquant entraîne une décote de 1,25 % (jusqu'à −25 %) et chaque trimestre supplémentaire une surcote de +1,25 %, sans plafond. La retraite complémentaire AGIRC-ARRCO s'ajoute à ce montant et représente généralement 30 à 50 % de plus.</p>
+            <p>La <strong>pension de base CNAV</strong> est calculée selon la formule : salaire annuel moyen (25 meilleures années, plafonné au PMSS) × 50 % × prorata de trimestres × coefficient de décote ou surcote. Chaque trimestre manquant entraîne une décote de 0,625 % (jusqu'à −12,5 % maximum, au-delà de 20 trimestres manquants) et chaque trimestre supplémentaire une surcote de +1,25 %, sans plafond. La retraite complémentaire AGIRC-ARRCO s'ajoute à ce montant et représente généralement 30 à 50 % de plus.</p>
           </div>
         </div>
 

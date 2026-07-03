@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
+import { PASS_2026, getDureeRequise, getDecote } from "../../data/baremesRetraite.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../../data/tauxFiscaux.js";
 
 // Mini-simulateur retraite CNAV simplifié, destiné à être intégré en <iframe>.
 // Calcul rapide : salaire + trimestres → pension estimée.
@@ -6,8 +8,6 @@ import { useState, useEffect, useMemo } from "react";
 const eur = n => Math.round(n).toLocaleString("fr-FR") + " €";
 const field = { width: "100%", boxSizing: "border-box", padding: "9px 12px", borderRadius: 8, border: "1px solid #d8dee8", fontSize: 15, fontFamily: "system-ui, sans-serif", color: "#0b1220", background: "#fff" };
 const lab = { display: "block", fontSize: 12, color: "#5b6675", marginBottom: 4, fontWeight: 500 };
-
-const PASS = 46368;
 
 export default function EmbedRetraite() {
   const [salaire, setSalaire] = useState(2500);
@@ -24,15 +24,15 @@ export default function EmbedRetraite() {
   }, []);
 
   const result = useMemo(() => {
-    const requis = anneeNaissance >= 1965 ? 172 : 167;
+    const requis = getDureeRequise(anneeNaissance);
     const manquants = Math.max(0, requis - trimestres);
     const sam = (salaire || 0) * 12;
-    const samP = Math.min(sam, PASS);
-    const decote = Math.min(manquants, 20) * 0.00625;
+    const samP = Math.min(sam, PASS_2026);
+    const decote = getDecote(manquants);
     const taux = Math.max(0, 0.5 - decote);
     const prorat = Math.min(trimestres / requis, 1);
     const brute = (samP * taux * prorat) / 12;
-    const nette = brute * 0.93;
+    const nette = brute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
     const pct = Math.round((trimestres / requis) * 100);
     return { brute, nette, requis, manquants, pct };
   }, [salaire, trimestres, anneeNaissance]);

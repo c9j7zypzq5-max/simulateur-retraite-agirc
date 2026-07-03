@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import SimIcon from "../../data/simIcons.jsx";
+import { getDecote, getSurcote, AGE_TAUX_PLEIN_AUTOMATIQUE } from "../../data/baremesRetraite.js";
+import { TAUX_PRELEVEMENT_PENSION_DEFAUT } from "../../data/tauxFiscaux.js";
 import { track } from '@vercel/analytics';
 import { useTheme } from "../../hooks/useTheme.js";
 import Navbar from "../../components/Navbar.jsx";
@@ -42,17 +44,17 @@ function calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categAc
   const trimSuppl     = Math.max(0, trim - DUREE_REQUISE);
 
   let decote = 0, surcote = 0;
-  if (ageDép < 67 && trimManquants > 0 && ageDép < ageLegal + (DUREE_REQUISE - trim) / 4) {
-    decote = Math.min(trimManquants, 20) * 0.00625;
+  if (ageDép < AGE_TAUX_PLEIN_AUTOMATIQUE && trimManquants > 0 && ageDép < ageLegal + (DUREE_REQUISE - trim) / 4) {
+    decote = getDecote(trimManquants);
   }
   if (trim >= DUREE_REQUISE && ageDép >= ageLegal) {
-    surcote = trimSuppl * 0.0125;
+    surcote = getSurcote(trimSuppl);
   }
 
   const tauxLiquidation = Math.min(Math.max(TAUX_MAX * prorat - decote + surcote, 0), TAUX_MAX);
   const coefEnfants = bonus3Enfants ? 1.10 : 1.00;
   const pensionBrute = traitement * tauxLiquidation * coefEnfants;
-  const pensionNette = pensionBrute * 0.917; // ~8.3% prélèvements
+  const pensionNette = pensionBrute * (1 - TAUX_PRELEVEMENT_PENSION_DEFAUT);
 
   return { pensionBrute, pensionNette, trimestresService: trim, tauxLiquidation, decote, surcote, prorat, trimManquants, trimSuppl, ageLegal };
 }
@@ -241,7 +243,7 @@ export default function FonctionPublique() {
                   {pensionAnim.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} €
                 </div>
                 <div style={{ marginTop: 10, fontSize: 13, color: "var(--text-secondary)" }}>
-                  soit <strong>{fmtEur(res.pensionBrute)}/mois brut</strong> avant prélèvements (~8,3 %)
+                  soit <strong>{fmtEur(res.pensionBrute)}/mois brut</strong> avant prélèvements sociaux (~{(TAUX_PRELEVEMENT_PENSION_DEFAUT * 100).toFixed(1)} %, taux médian estimé)
                 </div>
               </>
             )}
