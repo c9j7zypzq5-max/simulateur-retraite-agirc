@@ -36,6 +36,8 @@ const STALE = [
   "17,763", "0,6331",
   // Anciennes valeurs base CNAVPL — régime désormais modélisé par points (0,6599)
   "0,5714", "7,04 €",
+  // Ancienne valeur de service CIPAV (estimation non couplée à un achat officiel)
+  "0.4753", "0,4753",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

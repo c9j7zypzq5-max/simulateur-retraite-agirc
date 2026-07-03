@@ -35,18 +35,38 @@ const POINTS_MAX_T1 = 557;
 const POINTS_MAX_T2 = 25;
 
 // ─── CIPAV : Classes de cotisation et points ────────────────────────────────
-// Barème CIPAV connu pour 2025 (valeurs 2026 non encore publiées) : on garde
+// Les seuils de revenu et montants de cotisation par classe sont ceux du
+// dernier barème connu (2025 ; non republié pour 2026 à ce jour) — on garde
 // donc son propre plafond de référence, distinct du PASS 2026 du régime de base.
+// En revanche, le NOMBRE DE POINTS par classe est recalculé ici à partir du
+// coût d'achat du point 2026 (47,40 €), confirmé sur plusieurs sources
+// officielles/professionnelles. ⚠️ Ne jamais figer les points en dur sans les
+// coupler à l'achat qui les a produits : appliquer une nouvelle valeur de
+// service à d'anciens points calculés sur un ancien achat surestime la pension
+// d'un facteur égal au ratio des deux prix d'achat (piège déjà rencontré sur
+// Agirc-Arrco et IRCANTEC).
 const PASS_CIPAV = 47_100;
+const ACHAT_CIPAV_2026 = 47.40; // €/point (coût d'achat 2026)
+const SERVICE_CIPAV_2026 = 2.89; // €/point/an (valeur de service 2026)
 
 function getClasseCIPAV(revenu) {
   const p = PASS_CIPAV;
-  if (revenu < 0.85 * p) return { classe: 1, points: 222, cotisation: 1528, label: "< 40 035 €" };
-  if (revenu < 1 * p) return { classe: 2, points: 333, cotisation: 2292, label: "40 035 – 47 100 €" };
-  if (revenu < 1.5 * p) return { classe: 3, points: 444, cotisation: 3056, label: "47 100 – 70 650 €" };
-  if (revenu < 2.5 * p) return { classe: 4, points: 666, cotisation: 4584, label: "70 650 – 117 750 €" };
-  if (revenu < 4 * p) return { classe: 5, points: 888, cotisation: 6112, label: "117 750 – 188 400 €" };
-  return { classe: 6, points: 1110, cotisation: 7640, label: "> 188 400 €" };
+  const COTISATIONS = [
+    { classe: 1, cotisation: 1528, label: "< 40 035 €" },
+    { classe: 2, cotisation: 2292, label: "40 035 – 47 100 €" },
+    { classe: 3, cotisation: 3056, label: "47 100 – 70 650 €" },
+    { classe: 4, cotisation: 4584, label: "70 650 – 117 750 €" },
+    { classe: 5, cotisation: 6112, label: "117 750 – 188 400 €" },
+    { classe: 6, cotisation: 7640, label: "> 188 400 €" },
+  ];
+  let c;
+  if (revenu < 0.85 * p) c = COTISATIONS[0];
+  else if (revenu < 1 * p) c = COTISATIONS[1];
+  else if (revenu < 1.5 * p) c = COTISATIONS[2];
+  else if (revenu < 2.5 * p) c = COTISATIONS[3];
+  else if (revenu < 4 * p) c = COTISATIONS[4];
+  else c = COTISATIONS[5];
+  return { ...c, points: Math.round(c.cotisation / ACHAT_CIPAV_2026) };
 }
 
 // ─── Calcul CNAVPL ─────────────────────────────────────────────────────────
@@ -97,7 +117,7 @@ function calcCnavpl({
   // ─── CIPAV : Régime complémentaire ────────────────────────────────────
   const classCipav = getClasseCIPAV(revenuAnnuel);
   const totalPointsCipav = classCipav.points * ((anneesFaites ?? 0) + (anneesRestantes ?? 0));
-  const valeurPointCipav = 0.4753; // 2025 estimate (en service)
+  const valeurPointCipav = SERVICE_CIPAV_2026;
   const pensionCipav = (totalPointsCipav * valeurPointCipav) / 12;
 
   const pensionTotale = pensionBaseNette + pensionCipav;
@@ -120,14 +140,16 @@ function calcCnavpl({
 // ─── Tableau CIPAV classes ────────────────────────────────────────────────
 
 function TableCIPAV({ revenuAnnuel }) {
+  // Mêmes cotisations que getClasseCIPAV ; points recalculés depuis la même
+  // fonction pour ne jamais diverger de la valeur réellement utilisée au calcul.
   const classes = [
-    { classe: 1, label: "< 40 035 €", points: 222, cotisation: 1528 },
-    { classe: 2, label: "40 035 – 47 100 €", points: 333, cotisation: 2292 },
-    { classe: 3, label: "47 100 – 70 650 €", points: 444, cotisation: 3056 },
-    { classe: 4, label: "70 650 – 117 750 €", points: 666, cotisation: 4584 },
-    { classe: 5, label: "117 750 – 188 400 €", points: 888, cotisation: 6112 },
-    { classe: 6, label: "> 188 400 €", points: 1110, cotisation: 7640 },
-  ];
+    { classe: 1, label: "< 40 035 €", cotisation: 1528 },
+    { classe: 2, label: "40 035 – 47 100 €", cotisation: 2292 },
+    { classe: 3, label: "47 100 – 70 650 €", cotisation: 3056 },
+    { classe: 4, label: "70 650 – 117 750 €", cotisation: 4584 },
+    { classe: 5, label: "117 750 – 188 400 €", cotisation: 6112 },
+    { classe: 6, label: "> 188 400 €", cotisation: 7640 },
+  ].map(c => ({ ...c, points: Math.round(c.cotisation / ACHAT_CIPAV_2026) }));
 
   const currentClass = getClasseCIPAV(revenuAnnuel).classe;
 
