@@ -284,6 +284,31 @@ async function handleWebhook(req, res, stripe) {
     } catch { /* webhook must always return 200 */ }
   }
 
+  // Active le statut Pro de façon fiable côté serveur, indépendamment du
+  // retour navigateur vers /merci-pro (handleVerifySubscription) — si
+  // l'utilisateur ferme l'onglet avant la redirection, ce webhook rattrape
+  // l'activation initiale.
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+    if (session.mode === 'subscription' && session.client_reference_id && session.customer) {
+      try {
+        const admin = await getSupabaseAdmin();
+        if (admin) {
+          let periodEnd = null;
+          try {
+            const subscription = await stripe.subscriptions.retrieve(session.subscription);
+            periodEnd = toIso(subscription.current_period_end);
+          } catch { /* period_end best-effort */ }
+          await admin.from('profiles').update({
+            stripe_customer_id: session.customer,
+            subscription_status: 'active',
+            current_period_end: periodEnd,
+          }).eq('id', session.client_reference_id);
+        }
+      } catch { /* webhook must always return 200 */ }
+    }
+  }
+
   res.status(200).json({ received: true });
 }
 

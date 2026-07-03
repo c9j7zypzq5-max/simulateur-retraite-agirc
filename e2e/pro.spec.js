@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { waitForPage } from './helpers.js';
+import { ACCOUNT_ENABLED } from '../src/config/features.js';
 
 test.describe('Page Pro et Mes Simulations', () => {
+  test.skip(!ACCOUNT_ENABLED, 'Compte/Pro désactivé (ACCOUNT_ENABLED=false) — /pro rend NotFound');
+
   test('la page /pro se charge et affiche la tarification', async ({ page }) => {
     await page.goto('/pro');
     await waitForPage(page);

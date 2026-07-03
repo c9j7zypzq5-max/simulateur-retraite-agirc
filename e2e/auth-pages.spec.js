@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 import { waitForPage } from './helpers.js';
+import { ACCOUNT_ENABLED } from '../src/config/features.js';
 
 test.describe('Pages d\'authentification', () => {
+  test.skip(!ACCOUNT_ENABLED, 'Compte/Pro désactivé (ACCOUNT_ENABLED=false) — /connexion rend NotFound');
+
   test('la page /connexion se charge et affiche le formulaire email/mot de passe', async ({ page }) => {
     await page.goto('/connexion');
     await waitForPage(page);
