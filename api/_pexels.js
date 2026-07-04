@@ -27,10 +27,13 @@ export async function pexelsPool(category) {
 }
 
 // Met en forme une photo Pexels au format stocké dans l'article.
+// Le CDN Pexels (imgix) sert du WebP à la demande via `&fm=webp` — payload
+// nettement plus léger que le JPEG par défaut, sans changer l'URL source.
 export function toImage(photo) {
   if (!photo) return null;
+  const src = photo.src?.large || photo.src?.medium;
   return {
-    image: photo.src?.large || photo.src?.medium,
+    image: src ? `${src}${src.includes('?') ? '&' : '?'}fm=webp` : src,
     imageAlt: photo.alt || '',
     imageCredit: photo.photographer ? `Photo : ${photo.photographer} / Pexels` : 'Pexels',
   };

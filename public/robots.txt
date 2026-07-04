@@ -10,23 +10,63 @@ Disallow: /tableau-de-bord
 Disallow: /rapport/
 Disallow: /partage/
 
-# Autoriser les crawlers IA et LLM
+# Autoriser les crawlers IA et LLM — un bloc User-agent dédié n'hérite PAS des
+# règles du bloc générique (*) : chaque Disallow sensible doit être répété ici.
 User-agent: GPTBot
 Allow: /
 Allow: /api/og
 Disallow: /api/
 Disallow: /embed/
+Disallow: /mes-simulations
 Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /mes-simulations
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /mes-simulations
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /mes-simulations
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /mes-simulations
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /mes-simulations
+Disallow: /compte
+Disallow: /connexion
+Disallow: /tableau-de-bord
+Disallow: /rapport/
+Disallow: /partage/
 
 Sitemap: https://www.simfinly.com/sitemap.xml

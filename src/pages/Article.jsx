@@ -278,7 +278,8 @@ export default function Article() {
                 <img
                   src={article.image}
                   alt={article.imageAlt || article.title}
-                  loading="lazy"
+                  loading="eager"
+                  fetchPriority="high"
                   style={{ width: "100%", aspectRatio: "16 / 9", objectFit: "cover", borderRadius: 16, display: "block", border: "1px solid var(--border)" }}
                 />
                 {article.imageCredit && (
