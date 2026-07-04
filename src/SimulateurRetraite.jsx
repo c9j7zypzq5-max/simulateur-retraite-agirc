@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { track } from '@vercel/analytics';
 import Footer from "./components/Footer.jsx";
 import AdUnit from "./components/AdUnit.jsx";
@@ -7,6 +7,8 @@ import JsonLd from "./components/JsonLd.jsx";
 import { useTheme } from "./hooks/useTheme.js";
 import ShareBar from "./components/ShareBar.jsx";
 import SimRecommendations from "./components/SimRecommendations.jsx";
+import ZoomableChart from "./components/ZoomableChart.jsx";
+import LineAreaChart from "./components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
 import { FAQS } from "./data/faqs.js";
 import { EDITORIAL_BY_ROUTE } from "./data/editorial.js";
@@ -345,6 +347,23 @@ export default function SimulateurRetraite() {
   const diffB = resB.pensionNette - res.pensionNette;
 
   const hasResult = res.pensionNette > 0;
+
+  // Projection de la pension nette selon le nombre d'années restantes avant
+  // le départ (le coefficient de solidarité par âge ayant été supprimé en
+  // 2024, la variable pertinente pour Agirc-Arrco est la durée de cotisation
+  // restante — pas l'âge — puisqu'elle seule fait croître les points acquis).
+  const projectionPension = useMemo(() => {
+    if (!hasResult) return [];
+    const maxYears = Math.max(anneesRestantes ?? 0, 1);
+    const step = maxYears > 20 ? Math.ceil(maxYears / 20) : 1;
+    const years = [];
+    for (let i = 0; i <= maxYears; i += step) years.push(i);
+    if (years[years.length - 1] !== maxYears) years.push(maxYears);
+    return years.map(i => ({
+      x: i,
+      y: calcResult({ salaire, anneesFaites, anneesRestantes: i, evolutionSalaire, tauxReval, bonus3Enfants, estCadre, rfr, nbParts }).pensionNette,
+    }));
+  }, [salaire, anneesFaites, anneesRestantes, evolutionSalaire, tauxReval, bonus3Enfants, estCadre, rfr, nbParts, hasResult]);
   const report = {
     title: "Simulateur Retraite Agirc-Arrco",
     highlight: { label: "Pension complémentaire nette mensuelle", value: hasResult ? fmtEur(res.pensionNette) : "—" },
@@ -620,6 +639,26 @@ export default function SimulateurRetraite() {
         </div>
 
         <ShareBar params={{ salaire, anneesFaites, anneesRestantes, ageDépart, evolutionSalaire, tauxReval, estCadre }} resultsRef={resultsRef} report={report} name="agirc-arrco" />
+
+        {/* ── Graphique projection ── */}
+        {hasResult && projectionPension.length > 1 && (
+          <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "24px 28px", marginTop: 20 }}>
+            <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>
+              Pension projetée selon la durée de cotisation restante
+            </div>
+            <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>
+              Le coefficient de solidarité par âge ayant été supprimé en 2024, c'est la durée de cotisation qui fait croître votre pension — chaque année supplémentaire ajoute des points et bénéficie de la revalorisation.
+            </div>
+            <ZoomableChart caption="Pension Agirc-Arrco nette selon l'année de départ">
+              <LineAreaChart
+                series={[{ id: "pension", label: "Pension nette", points: projectionPension, color: "var(--primary)", fillColor: "rgba(43,92,230,0.12)" }]}
+                xFmt={(v) => v === 0 ? "Aujourd'hui" : `${2026 + v}`}
+                yFmt={(v) => `${Math.round(v).toLocaleString("fr-FR")} €`}
+                aria="Pension Agirc-Arrco nette selon l'année de départ"
+              />
+            </ZoomableChart>
+          </div>
+        )}
 
         {/* ── Recommandations contextuelles ── */}
         {hasResult && (() => {
