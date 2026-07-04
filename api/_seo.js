@@ -27,6 +27,9 @@ export const SEO_CONTENT = {
       ['/simulateurs/epargne', 'Épargne & intérêts composés'],
       ['/simulateurs/fire', 'Indépendance financière (FIRE)'],
       ['/retraite/guide-complet-2026', 'Guide complet de la retraite 2026'],
+      ['/immobilier/guide-complet-2026', 'Guide complet immobilier 2026'],
+      ['/impots/guide-complet-2026', 'Guide complet impôts 2026'],
+      ['/epargne/guide-complet-2026', 'Guide complet FIRE et épargne 2026'],
     ],
   },
   '/simulateurs/flat-tax': {
@@ -313,6 +316,18 @@ export const SEO_CONTENT = {
   '/immobilier/frais-notaire': {
     h1: "Frais de notaire 2026 : taux, calcul et comment les réduire",
     intro: "Les frais de notaire représentent 7 à 8 % du prix d'un bien ancien (2 à 3 % dans le neuf). Décomposition exacte des postes, tableau par tranches de prix et 3 stratégies légales pour les minimiser. Simulateur de calcul gratuit.",
+  },
+  '/immobilier/guide-complet-2026': {
+    h1: "Guide complet immobilier 2026 : emprunt, frais de notaire, PTZ et fiscalité",
+    intro: "Tout sur l'achat immobilier en 2026 : capacité d'emprunt (35 % de taux d'endettement max), frais de notaire (6,32 % de droits de mutation dans la majorité des départements), PTZ jusqu'à 50 % de l'opération, rendement locatif net et plus-value. Simulateurs gratuits inclus.",
+  },
+  '/impots/guide-complet-2026': {
+    h1: "Guide complet impôts 2026 : barème, flat tax, plus-value et succession",
+    intro: "Tout sur la fiscalité en 2026 : barème de l'impôt sur le revenu (5 tranches, 0 à 45 %), flat tax à 31,4 % ou option barème, plus-value immobilière, abattements de succession et donation. Simulateurs gratuits inclus.",
+  },
+  '/epargne/guide-complet-2026': {
+    h1: "Guide complet FIRE et épargne 2026 : indépendance financière et simulation Monte Carlo",
+    intro: "Tout sur l'indépendance financière (FIRE) et l'épargne en 2026 : règle des 4 % (capital cible = 25x les dépenses annuelles), taux d'épargne, simulation Monte Carlo sur l'historique réel du S&P 500, PEA vs assurance-vie. Simulateurs gratuits inclus.",
   },
   '/widgets': {
     h1: "Widgets embarquables gratuits — simulateurs financiers à intégrer",

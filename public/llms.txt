@@ -81,6 +81,9 @@
 - [Comparatifs](https://www.simfinly.com/comparatifs): Comparatifs de produits financiers (livrets, assurances-vie, PER, courtiers).
 - [Guide complet retraite 2026](https://www.simfinly.com/retraite/guide-complet-2026): Âge légal, calcul CNAV et Agirc-Arrco, décote/surcote, rachat de trimestres et stratégies d'optimisation — page de référence reliant tous les simulateurs retraite.
 - [Retraite par métier](https://www.simfinly.com/retraite): 32 guides détaillés par profession (fonctionnaire, médecin libéral, artisan, chauffeur VTC…) avec règles de calcul spécifiques à chaque régime.
+- [Guide complet immobilier 2026](https://www.simfinly.com/immobilier/guide-complet-2026): Capacité d'emprunt, frais de notaire, PTZ, rendement locatif et plus-value — page de référence reliant tous les simulateurs immobilier.
+- [Guide complet impôts 2026](https://www.simfinly.com/impots/guide-complet-2026): Barème de l'impôt sur le revenu, flat tax, plus-value immobilière et droits de succession — page de référence reliant tous les simulateurs fiscalité.
+- [Guide complet FIRE et épargne 2026](https://www.simfinly.com/epargne/guide-complet-2026): Règle des 4 %, taux d'épargne, simulation Monte Carlo et comparatifs d'enveloppes — page de référence reliant tous les simulateurs épargne et FIRE.
 
 ## Versions internationales
 

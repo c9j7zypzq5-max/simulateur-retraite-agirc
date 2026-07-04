@@ -127,6 +127,9 @@ const GuideFraisNotaire      = lazy(() => import("./pages/GuideFraisNotaire.jsx"
 const GuideRetraite2026      = lazy(() => import("./pages/GuideRetraite2026.jsx"));
 const GuideImpotRevenu       = lazy(() => import("./pages/GuideImpotRevenu.jsx"));
 const GuidePER2026           = lazy(() => import("./pages/GuidePER2026.jsx"));
+const GuideImmobilier2026    = lazy(() => import("./pages/GuideImmobilier2026.jsx"));
+const GuideImpots2026        = lazy(() => import("./pages/GuideImpots2026.jsx"));
+const GuideEpargneFire2026   = lazy(() => import("./pages/GuideEpargneFire2026.jsx"));
 
 // Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
 // Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
@@ -383,6 +386,9 @@ export default function App() {
         <Route path="/immobilier/frais-notaire" element={<GuideFraisNotaire />} />
         <Route path="/impots/simulateur-impot-revenu" element={<GuideImpotRevenu />} />
         <Route path="/epargne/guide-per-2026" element={<GuidePER2026 />} />
+        <Route path="/immobilier/guide-complet-2026" element={<GuideImmobilier2026 />} />
+        <Route path="/impots/guide-complet-2026" element={<GuideImpots2026 />} />
+        <Route path="/epargne/guide-complet-2026" element={<GuideEpargneFire2026 />} />
         {/* Légal */}
         <Route path="/mentions-legales" element={<MentionsLegales />} />
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />

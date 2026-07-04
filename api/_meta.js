@@ -111,6 +111,9 @@ export const ROUTE_META = {
   '/immobilier/frais-notaire':              { title: 'Frais de notaire 2026 — taux, calcul et comment les réduire',            emoji: '🏠', cat: 'Immobilier', prio: '0.9', freq: 'monthly' },
   '/impots/simulateur-impot-revenu':        { title: "Impôt sur le revenu 2026 — barème, calcul et réductions | simfinly",     emoji: '💰', cat: 'Fiscalité',  prio: '0.9', freq: 'monthly' },
   '/epargne/guide-per-2026':               { title: 'PER 2026 — guide complet, avantages fiscaux et comparatif assurance-vie', emoji: '📈', cat: 'Épargne',    prio: '0.9', freq: 'monthly' },
+  '/immobilier/guide-complet-2026':        { title: 'Guide immobilier 2026 — emprunt, frais de notaire, PTZ et fiscalité',     emoji: '🏘️', cat: 'Immobilier', prio: '1.0', freq: 'monthly' },
+  '/impots/guide-complet-2026':            { title: 'Guide impôts 2026 — barème, flat tax, plus-value et succession',          emoji: '📋', cat: 'Impôts',     prio: '1.0', freq: 'monthly' },
+  '/epargne/guide-complet-2026':           { title: 'Guide FIRE et épargne 2026 — indépendance financière et Monte Carlo',     emoji: '🔥', cat: 'FIRE',       prio: '1.0', freq: 'monthly' },
   // Contenu éditorial
   '/blog':                                { title: 'Blog finances personnelles — retraite, immobilier, épargne, FIRE',     emoji: '📰', cat: '',          prio: '0.8', freq: 'weekly'  },
   '/lexique':                             { title: 'Lexique financier — définitions TAEG, PER, TMI, FIRE…',               emoji: '📖', cat: '',          prio: '0.7', freq: 'monthly' },
