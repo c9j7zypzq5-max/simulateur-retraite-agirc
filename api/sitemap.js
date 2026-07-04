@@ -99,6 +99,14 @@ ${SECTIONS.map(s => `  <sitemap>
 
   function imageTagForRoute(route) {
     const meta = ROUTE_META[route];
+    // Articles de blog : absents de ROUTE_META (pas de méta statique par
+    // route), donc jusqu'ici sans <image:image> dans le sitemap. Récupérer la
+    // catégorie de chaque article impliquerait un aller-retour Redis par URL
+    // (coût N+1 sur un endpoint appelé à chaque requête) — on retombe sur le
+    // visuel générique plutôt que de laisser l'extension image vide.
+    if (route.startsWith('/blog/')) {
+      return `\n    <image:image><image:loc>${BASE}${OG_IMAGE_DEFAULT}</image:loc></image:image>`;
+    }
     if (!meta || !meta.cat) return '';
     const img = (OG_IMAGE_BY_CAT[meta.cat] || OG_IMAGE_DEFAULT);
     const title = (meta.title || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

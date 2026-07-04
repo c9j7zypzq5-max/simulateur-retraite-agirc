@@ -18,6 +18,7 @@
 - [Plan Épargne Retraite (PER)](https://www.simfinly.com/simulateurs/per): Projette le capital et la déduction fiscale d'un PER selon les versements annuels et la tranche marginale.
 - [Rente viagère vs retrait programmé](https://www.simfinly.com/simulateurs/rente-capital): Compare la rente et les retraits programmés : revenu mensuel net, point mort, cumulatif 20 ans.
 - [Réforme retraite 2023 — avant/après](https://www.simfinly.com/simulateurs/comparaison-reforme): Mesure l'impact de la réforme 2023 sur l'âge de départ et la pension selon le profil.
+- [Retraite Luxembourg (CNAP)](https://www.simfinly.com/simulateurs/retraite-luxembourg): Estime la pension de retraite luxembourgeoise pour les travailleurs frontaliers français.
 
 ## Simulateurs retraite (Suisse)
 
@@ -45,6 +46,7 @@
 - [IPP — Impôt des personnes physiques (Belgique)](https://www.simfinly.com/be/simulateurs/impot-revenu): Calcul de l'IPP belge selon les barèmes 2025 et les déductions applicables.
 - [Droits de succession (Belgique)](https://www.simfinly.com/be/simulateurs/succession): Droits de succession belges selon la région, le lien de parenté et l'actif net transmis.
 - [Droits de succession (France)](https://www.simfinly.com/simulateurs/succession): Droits de succession français selon le lien de parenté et les abattements légaux.
+- [Droits de succession (Suisse)](https://www.simfinly.com/ch/simulateurs/succession-ch): Droits de succession suisses selon le canton et le lien de parenté.
 - [Donation](https://www.simfinly.com/simulateurs/donation): Calcule les droits de donation après abattements et compare les stratégies de transmission.
 
 ## Simulateurs finances personnelles
@@ -77,6 +79,8 @@
 - [Guides thématiques](https://www.simfinly.com/guides): Guides complets par thématique (retraite, immobilier, impôts, FIRE) pour comprendre et agir.
 - [Lexique financier](https://www.simfinly.com/lexique): Définitions claires et illustrées des termes financiers courants.
 - [Comparatifs](https://www.simfinly.com/comparatifs): Comparatifs de produits financiers (livrets, assurances-vie, PER, courtiers).
+- [Guide complet retraite 2026](https://www.simfinly.com/retraite/guide-complet-2026): Âge légal, calcul CNAV et Agirc-Arrco, décote/surcote, rachat de trimestres et stratégies d'optimisation — page de référence reliant tous les simulateurs retraite.
+- [Retraite par métier](https://www.simfinly.com/retraite): 32 guides détaillés par profession (fonctionnaire, médecin libéral, artisan, chauffeur VTC…) avec règles de calcul spécifiques à chaque régime.
 
 ## Versions internationales
 

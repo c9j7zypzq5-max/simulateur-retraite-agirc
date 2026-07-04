@@ -89,6 +89,7 @@ const ALL_ITEMS_FR = [
   { path: "/simulateurs/pension-reversion",    title: "Pension de réversion",    subtitle: "Droits du conjoint survivant" },
   { path: "/simulateurs/rente-capital",        title: "Rente vs retrait",        subtitle: "Stratégie de liquidation" },
   { path: "/simulateurs/comparaison-reforme",  title: "Réforme 2023",            subtitle: "Avant / après loi Borne" },
+  { path: "/simulateurs/retraite-luxembourg",  title: "Retraite Luxembourg",     subtitle: "Frontaliers — CNAP" },
 ];
 
 export const NAV_GROUPS = [
@@ -166,6 +167,7 @@ const CH_NAV_GROUPS = [
   ]},
   { id: "impots", icon: "📋", label: "Fiscalité", items: [
     { path: "/simulateurs/impot-revenu-ch", title: "Impôt sur le revenu", subtitle: "Fédéral + cantonal" },
+    { path: "/simulateurs/succession-ch",   title: "Droits de succession", subtitle: "Cantons suisses" },
   ]},
   { id: "finances", icon: "💰", label: "Finances", items: [
     { path: "/simulateurs/epargne",     title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },

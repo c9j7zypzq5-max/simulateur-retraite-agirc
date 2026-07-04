@@ -4,7 +4,7 @@
 //
 // Préfixe « _ » : Vercel ne traite pas ce fichier comme une route serverless.
 
-import { BASE, ROUTE_META, ogImageForRoute } from './_meta.js';
+import { BASE, ROUTE_META, ogImageForRoute, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT } from './_meta.js';
 export { BASE, ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, ogImageForRoute } from './_meta.js';
 import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -337,6 +337,7 @@ export function structuredData(route, extra = {}) {
     const g = GUIDES_BY_SLUG[route.slice('/guides/'.length)];
     if (!g) return [];
     const ogImg = ogImageForRoute(route);
+    const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
     const schemas = [
       breadcrumb([['Accueil', `${BASE}/`], ['Guides', `${BASE}/guides`], [g.title, url]]),
       {
@@ -345,6 +346,7 @@ export function structuredData(route, extra = {}) {
         image: { '@type': 'ImageObject', url: ogImg, width: 1200, height: 630 },
         author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+        datePublished: lastmod, dateModified: lastmod,
       },
     ];
     if (g.steps && g.steps.length > 0) {
@@ -362,6 +364,7 @@ export function structuredData(route, extra = {}) {
     const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
     if (!c) return [];
     const ogImg = ogImageForRoute(route);
+    const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
     return [
       breadcrumb([['Accueil', `${BASE}/`], ['Comparatifs', `${BASE}/comparatifs`], [c.shortTitle, url]]),
       {
@@ -370,6 +373,7 @@ export function structuredData(route, extra = {}) {
         image: { '@type': 'ImageObject', url: ogImg, width: 1200, height: 630 },
         author: { '@type': 'Organization', name: 'simfinly.com', url: BASE },
         publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
+        datePublished: lastmod, dateModified: lastmod,
       },
     ];
   }
@@ -384,7 +388,12 @@ export function structuredData(route, extra = {}) {
       publisher: { '@type': 'Organization', name: 'simfinly.com', logo: { '@type': 'ImageObject', url: `${BASE}/logo-mark.svg` } },
     };
     if (extra.publishedAt) { article.datePublished = extra.publishedAt; article.dateModified = extra.dateModified || extra.publishedAt; }
-    if (extra.image) article.image = extra.image;
+    // `image` est recommandé (pas obligatoire) pour l'éligibilité aux rich
+    // results Article, mais ~55 articles statiques n'ont jamais eu de photo
+    // Pexels associée — on retombe sur le visuel générique par catégorie
+    // (déjà utilisé pour les guides/comparatifs) plutôt que de laisser le
+    // champ vide.
+    article.image = extra.image || `${BASE}${OG_IMAGE_BY_CAT[extra.category] || OG_IMAGE_DEFAULT}`;
     if (extra.content) article.articleBody = String(extra.content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
     const schemas = [
       breadcrumb([['Accueil', `${BASE}/`], ['Blog', `${BASE}/blog`], [extra.title, url]]),
