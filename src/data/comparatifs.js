@@ -102,6 +102,44 @@ export const COMPARATIFS = [
     verdict: "En dessous de 5 ans ou en cas d'incertitude sur votre lieu de vie, la location garde l'avantage. Pour un projet stable de long terme, l'achat construit un patrimoine et supprime le loyer à terme. Estimez votre mensualité et vos frais ci-dessous pour décider.",
     sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/frais-notaire'],
     terms: ['taeg', 'ptz', 'capacite-emprunt'],
+    en: {
+      title: 'Renting vs buying your home: which makes sense?',
+      shortTitle: 'Rent vs buy',
+      intro: "Should you keep renting or take the plunge and buy your home? The answer depends on how long you plan to stay, current interest rates, closing costs, and the rent you'd save. Here are the criteria to help you decide, with calculators to back it up.",
+      a: {
+        name: 'Renting',
+        pour: ["Freedom to move (relocation, life changes)", "No closing costs or major upkeep", "Savings stay liquid instead of tied up"],
+        contre: ["Rent is money you don't get back", "No wealth building", "Exposed to rent increases"],
+      },
+      b: {
+        name: 'Buying',
+        pour: ["Builds long-term wealth", "Stability and freedom to renovate", "No more rent once the mortgage is paid off"],
+        contre: ["High upfront closing costs (7-8% for existing homes in France)", "Cost of the loan and upkeep", "Less mobility"],
+      },
+      criteres: [
+        { label: "Recommended horizon", a: "Short / uncertain (< 5 years)", b: "Long (> 7-8 years)" },
+        { label: "Entry cost", a: "Security deposit", b: "Down payment + closing costs" },
+        { label: "Wealth building", a: "Through invested savings", b: "Through loan principal repayment" },
+        { label: "Flexibility", a: "High", b: "Low" },
+        { label: "Risk", a: "Rising rents", b: "Falling prices, unexpected repairs" },
+      ],
+      sections: [
+        {
+          h2: "The weight of closing costs and holding period",
+          body: [
+            "Buying involves substantial closing costs (roughly 7-8% of the price for an existing home in France, less for new builds) that need to be \"amortized\" over time. Below 5 to 7 years of ownership, reselling risks not covering those costs — renting is then often the more rational choice.",
+            "Beyond that horizon, repaying the loan principal acts as forced savings that tips the balance toward buying.",
+          ],
+        },
+        {
+          h2: "The opportunity cost of your down payment",
+          body: [
+            "Money tied up in a purchase (down payment, fees) could have been invested elsewhere. To compare honestly, weigh the potential return of that invested money against the rent you'd save by owning.",
+          ],
+        },
+      ],
+      verdict: "Under 5 years, or if you're uncertain where you'll live, renting keeps the edge. For a stable, long-term plan, buying builds wealth and eventually removes the rent payment. Estimate your monthly payment and fees below to decide.",
+    },
   },
   {
     slug: 'freelance-ou-salarie',
@@ -239,6 +277,45 @@ export const COMPARATIFS = [
     verdict: "Les SCPI conviennent à l'investisseur passif cherchant des revenus réguliers sans contrainte de gestion. L'immobilier direct maximise le levier et la plus-value pour un investisseur impliqué. Comparez le rendement locatif de votre projet immobilier avec notre simulateur.",
     sims: ['/simulateurs/rendement-locatif', '/simulateurs/emprunt-immobilier'],
     terms: ['scpi', 'rendement-locatif', 'effet-de-levier'],
+    en: {
+      title: 'Real estate fund or direct property: which rental investment?',
+      shortTitle: 'Real estate fund vs direct property',
+      intro: "You can invest in property directly (buying a unit, managing tenants) or through a real estate investment fund such as a French SCPI — a pooled vehicle similar to a non-traded REIT. Both have distinct advantages depending on your capital, your time and your risk tolerance.",
+      a: {
+        name: 'Real estate fund (SCPI)',
+        pour: ["Zero property management (a management company handles everything)", "Instant diversification across hundreds of properties", "Accessible from a small ticket (around €1,000 in shares)", "Regular quarterly or monthly income"],
+        contre: ["Net yield diluted by subscription fees (8-12%)", "Limited liquidity (secondary market can be slow)", "No direct mortgage leverage (except fund-specific financing)"],
+      },
+      b: {
+        name: 'Direct property',
+        pour: ["Mortgage leverage (borrowing at a low rate amplifies returns)", "Potentially high capital gain on resale", "Full control: choice of property, renovations, rent"],
+        contre: ["Concentrated on a single asset", "Time-consuming management (tenants, repairs, disputes)", "High entry cost (closing costs, down payment)"],
+      },
+      criteres: [
+        { label: "Entry ticket", a: "From about €1,000", b: "€30,000 – 50,000 (minimum down payment)" },
+        { label: "Management", a: "Fully delegated", b: "Self-managed or via an agency" },
+        { label: "Diversification", a: "High (dozens of properties)", b: "Low (one property)" },
+        { label: "Average gross yield", a: "4 – 6% (distribution rate)", b: "3 – 7% depending on location" },
+        { label: "Leverage", a: "Possible but complex", b: "Natural, via a mortgage" },
+      ],
+      sections: [
+        {
+          h2: "Real estate funds: the simplicity of paper property",
+          body: [
+            "A real estate fund pools dozens or hundreds of assets (offices, retail, housing, warehouses) managed by professionals. Investors receive income proportional to their shares, with zero management hassle. It's the ideal solution for a passive investor, or one without enough capital for direct property.",
+            "The main drawback remains high entry fees (8-12% depending on the fund), which weigh on short-term returns. The recommended investment horizon is at least 8 to 10 years.",
+          ],
+        },
+        {
+          h2: "Direct property: leverage and capital gains",
+          body: [
+            "Direct property lets you use mortgage financing to amplify returns (leverage effect). A 20% down payment can generate a return on equity well above a real estate fund's distribution rate. It's the classic wealth-building strategy for those with a moderate amount of capital.",
+            "The trade-off is real: property management, upkeep, vacancy risk, concentrated risk. Using an agency reduces the hassle but takes 7-10% of the rent.",
+          ],
+        },
+      ],
+      verdict: "Real estate funds suit passive investors seeking regular income with no management hassle. Direct property maximizes leverage and capital gains for a hands-on investor. Compare the rental yield of your project with our calculator.",
+    },
   },
   {
     slug: 'fonds-euros-vs-etf',
@@ -377,6 +454,45 @@ export const COMPARATIFS = [
     verdict: "Pour un taux de crédit inférieur à 3 %, investir l'excédent est quasi systématiquement gagnant sur 10 ans. Pour un taux supérieur à 4 %, le remboursement anticipé devient une option sérieuse. Simulez les deux scénarios avec notre simulateur épargne.",
     sims: ['/simulateurs/epargne', '/simulateurs/emprunt-immobilier'],
     terms: ['taeg', 'effet-de-levier', 'etf'],
+    en: {
+      title: 'Pay off your mortgage early or invest the surplus?',
+      shortTitle: 'Pay off debt vs invest',
+      intro: "You have some spare savings available. Should you use it to pay down your mortgage early, or invest it to benefit from market returns? The answer depends on your loan rate, your time horizon and your risk tolerance.",
+      a: {
+        name: 'Pay off early',
+        pour: ["Guaranteed savings on remaining interest", "Lower overall risk (less debt)", "Frees up monthly cash flow sooner"],
+        contre: ["Prepayment penalties may apply depending on your loan terms", "Capital locked into an illiquid asset", "Opportunity cost if markets perform better"],
+      },
+      b: {
+        name: 'Invest the surplus',
+        pour: ["Potential return above the loan rate (ETFs have historically returned 7-9%/year)", "Liquidity preserved (capital available if needed)", "Benefits from compound interest over the long run"],
+        contre: ["Risk of capital loss in the short term", "Uncertain return (unlike the guaranteed interest savings)", "Requires sticking to the discipline over the long run"],
+      },
+      criteres: [
+        { label: "Guaranteed return", a: "Yes (= loan rate)", b: "No (expected but uncertain)" },
+        { label: "Expected return", a: "= loan rate (2-4%)", b: "= market return (5-9%)" },
+        { label: "Liquidity", a: "None (capital repaid)", b: "High (capital available)" },
+        { label: "Risk", a: "None", b: "Moderate to high" },
+        { label: "Recommended when loan rate is", a: "> 4% (rarely beaten elsewhere)", b: "< 3% (markets often more profitable)" },
+      ],
+      sections: [
+        {
+          h2: "The math rule of thumb",
+          body: [
+            "The rational decision is simple: if the expected investment return is higher than the loan rate (net of tax), investing wins. Historically, an MSCI World ETF has delivered 7-9% a year, well above most mortgage rates taken out before 2023 (1-2%).",
+            "Since 2022-2024, mortgage rates have risen to 3.5-4.5%. The math becomes tighter, especially once you factor in taxes on investment gains.",
+          ],
+        },
+        {
+          h2: "The psychological and practical dimension",
+          body: [
+            "Being debt-free brings real peace of mind that has value. If the prospect of carrying a loan stresses you out, or if your rate is above 4%, paying it off early is a reasonable decision even when it isn't always mathematically optimal.",
+            "Watch out for prepayment penalties: they're capped by law in many jurisdictions but reduce the appeal of partial repayment. Negotiate them, or time your repayments around your loan's anniversary date.",
+          ],
+        },
+      ],
+      verdict: "For a loan rate below 3%, investing the surplus wins almost systematically over 10 years. For a rate above 4%, early repayment becomes a serious option. Simulate both scenarios with our savings calculator.",
+    },
   },
   {
     slug: 'pel-vs-livret-a',
@@ -657,6 +773,51 @@ export const COMPARATIFS = [
     verdict: "Choisissez la rente si vous craignez de manquer d'argent en vieillissant (protection longevité) et que votre conjoint bénéficierait de la réversion. Optez pour le retrait en capital si vous avez d'autres revenus stables et souhaitez transmettre à vos enfants. La solution mixte est souvent la plus équilibrée.",
     sims: ['/simulateurs/rente-capital', '/simulateurs/per'],
     terms: ['rente-viagere', 'per', 'risque-sequence', 'regle-4-pourcent', 'assurance-vie'],
+    en: {
+      title: 'Annuity or scheduled withdrawal: how to draw down your retirement savings?',
+      shortTitle: 'Annuity vs withdrawal',
+      intro: "At retirement, converting your retirement savings (in France, a PER) into a life annuity guarantees income for life, while a scheduled (or lump-sum) withdrawal keeps you in control of the capital. These two exit options have very different tax, estate and financial-planning implications.",
+      a: {
+        name: 'Life annuity',
+        pour: ["Guaranteed income for life, regardless of how long you live", "Protects against longevity risk", "Can include a survivor's benefit for a spouse"],
+        contre: ["Capital is permanently given up upon conversion", "Taxation depends on your age at conversion", "Return is priced on average life expectancy"],
+      },
+      b: {
+        name: 'Lump-sum / scheduled withdrawal',
+        pour: ["Capital is preserved and can be passed on to heirs", "Full flexibility over amounts and frequency", "Only invested returns are taxed on withdrawal, not the whole balance"],
+        contre: ["Risk of outliving your capital", "Requires actively managing the portfolio", "Sequence-of-returns risk if markets crash early in retirement"],
+      },
+      criteres: [
+        { label: "Guaranteed duration", a: "Lifetime, unlimited", b: "Limited to available capital" },
+        { label: "Estate transfer", a: "Capital is lost on death (unless guaranteed annuity period)", b: "Remaining capital passes to heirs" },
+        { label: "Taxation on exit", a: "Partial taxable share, depends on age (French PER rules)", b: "Deducted contributions taxed as income; gains taxed as capital income" },
+        { label: "Management", a: "None (automatic income)", b: "Active management required" },
+        { label: "Longevity risk", a: "None (borne by the insurer)", b: "High if you live much longer than expected" },
+      ],
+      sections: [
+        {
+          h2: "The life annuity: absolute security",
+          body: [
+            "By converting all or part of your retirement savings into a life annuity, you buy the certainty of a regular income until your last day. The insurer pools longevity risk across all annuity holders — if you live to 95, the annuity keeps paying, even well beyond what your original capital would have covered.",
+            "The taxable share typically depends on your age at conversion — in France, for instance, it ranges from 70% before age 50 down to 30% at 70 or older, which is why converting later is often more tax-efficient. A joint-life annuity (with a 60-80% survivor benefit) reduces the monthly amount but protects the household.",
+          ],
+        },
+        {
+          h2: "Scheduled withdrawal: freedom and estate transfer",
+          body: [
+            "Many retirement plans now allow a full or partial lump-sum exit instead of an annuity. You can withdraw the entire capital at once (watch the tax-bracket impact in that year) or in scheduled installments. Previously tax-deducted contributions are taxed as income on the way out; investment gains are taxed as capital income.",
+            "This option keeps you fully in control: you can adjust withdrawals to your needs, reinvest part of the capital, and pass on what's left to your heirs. It's usually preferable if you have other secure income (a pension, rental income) and a good tolerance for longevity risk.",
+          ],
+        },
+        {
+          h2: "The blended approach: the best of both worlds",
+          body: [
+            "You don't have to pick one option for the entire balance. A common strategy: convert 30-40% of the capital into an annuity to cover essential fixed expenses (food, health, housing), and keep the rest under scheduled withdrawal for discretionary spending and projects. This protects against longevity risk while preserving flexibility.",
+          ],
+        },
+      ],
+      verdict: "Choose the annuity if you're worried about running out of money later in life and your spouse would benefit from the survivor option. Choose scheduled withdrawal if you have other stable income and want to leave an inheritance. The blended approach is often the most balanced choice.",
+    },
   },
   {
     slug: 'micro-entrepreneur-vs-portage-salarial',

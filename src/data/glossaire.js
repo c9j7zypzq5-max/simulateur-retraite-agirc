@@ -71,6 +71,14 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/emprunt-immobilier'],
     related: ['capacite-emprunt', 'taeg'],
+    en: {
+      term: "Debt-to-income ratio", full: "Debt-to-income (DTI) ratio",
+      short: "Share of your income spent repaying loans. Usually capped around 35% by lenders.",
+      long: [
+        "The debt-to-income ratio compares your total monthly loan payments to your net income. French lenders generally cap it at 35% (insurance included), following the HCSF (Haut Conseil de Stabilité Financière) recommendations — the equivalent guideline in most countries is similar, often 36-43%.",
+        "Above that threshold, getting a loan becomes difficult. Lenders also look at your \"disposable income\" (income minus fixed costs) to judge whether the remaining amount is enough to live on.",
+      ],
+    },
   },
   {
     slug: 'capacite-emprunt', term: "Capacité d'emprunt", full: "Capacité d'emprunt",
@@ -83,6 +91,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/emprunt-immobilier'],
     related: ['taux-endettement', 'apport'],
+    en: {
+      term: "Borrowing capacity", full: "Borrowing capacity",
+      short: "The maximum amount you can borrow given your income, expenses and the loan term.",
+      long: [
+        "Borrowing capacity is the amount a bank agrees to lend you. It depends on your income, your existing expenses, the maximum debt-to-income ratio (≈35%), the interest rate and the loan term.",
+        "A larger down payment or a longer term both increase what you can afford, but a longer term also raises the total interest paid over the life of the loan.",
+        "Example: with €3,000 in monthly net income and a 35% maximum debt-to-income ratio, the maximum monthly payment is about €1,050 — at 3.3% over 20 years, that's a borrowing capacity of roughly €184,000, versus about €214,000 over 25 years (same monthly payment, higher total interest cost).",
+      ],
+    },
   },
   {
     slug: 'apport', term: 'Apport personnel', full: 'Apport personnel',
@@ -141,6 +158,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/rendement-locatif'],
     related: ['lmnp', 'plus-value-immobiliere'],
+    en: {
+      term: "Rental yield", full: "Rental yield",
+      short: "Ratio between annual rent and the purchase price of a property. Gross vs net yield.",
+      long: [
+        "Gross rental yield = (annual rent / purchase price) × 100. Net yield deducts running costs, property tax, management fees and taxation.",
+        "It's the key metric for comparing rental investments, alongside vacancy risk and potential capital appreciation.",
+        "Example: a studio bought for €120,000 and rented for €550/month shows a gross yield of 5.5% (€6,600/€120,000). After condo fees, property tax and management fees (about €1,500/year), and before tax, the net yield often falls to around 3.5-4%.",
+      ],
+    },
   },
   {
     slug: 'lmnp', term: 'LMNP', full: 'Loueur en Meublé Non Professionnel',
@@ -496,6 +522,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/epargne', '/simulateurs/fire'],
     related: ['capitalisation', 'cagr', 'taux-epargne'],
+    en: {
+      term: "Compound interest", full: "Compound interest",
+      short: "Interest earning interest on itself, accelerating growth over time.",
+      long: [
+        "With compound interest, the gains from one period are added to the principal and themselves generate gains in the next period. The \"snowball\" effect becomes dramatic over the long run: growth isn't linear, it's exponential.",
+        "Concrete example: €10,000 invested at 6%/year with no further contributions grows to about €18,000 after 10 years, but more than €57,000 after 30 years — the capital was only multiplied by 1.8x in 10 years, but by 5.7x in 30 years, because the interest from the early years keeps compounding over the entire remaining period.",
+        "It's the main engine of long-term wealth building: the earlier you start, the more powerful the effect — which is why time in the market usually matters more than the amount invested.",
+      ],
+    },
   },
   {
     slug: 'capitalisation', term: 'Capitalisation', full: 'Capitalisation',
@@ -531,6 +566,14 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/fire'],
     related: ['swr', 'taux-epargne', 'interets-composes'],
+    en: {
+      term: "FIRE", full: "Financial Independence, Retire Early",
+      short: "A movement aiming for financial independence to be able to stop working well before traditional retirement age.",
+      long: [
+        "FIRE (Financial Independence, Retire Early) means saving and investing aggressively to reach a capital that lets you live off your investments.",
+        "The target is often estimated at 25 times annual expenses (the 4% rule). Variants include Lean, Coast, Barista and Fat FIRE.",
+      ],
+    },
     faqs: [
       { q: "Quel capital faut-il pour atteindre l'indépendance financière en France ?", a: "Selon la règle des 4 % : capital FIRE = dépenses annuelles × 25. Pour vivre avec 2 000 €/mois (24 000 €/an), il faut environ 600 000 € de capital investi. Ce montant varie selon votre âge de retraite ciblé (plus conservateur pour 40 ans, la règle des 4 % est calculée sur 30 ans), votre niveau de vie et la fiscalité française sur les revenus de capitaux." },
       { q: "Quelle différence entre FIRE et retraite classique ?", a: "La retraite classique est financée par les cotisations sociales accumulées sur une carrière (système par répartition). Le FIRE consiste à accumuler un capital personnel suffisant pour vivre de ses revenus passifs, indépendamment du système public. Les deux ne s'excluent pas : une personne FIRE à 45 ans touchera quand même sa retraite légale à 64 ans." },
@@ -560,6 +603,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/budget', '/simulateurs/fire', '/simulateurs/epargne'],
     related: ['fire', 'interets-composes'],
+    en: {
+      term: "Savings rate", full: "Savings rate",
+      short: "The share of your income you save each month. The #1 lever toward financial independence.",
+      long: [
+        "Savings rate = monthly savings / net income. It's the factor that most influences how fast you build wealth — more than investment returns, especially in the early years.",
+        "The 50/30/20 rule suggests putting at least 20% of income toward it (50% essentials, 30% wants, 20% savings/debt). FIRE followers often aim for 40-60%.",
+        "Example of the impact on time to financial independence (at a constant return): at a 10% savings rate, it takes about 51 years to reach a capital covering expenses; at 25%, about 32 years; at 50%, about 17 years. Doubling your savings rate doesn't just cut the time in half — it cuts it by much more, because every extra euro saved also lowers your target expenses.",
+      ],
+    },
   },
 
   // ── Épargne réglementée & supports ──────────────────────────────────────────
@@ -653,6 +705,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/epargne', '/simulateurs/comparateur'],
     related: ['etf', 'volatilite', 'interets-composes'],
+    en: {
+      term: "DCA", full: "Dollar Cost Averaging",
+      short: "Investing a fixed amount at regular intervals to smooth out the purchase price and reduce timing risk.",
+      long: [
+        "DCA (Dollar Cost Averaging) means investing a constant amount at a regular interval (often monthly), regardless of market conditions. You mechanically buy more units when prices fall and fewer when they rise.",
+        "This discipline smooths the average purchase price and avoids the psychological trap of trying to \"time the market\" before investing a lump sum — a strategy that statistically often underperforms investing immediately in long-term bull markets, but reduces the risk of bad timing in a volatile market.",
+        "It's the natural strategy for automated ETF investing (recurring monthly contributions): it removes emotion from the investment decision and suits regular savers better than investors sitting on a lump sum to deploy.",
+      ],
+    },
   },
   {
     slug: 'diversification', term: 'Diversification', full: 'Diversification',
@@ -688,6 +749,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/epargne', '/simulateurs/salaire'],
     related: ['rendement-reel', 'livret-a', 'interets-composes'],
+    en: {
+      term: "Inflation", full: "Inflation",
+      short: "A general rise in prices that erodes the purchasing power of savings over time.",
+      long: [
+        "Inflation is the average increase in the price of goods and services. It reduces the real value of idle money: €1,000 today will buy less in 10 years, even if you never spend it.",
+        "Example: at an average inflation rate of 2%/year, €100,000 left uninvested (or invested at a zero return) loses about 18% of its purchasing power in 10 years, and about 33% in 20 years.",
+        "To preserve purchasing power, you need a return above inflation (a positive real return). That's why leaving excess emergency savings in a low-yield account represents a real opportunity cost, even though the nominal capital never falls.",
+      ],
+    },
   },
   {
     slug: 'rendement-reel', term: 'Rendement réel', full: 'Rendement réel',
@@ -863,6 +933,15 @@ export const GLOSSARY = [
       "Exemple : avec 1 200 €/mois de dépenses (14 400 €/an), le capital cible Lean FIRE est de 14 400 × 25 = 360 000 € — contre 600 000 € pour un budget de 2 000 €/mois, soit un capital atteint bien plus tôt à taux d'épargne égal.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'fat-fire', 'taux-epargne'],
+    en: {
+      term: "Lean FIRE", full: "Lean FIRE",
+      short: "A FIRE variant aiming for independence with a modest budget, hence a lower target capital.",
+      long: [
+        "Lean FIRE means reaching financial independence by aggressively optimizing your expenses: a frugal lifestyle lowers the capital required (still roughly 25 times annual expenses).",
+        "It's reached faster, at the cost of a tight budget and a smaller safety margin.",
+        "Example: with €1,200/month in expenses (€14,400/year), the Lean FIRE target capital is €14,400 × 25 = €360,000 — versus €600,000 for a €2,000/month budget, reached much sooner at the same savings rate.",
+      ],
+    },
   },
   {
     slug: 'fat-fire', term: 'Fat FIRE', full: 'Fat FIRE',
@@ -874,6 +953,15 @@ export const GLOSSARY = [
       "Exemple : pour maintenir un train de vie de 5 000 €/mois (60 000 €/an), le capital cible Fat FIRE est de 60 000 × 25 = 1 500 000 € — un objectif qui demande généralement des revenus élevés ou un horizon d'épargne plus long que le FIRE standard.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'lean-fire'],
+    en: {
+      term: "Fat FIRE", full: "Fat FIRE",
+      short: "Financial independence with a comfortable lifestyle, hence a high target capital.",
+      long: [
+        "Fat FIRE aims to live off your investments without lowering your standard of living. The target capital is high (often above €1.5M) because annual expenses are too.",
+        "It takes more time or higher income, but offers greater comfort and security.",
+        "Example: to maintain a lifestyle of €5,000/month (€60,000/year), the Fat FIRE target capital is €60,000 × 25 = €1,500,000 — a goal that generally requires a high income or a longer savings horizon than standard FIRE.",
+      ],
+    },
   },
   {
     slug: 'coast-fire', term: 'Coast FIRE', full: 'Coast FIRE',
@@ -885,6 +973,15 @@ export const GLOSSARY = [
       "Une fois ce palier atteint, vous n'êtes plus obligé de mettre de côté pour la retraite : vous pouvez réduire votre temps de travail, changer pour un métier moins rémunérateur mais plus épanouissant, et vous contenter de couvrir vos dépenses courantes le temps que le capital investi fasse le reste.",
     ],
     sims: ['/simulateurs/fire', '/simulateurs/epargne'], related: ['fire', 'interets-composes'],
+    en: {
+      term: "Coast FIRE", full: "Coast FIRE",
+      short: "Having already invested enough that compound interest alone will fund your retirement, with no further contributions.",
+      long: [
+        "In Coast FIRE, you've accumulated enough capital that it will grow on its own, purely through the magic of compound interest, until it reaches your FIRE target by traditional retirement age — without needing to add another euro of savings.",
+        "Example: at 35, with a target of €750,000 by age 65 and a real return of 5%/year, you'd need to have already invested about €173,000 to be Coast FIRE (€173,000 × 1.05^30 ≈ €750,000). Below that threshold, you still need to actively save; above it, the capital is already enough.",
+        "Once you hit that level, you're no longer required to set money aside for retirement: you can cut back your working hours, switch to a less well-paid but more fulfilling job, and just cover your current expenses while the invested capital does the rest.",
+      ],
+    },
   },
   {
     slug: 'barista-fire', term: 'Barista FIRE', full: 'Barista FIRE',
@@ -896,6 +993,15 @@ export const GLOSSARY = [
       "Exemple : pour 2 000 €/mois de dépenses, un revenu d'appoint de 800 €/mois (mi-temps) ne laisse que 1 200 €/mois (14 400 €/an) à couvrir par les retraits — ramenant le capital nécessaire à 14 400 × 25 = 360 000 €, contre 600 000 € sans aucun revenu d'activité.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'coast-fire'],
+    en: {
+      term: "Barista FIRE", full: "Barista FIRE",
+      short: "Semi-retirement: a small job covers part of your expenses (and often health coverage), the rest coming from your investments.",
+      long: [
+        "Barista FIRE combines part-time work with moderate portfolio withdrawals. The side job provides extra income and, often, health coverage.",
+        "It's a compromise between freedom and security, reachable earlier than full FIRE.",
+        "Example: for €2,000/month in expenses, a €800/month side income (part-time) leaves only €1,200/month (€14,400/year) to be covered by withdrawals — bringing the required capital down to €14,400 × 25 = €360,000, versus €600,000 with no earned income at all.",
+      ],
+    },
   },
 
   // ── Placements & marchés ─────────────────────────────────────────────────────
@@ -1015,6 +1121,15 @@ export const GLOSSARY = [
       "Exemple : un foyer avec 3 000 € de revenus nets et 1 800 € de charges fixes (crédit immobilier, énergie, assurances, abonnements) dispose d'un reste à vivre de 1 200 €, soit 400 € par personne pour un couple sans enfant — un niveau généralement jugé confortable par les banques.",
     ],
     sims: ['/simulateurs/budget', '/simulateurs/emprunt-immobilier'], related: ['taux-endettement', 'taux-epargne'],
+    en: {
+      term: "Disposable income", full: "Disposable income after fixed costs",
+      short: "What's left each month once fixed costs and loan payments are covered.",
+      long: [
+        "Disposable income = income − fixed costs (rent/mortgage, utilities, insurance…). Lenders look at it as closely as the debt-to-income ratio when granting a loan.",
+        "A comfortable disposable income secures your budget and your ability to save.",
+        "Example: a household with €3,000 in net income and €1,800 in fixed costs (mortgage, utilities, insurance, subscriptions) has €1,200 left over, or €400 per person for a couple with no children — a level generally seen as comfortable by lenders.",
+      ],
+    },
   },
 
   // ── Budget (nouveaux) ─────────────────────────────────────────────────────
@@ -1028,6 +1143,15 @@ export const GLOSSARY = [
       "Exemple : pour 3 000 € de revenus nets mensuels, la règle 50/30/20 affecte 1 500 € aux besoins essentiels, 900 € aux envies et 600 € à l'épargne.",
     ],
     sims: ['/simulateurs/budget'], related: ['taux-epargne', 'reste-a-vivre', 'epargne-precaution'],
+    en: {
+      term: "50/30/20 rule", full: "50/30/20 budgeting rule",
+      short: "A budgeting method: 50% of income for needs, 30% for wants, 20% for savings.",
+      long: [
+        "The 50/30/20 rule is a simple way to structure a monthly budget without a spreadsheet. It splits net income into three buckets: essential needs (rent, food, transport), wants (dining out, entertainment, non-essential subscriptions) and savings.",
+        "It isn't rigid: in expensive cities, rent alone can exceed 30% of income. The goal is to keep savings non-negotiable, adjusting the other two categories instead.",
+        "Example: for €3,000 in monthly net income, the 50/30/20 rule allocates €1,500 to essential needs, €900 to wants and €600 to savings.",
+      ],
+    },
   },
   {
     slug: 'epargne-precaution', term: "Épargne de précaution", full: "Épargne de précaution (fonds d'urgence)",
@@ -1038,6 +1162,14 @@ export const GLOSSARY = [
       "On recommande généralement 3 mois de dépenses fixes pour un salarié stable, 6 mois pour un indépendant ou une situation plus incertaine. Elle doit être logée sur un compte liquide (Livret A, LDDS) et non sur des placements risqués.",
     ],
     sims: ['/simulateurs/budget', '/simulateurs/epargne'], related: ['livret-a', 'ldds', 'taux-epargne'],
+    en: {
+      term: "Emergency fund", full: "Emergency fund (precautionary savings)",
+      short: "A liquid reserve of 3 to 6 months of expenses to cover unexpected events without going into debt.",
+      long: [
+        "The emergency fund is the first building block of any financial strategy. It covers life's accidents (job loss, breakdown, health issues) without having to sell investments or resort to credit.",
+        "A common recommendation is 3 months of fixed expenses for a stable employee, 6 months for a freelancer or a less certain situation. It should sit in a liquid, easily accessible account, not in risky investments.",
+      ],
+    },
   },
   {
     slug: 'budget-base-zero', term: 'Budget base zéro', full: 'Méthode du budget base zéro',
@@ -1524,6 +1656,15 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/fire', '/simulateurs/epargne'],
     related: ['fire', 'swr', 'taux-epargne', 'numero-f', 'interets-composes'],
+    en: {
+      term: "4% rule", full: "4% rule (safe withdrawal rate)",
+      short: "The principle that withdrawing 4% of your portfolio each year lets it last at least 30 years, based on the 1998 Trinity study.",
+      long: [
+        "The 4% rule comes from the Trinity study (1998), which analyzed withdrawals from US stock/bond portfolios over 30-year periods. Conclusion: withdrawing 4% of the initial capital in the first year, then adjusting for inflation, succeeded in 95% of historical scenarios.",
+        "It's the basis of the FIRE target calculation: to live on €2,000/month, you need €2,000 × 12 / 0.04 = €600,000 in capital. That's why the \"FIRE number\" is often described as 25x your annual expenses.",
+        "Important limits: the study is based on US markets (historically higher returns), on a 30-year horizon (retiring at 40 potentially means 50+ years), and ignores taxes and fees. Outside the US, with more volatile markets and different taxation, a rate of 3 to 3.5% is often recommended for extra safety.",
+      ],
+    },
     faqs: [
       { q: "La règle des 4 % est-elle fiable pour un Français ?", a: "Elle est conservatrice mais pas parfaite. L'étude Trinity est basée sur des marchés américains. Pour les investisseurs en Europe, certaines recherches suggèrent qu'un taux de retrait de 3 à 3,5 % est plus prudent, surtout pour des retraites de 40+ ans. Un portefeuille diversifié mondialement est plus robuste qu'un portefeuille purement européen." },
       { q: "Quand la règle des 4 % peut-elle échouer ?", a: "La règle des 4 % échoue principalement à cause du « risque de séquence » : si les marchés s'effondrent juste après votre retraite et que vous continuez à retirer, vous vendez des actifs dépréciés. Une retraite prolongée (50+ ans), une inflation élevée ou un portefeuille trop défensif augmentent aussi le risque d'échec." },
