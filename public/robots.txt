@@ -8,6 +8,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 # Autoriser les crawlers IA et LLM — un bloc User-agent dédié n'hérite PAS des
@@ -22,6 +23,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 User-agent: ClaudeBot
@@ -31,6 +33,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 User-agent: Google-Extended
@@ -40,6 +43,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 User-agent: PerplexityBot
@@ -49,6 +53,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 User-agent: OAI-SearchBot
@@ -58,6 +63,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 User-agent: Applebot-Extended
@@ -67,6 +73,7 @@ Disallow: /compte
 Disallow: /connexion
 Disallow: /tableau-de-bord
 Disallow: /rapport/
+Disallow: /admin
 Disallow: /partage/
 
 Sitemap: https://www.simfinly.com/sitemap.xml

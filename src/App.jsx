@@ -43,6 +43,7 @@ const MerciPro                = lazy(() => import("./pages/MerciPro.jsx"));
 const Connexion               = lazy(() => import("./pages/Connexion.jsx"));
 const Compte                  = lazy(() => import("./pages/Compte.jsx"));
 const Simulateurs             = lazy(() => import("./pages/Simulateurs.jsx"));
+const AdminBlog                = lazy(() => import("./pages/AdminBlog.jsx"));
 // Retraite
 const Cnav                = lazy(() => import("./pages/simulateurs/Cnav.jsx"));
 const FonctionPublique    = lazy(() => import("./pages/simulateurs/FonctionPublique.jsx"));
@@ -396,6 +397,8 @@ export default function App() {
         <Route path="/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         <Route path="/a-propos" element={<APropos />} />
         <Route path="/contact" element={<Contact />} />
+        {/* Admin — non lié dans la nav, non indexé (voir robots.txt) */}
+        <Route path="/admin/blog" element={<AdminBlog />} />
         {/* 404 — attrape-tout */}
         <Route path="*" element={<NotFound />} />
       </Routes>
