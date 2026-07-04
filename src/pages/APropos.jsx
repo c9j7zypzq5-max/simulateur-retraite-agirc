@@ -43,13 +43,14 @@ export default function APropos() {
         </Section>
 
         <Section title="Nos simulateurs">
-          <p style={{ marginBottom: 16 }}>Le site compte actuellement <strong style={{ color: "var(--text)" }}>16 simulateurs</strong> répartis en 4 catégories :</p>
+          <p style={{ marginBottom: 16 }}>Le site compte actuellement <strong style={{ color: "var(--text)" }}>40 simulateurs</strong> répartis en 5 catégories, plus des versions dédiées à la Belgique, la Suisse et le Luxembourg :</p>
           <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
             {[
-              { cat: "Retraite", count: 8, desc: "CNAV, Agirc-Arrco, Fonction publique, Indépendants, IRCANTEC, Retraite progressive, CIPAV, MSA" },
-              { cat: "Immobilier", count: 2, desc: "Emprunt immobilier, Rendement locatif" },
-              { cat: "Impôts", count: 2, desc: "Impôt sur le revenu, Plus-value immobilière" },
-              { cat: "Finances & Vie", count: 4, desc: "Épargne & intérêts composés, FIRE, Le vrai prix en heures, Ma vie en semaines" },
+              { cat: "Retraite", count: 16, desc: "Synthèse tous régimes, CNAV, Agirc-Arrco, Fonction publique, Indépendants, IRCANTEC, MSA, CIPAV, PER, Retraite progressive, Trimestres, Retraite anticipée, Réversion, Rente vs capital, Réforme 2023, Luxembourg" },
+              { cat: "Immobilier", count: 5, desc: "Emprunt immobilier, PTZ, Frais de notaire, Rendement locatif, Déficit foncier" },
+              { cat: "Impôts", count: 5, desc: "Impôt sur le revenu, Flat tax, Plus-value immobilière, Succession, Donation" },
+              { cat: "Finances & Vie", count: 12, desc: "Budget 50/30/20, Épargne & intérêts composés, FIRE, Salaire net/brut, Patrimoine, Comparateur d'actifs, Assurance-vie, Crédit conso, Inflation, Épargne salariale, Freelance vs salarié, Divorce" },
+              { cat: "Outils pratiques", count: 2, desc: "Prix en heures de vie, Ma vie en semaines" },
             ].map(({ cat, count, desc }) => (
               <li key={cat} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "12px 16px" }}>
                 <span style={{ fontWeight: 600, color: "var(--text)" }}>{cat}</span>

@@ -27,7 +27,33 @@ const SECTIONS = [
   {
     h2: "Sources",
     body: [
-      "Nous nous appuyons sur les sources officielles : service-public.fr, l'URSSAF, l'Agirc-Arrco, la CNAV, la Banque de France (taux d'usure), la DGFiP (barèmes fiscaux) et les textes réglementaires (décrets, lois de finances). Les données de marché du comparateur d'actifs proviennent de Yahoo Finance.",
+      "Nous nous appuyons exclusivement sur des sources officielles, citées ci-dessous pour vérification directe :",
+    ],
+    links: [
+      { href: "https://www.service-public.fr", label: "service-public.fr" },
+      { href: "https://www.urssaf.fr", label: "URSSAF" },
+      { href: "https://www.agirc-arrco.fr", label: "Agirc-Arrco" },
+      { href: "https://www.lassuranceretraite.fr", label: "L'Assurance Retraite (CNAV)" },
+      { href: "https://www.banque-france.fr", label: "Banque de France (taux d'usure)" },
+      { href: "https://www.impots.gouv.fr", label: "impots.gouv.fr / DGFiP (barèmes fiscaux)" },
+      { href: "https://www.legifrance.gouv.fr", label: "Légifrance (décrets, lois de finances)" },
+    ],
+    bodyAfter: [
+      "Les données de marché historiques du comparateur d'actifs et de la simulation Monte Carlo (FIRE) proviennent de Yahoo Finance et de séries longues du S&P 500 (1928-2024, Robert Shiller / Aswath Damodaran).",
+    ],
+  },
+  {
+    h2: "Qui écrit ces contenus",
+    body: [
+      "simfinly.com est un projet indépendant, sans rédaction financière tierce : les formules et barèmes de chaque simulateur sont codés directement à partir des textes réglementaires et des barèmes publiés par les organismes cités ci-dessus, puis testés par des scénarios de calcul automatisés (voir la section Vérification) pour détecter toute incohérence entre simulateurs traitant le même sujet.",
+      "Nous ne sommes ni conseillers en gestion de patrimoine, ni experts-comptables, ni avocats fiscalistes. Le site ne remplace pas un avis professionnel personnalisé.",
+    ],
+  },
+  {
+    h2: "Vérification et cohérence des calculs",
+    body: [
+      "Chaque barème sensible (plafond de la Sécurité sociale, durée d'assurance requise par génération, taux de décote/surcote, barème de l'impôt sur le revenu) est centralisé dans un module unique partagé par tous les simulateurs concernés, plutôt que dupliqué : cela évite qu'un même paramètre affiche des valeurs différentes selon l'outil consulté.",
+      "Une suite de tests automatisés s'exécute à chaque mise à jour du site pour vérifier que les valeurs affichées correspondent aux barèmes en vigueur et qu'aucune ancienne valeur périmée ne subsiste dans le code.",
     ],
   },
   {
@@ -81,6 +107,20 @@ export default function Methodologie() {
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 10 }}>{sec.h2}</h2>
             {sec.body.map((p, j) => (
               <p key={j} style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-secondary)", marginBottom: 14 }}>{p}</p>
+            ))}
+            {sec.links && (
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 14px", display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {sec.links.map((l) => (
+                  <li key={l.href}>
+                    <a href={l.href} target="_blank" rel="noopener noreferrer nofollow" style={{ fontSize: 13, color: "var(--gold)", textDecoration: "none", border: "1px solid var(--border)", borderRadius: 8, padding: "6px 10px", display: "inline-block" }}>
+                      {l.label} ↗
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {sec.bodyAfter && sec.bodyAfter.map((p, j) => (
+              <p key={`after-${j}`} style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-secondary)", marginBottom: 14 }}>{p}</p>
             ))}
           </section>
         ))}
