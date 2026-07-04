@@ -840,6 +840,106 @@ export const COMPARATIFS = [
     sims: ['/simulateurs/retraite-progressive', '/simulateurs/cnav', '/simulateurs/trimestres'],
     terms: ['retraite-progressive', 'cumul-emploi-retraite', 'taux-plein', 'surcote', 'trimestre'],
   },
+  {
+    slug: 'sci-vs-indivision',
+    title: 'SCI ou indivision : comment détenir un bien à plusieurs ?',
+    shortTitle: 'SCI vs indivision',
+    emoji: '🏛️',
+    category: 'Patrimoine',
+    intro: "Acheter ou transmettre un bien immobilier à plusieurs impose de choisir un cadre juridique. L'indivision est le régime par défaut, simple mais rigide et propice aux blocages. La Société Civile Immobilière (SCI) demande une création plus formelle, mais offre bien plus de souplesse pour gérer et transmettre le bien dans la durée.",
+    a: {
+      name: 'SCI',
+      pour: ["Statuts sur mesure : règles de gestion et de sortie définies à l'avance", "Transmission facilitée par cession de parts (pas de vente du bien)", "Évite les blocages de l'unanimité propres à l'indivision"],
+      contre: ["Frais de création et de comptabilité annuelle", "Formalisme : assemblées, procès-verbaux, statuts à respecter", "Responsabilité des associés proportionnelle à leurs parts (indéfinie, non solidaire)"],
+    },
+    b: {
+      name: 'Indivision',
+      pour: ["Aucune formalité de création : régime automatique dès l'achat à plusieurs", "Aucun frais de gestion récurrent", "Simplicité pour un achat ponctuel entre deux personnes qui s'entendent bien"],
+      contre: ["Règle de l'unanimité pour les décisions importantes (vente, gros travaux)", "Un seul indivisaire peut demander le partage judiciaire à tout moment", "Transmission par parts indivises, souvent source de conflits entre héritiers"],
+    },
+    criteres: [
+      { label: "Formalités de création", a: "Statuts, immatriculation, frais notariés", b: "Aucune — automatique dès l'achat" },
+      { label: "Règle de décision", a: "Définie librement par les statuts (majorité possible)", b: "Unanimité pour les actes importants" },
+      { label: "Sortie d'un associé", a: "Cession de parts, encadrée par les statuts", b: "Possibilité de demander le partage judiciaire à tout moment" },
+      { label: "Transmission aux héritiers", a: "Donation de parts, abattements applicables progressivement", b: "Quote-part indivise, souvent conflictuelle entre héritiers" },
+      { label: "Coût de gestion annuel", a: "Comptabilité et formalisme à prévoir", b: "Aucun" },
+    ],
+    sections: [
+      {
+        h2: "L'indivision : simple par défaut, rigide dans la durée",
+        body: [
+          "Dès qu'un bien est acheté à plusieurs sans structure dédiée, il est automatiquement en indivision : chaque indivisaire détient une quote-part du bien (et non un bien physiquement délimité). Aucune formalité n'est requise à la création, ce qui en fait le régime le plus simple pour un achat ponctuel.",
+          "Sa faiblesse principale est la règle de l'unanimité pour les décisions importantes (vente du bien, travaux significatifs) : un seul indivisaire en désaccord peut bloquer la situation. Pire, le principe selon lequel « nul n'est contraint de demeurer dans l'indivision » permet à tout indivisaire de demander le partage judiciaire à tout moment, pouvant forcer une vente non désirée par les autres.",
+        ],
+      },
+      {
+        h2: "La SCI : un cadre sur mesure pour gérer et transmettre",
+        body: [
+          "La Société Civile Immobilière permet de définir librement, dans ses statuts, les règles de gestion (majorité simple au lieu de l'unanimité, gérant désigné) et les conditions de sortie d'un associé. Le bien appartient à la société, et les associés détiennent des parts sociales — céder ses parts est souvent plus simple que vendre une quote-part indivise.",
+          "Pour la transmission, la SCI permet de donner progressivement des parts aux enfants (en profitant des abattements de donation renouvelables tous les 15 ans) tout en conservant le contrôle via la gérance — un outil de transmission patrimoniale bien plus flexible que l'indivision.",
+        ],
+      },
+      {
+        h2: "Quand choisir l'un ou l'autre ?",
+        body: [
+          "L'indivision convient à un achat ponctuel entre proches qui s'entendent bien et n'anticipent pas de désaccord à long terme (résidence secondaire familiale simple, achat entre concubins sur une courte durée). La SCI est préférable dès que le bien est destiné à être conservé longtemps, transmis progressivement, ou détenu par plusieurs personnes aux intérêts potentiellement divergents (fratrie, investissement locatif à plusieurs).",
+        ],
+      },
+    ],
+    verdict: "Pour un achat simple à deux qui s'entendent bien et sur une durée limitée, l'indivision suffit et évite des frais de gestion. Dès que le bien est destiné à être conservé longtemps, transmis à plusieurs héritiers, ou détenu par des associés aux intérêts potentiellement divergents, la SCI apporte une sécurité juridique et une souplesse de transmission que l'indivision ne permet pas.",
+    sims: ['/simulateurs/succession', '/simulateurs/donation', '/simulateurs/rendement-locatif'],
+    terms: ['sci', 'donation-partage', 'reserve-hereditaire'],
+  },
+  {
+    slug: 'lmnp-micro-bic-vs-reel',
+    title: 'LMNP micro-BIC ou régime réel : quel régime fiscal choisir ?',
+    shortTitle: 'LMNP micro-BIC vs réel',
+    emoji: '🧾',
+    category: 'Immobilier',
+    intro: "En location meublée (LMNP), deux régimes fiscaux s'opposent pour déclarer vos loyers : le micro-BIC, avec son abattement forfaitaire automatique, et le régime réel, qui permet de déduire les charges réelles et d'amortir le bien. Le choix a un impact direct sur l'impôt payé chaque année.",
+    a: {
+      name: 'Micro-BIC',
+      pour: ["Simplicité : aucune comptabilité, un seul chiffre à déclarer", "Abattement forfaitaire de 50 % sur les loyers (30 % pour certains meublés de tourisme non classés)", "Accessible tant que les recettes restent sous le seuil (77 700 € en 2026 pour la location meublée classique)"],
+      contre: ["Abattement forfaitaire souvent inférieur aux charges réelles pour un bien avec crédit en cours", "Pas de prise en compte de l'amortissement du bien", "Peu avantageux si les charges réelles (intérêts, copropriété, travaux) dépassent 50 % des loyers"],
+    },
+    b: {
+      name: 'Régime réel',
+      pour: ["Déduction de toutes les charges réelles (intérêts d'emprunt, copropriété, travaux, assurance)", "Amortissement du bien et du mobilier : réduit fortement, voire annule, le résultat imposable", "Déficit reportable sur les revenus de même nature pendant 10 ans"],
+      contre: ["Comptabilité obligatoire (souvent via un expert-comptable)", "Option engageante pour 1 an minimum, non rétroactive", "Complexité accrue en cas de revente (réintégration des amortissements dans la plus-value depuis 2025)"],
+    },
+    criteres: [
+      { label: "Simplicité déclarative", a: "Très simple, aucune comptabilité", b: "Comptabilité complète requise" },
+      { label: "Abattement / déduction", a: "Forfaitaire, 50 % des loyers", b: "Charges réelles + amortissement (souvent > 50 %)" },
+      { label: "Seuil de recettes", a: "77 700 €/an maximum (2026)", b: "Aucun seuil" },
+      { label: "Rentable si...", a: "Charges réelles faibles (bien sans crédit, peu de charges)", b: "Bien récent avec crédit, travaux ou charges de copropriété élevées" },
+      { label: "Impact à la revente", a: "Sans effet sur la plus-value", b: "Amortissements déduits réintégrés dans le calcul de la plus-value (depuis 2025)" },
+    ],
+    sections: [
+      {
+        h2: "Le micro-BIC : la simplicité au prix d'un abattement parfois insuffisant",
+        body: [
+          "Le régime micro-BIC applique un abattement forfaitaire de 50 % sur les loyers perçus (censé représenter l'ensemble des charges), sans qu'aucune dépense réelle ne soit à justifier. C'est l'option par défaut tant que les recettes locatives restent sous le seuil de 77 700 €/an en 2026, et le choix le plus simple pour un bien sans crédit ou avec peu de charges.",
+          "Sa limite apparaît dès que les charges réelles (intérêts d'emprunt, charges de copropriété, taxe foncière, travaux) dépassent 50 % des loyers encaissés — ce qui est fréquent les premières années d'un investissement financé à crédit.",
+        ],
+      },
+      {
+        h2: "Le régime réel : l'amortissement, souvent la clé d'une fiscalité quasi nulle",
+        body: [
+          "Au régime réel, toutes les charges réelles sont déductibles, et surtout, le bien immobilier (hors terrain) et le mobilier peuvent être amortis sur plusieurs années. Cet amortissement, purement comptable, réduit le résultat imposable sans sortie de trésorerie — il permet fréquemment d'afficher un résultat fiscal proche de zéro malgré des loyers réellement perçus.",
+          "En contrepartie, la tenue d'une comptabilité complète est obligatoire, ce qui implique généralement le recours à un expert-comptable. L'option est engageante et son abandon n'est pas rétroactif sur l'année en cours.",
+        ],
+      },
+      {
+        h2: "Comment trancher ?",
+        body: [
+          "Simulez les deux régimes avec vos chiffres réels : si vos charges annuelles (intérêts compris) dépassent 50 % de vos loyers, le régime réel est presque toujours plus avantageux malgré sa complexité administrative. Pour un bien sans crédit et peu de charges, le micro-BIC reste souvent suffisant et évite les frais de comptabilité.",
+        ],
+      },
+    ],
+    verdict: "Le régime réel devient avantageux dès que les charges (intérêts d'emprunt en tête) dépassent 50 % des loyers — c'est-à-dire pour la plupart des investissements récents financés à crédit. Le micro-BIC reste pertinent pour un bien détenu sans emprunt ou avec de faibles charges, où sa simplicité l'emporte sur un gain fiscal marginal du régime réel.",
+    sims: ['/simulateurs/rendement-locatif', '/simulateurs/deficit-foncier'],
+    terms: ['lmnp', 'rendement-locatif', 'micro-foncier'],
+  },
 ];
 
 export const COMPARATIFS_BY_SLUG = Object.fromEntries(COMPARATIFS.map(c => [c.slug, c]));
