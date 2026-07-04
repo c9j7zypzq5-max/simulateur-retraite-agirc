@@ -183,6 +183,7 @@ export const GLOSSARY = [
     long: [
       "L'impôt sur le revenu (IR) est calculé selon un barème progressif par tranches, après division du revenu imposable par le nombre de parts (quotient familial). Une décote peut réduire l'impôt des foyers modestes.",
       "Il est prélevé à la source, avec régularisation l'année suivante selon la déclaration.",
+      "Exemple : un célibataire (1 part) avec 30 000 € de revenu imposable en 2026 paie environ 2 104 € d'impôt — seule la fraction au-dessus de 11 600 € est taxée à 11 %, puis la fraction au-dessus de 29 579 € à 30 %, soit un taux moyen réel d'environ 7 %, bien inférieur à sa TMI de 30 %.",
     ],
     sims: ['/simulateurs/impot-revenu'],
     related: ['tmi', 'quotient-familial', 'decote'],
@@ -194,6 +195,7 @@ export const GLOSSARY = [
     long: [
       "Le quotient familial attribue des parts selon la composition du foyer (1 part par adulte, 0,5 part par enfant, etc.). Le revenu imposable est divisé par ce nombre de parts avant application du barème.",
       "Ce mécanisme réduit l'impôt des familles, dans la limite d'un plafond par demi-part.",
+      "Exemple : un couple marié avec 2 enfants (3 parts) et 60 000 € de revenu imposable est taxé comme si chaque part gagnait 20 000 € (60 000 ÷ 3), ce qui allège fortement l'impôt par rapport à un célibataire seul sur le même revenu total — c'est tout l'objet du quotient familial.",
     ],
     sims: ['/simulateurs/impot-revenu'],
     related: ['ir', 'tmi'],
@@ -239,6 +241,7 @@ export const GLOSSARY = [
     short: "Prélèvement social de 0,5 % destiné à résorber la dette de la Sécurité sociale.",
     long: [
       "La CRDS est une contribution de 0,5 % prélevée sur une assiette large de revenus, créée pour rembourser la dette sociale. Elle accompagne généralement la CSG.",
+      "Exemple : sur un salaire brut de 2 500 €/mois, la CRDS représente environ 12,50 €/mois — un montant modeste isolément, mais qui s'ajoute à la CSG (9,2 %) et aux autres cotisations pour former l'écart entre salaire brut et salaire net.",
     ],
     sims: ['/simulateurs/salaire'],
     related: ['csg', 'prelevements-sociaux'],
@@ -250,6 +253,7 @@ export const GLOSSARY = [
     long: [
       "La plus-value immobilière est la différence entre le prix de vente et le prix d'achat (majoré de certains frais). La résidence principale en est exonérée.",
       "Pour les autres biens, elle est taxée à 19 % d'impôt + 17,2 % de prélèvements sociaux, avec des abattements croissants selon la durée de détention (exonération totale après 22 ans pour l'impôt, 30 ans pour les prélèvements sociaux).",
+      "Exemple : un bien locatif acheté 200 000 € et revendu 260 000 € après 10 ans de détention dégage une plus-value brute de 60 000 €. L'abattement pour durée de détention (6 %/an au-delà de 5 ans pour l'IR) réduit la base taxable d'environ 30 %, ramenant l'impôt dû à quelques milliers d'euros plutôt qu'au calcul sur la plus-value brute complète.",
     ],
     sims: ['/simulateurs/plus-value-immobiliere'],
     related: ['abattement', 'prelevements-sociaux'],
@@ -792,6 +796,7 @@ export const GLOSSARY = [
     long: [
       "L'ASPA garantit un niveau de ressources minimal aux personnes âgées de 65 ans et plus disposant de faibles revenus. Elle complète les pensions pour atteindre un plancher fixé par l'État.",
       "Elle est récupérable sur la succession au-delà d'un certain montant d'actif net.",
+      "Exemple : en 2026, le plancher garanti est de 1 034 €/mois pour une personne seule et 1 605 €/mois pour un couple. Un retraité isolé percevant 800 €/mois de pension peut ainsi obtenir un complément ASPA d'environ 234 €/mois pour atteindre ce plancher.",
     ],
     sims: ['/simulateurs/cnav'],
     related: ['cnav', 'minimum-contributif'],
@@ -803,6 +808,7 @@ export const GLOSSARY = [
     long: [
       "Le minimum contributif (Mico) relève la pension de base des assurés qui partent au taux plein mais ont eu de faibles salaires. Son montant est majoré selon la durée cotisée.",
       "Il diffère de l'ASPA : il récompense la cotisation, sans condition de ressources aussi stricte.",
+      "Exemple : un salarié partant au taux plein après une carrière complète mais rémunérée au SMIC toute sa vie verrait sa pension de base calculée normalement (50 % du SAM) aboutir à un montant très faible — le Mico relève alors cette pension jusqu'à un plancher, majoré si la carrière a été intégralement cotisée (« Mico majoré »).",
     ],
     sims: ['/simulateurs/cnav'],
     related: ['taux-plein', 'aspa'],
@@ -854,6 +860,7 @@ export const GLOSSARY = [
     long: [
       "Le Lean FIRE consiste à atteindre l'indépendance financière en optimisant fortement ses dépenses : un train de vie sobre abaisse le capital nécessaire (toujours environ 25 fois les dépenses annuelles).",
       "Il s'atteint plus vite, au prix d'un budget serré et d'une marge de sécurité réduite.",
+      "Exemple : avec 1 200 €/mois de dépenses (14 400 €/an), le capital cible Lean FIRE est de 14 400 × 25 = 360 000 € — contre 600 000 € pour un budget de 2 000 €/mois, soit un capital atteint bien plus tôt à taux d'épargne égal.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'fat-fire', 'taux-epargne'],
   },
@@ -864,6 +871,7 @@ export const GLOSSARY = [
     long: [
       "Le Fat FIRE vise à vivre de ses placements sans réduire son niveau de vie. Le capital cible est élevé (souvent plus de 1,5 M€) car les dépenses annuelles le sont aussi.",
       "Il demande plus de temps ou de revenus, mais offre un confort et une sécurité supérieurs.",
+      "Exemple : pour maintenir un train de vie de 5 000 €/mois (60 000 €/an), le capital cible Fat FIRE est de 60 000 × 25 = 1 500 000 € — un objectif qui demande généralement des revenus élevés ou un horizon d'épargne plus long que le FIRE standard.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'lean-fire'],
   },
@@ -885,6 +893,7 @@ export const GLOSSARY = [
     long: [
       "Le Barista FIRE combine un travail à temps partiel et des retraits modérés du portefeuille. Le job d'appoint apporte un complément de revenu et, souvent, une couverture santé.",
       "C'est un compromis entre liberté et sécurité, accessible plus tôt que le FIRE complet.",
+      "Exemple : pour 2 000 €/mois de dépenses, un revenu d'appoint de 800 €/mois (mi-temps) ne laisse que 1 200 €/mois (14 400 €/an) à couvrir par les retraits — ramenant le capital nécessaire à 14 400 × 25 = 360 000 €, contre 600 000 € sans aucun revenu d'activité.",
     ],
     sims: ['/simulateurs/fire'], related: ['fire', 'coast-fire'],
   },
@@ -992,6 +1001,7 @@ export const GLOSSARY = [
     long: [
       "Un crédit d'impôt vient en déduction de votre impôt ; s'il dépasse l'impôt dû, l'excédent vous est remboursé par l'administration (emploi à domicile, garde d'enfants…).",
       "Il diffère de la réduction d'impôt, qui ne peut pas générer de remboursement.",
+      "Exemple : un crédit d'impôt de 1 500 € (emploi à domicile) pour un foyer dont l'impôt dû est de 900 € : les 900 € sont annulés, et les 600 € restants sont versés par l'administration. Une réduction d'impôt classique, elle, aurait été perdue au-delà de 900 €.",
     ],
     sims: ['/simulateurs/impot-revenu'], related: ['ir', 'tmi'],
   },
@@ -1002,6 +1012,7 @@ export const GLOSSARY = [
     long: [
       "Le reste à vivre = revenus − charges fixes (loyer/crédit, énergie, assurances…). Les banques l'examinent autant que le taux d'endettement pour accorder un prêt.",
       "Un reste à vivre confortable sécurise votre budget et votre capacité d'épargne.",
+      "Exemple : un foyer avec 3 000 € de revenus nets et 1 800 € de charges fixes (crédit immobilier, énergie, assurances, abonnements) dispose d'un reste à vivre de 1 200 €, soit 400 € par personne pour un couple sans enfant — un niveau généralement jugé confortable par les banques.",
     ],
     sims: ['/simulateurs/budget', '/simulateurs/emprunt-immobilier'], related: ['taux-endettement', 'taux-epargne'],
   },
@@ -1014,6 +1025,7 @@ export const GLOSSARY = [
     long: [
       "La règle 50/30/20 est une méthode simple pour structurer son budget mensuel sans tableur. Elle divise les revenus nets en trois enveloppes : besoins essentiels (loyer, alimentation, transport), envies (restaurants, loisirs, abonnements non indispensables) et épargne.",
       "Elle n'est pas rigide : en région parisienne, le loyer seul peut dépasser 30 % des revenus. L'objectif est de garder l'épargne non négociable, quitte à ajuster les deux autres catégories.",
+      "Exemple : pour 3 000 € de revenus nets mensuels, la règle 50/30/20 affecte 1 500 € aux besoins essentiels, 900 € aux envies et 600 € à l'épargne.",
     ],
     sims: ['/simulateurs/budget'], related: ['taux-epargne', 'reste-a-vivre', 'epargne-precaution'],
   },
@@ -1056,6 +1068,7 @@ export const GLOSSARY = [
     long: [
       "Le dispositif carrière longue permet aux assurés ayant commencé à cotiser avant 20 ans (voire 18 ou 16 ans selon les périodes) et ayant validé un certain nombre de trimestres de partir avant l'âge légal de départ à la retraite.",
       "Les conditions précises (âge de début, nombre de trimestres cotisés) varient selon la génération. Ce dispositif a été étendu et modifié par les réformes successives des retraites.",
+      "Exemple : un assuré né en 1965 ayant commencé à travailler à 19 ans et validé ses 172 trimestres requis peut, sous condition d'avoir cotisé (et non simplement validé) un nombre suffisant de trimestres avant cet âge, partir dès 62 ans au lieu de l'âge légal de 64 ans applicable à sa génération.",
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['trimestre', 'taux-plein', 'decote'],
   },
@@ -1066,6 +1079,7 @@ export const GLOSSARY = [
     long: [
       "La pension de réversion est versée au conjoint (ou ex-conjoint non remarié selon les cas) d'un assuré décédé. Son montant est une fraction (50 % au régime général, 60 % à l'Agirc-Arrco) de la retraite du défunt.",
       "Au régime général, elle est soumise à une condition de ressources. À l'Agirc-Arrco, elle n'est versée qu'aux conjoints mariés et sans condition de ressources, mais les concubins et partenaires de PACS en sont exclus.",
+      "Exemple : un défunt percevait 1 500 €/mois de retraite CNAV et 800 €/mois de retraite Agirc-Arrco. Le conjoint survivant peut percevoir jusqu'à 54 % × 1 500 € = 810 €/mois au titre de la CNAV (sous condition de ressources) et 60 % × 800 € = 480 €/mois au titre de l'Agirc-Arrco (sans condition de ressources s'il était marié), soit 1 290 €/mois au total.",
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
     faqs: [
