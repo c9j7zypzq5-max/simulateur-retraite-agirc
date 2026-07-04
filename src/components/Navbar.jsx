@@ -832,8 +832,9 @@ export default function Navbar({ theme, setTheme }) {
           })}
         </nav>
 
-        {/* Simulations sauvegardées — masquées si ACCOUNT_ENABLED = false */}
-        {ACCOUNT_ENABLED && history.length > 0 && (
+        {/* Simulations sauvegardées : localStorage pur (useSimHistory), indépendant
+            d'ACCOUNT_ENABLED — /mes-simulations reste accessible sans compte. */}
+        {history.length > 0 && (
           <div style={{ borderTop: "1px solid var(--border)", padding: "10px 10px 4px", flexShrink: 0 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6, padding: "0 2px" }}>
               <span style={{ fontSize: 9.5, letterSpacing: "0.07em", textTransform: "uppercase", color: "var(--text-secondary)" }}>

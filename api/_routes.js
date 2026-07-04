@@ -409,6 +409,9 @@ export function structuredData(route, extra = {}) {
   const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
   if (route.startsWith('/simulateurs/')) {
     const seoIntro = SEO_CONTENT[route]?.intro;
+    // Même source que le <lastmod> du sitemap : les deux signaux doivent raconter
+    // la même histoire de fraîcheur de contenu (sinon Google finit par ignorer les deux).
+    const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
     out.push({
       '@context': 'https://schema.org', '@type': 'WebApplication',
       name: meta.title, url,
@@ -419,6 +422,7 @@ export function structuredData(route, extra = {}) {
       featureList: 'Calcul instantané, Export PDF, Partage de simulation, Graphiques interactifs, Comparaison de scénarios',
       screenshot: `${BASE}/og-image.webp`,
       author: { '@type': 'Organization', name: 'Simfinly', url: BASE },
+      dateModified: lastmod,
       // Pas d'aggregateRating : aucun système d'avis réel n'alimente cette note.
       // Un rich snippet d'avis fabriqué viole les règles Google (risque de
       // sanction manuelle) — à réintroduire uniquement avec de vrais avis vérifiables.

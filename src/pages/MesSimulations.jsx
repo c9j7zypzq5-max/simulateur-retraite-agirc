@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth.js";
 import { useNoIndex } from "../hooks/useNoIndex.js";
+import { ACCOUNT_ENABLED } from "../config/features.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSimHistory } from "../hooks/useSimHistory.js";
@@ -51,8 +52,10 @@ function SimIcon({ simulator }) {
 const NAV_ITEMS = [
   { label: "Mes simulations", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>, to: "/mes-simulations", tab: "list" },
   { label: "Comparaisons", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>, to: "/mes-simulations?tab=compare", tab: "compare" },
-  { label: "Profil", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>, to: "/compte", tab: null },
-  { label: "Abonnement", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1v6M12 17v6M4.2 4.2l4.3 4.3M15.5 15.5l4.3 4.3M1 12h6M17 12h6"/></svg>, to: "/pro", tab: null },
+  // Profil/Abonnement exigent un compte Supabase (routes /compte, /pro elles-mêmes
+  // gated par ACCOUNT_ENABLED) — filtrés plus bas quand ACCOUNT_ENABLED = false.
+  { label: "Profil", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>, to: "/compte", tab: null, requiresAccount: true },
+  { label: "Abonnement", icon: <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1v6M12 17v6M4.2 4.2l4.3 4.3M15.5 15.5l4.3 4.3M1 12h6M17 12h6"/></svg>, to: "/pro", tab: null, requiresAccount: true },
 ];
 
 export default function MesSimulations() {
@@ -170,7 +173,7 @@ export default function MesSimulations() {
             <div style={{ background: "#fff", borderRight: "1px solid #e7eaf0", padding: "28px 20px", minHeight: 520, borderRadius: "14px 0 0 14px" }}>
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8a93a3", fontWeight: 700, marginBottom: 14 }}>Mon compte</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                {NAV_ITEMS.map(item => {
+                {NAV_ITEMS.filter(item => !item.requiresAccount || ACCOUNT_ENABLED).map(item => {
                   const isActive = item.tab
                     ? activeTab === item.tab
                     : window.location.pathname === item.to;

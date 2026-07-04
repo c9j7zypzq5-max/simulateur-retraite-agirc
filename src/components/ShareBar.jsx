@@ -342,17 +342,18 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
         )}
       </div>
 
-      {ACCOUNT_ENABLED && isConfigured && user && (
-        <div style={{ position: "relative" }}>
-          <button style={btnStyle} onClick={handleSave}
-            aria-label={locale === "en" ? "Save simulation" : "Sauvegarder la simulation"}
-            onMouseEnter={hoverIn} onMouseLeave={hoverOut}
-            onFocus={focusIn} onBlur={focusOut}>
-            <SaveIcon />
-            <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
-          </button>
-        </div>
-      )}
+      {/* Sauvegarde locale (localStorage) : ne dépend ni d'ACCOUNT_ENABLED ni d'un
+          compte Supabase — useSimHistory fonctionne sans authentification, seule
+          la synchro cloud additionnelle est conditionnée à la présence d'un user. */}
+      <div style={{ position: "relative" }}>
+        <button style={btnStyle} onClick={handleSave}
+          aria-label={locale === "en" ? "Save simulation" : "Sauvegarder la simulation"}
+          onMouseEnter={hoverIn} onMouseLeave={hoverOut}
+          onFocus={focusIn} onBlur={focusOut}>
+          <SaveIcon />
+          <span className="btn-text">{saved ? (locale === "en" ? "Saved!" : "Sauvegardé !") : (locale === "en" ? "Save" : "Sauvegarder")}</span>
+        </button>
+      </div>
 
       {ACCOUNT_ENABLED && isConfigured && user && (
         <div style={{ position: "relative" }}>

@@ -356,7 +356,10 @@ export default function App() {
         <Route path="/simulateurs/comparaison-reforme" element={<ComparaisonReforme />} />
         <Route path="/methodologie" element={<Methodologie />} />
         {/* Compte / Pro — masqués jusqu'à la mise en production */}
-        <Route path="/mes-simulations" element={ACCOUNT_ENABLED ? <MesSimulations /> : <NotFound />} />
+        {/* mes-simulations : pur localStorage (useSimHistory), fonctionne sans compte
+            — reste accessible même si ACCOUNT_ENABLED = false, contrairement aux
+            pages ci-dessous qui exigent réellement une session Supabase. */}
+        <Route path="/mes-simulations" element={<MesSimulations />} />
         <Route path="/tableau-de-bord" element={ACCOUNT_ENABLED ? <TableauDeBord /> : <NotFound />} />
         <Route path="/wizard-retraite" element={ACCOUNT_ENABLED ? <WizardRetraite /> : <NotFound />} />
         <Route path="/synthese-patrimoniale" element={ACCOUNT_ENABLED ? <SynthesePatrimoniale /> : <NotFound />} />
