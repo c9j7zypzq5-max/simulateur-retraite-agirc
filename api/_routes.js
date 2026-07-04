@@ -385,10 +385,20 @@ export function structuredData(route, extra = {}) {
     if (extra.publishedAt) { article.datePublished = extra.publishedAt; article.dateModified = extra.dateModified || extra.publishedAt; }
     if (extra.image) article.image = extra.image;
     if (extra.content) article.articleBody = String(extra.content).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-    return [
+    const schemas = [
       breadcrumb([['Accueil', `${BASE}/`], ['Blog', `${BASE}/blog`], [extra.title, url]]),
       article,
     ];
+    if (extra.faqs && extra.faqs.length > 0) {
+      schemas.push({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: extra.faqs.map(({ q, a }) => ({
+          '@type': 'Question', name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      });
+    }
+    return schemas;
   }
 
   const meta = ROUTE_META[route];

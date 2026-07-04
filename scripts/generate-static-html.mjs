@@ -131,7 +131,7 @@ async function blogEntries() {
   const staticFallback = BLOG_SLUGS.map(route => {
     const slug = route.replace('/blog/', '');
     const a = STATIC_BY_SLUG[slug];
-    return a ? { route, title: a.title, description: a.intro, publishedAt: a.publishedAt, content: a.content } : { route };
+    return a ? { route, title: a.title, description: a.intro, publishedAt: a.publishedAt, content: a.content, faqs: a.faqs } : { route };
   });
   if (!url || !token) return staticFallback;
   try {
@@ -142,13 +142,13 @@ async function blogEntries() {
     const entries = [];
     for (const slug of slugs) {
       const route = slug.startsWith('/blog/') ? slug : `/blog/${slug}`;
-      let title, description, publishedAt, image, content;
+      let title, description, publishedAt, image, content, faqs;
       try {
         const raw = await redis.get(`blog:article:${slug.replace(/^\/blog\//, '')}`);
         const a = raw ? (typeof raw === 'string' ? JSON.parse(raw) : raw) : null;
-        title = a?.title; description = a?.intro; publishedAt = a?.publishedAt; image = a?.image; content = a?.content;
+        title = a?.title; description = a?.intro; publishedAt = a?.publishedAt; image = a?.image; content = a?.content; faqs = a?.faqs;
       } catch { /* titre par défaut */ }
-      entries.push({ route, title, description, publishedAt, image, content });
+      entries.push({ route, title, description, publishedAt, image, content, faqs });
     }
     return entries;
   } catch {
