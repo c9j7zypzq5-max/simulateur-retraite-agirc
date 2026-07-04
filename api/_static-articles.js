@@ -506,7 +506,7 @@ export const STATIC_ARTICLES = [
 <ul>
 <li><strong>Avoir été marié</strong> : le PACS et le concubinage n'ouvrent pas droit à la réversion CNAV.</li>
 <li><strong>Avoir au moins 55 ans</strong> (pas de condition d'âge pour les veuves avec enfants à charge).</li>
-<li><strong>Plafond de ressources</strong> : vos revenus annuels ne doivent pas dépasser 23 441 € (personne seule, 2026). En cas de remariage ou cohabitation, les ressources du partenaire s'ajoutent.</li>
+<li><strong>Plafond de ressources</strong> : vos revenus annuels ne doivent pas dépasser 25 001,60 € (personne seule, 2026). En cas de remariage ou cohabitation, les ressources du partenaire s'ajoutent.</li>
 </ul>
 <p>La réversion est <strong>cumulable avec vos propres droits à la retraite</strong> dans la limite du plafond de ressources. Au-delà du plafond, elle est réduite proportionnellement.</p>
 <h2>L'Agirc-Arrco : 60 % sans condition de ressources</h2>
@@ -528,8 +528,8 @@ export const STATIC_ARTICLES = [
 <p>Le simulateur de réversion de simfinly.com calcule la pension de réversion CNAV et Agirc-Arrco selon la retraite du défunt, votre âge et vos ressources. Il vérifie si le plafond est dépassé et calcule la réversion nette mensuelle.</p>`,
     faqs: [
       { q: "Qui a droit à la pension de réversion en France ?", a: "La pension de réversion CNAV est réservée aux personnes ayant été mariées avec le défunt — le PACS et le concubinage n'ouvrent pas droit. Il faut également avoir au moins 55 ans (sauf si des enfants à charge sont présents). La durée du mariage n'est pas une condition d'éligibilité au régime général." },
-      { q: "Quel est le montant de la pension de réversion au régime général ?", a: "La pension de réversion CNAV est égale à 54 % de la pension brute de base du défunt. Elle est ensuite réduite si vos revenus annuels dépassent 23 441 € (personne seule, 2026). Au-delà de ce plafond, la réversion est réduite proportionnellement. La réversion Agirc-Arrco (complémentaire) est de 60 % sans condition de ressources." },
-      { q: "Peut-on cumuler la réversion avec sa propre retraite ?", a: "Oui, la réversion CNAV est cumulable avec vos propres droits à la retraite, mais dans la limite du plafond de ressources (23 441 € par an pour une personne seule en 2026). La réversion Agirc-Arrco est intégralement cumulable avec vos propres droits, sans plafond de ressources." },
+      { q: "Quel est le montant de la pension de réversion au régime général ?", a: "La pension de réversion CNAV est égale à 54 % de la pension brute de base du défunt. Elle est ensuite réduite si vos revenus annuels dépassent 25 001,60 € (personne seule, 2026). Au-delà de ce plafond, la réversion est réduite proportionnellement. La réversion Agirc-Arrco (complémentaire) est de 60 % sans condition de ressources." },
+      { q: "Peut-on cumuler la réversion avec sa propre retraite ?", a: "Oui, la réversion CNAV est cumulable avec vos propres droits à la retraite, mais dans la limite du plafond de ressources (25 001,60 € par an pour une personne seule en 2026). La réversion Agirc-Arrco est intégralement cumulable avec vos propres droits, sans plafond de ressources." },
       { q: "La pension de réversion est-elle maintenue en cas de remariage ?", a: "Non pour la CNAV : la pension de réversion est suspendue depuis 2003 en cas de remariage ou vie en couple. En revanche, la réversion Agirc-Arrco est maintenue même en cas de remariage pour les pensions acquises avant 2017. Vérifiez bien les règles de chaque caisse dont dépendait le défunt." },
     ],
   },

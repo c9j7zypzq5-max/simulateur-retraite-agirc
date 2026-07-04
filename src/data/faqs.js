@@ -432,7 +432,7 @@ export const FAQS = {
   },
   {
     q: "Comment fonctionne la condition de ressources ?",
-    a: "Seule la réversion de base (CNAV) est soumise à condition de ressources. En 2025, les ressources annuelles du survivant ne doivent pas dépasser 24 710 € pour une personne seule (39 537 € pour un couple). Si le total des ressources et de la réversion dépasse ce plafond, la réversion de base est réduite du montant du dépassement. La réversion complémentaire Agirc-Arrco, elle, n'est pas concernée.",
+    a: "Seule la réversion de base (CNAV) est soumise à condition de ressources. En 2026, les ressources annuelles du survivant ne doivent pas dépasser 25 001,60 € pour une personne seule (40 002,56 € pour un couple). Si le total des ressources et de la réversion dépasse ce plafond, la réversion de base est réduite du montant du dépassement. La réversion complémentaire Agirc-Arrco, elle, n'est pas concernée.",
   },
   {
     q: "À partir de quel âge perçoit-on la réversion ?",
@@ -440,7 +440,7 @@ export const FAQS = {
   },
   {
     q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur les barèmes 2025 (taux de 54 % et 60 %, plafonds de ressources). Le calcul réel dépend de la carrière du défunt, de tous ses régimes (fonction publique, indépendants…) et de la situation précise du survivant. Adressez-vous à votre caisse de retraite pour un calcul officiel.",
+    a: "Non. Il s'agit d'une estimation indicative basée sur les barèmes 2026 (taux de 54 % et 60 %, plafonds de ressources). Le calcul réel dépend de la carrière du défunt, de tous ses régimes (fonction publique, indépendants…) et de la situation précise du survivant. Adressez-vous à votre caisse de retraite pour un calcul officiel.",
   },
 ],
 

@@ -25,7 +25,7 @@ const FAQ = [
   },
   {
     q: "Y a-t-il un plafond de ressources pour la réversion CNAV ?",
-    a: "Oui. En 2026, vos ressources annuelles ne doivent pas dépasser 23 441 € (personne seule) ou 37 506 € (en couple, si vous vous êtes remarié). Si vous dépassez ce plafond, votre réversion CNAV est réduite ou supprimée. La réversion Agirc-Arrco n'a pas de plafond de ressources.",
+    a: "Oui. En 2026, vos ressources annuelles ne doivent pas dépasser 25 001,60 € (personne seule) ou 40 002,56 € (en couple, si vous vous êtes remarié). Si vous dépassez ce plafond, votre réversion CNAV est réduite ou supprimée. La réversion Agirc-Arrco n'a pas de plafond de ressources.",
   },
   {
     q: "La pension de réversion est-elle imposable ?",
@@ -174,7 +174,7 @@ export default function GuidePensionReversion() {
           <ul>
             <li><strong>Âge minimum :</strong> 55 ans (abaissé à 51 ans si le défunt est décédé avant 2009)</li>
             <li><strong>Lien matrimonial :</strong> être marié(e) ou avoir été marié(e) (divorcé(e) non remarié(e))</li>
-            <li><strong>Ressources :</strong> ne pas dépasser 23 441 €/an (seul) ou 37 506 €/an (en couple)</li>
+            <li><strong>Ressources :</strong> ne pas dépasser 25 001,60 €/an (seul) ou 40 002,56 €/an (en couple)</li>
           </ul>
           <p>Il n'y a pas de condition de durée de mariage, ni d'obligation que le défunt ait été à la retraite au moment du décès.</p>
         </div>
@@ -192,7 +192,7 @@ export default function GuidePensionReversion() {
             </thead>
             <tbody>
               {[
-                ["CNAV (salarié privé)", "54 %", "Oui — 23 441 €/an (seul)", "55 ans"],
+                ["CNAV (salarié privé)", "54 %", "Oui — 25 001,60 €/an (seul)", "55 ans"],
                 ["Agirc-Arrco", "60 %", "Non", "Pas d'âge minimum"],
                 ["IRCANTEC (agents pub.)", "50 %", "Non", "Pas d'âge minimum"],
                 ["Fonction publique (CNRACL)", "50 %", "Non", "Pas d'âge minimum"],
@@ -215,7 +215,7 @@ export default function GuidePensionReversion() {
           <p style={{ background: "var(--primary-soft)", border: "1px solid var(--border-gold)", borderRadius: 10, padding: "14px 20px", fontWeight: 600, color: "var(--text)" }}>
             Réversion nette = Réversion théorique − (Dépassement du plafond × 1,3)
           </p>
-          <p style={{ marginTop: 16 }}>Exemple : plafond 23 441 €/an, vos ressources = 26 000 €/an (dépassement = 2 559 €). Réversion réduite de 2 559 × 1,3 = 3 327 €/an.</p>
+          <p style={{ marginTop: 16 }}>Exemple : plafond 25 001,60 €/an, vos ressources = 26 000 €/an (dépassement = 998,40 €). Réversion réduite de 998,40 × 1,3 = 1 297,92 €/an.</p>
           <p>Les ressources prises en compte : pensions de retraite, revenus d'activité, revenus du patrimoine, allocations chômage, indemnités journalières. La réversion Agirc-Arrco que vous percevez est exclue du calcul du plafond CNAV.</p>
         </div>
 

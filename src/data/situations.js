@@ -161,7 +161,7 @@ export const SITUATIONS = {
       },
       {
         title: "La pension de réversion : un filet de sécurité",
-        content: "Si votre conjoint décède, vous avez droit à **54 % de sa pension brute** (régime général) sous conditions de ressources. En 2026, le plafond de ressources est de 23 441 €/an (seul) ou 37 506 €/an (en couple après remariage).\n\n**Agirc-Arrco :** 60 % de la retraite complémentaire du défunt, sans condition de ressources, à condition d'avoir été mariés et non divorcés.\n\nEn cas de divorce, la pension de réversion CNAV se calcule au prorata de la durée de mariage. Si vous vous êtes remariés, la réversion est partagée entre les ex-conjoints.\n\nSimulez le montant avec notre simulateur pension de réversion.",
+        content: "Si votre conjoint décède, vous avez droit à **54 % de sa pension brute** (régime général) sous conditions de ressources. En 2026, le plafond de ressources est de 25 001,60 €/an (seul) ou 40 002,56 €/an (en couple après remariage).\n\n**Agirc-Arrco :** 60 % de la retraite complémentaire du défunt, sans condition de ressources, à condition d'avoir été mariés et non divorcés.\n\nEn cas de divorce, la pension de réversion CNAV se calcule au prorata de la durée de mariage. Si vous vous êtes remariés, la réversion est partagée entre les ex-conjoints.\n\nSimulez le montant avec notre simulateur pension de réversion.",
       },
     ],
     faq: [

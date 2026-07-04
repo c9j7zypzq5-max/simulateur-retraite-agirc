@@ -44,6 +44,12 @@ const STALE = [
   // découvert lors de l'unification des barèmes retraite — 4 valeurs
   // différentes du PASS/PMSS coexistaient dans le repo)
   "46 368 € en 2026", "43 992 € en 2024", "3 925 €/mois", "PMSS 2025 est de 3 864",
+  // Plafond de ressources pension de réversion : valeur 2025 périmée présentée
+  // comme 2026 (24 710 €/39 537 €), et un chiffre erroné (23 441 €/37 506 €)
+  // sans source qui s'est propagé dans 5 fichiers avant correction vers la
+  // valeur officielle 2026 (circulaire Cnav n° 2025-29 du 22/12/2025) :
+  // 25 001,60 €/40 002,56 €.
+  "24 710 €", "24710", "39 537 €", "39537", "23 441 €", "23441", "37 506 €", "37506",
 ];
 
 // Fichiers exclus : le module central documente les anciennes valeurs en

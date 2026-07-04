@@ -1215,7 +1215,7 @@ export const GLOSSARY = [
     ],
     sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
     faqs: [
-      { q: "À combien s'élève la pension de réversion en 2026 ?", a: "Au régime général (CNAV), la pension de réversion est égale à 54 % de la retraite de base du défunt, sous condition de ressources (max 23 441 €/an pour une personne seule en 2026). À l'Agirc-Arrco, la réversion est de 60 % de la pension complémentaire, sans condition de ressources mais réservée aux conjoints mariés." },
+      { q: "À combien s'élève la pension de réversion en 2026 ?", a: "Au régime général (CNAV), la pension de réversion est égale à 54 % de la retraite de base du défunt, sous condition de ressources (max 25 001,60 €/an pour une personne seule en 2026, 40 002,56 € pour un couple). À l'Agirc-Arrco, la réversion est de 60 % de la pension complémentaire, sans condition de ressources mais réservée aux conjoints mariés." },
       { q: "Les concubins ont-ils droit à la pension de réversion ?", a: "Non. Ni le concubinage ni le PACS ne donnent droit à la pension de réversion au régime général ou à l'Agirc-Arrco. Seul le mariage ouvre ce droit. En cas de divorce, l'ex-conjoint peut bénéficier d'une réversion si le défunt n'était pas remarié (CNAV) ou proportionnellement à la durée de mariage (certains régimes)." },
       { q: "La pension de réversion est-elle imposable ?", a: "Oui. La pension de réversion est imposée comme un revenu de remplacement. Elle est soumise à l'impôt sur le revenu après l'abattement de 10 % sur les pensions (plafonné à 4 321 € par foyer en 2026) et aux prélèvements sociaux (CSG 8,3 %, CRDS 0,5 % — exonération possible sous conditions de ressources)." },
     ],

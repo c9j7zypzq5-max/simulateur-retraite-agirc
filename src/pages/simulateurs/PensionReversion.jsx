@@ -22,21 +22,23 @@ import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 
 // ─── Barème de la pension de réversion ──────────────────────────────────────────
-// Valeurs INDICATIVES 2025, isolées ici pour être corrigées facilement.
+// Valeurs INDICATIVES 2026, isolées ici pour être corrigées facilement.
 //
 // Régime de base (CNAV) : 54 % de la pension du défunt, soumis à condition de
 // ressources et à un âge minimum de 55 ans. Le plafond de ressources annuelles
-// 2025 = 2 080 × SMIC horaire (11,88 €) = 24 710 € pour une personne seule,
-// × 1,6 = 39 537 € pour un couple. Si les ressources + la réversion dépassent ce
-// plafond, la réversion est réduite à due concurrence (réversion différentielle).
+// 2026 = 2 080 × SMIC horaire brut au 1er janvier 2026 = 25 001,60 € pour une
+// personne seule, × 1,6 = 40 002,56 € pour un couple (marié/pacsé/en concubinage
+// selon les règles CNAV). Source : circulaire Cnav n° 2025-29 du 22/12/2025,
+// revalorisation au 1er janvier 2026. Si les ressources + la réversion dépassent
+// ce plafond, la réversion est réduite à due concurrence (réversion différentielle).
 //
 // Régime complémentaire (Agirc-Arrco) : 60 % de la pension complémentaire du
 // défunt, SANS condition de ressources, mais âge minimum 55 ans et suppression en
 // cas de remariage.
 const TAUX_BASE = 0.54;
 const TAUX_COMPL = 0.60;
-const PLAFOND_SEUL = 24710;     // ressources annuelles, personne seule (2025)
-const PLAFOND_COUPLE = 39537;   // ressources annuelles, en couple (2025)
+const PLAFOND_SEUL = 25001.60;   // ressources annuelles, personne seule (2026)
+const PLAFOND_COUPLE = 40002.56; // ressources annuelles, en couple (2026)
 const AGE_MIN = 55;
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
@@ -338,7 +340,7 @@ export default function PensionReversion() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Une fraction de la pension du défunt</h3>
             <p style={{ marginBottom: 16 }}>La pension de réversion permet au conjoint survivant de percevoir une partie de la retraite dont bénéficiait ou aurait bénéficié son époux décédé. Elle se compose de la réversion de base, versée par le régime général (CNAV) à hauteur de 54 % de la pension du défunt, et de la réversion complémentaire Agirc-Arrco, égale à 60 % de la pension complémentaire pour les salariés du privé. Le seul mariage ouvre ce droit : le PACS et le concubinage en sont exclus.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La condition de ressources</h3>
-            <p style={{ marginBottom: 16 }}>La réversion de base est soumise à un plafond de ressources : en 2025, 24 710 € par an pour une personne seule et 39 537 € pour un couple. Si les ressources du survivant, augmentées de la réversion, dépassent ce plafond, la réversion de base est diminuée du montant excédentaire. La réversion complémentaire Agirc-Arrco échappe en revanche à cette condition, mais est supprimée en cas de remariage.</p>
+            <p style={{ marginBottom: 16 }}>La réversion de base est soumise à un plafond de ressources : en 2026, 25 001,60 € par an pour une personne seule et 40 002,56 € pour un couple. Si les ressources du survivant, augmentées de la réversion, dépassent ce plafond, la réversion de base est diminuée du montant excédentaire. La réversion complémentaire Agirc-Arrco échappe en revanche à cette condition, mais est supprimée en cas de remariage.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Âge et démarches</h3>
             <p>La réversion s'obtient à partir de 55 ans. Elle n'est pas versée automatiquement : il faut en faire la demande auprès des caisses de retraite du défunt, idéalement via le service en ligne unique de demande de réversion. En cas de mariages multiples du défunt, la réversion est partagée entre les ex-conjoints au prorata de la durée de chaque mariage.</p>
           </div>
@@ -360,7 +362,7 @@ export default function PensionReversion() {
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
-          Simulation indicative basée sur les barèmes 2025 (taux 54 % / 60 %, plafonds de ressources) · Le calcul réel dépend de tous les régimes du défunt · Ne constitue pas un conseil officiel
+          Simulation indicative basée sur les barèmes 2026 (taux 54 % / 60 %, plafonds de ressources) · Le calcul réel dépend de tous les régimes du défunt · Ne constitue pas un conseil officiel
         </p>
 
         {/* AdSense bas */}
