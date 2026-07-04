@@ -37,8 +37,8 @@ function ContentFr() {
           <strong style={{ color: "var(--text)" }}>Adrian Farago</strong><br />
           Particulier — site non commercial<br />
           Contact :{" "}
-          <a href="mailto:adrian.faragofer@gmail.com" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
-            adrian.faragofer@gmail.com
+          <a href="mailto:contact@simfinly.com" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+            contact@simfinly.com
           </a>
         </p>
         <p style={{ marginTop: 14 }}>
@@ -99,8 +99,8 @@ function ContentEn() {
           <strong style={{ color: "var(--text)" }}>Adrian Farago</strong><br />
           Private individual — non-commercial site<br />
           Contact:{" "}
-          <a href="mailto:adrian.faragofer@gmail.com" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
-            adrian.faragofer@gmail.com
+          <a href="mailto:contact@simfinly.com" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+            contact@simfinly.com
           </a>
         </p>
         <p style={{ marginTop: 14 }}>

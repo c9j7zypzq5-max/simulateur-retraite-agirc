@@ -96,8 +96,8 @@ function ContentFr() {
         </p>
         <p style={{ marginTop: 14 }}>
           Pour exercer vos droits ou pour toute question, contactez :{" "}
-          <a href="mailto:adrian.faragofer@gmail.com" style={linkStyle}>
-            adrian.faragofer@gmail.com
+          <a href="mailto:contact@simfinly.com" style={linkStyle}>
+            contact@simfinly.com
           </a>
         </p>
         <p style={{ marginTop: 14 }}>
@@ -175,8 +175,8 @@ function ContentEn() {
         </p>
         <p style={{ marginTop: 14 }}>
           To exercise your rights or for any question, contact:{" "}
-          <a href="mailto:adrian.faragofer@gmail.com" style={linkStyle}>
-            adrian.faragofer@gmail.com
+          <a href="mailto:contact@simfinly.com" style={linkStyle}>
+            contact@simfinly.com
           </a>
         </p>
         <p style={{ marginTop: 14 }}>

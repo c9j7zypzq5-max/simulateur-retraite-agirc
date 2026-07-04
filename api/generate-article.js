@@ -2,7 +2,11 @@ import { Redis } from '@upstash/redis';
 import { pexelsImage } from './_pexels.js';
 import { pingIndexNow } from './_indexnow.js';
 
-// Sujets en rotation — 1 article généré par appel cron
+// Sujets en rotation — 1 article généré par appel cron.
+// L'article est stocké en brouillon (status: 'draft', clé blog:draft:*) et
+// n'est JAMAIS publié automatiquement : il doit être relu et approuvé via
+// GET/POST /api/publish-article (action=approve) avant d'apparaître sur le
+// site et d'être poussé à l'indexation. Voir publish-article.js.
 const TOPICS = [
   { title: "L'impact des intérêts composés sur votre épargne à long terme",             category: "Épargne"     },
   { title: "FIRE en France : adapter la règle des 4 % au contexte français",            category: "FIRE"        },
@@ -151,7 +155,8 @@ Contraintes pour le champ content :
     }
 
     article.slug = slugify(article.slug || article.title);
-    article.publishedAt = new Date().toISOString();
+    article.status = 'draft';
+    article.generatedAt = new Date().toISOString();
     article.category = article.category || topic.category;
     article.readTime = article.readTime || 5;
 
@@ -167,12 +172,18 @@ Contraintes pour le champ content :
       }
     }
 
-    // Stockage Redis
-    await redis.set(`blog:article:${article.slug}`, JSON.stringify(article));
-    await redis.zadd('blog:slugs', { score: Date.now(), member: article.slug });
+    // Stockage en brouillon (pas de publication ni d'indexation tant qu'il
+    // n'a pas été relu et approuvé manuellement).
+    await redis.set(`blog:draft:${article.slug}`, JSON.stringify(article));
+    await redis.zadd('blog:drafts', { score: Date.now(), member: article.slug });
 
-    pingIndexNow(`https://www.simfinly.com/blog/${article.slug}`); // best-effort, ne bloque pas la réponse
-    res.status(200).json({ ok: true, slug: article.slug, title: article.title });
+    res.status(200).json({
+      ok: true,
+      status: 'draft',
+      slug: article.slug,
+      title: article.title,
+      message: 'Brouillon généré, en attente de relecture humaine (GET /api/publish-article pour la liste, action=approve pour publier).',
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
