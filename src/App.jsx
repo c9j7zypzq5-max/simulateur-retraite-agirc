@@ -274,6 +274,8 @@ export default function App() {
         <Route path="/en/contact" element={<Contact />} />
         <Route path="/en/comparisons" element={<Comparatifs />} />
         <Route path="/en/comparisons/:slug" element={<Comparatif />} />
+        <Route path="/en/glossary" element={<Lexique />} />
+        <Route path="/en/glossary/:slug" element={<LexiqueTerme />} />
         <Route path="/en/simulators/donation" element={<Donation />} />
         <Route path="/en/simulators/pension-reversion" element={<PensionReversion />} />
         {/* Retraite */}

@@ -2,17 +2,19 @@ import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Search } from "lucide-react";
 import { useTheme } from "../hooks/useTheme.js";
+import { useTranslation } from "../i18n/index.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { GLOSSARY } from "../data/glossaire.js";
 
 const ALL_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
-function TermCard({ entry }) {
+function TermCard({ entry, isEn }) {
   const [hovered, setHovered] = useState(false);
+  const view = isEn ? entry.en : entry;
   return (
     <Link
-      to={`/lexique/${entry.slug}`}
+      to={isEn ? `/en/glossary/${entry.slug}` : `/lexique/${entry.slug}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
@@ -25,49 +27,57 @@ function TermCard({ entry }) {
       }}
     >
       <div style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", marginBottom: 5 }}>
-        {entry.term}
+        {view.term}
       </div>
-      {entry.full !== entry.term && (
-        <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 6, fontStyle: "italic" }}>{entry.full}</div>
+      {view.full !== view.term && (
+        <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 6, fontStyle: "italic" }}>{view.full}</div>
       )}
-      <p style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--text-secondary)", margin: 0 }}>{entry.short}</p>
+      <p style={{ fontSize: 13.5, lineHeight: 1.55, color: "var(--text-secondary)", margin: 0 }}>{view.short}</p>
     </Link>
   );
 }
 
 export default function Lexique() {
   const [theme, setTheme] = useTheme();
+  const { locale } = useTranslation();
+  const isEn = locale === 'en';
   const [query, setQuery] = useState("");
   const [activeLetter, setActiveLetter] = useState(null);
 
   useEffect(() => {
-    document.title = "Lexique financier — définitions claires | simfinly.com";
-    document.querySelector('meta[name="description"]')?.setAttribute("content",
-      "Lexique des termes de finances personnelles : TAEG, PTZ, PER, TMI, FIRE, assurance-vie, Agirc-Arrco… Des définitions simples, reliées à nos simulateurs gratuits.");
+    document.title = isEn
+      ? "Financial glossary — clear definitions | simfinly.com"
+      : "Lexique financier — définitions claires | simfinly.com";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", isEn
+      ? "Glossary of personal finance terms: compound interest, FIRE, savings rate, DTI ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators."
+      : "Lexique des termes de finances personnelles : TAEG, PTZ, PER, TMI, FIRE, assurance-vie, Agirc-Arrco… Des définitions simples, reliées à nos simulateurs gratuits.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = 'https://www.simfinly.com/lexique';
-  }, []);
+    link.href = isEn ? 'https://www.simfinly.com/en/glossary' : 'https://www.simfinly.com/lexique';
+  }, [isEn]);
+
+  const source = useMemo(() => isEn ? GLOSSARY.filter(t => t.en) : GLOSSARY, [isEn]);
 
   const q = query.trim().toLowerCase();
   const filtered = useMemo(() => {
-    if (!q) return GLOSSARY;
-    return GLOSSARY.filter(t =>
-      t.term.toLowerCase().includes(q) ||
-      t.full.toLowerCase().includes(q) ||
-      t.short.toLowerCase().includes(q) ||
-      (t.aliases || []).some(a => a.toLowerCase().includes(q))
-    );
-  }, [q]);
+    if (!q) return source;
+    return source.filter(t => {
+      const view = isEn ? t.en : t;
+      return view.term.toLowerCase().includes(q) ||
+        view.full.toLowerCase().includes(q) ||
+        view.short.toLowerCase().includes(q) ||
+        (t.aliases || []).some(a => a.toLowerCase().includes(q));
+    });
+  }, [q, source, isEn]);
 
   const byLetter = useMemo(() => {
     const groups = {};
     for (const t of filtered) {
-      const letter = t.term[0].toUpperCase();
+      const letter = (isEn ? t.en.term : t.term)[0].toUpperCase();
       (groups[letter] ||= []).push(t);
     }
     return groups;
-  }, [filtered]);
+  }, [filtered, isEn]);
 
   const presentLetters = new Set(Object.keys(byLetter));
   const letters = ALL_LETTERS.filter(l => presentLetters.has(l));
@@ -92,10 +102,12 @@ export default function Lexique() {
         {/* Hero */}
         <div style={{ textAlign: "center", padding: "44px 0 26px", animation: "fadeUp .5s ease both" }}>
           <h1 style={{ fontFamily: "'Space Grotesk',sans-serif", fontSize: "clamp(28px,5vw,36px)", fontWeight: 600, letterSpacing: "-0.02em", color: "var(--text)", margin: "0 0 12px" }}>
-            Lexique financier
+            {isEn ? "Financial glossary" : "Lexique financier"}
           </h1>
           <p style={{ fontSize: 16, color: "var(--text-secondary)", margin: "0 0 22px" }}>
-            {GLOSSARY.length} termes de retraite, immobilier et fiscalité, définis clairement.
+            {isEn
+              ? `${source.length} personal finance terms, clearly defined.`
+              : `${GLOSSARY.length} termes de retraite, immobilier et fiscalité, définis clairement.`}
           </p>
           {/* Search bar */}
           <div style={{ display: "flex", alignItems: "center", background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: 13, padding: "12px 18px", maxWidth: 460, margin: "0 auto", gap: 10 }}>
@@ -104,8 +116,8 @@ export default function Lexique() {
               type="search"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Rechercher un terme (TMI, GMP, décote…)"
-              aria-label="Rechercher un terme"
+              placeholder={isEn ? "Search a term (FIRE, DTI, DCA…)" : "Rechercher un terme (TMI, GMP, décote…)"}
+              aria-label={isEn ? "Search a term" : "Rechercher un terme"}
               style={{
                 flex: 1, border: "none", background: "transparent",
                 color: "var(--text)", fontSize: 15,
@@ -126,7 +138,7 @@ export default function Lexique() {
                   key={letter}
                   onClick={() => present && scrollToLetter(letter)}
                   disabled={!present}
-                  aria-label={`Aller à la lettre ${letter}`}
+                  aria-label={isEn ? `Go to letter ${letter}` : `Aller à la lettre ${letter}`}
                   style={{
                     width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center",
                     fontFamily: "'Space Grotesk',sans-serif", fontSize: 13,
@@ -149,7 +161,7 @@ export default function Lexique() {
         {/* Results */}
         {filtered.length === 0 ? (
           <div style={{ textAlign: "center", padding: "50px 20px", color: "var(--text-secondary)", fontSize: 14 }}>
-            Aucun terme ne correspond à « {query} ».
+            {isEn ? `No term matches "${query}".` : `Aucun terme ne correspond à « ${query} ».`}
           </div>
         ) : (
           letters.map(letter => (
@@ -161,7 +173,7 @@ export default function Lexique() {
                 {letter}
               </h2>
               <div className="lexique-grid">
-                {byLetter[letter].map(entry => <TermCard key={entry.slug} entry={entry} />)}
+                {byLetter[letter].map(entry => <TermCard key={entry.slug} entry={entry} isEn={isEn} />)}
               </div>
             </section>
           ))

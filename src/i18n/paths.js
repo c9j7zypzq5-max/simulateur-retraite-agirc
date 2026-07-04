@@ -28,6 +28,7 @@ const EN_PATH_MAP = {
   '/merci':                          '/thank-you',
   '/merci-pro':                      '/thank-you-pro',
   '/comparatifs':                    '/comparisons',
+  '/lexique':                        '/glossary',
   '/simulateurs/donation':           '/simulators/donation',
   '/simulateurs/pension-reversion':  '/simulators/pension-reversion',
   '/contact':                        '/contact',

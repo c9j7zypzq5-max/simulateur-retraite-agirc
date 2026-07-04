@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, EN_ROUTES, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, EN_ROUTES, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -25,6 +25,14 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   if (locale === 'en') {
     const meta = ROUTE_META_EN[route];
     if (meta) return { title: meta.title, description: meta.description };
+    if (route.startsWith('/lexique/')) {
+      const t = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)];
+      if (t?.en) return { title: `${t.en.term}: definition (${t.en.full}) | simfinly.com`, description: t.en.short };
+    }
+    if (route.startsWith('/comparatifs/')) {
+      const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
+      if (c?.en) return { title: `${c.en.title} | simfinly.com`, description: c.en.intro };
+    }
     return { title: null, description: SEO_CONTENT_EN[route]?.intro || null };
   }
   if (country === 'ch') {
@@ -195,6 +203,22 @@ for (const route of EN_ARRAY) {
 for (const route of COMPARATIFS_SLUGS) {
   const slug = route.slice('/comparatifs/'.length);
   const enPath = `/en/comparisons/${slug}`;
+  const dir = path.join(distDir, enPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { urlPath: enPath }, 'en'));
+}
+
+// ── Lexique EN (/en/glossary, /en/glossary/:slug) ──────────────────────────────
+// Le lexique n'a pas de version EN complète (contrairement aux comparatifs) :
+// seul un sous-ensemble de termes universels est traduit (LEXIQUE_SLUGS_EN).
+{
+  const dir = path.join(distDir, '/en/glossary');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, '/lexique', { urlPath: '/en/glossary' }, 'en'));
+}
+for (const route of LEXIQUE_SLUGS_EN) {
+  const slug = route.slice('/lexique/'.length);
+  const enPath = `/en/glossary/${slug}`;
   const dir = path.join(distDir, enPath);
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { urlPath: enPath }, 'en'));

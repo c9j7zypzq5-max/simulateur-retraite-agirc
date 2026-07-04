@@ -129,6 +129,7 @@ export const ROUTE_META_EN = {
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
   '/simulateurs/retraite-luxembourg': { title: 'Luxembourg State Pension Calculator (CNAP) 2025 — Estimate Your Pension', description: 'Estimate your Luxembourg CNAP pension based on your career length, salary and departure age. Also covers cross-border workers and expats.' },
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
+  '/lexique': { title: 'Financial Glossary — Clear Definitions | Simfinly', description: 'Glossary of personal finance terms: compound interest, FIRE, savings rate, debt-to-income ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators.' },
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
 };
 
@@ -194,6 +195,12 @@ export function hreflangLinks(route) {
     if (route === '/comparatifs') enSeg = '/comparisons';
     else if (route.startsWith('/comparatifs/')) enSeg = route.replace('/comparatifs/', '/comparisons/');
     links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en${enSeg === '/' ? '' : enSeg}" />`);
+  } else if (route === '/lexique') {
+    // Le lexique n'est pas dans EN_ROUTES (pas de version EN complète) : seul un
+    // sous-ensemble de termes est traduit, sous /en/glossary/.
+    links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en/glossary" />`);
+  } else if (route.startsWith('/lexique/') && GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)]?.en) {
+    links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en/glossary/${route.slice('/lexique/'.length)}" />`);
   }
   if (CH_ROUTES.includes(route)) {
     links.push(`<link rel="alternate" hreflang="fr-CH" href="${BASE}/ch${route === '/' ? '' : route}" />`);
@@ -282,6 +289,10 @@ export const EN_BLOG_SLUGS = [
 
 // Fiches du lexique (/lexique/:slug) : pré-rendues au build et incluses au sitemap.
 export const LEXIQUE_SLUGS = GLOSSARY.map(t => `/lexique/${t.slug}`);
+
+// Sous-ensemble du lexique traduit en anglais (/en/glossary/:slug) : pré-rendues
+// au build et incluses au sitemap EN.
+export const LEXIQUE_SLUGS_EN = GLOSSARY.filter(t => t.en).map(t => `/lexique/${t.slug}`);
 
 // Guides thématiques (/guides/:slug) : pré-rendus au build et inclus au sitemap.
 export const GUIDES_SLUGS = GUIDES.map(g => `/guides/${g.slug}`);

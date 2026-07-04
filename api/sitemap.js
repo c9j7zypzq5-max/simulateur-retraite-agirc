@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
+import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
 
 // Sitemap dynamique, segmenté par section (via ?section=) pour permettre un
 // suivi séparé du taux d'indexation par type de contenu dans Search Console,
@@ -73,6 +73,16 @@ ${SECTIONS.map(s => `  <sitemap>
     prio: ROUTE_META_EN[route] ? '0.8' : '0.7',
   }));
 
+  // Lexique EN (sous-ensemble universel traduit, /en/glossary et /en/glossary/:slug)
+  const lexiqueEnUrls = [
+    { loc: '/en/glossary', freq: 'monthly', prio: '0.6' },
+    ...LEXIQUE_SLUGS_EN.map(route => ({
+      loc: `/en/glossary/${route.slice('/lexique/'.length)}`,
+      freq: 'monthly',
+      prio: '0.5',
+    })),
+  ];
+
   // Pages CH (/ch/...) — hors mentions légales et confidentialité
   const legalRoutes = new Set(['/mentions-legales', '/politique-de-confidentialite']);
   const chUrls = CH_ROUTES.filter(r => !legalRoutes.has(r)).map(route => ({
@@ -93,7 +103,7 @@ ${SECTIONS.map(s => `  <sitemap>
     blog: [...blogUrls, ...enBlogUrls],
     lexique: lexiqueUrls,
     guides: [...guideUrls, ...comparatifUrls],
-    i18n: [...enUrls, ...chUrls, ...beUrls],
+    i18n: [...enUrls, ...lexiqueEnUrls, ...chUrls, ...beUrls],
   };
   const allUrls = URLS_BY_SECTION[section];
 

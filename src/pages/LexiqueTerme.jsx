@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
+import { useTranslation } from "../i18n/index.js";
+import { LocaleLink } from "../lib/router.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
@@ -30,12 +32,15 @@ const BLOG_CATS_FOR = {
 export default function LexiqueTerme() {
   const [theme, setTheme] = useTheme();
   const { slug } = useParams();
+  const { locale } = useTranslation();
+  const isEn = locale === 'en';
   const entry = GLOSSARY_BY_SLUG[slug];
+  const view = entry ? (isEn && entry.en ? { ...entry, ...entry.en } : entry) : null;
   const [relatedArticles, setRelatedArticles] = useState([]);
 
   // Articles de blog liés (même thématique que le terme).
   useEffect(() => {
-    if (!entry) { setRelatedArticles([]); return; }
+    if (!entry || isEn) { setRelatedArticles([]); return; }
     const cats = BLOG_CATS_FOR[entry.category] || [];
     fetch('/api/articles')
       .then(r => r.json())
@@ -44,30 +49,36 @@ export default function LexiqueTerme() {
         setRelatedArticles(list);
       })
       .catch(() => setRelatedArticles([]));
-  }, [entry]);
+  }, [entry, isEn]);
 
   useEffect(() => {
-    if (!entry) { document.title = "Terme introuvable | simfinly.com"; return; }
-    document.title = `${entry.term} : définition (${entry.full}) | simfinly.com`;
-    document.querySelector('meta[name="description"]')?.setAttribute("content", entry.short);
+    if (!view) { document.title = isEn ? "Term not found | simfinly.com" : "Terme introuvable | simfinly.com"; return; }
+    document.title = isEn
+      ? `${view.term}: definition (${view.full}) | simfinly.com`
+      : `${view.term} : définition (${view.full}) | simfinly.com`;
+    document.querySelector('meta[name="description"]')?.setAttribute("content", view.short);
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = `https://www.simfinly.com/lexique/${slug}`;
-  }, [entry, slug]);
+    link.href = isEn ? `https://www.simfinly.com/en/glossary/${slug}` : `https://www.simfinly.com/lexique/${slug}`;
+  }, [view, slug, isEn]);
 
-  const cat = entry ? (CATEGORY_COLORS[entry.category] || CATEGORY_COLORS["Finances"]) : null;
-  const related = (entry?.related || []).map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean);
+  if (isEn && entry && !entry.en) return <Navigate to={`/lexique/${slug}`} replace />;
 
-  const faqLd = entry && entry.long?.length > 0 ? {
+  const cat = view ? (CATEGORY_COLORS[view.category] || CATEGORY_COLORS["Finances"]) : null;
+  const related = (view?.related || []).map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean).filter(r => !isEn || r.en);
+
+  const faqLd = view && view.long?.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: [{
       '@type': 'Question',
-      name: `Qu'est-ce que ${entry.full || entry.term} ?`,
-      acceptedAnswer: { '@type': 'Answer', text: entry.short },
-    }, ...entry.long.slice(0, 2).map((p, i) => ({
+      name: isEn ? `What is ${view.full || view.term}?` : `Qu'est-ce que ${view.full || view.term} ?`,
+      acceptedAnswer: { '@type': 'Answer', text: view.short },
+    }, ...view.long.slice(0, 2).map((p, i) => ({
       '@type': 'Question',
-      name: i === 0 ? `Comment fonctionne ${entry.term} ?` : `Pourquoi utiliser ${entry.term} ?`,
+      name: isEn
+        ? (i === 0 ? `How does ${view.term} work?` : `Why use ${view.term}?`)
+        : (i === 0 ? `Comment fonctionne ${view.term} ?` : `Pourquoi utiliser ${view.term} ?`),
       acceptedAnswer: { '@type': 'Answer', text: p },
     }))],
   } : null;
@@ -81,22 +92,22 @@ export default function LexiqueTerme() {
 
         {/* Fil d'Ariane */}
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
-          <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
+          <Link to={isEn ? "/en" : "/"} style={{ color: "var(--text-secondary)", textDecoration: "none" }}>{isEn ? "Home" : "Accueil"}</Link>
           {" · "}
-          <Link to="/lexique" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Lexique</Link>
-          {entry && <>{" · "}<span style={{ color: "var(--text)" }}>{entry.term}</span></>}
+          <Link to={isEn ? "/en/glossary" : "/lexique"} style={{ color: "var(--text-secondary)", textDecoration: "none" }}>{isEn ? "Glossary" : "Lexique"}</Link>
+          {view && <>{" · "}<span style={{ color: "var(--text)" }}>{view.term}</span></>}
         </div>
 
-        {!entry ? (
+        {!view ? (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>Terme introuvable</h1>
-            <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>Ce terme n'existe pas (encore) dans le lexique.</p>
-            <Link to="/lexique" style={{
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>{isEn ? "Term not found" : "Terme introuvable"}</h1>
+            <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>{isEn ? "This term doesn't exist (yet) in the glossary." : "Ce terme n'existe pas (encore) dans le lexique."}</p>
+            <Link to={isEn ? "/en/glossary" : "/lexique"} style={{
               display: "inline-block", padding: "10px 24px", borderRadius: 10,
               background: "rgba(184,147,74,0.15)", color: "var(--gold)",
               border: "1px solid var(--border-gold)", textDecoration: "none", fontSize: 14,
-            }}>← Voir tout le lexique</Link>
+            }}>{isEn ? "← See the full glossary" : "← Voir tout le lexique"}</Link>
           </div>
         ) : (
           <>
@@ -106,52 +117,52 @@ export default function LexiqueTerme() {
                   fontSize: 10, fontWeight: 600, padding: "3px 10px", borderRadius: 12, letterSpacing: "0.06em",
                   background: cat.bg, color: cat.color, border: `1px solid ${cat.border}`,
                 }}>
-                  {entry.category}
+                  {view.category}
                 </span>
               </div>
               <h1 style={{
                 fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px,5vw,42px)",
                 fontWeight: 600, lineHeight: 1.2, color: "var(--text)", marginBottom: 8,
               }}>
-                {entry.term}
+                {view.term}
               </h1>
-              {entry.full !== entry.term && (
-                <p style={{ fontSize: 16, color: "var(--text-secondary)", fontStyle: "italic", marginBottom: 16 }}>{entry.full}</p>
+              {view.full !== view.term && (
+                <p style={{ fontSize: 16, color: "var(--text-secondary)", fontStyle: "italic", marginBottom: 16 }}>{view.full}</p>
               )}
               <p style={{
                 fontSize: 16, lineHeight: 1.75, color: "var(--text-secondary)",
                 borderLeft: "3px solid var(--gold)", paddingLeft: 18,
               }}>
-                {entry.short}
+                {view.short}
               </p>
             </div>
 
             {/* Définition détaillée */}
             <div>
-              {entry.long.map((p, i) => (
+              {view.long.map((p, i) => (
                 <p key={i} style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-secondary)", marginBottom: 16 }}>{p}</p>
               ))}
             </div>
 
             {/* Simulateurs liés */}
-            {entry.sims?.length > 0 && (
+            {view.sims?.length > 0 && (
               <div style={{
                 background: "linear-gradient(135deg,rgba(184,147,74,0.1),rgba(232,192,106,0.04))",
                 border: "1px solid var(--border-gold)", borderRadius: 16, padding: "20px 24px", margin: "28px 0",
               }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold-mid)", marginBottom: 12 }}>
-                  Mettre en pratique
+                  {isEn ? "Put it into practice" : "Mettre en pratique"}
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                  {entry.sims.map(path => (
-                    <Link key={path} to={path} style={{
+                  {view.sims.map(path => (
+                    <LocaleLink key={path} to={path} style={{
                       padding: "9px 16px", borderRadius: 10,
                       background: "rgba(184,147,74,0.2)", color: "var(--gold)",
                       border: "1px solid var(--border-gold)", textDecoration: "none",
                       fontSize: 13, fontWeight: 500,
                     }}>
                       {simLabel(path)} →
-                    </Link>
+                    </LocaleLink>
                   ))}
                 </div>
               </div>
@@ -166,16 +177,16 @@ export default function LexiqueTerme() {
             {related.length > 0 && (
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
-                  Voir aussi
+                  {isEn ? "See also" : "Voir aussi"}
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                   {related.map(r => (
-                    <Link key={r.slug} to={`/lexique/${r.slug}`} style={{
+                    <Link key={r.slug} to={isEn ? `/en/glossary/${r.slug}` : `/lexique/${r.slug}`} style={{
                       padding: "6px 14px", borderRadius: 20, fontSize: 13,
                       background: "var(--card-bg)", color: "var(--text)",
                       border: "1px solid var(--border)", textDecoration: "none",
                     }}>
-                      {r.term}
+                      {isEn ? r.en.term : r.term}
                     </Link>
                   ))}
                 </div>
@@ -183,7 +194,7 @@ export default function LexiqueTerme() {
             )}
 
             {/* Articles liés */}
-            {relatedArticles.length > 0 && (
+            {!isEn && relatedArticles.length > 0 && (
               <div style={{ marginBottom: 32 }}>
                 <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
                   À lire sur le blog
@@ -203,11 +214,11 @@ export default function LexiqueTerme() {
 
             {/* Navigation */}
             <div style={{ borderTop: "1px solid var(--border)", paddingTop: 24 }}>
-              <Link to="/lexique" style={{
+              <Link to={isEn ? "/en/glossary" : "/lexique"} style={{
                 fontSize: 13, color: "var(--text-secondary)", textDecoration: "none",
                 display: "inline-flex", alignItems: "center", gap: 6,
               }}>
-                ← Tout le lexique
+                {isEn ? "← Full glossary" : "← Tout le lexique"}
               </Link>
             </div>
           </>
