@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { ACCOUNT_ENABLED } from '../config/features.js';
 
 // Client Supabase côté navigateur.
 // La clé "anon" est PUBLIQUE par conception (elle est censée se retrouver dans
@@ -13,7 +14,13 @@ import { createClient } from '@supabase/supabase-js';
 const url = import.meta.env.VITE_SUPABASE_URL || import.meta.env.VITE_PUBLIC_SUPABASE_URL;
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_PUBLIC_SUPABASE_ANON_KEY;
 
-export const isSupabaseConfigured = Boolean(url && anonKey);
+// Conditionné à ACCOUNT_ENABLED (pas seulement à la présence des clés) : les
+// variables d'environnement Supabase peuvent être déjà en place en production
+// en prévision de la réactivation du compte/Pro, sans que la fonctionnalité
+// soit pour autant active. Instancier le client dans ce cas téléchargeait et
+// exécutait inutilement le SDK Supabase (~55 Ko gzippés + un appel réseau
+// getSession()) sur CHAQUE page du site, pour une fonctionnalité désactivée.
+export const isSupabaseConfigured = ACCOUNT_ENABLED && Boolean(url && anonKey);
 
 export const supabase = isSupabaseConfigured
   ? createClient(url, anonKey, {

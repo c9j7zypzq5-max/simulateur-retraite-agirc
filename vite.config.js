@@ -18,7 +18,13 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('react-dom') || id.includes('react/')) return 'react';
-          if (id.includes('@supabase')) return 'supabase';
+          // PAS de règle manuelle pour @supabase : forcer ce module dans un chunk
+          // nommé faisait que Rollup le traitait comme un chunk "partagé" éligible
+          // au modulepreload sur TOUTE page, même si son seul importeur restant
+          // (AuthProvider, ShareBar) n'utilise qu'un import() dynamique conditionné
+          // à ACCOUNT_ENABLED. Laisser le chunking automatique de Rollup respecte
+          // correctement la frontière async — le SDK Supabase (~55 Ko gzippés)
+          // n'est alors plus jamais téléchargé tant qu'ACCOUNT_ENABLED = false.
           if (id.includes('lucide-react')) return 'icons';
           if (id.includes('recharts') || id.includes('d3-')) return 'charts';
           if (id.includes('stripe')) return 'stripe';

@@ -10,7 +10,6 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useToast } from "../context/ToastContext.jsx";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
-import { supabase } from "../lib/supabase.js";
 
 // Quota de rapports pour un compte gratuit (non Pro). Au-delà → page Pro.
 const FREE_REPORT_LIMIT = 1;
@@ -65,7 +64,7 @@ const SaveIcon = () => (
 
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const { isPro, user, isConfigured, reportCount, incrementReportCount } = useAuth();
-  const { saveEntryWithSync } = useSimHistory();
+  const { saveEntry, saveEntryWithSync } = useSimHistory();
   const showToast = useToast();
   const { t, locale } = useTranslation();
   const navigate = useNavigate();
@@ -97,8 +96,16 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     return () => { abortRef.current?.abort(); };
   }, []);
 
-  // Précharge jsPDF et html2canvas après le montage pour que le premier clic soit instantané
-  useEffect(() => {
+  // Précharge jsPDF et html2canvas (≈175 Ko gzippés à eux deux) uniquement sur
+  // signal d'intention (survol/focus du bouton Rapport) plutôt qu'au montage :
+  // ShareBar est présent sur ~45 pages simulateurs, et la grande majorité des
+  // visiteurs ne cliquent jamais sur « Rapport » — précharger sans condition
+  // téléchargeait ces librairies en arrière-plan sur chaque vue de page pour
+  // rien, au détriment du volume de données et du temps de compilation JS.
+  const reportLibsPreloaded = useRef(false);
+  const preloadReportLibs = useCallback(() => {
+    if (reportLibsPreloaded.current) return;
+    reportLibsPreloaded.current = true;
     import("jspdf").catch(() => {});
     import("html2canvas").catch(() => {});
   }, []);
@@ -206,18 +213,28 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     } finally { setBusy(false); }
   }
 
-  function handleSave() {
+  async function handleSave() {
     const shareUrl = buildShareUrl(params);
     const simulator = name || window.location.pathname;
     const label = report?.title || name || simulator;
     const reportSnapshot = report
       ? { highlight: report.highlight, results: report.results?.slice(0, 6) }
       : undefined;
-    saveEntryWithSync({ simulator, label, shareUrl, reportSnapshot }, { user, supabaseClient: supabase });
+    // Sauvegarde locale immédiate (localStorage, fonctionne sans compte) ; la
+    // synchro cloud est best-effort et ne doit jamais retarder le feedback UI.
+    // Import dynamique du client Supabase : ShareBar est présent sur ~45 pages
+    // simulateurs, un import statique aurait fait charger le SDK Supabase
+    // (~55 Ko gzippés) sur chacune d'elles, y compris pour ACCOUNT_ENABLED = false
+    // où `user` est de toute façon toujours null (aucune synchro cloud possible).
+    saveEntry({ simulator, label, shareUrl, reportSnapshot });
     setSaved(true);
     showToast(locale === "en" ? "Simulation saved!" : "Simulation sauvegardée !");
     track("save_simulation", { simulateur: name });
     setTimeout(() => setSaved(false), 2500);
+    if (user) {
+      const { supabase } = await import("../lib/supabase.js");
+      saveEntryWithSync({ simulator, label, shareUrl, reportSnapshot }, { user, supabaseClient: supabase });
+    }
   }
 
   async function handlePublicLink() {
@@ -297,8 +314,9 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
           onClick={handleReport} disabled={busy}
           aria-label={locale === "en" ? "Download PDF report" : "Télécharger le rapport PDF"}
           aria-busy={busy}
-          onMouseEnter={hoverIn} onMouseLeave={hoverOut}
-          onFocus={focusIn} onBlur={focusOut}>
+          onMouseEnter={e => { hoverIn(e); preloadReportLibs(); }} onMouseLeave={hoverOut}
+          onFocus={e => { focusIn(e); preloadReportLibs(); }} onBlur={focusOut}
+          onTouchStart={preloadReportLibs}>
           {busy
             ? <span style={{ display: "inline-block", width: 14, height: 14, border: "2px solid var(--text-secondary)", borderTopColor: "var(--gold)", borderRadius: "50%", animation: "spin 0.7s linear infinite" }} aria-hidden="true" />
             : <DownloadIcon />}
