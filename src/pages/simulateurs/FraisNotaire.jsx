@@ -13,7 +13,7 @@ import { useIsMobile } from "../../hooks/useIsMobile.js";
 import {
   NumInput, AccordionSection,
   Chip, StatusBadge, useAnimatedNumber,
-  fmtEur, SimulateurHeader, FaqSection,
+  fmtEur, SimulateurHeader, FaqSection, Toggle,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
@@ -25,16 +25,25 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 // isolées ici pour être corrigées facilement.
 //
 // 1) Droits de mutation (DMTO) : impôts reversés à l'État et aux collectivités.
-//    - Ancien : ~5,80 % (taux départemental 4,50 % + communal 1,20 % + frais
-//      d'assiette). Plusieurs départements appliquent désormais jusqu'à 6,30 %
-//      depuis 2025 ; valeur par défaut prudente : 5,80 %.
+//    - Ancien : la loi de finances 2025 a autorisé chaque département à relever
+//      de 0,5 point son taux départemental (4,50 % → 5,00 %), portant le DMTO
+//      total à 6,32 % (contre 5,81 % sans la hausse). Selon les données DGFiP/
+//      notaires (situation début 2026), la GRANDE MAJORITÉ des départements ont
+//      voté cette hausse — 6,32 % est donc désormais le cas par défaut le plus
+//      probable, et non plus l'exception. Une minorité de départements ne l'ont
+//      pas appliquée (~5,81 %) ; l'Indre et Mayotte restent à un taux réduit
+//      distinct (~5,09 %, non modélisé ici). La liste précise évolue au gré des
+//      délibérations départementales — à vérifier sur impots.gouv.fr avant un
+//      achat réel.
 //    - Neuf (VEFA / première vente) : 0,715 % (taxe de publicité foncière réduite).
 // 2) Émoluments du notaire : barème dégressif réglementé (arrêté 2021), HT,
 //    auquel s'ajoute la TVA à 20 %.
 // 3) Contribution de sécurité immobilière (ex-salaire du conservateur) : 0,10 %.
 // 4) Émoluments de formalités et débours : forfait (copies, état civil,
 //    cadastre…). Estimé ~1 000 €.
-const TAUX_DMTO = { ancien: 0.0580, neuf: 0.00715 };
+const TAUX_DMTO_ANCIEN_HAUSSE = 0.0632; // majorité des départements (hausse 2025 votée)
+const TAUX_DMTO_ANCIEN_SANS_HAUSSE = 0.0581; // minorité n'ayant pas voté la hausse
+const TAUX_DMTO_NEUF = 0.00715;
 const TAUX_CSI = 0.0010;        // contribution de sécurité immobilière
 const TVA = 0.20;               // TVA sur les émoluments du notaire
 const DEBOURS_FORFAIT = 1000;   // émoluments de formalités + débours (forfait)
@@ -79,6 +88,9 @@ export default function FraisNotaire() {
   const [prix, setPrix]       = useState(null);
   const [type, setType]       = useState("ancien");   // "ancien" | "neuf"
   const [mobilier, setMobilier] = useState(null);     // valeur du mobilier déductible
+  const [hausseDmto, setHausseDmto] = useState(true); // département ayant voté la hausse 2025 (majoritaire)
+
+  const tauxDmto = type === "neuf" ? TAUX_DMTO_NEUF : (hausseDmto ? TAUX_DMTO_ANCIEN_HAUSSE : TAUX_DMTO_ANCIEN_SANS_HAUSSE);
 
   const resultsRef = useRef(null);
 
@@ -108,12 +120,13 @@ export default function FraisNotaire() {
       if (shared.prix !== undefined) setPrix(shared.prix);
       if (shared.type !== undefined) setType(shared.type);
       if (shared.mobilier !== undefined) setMobilier(shared.mobilier);
+      if (shared.hausseDmto !== undefined) setHausseDmto(shared.hausseDmto);
     }
   }, []);
 
   useEffect(() => {
-    window.history.replaceState(null, '', buildShareUrl({ prix, type, mobilier }));
-  }, [prix, type, mobilier]);
+    window.history.replaceState(null, '', buildShareUrl({ prix, type, mobilier, hausseDmto }));
+  }, [prix, type, mobilier, hausseDmto]);
 
   // ── Calculs ──
   const prixBien = prix ?? 0;
@@ -121,7 +134,7 @@ export default function FraisNotaire() {
   // Assiette des droits de mutation : prix net du mobilier déductible.
   const assiette = Math.max(0, prixBien - valMobilier);
 
-  const droitsMutation = assiette * TAUX_DMTO[type];
+  const droitsMutation = assiette * tauxDmto;
   const emolumentsHT = emolumentsNotaireHT(assiette);
   const emolumentsTTC = emolumentsHT * (1 + TVA);
   const csi = assiette * TAUX_CSI;
@@ -143,6 +156,7 @@ export default function FraisNotaire() {
       { label: "Prix du bien", value: prix ? fmtEur(prix) : "—" },
       { label: "Type de bien", value: type === "neuf" ? "Neuf (VEFA)" : "Ancien" },
       { label: "Mobilier déduit", value: valMobilier ? fmtEur(valMobilier) : "—" },
+      ...(type === "ancien" ? [{ label: "Département avec hausse DMTO 2025", value: hausseDmto ? "Oui (6,32 %)" : "Non (5,81 %)" }] : []),
     ],
     results: hasInput ? [
       { label: "Frais de notaire estimés", value: fmtEur(Math.round(fraisTotal)), strong: true },
@@ -230,9 +244,21 @@ export default function FraisNotaire() {
                   })}
                 </div>
                 <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
-                  Dans le neuf, les droits de mutation sont réduits (0,715 % contre ~5,80 %).
+                  Dans le neuf, les droits de mutation sont réduits (0,715 % contre 6,32 % dans l'ancien).
                 </div>
               </div>
+
+              {type === "ancien" && (
+                <div style={{ marginTop: 16 }}>
+                  <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
+                    Mon département a-t-il voté la hausse 2025 du DMTO ?
+                  </label>
+                  <Toggle options={["Non (5,81 %)", "Oui (6,32 %)"]} checked={hausseDmto} onChange={setHausseDmto} />
+                  <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)", letterSpacing: "0.04em" }}>
+                    La grande majorité des départements ont voté la hausse depuis 2025 (6,32 % au total). Vérifiez le taux exact de votre département sur impots.gouv.fr si besoin.
+                  </div>
+                </div>
+              )}
             </div>
 
             <div style={card}>
@@ -263,7 +289,7 @@ export default function FraisNotaire() {
                   </div>
                   <div style={{ marginTop: 14, display: "flex", justifyContent: "center", gap: 8, flexWrap: "wrap" }}>
                     <StatusBadge status="gold" label={type === "neuf" ? "Bien neuf" : "Bien ancien"} />
-                    <StatusBadge status={type === "neuf" ? "good" : "warn"} label={`Droits de mutation ${(TAUX_DMTO[type] * 100).toFixed(type === "neuf" ? 3 : 2)} %`} />
+                    <StatusBadge status={type === "neuf" ? "good" : "warn"} label={`Droits de mutation ${(tauxDmto * 100).toFixed(type === "neuf" ? 3 : 2)} %`} />
                   </div>
                 </>
               )}
@@ -291,7 +317,7 @@ export default function FraisNotaire() {
                   { label: "Prix du bien", value: fmtEur(prixBien) },
                   ...(valMobilier > 0 ? [{ label: "Mobilier déduit", value: `− ${fmtEur(valMobilier)}` }] : []),
                   { label: "Assiette des droits de mutation", value: fmtEur(Math.round(assiette)) },
-                  { label: `Droits de mutation (${(TAUX_DMTO[type] * 100).toFixed(type === "neuf" ? 3 : 2)} %)`, value: fmtEur(Math.round(droitsMutation)), accent: true },
+                  { label: `Droits de mutation (${(tauxDmto * 100).toFixed(type === "neuf" ? 3 : 2)} %)`, value: fmtEur(Math.round(droitsMutation)), accent: true },
                   { label: "Émoluments notaire HT", value: fmtEur(Math.round(emolumentsHT)) },
                   { label: "Émoluments notaire TTC (TVA 20 %)", value: fmtEur(Math.round(emolumentsTTC)), accent: true },
                   { label: "Contribution sécurité immobilière (0,10 %)", value: fmtEur(Math.round(csi)) },
@@ -323,7 +349,7 @@ export default function FraisNotaire() {
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Des frais d'acquisition, pas seulement de notaire</h3>
             <p style={{ marginBottom: 16 }}>Les « frais de notaire » sont en réalité des frais d'acquisition, dont le notaire ne conserve qu'une faible part. Environ 80 % du montant correspond aux droits de mutation à titre onéreux (DMTO), un impôt reversé au département, à la commune et à l'État. Viennent ensuite les émoluments du notaire (sa rémunération, encadrée par un barème national), la contribution de sécurité immobilière (0,10 %) et les débours (sommes avancées pour le compte de l'acheteur : documents d'urbanisme, état hypothécaire, géomètre…).</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Ancien ou neuf : un écart majeur</h3>
-            <p style={{ marginBottom: 16 }}>Dans l'ancien, les frais représentent environ 7 à 8 % du prix d'achat, en raison de droits de mutation autour de 5,80 % (jusqu'à 6,30 % dans certains départements depuis 2025). Dans le neuf, les droits sont réduits à 0,715 %, ce qui ramène les frais à 2 à 3 % du prix. Cet écart explique en grande partie pourquoi un même budget n'offre pas la même surface selon que l'on achète dans l'ancien ou dans le neuf.</p>
+            <p style={{ marginBottom: 16 }}>Dans l'ancien, les frais représentent environ 7 à 8 % du prix d'achat, la loi de finances 2025 ayant autorisé chaque département à relever son taux de droits de mutation de 0,5 point (portant le total à 6,32 % au lieu de 5,81 %). La grande majorité des départements ont voté cette hausse depuis 2025 — 6,32 % est donc désormais le taux le plus répandu, et non plus une exception. Dans le neuf, les droits sont réduits à 0,715 %, ce qui ramène les frais à 2 à 3 % du prix. Cet écart explique en grande partie pourquoi un même budget n'offre pas la même surface selon que l'on achète dans l'ancien ou dans le neuf.</p>
             <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Comment réduire la note</h3>
             <p>Deux leviers principaux : déduire la valeur du mobilier vendu avec le bien (les meubles n'étant pas soumis aux droits de mutation) et, pour les biens de plus de 100 000 €, demander une remise sur les émoluments du notaire (jusqu'à 20 % sur la part au-delà de ce seuil). Les frais d'agence, s'ils sont à la charge de l'acquéreur, peuvent également être sortis du prix soumis aux droits selon leur mode de facturation.</p>
           </div>
@@ -345,7 +371,7 @@ export default function FraisNotaire() {
         <FaqSection items={FAQ} />
 
         <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
-          Simulation indicative basée sur les barèmes 2024-2025 · Le montant exact figure dans le décompte du notaire et varie selon le département · Ne constitue pas un conseil juridique
+          Simulation indicative basée sur les barèmes 2026 (DMTO post-hausse LF 2025) · Le montant exact figure dans le décompte du notaire et varie selon le département · Ne constitue pas un conseil juridique
         </p>
 
         {/* AdSense bas */}

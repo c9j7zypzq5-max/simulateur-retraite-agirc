@@ -198,7 +198,7 @@ export const FAQS = {
       { q: "Comment est calculé le taux d'endettement et quel est le plafond légal ?", a: "Le taux d'endettement (ou taux d'effort) = mensualités de crédit ÷ revenus nets × 100. Depuis janvier 2022, le HCSF (Haut Conseil de Stabilité Financière) impose un plafond légal de 35 % pour les banques françaises. Au-delà, le dossier est refusé dans la grande majorité des cas." },
       { q: "Qu'est-ce que le PTZ (primo-accédant) ?", a: "Le Prêt à Taux Zéro (PTZ) est réservé aux primo-accédants achetant leur première résidence principale. Il finance jusqu'à 50 % de l'opération dans les zones tendues (A, Abis, B1) avec un taux à 0 %. Ce simulateur l'approxime à 10 % du capital à 1,95 % — les conditions réelles varient selon la zone, les revenus et le type de logement." },
       { q: "Quelle durée d'emprunt choisir ?", a: "Une durée plus longue réduit la mensualité mais augmente le coût total des intérêts. Les banques françaises prêtent généralement jusqu'à 25 ans (27 ans pour le neuf avec travaux). Règle pratique : remboursez le moins longtemps possible tout en restant sous 35 % de taux d'endettement. Les durées de 20-25 ans sont les plus courantes." },
-      { q: "Comment sont estimés les frais de notaire ?", a: "Pour un logement ancien : ~7,5 % du prix (droits de mutation 5,8 %, émoluments notaire, frais de dossier). Pour le neuf : ~2,5 % (droits réduits car la TVA est déjà payée). Ces taux sont approximatifs — le simulateur en donne une estimation, votre notaire établira le montant exact." },
+      { q: "Comment sont estimés les frais de notaire ?", a: "Pour un logement ancien : ~7,5 % à 8 % du prix (droits de mutation 6,32 % dans la majorité des départements depuis la hausse 2025, émoluments notaire, frais de dossier). Pour le neuf : ~2,5 % (droits réduits car la TVA est déjà payée). Ces taux sont approximatifs — le simulateur en donne une estimation, votre notaire établira le montant exact." },
       { q: "Assurance emprunteur : est-ce obligatoire ?", a: "L'assurance de prêt n'est pas légalement obligatoire, mais toutes les banques l'exigent en pratique. Elle couvre le décès, l'invalidité et parfois la perte d'emploi. Depuis la loi Lemoine (2022), vous pouvez changer d'assurance à tout moment, ce qui peut générer des économies significatives sur la durée." },
     ],
 
@@ -263,7 +263,7 @@ export const FAQS = {
   },
   {
     q: "Pourquoi les frais sont-ils plus faibles dans le neuf ?",
-    a: "Dans l'immobilier neuf (VEFA ou première vente), les droits de mutation sont réduits à 0,715 % au lieu d'environ 5,80 % dans l'ancien. Les frais d'acquisition tombent alors à 2-3 % du prix, contre 7-8 % dans l'ancien. En contrepartie, le prix au mètre carré du neuf est généralement plus élevé et la TVA (20 %) est déjà incluse dans le prix de vente.",
+    a: "Dans l'immobilier neuf (VEFA ou première vente), les droits de mutation sont réduits à 0,715 % au lieu de 6,32 % dans l'ancien (taux appliqué par la majorité des départements depuis la hausse votée en 2025). Les frais d'acquisition tombent alors à 2-3 % du prix, contre 7-8 % dans l'ancien. En contrepartie, le prix au mètre carré du neuf est généralement plus élevé et la TVA (20 %) est déjà incluse dans le prix de vente.",
   },
   {
     q: "Les frais de notaire portent-ils sur le mobilier ?",

@@ -646,18 +646,18 @@ export const STATIC_ARTICLES = [
     content: `<h2>Les frais de notaire : trois composantes distinctes</h2>
 <p>L'expression "frais de notaire" désigne l'ensemble des sommes versées au notaire, dont la grande majorité ne lui revient pas. Ils se décomposent en :</p>
 <ul>
-<li><strong>Droits de mutation</strong> (taxe départementale + communale) : environ 5,8 % du prix dans l'ancien, reversés à la collectivité. C'est la part la plus importante.</li>
+<li><strong>Droits de mutation</strong> (taxe départementale + communale) : 6,32 % du prix dans l'ancien pour la majorité des départements (hausse votée depuis 2025), 5,81 % dans une minorité de départements n'ayant pas relevé leur taux. C'est la part la plus importante, reversée à la collectivité.</li>
 <li><strong>Émoluments du notaire</strong> : rémunération réglementée selon barème officiel, environ 0,8-1 % du prix.</li>
 <li><strong>Débours et formalités</strong> : frais administratifs, publications, cadastre. Environ 0,5-0,8 % du prix.</li>
 </ul>
 <h2>L'ancien : 7 à 8 % du prix</h2>
-<p>Pour un bien ancien (plus de 5 ans), les droits de mutation s'élèvent à <strong>5,80 %</strong> dans la quasi-totalité des départements. S'y ajoutent émoluments et débours pour un total de 7-8 %.</p>
-<p>Exemple pour un appartement à <strong>300 000 €</strong> :</p>
+<p>Pour un bien ancien (plus de 5 ans), les droits de mutation s'élèvent à <strong>6,32 %</strong> dans la majorité des départements depuis la hausse votée en 2025 (5,81 % dans une minorité de départements n'ayant pas relevé leur taux). S'y ajoutent émoluments et débours pour un total de 7-8 %.</p>
+<p>Exemple pour un appartement à <strong>300 000 €</strong> (département ayant appliqué la hausse) :</p>
 <ul>
-<li>Droits de mutation : ≈ 17 400 €</li>
-<li>Émoluments notaire : ≈ 3 000 €</li>
-<li>Débours : ≈ 1 500 €</li>
-<li><strong>Total : environ 21 900 €</strong></li>
+<li>Droits de mutation : ≈ 18 960 €</li>
+<li>Émoluments notaire : ≈ 3 350 €</li>
+<li>Débours : ≈ 1 300 €</li>
+<li><strong>Total : environ 23 600 €</strong></li>
 </ul>
 <h2>Le neuf : 2 à 3 % du prix</h2>
 <p>Pour un logement neuf (premier acquéreur, TVA incluse dans le prix), les droits de mutation sont réduits à <strong>0,715 %</strong>. Les frais totaux se limitent à 2-3 % du prix, une économie significative justifiant en partie le prix au m² souvent plus élevé dans le neuf.</p>
@@ -666,8 +666,8 @@ export const STATIC_ARTICLES = [
 <h2>Calculez vos frais de notaire</h2>
 <p>Le simulateur frais de notaire de simfinly.com calcule précisément droits de mutation, émoluments et débours selon le prix, le département et le type de bien. Intégrez les frais d'agence et le PTZ pour avoir une vision complète de votre financement.</p>`,
     faqs: [
-      { q: "Quels sont les frais de notaire en 2026 pour un achat dans l'ancien ?", a: "Pour un bien ancien, les frais de notaire représentent environ 7 à 8 % du prix d\'achat. Ils se décomposent en : droits de mutation (taxe départementale ~4,5 % + taxe communale 1,2 % + CSI 0,1 %), émoluments du notaire (~1 % selon barème dégressif), frais de formalités et débours (~1 %). Sur un appartement à 250 000 €, comptez environ 18 000-20 000 € de frais de notaire." },
-      { q: "Peut-on réduire les frais de notaire légalement ?", a: "Oui, trois leviers légaux existent : (1) Déduire la valeur des meubles inclus dans la vente (cuisine équipée, électroménager) du prix du bien — les droits de mutation ne s\'appliquent pas aux meubles. Une cuisine à 8 000 € incluse réduit la base taxable d\'autant. (2) Choisir un bien en zone à taxe départementale réduite — certains départements ont voté un taux de 3,8 % au lieu de 4,5 %. (3) Si le prix dépasse 150 000 €, demander la remise de 20 % sur les émoluments du notaire (légalement autorisé depuis 2016)." },
+      { q: "Quels sont les frais de notaire en 2026 pour un achat dans l'ancien ?", a: "Pour un bien ancien, les frais de notaire représentent environ 7 à 8 % du prix d\'achat. Ils se décomposent en : droits de mutation (taxe départementale, relevée à 5,0 % depuis 2025 dans la majorité des départements + taxe communale 1,2 % + CSI 0,1 %, soit 6,32 % au total dans ces départements — 5,81 % dans une minorité n\'ayant pas relevé leur taux), émoluments du notaire (~1 % selon barème dégressif), frais de formalités et débours (~1 %). Sur un appartement à 250 000 €, comptez environ 19 000-21 000 € de frais de notaire." },
+      { q: "Peut-on réduire les frais de notaire légalement ?", a: "Oui, trois leviers légaux existent : (1) Déduire la valeur des meubles inclus dans la vente (cuisine équipée, électroménager) du prix du bien — les droits de mutation ne s\'appliquent pas aux meubles. Une cuisine à 8 000 € incluse réduit la base taxable d\'autant. (2) Le taux de droits de mutation dépend du département du bien : une minorité n\'a pas voté la hausse de 2025 et reste à 5,81 % au lieu de 6,32 % — un critère parmi d\'autres dans un choix de localisation, mais pas un levier d\'optimisation à lui seul. (3) Si le prix dépasse 150 000 €, demander la remise de 20 % sur les émoluments du notaire (légalement autorisé depuis 2016)." },
     ],
   },
   {

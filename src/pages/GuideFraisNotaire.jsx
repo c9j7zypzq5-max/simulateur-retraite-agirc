@@ -10,7 +10,7 @@ const BASE = "https://www.simfinly.com";
 const STATS = [
   { value: "7–8 %", label: "Taux ancien (existant)", note: "Du prix de vente pour les biens anciens" },
   { value: "2–3 %", label: "Taux neuf", note: "Pour les logements neufs (< 5 ans)" },
-  { value: "5,80 %", label: "Droits de mutation", note: "Principal poste (taxe collectivités)" },
+  { value: "6,32 %", label: "Droits de mutation", note: "Principal poste — majorité des départements depuis 2025" },
   { value: "1 %", label: "Honoraires notaire", note: "Environ 1 % du prix pour un bien > 150 k€" },
 ];
 
@@ -21,7 +21,7 @@ const FAQ = [
   },
   {
     q: "Peut-on négocier les frais de notaire ?",
-    a: "Les droits de mutation (environ 5,80 % du prix) sont fixés par la loi et ne se négocient pas. Les émoluments du notaire (sa rémunération) sont réglementés par décret — ils sont donc identiques chez tous les notaires pour un même prix. Seuls les débours (frais de dossier, hypothèque, etc.) peuvent marginalement varier. En pratique, les frais de notaire ne se négocient pas.",
+    a: "Les droits de mutation (6,32 % du prix dans la majorité des départements depuis 2025, 5,81 % dans une minorité) sont fixés par la loi et ne se négocient pas. Les émoluments du notaire (sa rémunération) sont réglementés par décret — ils sont donc identiques chez tous les notaires pour un même prix. Seuls les débours (frais de dossier, hypothèque, etc.) peuvent marginalement varier. En pratique, les frais de notaire ne se négocient pas.",
   },
   {
     q: "Comment réduire les frais de notaire lors d'un achat ?",
