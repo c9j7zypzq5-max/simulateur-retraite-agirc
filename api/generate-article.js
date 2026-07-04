@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { pexelsImage } from './_pexels.js';
+import { pingIndexNow } from './_indexnow.js';
 
 // Sujets en rotation — 1 article généré par appel cron
 const TOPICS = [
@@ -170,6 +171,7 @@ Contraintes pour le champ content :
     await redis.set(`blog:article:${article.slug}`, JSON.stringify(article));
     await redis.zadd('blog:slugs', { score: Date.now(), member: article.slug });
 
+    pingIndexNow(`https://www.simfinly.com/blog/${article.slug}`); // best-effort, ne bloque pas la réponse
     res.status(200).json({ ok: true, slug: article.slug, title: article.title });
   } catch (err) {
     res.status(500).json({ error: err.message });
