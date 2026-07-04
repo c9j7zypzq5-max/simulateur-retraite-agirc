@@ -13,6 +13,7 @@ export const RECOMMENDATIONS = {
     { icon: "🏆", label: "Retraite complémentaire Agirc-Arrco", description: "La CNAV s'additionne à la complémentaire Agirc-Arrco. Calculez les deux pour votre pension totale.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
     { icon: "📅", label: "Vérifiez vos trimestres", description: "Connaître votre durée d'assurance vous indique à quel âge vous pourrez partir à taux plein.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
     { icon: "💼", label: "Préparez un PER", description: "Le Plan d'Épargne Retraite complète votre pension et réduit votre impôt dès maintenant.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir 54 % de cette pension de base. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/trimestres': [
     { icon: "⏩", label: "Retraite anticipée — suis-je éligible ?", description: "Avec suffisamment de trimestres, vous pouvez partir avant 64 ans. Vérifiez vos droits.", to: "/simulateurs/retraite-anticipee", cta: "Vérifier l'éligibilité →" },
@@ -73,6 +74,7 @@ export const RECOMMENDATIONS = {
     { icon: "⚖️", label: "Rente ou retrait programmé ?", description: "Une fois votre capital retraite constitué, choisissez entre la rente viagère et les retraits programmés.", to: "/simulateurs/rente-capital", cta: "Comparer →" },
     { icon: "💼", label: "Maximisez le PER", description: "Estimez combien vous pouvez verser sur un PER pour booster votre capital tout en défiscalisant.", to: "/simulateurs/per", cta: "Simuler le PER →" },
     { icon: "📅", label: "Vérifiez vos trimestres", description: "La durée d'assurance conditionne votre taux et votre âge de départ. Vérifiez votre situation.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
+    { icon: "💞", label: "Protégez votre conjoint", description: "En cas de décès, votre conjoint peut percevoir une pension de réversion sur vos droits cumulés. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/rente-capital': [
     { icon: "💼", label: "Simulez votre PER", description: "Le capital converti en rente ou retiré provient souvent d'un PER — vérifiez le montant projeté et la déduction fiscale.", to: "/simulateurs/per", cta: "Simuler le PER →" },

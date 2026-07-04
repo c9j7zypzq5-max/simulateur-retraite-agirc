@@ -678,7 +678,8 @@ export default function SimulateurRetraite() {
           } else {
             items.push({ icon: "📊", label: "Comparez vos scénarios de départ", description: "Utilisez le simulateur de synthèse pour comparer tous vos régimes (base + complémentaire) selon l'âge de départ.", to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" });
           }
-          return <SimRecommendations items={items.slice(0, 3)} />;
+          items.push({ icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir 60 % de cette pension complémentaire. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" });
+          return <SimRecommendations items={items.slice(0, 4)} />;
         })()}
 
         {/* ── Comparateur ── */}
