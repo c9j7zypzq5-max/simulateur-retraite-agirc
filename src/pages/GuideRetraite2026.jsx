@@ -4,12 +4,40 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import { PASS_2026, getAgeLegal, getDureeRequise } from "../data/baremesRetraite.js";
 
 const BASE = "https://www.simfinly.com";
 
+// Table générationnelle affichée : dérivée du module canonique (source unique
+// utilisée par tous les simulateurs) pour éviter qu'elle diverge — c'est
+// exactement ce genre de table recopiée à la main qui avait fini par afficher
+// 4 valeurs différentes de durée requise pour la même génération selon la page.
+const GENERATIONS_AFFICHEES = [
+  { annee: 1961, mois: 8,  label: "Avant le 1er sept. 1961" },
+  { annee: 1961, mois: 12, label: "1er sept. 1961 – 31 déc. 1961" },
+  { annee: 1962, mois: 12, label: "1962" },
+  { annee: 1963, mois: 12, label: "1963" },
+  { annee: 1964, mois: 12, label: "1964" },
+  { annee: 1965, mois: 12, label: "1965" },
+  { annee: 1966, mois: 12, label: "1966" },
+  { annee: 1967, mois: 12, label: "1967" },
+  { annee: 1968, mois: 12, label: "1968" },
+  { annee: 1969, mois: 12, label: "1969 et après" },
+];
+function formatAge(ageDecimal) {
+  const annees = Math.floor(ageDecimal);
+  const mois = Math.round((ageDecimal - annees) * 12);
+  return mois === 0 ? `${annees} ans` : `${annees} ans et ${mois} mois`;
+}
+const AGE_TABLE = GENERATIONS_AFFICHEES.map(g => ({
+  generation: g.label,
+  age: formatAge(getAgeLegal(g.annee, g.mois)),
+  duree: `${getDureeRequise(g.annee, g.mois)} trimestres`,
+}));
+
 const STATS = [
-  { value: "64 ans", label: "Âge légal 2026", note: "Pour les nés après le 1er sept. 1961" },
-  { value: "172 trimestres", label: "Taux plein générations 1965+", note: "43 années de cotisation" },
+  { value: "64 ans", label: "Âge légal — palier définitif", note: "Pour les générations nées à partir de 1969" },
+  { value: "172 trimestres", label: "Taux plein générations 1966+", note: "Calendrier gelé par la LFSS 2026 pour 1964-1968" },
   { value: "50 %", label: "Taux de liquidation CNAV", note: "Taux plein sur le SAM (25 meilleures années)" },
   { value: "1,4386 €", label: "Valeur point Agirc-Arrco 2026", note: "Retraite complémentaire salariés privés" },
 ];
@@ -17,11 +45,11 @@ const STATS = [
 const FAQ = [
   {
     q: "Quel est l'âge de départ à la retraite en 2026 ?",
-    a: "En 2026, l'âge légal de départ à la retraite est de 63 ans pour ceux nés entre le 1er septembre 1961 et le 31 décembre 1961, et de 64 ans pour ceux nés à partir du 1er janvier 1962. L'âge du taux plein automatique (sans décote quelle que soit votre durée de cotisation) reste fixé à 67 ans.",
+    a: "L'âge légal dépend de votre année de naissance : il augmente progressivement de 62 ans (avant septembre 1961) vers un palier définitif de 64 ans pour les générations nées à partir de 1969. La loi de financement de la Sécurité sociale pour 2026 a gelé cette montée en charge pour les générations 1964 à 1968 (départs à partir du 1er septembre 2026, jusqu'au 1er janvier 2028). L'âge du taux plein automatique (sans décote quelle que soit votre durée de cotisation) reste fixé à 67 ans pour toutes les générations.",
   },
   {
     q: "Comment calculer sa retraite de base CNAV ?",
-    a: "La pension CNAV = SAM × Taux × (Durée assurée / Durée de référence). SAM = Salaire Annuel Moyen des 25 meilleures années ; Taux = 50 % (taux plein) à 37,5 % (décote max) ; Durée de référence = 172 trimestres (génération 1965+). Le simulateur CNAV de simfinly effectue ce calcul automatiquement.",
+    a: "La pension CNAV = SAM × Taux × (Durée assurée / Durée de référence). SAM = Salaire Annuel Moyen des 25 meilleures années ; Taux = 50 % au taux plein, réduit de 0,625 %/trimestre manquant jusqu'à 43,75 % (décote maximale à 20 trimestres manquants) ; Durée de référence = 172 trimestres pour les générations 1966 et suivantes. Le simulateur CNAV de simfinly effectue ce calcul automatiquement.",
   },
   {
     q: "À combien s'élève la retraite moyenne en France en 2026 ?",
@@ -40,10 +68,37 @@ const FAQ = [
 const SIMULATEURS = [
   { path: "/simulateurs/cnav", label: "Retraite de base (CNAV)", emoji: "🏛️", desc: "Calcul pension régime général — salariés du privé" },
   { path: "/simulateurs/agirc-arrco", label: "Agirc-Arrco", emoji: "🏆", desc: "Retraite complémentaire — points et valeur 2026" },
+  { path: "/simulateurs/fonction-publique", label: "Fonction publique", emoji: "⚖️", desc: "CNRACL, traitement indiciaire et RAFP" },
+  { path: "/simulateurs/independants", label: "Indépendants (TNS)", emoji: "💼", desc: "SSI + RCI, artisans et commerçants" },
+  { path: "/simulateurs/synthese-retraite", label: "Synthèse tous régimes", emoji: "🧮", desc: "Additionnez toutes vos pensions en un calcul" },
   { path: "/simulateurs/trimestres", label: "Trimestres retraite", emoji: "📅", desc: "Nombre de trimestres cotisés et manquants" },
+  { path: "/simulateurs/retraite-anticipee", label: "Retraite anticipée", emoji: "⏩", desc: "Carrières longues, départ avant l'âge légal" },
   { path: "/simulateurs/pension-reversion", label: "Pension de réversion", emoji: "💞", desc: "Droits du conjoint survivant" },
   { path: "/simulateurs/per", label: "PER vs Assurance-vie", emoji: "📈", desc: "Optimiser votre épargne retraite" },
   { path: "/simulateurs/retraite-progressive", label: "Retraite progressive", emoji: "⏩", desc: "Réduire le temps de travail avant la retraite" },
+  { path: "/simulateurs/comparaison-reforme", label: "Réforme 2023 — impact", emoji: "📊", desc: "Comparer avant/après la loi Borne" },
+  { path: "/simulateurs/rente-capital", label: "Rente ou capital (PER)", emoji: "⚖️", desc: "Rente viagère vs retrait programmé" },
+];
+
+const TERMES_LEXIQUE = [
+  ["taux-plein", "Taux plein"],
+  ["decote", "Décote"],
+  ["surcote", "Surcote"],
+  ["trimestre", "Trimestre"],
+  ["sam", "SAM"],
+  ["agirc-arrco", "Agirc-Arrco"],
+  ["cnav", "CNAV"],
+  ["pass", "PASS"],
+  ["rachat-trimestres", "Rachat de trimestres"],
+  ["cumul-emploi-retraite", "Cumul emploi-retraite"],
+  ["retraite-progressive", "Retraite progressive"],
+  ["carriere-longue", "Carrière longue"],
+];
+
+const COMPARATIFS_RETRAITE = [
+  ["rachat-trimestres-ou-decote", "Racheter des trimestres ou accepter la décote ?"],
+  ["cumul-emploi-retraite-vs-retraite-progressive", "Cumul emploi-retraite ou retraite progressive ?"],
+  ["rente-viagere-vs-retrait-programme", "Rente viagère ou retrait programmé (PER) ?"],
 ];
 
 const ETAPES = [
@@ -64,7 +119,7 @@ const schemas = [
     publisher: { "@type": "Organization", name: "Simfinly", logo: { "@type": "ImageObject", url: `${BASE}/logo-mark.svg` } },
     url: `${BASE}/retraite/guide-complet-2026`,
     datePublished: "2026-01-01",
-    dateModified: "2026-06-29",
+    dateModified: "2026-07-04",
     inLanguage: "fr-FR",
     mainEntityOfPage: `${BASE}/retraite/guide-complet-2026`,
   },
@@ -237,20 +292,20 @@ export default function GuideRetraite2026() {
           </div>
           <p>Avec :</p>
           <ul>
-            <li><strong>SAM</strong> = Salaire Annuel Moyen des 25 meilleures années (limité au PASS, soit 47 100 €/an en 2026)</li>
-            <li><strong>Taux</strong> = 50 % si taux plein, jusqu'à 37,5 % avec décote maximale (20 trimestres manquants)</li>
-            <li><strong>Trimestres de référence</strong> = 172 pour les générations nées à partir de 1965</li>
+            <li><strong>SAM</strong> = Salaire Annuel Moyen des 25 meilleures années (limité au PASS, soit {PASS_2026.toLocaleString('fr-FR')} €/an en 2026)</li>
+            <li><strong>Taux</strong> = 50 % si taux plein, jusqu'à 43,75 % avec décote maximale (20 trimestres manquants, -12,5 %)</li>
+            <li><strong>Trimestres de référence</strong> = 172 pour les générations nées à partir de 1966 (calendrier gelé par la LFSS 2026 pour 1964-1968)</li>
           </ul>
           <div style={s.infoBox}>
-            <strong>💡 Exemple :</strong> SAM de 35 000 €, 172 trimestres (taux plein), génération 1965+.<br/>
+            <strong>💡 Exemple :</strong> SAM de 35 000 €, 172 trimestres (taux plein), génération 1966+.<br/>
             Pension = 35 000 × 50 % × (172/172) = <strong>17 500 €/an</strong> soit <strong>1 458 €/mois</strong>
           </div>
-          <p>Attention : le SAM est calculé sur votre salaire brut plafonné au Plafond de la Sécurité Sociale (PASS = 47 100 €/an en 2026). Un cadre gagnant 80 000 €/an ne sera pris en compte qu'à hauteur de 47 100 € dans le calcul CNAV.</p>
+          <p>Attention : le SAM est calculé sur votre salaire brut plafonné au Plafond Annuel de la Sécurité Sociale (PASS = {PASS_2026.toLocaleString('fr-FR')} €/an en 2026). Un cadre gagnant 80 000 €/an ne sera pris en compte qu'à hauteur de {PASS_2026.toLocaleString('fr-FR')} € dans le calcul CNAV.</p>
         </div>
 
         <h2 style={s.h2}>L'âge légal en 2026 selon votre génération</h2>
         <div style={s.body}>
-          <p>La réforme des retraites de 2023 (loi Borne) a progressivement repoussé l'âge légal de 62 à 64 ans. En 2026 :</p>
+          <p>La réforme des retraites de 2023 (loi Borne) a progressivement repoussé l'âge légal de 62 à 64 ans. La loi de financement de la Sécurité sociale pour 2026 (LFSS 2026) a toutefois <strong>gelé cette montée en charge pour les générations 1964 à 1968</strong>, pour les départs à partir du 1er septembre 2026 et jusqu'au 1er janvier 2028 — la trajectoire vers 64 ans reprendra ensuite, sauf nouvelle loi :</p>
           <table style={s.table}>
             <thead>
               <tr>
@@ -260,45 +315,36 @@ export default function GuideRetraite2026() {
               </tr>
             </thead>
             <tbody>
-              {[
-                ["Avant le 1er sept. 1961", "62 ans", "168 trimestres"],
-                ["1er sept. 1961 – 31 déc. 1961", "62 ans et 3 mois", "168 trimestres"],
-                ["1962", "62 ans et 6 mois", "169 trimestres"],
-                ["1963", "62 ans et 9 mois", "170 trimestres"],
-                ["1964", "63 ans", "171 trimestres"],
-                ["1965", "63 ans et 3 mois", "172 trimestres"],
-                ["1966", "63 ans et 6 mois", "172 trimestres"],
-                ["1967", "63 ans et 9 mois", "172 trimestres"],
-                ["À partir de 1968", "64 ans", "172 trimestres"],
-              ].map((row, i) => (
-                <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
+              {AGE_TABLE.map((row, i) => (
+                <tr key={i}><td style={s.td}>{row.generation}</td><td style={s.td}>{row.age}</td><td style={s.td}>{row.duree}</td></tr>
               ))}
             </tbody>
           </table>
           <div style={s.warnBox}>
-            <strong>⚠️ Important :</strong> L'âge légal n'est pas forcément l'âge optimal. Partir exactement à 64 ans sans avoir vos 172 trimestres entraîne une <strong>décote de 1,25 %/trimestre manquant</strong> (jusqu'à -25 % max sur la pension CNAV).
+            <strong>⚠️ Important :</strong> L'âge légal n'est pas forcément l'âge optimal. Partir sans avoir vos trimestres requis avant l'âge du taux plein automatique (67 ans) entraîne une <strong>décote de 0,625 %/trimestre manquant</strong> (plafonnée à 20 trimestres, soit -12,5 % max sur la pension CNAV).
           </div>
         </div>
 
         <h2 style={s.h2}>Décote, taux plein et surcote : les 3 scénarios</h2>
         <div style={s.body}>
-          <p><strong>Décote (ou "coefficient d'abattement")</strong> : si vous partez avant d'avoir tous vos trimestres ET avant 67 ans, votre pension CNAV est réduite de <strong>1,25 % par trimestre manquant</strong> (plafonné à 20 trimestres = -25 %). La décote disparaît à 67 ans (âge du taux plein automatique).</p>
+          <p><strong>Décote</strong> : si vous partez avant d'avoir tous vos trimestres ET avant 67 ans, votre pension CNAV est réduite de <strong>0,625 % par trimestre manquant</strong> (plafonné à 20 trimestres = -12,5 % maximum). La décote disparaît à 67 ans (âge du taux plein automatique, quel que soit le nombre de trimestres validés).</p>
           <p><strong>Taux plein</strong> : vous avez cotisé le nombre de trimestres requis pour votre génération. Taux = 50 %. C'est le scénario optimal pour la plupart des salariés du privé avec une carrière complète.</p>
-          <p><strong>Surcote</strong> : vous continuez à travailler après avoir atteint le taux plein. <strong>+1,25 % de pension par trimestre supplémentaire</strong> (soit +5 %/an). Cumulable avec le bonus Agirc-Arrco (+10 à +30 %).</p>
+          <p><strong>Surcote</strong> : vous continuez à travailler après avoir atteint à la fois l'âge légal et le nombre de trimestres requis. <strong>+1,25 % de pension par trimestre supplémentaire</strong> (soit +5 %/an), sans plafond.</p>
+          <p>Ces trois mécanismes ne s'appliquent qu'à la pension de base CNAV. La retraite complémentaire Agirc-Arrco n'applique plus aucune minoration ni majoration liée à l'âge de départ : le coefficient de solidarité (malus temporaire de -10 % pendant 3 ans) a été définitivement supprimé pour les retraites liquidées depuis le 1er avril 2024.</p>
           <table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Scénario</th>
                 <th style={s.th}>Impact sur pension CNAV</th>
-                <th style={s.th}>Impact sur Agirc-Arrco</th>
               </tr>
             </thead>
             <tbody>
               {[
-                ["Départ à l'âge légal (64 ans) avec taux plein", "+0 % (base 50 %)", "Malus -10 % pendant 3 ans"],
-                ["Départ avec 10 trimestres manquants (-12,5 %)", "-12,5 % (43,75 %)", "Malus -10 % pendant 3 ans"],
-                ["Départ à 67 ans (taux plein auto)", "Base 50 % garanti", "Pas de malus"],
-                ["1 an après le taux plein (surcote +5 %)", "+5 % (52,5 %)", "Bonus +10 % pendant 1 an"],
+                ["Départ à l'âge légal avec taux plein", "+0 % (base 50 %)"],
+                ["Départ avec 10 trimestres manquants (-6,25 %)", "-6,25 % (46,875 %)"],
+                ["Départ avec 20 trimestres manquants ou plus (plafond)", "-12,5 % (43,75 %)"],
+                ["Départ à 67 ans (taux plein automatique)", "Base 50 % garantie, quel que soit le nombre de trimestres"],
+                ["4 trimestres travaillés après le taux plein (surcote)", "+5 % (52,5 %)"],
               ].map((row, i) => (
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
@@ -359,6 +405,48 @@ export default function GuideRetraite2026() {
               </Link>
             ))}
           </div>
+          <p style={{ marginTop: 14 }}>
+            <Link to="/retraite" style={{ color: "var(--primary)", fontWeight: 600, textDecoration: "none" }}>Voir les 32 guides métier →</Link>
+          </p>
+        </div>
+
+        {/* Comparatifs */}
+        <h2 style={s.h2}>Comparatifs retraite</h2>
+        <div style={s.body}>
+          <p>Pour arbitrer entre deux stratégies concrètes, consultez nos pages comparatives dédiées :</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+            {COMPARATIFS_RETRAITE.map(([slug, label]) => (
+              <Link key={slug} to={`/comparatifs/${slug}`} style={{
+                background: "var(--chip-bg)", color: "var(--primary)", borderRadius: 20,
+                padding: "6px 14px", fontSize: 13, fontWeight: 500, textDecoration: "none",
+                border: "1px solid var(--border-gold)",
+              }}>
+                {label}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* Lexique */}
+        <h2 style={s.h2}>Lexique retraite</h2>
+        <div style={s.body}>
+          <p>Les termes essentiels expliqués simplement :</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+            {TERMES_LEXIQUE.map(([slug, label]) => (
+              <Link key={slug} to={`/lexique/${slug}`} style={{
+                background: "var(--chip-bg)", color: "var(--primary)", borderRadius: 20,
+                padding: "6px 14px", fontSize: 13, fontWeight: 500, textDecoration: "none",
+                border: "1px solid var(--border-gold)",
+              }}>
+                {label}
+              </Link>
+            ))}
+          </div>
+          <p style={{ marginTop: 14 }}>
+            <Link to="/lexique" style={{ color: "var(--primary)", fontWeight: 600, textDecoration: "none" }}>Voir tout le lexique →</Link>
+            {" · "}
+            <Link to="/blog" style={{ color: "var(--primary)", fontWeight: 600, textDecoration: "none" }}>Articles retraite du blog →</Link>
+          </p>
         </div>
 
         {/* FAQ */}

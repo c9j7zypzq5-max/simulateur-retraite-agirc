@@ -9,15 +9,15 @@ import { METIERS_LIST } from "../data/metiers.js";
 const TOP_REGIMES = [
   { label: "Salarié du privé", desc: "CNAV + Agirc-Arrco", slugs: ["ingenieur-cadre", "chauffeur-routier", "caissiere", "ouvrier-usine"] },
   { label: "Fonctionnaire", desc: "SRE / CNRACL", slugs: ["fonctionnaire", "enseignant", "policier", "militaire", "gendarme", "pompier", "aide-soignante", "magistrat", "diplomate"] },
-  { label: "Profession libérale", desc: "CNAVPL + caisse spécifique", slugs: ["medecin-liberal", "avocat", "pharmacien", "chirurgien-dentiste", "sage-femme", "veterinaire", "notaire", "expert-comptable", "architecte"] },
-  { label: "Travailleur indépendant", desc: "SSI (anciennement RSI)", slugs: ["artisan", "commercant", "chef-entreprise", "auto-entrepreneur"] },
+  { label: "Profession libérale", desc: "CNAVPL + caisse spécifique", slugs: ["medecin-liberal", "avocat", "pharmacien", "chirurgien-dentiste", "sage-femme", "veterinaire", "notaire", "expert-comptable", "architecte", "kinesitherapeute"] },
+  { label: "Travailleur indépendant", desc: "SSI (anciennement RSI)", slugs: ["artisan", "commercant", "chef-entreprise", "auto-entrepreneur", "chauffeur-vtc"] },
   { label: "Cas particuliers", desc: "Régimes spécifiques", slugs: ["agriculteur", "intermittent", "expatrie", "infirmiere"] },
 ];
 
 const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "name": "Retraite par métier 2026 — 30 professions",
+  "name": "Retraite par métier 2026 — 32 professions",
   "description": "Guides complets sur la retraite selon votre profession : médecin, fonctionnaire, avocat, militaire, auto-entrepreneur… Calculs, règles et simulateurs.",
   "url": "https://www.simfinly.com/retraite",
   "hasPart": METIERS_LIST.map(m => ({
@@ -31,7 +31,7 @@ export default function RetraiteIndex() {
   const [theme, setTheme] = useTheme();
 
   usePageMeta(
-    "Retraite par métier 2026 — 30 professions, règles et calculs | simfinly.com",
+    "Retraite par métier 2026 — 32 professions, règles et calculs | simfinly.com",
     "Calculez votre retraite selon votre profession : médecin libéral, fonctionnaire, avocat, militaire, auto-entrepreneur… 30 guides complets avec simulateur gratuit."
   );
 

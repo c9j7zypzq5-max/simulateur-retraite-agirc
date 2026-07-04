@@ -34,6 +34,7 @@ export const ROUTE_DATES = {
     [route, `${annee}-${MOIS_NUM[mois] || '01'}-01`]
   )),
   '/': '2026-06-15',
+  '/retraite/guide-complet-2026': '2026-07-04',
 };
 
 // Routes disponibles en version anglaise (/en/...).

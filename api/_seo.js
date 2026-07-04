@@ -300,7 +300,7 @@ export const SEO_CONTENT = {
   },
   '/retraite/guide-complet-2026': {
     h1: "Guide complet retraite 2026 : calcul, simulateurs et optimisation",
-    intro: "Tout comprendre sur la retraite en 2026 : âge légal 64 ans (génération 1968+), calcul CNAV (SAM × 50 % × trimestres) et Agirc-Arrco (points × 1,4386 €), décote et surcote, rachat de trimestres, taux de remplacement. Guides par profession inclus.",
+    intro: "Tout comprendre sur la retraite en 2026 : âge légal jusqu'à 64 ans (palier définitif génération 1969+, calendrier gelé pour 1964-1968 par la LFSS 2026), calcul CNAV (SAM × 50 % × trimestres) et Agirc-Arrco (points × 1,4386 €), décote et surcote, rachat de trimestres, taux de remplacement. Guides par profession inclus.",
   },
   '/retraite/points-agirc-arrco': {
     h1: "Points Agirc-Arrco 2026 : valeur du point et calcul de la pension",
