@@ -4,9 +4,23 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import TableOfContents from "../components/TableOfContents.jsx";
 import { PASS_2026, getAgeLegal, getDureeRequise } from "../data/baremesRetraite.js";
 
 const BASE = "https://www.simfinly.com";
+
+const TOC_ITEMS = [
+  { id: "simulateurs", label: "Les simulateurs retraite" },
+  { id: "fondamentaux", label: "Les fondamentaux de la retraite" },
+  { id: "calcul-cnav", label: "Calcul de la retraite de base CNAV" },
+  { id: "age-legal", label: "L'âge légal selon votre génération" },
+  { id: "decote-surcote", label: "Décote, taux plein et surcote" },
+  { id: "rachat-trimestres", label: "Rachat de trimestres : est-ce rentable ?" },
+  { id: "etapes", label: "Les 5 étapes pour préparer sa retraite" },
+  { id: "par-profession", label: "Retraite par profession" },
+  { id: "comparatifs", label: "Comparatifs retraite" },
+  { id: "lexique", label: "Lexique retraite" },
+];
 
 // Table générationnelle affichée : dérivée du module canonique (source unique
 // utilisée par tous les simulateurs) pour éviter qu'elle diverge — c'est
@@ -233,6 +247,8 @@ export default function GuideRetraite2026() {
           </p>
         </div>
 
+        <TableOfContents items={TOC_ITEMS} />
+
         {/* Stats */}
         <div style={s.stats}>
           {STATS.map((st, i) => (
@@ -245,7 +261,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Simulateurs */}
-        <h2 style={s.h2}>Les simulateurs retraite disponibles sur simfinly</h2>
+        <h2 id="simulateurs" style={s.h2}>Les simulateurs retraite disponibles sur simfinly</h2>
         <p style={{ ...s.body, marginBottom: 0 }}>Tous nos simulateurs sont gratuits, sans inscription, et calculent en temps réel.</p>
         <div style={s.simGrid}>
           {SIMULATEURS.map((sim, i) => (
@@ -258,7 +274,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Content */}
-        <h2 style={s.h2}>Les fondamentaux de la retraite en France (2026)</h2>
+        <h2 id="fondamentaux" style={s.h2}>Les fondamentaux de la retraite en France (2026)</h2>
         <div style={s.body}>
           <p>Le système de retraite français repose sur la <strong>répartition</strong> : les actifs d'aujourd'hui financent les pensions des retraités d'aujourd'hui. Il est organisé en plusieurs régimes obligatoires selon votre statut professionnel :</p>
           <table style={s.table}>
@@ -284,7 +300,7 @@ export default function GuideRetraite2026() {
           </table>
         </div>
 
-        <h2 style={s.h2}>Calcul de la retraite de base CNAV</h2>
+        <h2 id="calcul-cnav" style={s.h2}>Calcul de la retraite de base CNAV</h2>
         <div style={s.body}>
           <p>Pour les salariés du privé, la pension de base CNAV se calcule selon la formule :</p>
           <div style={s.formula}>
@@ -303,7 +319,7 @@ export default function GuideRetraite2026() {
           <p>Attention : le SAM est calculé sur votre salaire brut plafonné au Plafond Annuel de la Sécurité Sociale (PASS = {PASS_2026.toLocaleString('fr-FR')} €/an en 2026). Un cadre gagnant 80 000 €/an ne sera pris en compte qu'à hauteur de {PASS_2026.toLocaleString('fr-FR')} € dans le calcul CNAV.</p>
         </div>
 
-        <h2 style={s.h2}>L'âge légal en 2026 selon votre génération</h2>
+        <h2 id="age-legal" style={s.h2}>L'âge légal en 2026 selon votre génération</h2>
         <div style={s.body}>
           <p>La réforme des retraites de 2023 (loi Borne) a progressivement repoussé l'âge légal de 62 à 64 ans. La loi de financement de la Sécurité sociale pour 2026 (LFSS 2026) a toutefois <strong>gelé cette montée en charge pour les générations 1964 à 1968</strong>, pour les départs à partir du 1er septembre 2026 et jusqu'au 1er janvier 2028 — la trajectoire vers 64 ans reprendra ensuite, sauf nouvelle loi :</p>
           <table style={s.table}>
@@ -325,7 +341,7 @@ export default function GuideRetraite2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Décote, taux plein et surcote : les 3 scénarios</h2>
+        <h2 id="decote-surcote" style={s.h2}>Décote, taux plein et surcote : les 3 scénarios</h2>
         <div style={s.body}>
           <p><strong>Décote</strong> : si vous partez avant d'avoir tous vos trimestres ET avant 67 ans, votre pension CNAV est réduite de <strong>0,625 % par trimestre manquant</strong> (plafonné à 20 trimestres = -12,5 % maximum). La décote disparaît à 67 ans (âge du taux plein automatique, quel que soit le nombre de trimestres validés).</p>
           <p><strong>Taux plein</strong> : vous avez cotisé le nombre de trimestres requis pour votre génération. Taux = 50 %. C'est le scénario optimal pour la plupart des salariés du privé avec une carrière complète.</p>
@@ -352,7 +368,7 @@ export default function GuideRetraite2026() {
           </table>
         </div>
 
-        <h2 style={s.h2}>Rachat de trimestres : est-ce rentable ?</h2>
+        <h2 id="rachat-trimestres" style={s.h2}>Rachat de trimestres : est-ce rentable ?</h2>
         <div style={s.body}>
           <p>Le rachat de trimestres CNAV permet d'augmenter votre durée d'assurance et/ou d'améliorer votre taux. Deux types :</p>
           <ul>
@@ -364,7 +380,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Les 5 étapes */}
-        <h2 style={s.h2}>Les 5 étapes pour préparer sa retraite en 2026</h2>
+        <h2 id="etapes" style={s.h2}>Les 5 étapes pour préparer sa retraite en 2026</h2>
         <div style={s.etapes}>
           {ETAPES.map((e, i) => (
             <div key={i} style={s.etape}>
@@ -378,7 +394,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Guides métier */}
-        <h2 style={s.h2}>Retraite par profession</h2>
+        <h2 id="par-profession" style={s.h2}>Retraite par profession</h2>
         <div style={s.body}>
           <p>Chaque régime a ses règles propres. Consultez le guide détaillé pour votre profession :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
@@ -411,7 +427,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Comparatifs */}
-        <h2 style={s.h2}>Comparatifs retraite</h2>
+        <h2 id="comparatifs" style={s.h2}>Comparatifs retraite</h2>
         <div style={s.body}>
           <p>Pour arbitrer entre deux stratégies concrètes, consultez nos pages comparatives dédiées :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
@@ -428,7 +444,7 @@ export default function GuideRetraite2026() {
         </div>
 
         {/* Lexique */}
-        <h2 style={s.h2}>Lexique retraite</h2>
+        <h2 id="lexique" style={s.h2}>Lexique retraite</h2>
         <div style={s.body}>
           <p>Les termes essentiels expliqués simplement :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>

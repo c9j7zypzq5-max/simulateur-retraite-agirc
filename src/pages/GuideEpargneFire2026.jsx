@@ -4,8 +4,19 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import TableOfContents from "../components/TableOfContents.jsx";
 
 const BASE = "https://www.simfinly.com";
+
+const TOC_ITEMS = [
+  { id: "simulateurs", label: "Les simulateurs épargne & FIRE" },
+  { id: "regle-4-pourcent", label: "La règle des 4 %" },
+  { id: "monte-carlo", label: "Simulation Monte Carlo" },
+  { id: "taux-epargne", label: "Le taux d'épargne" },
+  { id: "etapes", label: "Les 5 étapes vers l'indépendance financière" },
+  { id: "comparatifs", label: "Comparatifs épargne" },
+  { id: "lexique", label: "Lexique FIRE et épargne" },
+];
 
 const STATS = [
   { value: "25x", label: "Capital cible FIRE", note: "25 fois les dépenses annuelles (règle des 4 %)" },
@@ -185,6 +196,8 @@ export default function GuideEpargneFire2026() {
           </p>
         </div>
 
+        <TableOfContents items={TOC_ITEMS} />
+
         <div style={s.stats}>
           {STATS.map((st, i) => (
             <div key={i} style={s.stat}>
@@ -195,7 +208,7 @@ export default function GuideEpargneFire2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Les simulateurs épargne & FIRE disponibles sur simfinly</h2>
+        <h2 id="simulateurs" style={s.h2}>Les simulateurs épargne & FIRE disponibles sur simfinly</h2>
         <p style={{ ...s.body, marginBottom: 0 }}>Tous nos simulateurs sont gratuits, sans inscription, et calculent en temps réel.</p>
         <div style={s.simGrid}>
           {SIMULATEURS.map((sim, i) => (
@@ -207,7 +220,7 @@ export default function GuideEpargneFire2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>La règle des 4 % : combien faut-il pour être libre financièrement ?</h2>
+        <h2 id="regle-4-pourcent" style={s.h2}>La règle des 4 % : combien faut-il pour être libre financièrement ?</h2>
         <div style={s.body}>
           <p>Issue de l'étude Trinity, la règle des 4 % (Safe Withdrawal Rate) estime qu'un retrait annuel de 4 % du capital initial, ajusté à l'inflation chaque année, a une forte probabilité de ne jamais épuiser le capital sur 30 ans.</p>
           <div style={s.formula}>Capital cible = Dépenses annuelles × 25</div>
@@ -217,7 +230,7 @@ export default function GuideEpargneFire2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Simulation Monte Carlo : au-delà de la projection à rendement constant</h2>
+        <h2 id="monte-carlo" style={s.h2}>Simulation Monte Carlo : au-delà de la projection à rendement constant</h2>
         <div style={s.body}>
           <p>Une projection classique suppose un rendement annuel constant — une hypothèse optimiste qui ignore la volatilité réelle des marchés. Le simulateur FIRE de simfinly propose un mode probabiliste : il tire aléatoirement des rendements annuels réels dans l'historique du S&P 500 (1928-2024, avec remise), sur environ 1 000 trajectoires simulées, pour afficher une fourchette réaliste (percentiles P10, P50, P90) de l'évolution de votre capital dans le temps.</p>
           <div style={s.warnBox}>
@@ -225,7 +238,7 @@ export default function GuideEpargneFire2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Le taux d'épargne : le levier le plus puissant</h2>
+        <h2 id="taux-epargne" style={s.h2}>Le taux d'épargne : le levier le plus puissant</h2>
         <div style={s.body}>
           <p>Le taux d'épargne (épargne mensuelle ÷ revenus nets) influence la vitesse d'accumulation du patrimoine bien plus que le rendement des placements, surtout dans les premières années :</p>
           <ul>
@@ -236,7 +249,7 @@ export default function GuideEpargneFire2026() {
           <p>La règle du 50/30/20 (50 % besoins essentiels, 30 % envies, 20 % épargne minimum) est un point de départ ; les adeptes du FIRE visent souvent 40 à 60 %.</p>
         </div>
 
-        <h2 style={s.h2}>Les 5 étapes vers l'indépendance financière</h2>
+        <h2 id="etapes" style={s.h2}>Les 5 étapes vers l'indépendance financière</h2>
         <div style={s.etapes}>
           {ETAPES.map((e, i) => (
             <div key={i} style={s.etape}>
@@ -246,7 +259,7 @@ export default function GuideEpargneFire2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Comparatifs épargne</h2>
+        <h2 id="comparatifs" style={s.h2}>Comparatifs épargne</h2>
         <div style={s.body}>
           <p>Pour arbitrer entre deux enveloppes ou stratégies concrètes :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
@@ -256,7 +269,7 @@ export default function GuideEpargneFire2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Lexique FIRE et épargne</h2>
+        <h2 id="lexique" style={s.h2}>Lexique FIRE et épargne</h2>
         <div style={s.body}>
           <p>Les termes essentiels expliqués simplement :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>

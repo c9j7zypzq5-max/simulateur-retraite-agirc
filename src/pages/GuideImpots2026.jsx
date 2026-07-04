@@ -4,8 +4,20 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import TableOfContents from "../components/TableOfContents.jsx";
 
 const BASE = "https://www.simfinly.com";
+
+const TOC_ITEMS = [
+  { id: "simulateurs", label: "Les simulateurs fiscalité" },
+  { id: "bareme-ir", label: "Le barème de l'impôt sur le revenu" },
+  { id: "flat-tax", label: "Flat tax (PFU)" },
+  { id: "plus-value", label: "Plus-value immobilière" },
+  { id: "succession", label: "Succession et donation" },
+  { id: "etapes", label: "Les 5 étapes pour optimiser sa fiscalité" },
+  { id: "comparatifs", label: "Comparatifs fiscalité" },
+  { id: "lexique", label: "Lexique fiscalité" },
+];
 
 const STATS = [
   { value: "45 %", label: "Taux marginal maximum (TMI)", note: "Au-delà de 181 917 € de revenu imposable" },
@@ -186,6 +198,8 @@ export default function GuideImpots2026() {
           </p>
         </div>
 
+        <TableOfContents items={TOC_ITEMS} />
+
         <div style={s.stats}>
           {STATS.map((st, i) => (
             <div key={i} style={s.stat}>
@@ -196,7 +210,7 @@ export default function GuideImpots2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Les simulateurs fiscalité disponibles sur simfinly</h2>
+        <h2 id="simulateurs" style={s.h2}>Les simulateurs fiscalité disponibles sur simfinly</h2>
         <p style={{ ...s.body, marginBottom: 0 }}>Tous nos simulateurs sont gratuits, sans inscription, et calculent en temps réel.</p>
         <div style={s.simGrid}>
           {SIMULATEURS.map((sim, i) => (
@@ -208,7 +222,7 @@ export default function GuideImpots2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Le barème de l'impôt sur le revenu 2026</h2>
+        <h2 id="bareme-ir" style={s.h2}>Le barème de l'impôt sur le revenu 2026</h2>
         <div style={s.body}>
           <p>L'impôt sur le revenu est calculé selon un barème progressif par tranches, appliqué au revenu imposable divisé par le nombre de parts du foyer fiscal (quotient familial) :</p>
           <table style={s.table}>
@@ -224,7 +238,7 @@ export default function GuideImpots2026() {
           <p>Chaque taux ne s'applique qu'à la fraction du revenu comprise dans sa tranche — c'est pourquoi votre taux moyen d'imposition est toujours inférieur à votre TMI (tranche marginale d'imposition).</p>
         </div>
 
-        <h2 style={s.h2}>Flat tax (PFU) : 30 % ou 31,4 % selon le revenu</h2>
+        <h2 id="flat-tax" style={s.h2}>Flat tax (PFU) : 30 % ou 31,4 % selon le revenu</h2>
         <div style={s.body}>
           <p>Le Prélèvement Forfaitaire Unique taxe automatiquement les revenus du capital à un taux forfaitaire : 12,8 % d'impôt sur le revenu, plus des prélèvements sociaux dont le taux dépend du type de revenu depuis la hausse votée en 2025 (18,6 % pour les dividendes et plus-values mobilières dans la majorité des cas, contre 17,2 % pour d'autres revenus du capital) — soit 30 % ou 31,4 % au total.</p>
           <div style={s.infoBox}>
@@ -232,7 +246,7 @@ export default function GuideImpots2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Plus-value immobilière : l'abattement pour durée de détention</h2>
+        <h2 id="plus-value" style={s.h2}>Plus-value immobilière : l'abattement pour durée de détention</h2>
         <div style={s.body}>
           <p>La résidence principale est totalement exonérée. Pour les autres biens, la plus-value est taxée à 19 % d'impôt + prélèvements sociaux, avec un abattement progressif :</p>
           <ul>
@@ -241,12 +255,12 @@ export default function GuideImpots2026() {
           </ul>
         </div>
 
-        <h2 style={s.h2}>Succession et donation : l'abattement de 100 000 € par enfant</h2>
+        <h2 id="succession" style={s.h2}>Succession et donation : l'abattement de 100 000 € par enfant</h2>
         <div style={s.body}>
           <p>En ligne directe (parent-enfant), chaque parent peut transmettre 100 000 € par enfant en franchise de droits, un abattement <strong>renouvelable tous les 15 ans</strong>. Entre époux ou partenaires de PACS, la transmission par succession est totalement exonérée. Donner de son vivant, tôt et régulièrement, permet ainsi de transmettre un patrimoine important sans droits de succession.</p>
         </div>
 
-        <h2 style={s.h2}>Les 5 étapes pour optimiser sa fiscalité</h2>
+        <h2 id="etapes" style={s.h2}>Les 5 étapes pour optimiser sa fiscalité</h2>
         <div style={s.etapes}>
           {ETAPES.map((e, i) => (
             <div key={i} style={s.etape}>
@@ -256,7 +270,7 @@ export default function GuideImpots2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Comparatifs fiscalité</h2>
+        <h2 id="comparatifs" style={s.h2}>Comparatifs fiscalité</h2>
         <div style={s.body}>
           <p>Pour arbitrer entre deux stratégies concrètes :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
@@ -266,7 +280,7 @@ export default function GuideImpots2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Lexique fiscalité</h2>
+        <h2 id="lexique" style={s.h2}>Lexique fiscalité</h2>
         <div style={s.body}>
           <p>Les termes essentiels expliqués simplement :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>

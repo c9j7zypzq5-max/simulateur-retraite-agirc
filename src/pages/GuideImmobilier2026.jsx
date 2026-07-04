@@ -4,8 +4,20 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import JsonLd from "../components/JsonLd.jsx";
+import TableOfContents from "../components/TableOfContents.jsx";
 
 const BASE = "https://www.simfinly.com";
+
+const TOC_ITEMS = [
+  { id: "simulateurs", label: "Les simulateurs immobilier" },
+  { id: "capacite-emprunt", label: "Capacité d'emprunt : le calcul de référence" },
+  { id: "frais-notaire", label: "Frais de notaire" },
+  { id: "ptz", label: "Le PTZ" },
+  { id: "investissement-locatif", label: "Investissement locatif : rendement et fiscalité" },
+  { id: "etapes", label: "Les 5 étapes pour préparer un achat" },
+  { id: "comparatifs", label: "Comparatifs immobilier" },
+  { id: "lexique", label: "Lexique immobilier" },
+];
 
 const STATS = [
   { value: "35 %", label: "Taux d'endettement maximum", note: "Plafond HCSF, assurance comprise" },
@@ -189,6 +201,8 @@ export default function GuideImmobilier2026() {
           </p>
         </div>
 
+        <TableOfContents items={TOC_ITEMS} />
+
         <div style={s.stats}>
           {STATS.map((st, i) => (
             <div key={i} style={s.stat}>
@@ -199,7 +213,7 @@ export default function GuideImmobilier2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Les simulateurs immobilier disponibles sur simfinly</h2>
+        <h2 id="simulateurs" style={s.h2}>Les simulateurs immobilier disponibles sur simfinly</h2>
         <p style={{ ...s.body, marginBottom: 0 }}>Tous nos simulateurs sont gratuits, sans inscription, et calculent en temps réel.</p>
         <div style={s.simGrid}>
           {SIMULATEURS.map((sim, i) => (
@@ -211,7 +225,7 @@ export default function GuideImmobilier2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Capacité d'emprunt : le calcul de référence</h2>
+        <h2 id="capacite-emprunt" style={s.h2}>Capacité d'emprunt : le calcul de référence</h2>
         <div style={s.body}>
           <p>Depuis janvier 2022, le Haut Conseil de Stabilité Financière (HCSF) impose aux banques un <strong>taux d'endettement maximum de 35 %</strong> (assurance emprunteur incluse), sauf dérogations marginales accordées par les banques (dossiers à hauts revenus notamment).</p>
           <div style={s.formula}>Mensualité maximale = Revenus nets mensuels × 35 %</div>
@@ -223,7 +237,7 @@ export default function GuideImmobilier2026() {
           <p>Allonger la durée du prêt augmente le montant empruntable à mensualité égale, mais alourdit le coût total du crédit — un arbitrage à faire au cas par cas avec le simulateur d'emprunt immobilier.</p>
         </div>
 
-        <h2 style={s.h2}>Frais de notaire : 7-8 % dans l'ancien, 2-3 % dans le neuf</h2>
+        <h2 id="frais-notaire" style={s.h2}>Frais de notaire : 7-8 % dans l'ancien, 2-3 % dans le neuf</h2>
         <div style={s.body}>
           <p>Les « frais de notaire » sont en réalité des frais d'acquisition, dont le notaire ne conserve qu'une faible part. Environ 80 % du montant correspond aux droits de mutation à titre onéreux (DMTO), un impôt reversé au département, à la commune et à l'État.</p>
           <table style={s.table}>
@@ -239,7 +253,7 @@ export default function GuideImmobilier2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Le PTZ : jusqu'à 50 % de l'achat sans intérêts</h2>
+        <h2 id="ptz" style={s.h2}>Le PTZ : jusqu'à 50 % de l'achat sans intérêts</h2>
         <div style={s.body}>
           <p>Le Prêt à Taux Zéro est réservé aux primo-accédants sous conditions de ressources. Depuis avril 2025, il est accessible dans toutes les zones (A, B1, B2, C). La quotité finançable dépend de la zone, du type de bien et de la tranche de revenus :</p>
           <ul>
@@ -250,14 +264,14 @@ export default function GuideImmobilier2026() {
           <p>Utilisez le simulateur PTZ pour vérifier votre éligibilité exacte selon votre zone et vos revenus.</p>
         </div>
 
-        <h2 style={s.h2}>Investissement locatif : rendement et fiscalité</h2>
+        <h2 id="investissement-locatif" style={s.h2}>Investissement locatif : rendement et fiscalité</h2>
         <div style={s.body}>
           <p>Le rendement locatif brut ignore les charges — c'est le rendement net qui reflète la rentabilité réelle :</p>
           <div style={s.formula}>Rendement net ≈ Rendement brut − 2 à 3 points (charges, taxe foncière, gestion, vacance)</div>
           <p>Côté fiscalité, le régime réel en location nue permet de déduire les charges (intérêts, travaux, taxe foncière) ; un déficit qui en résulte est imputable sur le revenu global dans la limite de <strong>10 700 €/an</strong> (21 400 € en régime « louer abordable »). En LMNP (location meublée), l'amortissement du bien permet souvent de neutraliser l'imposition des loyers pendant plusieurs années.</p>
         </div>
 
-        <h2 style={s.h2}>Les 5 étapes pour préparer un achat immobilier</h2>
+        <h2 id="etapes" style={s.h2}>Les 5 étapes pour préparer un achat immobilier</h2>
         <div style={s.etapes}>
           {ETAPES.map((e, i) => (
             <div key={i} style={s.etape}>
@@ -267,7 +281,7 @@ export default function GuideImmobilier2026() {
           ))}
         </div>
 
-        <h2 style={s.h2}>Comparatifs immobilier</h2>
+        <h2 id="comparatifs" style={s.h2}>Comparatifs immobilier</h2>
         <div style={s.body}>
           <p>Pour arbitrer entre deux stratégies concrètes :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
@@ -277,7 +291,7 @@ export default function GuideImmobilier2026() {
           </div>
         </div>
 
-        <h2 style={s.h2}>Lexique immobilier</h2>
+        <h2 id="lexique" style={s.h2}>Lexique immobilier</h2>
         <div style={s.body}>
           <p>Les termes essentiels expliqués simplement :</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>

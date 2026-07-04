@@ -74,6 +74,11 @@ export const RECOMMENDATIONS = {
     { icon: "💼", label: "Maximisez le PER", description: "Estimez combien vous pouvez verser sur un PER pour booster votre capital tout en défiscalisant.", to: "/simulateurs/per", cta: "Simuler le PER →" },
     { icon: "📅", label: "Vérifiez vos trimestres", description: "La durée d'assurance conditionne votre taux et votre âge de départ. Vérifiez votre situation.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
   ],
+  '/simulateurs/rente-capital': [
+    { icon: "💼", label: "Simulez votre PER", description: "Le capital converti en rente ou retiré provient souvent d'un PER — vérifiez le montant projeté et la déduction fiscale.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "L'assurance-vie offre une autre façon de sortir en rente ou en capital, avec une fiscalité différente après 8 ans.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
+    { icon: "🧮", label: "Synthèse retraite tous régimes", description: "Consolidez cette rente avec vos pensions CNAV et Agirc-Arrco pour une vision complète de vos revenus futurs.", to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" },
+  ],
   '/simulateurs/retraite-luxembourg': [
     { icon: "🏛", label: "Cumulez avec la CNAV française", description: "En tant que frontalier, vous avez peut-être des droits CNAV en France. Estimez les deux pensions.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "🏆", label: "Agirc-Arrco si carrière mixte", description: "Si vous avez travaillé en France avant le Luxembourg, calculez aussi votre complémentaire.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
