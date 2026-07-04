@@ -17,8 +17,8 @@ export const TAUX_PFU_IR  = 0.128;   // 12,8 % impôt sur le revenu
 export const TAUX_PS      = 0.172;   // 17,2 % prélèvements sociaux (PS)
 export const TAUX_PFU     = TAUX_PFU_IR + TAUX_PS; // 30 % total PFU
 
-// Depuis la loi de finances 2024 : le taux PS passe de 17,2 % à 18,6 % pour
-// les revenus de capitaux mobiliers (RCM) perçus à compter du 01/01/2025.
+// Depuis la loi de financement de la Sécurité sociale pour 2026 : le taux PS
+// passe de 17,2 % à 18,6 % pour les revenus de capitaux mobiliers (RCM).
 export const TAUX_PS_RCM  = 0.186;
 export const TAUX_PFU_RCM = TAUX_PFU_IR + TAUX_PS_RCM; // 31,4 % dividendes / plus-values
 

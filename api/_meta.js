@@ -97,6 +97,8 @@ export const ROUTE_META = {
   '/retraite/intermittent':          { title: 'Retraite intermittent du spectacle 2026 — CNAV, Audiens et calcul',      emoji: '🎭', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   '/retraite/expatrie':              { title: "Retraite expatrié français 2026 — CFE, conventions bilatérales et droits", emoji: '✈️', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   '/retraite/diplomate':             { title: "Retraite diplomate fonctionnaire 2026 — SRE, bonifications et calcul",   emoji: '🏳️', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/kinesitherapeute':      { title: 'Retraite kinésithérapeute 2026 — CARPIMKO, calcul et âge de départ',    emoji: '🦵', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
+  '/retraite/chauffeur-vtc':         { title: 'Retraite chauffeur VTC 2026 — SSI, calcul et cotisations',              emoji: '🚕', cat: 'Retraite', prio: '0.8', freq: 'monthly' },
   // Retraite par situation de vie et calendrier
   '/retraite/calendrier-generations': { title: 'Âge départ retraite par année de naissance 2026 — tableau complet',      emoji: '📅', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
   '/retraite/a-40-ans':              { title: 'Préparer sa retraite à 40 ans 2026 — PER, épargne et stratégie',          emoji: '🕐', cat: 'Retraite', prio: '0.8', freq: 'monthly' },

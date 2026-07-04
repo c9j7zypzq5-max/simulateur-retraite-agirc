@@ -752,6 +752,94 @@ export const COMPARATIFS = [
     sims: ['/simulateurs/rendement-locatif', '/simulateurs/emprunt-immobilier'],
     terms: ['dpe', 'deficit-foncier', 'rendement-locatif', 'lmnp', 'vefa'],
   },
+  {
+    slug: 'rachat-trimestres-ou-decote',
+    title: 'Racheter des trimestres ou accepter la décote : que choisir ?',
+    shortTitle: 'Rachat de trimestres vs décote',
+    emoji: '⏳',
+    category: 'Retraite',
+    intro: "Il vous manque des trimestres pour le taux plein : deux options s'offrent à vous. Racheter les trimestres manquants (Versement Pour la Retraite) pour partir sans décote, ou partir quand même et accepter une décote définitive sur votre pension de base. Le bon choix dépend de votre âge, de votre espérance de vie et du coût du rachat.",
+    a: {
+      name: 'Racheter les trimestres',
+      pour: ["Supprime la décote définitivement", "Montant déductible du revenu imposable", "Rentable si vous vivez longtemps après le départ"],
+      contre: ["Coût élevé, croissant avec l'âge au rachat", "Aucun gain si vous n'avez pas atteint l'âge légal", "Immobilise un capital qui pourrait être investi ailleurs"],
+    },
+    b: {
+      name: 'Accepter la décote',
+      pour: ["Aucune avance de trésorerie nécessaire", "Capital conservé et disponible immédiatement", "Départ à la retraite dès l'âge légal atteint"],
+      contre: ["Décote définitive de 0,625 % par trimestre manquant (jusqu'à 12,5 %)", "Réduction à vie de la pension de base CNAV", "Pas de rattrapage possible après liquidation"],
+    },
+    criteres: [
+      { label: "Coût immédiat", a: "Plusieurs milliers d'euros par trimestre selon l'âge", b: "Aucun" },
+      { label: "Effet sur la pension", a: "Trimestres validés en plus, décote réduite ou supprimée", b: "Décote de 0,625 %/trimestre manquant, plafonnée à 12,5 %" },
+      { label: "Réversibilité", a: "Aucune (achat définitif)", b: "Aucune (décote définitive)" },
+      { label: "Fiscalité", a: "Versement déductible du revenu imposable", b: "Sans effet fiscal" },
+      { label: "Rentabilité", a: "Meilleure si rachat jeune et longue espérance de vie", b: "Meilleure si rachat tardif ou espérance de vie plus courte" },
+    ],
+    sections: [
+      {
+        h2: "Le rachat de trimestres : un pari sur la durée",
+        body: [
+          "Le Versement Pour la Retraite (VFR) permet de racheter jusqu'à 12 trimestres, généralement des années d'études supérieures ou des années incomplètes en début de carrière. Le tarif dépend de l'âge au moment du rachat et du revenu : plus on rachète tôt, moins c'est cher, mais on immobilise le capital plus longtemps avant la retraite.",
+          "Exemple : un rachat de 4 trimestres à 45 ans avec un revenu de 40 000 €/an coûte environ 23 000 € (option taux plein seul), déductibles du revenu imposable. Si ce rachat supprime une décote de 2,5 % (4 × 0,625 %) sur une pension de base de 1 400 €/mois, le gain est de 35 €/mois à vie — soit un retour sur investissement en un peu plus de 54 ans de retraite, ce qui est rarement rentable seul sur ce seul critère : le rachat n'est souvent intéressant que combiné à d'autres motivations (valider le taux plein pour la retraite complémentaire, anticiper le départ).",
+        ],
+      },
+      {
+        h2: "Accepter la décote : simple, mais définitif",
+        body: [
+          "Partir à la retraite sans le nombre de trimestres requis entraîne une décote de 0,625 % par trimestre manquant, plafonnée à 20 trimestres (12,5 % de réduction maximum), calculée sur le taux de la pension de base CNAV. Cette décote est définitive et s'applique toute la vie, sans possibilité de rattrapage après la liquidation.",
+          "Elle n'affecte que la pension de base : la retraite complémentaire Agirc-Arrco n'applique plus aucune minoration liée à l'âge de départ depuis la suppression du coefficient de solidarité en avril 2024. Attendre l'âge du taux plein automatique (67 ans) supprime toute décote, sans qu'il soit nécessaire de racheter quoi que ce soit.",
+        ],
+      },
+    ],
+    verdict: "Le rachat de trimestres est surtout pertinent si vous êtes encore loin de la retraite (le coût est plus bas) et que vous visez un départ anticipé précis (carrière longue). Si vous êtes proche de l'âge légal ou du taux plein automatique à 67 ans, la décote — ou simplement patienter quelques mois — coûte souvent moins cher qu'un rachat tardif. Simulez les deux scénarios avant de décider : le rachat immobilise un capital qui pourrait aussi être investi.",
+    sims: ['/simulateurs/trimestres', '/simulateurs/cnav', '/simulateurs/retraite-anticipee'],
+    terms: ['rachat-trimestres', 'decote', 'trimestre', 'taux-plein', 'carriere-longue'],
+  },
+  {
+    slug: 'cumul-emploi-retraite-vs-retraite-progressive',
+    title: 'Cumul emploi-retraite ou retraite progressive : comment aménager sa fin de carrière ?',
+    shortTitle: 'Cumul emploi-retraite vs retraite progressive',
+    emoji: '🔄',
+    category: 'Retraite',
+    intro: "Deux dispositifs permettent de ne pas arrêter de travailler du jour au lendemain. La retraite progressive fait liquider une fraction de la pension tout en travaillant à temps partiel. Le cumul emploi-retraite liquide la pension à taux plein et permet de reprendre une activité en plus. Leurs conditions d'accès et leurs effets sur les droits futurs diffèrent fortement.",
+    a: {
+      name: 'Retraite progressive',
+      pour: ["Accessible dès 62 ans (2 ans avant l'âge légal actuel)", "Continue à générer des droits à la retraite (trimestres, points)", "Transition en douceur vers l'arrêt total"],
+      contre: ["Nécessite un temps partiel (40 à 80 % d'un temps plein)", "Pension définitive recalculée seulement à la liquidation totale", "Accord de l'employeur requis pour le temps partiel"],
+    },
+    b: {
+      name: 'Cumul emploi-retraite',
+      pour: ["Cumul intégral et illimité des revenus si le taux plein est atteint", "Depuis 2023, les cotisations versées ouvrent une seconde pension", "Pas de condition de temps partiel : activité libre"],
+      contre: ["Cumul plafonné (revenus + pension) si le taux plein n'est pas atteint", "Nécessite d'avoir déjà liquidé sa pension de base", "Ne permet pas d'augmenter la pension déjà liquidée (hors surcote différée depuis 2023)"],
+    },
+    criteres: [
+      { label: "Âge d'accès", a: "62 ans (2 ans avant l'âge légal), sous conditions de trimestres", b: "Après liquidation de la pension (âge légal atteint)" },
+      { label: "Quotité de travail", a: "Temps partiel obligatoire (40-80 %)", b: "Libre, y compris temps plein" },
+      { label: "Droits acquis en plus", a: "Trimestres et points supplémentaires jusqu'à la liquidation totale", b: "Surcote différée depuis 2023 (nouvelle pension recalculée)" },
+      { label: "Plafond de revenus", a: "Pension proportionnelle au temps partiel, pas de plafond sur le salaire", b: "Plafonné si cumul non intégral (avant taux plein)" },
+      { label: "Réversibilité", a: "Peut revenir à temps plein et annuler la retraite progressive", b: "Définitif : la pension déjà liquidée ne peut pas être annulée" },
+    ],
+    sections: [
+      {
+        h2: "La retraite progressive : réduire son activité sans perdre de droits",
+        body: [
+          "La retraite progressive permet, dès 62 ans (sous réserve d'avoir au moins 150 trimestres validés), de percevoir une fraction de sa pension proportionnelle à la réduction de son temps de travail, tout en continuant à cotiser sur son activité à temps partiel. Ces cotisations génèrent de nouveaux trimestres et points, qui viendront augmenter la pension définitive calculée au moment de la liquidation totale.",
+          "Exemple : un salarié travaillant à 60 % perçoit environ 40 % de sa pension estimée, en plus de son salaire à temps partiel. À la liquidation complète (souvent à l'âge légal ou au taux plein), sa pension est recalculée en tenant compte des trimestres et points accumulés pendant cette période — elle peut même bénéficier d'une surcote si le taux plein est déjà acquis.",
+        ],
+      },
+      {
+        h2: "Le cumul emploi-retraite : une seconde carrière après liquidation",
+        body: [
+          "Le cumul emploi-retraite consiste à liquider sa pension (de base et complémentaire) puis à reprendre une activité professionnelle, salariée ou indépendante. Si le taux plein est atteint (trimestres ou âge de 67 ans), le cumul est intégral et illimité : aucun plafond sur les revenus cumulés. Sinon, le cumul est plafonné au dernier salaire d'activité ou à 1,6 SMIC.",
+          "Depuis la réforme de 2023, les cotisations versées lors d'un cumul emploi-retraite ouvrent droit à une seconde pension (« surcote différée »), plafonnée mais réelle — une nouveauté qui rend le dispositif plus intéressant qu'avant, où ces cotisations étaient perdues sans contrepartie.",
+        ],
+      },
+    ],
+    verdict: "Choisissez la retraite progressive si vous n'avez pas encore le taux plein et souhaitez réduire progressivement votre activité tout en continuant à améliorer votre pension future. Optez pour le cumul emploi-retraite si vous avez déjà le taux plein et voulez soit ralentir totalement, soit repartir sur une nouvelle activité sans plafond de revenus. Les deux dispositifs ne sont pas cumulables simultanément, mais peuvent se succéder dans le temps.",
+    sims: ['/simulateurs/retraite-progressive', '/simulateurs/cnav', '/simulateurs/trimestres'],
+    terms: ['retraite-progressive', 'cumul-emploi-retraite', 'taux-plein', 'surcote', 'trimestre'],
+  },
 ];
 
 export const COMPARATIFS_BY_SLUG = Object.fromEntries(COMPARATIFS.map(c => [c.slug, c]));

@@ -1149,6 +1149,82 @@ export const METIERS = {
     ],
   },
 
+  kinesitherapeute: {
+    slug: 'kinesitherapeute',
+    icon: '🦵',
+    title: 'Retraite kinésithérapeute',
+    subtitle: 'CARPIMKO · Caisse Autonome de Retraite des Infirmiers, Masseurs-Kinésithérapeutes',
+    metaTitle: 'Retraite kinésithérapeute 2026 — CARPIMKO, calcul et âge de départ',
+    metaDesc: "Guide retraite kinésithérapeute libéral 2026 : CARPIMKO (base + complémentaire + invalidité-décès), âge légal, cotisations et taux de remplacement.",
+    intro: "Les masseurs-kinésithérapeutes libéraux cotisent à la CARPIMKO, qui gère une retraite de base forfaitaire, un régime complémentaire par points et un régime invalidité-décès. Le taux de remplacement dépend fortement du nombre de points accumulés sur la carrière.",
+    simulateurPath: '/simulateurs/independants',
+    simulateurLabel: 'Simulateur Retraite Indépendants',
+    stats: [
+      { label: 'Âge légal', value: '64 ans', note: 'taux plein automatique à 67 ans' },
+      { label: 'Base forfaitaire', value: '≈ 700-900 €/mois', note: 'carrière complète' },
+      { label: 'Complémentaire', value: 'Variable', note: 'selon points accumulés' },
+      { label: 'Cotisation totale', value: '≈ 15-20 % du revenu', note: 'base + complémentaire + invalidité-décès' },
+    ],
+    sections: [
+      {
+        title: 'Les trois régimes de la CARPIMKO',
+        content: "1. **Retraite de base** : forfaitaire, indépendante du niveau de revenus au-delà d'un seuil minimal de cotisation — assure un plancher commun à tous les kinés libéraux.\n\n2. **Régime complémentaire** : par points, cotisations proportionnelles au revenu professionnel. C'est la part la plus variable et souvent la plus importante de la pension totale.\n\n3. **Régime invalidité-décès** : couverture obligatoire en cas d'incapacité avant la retraite, financée par une cotisation séparée.",
+      },
+      {
+        title: 'Salariat mixte : kiné libéral et salarié',
+        content: "De nombreux kinésithérapeutes exercent en partie en libéral (cabinet) et en partie en salarié (clinique, hôpital, EHPAD). Dans ce cas, ils cumulent des droits à la CARPIMKO pour la part libérale et à la CNAV + Agirc-Arrco pour la part salariée — deux carrières à additionner à la retraite via la synthèse retraite.",
+      },
+      {
+        title: 'Préparer sa retraite avec un faible taux de remplacement',
+        content: "Le taux de remplacement CARPIMKO reste souvent inférieur à celui d'un salarié à revenu équivalent. Un PER individuel (déductible jusqu'à 10 % des revenus nets professionnels) et une épargne en assurance-vie ou en SCPI sont fréquemment utilisés par les kinés libéraux pour compenser cet écart.",
+      },
+    ],
+    faq: [
+      { q: "À quel âge un kinésithérapeute libéral peut-il partir à la retraite ?", a: "L'âge légal est progressivement porté à 64 ans (réforme 2023). Le taux plein automatique, sans condition de trimestres, s'obtient à 67 ans. Avec le nombre de trimestres requis (167 à 172 selon la génération), un départ dès l'âge légal se fait sans décote." },
+      { q: "Comment est calculée la pension de base CARPIMKO ?", a: "La retraite de base CARPIMKO est forfaitaire : elle dépend du nombre de trimestres validés (jusqu'à la durée requise pour le taux plein) plutôt que du revenu, contrairement au régime complémentaire qui, lui, est proportionnel aux cotisations versées sur toute la carrière." },
+      { q: "Un kiné qui exerce en libéral ET en salarié cumule-t-il deux retraites ?", a: "Oui. La part de carrière salariée (clinique, hôpital) cotise à la CNAV et à l'Agirc-Arrco, tandis que la part libérale cotise à la CARPIMKO. À la retraite, les deux pensions se cumulent et s'additionnent, chacune calculée selon les règles de son propre régime." },
+      { q: "Le régime invalidité-décès de la CARPIMKO est-il obligatoire ?", a: "Oui, la cotisation invalidité-décès est obligatoire pour tout kinésithérapeute libéral affilié à la CARPIMKO. Elle finance une pension d'invalidité en cas d'incapacité à exercer avant l'âge de la retraite, et un capital ou une rente au conjoint survivant en cas de décès." },
+    ],
+  },
+
+  'chauffeur-vtc': {
+    slug: 'chauffeur-vtc',
+    icon: '🚕',
+    title: 'Retraite chauffeur VTC',
+    subtitle: 'SSI · Sécurité Sociale des Indépendants · Auto-entrepreneur ou société',
+    metaTitle: 'Retraite chauffeur VTC 2026 — SSI, calcul et cotisations',
+    metaDesc: "Guide retraite chauffeur VTC 2026 : régime SSI (indépendants), cotisations en micro-entrepreneur ou société, trimestres validés et stratégies pour compenser un faible taux de remplacement.",
+    intro: "Les chauffeurs VTC indépendants relèvent de la Sécurité Sociale des Indépendants (SSI), intégrée au régime général depuis 2020. Leur retraite dépend fortement du statut choisi (micro-entrepreneur ou société) et du niveau de cotisation, souvent inférieur à celui d'un salarié à revenu équivalent.",
+    simulateurPath: '/simulateurs/independants',
+    simulateurLabel: 'Simulateur Retraite Indépendants',
+    stats: [
+      { label: 'Âge légal', value: '64 ans', note: 'comme le régime général' },
+      { label: 'Cotisation micro-entrepreneur', value: '≈ 21,2 % du CA', note: 'prestations de service (VTC)' },
+      { label: 'Validation trimestre', value: '≈ 1 782 €', note: 'de revenu net, en 2026' },
+      { label: 'Taux plein automatique', value: '67 ans', note: 'quel que soit le nombre de trimestres' },
+    ],
+    sections: [
+      {
+        title: 'Deux statuts, deux niveaux de cotisation retraite',
+        content: "En **micro-entrepreneur**, les cotisations sociales (dont la part retraite) sont prélevées automatiquement sur le chiffre d'affaires, à un taux forfaitaire (≈ 21,2 % pour les prestations de service en 2026). En **société** (EURL, SASU), les cotisations sont calculées sur la rémunération réellement versée, ce qui permet d'optimiser le niveau de cotisation retraite mais demande une gestion comptable plus lourde.",
+      },
+      {
+        title: "L'écart de droits retraite avec le salariat",
+        content: "À chiffre d'affaires équivalent, un chauffeur VTC indépendant cotise en général moins pour sa retraite qu'un salarié, car les plateformes ne versent pas de cotisations patronales et le revenu net après charges (carburant, entretien du véhicule, commission plateforme) est souvent inférieur au salaire net d'un emploi équivalent. Le nombre de trimestres validés dépend directement du revenu déclaré, ce qui peut ralentir l'acquisition de trimestres en période de faible activité.",
+      },
+      {
+        title: 'Compenser un faible niveau de cotisation',
+        content: "Beaucoup de chauffeurs VTC choisissent de compléter leur retraite obligatoire par une épargne personnelle : PER (déductible des revenus indépendants), assurance-vie, ou investissement locatif. Racheter des trimestres pour d'anciennes années d'études ou de faible activité peut aussi être pertinent si le nombre de trimestres validés est structurellement bas.",
+      },
+    ],
+    faq: [
+      { q: "Un chauffeur VTC valide-t-il des trimestres de retraite ?", a: "Oui, comme tout indépendant affilié à la SSI. Un trimestre est validé dès lors que le revenu professionnel net atteint environ 1 782 € en 2026 (150 fois le SMIC horaire), dans la limite de 4 trimestres par an." },
+      { q: "Micro-entrepreneur ou société : quel statut cotise le plus pour la retraite ?", a: "En micro-entrepreneur, les cotisations sont prélevées automatiquement sur le CA, sans possibilité d'optimisation. En société (EURL/SASU), le dirigeant peut ajuster sa rémunération pour cotiser davantage (et donc valider plus de trimestres et de points) s'il le souhaite, au prix d'une gestion administrative plus complexe." },
+      { q: "Le cumul de plusieurs plateformes (VTC + livraison) est-il comptabilisé pour la retraite ?", a: "Oui. Tous les revenus indépendants déclarés à la SSI, quelle que soit la plateforme ou l'activité, sont cumulés pour le calcul des trimestres et des points de retraite, dans la limite du plafond annuel de la Sécurité sociale." },
+      { q: "Comment un chauffeur VTC peut-il compenser une retraite obligatoire faible ?", a: "Les leviers principaux sont : opter pour le statut en société si le volume d'activité le justifie (pour cotiser davantage), ouvrir un PER individuel (déductible des revenus professionnels), et envisager le rachat de trimestres pour des années d'études ou de faible activité passée." },
+    ],
+  },
+
 };
 
 export const METIERS_LIST = Object.values(METIERS);

@@ -23,6 +23,7 @@ export const GLOSSARY = [
     long: [
       "Le TAEG (Taux Annuel Effectif Global) est l'indicateur de référence pour mesurer le coût réel d'un crédit. Il intègre le taux d'intérêt nominal, mais aussi l'assurance emprunteur, les frais de dossier et de garantie.",
       "C'est le seul taux qui permet de comparer objectivement deux offres de prêt : un taux nominal bas peut cacher des frais élevés. Le TAEG ne peut légalement pas dépasser le taux d'usure fixé par la Banque de France.",
+      "Exemple : pour un prêt de 200 000 € sur 20 ans, un taux nominal de 3,3 % combiné à une assurance à 0,34 % donne un TAEG proche de 3,7 % — l'écart de 0,4 point représente plusieurs milliers d'euros sur la durée totale du crédit.",
     ],
     sims: ['/simulateurs/emprunt-immobilier', '/simulateurs/credit-conso'],
     related: ['taea', 'taux-endettement', 'amortissement'],
@@ -50,6 +51,7 @@ export const GLOSSARY = [
     long: [
       "Le Prêt à Taux Zéro (PTZ) est un prêt aidé par l'État, sans intérêts ni frais de dossier, réservé aux primo-accédants (qui n'ont pas été propriétaires de leur résidence principale les 2 dernières années).",
       "Son montant dépend de la zone géographique du logement, des revenus du foyer et de sa composition. Il complète un prêt principal et ne peut financer la totalité de l'achat.",
+      "Exemple : un couple sans enfant achetant un logement neuf à 220 000 € en zone B1, avec des revenus sous le plafond, peut obtenir un PTZ jusqu'à 40 % du prix, soit environ 88 000 € sans intérêts ni frais de dossier, en complément d'un prêt principal classique.",
     ],
     sims: ['/simulateurs/ptz', '/simulateurs/emprunt-immobilier'],
     related: ['taeg', 'apport', 'frais-notaire'],
@@ -77,6 +79,7 @@ export const GLOSSARY = [
     long: [
       "La capacité d'emprunt correspond à la somme qu'une banque accepte de vous prêter. Elle dépend de vos revenus, de vos charges, du taux d'endettement maximal (≈ 35 %), du taux d'intérêt et de la durée.",
       "Augmenter l'apport ou allonger la durée augmente le bien finançable, mais la durée fait grimper le coût total des intérêts.",
+      "Exemple : avec 3 000 € de revenus nets mensuels et 35 % d'endettement maximum, la mensualité maximale est d'environ 1 050 € — soit, à 3,3 % sur 20 ans, une capacité d'emprunt de l'ordre de 184 000 €, contre environ 214 000 € sur 25 ans (mensualité identique, coût total des intérêts plus élevé).",
     ],
     sims: ['/simulateurs/emprunt-immobilier'],
     related: ['taux-endettement', 'apport'],
@@ -134,6 +137,7 @@ export const GLOSSARY = [
     long: [
       "Le rendement locatif brut = (loyers annuels / prix d'achat) × 100. Le rendement net déduit les charges, la taxe foncière, les frais de gestion et la fiscalité.",
       "C'est l'indicateur clé pour comparer des investissements locatifs, à mettre en regard du risque de vacance et de la plus-value potentielle.",
+      "Exemple : un studio acheté 120 000 € loué 550 €/mois affiche un rendement brut de 5,5 % (6 600 €/120 000 €). Après charges de copropriété, taxe foncière et frais de gestion (environ 1 500 €/an), et avant fiscalité, le rendement net tombe souvent autour de 3,5-4 %.",
     ],
     sims: ['/simulateurs/rendement-locatif'],
     related: ['lmnp', 'plus-value-immobiliere'],
@@ -271,6 +275,7 @@ export const GLOSSARY = [
     long: [
       "L'Agirc-Arrco est le régime complémentaire obligatoire des salariés du secteur privé. Vos cotisations sont converties en points ; à la retraite, la pension = nombre de points × valeur du point.",
       "Elle s'ajoute à la retraite de base de la CNAV. Le coefficient de solidarité (bonus-malus) qui s'appliquait auparavant selon l'âge de départ a été supprimé en avril 2024.",
+      "Exemple : avec 6 000 points accumulés sur une carrière, la pension Agirc-Arrco annuelle = 6 000 × 1,4386 € (valeur de service 2026) ≈ 8 632 €/an, soit environ 719 €/mois, versés en plus de la pension de base CNAV.",
     ],
     sims: ['/simulateurs/agirc-arrco'],
     related: ['cnav', 'points-retraite', 'taux-plein'],
@@ -302,6 +307,7 @@ export const GLOSSARY = [
     short: "Retraite complémentaire par points des agents non titulaires du secteur public.",
     long: [
       "L'IRCANTEC est le régime complémentaire des contractuels de la fonction publique et de certains élus. Comme l'Agirc-Arrco, il fonctionne par points.",
+      "Exemple : un agent contractuel cotisant 20 ans avec un salaire moyen de 2 200 €/mois accumule des points dont la valeur, appliquée au moment de la liquidation, vient s'ajouter à sa pension de base CNAV — le mécanisme de conversion points → pension est identique dans son principe à l'Agirc-Arrco, mais avec des taux et une valeur de point propres à l'IRCANTEC.",
     ],
     sims: ['/simulateurs/ircantec'],
     related: ['points-retraite', 'cnav'],
@@ -397,6 +403,7 @@ export const GLOSSARY = [
     long: [
       "Dans les régimes par points (Agirc-Arrco, IRCANTEC…), les cotisations achètent des points à un « prix d'achat ». À la retraite, pension = nombre de points × valeur de service du point.",
       "La valeur du point est revalorisée périodiquement.",
+      "Exemple Agirc-Arrco 2026 : un salarié cotisant 1 000 € sur l'année au prix d'achat du point (20,1877 €) acquiert environ 49,5 points ; à la liquidation, ces points valent 49,5 × 1,4386 € ≈ 71 €/an de pension complémentaire.",
     ],
     sims: ['/simulateurs/agirc-arrco', '/simulateurs/ircantec'],
     related: ['agirc-arrco', 'ircantec'],
@@ -423,6 +430,7 @@ export const GLOSSARY = [
     short: "Salaire horaire minimum légal. Sert notamment à valider les trimestres de retraite.",
     long: [
       "Le SMIC fixe la rémunération minimale légale. Au-delà du salaire, il sert de référence à divers calculs sociaux : la validation d'un trimestre de retraite requiert un revenu d'au moins 150 fois le SMIC horaire.",
+      "Exemple : avec un SMIC horaire brut d'environ 11,88 € en 2026, il faut environ 1 782 € de revenu soumis à cotisations sur l'année pour valider un trimestre — un salarié à temps plein au SMIC valide donc ses 4 trimestres bien avant la fin de l'année.",
     ],
     sims: ['/simulateurs/salaire'],
     related: ['trimestre', 'pass'],
@@ -492,6 +500,7 @@ export const GLOSSARY = [
     long: [
       "La capitalisation consiste à réinvestir automatiquement les revenus produits par un placement. Combinée à la durée, elle exploite pleinement les intérêts composés.",
       "Les ETF « capitalisants » réinvestissent les dividendes, contrairement aux ETF « distribuants ».",
+      "Exemple : un ETF World distribuant environ 1,8 % de dividendes par an, sur 20 ans avec un capital de 50 000 € non réinvesti, laisse passer l'équivalent de plusieurs milliers d'euros de croissance composée par rapport à sa version capitalisante à performance égale.",
     ],
     sims: ['/simulateurs/epargne'],
     related: ['interets-composes', 'etf'],
@@ -503,6 +512,7 @@ export const GLOSSARY = [
     long: [
       "Le CAGR (Compound Annual Growth Rate) exprime la croissance moyenne d'un investissement par an sur une durée donnée, comme si elle avait été régulière.",
       "Il permet de comparer des placements sur des périodes différentes, indépendamment de la volatilité année par année.",
+      "Exemple : un placement passant de 10 000 € à 20 000 € en 8 ans, malgré des années positives et négatives entre-temps, affiche un CAGR de (20 000/10 000)^(1/8) − 1 ≈ 9 % par an — le taux constant qui aurait produit le même résultat final.",
     ],
     sims: ['/simulateurs/comparateur'],
     related: ['etf', 'interets-composes'],
@@ -530,6 +540,7 @@ export const GLOSSARY = [
     long: [
       "La règle des 4 % (Safe Withdrawal Rate) découle de l'étude Trinity : retirer 4 % du portefeuille initial la première année, puis ajuster à l'inflation, offre une forte probabilité de ne pas épuiser le capital sur 30 ans.",
       "Elle implique un capital cible d'environ 25 fois les dépenses annuelles. À adapter au contexte français (fiscalité, horizon plus long).",
+      "Exemple : pour financer 2 000 €/mois de dépenses (24 000 €/an) avec un retrait de 4 %, le capital cible est de 24 000 € ÷ 0,04 = 600 000 €. Avec un taux de retrait plus prudent de 3,5 % (souvent recommandé pour un horizon de 40-50 ans typique du FIRE), le capital cible grimpe à environ 686 000 €.",
     ],
     sims: ['/simulateurs/fire'],
     related: ['fire', 'taux-epargne'],
@@ -571,6 +582,7 @@ export const GLOSSARY = [
     long: [
       "Le LDDS fonctionne comme le Livret A (capital garanti, intérêts nets d'impôt, retraits libres) avec un plafond de 12 000 €. Il finance l'économie sociale et la transition écologique.",
       "On le cumule souvent avec le Livret A pour augmenter sa réserve d'épargne défiscalisée.",
+      "Exemple : un foyer cumulant Livret A (plafond 22 950 €) et LDDS (plafond 12 000 €) dispose ainsi de près de 35 000 € d'épargne de précaution totalement défiscalisée avant de devoir chercher d'autres supports.",
     ],
     sims: ['/simulateurs/epargne'],
     related: ['livret-a', 'taux-epargne'],
@@ -594,6 +606,7 @@ export const GLOSSARY = [
     long: [
       "Le fonds en euros est le compartiment sécurisé de l'assurance-vie : le capital est garanti et les intérêts acquis le sont définitivement (effet cliquet).",
       "En contrepartie de cette sécurité, son rendement est modeste. Il se combine souvent avec des unités de compte pour viser plus de performance.",
+      "Exemple : les fonds en euros ont servi en moyenne autour de 2,5-3 % net de frais de gestion en 2024-2025 — supérieur au Livret A certaines années, mais avec une fiscalité moins favorable (PFU ou barème selon l'ancienneté du contrat, contre 0 % pour le Livret A).",
     ],
     sims: ['/simulateurs/assurance-vie'],
     related: ['assurance-vie', 'unites-de-compte'],
