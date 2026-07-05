@@ -133,3 +133,24 @@ drop policy if exists "simulations_delete_own" on public.simulations;
 create policy "simulations_delete_own"
   on public.simulations for delete
   using (auth.uid() = user_id);
+
+-- -----------------------------------------------------------------------------
+-- 4) Liens de partage public (api/share.js) : accès UNIQUEMENT via la clé
+--    service_role côté serveur (qui contourne RLS). RLS activée sans AUCUNE
+--    policy pour anon/authenticated : la clé "anon" publique ne doit jamais
+--    pouvoir lister ni lire cette table directement via l'API REST Supabase
+--    (sinon tout le monde pourrait énumérer les simulations partagées par
+--    d'autres utilisateurs). L'id (nanoid 8 caractères) reste la seule clé
+--    d'accès légitime, exclusivement via l'endpoint serveur.
+-- -----------------------------------------------------------------------------
+create table if not exists public.public_links (
+  id         text primary key,
+  params     text not null,
+  title      text,
+  highlight  text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.public_links enable row level security;
+-- Aucune policy créée volontairement : ni anon ni authenticated n'ont accès,
+-- seul service_role (utilisé par api/share.js) peut lire/écrire cette table.

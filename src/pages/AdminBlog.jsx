@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 
 // Page interne (non listée, non indexée) pour relire, approuver ou rejeter les
 // brouillons d'articles générés automatiquement par le cron (api/generate-article.js)
@@ -154,7 +155,7 @@ export default function AdminBlog() {
             <p style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 12, fontStyle: "italic" }}>{d.intro}</p>
             <div
               style={{ fontSize: 14, lineHeight: 1.7, maxHeight: 320, overflowY: "auto", border: "1px solid var(--border)", borderRadius: 8, padding: 14, marginBottom: 14, background: "var(--bg)" }}
-              dangerouslySetInnerHTML={{ __html: d.content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(d.content || "") }}
             />
             <div>
               <button disabled={busySlug === d.slug} onClick={() => handleAction(d.slug, "approve")} style={btn("approve")}>
