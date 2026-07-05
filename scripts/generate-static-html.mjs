@@ -1,12 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, EN_ROUTES, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { STATIC_BY_SLUG } from '../api/_static-articles.js';
+import { localePath } from '../src/i18n/paths.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -41,6 +42,10 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   }
   if (country === 'be') {
     const meta = ROUTE_META_BE[route];
+    if (meta) return { title: meta.title, description: meta.description };
+  }
+  if (country === 'lu') {
+    const meta = ROUTE_META_LU[route];
     if (meta) return { title: meta.title, description: meta.description };
   }
   if (route.startsWith('/lexique/')) {
@@ -91,6 +96,7 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   else if (locale === 'en') urlPath = `/en${route === '/' ? '' : route}`;
   else if (country === 'ch') urlPath = `/ch${route === '/' ? '' : route}`;
   else if (country === 'be') urlPath = `/be${route === '/' ? '' : route}`;
+  else if (country === 'lu') urlPath = `/lu${route === '/' ? '' : route}`;
   else urlPath = route;
   const url = `${BASE}${urlPath}`;
   let out = html
@@ -107,6 +113,9 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   } else if (country === 'be') {
     out = out
       .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_BE"');
+  } else if (country === 'lu') {
+    out = out
+      .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_LU"');
   }
 
   if (title) {
@@ -191,12 +200,18 @@ for (const entry of routes) {
 fs.writeFileSync(path.join(distDir, 'index.html'), patchHtml(indexHtml, '/', {}, 'fr'));
 
 // ── Pages EN (routes universelles disponibles en anglais) ──────────────────────
+// Le segment anglais peut différer du chemin FR (ex. /simulateurs/cnav →
+// /en/simulators/french-pension) : on passe toujours par localePath() (même
+// table EN_PATH_MAP que le routeur client) plutôt que de préfixer `/en`
+// naïvement, sous peine d'écrire le HTML statique à une URL que React Router
+// ne sert pas (et de laisser la vraie URL EN retomber sur le index.html
+// générique via le rewrite SPA).
 const EN_ARRAY = Array.from(EN_ROUTES);
 for (const route of EN_ARRAY) {
-  const urlPath = route === '/' ? '/en' : `/en${route}`;
+  const urlPath = localePath(route, 'en');
   const dir = path.join(distDir, urlPath);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'en'));
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { urlPath }, 'en'));
 }
 
 // ── Comparatifs EN (/en/comparisons/:slug) ─────────────────────────────────────
@@ -240,6 +255,14 @@ for (const route of BE_ROUTES) {
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'be'));
 }
 
+// ── Pages LU (/lu/... routes disponibles au Luxembourg) ────────────────────────
+for (const route of LU_ROUTES) {
+  const urlPath = route === '/' ? '/lu' : `/lu${route}`;
+  const dir = path.join(distDir, urlPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'lu'));
+}
+
 // Versionne le cache du service worker à chaque build : le nom de cache change,
 // donc l'ancien cache (anciens JS/CSS) est purgé à l'activation du nouveau SW.
 try {
@@ -252,4 +275,4 @@ try {
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.
 
-console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE`);
+console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE + ${LU_ROUTES.length} LU`);

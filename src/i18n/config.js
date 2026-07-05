@@ -6,9 +6,10 @@ export const LOCALES = ['fr', 'en'];
 // Pays supportés : code → métadonnées affichées dans le sélecteur.
 // Ajouter un pays ici pour activer son préfixe d'URL (/be/, /uk/, …).
 export const COUNTRIES = {
-  fr: { lang: 'fr', label: 'France',   flag: '🇫🇷', locale: 'fr' },
-  be: { lang: 'fr', label: 'Belgique', flag: '🇧🇪', locale: 'fr' },
-  ch: { lang: 'fr', label: 'Suisse',   flag: '🇨🇭', locale: 'fr' },
+  fr: { lang: 'fr', label: 'France',     flag: '🇫🇷', locale: 'fr' },
+  be: { lang: 'fr', label: 'Belgique',   flag: '🇧🇪', locale: 'fr' },
+  ch: { lang: 'fr', label: 'Suisse',     flag: '🇨🇭', locale: 'fr' },
+  lu: { lang: 'fr', label: 'Luxembourg', flag: '🇱🇺', locale: 'fr' },
 };
 export const DEFAULT_COUNTRY = 'fr';
 export const COUNTRY_CODES = Object.keys(COUNTRIES); // ['fr', 'be']

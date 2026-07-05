@@ -12,6 +12,7 @@ import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
 import { BAREMES_DATES } from '../src/data/baremesDates.js';
 import { SEO_CONTENT } from './_seo.js';
+import { EN_PATH_MAP } from '../src/i18n/paths.js';
 
 
 // Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
@@ -129,7 +130,7 @@ export const ROUTE_META_EN = {
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
   '/contact':                     { title: 'Contact — Simfinly',                                             description: 'Contact the simfinly.com team: questions about a calculator, error reports, partnership or press enquiries. Reply within 48 business hours.' },
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
-  '/simulateurs/retraite-luxembourg': { title: 'Luxembourg State Pension Calculator (CNAP) 2025 — Estimate Your Pension', description: 'Estimate your Luxembourg CNAP pension based on your career length, salary and departure age. Also covers cross-border workers and expats.' },
+  '/simulateurs/retraite-luxembourg': { title: 'Luxembourg Pension Calculator (CNAP) 2026 — pension & replacement rate', description: 'Estimate your Luxembourg CNAP pension based on your career, salary and retirement age. Built for cross-border workers and expats employed in Luxembourg.' },
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
   '/lexique': { title: 'Financial Glossary — Clear Definitions | Simfinly', description: 'Glossary of personal finance terms: compound interest, FIRE, savings rate, debt-to-income ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators.' },
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
@@ -158,6 +159,27 @@ export const ROUTE_META_CH = {
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur ma vie en semaines — visualiser son temps (Suisse)',                      description: 'Visualisez votre vie entière sous forme de grille, une case par semaine. Semaines vécues, semaines restantes et étés encore à venir.' },
 };
 
+// Routes disponibles sous /lu/ (Luxembourg). Miroir de src/i18n/paths.js LU_ROUTES
+// (hors /lu/guides et /lu/lexique, pré-rendus séparément comme pour BE).
+export const LU_ROUTES = [
+  '/',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  '/simulateurs/impot-revenu-lu',
+  '/simulateurs/succession-lu',
+  '/simulateurs/retraite-luxembourg',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+];
+
 // Méta belges (title + description) pour le HTML statique /be/...
 export const ROUTE_META_BE = {
   '/':                                    { title: 'Simfinly — Simulateurs gratuits pension, IPP, succession & finances (Belgique)',     description: 'Simulez votre pension légale ONSS, votre IPP, vos droits de succession et votre épargne. Simulateurs gratuits adaptés à la législation belge 2025, sans inscription.' },
@@ -178,11 +200,30 @@ export const ROUTE_META_BE = {
   '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat (Belgique)',              description: 'Convertissez n\'importe quel achat en heures de travail réelles. Le vrai coût d\'un bien ou d\'un abonnement exprimé en temps plutôt qu\'en euros.' },
 };
 
+// Méta luxembourgeoises (title + description) pour le HTML statique /lu/...
+export const ROUTE_META_LU = {
+  '/':                                    { title: 'Simfinly — Simulateurs gratuits retraite CNAP, impôt, succession (Luxembourg)', description: 'Simulez votre pension CNAP, votre impôt sur le revenu et vos droits de succession au Luxembourg. Simulateurs gratuits pour frontaliers et résidents, sans inscription.' },
+  '/simulateurs/retraite-luxembourg':     { title: 'Simulateur retraite Luxembourg (CNAP) 2026 — pension & taux de remplacement', description: 'Estimez votre pension CNAP luxembourgeoise selon votre carrière, salaire et âge de départ. Conçu pour les frontaliers et expatriés travaillant au Luxembourg.' },
+  '/simulateurs/impot-revenu-lu':         { title: 'Simulateur impôt sur le revenu Luxembourg 2026 — classes 1, 1a, 2',            description: 'Calculez votre impôt luxembourgeois selon le barème progressif à 23 tranches, votre classe d\'impôt et la contribution au fonds pour l\'emploi. Estimation pour frontaliers et résidents.' },
+  '/simulateurs/succession-lu':           { title: 'Simulateur droits de succession Luxembourg 2026 — ligne directe, conjoint',    description: 'Estimez les droits de succession luxembourgeois selon le lien de parenté : exonération en ligne directe et conjoint, barème progressif pour les autres héritiers.' },
+  '/simulateurs/epargne':                 { title: 'Simulateur épargne & intérêts composés en EUR — projection long terme (Luxembourg)', description: 'Projetez la croissance de votre épargne en euros sur le long terme. Capital final selon le rendement, la durée et l\'effort mensuel en EUR.' },
+  '/simulateurs/fire':                    { title: 'Simulateur FIRE — indépendance financière & retraite anticipée (Luxembourg)',  description: 'Calculez le patrimoine nécessaire pour vivre de vos investissements au Luxembourg et l\'âge auquel vous atteignez l\'indépendance financière. Règle des 4 %, paliers Lean/Coast/Fat FIRE.' },
+  '/simulateurs/budget':                  { title: 'Simulateur budget 50/30/20 — finances personnelles Luxembourg',              description: 'Répartissez votre budget mensuel selon la règle 50/30/20 : besoins, envies, épargne. Taux d\'épargne et conseils adaptés à la situation luxembourgeoise.' },
+  '/simulateurs/patrimoine':              { title: 'Simulateur patrimoine global — richesse nette & répartition (Luxembourg)',     description: 'Consolidez vos actifs financiers et immobiliers pour visualiser votre richesse nette et sa répartition par classe d\'actifs, en contexte luxembourgeois.' },
+  '/simulateurs/emprunt-immobilier':      { title: 'Simulateur emprunt immobilier Luxembourg — mensualités & capacité',           description: 'Calculez la mensualité, la capacité d\'emprunt et le coût total de votre crédit hypothécaire au Luxembourg. Tableau d\'amortissement annuel inclus.' },
+  '/simulateurs/rendement-locatif':       { title: 'Simulateur rendement locatif Luxembourg — rentabilité brute & nette',         description: 'Évaluez la rentabilité brute et nette d\'un investissement locatif au Luxembourg. Cash flow mensuel et retour sur fonds propres.' },
+  '/simulateurs/assurance-vie':           { title: 'Simulateur épargne & assurance-vie en EUR — capital Luxembourg',              description: 'Projetez la croissance de votre épargne en euros et estimez le capital disponible à l\'échéance, au Luxembourg.' },
+  '/simulateurs/comparateur':             { title: 'Comparateur d\'actifs ETF, actions, crypto — Luxembourg',                     description: 'Comparez la performance historique d\'ETF, actions et cryptomonnaies sur la période de votre choix. CAGR, versements programmés et indice base 100.' },
+  '/simulateurs/credit-conso':            { title: 'Simulateur crédit à la consommation — mensualité & coût Luxembourg',          description: 'Calculez la mensualité et le coût total de votre crédit conso selon le montant, le TAEG et la durée. Adapté au marché luxembourgeois.' },
+  '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat (Luxembourg)',       description: 'Convertissez n\'importe quel achat en heures de travail réelles. Le vrai coût d\'un bien ou d\'un abonnement exprimé en temps plutôt qu\'en euros.' },
+};
+
 // Méta d'une route pour une locale et un pays donnés.
 export function routeMeta(route, locale = 'fr', country = 'fr') {
   if (locale === 'en' && ROUTE_META_EN[route]) return ROUTE_META_EN[route];
   if (country === 'ch' && ROUTE_META_CH[route]) return ROUTE_META_CH[route];
   if (country === 'be' && ROUTE_META_BE[route]) return ROUTE_META_BE[route];
+  if (country === 'lu' && ROUTE_META_LU[route]) return ROUTE_META_LU[route];
   return ROUTE_META[route];
 }
 
@@ -194,10 +235,10 @@ export function hreflangLinks(route) {
   const fr = `${BASE}${route === '/' ? '/' : route}`;
   links.push(`<link rel="alternate" hreflang="fr" href="${fr}" />`);
   if (EN_ROUTES.includes(route)) {
-    // Les comparatifs utilisent /en/comparisons/ (pas /en/comparatifs/)
-    let enSeg = route;
-    if (route === '/comparatifs') enSeg = '/comparisons';
-    else if (route.startsWith('/comparatifs/')) enSeg = route.replace('/comparatifs/', '/comparisons/');
+    // Le segment anglais peut différer du chemin FR (ex. /simulateurs/cnav →
+    // /simulators/french-pension) : toujours passer par EN_PATH_MAP, la même
+    // table que le routeur client, plutôt qu'un préfixe `/en` naïf.
+    const enSeg = EN_PATH_MAP[route] ?? route;
     links.push(`<link rel="alternate" hreflang="en" href="${BASE}/en${enSeg === '/' ? '' : enSeg}" />`);
   } else if (route === '/lexique') {
     // Le lexique n'est pas dans EN_ROUTES (pas de version EN complète) : seul un
@@ -211,6 +252,9 @@ export function hreflangLinks(route) {
   }
   if (BE_ROUTES.includes(route)) {
     links.push(`<link rel="alternate" hreflang="fr-BE" href="${BASE}/be${route === '/' ? '' : route}" />`);
+  }
+  if (LU_ROUTES.includes(route)) {
+    links.push(`<link rel="alternate" hreflang="fr-LU" href="${BASE}/lu${route === '/' ? '' : route}" />`);
   }
   links.push(`<link rel="alternate" hreflang="x-default" href="${fr}" />`);
   // Inutile si seulement fr + x-default (même URL = balisage inutile)

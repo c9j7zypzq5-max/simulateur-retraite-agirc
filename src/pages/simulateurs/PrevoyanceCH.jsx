@@ -83,6 +83,7 @@ const FAQ = FAQS['/simulateurs/prevoyance-ch'];
 const DEFAULT = { age: 35, versementAnnuel: 7_056, rendement: 2, statut: 'salarie', revenuNet: 80_000 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     age:             Number(p.get("a")) || DEFAULT.age,
     versementAnnuel: Number(p.get("v")) || DEFAULT.versementAnnuel,
@@ -109,10 +110,10 @@ export default function PrevoyanceCH() {
   const resultsRef = useRef(null);
 
 
-  usePageMeta({
-    title: "Simulateur pilier 3a Suisse 2026 — Épargne retraite déductible | simfinly.com",
-    description: "Projetez votre capital pilier 3a et vos économies fiscales. Plafonds 2025 (7 056 CHF salarié / 35 280 CHF indépendant), rendement personnalisé, comparaison avec épargne ordinaire.",
-  });
+  usePageMeta(
+    "Simulateur pilier 3a Suisse 2026 — Épargne retraite déductible | simfinly.com",
+    "Projetez votre capital pilier 3a et vos économies fiscales. Plafonds 2025 (7 056 CHF salarié / 35 280 CHF indépendant), rendement personnalisé, comparaison avec épargne ordinaire."
+  );
 
   const animCapital  = useAnimatedNumber(res.capital);
   const animEconomie = useAnimatedNumber(res.economieFiscaleTotale);

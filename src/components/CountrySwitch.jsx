@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath, countryFromPath, COUNTRIES } from "../i18n/config.js";
-import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
+import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, luCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
 
 const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐' };
 
@@ -38,6 +38,14 @@ export default function CountrySwitch({ compact = false }) {
     code: 'ch', ...COUNTRIES.ch,
     path: chExact !== null ? chExact : '/ch',
     fallback: chExact === null,
+  });
+
+  // 🇱🇺 Luxembourg — exact si route en LU_ROUTES, sinon accueil /lu
+  const luExact = luCountryAlternatePath(pathname, 'fr');
+  options.push({
+    code: 'lu', ...COUNTRIES.lu,
+    path: luExact !== null ? luExact : '/lu',
+    fallback: luExact === null,
   });
 
   // 🌐 English — affiché si route disponible EN ou si déjà en anglais
@@ -120,6 +128,7 @@ export default function CountrySwitch({ compact = false }) {
             const sublabel = opt.code === 'fr' ? 'Simulateurs France'
               : opt.code === 'be' ? (opt.fallback ? 'Accueil Belgique' : 'Simulateurs Belgique')
               : opt.code === 'ch' ? (opt.fallback ? 'Accueil Suisse' : 'Simulateurs Suisse')
+              : opt.code === 'lu' ? (opt.fallback ? 'Accueil Luxembourg' : 'Simulateurs Luxembourg')
               : 'International';
             return (
               <button

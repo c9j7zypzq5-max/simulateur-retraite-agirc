@@ -111,6 +111,11 @@ const SuccessionCH  = lazy(() => import("./pages/simulateurs/SuccessionCH.jsx"))
 const RetraiteLU    = lazy(() => import("./pages/simulateurs/RetraiteLU.jsx"));
 const LexiqueCH     = lazy(() => import("./pages/simulateurs/LexiqueCH.jsx"));
 const GuidesCH      = lazy(() => import("./pages/simulateurs/GuidesCH.jsx"));
+// Simulateurs et contenus luxembourgeois
+const ImpotRevenuLU = lazy(() => import("./pages/simulateurs/ImpotRevenuLU.jsx"));
+const SuccessionLU  = lazy(() => import("./pages/simulateurs/SuccessionLU.jsx"));
+const GuidesLU      = lazy(() => import("./pages/simulateurs/GuidesLU.jsx"));
+const LexiqueLU     = lazy(() => import("./pages/simulateurs/LexiqueLU.jsx"));
 // Nouveaux widgets embarquables
 const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
 const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
@@ -252,6 +257,29 @@ export default function App() {
         <Route path="/ch/simulateurs/succession-ch" element={<SuccessionCH />} />
         <Route path="/ch/mentions-legales" element={<MentionsLegales />} />
         <Route path="/ch/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        {/* ── Luxembourg (/lu/) ── */}
+        <Route path="/lu" element={<Home />} />
+        {/* Simulateurs universels — même composant que FR */}
+        <Route path="/lu/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/lu/simulateurs/fire" element={<Fire />} />
+        <Route path="/lu/simulateurs/budget" element={<Budget />} />
+        <Route path="/lu/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/lu/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/lu/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/lu/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/lu/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
+        <Route path="/lu/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/lu/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        {/* Simulateurs avec règles luxembourgeoises spécifiques */}
+        <Route path="/lu/simulateurs/impot-revenu-lu" element={<ImpotRevenuLU />} />
+        <Route path="/lu/simulateurs/succession-lu" element={<SuccessionLU />} />
+        <Route path="/lu/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
+        {/* Contenu LU */}
+        <Route path="/lu/guides" element={<GuidesLU />} />
+        <Route path="/lu/lexique" element={<LexiqueLU />} />
+        {/* Légal */}
+        <Route path="/lu/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/lu/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
         <Route path="/en/simulators/savings" element={<Epargne />} />

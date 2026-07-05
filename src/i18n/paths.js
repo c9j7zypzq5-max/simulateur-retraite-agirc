@@ -2,7 +2,7 @@ import { DEFAULT_LOCALE } from './config.js';
 
 // Mapping : chemin canonique FR → segment URL anglais (après /en).
 // Source de vérité pour les deux sens de la traduction d'URL.
-const EN_PATH_MAP = {
+export const EN_PATH_MAP = {
   '/':                               '/',
   '/simulateurs/epargne':            '/simulators/savings',
   '/simulateurs/fire':               '/simulators/fire',
@@ -97,6 +97,33 @@ export const BE_ROUTES = new Set([
   '/be/lexique',
 ]);
 
+// Routes disponibles au Luxembourg (certaines avec règles luxembourgeoises
+// spécifiques, d'autres partagées avec la version française — devise EUR).
+export const LU_ROUTES = new Set([
+  '/',
+  // Universels (même logique que FR)
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  // Luxembourgeois uniquement
+  '/simulateurs/impot-revenu-lu',
+  '/simulateurs/succession-lu',
+  '/simulateurs/retraite-luxembourg',
+  // Légal
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+  // Contenu éditorial LU
+  '/lu/guides',
+  '/lu/lexique',
+]);
+
 // Retourne le chemin localisé EN pour une route canonique FR.
 // localePath('/simulateurs/epargne', 'en') → '/en/simulators/savings'
 export function localePath(route, locale) {
@@ -116,6 +143,9 @@ export function canonicalPath(pathname) {
   // Retirer le préfixe pays belge
   if (pathname === '/be') return '/';
   if (pathname.startsWith('/be/')) return pathname.slice(3);
+  // Retirer le préfixe pays luxembourgeois
+  if (pathname === '/lu') return '/';
+  if (pathname.startsWith('/lu/')) return pathname.slice(3);
   // Retirer le préfixe langue anglaise
   if (pathname === '/en') return '/';
   if (pathname.startsWith('/en/')) {
@@ -133,6 +163,10 @@ export function countryPath(route, country) {
   if (country === 'ch') {
     if (!CH_ROUTES.has(route)) return route;
     return route === '/' ? '/ch' : `/ch${route}`;
+  }
+  if (country === 'lu') {
+    if (!LU_ROUTES.has(route)) return route;
+    return route === '/' ? '/lu' : `/lu${route}`;
   }
   if (country === 'fr' || !BE_ROUTES.has(route)) return route;
   return route === '/' ? '/be' : `/be${route}`;
@@ -161,4 +195,13 @@ export function chCountryAlternatePath(pathname, currentCountry) {
   const canon = canonicalPath(pathname);
   if (!CH_ROUTES.has(canon)) return null;
   return currentCountry === 'ch' ? canon : countryPath(canon, 'ch');
+}
+
+// Retourne le chemin vers le pays alternatif (FR↔LU) pour l'URL courante.
+// luCountryAlternatePath('/simulateurs/retraite-luxembourg', 'fr') → '/lu/simulateurs/retraite-luxembourg'
+// luCountryAlternatePath('/lu/simulateurs/retraite-luxembourg', 'lu') → '/simulateurs/retraite-luxembourg'
+export function luCountryAlternatePath(pathname, currentCountry) {
+  const canon = canonicalPath(pathname);
+  if (!LU_ROUTES.has(canon)) return null;
+  return currentCountry === 'lu' ? canon : countryPath(canon, 'lu');
 }

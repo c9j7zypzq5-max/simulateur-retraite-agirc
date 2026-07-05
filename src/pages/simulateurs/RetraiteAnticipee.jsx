@@ -131,6 +131,7 @@ const DEFAULT = {
 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     anneeNaissance:      Number(p.get("an")) || DEFAULT.anneeNaissance,
     ageFin:              Number(p.get("af")) || DEFAULT.ageFin,

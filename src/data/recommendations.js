@@ -70,7 +70,17 @@ export const RECOMMENDATIONS = {
   '/simulateurs/retraite-luxembourg': [
     { icon: "🏛", label: "Comptabilisez vos années en France", description: "Si vous avez cotisé en France avant ou après votre carrière au Luxembourg, la totalisation UE additionne vos droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "🏆", label: "Ajoutez votre complémentaire française", description: "Les années salariées en France ouvrent aussi des droits Agirc-Arrco, à additionner à votre pension CNAP.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
-    { icon: "💼", label: "Complétez avec un PER", description: "Un Plan d'Épargne Retraite français permet aux frontaliers de se constituer un complément et de défiscaliser en France.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
+  ],
+  '/simulateurs/impot-revenu-lu': [
+    { icon: "🇱🇺", label: "Votre future pension CNAP", description: "Estimez la pension de retraite luxembourgeoise que vous constituez en cotisant sur ce revenu imposable.", to: "/simulateurs/retraite-luxembourg", cta: "Simuler la retraite LU →" },
+    { icon: "🏺", label: "Droits de succession au Luxembourg", description: "Ligne directe et conjoint exonérés, barème progressif pour les autres héritiers — anticipez la transmission de votre patrimoine.", to: "/simulateurs/succession-lu", cta: "Simuler la succession →" },
+    { icon: "💼", label: "Projetez votre épargne", description: "Simulez la croissance de votre épargne en euros sur le long terme grâce aux intérêts composés.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
+  ],
+  '/simulateurs/succession-lu': [
+    { icon: "🇱🇺", label: "Votre future pension CNAP", description: "Estimez la pension de retraite luxembourgeoise selon votre carrière et votre salaire.", to: "/simulateurs/retraite-luxembourg", cta: "Simuler la retraite LU →" },
+    { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
+    { icon: "🛡️", label: "Protégez votre transmission", description: "Une assurance-vie peut compléter la protection de vos proches en dehors du cadre successoral classique.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
   ],
   '/simulateurs/pension-reversion': [
     { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },

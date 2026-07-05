@@ -155,10 +155,10 @@ export default function Divorce() {
   const vals = { regime, actifCommun, revenu1, revenu2, dureeMariage, nbEnfants, garde, propres1, propres2 };
   const res = useMemo(() => calcDivorce(vals), [regime, actifCommun, revenu1, revenu2, dureeMariage, nbEnfants, garde, propres1, propres2]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Divorce & Partage Patrimoine 2026 | simfinly.com",
-    description: "Estimez le partage du patrimoine, la pension alimentaire et la prestation compensatoire en cas de divorce. Barème indicatif 2025 — ne remplace pas un avocat.",
-  });
+  usePageMeta(
+    "Simulateur Divorce & Partage Patrimoine 2026 | simfinly.com",
+    "Estimez le partage du patrimoine, la pension alimentaire et la prestation compensatoire en cas de divorce. Barème indicatif 2025 — ne remplace pas un avocat."
+  );
 
   const animPension  = useAnimatedNumber(res.pensionAlim);
   const animPC       = useAnimatedNumber(res.prestComp);

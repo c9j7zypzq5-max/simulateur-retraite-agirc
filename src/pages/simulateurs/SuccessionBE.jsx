@@ -123,6 +123,7 @@ const LIEN_OPTIONS = [
 const DEFAULT = { actifNet: 250_000, lien: "enfant", nbHeritiers: 2, region: "wal" };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     actifNet:    Number(p.get("a")) || DEFAULT.actifNet,
     lien:        p.get("l") || DEFAULT.lien,
@@ -147,10 +148,10 @@ export default function SuccessionBE() {
   const vals = { actifNet, lien, nbHeritiers, region };
   const res  = useMemo(() => calcSuccessionBE(vals), [actifNet, lien, nbHeritiers, region]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Droits de Succession Belgique 2024 — Wallonie & Bruxelles | simfinly.com",
-    description: "Calculez les droits de succession belges (Wallonie et Bruxelles-Capitale) selon le lien de parenté et le patrimoine transmis. Barèmes régionaux officiels.",
-  });
+  usePageMeta(
+    "Simulateur Droits de Succession Belgique 2024 — Wallonie & Bruxelles | simfinly.com",
+    "Calculez les droits de succession belges (Wallonie et Bruxelles-Capitale) selon le lien de parenté et le patrimoine transmis. Barèmes régionaux officiels."
+  );
 
   const animDroits = useAnimatedNumber(res.totalDroits);
   const animNet    = useAnimatedNumber(res.netChaque);

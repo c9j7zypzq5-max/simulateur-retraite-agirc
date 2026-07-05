@@ -88,6 +88,7 @@ const SITUATION_OPTIONS = [
 const DEFAULT = { revenu: 45_000, situation: "isole", nbEnfants: 0, tauxCommunaux: 7, fraisReels: null, quotientConjugal: false };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     revenu:           Number(p.get("r")) || DEFAULT.revenu,
     situation:        p.get("s") || DEFAULT.situation,
@@ -126,10 +127,10 @@ export default function ImpotRevenuBE() {
   const res = useMemo(() => calcIPP(vals), [revenu, situation, nbEnfants, tauxCommunaux, fraisReelMode, fraisReels, quotientConjugal]); // eslint-disable-line react-hooks/exhaustive-deps
   const shareUrl = buildShareUrl(toParams(vals));
 
-  usePageMeta({
-    title: "Simulateur IPP belge 2026 — Impôt sur le revenu Belgique | simfinly.com",
-    description: "Calculez votre impôt belge (IPP) 2025 : 4 tranches (25–50 %), quotité exemptée, frais professionnels, centimes additionnels communaux et quotient conjugal.",
-  });
+  usePageMeta(
+    "Simulateur IPP belge 2026 — Impôt sur le revenu Belgique | simfinly.com",
+    "Calculez votre impôt belge (IPP) 2025 : 4 tranches (25–50 %), quotité exemptée, frais professionnels, centimes additionnels communaux et quotient conjugal."
+  );
 
   const animIPP  = useAnimatedNumber(res.ippTotal);
   const animTaux = useAnimatedNumber(res.tauxMoyen);

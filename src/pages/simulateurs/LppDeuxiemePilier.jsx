@@ -98,6 +98,7 @@ const FAQ = FAQS['/simulateurs/lpp-deuxieme-pilier'];
 const DEFAULT = { salaireBrut: 80_000, age: 35 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     salaireBrut: Number(p.get("s")) || DEFAULT.salaireBrut,
     age:         Number(p.get("a")) || DEFAULT.age,
@@ -118,10 +119,10 @@ export default function LppDeuxiemePilier() {
   const resultsRef = useRef(null);
 
 
-  usePageMeta({
-    title: "Simulateur LPP 2e pilier Suisse 2026 — Avoir & rente | simfinly.com",
-    description: "Estimez votre avoir de vieillesse LPP (2e pilier suisse) et votre rente mensuelle projetée à 65 ans. Bonifications par tranche d'âge, taux d'intérêt 2025, taux de conversion 6,8 %.",
-  });
+  usePageMeta(
+    "Simulateur LPP 2e pilier Suisse 2026 — Avoir & rente | simfinly.com",
+    "Estimez votre avoir de vieillesse LPP (2e pilier suisse) et votre rente mensuelle projetée à 65 ans. Bonifications par tranche d'âge, taux d'intérêt 2025, taux de conversion 6,8 %."
+  );
 
   const animAvoir  = useAnimatedNumber(res.avoirProjecte);
   const animRente  = useAnimatedNumber(res.renteMensuelle);
