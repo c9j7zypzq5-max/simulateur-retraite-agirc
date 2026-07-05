@@ -1102,6 +1102,10 @@ export const METIERS = {
         title: 'Rapatriement des droits retraite étrangers',
         content: "Un expatrié rentrant en France après plusieurs années à l'étranger dispose de droits à la retraite dans chaque pays où il a cotisé. Chaque caisse étrangère verse sa pension propre à l'âge légal du pays concerné. Il n'est pas possible de transférer des droits étrangers vers la CNAV — chaque régime verse sa partie indépendamment.",
       },
+      {
+        title: 'Le cas particulier des frontaliers au Luxembourg',
+        content: "Le Luxembourg est la première destination des travailleurs frontaliers français. Contrairement à un expatrié classique, un frontalier reste résident fiscal en France tout en cotisant à la CNAP luxembourgeoise sur son salaire. Le règlement européen 883/2004 totalise ensuite les années françaises et luxembourgeoises pour déterminer le taux plein dans chaque régime. Utilisez le [simulateur retraite Luxembourg](/simulateurs/retraite-luxembourg) pour estimer votre pension CNAP en complément de votre CNAV.",
+      },
     ],
     faq: [
       { q: "Faut-il s'affilier à la CFE pour conserver ses droits retraite quand on part à l'étranger ?", a: "Ce n'est pas obligatoire mais fortement conseillé pour les longues expatriations. Sans CFE ni convention bilatérale, les années à l'étranger ne génèrent aucun trimestre en France. L'adhésion doit se faire dans les 6 mois du départ." },
