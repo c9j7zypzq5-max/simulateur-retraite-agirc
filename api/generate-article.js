@@ -71,13 +71,11 @@ function slugify(text) {
 
 export default async function handler(req, res) {
   // Auth : Vercel envoie automatiquement `Authorization: Bearer {CRON_SECRET}` pour les crons.
-  // Si CRON_SECRET n'est pas défini, l'endpoint est ouvert (usage dev/test).
+  // Échoue fermé si CRON_SECRET n'est pas défini (une mauvaise config ne doit
+  // jamais ouvrir cet endpoint, qui déclenche des appels payants à l'API Anthropic).
   const cronSecret = process.env.CRON_SECRET;
-  if (cronSecret) {
-    const auth = req.headers['authorization'];
-    if (auth !== `Bearer ${cronSecret}`) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
+  if (!cronSecret || req.headers['authorization'] !== `Bearer ${cronSecret}`) {
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
