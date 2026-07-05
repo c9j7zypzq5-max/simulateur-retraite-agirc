@@ -6,6 +6,8 @@
 // POST /api/share?action=create                   → créer un lien public court
 // GET  /api/share?action=get&id=xxx               → lire les données d'un lien court
 
+import { getRateLimit } from './_ratelimit.js';
+
 const BASE = 'https://www.simfinly.com';
 
 function setCors(req, res) {
@@ -48,6 +50,8 @@ export default async function handler(req, res) {
 
   // ── POST /api/share?action=create ─────────────────────────────────────────
   if (req.method === 'POST' && action === 'create') {
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+    if (await getRateLimit(ip, 'share-create', 20, 60)) { res.status(429).json({ error: 'Too many requests' }); return; }
     let body = req.body;
     if (typeof body === 'string') {
       if (body.length > MAX_PARAMS_LENGTH + 1000) { res.status(413).json({ error: 'Payload too large' }); return; }

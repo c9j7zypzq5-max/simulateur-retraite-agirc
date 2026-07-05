@@ -1,4 +1,5 @@
 import Stripe from 'stripe';
+import { getRateLimit } from './_ratelimit.js';
 
 // bodyParser disabled: we parse JSON manually and read raw body for webhook
 export const config = { api: { bodyParser: false } };
@@ -27,18 +28,6 @@ async function parseJson(req) {
     if (e.message === 'payload_too_large') throw e;
     return {};
   }
-}
-
-async function getRateLimit(ip, key, limit, windowSec) {
-  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) return false;
-  try {
-    const { Redis } = await import('@upstash/redis');
-    const redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN });
-    const rk = `rl:${key}:${ip}`;
-    const count = await redis.incr(rk);
-    if (count === 1) await redis.expire(rk, windowSec);
-    return count > limit;
-  } catch { return false; }
 }
 
 function verifyCsrf(req) {
@@ -155,6 +144,8 @@ async function handleCreateSubscription(req, res, stripe) {
 // client Stripe rattaché à ce compte (impossible d'accéder à celui d'autrui).
 async function handlePortal(req, res, stripe) {
   if (req.method !== 'POST') return res.status(405).end();
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (await getRateLimit(ip, 'portal', 10, 60)) return res.status(429).json({ error: 'Too many requests' });
   const { origin } = await parseJson(req);
 
   const user = await getUserFromAuthHeader(req);
@@ -182,6 +173,8 @@ async function handlePortal(req, res, stripe) {
 
 async function handleVerifyPayment(req, res, stripe, query) {
   if (req.method !== 'GET') return res.status(405).end();
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (await getRateLimit(ip, 'verify-payment', 20, 60)) return res.status(429).json({ error: 'Too many requests' });
   const session_id = query.session_id;
   if (!session_id || typeof session_id !== 'string') return res.status(400).json({ error: 'Missing session_id' });
 
@@ -206,6 +199,8 @@ async function handleVerifyPayment(req, res, stripe, query) {
 
 async function handleVerifySubscription(req, res, stripe, query) {
   if (req.method !== 'GET') return res.status(405).end();
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket?.remoteAddress || 'unknown';
+  if (await getRateLimit(ip, 'verify-subscription', 20, 60)) return res.status(429).json({ error: 'Too many requests' });
   const session_id = query.session_id;
   if (!session_id || typeof session_id !== 'string') return res.status(400).json({ error: 'Missing session_id' });
 
