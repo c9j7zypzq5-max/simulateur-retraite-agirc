@@ -98,11 +98,6 @@ export const RECOMMENDATIONS = {
     { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "L'assurance-vie offre une autre façon de sortir en rente ou en capital, avec une fiscalité différente après 8 ans.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
     { icon: "🧮", label: "Synthèse retraite tous régimes", description: "Consolidez cette rente avec vos pensions CNAV et Agirc-Arrco pour une vision complète de vos revenus futurs.", to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" },
   ],
-  '/simulateurs/retraite-luxembourg': [
-    { icon: "🏛", label: "Cumulez avec la CNAV française", description: "En tant que frontalier, vous avez peut-être des droits CNAV en France. Estimez les deux pensions.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
-    { icon: "🏆", label: "Agirc-Arrco si carrière mixte", description: "Si vous avez travaillé en France avant le Luxembourg, calculez aussi votre complémentaire.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
-    { icon: "⚖️", label: "Rente ou retrait programmé ?", description: "Avec votre capital pension, comparez la rente viagère et les retraits programmés.", to: "/simulateurs/rente-capital", cta: "Comparer →" },
-  ],
   '/simulateurs/lpp-deuxieme-pilier': [
     { icon: "🏦", label: "Pilier 3a — prévoyance individuelle", description: "Le 3e pilier (3a) complète votre LPP avec des avantages fiscaux. Estimez le capital accumulé.", to: "/simulateurs/prevoyance-ch", cta: "Simuler le 3a →" },
     { icon: "📋", label: "Impôt sur le revenu en Suisse", description: "Calculez votre impôt fédéral et cantonal pour dimensionner vos déductions de prévoyance.", to: "/simulateurs/impot-revenu-ch", cta: "Calculer l'impôt →" },

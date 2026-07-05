@@ -35,8 +35,9 @@ export default defineConfig([
     },
   },
   {
-    // Code Node : fonctions serverless (api/), scripts de build et config Vite.
-    files: ['api/**/*.js', 'scripts/**/*.{js,mjs}', '*.config.js', 'vite.config.js'],
+    // Code Node : fonctions serverless (api/), scripts de build, config Vite et
+    // tests e2e Playwright (exécutés sous Node, pas dans le navigateur).
+    files: ['api/**/*.js', 'scripts/**/*.{js,mjs}', '*.config.js', 'vite.config.js', 'e2e/**/*.js'],
     languageOptions: {
       globals: globals.node,
     },
