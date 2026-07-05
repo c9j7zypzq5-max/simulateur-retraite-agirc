@@ -341,12 +341,12 @@ export default function EpargneSalariale() {
         <FaqSection items={FAQ} />
 
         {/* À propos */}
-        <AccordionSection title="À propos de l'épargne salariale">
+        <AccordionSection title="À propos de l'épargne salariale" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             L'épargne salariale regroupe plusieurs dispositifs collectifs permettant aux salariés de se constituer une épargne avec l'aide de leur employeur : PEE (Plan d'Épargne Entreprise, bloqué 5 ans), PERCO/PERO (Plan d'Épargne Retraite, bloqué jusqu'à la retraite). L'abondement de l'employeur est l'avantage central : il peut doubler voire tripler vos versements dans la limite légale.
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            Les sommes issues de l'intéressement et de la participation peuvent également être versées dans ces plans, en exonération d'impôt sur le revenu. À la sortie du PEE, la plus-value est exonérée d'IR (mais soumise aux prélèvements sociaux de 17,2 %).
+            Les sommes issues de l'intéressement et de la <a href="/lexique/participation-entreprise" style={{ color: "var(--gold)" }}>participation</a> peuvent également être versées dans ces plans, en exonération d'impôt sur le revenu. À la sortie du PEE, la plus-value est exonérée d'IR (mais soumise aux prélèvements sociaux de 17,2 %).
           </p>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
             <strong>Ce simulateur est indicatif.</strong> Les résultats réels dépendent des performances des fonds, des frais de gestion et des règles propres à chaque accord d'entreprise.

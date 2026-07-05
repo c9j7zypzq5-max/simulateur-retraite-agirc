@@ -255,7 +255,7 @@ export default function SuccessionLU() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos des droits de succession luxembourgeois">
+        <AccordionSection title="À propos des droits de succession luxembourgeois" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Au Luxembourg, les droits de succession sont particulièrement favorables en <strong>ligne directe</strong> : la part reçue par les enfants et petits-enfants, en dévolution légale, est totalement exonérée. Le <strong>conjoint marié</strong> et le partenaire lié par une déclaration de partenariat enregistrée depuis au moins 3 ans sont également exonérés. Les frères et sœurs sont taxés à 6 % de base, les oncles/tantes et neveux/nièces à 9 %, et les tiers sans lien de parenté à 15 %.
           </p>

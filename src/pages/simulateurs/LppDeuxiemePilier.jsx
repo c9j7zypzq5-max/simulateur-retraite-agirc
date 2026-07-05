@@ -305,7 +305,7 @@ export default function LppDeuxiemePilier() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos du 2e pilier suisse">
+        <AccordionSection title="À propos du 2e pilier suisse" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             La Loi sur la Prévoyance Professionnelle (LPP) oblige les employeurs suisses à assurer leurs salariés gagnant plus de 22 050 CHF/an (seuil d'entrée 2025) auprès d'une caisse de pension. Les cotisations sont versées sur la base du salaire coordonné (salaire brut − déduction de coordination). Elles sont investies par la caisse et fructifient au taux d'intérêt minimum fixé chaque année par le Conseil fédéral (1,25 % en 2025).
           </p>

@@ -369,7 +369,7 @@ export default function Succession() {
         </AccordionSection>
 
         {/* About */}
-        <AccordionSection title="À propos des droits de succession">
+        <AccordionSection title="À propos des droits de succession" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Les droits de succession sont calculés sur la valeur nette des biens transmis au décès, après abattements légaux qui varient selon le lien de parenté. Le barème est progressif : plus la part taxable est élevée, plus le taux marginal est fort — jusqu'à 45 % en ligne directe et 60 % pour des tiers non liés.
           </p>

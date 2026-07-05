@@ -359,7 +359,7 @@ export default function ImpotRevenuCH() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos de l'impôt suisse sur le revenu">
+        <AccordionSection title="À propos de l'impôt suisse sur le revenu" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             En Suisse, les particuliers sont soumis à trois niveaux d'imposition sur le revenu : l'<strong>impôt fédéral direct (IFD)</strong>, prélevé par la Confédération avec un barème unique pour toute la Suisse ; l'<strong>impôt cantonal</strong>, dont les taux et barèmes varient fortement d'un canton à l'autre ; et l'<strong>impôt communal</strong>, calculé comme un pourcentage de l'impôt cantonal. La déclaration fiscale est annuelle et se fait au lieu de domicile au 31 décembre.
           </p>

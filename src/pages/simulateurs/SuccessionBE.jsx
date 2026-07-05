@@ -340,7 +340,7 @@ export default function SuccessionBE() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos des droits de succession belges">
+        <AccordionSection title="À propos des droits de succession belges" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Les droits de succession en Belgique sont régionaux. En Wallonie et à Bruxelles-Capitale, les taux progressifs commencent à 3 % (ligne directe) et montent jusqu'à 30 %. Contrairement à la France, il n'existe pas d'abattement standard de 100 000 € par héritier en ligne directe : les droits s'appliquent dès le premier euro selon les tranches progressives. Le conjoint marié et le cohabitant légal sont totalement exonérés dans les trois régions. La Flandre (Vlaanderen) applique un régime différent non couvert ici.
           </p>

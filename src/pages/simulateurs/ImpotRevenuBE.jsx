@@ -348,7 +348,7 @@ export default function ImpotRevenuBE() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos de l'IPP belge">
+        <AccordionSection title="À propos de l'IPP belge" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             L'IPP (Impôt des Personnes Physiques) est l'impôt belge sur les revenus des particuliers. Il se compose d'un <strong>impôt fédéral</strong> calculé sur un barème progressif à 4 tranches (25 %, 40 %, 45 %, 50 %) et d'une <strong>part communale</strong> (centimes additionnels), fixée par chaque commune. Le calcul tient compte d'une quotité exemptée d'impôt (10 160 € de base en EI 2025), éventuellement majorée pour les enfants à charge.
           </p>
