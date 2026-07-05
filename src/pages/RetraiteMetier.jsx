@@ -23,6 +23,10 @@ function ProfessionStats({ stats }) {
   );
 }
 
+// Bold (**texte**) et liens internes ([texte](/chemin)) — cf. src/data/metiers.js
+const MARKDOWN_TOKEN_RE = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+const LINK_RE = /^\[([^\]]+)\]\(([^)]+)\)$/;
+
 function ProfessionSection({ title, content }) {
   return (
     <div style={{ marginBottom: 32 }}>
@@ -32,13 +36,19 @@ function ProfessionSection({ title, content }) {
       <div style={{ fontSize: 14, lineHeight: 1.85, color: "var(--text-secondary)" }}>
         {content.split("\n").map((line, i) => {
           if (!line.trim()) return <br key={i} />;
-          // Bold markdown
-          const parts = line.split(/(\*\*[^*]+\*\*)/g);
+          const parts = line.split(MARKDOWN_TOKEN_RE);
           return (
             <p key={i} style={{ marginBottom: 10 }}>
-              {parts.map((part, j) =>
-                part.startsWith("**") ? <strong key={j} style={{ color: "var(--text)" }}>{part.slice(2, -2)}</strong> : part
-              )}
+              {parts.map((part, j) => {
+                if (part.startsWith("**") && part.endsWith("**")) {
+                  return <strong key={j} style={{ color: "var(--text)" }}>{part.slice(2, -2)}</strong>;
+                }
+                const link = part.match(LINK_RE);
+                if (link) {
+                  return <Link key={j} to={link[2]} style={{ color: "var(--gold)" }}>{link[1]}</Link>;
+                }
+                return part;
+              })}
             </p>
           );
         })}
