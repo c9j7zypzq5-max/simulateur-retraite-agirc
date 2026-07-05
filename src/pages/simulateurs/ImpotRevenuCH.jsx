@@ -120,6 +120,7 @@ const FAQ = FAQS['/simulateurs/impot-revenu-ch'];
 const DEFAULT = { revenuBrut: 90_000, marie: false, canton: "VD" };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     revenuBrut: Number(p.get("r")) || DEFAULT.revenuBrut,
     marie:      p.get("m") === "1",
@@ -142,10 +143,10 @@ export default function ImpotRevenuCH() {
   const resultsRef = useRef(null);
 
 
-  usePageMeta({
-    title: "Simulateur impôt revenu Suisse 2026 — IFD + cantonal | simfinly.com",
-    description: "Calculez votre impôt fédéral direct (IFD) et cantonal en Suisse 2025. Barème progressif, déductions AVS, frais professionnels, comparaison entre cantons.",
-  });
+  usePageMeta(
+    "Simulateur impôt revenu Suisse 2026 — IFD + cantonal | simfinly.com",
+    "Calculez votre impôt fédéral direct (IFD) et cantonal en Suisse 2025. Barème progressif, déductions AVS, frais professionnels, comparaison entre cantons."
+  );
 
   const animTotal = useAnimatedNumber(res.impotTotal);
   const animTaux  = useAnimatedNumber(res.tauxEffectif);

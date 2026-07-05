@@ -39,11 +39,13 @@ export const RECOMMENDATIONS = {
     { icon: "📅", label: "Vérifiez vos trimestres", description: "Les trimestres validés dans la fonction publique conditionnent votre âge de départ à taux plein.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
     { icon: "🏢", label: "Simulez votre IRCANTEC", description: "Si vous avez été agent non-titulaire, vous avez peut-être des droits IRCANTEC à ajouter.", to: "/simulateurs/ircantec", cta: "Simuler l'IRCANTEC →" },
     { icon: "💼", label: "Préparez un PER", description: "Le PER est ouvert aux fonctionnaires et permet de défiscaliser jusqu'à 10 % du revenu brut.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "Dans la fonction publique, le conjoint survivant perçoit 50 % de cette pension, sans condition de ressources. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/ircantec': [
     { icon: "⚖️", label: "Retraite de la fonction publique", description: "L'IRCANTEC s'additionne souvent à une pension civile ou militaire. Calculez les deux.", to: "/simulateurs/fonction-publique", cta: "Simuler →" },
     { icon: "🏛", label: "Estimez votre retraite de base CNAV", description: "Si vous avez alterné secteur privé et public, vous avez des droits CNAV à ajouter.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "💼", label: "Complétez avec un PER", description: "Un Plan d'Épargne Retraite complète votre pension et réduit votre impôt.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir une partie de vos pensions cumulées. Estimez le montant de sa réversion.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/cnavpl': [
     { icon: "🏛", label: "Retraite de base CNAV", description: "Si vous avez cotisé au régime général avant votre activité libérale, vous avez des droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
@@ -64,6 +66,21 @@ export const RECOMMENDATIONS = {
     { icon: "🏆", label: "Estimez votre retraite Agirc-Arrco", description: "Visualisez la complémentaire que vous percevrez pour dimensionner l'effort d'épargne PER nécessaire.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
     { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "Le PER et l'assurance-vie sont complémentaires mais ont des fiscalités différentes. Comparez.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
     { icon: "🏢", label: "Épargne salariale (PEE / PERCO)", description: "L'épargne salariale peut alimenter un PERO. Estimez le gain fiscal cumulé.", to: "/simulateurs/epargne-salariale", cta: "Simuler →" },
+  ],
+  '/simulateurs/retraite-luxembourg': [
+    { icon: "🏛", label: "Comptabilisez vos années en France", description: "Si vous avez cotisé en France avant ou après votre carrière au Luxembourg, la totalisation UE additionne vos droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
+    { icon: "🏆", label: "Ajoutez votre complémentaire française", description: "Les années salariées en France ouvrent aussi des droits Agirc-Arrco, à additionner à votre pension CNAP.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
+    { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
+  ],
+  '/simulateurs/impot-revenu-lu': [
+    { icon: "🇱🇺", label: "Votre future pension CNAP", description: "Estimez la pension de retraite luxembourgeoise que vous constituez en cotisant sur ce revenu imposable.", to: "/simulateurs/retraite-luxembourg", cta: "Simuler la retraite LU →" },
+    { icon: "🏺", label: "Droits de succession au Luxembourg", description: "Ligne directe et conjoint exonérés, barème progressif pour les autres héritiers — anticipez la transmission de votre patrimoine.", to: "/simulateurs/succession-lu", cta: "Simuler la succession →" },
+    { icon: "💼", label: "Projetez votre épargne", description: "Simulez la croissance de votre épargne en euros sur le long terme grâce aux intérêts composés.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
+  ],
+  '/simulateurs/succession-lu': [
+    { icon: "🇱🇺", label: "Votre future pension CNAP", description: "Estimez la pension de retraite luxembourgeoise selon votre carrière et votre salaire.", to: "/simulateurs/retraite-luxembourg", cta: "Simuler la retraite LU →" },
+    { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
+    { icon: "🛡️", label: "Protégez votre transmission", description: "Une assurance-vie peut compléter la protection de vos proches en dehors du cadre successoral classique.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
   ],
   '/simulateurs/pension-reversion': [
     { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },

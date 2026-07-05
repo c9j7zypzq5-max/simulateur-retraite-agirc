@@ -79,6 +79,7 @@ const FAQ = FAQS['/simulateurs/pension-legale'];
 const DEFAULT = { salaireMoyen: 3_200 * 12, carriereAns: 40, tauxMenage: false, birthYear: 1965 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     salaireMoyen: Number(p.get("s")) || DEFAULT.salaireMoyen,
     carriereAns:  Number(p.get("c")) || DEFAULT.carriereAns,
@@ -103,10 +104,10 @@ export default function PensionLegaleBE() {
 
   const shareUrl = buildShareUrl(toParams(vals));
 
-  usePageMeta({
-    title: "Simulateur pension légale Belgique 2026 — ONSS | simfinly.com",
-    description: "Estimez votre pension de retraite légale belge (1er pilier ONSS) : formule officielle, taux isolé/ménage, bonus pension, minimum garanti. Calcul selon la réforme 2025.",
-  });
+  usePageMeta(
+    "Simulateur pension légale Belgique 2026 — ONSS | simfinly.com",
+    "Estimez votre pension de retraite légale belge (1er pilier ONSS) : formule officielle, taux isolé/ménage, bonus pension, minimum garanti. Calcul selon la réforme 2025."
+  );
 
   const animPension = useAnimatedNumber(res.pensionMensuelle);
   const animNette   = useAnimatedNumber(res.pensionNette);

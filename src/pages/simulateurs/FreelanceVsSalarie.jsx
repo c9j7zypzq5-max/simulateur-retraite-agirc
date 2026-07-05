@@ -156,10 +156,10 @@ export default function FreelanceVsSalarie() {
   const [situation,  setSituation]  = useState(init.situation);
   const [enfants,    setEnfants]    = useState(init.enfants);
 
-  usePageMeta({
-    title: "Simulateur Freelance vs Salarié 2026 | simfinly.com",
-    description: "Comparez votre net disponible en tant que salarié, micro-entrepreneur (BIC/BNC) ou en portage salarial. Charges sociales, impôt sur le revenu, TMI : tout est calculé.",
-  });
+  usePageMeta(
+    "Simulateur Freelance vs Salarié 2026 | simfinly.com",
+    "Comparez votre net disponible en tant que salarié, micro-entrepreneur (BIC/BNC) ou en portage salarial. Charges sociales, impôt sur le revenu, TMI : tout est calculé."
+  );
 
   const resSalarie  = useMemo(() => calcSalarie({ brut, situation, enfants }), [brut, situation, enfants]);
   const resMicroBic = useMemo(() => calcMicroBicServices({ ca, situation, enfants }), [ca, situation, enfants]);

@@ -147,10 +147,10 @@ export default function Succession() {
   const vals = { actifNet, lien, nbHeritiers, donations };
   const res = useMemo(() => calcSuccession(vals), [actifNet, lien, nbHeritiers, donations]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Succession & Droits de Succession 2026 | simfinly.com",
-    description: "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2026 : enfants, conjoint, frères/sœurs, autres.",
-  });
+  usePageMeta(
+    "Simulateur Succession & Droits de Succession 2026 | simfinly.com",
+    "Calculez les droits de succession selon le lien de parenté, l'actif net transmis et les donations antérieures. Barème officiel 2026 : enfants, conjoint, frères/sœurs, autres."
+  );
 
   const animDroits  = useAnimatedNumber(res.totalDroits);
   const animNet     = useAnimatedNumber(res.netChaque);

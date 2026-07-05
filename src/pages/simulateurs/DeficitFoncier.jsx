@@ -153,10 +153,10 @@ export default function DeficitFoncier() {
   const vals = { loyersBruts, interetsEmprunt, taxeFonciere, chargesGestion, travaux, tmi, plafondEleve };
   const res  = useMemo(() => calcDeficitFoncier(vals), [loyersBruts, interetsEmprunt, taxeFonciere, chargesGestion, travaux, tmi, plafondEleve]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  usePageMeta({
-    title: "Simulateur Déficit Foncier 2026 — Économie d'impôt & Report | simfinly.com",
-    description: "Calculez votre déficit foncier 2025 : part imputable sur le revenu global (plafond 10 700 €), report sur 10 ans, économie d'IR et de prélèvements sociaux. Régime réel.",
-  });
+  usePageMeta(
+    "Simulateur Déficit Foncier 2026 — Économie d'impôt & Report | simfinly.com",
+    "Calculez votre déficit foncier 2025 : part imputable sur le revenu global (plafond 10 700 €), report sur 10 ans, économie d'IR et de prélèvements sociaux. Régime réel."
+  );
 
   const animEconomie = useAnimatedNumber(res.economieFiscaleImmédiate);
   const animDeficit  = useAnimatedNumber(Math.abs(res.deficitBrut));

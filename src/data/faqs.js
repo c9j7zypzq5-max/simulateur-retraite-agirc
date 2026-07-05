@@ -315,6 +315,22 @@ export const FAQS = {
   { q: "Qu'est-ce que le forfait de frais professionnels ?", a: "En Belgique, les frais professionnels peuvent être déduits de façon forfaitaire (30 % du revenu, plafond ~5 040 €) ou au réel si vos dépenses professionnelles sont supérieures. Le forfait est automatiquement appliqué si vous ne déclarez pas vos frais réels. Les travailleurs indépendants ont un calcul différent." },
 ],
 
+  '/simulateurs/impot-revenu-lu': [
+  { q: "Comment fonctionne le barème progressif luxembourgeois ?", a: "Le Luxembourg applique un barème progressif à 23 tranches allant de 0 % (jusqu'à 13 230 €) à 42 % (au-delà de 234 870 €), pour la classe 1. Chaque tranche de revenu est imposée au taux qui lui correspond, comme en France, et non l'ensemble du revenu au taux marginal." },
+  { q: "Quelle est la différence entre les classes d'impôt 1, 1a et 2 ?", a: "La classe 1 s'applique aux célibataires, divorcés ou mariés imposés individuellement. La classe 1a concerne les célibataires avec enfant à charge, les veufs/veuves et les 65 ans et plus, avec un traitement plus favorable depuis la réforme 2025. La classe 2 s'applique aux couples mariés ou pacsés imposés collectivement, avec le quotient conjugal (splitting)." },
+  { q: "Comment fonctionne le splitting de la classe 2 ?", a: "Le revenu imposable du couple est divisé par deux, le barème progressif est appliqué à cette moitié, puis le résultat est multiplié par deux. Ce mécanisme réduit l'impôt total en atténuant l'effet de la progressivité, surtout quand les revenus des deux conjoints sont très inégaux." },
+  { q: "Qu'est-ce que la contribution au fonds pour l'emploi ?", a: "C'est une surtaxe de solidarité de 7 % de l'impôt calculé, portée à 9 % au-delà de 150 000 € de revenu imposable (classes 1 et 1a) ou de 300 000 € (classe 2). Elle finance le fonds pour l'emploi luxembourgeois et s'ajoute systématiquement à l'impôt du barème." },
+  { q: "Les frontaliers français sont-ils imposés au Luxembourg ou en France ?", a: "En règle générale, un frontalier travaillant physiquement au Luxembourg y est imposé sur son salaire luxembourgeois, sous réserve de la convention fiscale franco-luxembourgeoise. Le nombre de jours de télétravail autorisés sans basculer la fiscalité en France est encadré par un seuil spécifique à surveiller chaque année." },
+],
+
+  '/simulateurs/succession-lu': [
+  { q: "Les enfants paient-ils des droits de succession au Luxembourg ?", a: "Non. En dévolution légale, la part reçue par les enfants et petits-enfants (ligne directe) est totalement exonérée de droits de succession au Luxembourg, quel que soit le montant transmis." },
+  { q: "Le conjoint survivant est-il exonéré ?", a: "Oui. Le conjoint marié est exonéré de droits de succession, tout comme le partenaire lié par une déclaration de partenariat enregistrée depuis au moins 3 ans avant le décès." },
+  { q: "Quel taux s'applique entre frères et sœurs ?", a: "Le taux de base est de 6 % sur la part légale, majoré selon un barème progressif si la part nette imposable dépasse 10 000 €. Ce taux peut donc dépasser significativement 6 % pour les successions importantes." },
+  { q: "Comment fonctionne la majoration au-delà de 10 000 € ?", a: "Au-delà de 10 000 € de part nette taxable, les taux de base (frères/sœurs, oncles-tantes-neveux-nièces, autres) sont majorés selon un barème progressif par tranches, jusqu'à un multiplicateur de 2,2 fois le taux de base pour les parts dépassant 1 750 000 €. Cette majoration ne s'applique jamais à la part légale des héritiers en ligne directe." },
+  { q: "Quel est le taux pour un héritier sans lien de parenté ?", a: "Les héritiers sans lien de parenté (amis, tiers) sont taxés au taux le plus élevé, 15 % de base, également soumis à la majoration progressive au-delà de 10 000 € de part nette taxable." },
+],
+
   '/simulateurs/impot-revenu-ch': [
   {
     q: "Comment fonctionne l'impôt fédéral direct (IFD) en Suisse ?",
@@ -599,14 +615,6 @@ export const FAQS = {
     q: "L'âge légal va-t-il encore changer ?",
     a: "La réforme du système de retraites de 2023 (loi Borne) a fixé le calendrier de montée en charge jusqu'à 64 ans pour les générations 1967 et postérieures. Des débats politiques sont régulièrement ouverts sur ce sujet, mais les modifications éventuelles ne peuvent s'appliquer qu'aux générations pas encore en âge de partir. Pour les personnes proches de la retraite, les règles actuelles s'appliquent.",
   },
-],
-
-  '/simulateurs/retraite-luxembourg': [
-  { q: "Comment fonctionne la retraite au Luxembourg (CNAP) ?", a: "Le régime général luxembourgeois (CNAP — Caisse Nationale d'Assurance Pension) est un régime par répartition. La pension est calculée sur la base des années de cotisation et du revenu moyen. Le taux de remplacement est l'un des plus élevés d'Europe : environ 73 % du dernier salaire en moyenne pour une carrière complète de 40 ans." },
-  { q: "Quel est l'âge légal de retraite au Luxembourg ?", a: "L'âge légal est 65 ans pour une pension normale. Il est possible de partir à 60 ans avec 40 années d'assurance (retraite anticipée ordinaire), ou à 57 ans avec 40 années effectives de cotisation (retraite anticipée pour longues carrières). Il n'y a pas de réforme d'âge prévue à ce stade." },
-  { q: "Comment est calculée la pension luxembourgeoise ?", a: "La pension est proportionnelle aux revenus cotisés et à la durée de carrière : environ 1,85 % du revenu moyen mensuel par année de cotisation, avec un forfait supplémentaire par année. Une pension minimale est garantie pour ceux qui ont cotisé au moins 40 ans." },
-  { q: "Les frontaliers français ont-ils droit à la retraite luxembourgeoise ?", a: "Oui. Les travailleurs frontaliers qui ont cotisé au Luxembourg ont droit à une pension CNAP proportionnelle à leurs années de cotisation luxembourgeoises. La pension est ensuite versée en France, mais reste soumise à l'impôt luxembourgeois sous la plupart des conventions fiscales." },
-  { q: "Puis-je cumuler pension luxembourgeoise et pension française ?", a: "Oui, le règlement européen (CE 883/2004) organise la coordination des régimes. Chaque pays calcule une pension 'nationale' proportionnelle aux années cotisées dans ce pays. Vous percevrez une pension de chaque régime auquel vous avez cotisé, dans les conditions d'âge propres à chacun." },
 ],
 
   '/simulateurs/retraite-progressive': [

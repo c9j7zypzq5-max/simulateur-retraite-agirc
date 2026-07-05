@@ -109,6 +109,25 @@ const SIMULATEURS_CH = [
   { path: "/simulateurs/cout-en-heures",      title: "Le vrai prix en heures de vie",      desc: "Convertissez n'importe quel achat en heures de travail réelles.",                                                                                                                                 tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: ["new"], available: true },
 ];
 
+// ── LU simulators (Luxembourg-specific + universal subset) ───────────────────
+const SIMULATEURS_LU = [
+  // Spécifiques Luxembourg
+  { path: "/simulateurs/retraite-luxembourg", title: "Retraite Luxembourg (CNAP)",           desc: "Estimez votre pension CNAP pour les frontaliers et expatriés travaillant au Luxembourg : carrière, salaire, âge de départ, majoration famille et taux de remplacement.", tag: "Retraite · Luxembourg",  categories: ["Retraite"],  badges: ["new"], featured: true, available: true },
+  { path: "/simulateurs/impot-revenu-lu",     title: "Impôt sur le revenu (Luxembourg)",     desc: "Calculez votre impôt luxembourgeois selon le barème progressif 2026, votre classe d'impôt (1, 1a, 2) et la contribution au fonds pour l'emploi.",                        tag: "Fiscalité · Luxembourg", categories: ["Fiscalité"], badges: ["new"], available: true },
+  { path: "/simulateurs/succession-lu",       title: "Droits de succession (Luxembourg)",    desc: "Estimez les droits de succession luxembourgeois selon le lien de parenté : exonération en ligne directe et conjoint, barème progressif pour les autres héritiers.",       tag: "Fiscalité · Luxembourg", categories: ["Fiscalité"], badges: ["new"], available: true },
+  // Simulateurs universels disponibles au Luxembourg
+  { path: "/simulateurs/epargne",            title: "Épargne & intérêts composés",          desc: "Projetez la croissance de votre épargne sur le long terme grâce aux intérêts composés et aux versements réguliers.",                                                       tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/fire",               title: "Indépendance financière (FIRE)",        desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et estimez à quel âge vous atteindrez la liberté financière. Règle des 25x / 4%.",                     tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/budget",             title: "Budget & Épargne 50/30/20",             desc: "Répartissez votre budget mensuel selon la règle d'or. Donut chart animé, jauges en temps réel et conseils personnalisés selon votre taux d'épargne.",                     tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/patrimoine",         title: "Patrimoine global",                    desc: "Consolidez l'ensemble de votre patrimoine — financier, immobilier et retraite — pour visualiser votre richesse nette et sa répartition par classe d'actifs.",               tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/comparateur",        title: "Comparateur d'actifs",                 desc: "Comparez la performance historique d'ETF, actions et cryptos sur la période de votre choix : volatilité, drawdown et rendement annualisé.",                              tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/assurance-vie",      title: "Assurance-vie",                        desc: "Projetez la croissance de votre contrat et la fiscalité des gains au rachat.",                                                                                             tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/credit-conso",       title: "Crédit à la consommation",             desc: "Calculez la mensualité, le coût total et les intérêts de votre crédit conso à partir du TAEG et de la durée. Tableau d'amortissement inclus.",                           tag: "Finances",             categories: ["Finances"],    badges: ["new"], available: true },
+  { path: "/simulateurs/emprunt-immobilier", title: "Emprunt immobilier",                   desc: "Calculez vos mensualités, votre capacité d'emprunt et le coût total du crédit.",                                                                                          tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",                    desc: "Évaluez la rentabilité brute et nette d'un investissement locatif selon les charges, la fiscalité et les frais de gestion.",                                              tag: "Immobilier",           categories: ["Immobilier"],  badges: ["new"], available: true },
+  { path: "/simulateurs/cout-en-heures",     title: "Le vrai prix en heures de vie",        desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?",                          tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: ["new"], available: true },
+];
+
 // ── EN simulators (universal subset, English content) ────────────────────────
 const SIMULATEURS_EN = [
   { path: "/simulateurs/fire", title: "FIRE Calculator", desc: "Calculate the net worth you need to live off your investments and the age at which you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones.", tag: "Finance · FIRE", categories: ["Finance"], badges: ["popular"], featured: true, available: true },
@@ -127,6 +146,7 @@ const SIMULATEURS_EN = [
 const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vie & Temps", "Patrimoine", "Frontaliers", "Outils"];
 const FILTERS_BE = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_CH = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
+const FILTERS_LU = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_EN = ["All", "Retirement", "Finance", "Tools"];
 
 const TXT = {
@@ -205,6 +225,36 @@ const TXT = {
     simCountFmt: (n) => n.toLocaleString("fr-CH"),
     simCountLabel: "simulations réalisées",
     searchPlaceholder: "Rechercher un simulateur (LPP, pilier 3a, impôts, FIRE…)",
+    searchAriaLabel: "Rechercher un simulateur",
+    clearSearch: "Effacer la recherche",
+    filterPrefix: "Filtrer :",
+    gridTitle: "Simulateurs disponibles",
+    emptyQuery: (q) => `Aucun simulateur ne correspond à « ${q} ».`,
+    emptyCategory: "Aucun simulateur dans cette catégorie pour l'instant.",
+    lexiqueSection: null,
+    blogSection: null,
+    ctaFeatured: "Simuler maintenant →",
+    ctaCard: "Simuler →",
+    badgePopular: "★ Populaire",
+    badgeUpdated: "Mis à jour 2026",
+    badgeNew: "Nouveau",
+    defaultFilter: "Tous",
+  },
+  lu: {
+    docTitle: "Simfinly.com — Simulateurs gratuits retraite CNAP, impôt, succession (Luxembourg)",
+    docDesc: (n) => `Simulez votre pension CNAP, votre impôt sur le revenu et vos droits de succession au Luxembourg. ${n} simulateurs gratuits pour frontaliers et résidents.`,
+    heroBadge: "Retraite CNAP · Fiscalité · Finances · Immobilier",
+    heroTitle: "Simulez vos grandes décisions",
+    heroEm: "avec la fiscalité luxembourgeoise",
+    heroDesc: "Des simulateurs gratuits, précis et pédagogiques adaptés au Luxembourg — pension CNAP, impôt sur le revenu, droits de succession et épargne. Pensés pour les frontaliers comme pour les résidents.",
+    stat1Label: "simulateurs actifs",
+    stat2: "30 s",
+    stat2Label: "pour une première estimation",
+    stat3: "100 %",
+    stat3Label: "gratuit & sans inscription",
+    simCountFmt: (n) => n.toLocaleString("fr-LU"),
+    simCountLabel: "simulations réalisées",
+    searchPlaceholder: "Rechercher un simulateur (CNAP, impôt, succession, FIRE…)",
     searchAriaLabel: "Rechercher un simulateur",
     clearSearch: "Effacer la recherche",
     filterPrefix: "Filtrer :",
@@ -387,12 +437,12 @@ export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
   const country = useCountry();
-  const txtKey = locale === 'en' ? 'en' : country === 'ch' ? 'ch' : country === 'be' ? 'be' : 'fr';
+  const txtKey = locale === 'en' ? 'en' : country === 'ch' ? 'ch' : country === 'be' ? 'be' : country === 'lu' ? 'lu' : 'fr';
   const txt = TXT[txtKey] ?? TXT.fr;
   useAuth();
 
-  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : country === 'ch' ? SIMULATEURS_CH : country === 'be' ? SIMULATEURS_BE : SIMULATEURS_FR;
-  const FILTERS = locale === 'en' ? FILTERS_EN : country === 'ch' ? FILTERS_CH : country === 'be' ? FILTERS_BE : FILTERS_FR;
+  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : country === 'ch' ? SIMULATEURS_CH : country === 'be' ? SIMULATEURS_BE : country === 'lu' ? SIMULATEURS_LU : SIMULATEURS_FR;
+  const FILTERS = locale === 'en' ? FILTERS_EN : country === 'ch' ? FILTERS_CH : country === 'be' ? FILTERS_BE : country === 'lu' ? FILTERS_LU : FILTERS_FR;
 
   const [activeFilter, setActiveFilter] = useState(txt.defaultFilter);
   const [query, setQuery] = useState(() => {

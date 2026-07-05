@@ -154,6 +154,7 @@ const DEFAULT = {
 };
 
 function fromParams(p) {
+  if (!p) return { ...DEFAULT };
   return {
     valeurBien:           Number(p.get("v"))  || DEFAULT.valeurBien,
     lien:                 p.get("l")          || DEFAULT.lien,
