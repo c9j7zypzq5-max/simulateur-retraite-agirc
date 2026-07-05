@@ -39,11 +39,13 @@ export const RECOMMENDATIONS = {
     { icon: "📅", label: "Vérifiez vos trimestres", description: "Les trimestres validés dans la fonction publique conditionnent votre âge de départ à taux plein.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
     { icon: "🏢", label: "Simulez votre IRCANTEC", description: "Si vous avez été agent non-titulaire, vous avez peut-être des droits IRCANTEC à ajouter.", to: "/simulateurs/ircantec", cta: "Simuler l'IRCANTEC →" },
     { icon: "💼", label: "Préparez un PER", description: "Le PER est ouvert aux fonctionnaires et permet de défiscaliser jusqu'à 10 % du revenu brut.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "Dans la fonction publique, le conjoint survivant perçoit 50 % de cette pension, sans condition de ressources. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/ircantec': [
     { icon: "⚖️", label: "Retraite de la fonction publique", description: "L'IRCANTEC s'additionne souvent à une pension civile ou militaire. Calculez les deux.", to: "/simulateurs/fonction-publique", cta: "Simuler →" },
     { icon: "🏛", label: "Estimez votre retraite de base CNAV", description: "Si vous avez alterné secteur privé et public, vous avez des droits CNAV à ajouter.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "💼", label: "Complétez avec un PER", description: "Un Plan d'Épargne Retraite complète votre pension et réduit votre impôt.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir une partie de vos pensions cumulées. Estimez le montant de sa réversion.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
   ],
   '/simulateurs/cnavpl': [
     { icon: "🏛", label: "Retraite de base CNAV", description: "Si vous avez cotisé au régime général avant votre activité libérale, vous avez des droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
