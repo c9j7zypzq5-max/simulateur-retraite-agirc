@@ -67,6 +67,11 @@ export const RECOMMENDATIONS = {
     { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "Le PER et l'assurance-vie sont complémentaires mais ont des fiscalités différentes. Comparez.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
     { icon: "🏢", label: "Épargne salariale (PEE / PERCO)", description: "L'épargne salariale peut alimenter un PERO. Estimez le gain fiscal cumulé.", to: "/simulateurs/epargne-salariale", cta: "Simuler →" },
   ],
+  '/simulateurs/retraite-luxembourg': [
+    { icon: "🏛", label: "Comptabilisez vos années en France", description: "Si vous avez cotisé en France avant ou après votre carrière au Luxembourg, la totalisation UE additionne vos droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
+    { icon: "🏆", label: "Ajoutez votre complémentaire française", description: "Les années salariées en France ouvrent aussi des droits Agirc-Arrco, à additionner à votre pension CNAP.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
+    { icon: "💼", label: "Complétez avec un PER", description: "Un Plan d'Épargne Retraite français permet aux frontaliers de se constituer un complément et de défiscaliser en France.", to: "/simulateurs/per", cta: "Simuler le PER →" },
+  ],
   '/simulateurs/pension-reversion': [
     { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "🏆", label: "Retraite complémentaire Agirc-Arrco", description: "La réversion Agirc-Arrco complète la réversion CNAV. Calculez les deux.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
