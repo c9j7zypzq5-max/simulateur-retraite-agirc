@@ -81,10 +81,10 @@ const DEFAULT = { salaireMoyen: 3_200 * 12, carriereAns: 40, tauxMenage: false, 
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    salaireMoyen: Number(p.get("s")) || DEFAULT.salaireMoyen,
-    carriereAns:  Number(p.get("c")) || DEFAULT.carriereAns,
-    tauxMenage:   p.get("m") === "1",
-    birthYear:    Number(p.get("b")) || DEFAULT.birthYear,
+    salaireMoyen: Number(p.s) || DEFAULT.salaireMoyen,
+    carriereAns:  Number(p.c) || DEFAULT.carriereAns,
+    tauxMenage:   p.m === "1",
+    birthYear:    Number(p.b) || DEFAULT.birthYear,
   };
 }
 function toParams(v) {

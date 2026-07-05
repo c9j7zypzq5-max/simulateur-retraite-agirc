@@ -100,8 +100,8 @@ const DEFAULT = { salaireBrut: 80_000, age: 35 };
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    salaireBrut: Number(p.get("s")) || DEFAULT.salaireBrut,
-    age:         Number(p.get("a")) || DEFAULT.age,
+    salaireBrut: Number(p.s) || DEFAULT.salaireBrut,
+    age:         Number(p.a) || DEFAULT.age,
   };
 }
 function toParams(v) {

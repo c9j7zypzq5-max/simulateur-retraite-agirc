@@ -80,9 +80,9 @@ const DEFAULT = { actifNet: 250_000, lien: "directe", nbHeritiers: 2 };
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    actifNet:    Number(p.get("a")) || DEFAULT.actifNet,
-    lien:        p.get("l") || DEFAULT.lien,
-    nbHeritiers: Number(p.get("n")) || DEFAULT.nbHeritiers,
+    actifNet:    Number(p.a) || DEFAULT.actifNet,
+    lien:        p.l || DEFAULT.lien,
+    nbHeritiers: Number(p.n) || DEFAULT.nbHeritiers,
   };
 }
 function toParams(v) {

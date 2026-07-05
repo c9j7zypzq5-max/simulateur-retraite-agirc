@@ -156,11 +156,11 @@ const DEFAULT = {
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    valeurBien:           Number(p.get("v"))  || DEFAULT.valeurBien,
-    lien:                 p.get("l")          || DEFAULT.lien,
-    ageDonateur:          Number(p.get("ag")) || DEFAULT.ageDonateur,
-    donationsAnterieures: Number(p.get("da")) || DEFAULT.donationsAnterieures,
-    anneesDernierDon:     Number(p.get("ad")) || DEFAULT.anneesDernierDon,
+    valeurBien:           Number(p.v)  || DEFAULT.valeurBien,
+    lien:                 p.l          || DEFAULT.lien,
+    ageDonateur:          Number(p.ag) || DEFAULT.ageDonateur,
+    donationsAnterieures: Number(p.da) || DEFAULT.donationsAnterieures,
+    anneesDernierDon:     Number(p.ad) || DEFAULT.anneesDernierDon,
   };
 }
 function toParams(v) {

@@ -133,11 +133,11 @@ const DEFAULT = {
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    anneeNaissance:      Number(p.get("an")) || DEFAULT.anneeNaissance,
-    ageFin:              Number(p.get("af")) || DEFAULT.ageFin,
-    trimestresCotises:   Number(p.get("tc")) || DEFAULT.trimestresCotises,
-    agePremierTrimestre: Number(p.get("ap")) || DEFAULT.agePremierTrimestre,
-    salaireMensuelBrut:  Number(p.get("sm")) || DEFAULT.salaireMensuelBrut,
+    anneeNaissance:      Number(p.an) || DEFAULT.anneeNaissance,
+    ageFin:              Number(p.af) || DEFAULT.ageFin,
+    trimestresCotises:   Number(p.tc) || DEFAULT.trimestresCotises,
+    agePremierTrimestre: Number(p.ap) || DEFAULT.agePremierTrimestre,
+    salaireMensuelBrut:  Number(p.sm) || DEFAULT.salaireMensuelBrut,
   };
 }
 function toParams(v) {
