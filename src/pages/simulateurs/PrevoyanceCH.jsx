@@ -85,11 +85,11 @@ const DEFAULT = { age: 35, versementAnnuel: 7_056, rendement: 2, statut: 'salari
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    age:             Number(p.get("a")) || DEFAULT.age,
-    versementAnnuel: Number(p.get("v")) || DEFAULT.versementAnnuel,
-    rendement:       Number(p.get("r")) || DEFAULT.rendement,
-    statut:          p.get("st") || DEFAULT.statut,
-    revenuNet:       Number(p.get("rn")) || DEFAULT.revenuNet,
+    age:             Number(p.a) || DEFAULT.age,
+    versementAnnuel: Number(p.v) || DEFAULT.versementAnnuel,
+    rendement:       Number(p.r) || DEFAULT.rendement,
+    statut:          p.st || DEFAULT.statut,
+    revenuNet:       Number(p.rn) || DEFAULT.revenuNet,
   };
 }
 function toParams(v) {

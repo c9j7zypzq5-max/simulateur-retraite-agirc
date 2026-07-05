@@ -90,12 +90,12 @@ const DEFAULT = { revenu: 45_000, situation: "isole", nbEnfants: 0, tauxCommunau
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    revenu:           Number(p.get("r")) || DEFAULT.revenu,
-    situation:        p.get("s") || DEFAULT.situation,
-    nbEnfants:        Number(p.get("e")) || DEFAULT.nbEnfants,
-    tauxCommunaux:    Number(p.get("tc")) || DEFAULT.tauxCommunaux,
-    fraisReels:       p.get("fr") ? Number(p.get("fr")) : null,
-    quotientConjugal: p.get("qc") === "1",
+    revenu:           Number(p.r) || DEFAULT.revenu,
+    situation:        p.s || DEFAULT.situation,
+    nbEnfants:        Number(p.e) || DEFAULT.nbEnfants,
+    tauxCommunaux:    Number(p.tc) || DEFAULT.tauxCommunaux,
+    fraisReels:       p.fr ? Number(p.fr) : null,
+    quotientConjugal: p.qc === "1",
   };
 }
 function toParams(v) {

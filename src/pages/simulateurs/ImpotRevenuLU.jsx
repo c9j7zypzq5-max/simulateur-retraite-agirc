@@ -102,8 +102,8 @@ const DEFAULT = { revenu: 55_000, classe: "1" };
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    revenu: Number(p.get("r")) || DEFAULT.revenu,
-    classe: p.get("c") || DEFAULT.classe,
+    revenu: Number(p.r) || DEFAULT.revenu,
+    classe: p.c || DEFAULT.classe,
   };
 }
 function toParams(v) {

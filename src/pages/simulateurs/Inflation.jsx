@@ -32,6 +32,7 @@ export default function Inflation() {
 
   useEffect(() => {
     const p = readShareParams();
+    if (!p) return;
     if (p.budget)  setBudget(Number(p.budget));
     if (p.horizon) setHorizon(Number(p.horizon));
   }, []);

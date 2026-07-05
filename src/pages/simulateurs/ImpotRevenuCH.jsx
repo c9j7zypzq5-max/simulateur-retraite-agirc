@@ -122,9 +122,9 @@ const DEFAULT = { revenuBrut: 90_000, marie: false, canton: "VD" };
 function fromParams(p) {
   if (!p) return { ...DEFAULT };
   return {
-    revenuBrut: Number(p.get("r")) || DEFAULT.revenuBrut,
-    marie:      p.get("m") === "1",
-    canton:     p.get("c") || DEFAULT.canton,
+    revenuBrut: Number(p.r) || DEFAULT.revenuBrut,
+    marie:      p.m === "1",
+    canton:     p.c || DEFAULT.canton,
   };
 }
 function toParams(v) {

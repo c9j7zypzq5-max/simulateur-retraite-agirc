@@ -68,6 +68,7 @@ export default function RenteCapital() {
 
   useEffect(() => {
     const p = readShareParams();
+    if (!p) return;
     if (p.capital)        setCapital(Number(p.capital));
     if (p.tauxConversion) setTauxConv(Number(p.tauxConversion));
     if (p.rendement)      setRendement(Number(p.rendement));
