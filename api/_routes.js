@@ -60,6 +60,8 @@ export const EN_ROUTES = [
   '/simulateurs/retraite-luxembourg',
   '/comparatifs',
   '/contact',
+  '/simulateurs/donation',
+  '/simulateurs/pension-reversion',
 ];
 
 // Routes disponibles sous /ch/ (Suisse). Miroir de src/i18n/paths.js CH_ROUTES.
@@ -131,6 +133,8 @@ export const ROUTE_META_EN = {
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
   '/lexique': { title: 'Financial Glossary — Clear Definitions | Simfinly', description: 'Glossary of personal finance terms: compound interest, FIRE, savings rate, debt-to-income ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators.' },
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
+  '/simulateurs/donation': { title: 'French Gift Tax Calculator (Donation) 2026 | Simfinly', description: 'Estimate French gift tax (droits de donation) between parents and children: allowances, tax brackets and net amount received.' },
+  '/simulateurs/pension-reversion': { title: 'French Survivor Pension Calculator 2026 — Private Sector & Civil Service | Simfinly', description: 'Estimate the French survivor pension (pension de réversion): 54% base + 60% Agirc-Arrco for private-sector employees, or 50% for civil servants (SRE/CNRACL), with means-testing where it applies.' },
 };
 
 // Méta suisses (title + description) pour le HTML statique /ch/...

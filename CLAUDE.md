@@ -26,14 +26,9 @@ Stack : React, Vite, Supabase (auth + BDD), Stripe (paiements), Vercel (serverle
 ### Pages existantes à maintenir en EN
 Routes déjà en EN : `/`, `/simulateurs/epargne`, `/simulateurs/fire`, `/simulateurs/budget`,
 `/simulateurs/patrimoine`, `/simulateurs/cout-en-heures`, `/simulateurs/credit-conso`,
-`/simulateurs/comparateur`, `/outils/qr-code`, `/mentions-legales`, `/politique-de-confidentialite`
-
-Routes ajoutées récemment — à internationaliser :
-- `/connexion` → `/en/connexion`
-- `/compte` → `/en/compte`
-- `/pro` → `/en/pro`
-- `/merci` → `/en/merci`
-- `/merci-pro` → `/en/merci-pro`
+`/simulateurs/comparateur`, `/outils/qr-code`, `/mentions-legales`, `/politique-de-confidentialite`,
+`/connexion` → `/en/login`, `/compte` → `/en/account`, `/pro` → `/en/pro`,
+`/merci` → `/en/thank-you`, `/merci-pro` → `/en/thank-you-pro`
 
 ## Limites Vercel
 - Max 13 fonctions serverless (fichiers sans `_` dans `/api/`)

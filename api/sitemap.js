@@ -1,5 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
+import { localePath } from '../src/i18n/paths.js';
 
 // Sitemap dynamique, segmenté par section (via ?section=) pour permettre un
 // suivi séparé du taux d'indexation par type de contenu dans Search Console,
@@ -38,6 +39,7 @@ ${SECTIONS.map(s => `  <sitemap>
   }
 
   let blogSlugs = BLOG_SLUGS;
+  let blogDates = {};
   if (section === 'blog' && process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
     try {
       const redis = new Redis({
@@ -47,6 +49,17 @@ ${SECTIONS.map(s => `  <sitemap>
       const slugs = await redis.zrange('blog:slugs', 0, -1, { rev: true });
       if (Array.isArray(slugs) && slugs.length) {
         blogSlugs = slugs.map(s => (s.startsWith('/blog/') ? s : `/blog/${s}`));
+        // Lastmod réel par article plutôt qu'une date unique pour tout le blog
+        // (Google finit par ignorer un <lastmod> identique sur un lot d'URLs).
+        // Un GET par slug est acceptable ici : route mise en cache 1h et peu
+        // sollicitée (crawlers uniquement), même schéma que api/articles.js.
+        const articles = await Promise.all(slugs.map(s => redis.get(`blog:article:${s}`)));
+        articles.forEach((raw, i) => {
+          if (!raw) return;
+          const a = typeof raw === 'string' ? JSON.parse(raw) : raw;
+          const iso = a.updatedAt || a.publishedAt;
+          if (iso) blogDates[blogSlugs[i]] = String(iso).slice(0, 10);
+        });
       }
     } catch {
       // garde le fallback statique
@@ -59,16 +72,21 @@ ${SECTIONS.map(s => `  <sitemap>
     prio: m.prio || '0.5',
   }));
 
-  const blogUrls = blogSlugs.map(route => ({ loc: route, freq: 'monthly', prio: '0.7' }));
+  const blogUrls = blogSlugs.map(route => ({ loc: route, freq: 'monthly', prio: '0.7', lastmod: blogDates[route] }));
   const enBlogUrls = EN_BLOG_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.7' }));
 
   const lexiqueUrls = LEXIQUE_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.6' }));
   const guideUrls = GUIDES_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.8' }));
   const comparatifUrls = COMPARATIFS_SLUGS.map(route => ({ loc: route, freq: 'monthly', prio: '0.7' }));
 
-  // Pages EN (routes universelles disponibles en anglais)
+  // Pages EN (routes universelles disponibles en anglais) — le segment anglais
+  // n'est pas toujours identique au segment FR (ex. /mentions-legales devient
+  // /en/legal-notice, /simulateurs/epargne devient /en/simulators/savings) :
+  // on réutilise localePath(), la même fonction que <LocaleLink> côté client,
+  // pour ne jamais générer une URL qui ne correspond à aucune route réelle.
   const enUrls = Array.from(EN_ROUTES).map(route => ({
-    loc: route === '/' ? '/en' : `/en${route}`,
+    loc: localePath(route, 'en'),
+    canonical: route, // route FR canonique, pour retrouver lastmod/image (clés de ROUTE_META)
     freq: 'monthly',
     prio: ROUTE_META_EN[route] ? '0.8' : '0.7',
   }));
@@ -124,9 +142,9 @@ ${SECTIONS.map(s => `  <sitemap>
   }
 
   const urls = allUrls.map(u => {
-    const route = u.loc.replace(/^\/(en|ch|be)/, '') || '/';
+    const route = u.canonical || u.loc.replace(/^\/(en|ch|be)/, '') || '/';
     const imgTag = imageTagForRoute(route);
-    const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
+    const lastmod = u.lastmod || ROUTE_DATES[route] || SITE_LASTMOD;
     return `  <url>
     <loc>${BASE}${u.loc}</loc>
     <lastmod>${lastmod}</lastmod>

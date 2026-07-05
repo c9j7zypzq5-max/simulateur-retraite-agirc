@@ -241,6 +241,7 @@ export default function GuideRetraite2026() {
         <div style={s.hero}>
           <span style={s.badge}>Guide complet</span>
           <h1 style={s.h1}>Retraite 2026 : tout comprendre pour bien préparer la vôtre</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 4 juillet 2026</p>
           <p style={s.sub}>
             Âge légal, calcul de la pension CNAV et Agirc-Arrco, rachat de trimestres, taux de remplacement,
             PER, retraite progressive — le guide complet rédigé par nos experts pour toutes les générations.

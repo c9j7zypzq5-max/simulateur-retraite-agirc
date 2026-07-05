@@ -133,6 +133,7 @@ export default function GuidePensionReversion() {
         <div style={s.hero}>
           <span style={s.badge}>Réversion</span>
           <h1 style={s.h1}>Pension de réversion 2026 : calcul, taux et conditions</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 1er juin 2026</p>
           <p style={s.sub}>
             La pension de réversion permet au conjoint survivant de percevoir une partie de la retraite du défunt.
             Taux, conditions d'âge, plafond de ressources, délai : voici tout ce qu'il faut savoir.

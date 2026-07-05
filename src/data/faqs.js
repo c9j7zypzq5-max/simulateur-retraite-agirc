@@ -424,23 +424,27 @@ export const FAQS = {
   '/simulateurs/pension-reversion': [
   {
     q: "Qui peut bénéficier d'une pension de réversion ?",
-    a: "La pension de réversion est réservée à l'époux ou ex-époux survivant d'une personne décédée ayant cotisé à la retraite. Le mariage est obligatoire : ni le PACS ni le concubinage n'ouvrent droit à réversion. Pour le régime de base, il faut avoir au moins 55 ans et des ressources inférieures à un plafond ; pour la complémentaire Agirc-Arrco, 55 ans suffisent (sans condition de ressources) mais le remariage supprime le droit.",
+    a: "La pension de réversion est réservée à l'époux ou ex-époux survivant d'une personne décédée ayant cotisé à la retraite. Le mariage est obligatoire : ni le PACS ni le concubinage n'ouvrent droit à réversion. Dans le régime général, il faut avoir au moins 55 ans ; dans la fonction publique (SRE, CNRACL), il n'y a pas d'âge minimum pour le conjoint survivant.",
   },
   {
     q: "Quel est le taux de la pension de réversion ?",
-    a: "Il dépend du régime. Pour la retraite de base du régime général (CNAV), la réversion correspond à 54 % de la pension de base du défunt. Pour la retraite complémentaire Agirc-Arrco des salariés du privé, le taux est de 60 % de la pension complémentaire. Les deux peuvent se cumuler si le défunt cotisait aux deux régimes.",
+    a: "Il dépend du régime du défunt. Salarié du privé : 54 % de la pension de base (CNAV) et 60 % de la retraite complémentaire Agirc-Arrco, cumulables. Fonctionnaire (État via le SRE, hospitalière/territoriale via la CNRACL) : taux unique de 50 %, appliqué à la fois à la pension principale et à la retraite additionnelle (RAFP).",
   },
   {
     q: "Comment fonctionne la condition de ressources ?",
-    a: "Seule la réversion de base (CNAV) est soumise à condition de ressources. En 2026, les ressources annuelles du survivant ne doivent pas dépasser 25 001,60 € pour une personne seule (40 002,56 € pour un couple). Si le total des ressources et de la réversion dépasse ce plafond, la réversion de base est réduite du montant du dépassement. La réversion complémentaire Agirc-Arrco, elle, n'est pas concernée.",
+    a: "Elle ne concerne que le régime général, et uniquement la réversion de base (CNAV). En 2026, les ressources annuelles du survivant ne doivent pas dépasser 25 001,60 € pour une personne seule (40 002,56 € pour un couple) ; au-delà, la réversion de base est réduite du montant du dépassement. La complémentaire Agirc-Arrco n'est pas concernée, et la fonction publique n'a aucune condition de ressources.",
+  },
+  {
+    q: "Le remariage supprime-t-il la pension de réversion ?",
+    a: "Cela dépend du régime. Dans le régime général, le remariage, le Pacs ou le concubinage supprime uniquement la complémentaire Agirc-Arrco : la réversion de base (CNAV) reste due, sous réserve de la condition de ressources du nouveau foyer. Dans la fonction publique en revanche, un remariage, un Pacs ou un concubinage supprime intégralement le droit à réversion, y compris la part principale.",
   },
   {
     q: "À partir de quel âge perçoit-on la réversion ?",
-    a: "L'âge minimum est de 55 ans, aussi bien pour le régime de base que pour l'Agirc-Arrco. Avant cet âge, le conjoint survivant peut, sous conditions (enfants à charge, invalidité), percevoir une allocation veuvage temporaire, mais pas la pension de réversion proprement dite.",
+    a: "Dans le régime général, l'âge minimum est de 55 ans, aussi bien pour le régime de base que pour l'Agirc-Arrco ; avant cet âge, le conjoint survivant peut, sous conditions (enfants à charge, invalidité), percevoir une allocation veuvage temporaire. La fonction publique ne prévoit pas d'âge minimum pour le conjoint survivant.",
   },
   {
     q: "Ce simulateur est-il officiel ?",
-    a: "Non. Il s'agit d'une estimation indicative basée sur les barèmes 2026 (taux de 54 % et 60 %, plafonds de ressources). Le calcul réel dépend de la carrière du défunt, de tous ses régimes (fonction publique, indépendants…) et de la situation précise du survivant. Adressez-vous à votre caisse de retraite pour un calcul officiel.",
+    a: "Non. Il s'agit d'une estimation indicative basée sur les barèmes 2026 (régime général et fonction publique). Le calcul réel dépend de la carrière complète du défunt (y compris s'il a cotisé à plusieurs régimes) et de la situation précise du survivant. Adressez-vous à votre caisse de retraite pour un calcul officiel.",
   },
 ],
 

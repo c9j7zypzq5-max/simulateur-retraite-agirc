@@ -50,6 +50,13 @@ const SECTIONS = [
     ],
   },
   {
+    h2: "Le blog et l'assistance de l'IA",
+    body: [
+      "Les simulateurs (formules, barèmes, calculs) sont entièrement codés à la main, comme expliqué ci-dessus. Les articles du blog, en revanche, sont en partie rédigés avec l'assistance d'une intelligence artificielle (Claude, d'Anthropic) à partir d'une liste de sujets définie par l'éditeur du site.",
+      "Aucun article généré par IA n'est publié automatiquement : chaque brouillon est relu individuellement par un humain, qui vérifie l'exactitude des informations et corrige ou rejette le texte si nécessaire, avant toute mise en ligne et indexation.",
+    ],
+  },
+  {
     h2: "Vérification et cohérence des calculs",
     body: [
       "Chaque barème sensible (plafond de la Sécurité sociale, durée d'assurance requise par génération, taux de décote/surcote, barème de l'impôt sur le revenu) est centralisé dans un module unique partagé par tous les simulateurs concernés, plutôt que dupliqué : cela évite qu'un même paramètre affiche des valeurs différentes selon l'outil consulté.",

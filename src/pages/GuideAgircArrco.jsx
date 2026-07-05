@@ -130,6 +130,7 @@ export default function GuideAgircArrco() {
         <div style={s.hero}>
           <span style={s.badge}>Retraite complémentaire</span>
           <h1 style={s.h1}>Points Agirc-Arrco 2026 : valeur du point et calcul de la pension</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 1er juin 2026</p>
           <p style={s.sub}>
             La retraite complémentaire Agirc-Arrco représente 30 à 65 % de la pension totale des salariés du privé.
             Comprendre comment fonctionnent vos points est essentiel pour optimiser votre départ.

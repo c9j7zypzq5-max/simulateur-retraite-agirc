@@ -192,6 +192,7 @@ export default function GuideImpots2026() {
         <div style={s.hero}>
           <span style={s.badge}>Guide complet</span>
           <h1 style={s.h1}>Impôts 2026 : barème, flat tax, plus-value et succession</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 4 juillet 2026</p>
           <p style={s.sub}>
             Barème de l'impôt sur le revenu, flat tax vs option barème, fiscalité de la plus-value immobilière,
             droits de succession et donation — le guide complet pour comprendre et optimiser votre fiscalité en 2026.

@@ -131,6 +131,7 @@ export default function GuidePER2026() {
         <div style={s.hero}>
           <span style={s.badge}>Épargne retraite</span>
           <h1 style={s.h1}>PER 2026 : guide complet du Plan d'Épargne Retraite</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 29 juin 2026</p>
           <p style={s.sub}>
             Le PER est le produit d'épargne retraite le plus avantageux fiscalement en France. Versements déductibles jusqu'à 35 194 €/an,
             sortie en capital ou en rente, déblocage anticipé possible — voici tout ce que vous devez savoir.

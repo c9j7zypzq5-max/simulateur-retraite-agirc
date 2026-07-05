@@ -143,6 +143,7 @@ export default function GuideFraisNotaire() {
         <div style={s.hero}>
           <span style={s.badge}>Immobilier</span>
           <h1 style={s.h1}>Frais de notaire 2026 : taux, calcul et comment les réduire</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 1er juin 2026</p>
           <p style={s.sub}>
             Les frais de notaire représentent 7 à 8 % du prix d'un bien ancien — un poste souvent sous-estimé lors du budget d'achat.
             Voici leur décomposition exacte, des exemples par tranches de prix et les moyens légaux de les minimiser.

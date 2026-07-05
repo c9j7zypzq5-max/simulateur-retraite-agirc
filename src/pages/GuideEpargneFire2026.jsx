@@ -190,6 +190,7 @@ export default function GuideEpargneFire2026() {
         <div style={s.hero}>
           <span style={s.badge}>Guide complet</span>
           <h1 style={s.h1}>FIRE et épargne 2026 : indépendance financière</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 4 juillet 2026</p>
           <p style={s.sub}>
             Règle des 4 %, capital cible, taux d'épargne, intérêts composés, PEA vs assurance-vie et simulation
             Monte Carlo sur l'historique réel des marchés — le guide complet pour bâtir votre indépendance financière.

@@ -195,6 +195,7 @@ export default function GuideImmobilier2026() {
         <div style={s.hero}>
           <span style={s.badge}>Guide complet</span>
           <h1 style={s.h1}>Immobilier 2026 : emprunt, frais de notaire et fiscalité</h1>
+          <p style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 12 }}>Mis à jour le 4 juillet 2026</p>
           <p style={s.sub}>
             Capacité d'emprunt, PTZ, frais de notaire, rendement locatif, déficit foncier et plus-value —
             le guide complet pour acheter, financer et rentabiliser un bien immobilier en France en 2026.
