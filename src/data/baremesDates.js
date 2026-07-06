@@ -39,4 +39,5 @@ export const BAREMES_DATES = {
   "/simulateurs/succession-ch":             { annee: 2025 },
   "/simulateurs/retraite-luxembourg":       { annee: 2025 },
   "/simulateurs/retraite-quebec":           { annee: 2026 },
+  "/simulateurs/impot-revenu-qc":           { annee: 2026 },
 };

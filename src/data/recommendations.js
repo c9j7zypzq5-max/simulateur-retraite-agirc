@@ -83,8 +83,13 @@ export const RECOMMENDATIONS = {
     { icon: "🛡️", label: "Protégez votre transmission", description: "Une assurance-vie peut compléter la protection de vos proches en dehors du cadre successoral classique.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
   ],
   '/simulateurs/retraite-quebec': [
+    { icon: "🇨🇦", label: "Votre impôt sur le revenu au Québec", description: "Estimez votre impôt combiné provincial et fédéral sur ce revenu de carrière.", to: "/simulateurs/impot-revenu-qc", cta: "Simuler l'impôt QC →" },
     { icon: "💰", label: "Projetez votre épargne", description: "Simulez la croissance de votre épargne en dollars canadiens grâce aux intérêts composés.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
     { icon: "🔥", label: "Indépendance financière (FIRE)", description: "Le RRQ ne couvre qu'une partie du revenu de travail : estimez le patrimoine nécessaire pour compléter votre retraite.", to: "/simulateurs/fire", cta: "Simuler le FIRE →" },
+  ],
+  '/simulateurs/impot-revenu-qc': [
+    { icon: "🇨🇦", label: "Votre future rente RRQ", description: "Estimez la rente de retraite québécoise que vous constituez en cotisant sur ce revenu imposable.", to: "/simulateurs/retraite-quebec", cta: "Simuler la retraite RRQ →" },
+    { icon: "💰", label: "Projetez votre épargne", description: "Simulez la croissance de votre épargne en dollars canadiens grâce aux intérêts composés.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
     { icon: "📊", label: "Consolidez votre patrimoine global", description: "Visualisez l'ensemble de vos actifs financiers et immobiliers en un coup d'œil.", to: "/simulateurs/patrimoine", cta: "Simuler →" },
   ],
   '/simulateurs/pension-reversion': [

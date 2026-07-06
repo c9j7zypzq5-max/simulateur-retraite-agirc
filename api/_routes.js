@@ -195,6 +195,7 @@ export const QC_ROUTES = [
   '/simulateurs/rendement-locatif',
   '/simulateurs/assurance-vie',
   '/simulateurs/retraite-quebec',
+  '/simulateurs/impot-revenu-qc',
   '/mentions-legales',
   '/politique-de-confidentialite',
 ];
@@ -241,6 +242,7 @@ export const ROUTE_META_LU = {
 export const ROUTE_META_QC = {
   '/':                                    { title: 'Simfinly — Simulateurs gratuits retraite RRQ, épargne, budget (Québec)',      description: 'Simulez votre rente RRQ, votre épargne et votre budget en dollars canadiens. Simulateurs gratuits adaptés au Québec, sans inscription.' },
   '/simulateurs/retraite-quebec':         { title: 'Simulateur retraite RRQ 2026 — rente du Régime de rentes du Québec',          description: 'Estimez votre rente RRQ selon votre revenu de carrière et l\'âge de départ choisi (60 à 70 ans). Basé sur les paramètres 2026 de Retraite Québec.' },
+  '/simulateurs/impot-revenu-qc':         { title: 'Simulateur impôt sur le revenu Québec 2026 — provincial + fédéral',          description: 'Calculez votre impôt québécois combiné (provincial et fédéral, avec l\'abattement de 16,5 %) selon le barème progressif 2026.' },
   '/simulateurs/epargne':                 { title: 'Simulateur épargne & intérêts composés en CAD — projection long terme (Québec)', description: 'Projetez la croissance de votre épargne en dollars canadiens sur le long terme. Capital final selon le rendement, la durée et l\'effort mensuel.' },
   '/simulateurs/fire':                    { title: 'Simulateur FIRE — indépendance financière & retraite anticipée (Québec)',     description: 'Calculez le patrimoine nécessaire pour vivre de vos investissements au Québec et l\'âge auquel vous atteignez l\'indépendance financière. Règle des 4 %, paliers Lean/Coast/Fat FIRE.' },
   '/simulateurs/budget':                  { title: 'Simulateur budget 50/30/20 — finances personnelles Québec',                  description: 'Répartissez votre budget mensuel selon la règle 50/30/20 : besoins, envies, épargne. Taux d\'épargne et conseils adaptés à la situation québécoise.' },
