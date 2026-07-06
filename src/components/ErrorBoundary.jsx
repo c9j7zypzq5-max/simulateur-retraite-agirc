@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { track } from "@vercel/analytics";
-import * as Sentry from "@sentry/react";
 
 // Détecte les erreurs de chargement de module/chunk (fréquentes quand un onglet
 // ouvert avant un déploiement demande un ancien chunk au nom de fichier disparu).
@@ -28,7 +27,11 @@ export default class ErrorBoundary extends Component {
       return;
     }
     // Remontée des erreurs réelles vers Sentry (si configuré) et Vercel Analytics.
-    try { Sentry.captureException(error); } catch { /* Sentry indisponible */ }
+    // Import dynamique : Sentry n'est ainsi jamais forcé dans le bundle critique
+    // chargé sur chaque page, seulement téléchargé si une erreur survient réellement.
+    import("@sentry/react")
+      .then((Sentry) => { try { Sentry.captureException(error); } catch { /* Sentry indisponible */ } })
+      .catch(() => { /* Sentry indisponible */ });
     try {
       track('client_error', {
         message: String(error?.message || error).slice(0, 200),

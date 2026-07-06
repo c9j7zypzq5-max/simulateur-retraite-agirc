@@ -17,7 +17,11 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: (id) => {
-          if (id.includes('react-dom') || id.includes('react/')) return 'react';
+          // Bornes de chemin précises : un simple id.includes('react/') capture
+          // aussi n'importe quel paquet scoped se terminant par "/react" (ex.
+          // @sentry/react, dont le chemin contient "react/build/..."), ce qui le
+          // forçait dans ce chunk partagé chargé sur CHAQUE page.
+          if (/[\\/]node_modules[\\/]react-dom[\\/]/.test(id) || /[\\/]node_modules[\\/]react[\\/]/.test(id)) return 'react';
           // PAS de règle manuelle pour @supabase : forcer ce module dans un chunk
           // nommé faisait que Rollup le traitait comme un chunk "partagé" éligible
           // au modulepreload sur TOUTE page, même si son seul importeur restant

@@ -9,6 +9,13 @@ import { AD_CLIENT, resolveAdSlot } from "../config/adsense.js";
 // sinon `placement`, sinon slot par défaut). Tant qu'aucun slot valide n'est
 // configuré (compte AdSense en cours de validation), le composant n'affiche RIEN
 // — pas de requête publicitaire invalide, pas de décalage de mise en page.
+//
+// Hauteur minimale réservée par format, pour éviter un Cumulative Layout Shift
+// quand l'annonce se remplit réellement (une fois le compte AdSense actif) :
+// sans cela, le conteneur passe de ~0px à la hauteur réelle de l'annonce et
+// pousse tout le contenu en dessous.
+const FORMAT_MIN_HEIGHT = { vertical: 600, auto: 250 };
+
 export default function AdUnit({ slot, placement, format = "auto", style = {} }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -34,7 +41,7 @@ export default function AdUnit({ slot, placement, format = "auto", style = {} })
   if (!adSlot) return null;
 
   return (
-    <div ref={ref} data-noprint style={{ textAlign: "center", overflow: "hidden", minHeight: 1, ...style }}>
+    <div ref={ref} data-noprint style={{ textAlign: "center", overflow: "hidden", minHeight: FORMAT_MIN_HEIGHT[format] || 250, ...style }}>
       {visible && (
         <ins
           className="adsbygoogle"
