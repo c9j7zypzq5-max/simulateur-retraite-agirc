@@ -74,7 +74,7 @@ export default function NewsletterSignup({ source = "footer" }) {
               placeholder={t.placeholder}
               aria-label={t.placeholder}
               aria-invalid={status === "error"}
-              style={{ flex: "1 1 220px", minWidth: 0, padding: "12px 14px", borderRadius: 10, border: `1px solid ${status === "error" ? "var(--negative)" : "var(--border)"}`, background: "var(--surface)", color: "var(--text)", fontSize: 15, fontFamily: "inherit" }}
+              style={{ flex: "1 1 220px", minWidth: 0, padding: "12px 14px", borderRadius: 10, border: `1px solid ${status === "error" ? "var(--negative)" : "var(--border)"}`, background: "var(--surface)", color: "var(--text)", fontSize: 16, fontFamily: "inherit" }}
             />
             <button
               type="submit"

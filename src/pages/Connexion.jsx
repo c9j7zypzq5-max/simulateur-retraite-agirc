@@ -83,7 +83,7 @@ export default function Connexion() {
   const input = {
     width: "100%", padding: "11px 13px", borderRadius: 10,
     border: "1px solid var(--border)", background: "var(--bg)",
-    color: "var(--text)", fontSize: 14, marginBottom: 12,
+    color: "var(--text)", fontSize: 16, marginBottom: 12,
     fontFamily: "'Hanken Grotesk', sans-serif", boxSizing: "border-box",
   };
 

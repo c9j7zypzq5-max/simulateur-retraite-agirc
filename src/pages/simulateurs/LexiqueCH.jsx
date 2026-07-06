@@ -70,7 +70,7 @@ export default function LexiqueCH() {
             value={query}
             onChange={e => setQuery(e.target.value)}
             aria-label="Rechercher un terme du lexique suisse"
-            style={{ width: "100%", boxSizing: "border-box", padding: "10px 36px 10px 36px", borderRadius: 10, border: "1.5px solid var(--border)", background: "var(--card)", color: "var(--text)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
+            style={{ width: "100%", boxSizing: "border-box", padding: "10px 36px 10px 36px", borderRadius: 10, border: "1.5px solid var(--border)", background: "var(--card)", color: "var(--text)", fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
             onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
             onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
           />

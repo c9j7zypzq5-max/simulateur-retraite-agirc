@@ -100,7 +100,7 @@ export default function SuccessionCH() {
               <select
                 value={canton}
                 onChange={e => setCanton(e.target.value)}
-                style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid var(--border)", background: "var(--card)", color: "var(--text)", fontSize: 14 }}
+                style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid var(--border)", background: "var(--card)", color: "var(--text)", fontSize: 16 }}
               >
                 {Object.entries(CANTONS).map(([k, v]) => (
                   <option key={k} value={k}>{v.name} ({k})</option>

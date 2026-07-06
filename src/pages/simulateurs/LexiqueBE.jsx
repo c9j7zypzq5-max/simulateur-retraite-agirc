@@ -91,7 +91,7 @@ export default function LexiqueBE() {
             style={{
               width: "100%", padding: "11px 40px 11px 42px", borderRadius: 10,
               background: "var(--surface)", border: "1.5px solid var(--border)",
-              color: "var(--text)", fontSize: 14,
+              color: "var(--text)", fontSize: 16,
               fontFamily: "'Hanken Grotesk', sans-serif", outline: "none",
               boxSizing: "border-box",
             }}
