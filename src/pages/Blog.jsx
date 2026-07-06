@@ -78,7 +78,7 @@ function FeaturedArticle({ article }) {
       <div className="featured-img-mobile">
         <div style={{ height: 160, background: `linear-gradient(135deg,var(--primary),#5B8CFF)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
           {article.image
-            ? <img src={article.image} alt="" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
+            ? <img src={article.image} alt="" fetchPriority="high" style={{ width: "100%", height: 160, objectFit: "cover", display: "block" }} />
             : <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" opacity="0.85"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           }
         </div>
