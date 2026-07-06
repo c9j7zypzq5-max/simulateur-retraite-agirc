@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES } from '../i18n/paths.js';
+import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES, QC_ROUTES } from '../i18n/paths.js';
 
 const SITE = 'https://www.simfinly.com';
 
 // Injecte dynamiquement les balises <link rel="alternate" hreflang> dans <head>.
-// Couvre FR (canonique), CH (/ch/ — fr-CH), BE (/be/ — fr-BE), LU (/lu/ — fr-LU), et EN (/en/).
+// Couvre FR (canonique), CH (/ch/ — fr-CH), BE (/be/ — fr-BE), LU (/lu/ — fr-LU),
+// QC (/qc/ — fr-CA, pas de code ISO dédié au Québec), et EN (/en/).
 export default function HreflangTags() {
   const { pathname } = useLocation();
 
@@ -17,8 +18,9 @@ export default function HreflangTags() {
     const hasBE = BE_ROUTES.has(canon);
     const hasCH = CH_ROUTES.has(canon);
     const hasLU = LU_ROUTES.has(canon);
+    const hasQC = QC_ROUTES.has(canon);
 
-    if (!hasEN && !hasBE && !hasCH && !hasLU) return;
+    if (!hasEN && !hasBE && !hasCH && !hasLU && !hasQC) return;
 
     const frHref = SITE + (canon === '/' ? '/' : canon);
     const tags = [
@@ -34,6 +36,9 @@ export default function HreflangTags() {
     }
     if (hasLU) {
       tags.push(['fr-LU', SITE + countryPath(canon, 'lu')]);
+    }
+    if (hasQC) {
+      tags.push(['fr-CA', SITE + countryPath(canon, 'qc')]);
     }
     if (hasEN) {
       tags.push(['en', SITE + localePath(canon, 'en')]);

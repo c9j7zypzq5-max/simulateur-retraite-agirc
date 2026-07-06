@@ -10,6 +10,7 @@ export const COUNTRIES = {
   be: { lang: 'fr', label: 'Belgique',   flag: '🇧🇪', locale: 'fr' },
   ch: { lang: 'fr', label: 'Suisse',     flag: '🇨🇭', locale: 'fr' },
   lu: { lang: 'fr', label: 'Luxembourg', flag: '🇱🇺', locale: 'fr' },
+  qc: { lang: 'fr', label: 'Québec',     flag: '🇨🇦', locale: 'fr' },
 };
 export const DEFAULT_COUNTRY = 'fr';
 export const COUNTRY_CODES = Object.keys(COUNTRIES); // ['fr', 'be']

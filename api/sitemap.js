@@ -1,5 +1,5 @@
 import { Redis } from '@upstash/redis';
-import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, LU_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
+import { BASE, ROUTE_META, EN_ROUTES, ROUTE_META_EN, CH_ROUTES, BE_ROUTES, LU_ROUTES, QC_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, SITE_LASTMOD, ROUTE_DATES } from './_routes.js';
 import { localePath } from '../src/i18n/paths.js';
 
 // Sitemap dynamique, segmenté par section (via ?section=) pour permettre un
@@ -123,12 +123,19 @@ ${SECTIONS.map(s => `  <sitemap>
     prio: ROUTE_META[route]?.prio ? String(Math.min(parseFloat(ROUTE_META[route].prio) - 0.1, 0.9)) : '0.7',
   }));
 
+  // Pages QC (/qc/...) — hors mentions légales et confidentialité
+  const qcUrls = QC_ROUTES.filter(r => !legalRoutes.has(r)).map(route => ({
+    loc: route === '/' ? '/qc' : `/qc${route}`,
+    freq: ROUTE_META[route]?.freq || 'monthly',
+    prio: ROUTE_META[route]?.prio ? String(Math.min(parseFloat(ROUTE_META[route].prio) - 0.1, 0.9)) : '0.7',
+  }));
+
   const URLS_BY_SECTION = {
     static: staticUrls,
     blog: [...blogUrls, ...enBlogUrls],
     lexique: lexiqueUrls,
     guides: [...guideUrls, ...comparatifUrls],
-    i18n: [...enUrls, ...lexiqueEnUrls, ...chUrls, ...beUrls, ...luUrls],
+    i18n: [...enUrls, ...lexiqueEnUrls, ...chUrls, ...beUrls, ...luUrls, ...qcUrls],
   };
   const allUrls = URLS_BY_SECTION[section];
 

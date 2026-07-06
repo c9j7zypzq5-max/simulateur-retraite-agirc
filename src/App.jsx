@@ -116,6 +116,10 @@ const ImpotRevenuLU = lazy(() => import("./pages/simulateurs/ImpotRevenuLU.jsx")
 const SuccessionLU  = lazy(() => import("./pages/simulateurs/SuccessionLU.jsx"));
 const GuidesLU      = lazy(() => import("./pages/simulateurs/GuidesLU.jsx"));
 const LexiqueLU     = lazy(() => import("./pages/simulateurs/LexiqueLU.jsx"));
+// Simulateurs et contenus québécois
+const RetraiteQC    = lazy(() => import("./pages/simulateurs/RetraiteQC.jsx"));
+const GuidesQC      = lazy(() => import("./pages/simulateurs/GuidesQC.jsx"));
+const LexiqueQC     = lazy(() => import("./pages/simulateurs/LexiqueQC.jsx"));
 // Nouveaux widgets embarquables
 const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
 const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
@@ -280,6 +284,27 @@ export default function App() {
         {/* Légal */}
         <Route path="/lu/mentions-legales" element={<MentionsLegales />} />
         <Route path="/lu/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
+        {/* ── Québec (/qc/) ── */}
+        <Route path="/qc" element={<Home />} />
+        {/* Simulateurs universels — même composant que FR */}
+        <Route path="/qc/simulateurs/epargne" element={<Epargne />} />
+        <Route path="/qc/simulateurs/fire" element={<Fire />} />
+        <Route path="/qc/simulateurs/budget" element={<Budget />} />
+        <Route path="/qc/simulateurs/patrimoine" element={<Patrimoine />} />
+        <Route path="/qc/simulateurs/comparateur" element={<Comparateur />} />
+        <Route path="/qc/simulateurs/cout-en-heures" element={<CoutEnHeures />} />
+        <Route path="/qc/simulateurs/credit-conso" element={<CreditConso />} />
+        <Route path="/qc/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
+        <Route path="/qc/simulateurs/rendement-locatif" element={<RendementLocatif />} />
+        <Route path="/qc/simulateurs/assurance-vie" element={<AssuranceVie />} />
+        {/* Simulateur avec règles québécoises spécifiques */}
+        <Route path="/qc/simulateurs/retraite-quebec" element={<RetraiteQC />} />
+        {/* Contenu QC */}
+        <Route path="/qc/guides" element={<GuidesQC />} />
+        <Route path="/qc/lexique" element={<LexiqueQC />} />
+        {/* Légal */}
+        <Route path="/qc/mentions-legales" element={<MentionsLegales />} />
+        <Route path="/qc/politique-de-confidentialite" element={<PolitiqueConfidentialite />} />
         {/* ── English versions (URL segments translated to English) ── */}
         <Route path="/en" element={<Home />} />
         <Route path="/en/simulators/savings" element={<Epargne />} />

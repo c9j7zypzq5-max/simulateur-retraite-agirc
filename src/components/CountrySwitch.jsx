@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath, countryFromPath, COUNTRIES } from "../i18n/config.js";
-import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, luCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
+import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, luCountryAlternatePath, qcCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
 
 const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐' };
 
@@ -46,6 +46,14 @@ export default function CountrySwitch({ compact = false }) {
     code: 'lu', ...COUNTRIES.lu,
     path: luExact !== null ? luExact : '/lu',
     fallback: luExact === null,
+  });
+
+  // 🇨🇦 Québec — exact si route en QC_ROUTES, sinon accueil /qc
+  const qcExact = qcCountryAlternatePath(pathname, 'fr');
+  options.push({
+    code: 'qc', ...COUNTRIES.qc,
+    path: qcExact !== null ? qcExact : '/qc',
+    fallback: qcExact === null,
   });
 
   // 🌐 English — affiché si route disponible EN ou si déjà en anglais
@@ -129,6 +137,7 @@ export default function CountrySwitch({ compact = false }) {
               : opt.code === 'be' ? (opt.fallback ? 'Accueil Belgique' : 'Simulateurs Belgique')
               : opt.code === 'ch' ? (opt.fallback ? 'Accueil Suisse' : 'Simulateurs Suisse')
               : opt.code === 'lu' ? (opt.fallback ? 'Accueil Luxembourg' : 'Simulateurs Luxembourg')
+              : opt.code === 'qc' ? (opt.fallback ? 'Accueil Québec' : 'Simulateurs Québec')
               : 'International';
             return (
               <button

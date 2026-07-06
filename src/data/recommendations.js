@@ -82,6 +82,11 @@ export const RECOMMENDATIONS = {
     { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
     { icon: "🛡️", label: "Protégez votre transmission", description: "Une assurance-vie peut compléter la protection de vos proches en dehors du cadre successoral classique.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
   ],
+  '/simulateurs/retraite-quebec': [
+    { icon: "💰", label: "Projetez votre épargne", description: "Simulez la croissance de votre épargne en dollars canadiens grâce aux intérêts composés.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
+    { icon: "🔥", label: "Indépendance financière (FIRE)", description: "Le RRQ ne couvre qu'une partie du revenu de travail : estimez le patrimoine nécessaire pour compléter votre retraite.", to: "/simulateurs/fire", cta: "Simuler le FIRE →" },
+    { icon: "📊", label: "Consolidez votre patrimoine global", description: "Visualisez l'ensemble de vos actifs financiers et immobiliers en un coup d'œil.", to: "/simulateurs/patrimoine", cta: "Simuler →" },
+  ],
   '/simulateurs/pension-reversion': [
     { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
     { icon: "🏆", label: "Retraite complémentaire Agirc-Arrco", description: "La réversion Agirc-Arrco complète la réversion CNAV. Calculez les deux.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
