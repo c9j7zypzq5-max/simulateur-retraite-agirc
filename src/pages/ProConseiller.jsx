@@ -35,6 +35,12 @@ const FEATURES = [
     title: "Confidentialité totale",
     desc: "Aucune donnée client ne transite par nos serveurs. Les calculs restent dans le navigateur — RGPD sans effort.",
   },
+  {
+    icon: "🧩",
+    title: "Widgets à intégrer sur votre site",
+    desc: "Ajoutez un simulateur interactif directement sur le site de votre cabinet ou dans un article : copiez-collez un code iframe, sans développement.",
+    path: "/widgets",
+  },
 ];
 
 const USE_CASES = [
@@ -122,13 +128,26 @@ export default function ProConseiller() {
 
         {/* Features grid */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 18, marginBottom: 64 }}>
-          {FEATURES.map(f => (
-            <div key={f.title} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "22px 20px" }}>
-              <div style={{ fontSize: 28, marginBottom: 10 }}>{f.icon}</div>
-              <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 8 }}>{f.title}</h3>
-              <p style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.65 }}>{f.desc}</p>
-            </div>
-          ))}
+          {FEATURES.map(f => {
+            const card = (
+              <>
+                <div style={{ fontSize: 28, marginBottom: 10 }}>{f.icon}</div>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 8, color: "var(--text)" }}>{f.title}</h3>
+                <p style={{ fontSize: 13.5, color: "var(--text-secondary)", lineHeight: 1.65 }}>{f.desc}</p>
+                {f.path && <span style={{ display: "inline-block", marginTop: 10, fontSize: 13, fontWeight: 600, color: "var(--primary)" }}>Voir les widgets →</span>}
+              </>
+            );
+            const cardStyle = { background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "22px 20px" };
+            return f.path ? (
+              <Link key={f.title} to={f.path} style={{ ...cardStyle, textDecoration: "none", display: "block" }}>
+                {card}
+              </Link>
+            ) : (
+              <div key={f.title} style={cardStyle}>
+                {card}
+              </div>
+            );
+          })}
         </div>
 
         {/* Use cases */}
@@ -180,7 +199,7 @@ export default function ProConseiller() {
             Discutons de vos besoins
           </h2>
           <p style={{ fontSize: 14, color: "var(--text-secondary)", marginBottom: 28, lineHeight: 1.6 }}>
-            Vous souhaitez une démo, intégrer nos simulateurs en iframe sur votre site, ou accéder à une version sans publicité ? Contactez-nous.
+            Vous souhaitez une démo, <Link to="/widgets" style={{ color: "var(--primary)", fontWeight: 500 }}>intégrer nos simulateurs en iframe sur votre site</Link>, ou accéder à une version sans publicité ? Contactez-nous.
           </p>
           {submitted ? (
             <div style={{ padding: "24px", background: "var(--positive-soft)", border: "1px solid var(--positive)", borderRadius: 12, textAlign: "center" }}>
