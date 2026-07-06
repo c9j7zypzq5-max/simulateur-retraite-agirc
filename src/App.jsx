@@ -118,6 +118,7 @@ const GuidesLU      = lazy(() => import("./pages/simulateurs/GuidesLU.jsx"));
 const LexiqueLU     = lazy(() => import("./pages/simulateurs/LexiqueLU.jsx"));
 // Simulateurs et contenus québécois
 const RetraiteQC    = lazy(() => import("./pages/simulateurs/RetraiteQC.jsx"));
+const ImpotRevenuQC = lazy(() => import("./pages/simulateurs/ImpotRevenuQC.jsx"));
 const GuidesQC      = lazy(() => import("./pages/simulateurs/GuidesQC.jsx"));
 const LexiqueQC     = lazy(() => import("./pages/simulateurs/LexiqueQC.jsx"));
 // Nouveaux widgets embarquables
@@ -297,8 +298,9 @@ export default function App() {
         <Route path="/qc/simulateurs/emprunt-immobilier" element={<EmpruntImmobilier />} />
         <Route path="/qc/simulateurs/rendement-locatif" element={<RendementLocatif />} />
         <Route path="/qc/simulateurs/assurance-vie" element={<AssuranceVie />} />
-        {/* Simulateur avec règles québécoises spécifiques */}
+        {/* Simulateurs avec règles québécoises spécifiques */}
         <Route path="/qc/simulateurs/retraite-quebec" element={<RetraiteQC />} />
+        <Route path="/qc/simulateurs/impot-revenu-qc" element={<ImpotRevenuQC />} />
         {/* Contenu QC */}
         <Route path="/qc/guides" element={<GuidesQC />} />
         <Route path="/qc/lexique" element={<LexiqueQC />} />

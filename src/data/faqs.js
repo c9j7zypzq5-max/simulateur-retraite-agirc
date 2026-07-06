@@ -323,6 +323,14 @@ export const FAQS = {
   { q: "Les frontaliers français sont-ils imposés au Luxembourg ou en France ?", a: "En règle générale, un frontalier travaillant physiquement au Luxembourg y est imposé sur son salaire luxembourgeois, sous réserve de la convention fiscale franco-luxembourgeoise. Le nombre de jours de télétravail autorisés sans basculer la fiscalité en France est encadré par un seuil spécifique à surveiller chaque année." },
 ],
 
+  '/simulateurs/impot-revenu-qc': [
+  { q: "Pourquoi le Québec a-t-il deux paliers d'imposition distincts ?", a: "Le Québec est la seule province canadienne à percevoir son propre impôt sur le revenu de façon pleinement autonome. Un résident québécois produit donc deux déclarations chaque année : une provinciale à Revenu Québec et une fédérale à l'Agence du revenu du Canada, chacune avec son propre barème progressif." },
+  { q: "Qu'est-ce que l'abattement du Québec ?", a: "C'est une réduction de 16,5 % appliquée à l'impôt fédéral autrement payable par les résidents du Québec, en compensation du transfert de points d'impôt survenu dans les années 1960 lorsque le Québec a mis en place son propre régime fiscal." },
+  { q: "Quel est le taux marginal maximal combiné au Québec ?", a: "En 2026, le taux marginal maximal atteint 25,75 % au provincial et 33 % au fédéral (avant abattement), soit un taux combiné avoisinant 53 % pour la tranche de revenu la plus élevée — l'un des plus élevés au Canada." },
+  { q: "Le taux fédéral le plus bas a-t-il changé récemment ?", a: "Oui. La loi C-4 (baisse d'impôt pour la classe moyenne), sanctionnée en mars 2026, a réduit le taux fédéral le plus bas de 15 % à 14 % à compter du 1er juillet 2025. 2026 est la première année civile complète où ce taux de 14 % s'applique en entier." },
+  { q: "Ce simulateur tient-il compte de toutes mes déductions ?", a: "Non. Ce calcul est une estimation basée uniquement sur le montant personnel de base (crédit non remboursable) et les paliers progressifs. Il ne modélise pas les autres crédits (cotisations REER, RRQ, assurance-emploi, crédits pour personne vivant seule, etc.) : consultez Revenu Québec ou un fiscaliste pour votre situation réelle." },
+],
+
   '/simulateurs/succession-lu': [
   { q: "Les enfants paient-ils des droits de succession au Luxembourg ?", a: "Non. En dévolution légale, la part reçue par les enfants et petits-enfants (ligne directe) est totalement exonérée de droits de succession au Luxembourg, quel que soit le montant transmis." },
   { q: "Le conjoint survivant est-il exonéré ?", a: "Oui. Le conjoint marié est exonéré de droits de succession, tout comme le partenaire lié par une déclaration de partenariat enregistrée depuis au moins 3 ans avant le décès." },

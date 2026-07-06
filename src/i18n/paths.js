@@ -141,6 +141,7 @@ export const QC_ROUTES = new Set([
   '/simulateurs/assurance-vie',
   // Québécois uniquement
   '/simulateurs/retraite-quebec',
+  '/simulateurs/impot-revenu-qc',
   // Légal
   '/mentions-legales',
   '/politique-de-confidentialite',
