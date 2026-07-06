@@ -1,0 +1,65 @@
+name: Fraîcheur des barèmes
+
+on:
+  schedule:
+    # Le 1er de chaque mois à 8h UTC.
+    - cron: '0 8 1 * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    name: Vérifier BAREMES_DATES
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Vérifier la fraîcheur des barèmes
+        id: check
+        run: |
+          if node scripts/check-baremes-freshness.mjs > result.txt 2>&1; then
+            echo "stale=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "stale=true" >> "$GITHUB_OUTPUT"
+          fi
+          grep -v '__STALE_BAREMES_JSON__' result.txt > result-clean.txt
+          cat result-clean.txt
+
+      - name: Composer le corps de l'issue
+        if: steps.check.outputs.stale == 'true'
+        run: |
+          {
+            cat result-clean.txt
+            echo
+            echo "Ces simulateurs affichent un barème dont l'année déclarée dans \`src/data/baremesDates.js\` commence à dater. Vérifier auprès de la source officielle si une revalorisation est parue, puis mettre à jour les constantes du simulateur concerné et la date dans \`baremesDates.js\`."
+            echo
+            echo "Vérifié automatiquement le $(date -u +%Y-%m-%d)."
+          } > issue-body.txt
+
+      - name: Ouvrir ou mettre à jour l'issue de suivi
+        if: steps.check.outputs.stale == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EXISTING=$(gh issue list --search "Barèmes à vérifier in:title" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file issue-body.txt
+          else
+            gh issue create --title "Barèmes à vérifier" --body-file issue-body.txt
+          fi
+
+      - name: Fermer l'issue de suivi si tout est à jour
+        if: steps.check.outputs.stale == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          EXISTING=$(gh issue list --search "Barèmes à vérifier in:title" --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue close "$EXISTING" --comment "Tous les barèmes sont à jour au $(date -u +%Y-%m-%d)."
+          fi

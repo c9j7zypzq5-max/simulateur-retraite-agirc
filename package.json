@@ -11,6 +11,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "og": "node scripts/generate-og-png.mjs",
+    "check:baremes": "node scripts/check-baremes-freshness.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
