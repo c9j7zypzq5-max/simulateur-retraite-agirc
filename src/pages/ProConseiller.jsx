@@ -199,6 +199,8 @@ export default function ProConseiller() {
                     onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
                     placeholder="Marie Dupont"
                     style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
                   />
                 </div>
                 <div>
@@ -210,6 +212,8 @@ export default function ProConseiller() {
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                     placeholder="marie@cabinet.fr"
                     style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                    onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+                    onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
                   />
                 </div>
               </div>
@@ -219,6 +223,8 @@ export default function ProConseiller() {
                   value={form.metier}
                   onChange={e => setForm(f => ({ ...f, metier: e.target.value }))}
                   style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 14, outline: "none", boxSizing: "border-box" }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
                 >
                   <option value="">Choisir…</option>
                   <option>CGP / CIF</option>
@@ -237,6 +243,8 @@ export default function ProConseiller() {
                   onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
                   placeholder="Dites-nous comment vous aimeriez utiliser Simfinly…"
                   style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 14, outline: "none", resize: "vertical", fontFamily: "'Hanken Grotesk', sans-serif", boxSizing: "border-box" }}
+                  onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+                  onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
                 />
               </div>
               <button

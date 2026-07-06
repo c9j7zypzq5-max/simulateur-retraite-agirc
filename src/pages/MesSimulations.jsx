@@ -300,6 +300,7 @@ export default function MesSimulations() {
                                       onBlur={() => handleSaveLabel(entry.id)}
                                       onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); } if (e.key === "Escape") setEditingId(null); }}
                                       style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "#0F1828", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 6, padding: "2px 8px", width: "100%", outline: "none" }}
+                                      onFocus={e => { e.currentTarget.style.borderColor = "#2B5CE6"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
                                     />
                                   ) : (
                                     <div
@@ -352,6 +353,7 @@ export default function MesSimulations() {
                                     onBlur={() => handleSaveLabel(entry.id)}
                                     onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); } if (e.key === "Escape") setEditingId(null); }}
                                     style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "#0F1828", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
+                                    onFocus={e => { e.currentTarget.style.borderColor = "#2B5CE6"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
                                   />
                                 ) : (
                                   <div

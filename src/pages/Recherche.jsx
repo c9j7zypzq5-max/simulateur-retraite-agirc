@@ -98,11 +98,14 @@ export default function Recherche() {
             value={input}
             onChange={e => setInput(e.target.value)}
             placeholder="retraite, PER, immobilier…"
+            aria-label="Rechercher"
             style={{
               flex: 1, padding: "12px 16px", borderRadius: 10,
               border: "1px solid var(--border)", background: "var(--card)",
               color: "var(--text)", fontSize: 15, outline: "none",
             }}
+            onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+            onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
           />
           <button
             type="submit"

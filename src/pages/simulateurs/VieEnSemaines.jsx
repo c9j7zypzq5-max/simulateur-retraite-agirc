@@ -389,6 +389,8 @@ export default function VieEnSemaines() {
               max={new Date().toISOString().split("T")[0]}
               onChange={e => setDateNaissance(e.target.value)}
               style={{ width: "100%", background: "var(--input-bg)", border: "1.5px solid var(--border)", borderRadius: 12, color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 16, padding: "14px 20px", outline: "none", boxSizing: "border-box", colorScheme: "dark light" }}
+              onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
+              onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
             />
           </div>
 
