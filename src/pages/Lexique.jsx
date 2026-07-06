@@ -42,6 +42,7 @@ export default function Lexique() {
   const { locale } = useTranslation();
   const isEn = locale === 'en';
   const [query, setQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
   const [activeLetter, setActiveLetter] = useState(null);
 
   useEffect(() => {
@@ -110,12 +111,14 @@ export default function Lexique() {
               : `${GLOSSARY.length} termes de retraite, immobilier et fiscalité, définis clairement.`}
           </p>
           {/* Search bar */}
-          <div style={{ display: "flex", alignItems: "center", background: "var(--surface)", border: "1.5px solid var(--border)", borderRadius: 13, padding: "12px 18px", maxWidth: 460, margin: "0 auto", gap: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", background: "var(--surface)", border: `1.5px solid ${searchFocused ? "var(--primary)" : "var(--border)"}`, borderRadius: 13, padding: "12px 18px", maxWidth: 460, margin: "0 auto", gap: 10, boxShadow: searchFocused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none", transition: "border-color 0.15s, box-shadow 0.15s" }}>
             <Search size={18} color="var(--text-secondary)" style={{ flexShrink: 0 }} />
             <input
               type="search"
               value={query}
               onChange={e => setQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
               placeholder={isEn ? "Search a term (FIRE, DTI, DCA…)" : "Rechercher un terme (TMI, GMP, décote…)"}
               aria-label={isEn ? "Search a term" : "Rechercher un terme"}
               style={{

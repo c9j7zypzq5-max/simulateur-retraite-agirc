@@ -43,7 +43,7 @@ function SimIcon({ simulator }) {
   }
 
   return (
-    <div style={{ width: 42, height: 42, borderRadius: 11, background: "#EAF0FF", color: "#2B5CE6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+    <div style={{ width: 42, height: 42, borderRadius: 11, background: "var(--primary-soft)", color: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
       {icon}
     </div>
   );
@@ -151,7 +151,7 @@ export default function MesSimulations() {
 
 
   return (
-    <div style={{ minHeight: "100vh", background: "#F5F6F8", fontFamily: "'Hanken Grotesk', sans-serif", color: "#0F1828" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <ConfirmModal
         open={confirmDeleteId !== null}
         title="Supprimer cette simulation ?"
@@ -170,8 +170,8 @@ export default function MesSimulations() {
 
           {/* Sidebar */}
           {!isMobile && (
-            <div style={{ background: "#fff", borderRight: "1px solid #e7eaf0", padding: "28px 20px", minHeight: 520, borderRadius: "14px 0 0 14px" }}>
-              <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "#8a93a3", fontWeight: 700, marginBottom: 14 }}>Mon compte</div>
+            <div style={{ background: "var(--surface)", borderRight: "1px solid var(--border)", padding: "28px 20px", minHeight: 520, borderRadius: "14px 0 0 14px" }}>
+              <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", fontWeight: 700, marginBottom: 14 }}>Mon compte</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 {NAV_ITEMS.filter(item => !item.requiresAccount || ACCOUNT_ENABLED).map(item => {
                   const isActive = item.tab
@@ -184,8 +184,8 @@ export default function MesSimulations() {
                       style={{
                         display: "flex", alignItems: "center", gap: 10,
                         fontSize: 14, fontWeight: isActive ? 600 : 400,
-                        color: isActive ? "#2B5CE6" : "#5B6677",
-                        background: isActive ? "#EAF0FF" : "transparent",
+                        color: isActive ? "var(--primary)" : "var(--text-secondary)",
+                        background: isActive ? "var(--primary-soft)" : "transparent",
                         padding: "10px 12px", borderRadius: 10,
                         textDecoration: "none", transition: "background 0.15s",
                       }}
@@ -199,17 +199,17 @@ export default function MesSimulations() {
           )}
 
           {/* Main content */}
-          <div style={{ background: "#fff", borderRadius: isMobile ? 14 : "0 14px 14px 0", border: "1px solid #e7eaf0", borderLeft: isMobile ? "1px solid #e7eaf0" : "none", padding: isMobile ? "20px 16px" : "28px 30px 36px" }}>
+          <div style={{ background: "var(--surface)", borderRadius: isMobile ? 14 : "0 14px 14px 0", border: "1px solid var(--border)", borderLeft: isMobile ? "1px solid var(--border)" : "none", padding: isMobile ? "20px 16px" : "28px 30px 36px" }}>
 
             {/* Header */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
               <div>
-                <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: "-0.01em", color: "#0F1828", margin: 0 }}>
+                <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: isMobile ? 22 : 26, fontWeight: 600, letterSpacing: "-0.01em", color: "var(--text)", margin: 0 }}>
                   {activeTab === "compare" ? "Comparaisons" : "Mes simulations"}
                 </h1>
                 {activeTab !== "compare" && (
                   <div style={{ marginTop: 6 }}>
-                    <div style={{ fontSize: 13.5, color: "#8a93a3" }}>
+                    <div style={{ fontSize: 13.5, color: "var(--text-secondary)" }}>
                       {history.length} scénario{history.length !== 1 ? "s" : ""} sauvegardé{history.length !== 1 ? "s" : ""}
                     </div>
                   </div>
@@ -217,7 +217,7 @@ export default function MesSimulations() {
               </div>
               <Link
                 to="/simulateurs"
-                style={{ display: "flex", alignItems: "center", gap: 7, fontSize: isMobile ? 13 : 13.5, fontWeight: 600, color: "#fff", background: "#2B5CE6", padding: isMobile ? "10px 12px" : "10px 16px", borderRadius: 10, textDecoration: "none", flexShrink: 0 }}
+                style={{ display: "flex", alignItems: "center", gap: 7, fontSize: isMobile ? 13 : 13.5, fontWeight: 600, color: "#fff", background: "var(--primary)", padding: isMobile ? "10px 12px" : "10px 16px", borderRadius: 10, textDecoration: "none", flexShrink: 0 }}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 {!isMobile && "Nouvelle simulation"}
@@ -235,11 +235,11 @@ export default function MesSimulations() {
               ) : (
                 <div style={{ textAlign: "center", padding: "50px 20px" }}>
                   <div style={{ fontSize: 36, marginBottom: 14 }}>⇄</div>
-                  <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "#0F1828", marginBottom: 10 }}>Aucune comparaison en cours</h2>
-                  <p style={{ fontSize: 14, color: "#5B6677", lineHeight: 1.7, marginBottom: 20 }}>
+                  <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "var(--text)", marginBottom: 10 }}>Aucune comparaison en cours</h2>
+                  <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 20 }}>
                     Revenez dans « Mes simulations » et cliquez sur l'icône ⊞ sur 2 scénarios pour les comparer.
                   </p>
-                  <Link to="/mes-simulations" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "#2B5CE6", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>
+                  <Link to="/mes-simulations" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "var(--primary)", color: "#fff", textDecoration: "none", fontSize: 14, fontWeight: 600 }}>
                     Aller à mes simulations →
                   </Link>
                 </div>
@@ -248,8 +248,8 @@ export default function MesSimulations() {
               <>
                 {/* Hint for compare */}
                 {history.length >= 2 && selected.size === 0 && (
-                  <div style={{ fontSize: 12, color: "#8a93a3", marginBottom: 16, padding: "8px 14px", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 10, display: "inline-block" }}>
-                    Cliquez sur l'icône <span style={{ color: "#2B5CE6" }}>⊞</span> sur 2 simulations pour les comparer côte à côte
+                  <div style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 16, padding: "8px 14px", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 10, display: "inline-block" }}>
+                    Cliquez sur l'icône <span style={{ color: "var(--primary)" }}>⊞</span> sur 2 simulations pour les comparer côte à côte
                   </div>
                 )}
                 {compareError && (
@@ -259,7 +259,7 @@ export default function MesSimulations() {
                   <div style={{ marginBottom: 16 }}>
                     <button
                       onClick={handleCompare}
-                      style={{ fontSize: 13, color: "#fff", background: "#2B5CE6", border: "none", borderRadius: 10, padding: "10px 18px", cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}
+                      style={{ fontSize: 13, color: "#fff", background: "var(--primary)", border: "none", borderRadius: 10, padding: "10px 18px", cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}
                     >
                       ⇄ Comparer les 2 scénarios
                     </button>
@@ -267,13 +267,13 @@ export default function MesSimulations() {
                 )}
 
                 {history.length === 0 ? (
-                  <div style={{ textAlign: "center", padding: "50px 20px", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 14 }}>
+                  <div style={{ textAlign: "center", padding: "50px 20px", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 14 }}>
                     <div style={{ fontSize: 40, marginBottom: 14 }}>🗂️</div>
-                    <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "#0F1828", marginBottom: 10 }}>Aucune simulation sauvegardée</h2>
-                    <p style={{ fontSize: 14, color: "#5B6677", lineHeight: 1.7, marginBottom: 20 }}>
+                    <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, color: "var(--text)", marginBottom: 10 }}>Aucune simulation sauvegardée</h2>
+                    <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 20 }}>
                       Lancez un simulateur puis utilisez « Sauvegarder » pour la retrouver ici.
                     </p>
-                    <Link to="/simulateurs" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "#2B5CE6", color: "#fff", textDecoration: "none", fontSize: 14 }}>
+                    <Link to="/simulateurs" style={{ display: "inline-block", padding: "10px 22px", borderRadius: 10, background: "var(--primary)", color: "#fff", textDecoration: "none", fontSize: 14 }}>
                       Voir les simulateurs →
                     </Link>
                   </div>
@@ -284,7 +284,7 @@ export default function MesSimulations() {
                       return (
                         <div
                           key={entry.id}
-                          style={{ background: "#fff", border: isChecked ? "1.5px solid #2B5CE6" : "1px solid #e7eaf0", borderRadius: 14, overflow: "hidden", transition: "border-color 0.2s" }}
+                          style={{ background: "var(--surface)", border: isChecked ? "1.5px solid var(--primary)" : "1px solid var(--border)", borderRadius: 14, overflow: "hidden", transition: "border-color 0.2s" }}
                         >
                           {isMobile ? (
                             /* Mobile card */
@@ -299,41 +299,42 @@ export default function MesSimulations() {
                                       onChange={e => setEditValue(e.target.value)}
                                       onBlur={() => handleSaveLabel(entry.id)}
                                       onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); } if (e.key === "Escape") setEditingId(null); }}
-                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "#0F1828", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 6, padding: "2px 8px", width: "100%", outline: "none" }}
+                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "var(--text)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", outline: "none" }}
+                                      onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
                                     />
                                   ) : (
                                     <div
-                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "#0F1828", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}
+                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}
                                       onDoubleClick={() => { setEditingId(entry.id); setEditValue(entry.label); }}
                                     >
                                       {entry.label}
                                     </div>
                                   )}
-                                  <div style={{ fontSize: 11.5, color: "#8a93a3", marginTop: 2 }}>{relativeDate(entry.savedAt)}</div>
+                                  <div style={{ fontSize: 11.5, color: "var(--text-secondary)", marginTop: 2 }}>{relativeDate(entry.savedAt)}</div>
                                 </div>
                                 {entry.reportSnapshot?.highlight && (
                                   <div style={{ textAlign: "right", flexShrink: 0 }}>
-                                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "#0F1828" }}>{entry.reportSnapshot.highlight.value}</div>
-                                    <div style={{ fontSize: 10.5, color: "#8a93a3" }}>{entry.reportSnapshot.highlight.label}</div>
+                                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, color: "var(--text)" }}>{entry.reportSnapshot.highlight.value}</div>
+                                    <div style={{ fontSize: 10.5, color: "var(--text-secondary)" }}>{entry.reportSnapshot.highlight.label}</div>
                                   </div>
                                 )}
                               </div>
-                              <div style={{ display: "flex", gap: 8, paddingTop: 12, borderTop: "1px solid #f0f2f6" }}>
+                              <div style={{ display: "flex", gap: 8, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
                                 <button
                                   onClick={() => handleReopenEntry(entry)}
-                                  style={{ flex: 1, textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "#2B5CE6", background: "#EAF0FF", border: "none", padding: 8, borderRadius: 8, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+                                  style={{ flex: 1, textAlign: "center", fontSize: 12.5, fontWeight: 600, color: "var(--primary)", background: "var(--primary-soft)", border: "none", padding: 8, borderRadius: 8, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
                                 >
                                   Rouvrir
                                 </button>
                                 <button
                                   onClick={() => toggleSelect(entry.id)}
-                                  style={{ flex: 1, textAlign: "center", fontSize: 12.5, fontWeight: 600, color: isChecked ? "#2B5CE6" : "#5B6677", background: isChecked ? "#EAF0FF" : "#F5F6F8", border: isChecked ? "1px solid #2B5CE6" : "1px solid #e7eaf0", padding: 8, borderRadius: 8, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
+                                  style={{ flex: 1, textAlign: "center", fontSize: 12.5, fontWeight: 600, color: isChecked ? "var(--primary)" : "var(--text-secondary)", background: isChecked ? "var(--primary-soft)" : "var(--bg)", border: isChecked ? "1px solid var(--primary)" : "1px solid var(--border)", padding: 8, borderRadius: 8, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
                                 >
                                   {isChecked ? "✓ Sélectionné" : "Comparer"}
                                 </button>
                                 <button
                                   onClick={() => setConfirmDeleteId(entry.id)}
-                                  style={{ width: 36, height: 36, background: "none", border: "1px solid #e7eaf0", borderRadius: 8, cursor: "pointer", color: "#8a93a3", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}
+                                  style={{ width: 36, height: 36, background: "none", border: "1px solid var(--border)", borderRadius: 8, cursor: "pointer", color: "var(--text-secondary)", fontSize: 14, display: "flex", alignItems: "center", justifyContent: "center" }}
                                 >
                                   ✕
                                 </button>
@@ -351,11 +352,12 @@ export default function MesSimulations() {
                                     onChange={e => setEditValue(e.target.value)}
                                     onBlur={() => handleSaveLabel(entry.id)}
                                     onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); } if (e.key === "Escape") setEditingId(null); }}
-                                    style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "#0F1828", background: "#F5F6F8", border: "1px solid #e7eaf0", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
+                                    style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "var(--text)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", maxWidth: 360, outline: "none" }}
+                                    onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
                                   />
                                 ) : (
                                   <div
-                                    style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "#0F1828", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}
+                                    style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15.5, fontWeight: 600, color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", cursor: "pointer" }}
                                     onDoubleClick={() => { setEditingId(entry.id); setEditValue(entry.label); }}
                                     title="Double-cliquer pour renommer"
                                   >
@@ -363,18 +365,18 @@ export default function MesSimulations() {
                                   </div>
                                 )}
                                 {entry.reportSnapshot?.highlight && (
-                                  <div style={{ fontSize: 12.5, color: "#8a93a3", marginTop: 3 }}>
+                                  <div style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3 }}>
                                     {entry.reportSnapshot.highlight.label} · {relativeDate(entry.savedAt)}
                                   </div>
                                 )}
                                 {!entry.reportSnapshot?.highlight && (
-                                  <div style={{ fontSize: 12.5, color: "#8a93a3", marginTop: 3 }}>{relativeDate(entry.savedAt)}</div>
+                                  <div style={{ fontSize: 12.5, color: "var(--text-secondary)", marginTop: 3 }}>{relativeDate(entry.savedAt)}</div>
                                 )}
                               </div>
                               {entry.reportSnapshot?.highlight && (
                                 <div style={{ textAlign: "right", flexShrink: 0 }}>
-                                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "#0F1828" }}>{entry.reportSnapshot.highlight.value}</div>
-                                  <div style={{ fontSize: 11, color: "#8a93a3" }}>{entry.reportSnapshot.highlight.label}</div>
+                                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, fontWeight: 600, color: "var(--text)" }}>{entry.reportSnapshot.highlight.value}</div>
+                                  <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{entry.reportSnapshot.highlight.label}</div>
                                 </div>
                               )}
                               <div style={{ display: "flex", gap: 8, marginLeft: 8, flexShrink: 0 }}>
@@ -382,7 +384,7 @@ export default function MesSimulations() {
                                 <button
                                   onClick={() => handleReopenEntry(entry)}
                                   title="Rouvrir la simulation"
-                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid #e7eaf0", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#5B6677", cursor: "pointer" }}
+                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid var(--border)", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", cursor: "pointer" }}
                                 >
                                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
                                 </button>
@@ -390,7 +392,7 @@ export default function MesSimulations() {
                                 <button
                                   onClick={() => toggleSelect(entry.id)}
                                   title={isChecked ? "Désélectionner" : "Sélectionner pour comparer"}
-                                  style={{ width: 34, height: 34, borderRadius: 9, border: isChecked ? "1.5px solid #2B5CE6" : "1px solid #e7eaf0", background: isChecked ? "#EAF0FF" : "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: isChecked ? "#2B5CE6" : "#5B6677", cursor: "pointer", transition: "all 0.15s" }}
+                                  style={{ width: 34, height: 34, borderRadius: 9, border: isChecked ? "1.5px solid var(--primary)" : "1px solid var(--border)", background: isChecked ? "var(--primary-soft)" : "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", color: isChecked ? "var(--primary)" : "var(--text-secondary)", cursor: "pointer", transition: "all 0.15s" }}
                                 >
                                   {isChecked
                                     ? <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -401,7 +403,7 @@ export default function MesSimulations() {
                                 <button
                                   onClick={() => handleCopyLink(entry)}
                                   title={copiedId === entry.id ? "Lien copié !" : "Copier le lien"}
-                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid #e7eaf0", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: copiedId === entry.id ? "#15A06B" : "#5B6677", cursor: "pointer", transition: "color 0.2s" }}
+                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid var(--border)", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", color: copiedId === entry.id ? "var(--positive)" : "var(--text-secondary)", cursor: "pointer", transition: "color 0.2s" }}
                                 >
                                   {copiedId === entry.id
                                     ? <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -412,7 +414,7 @@ export default function MesSimulations() {
                                 <button
                                   onClick={() => setConfirmDeleteId(entry.id)}
                                   title="Supprimer"
-                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid #e7eaf0", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", color: "#8a93a3", cursor: "pointer", fontSize: 14 }}
+                                  style={{ width: 34, height: 34, borderRadius: 9, border: "1px solid var(--border)", background: "var(--surface)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-secondary)", cursor: "pointer", fontSize: 14 }}
                                 >
                                   ✕
                                 </button>
@@ -438,7 +440,7 @@ export default function MesSimulations() {
                   <div style={{ marginTop: 24, display: "flex", justifyContent: "flex-end" }}>
                     <button
                       onClick={() => { clearHistory(); setHistory([]); setSelected(new Set()); setCompareEntries(null); }}
-                      style={{ fontSize: 12, color: "#8a93a3", background: "none", border: "1px solid #e7eaf0", borderRadius: 8, padding: "6px 14px", cursor: "pointer" }}
+                      style={{ fontSize: 12, color: "var(--text-secondary)", background: "none", border: "1px solid var(--border)", borderRadius: 8, padding: "6px 14px", cursor: "pointer" }}
                     >
                       Tout effacer
                     </button>
