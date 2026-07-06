@@ -583,7 +583,7 @@ export default function Home() {
           <input
             type="search" value={query} onChange={e => setQuery(e.target.value)}
             placeholder={txt.searchPlaceholder} aria-label={txt.searchAriaLabel}
-            style={{ width: "100%", padding: "12px 44px", borderRadius: 12, background: "var(--surface)", border: "1.5px solid var(--border)", color: "var(--text)", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
+            style={{ width: "100%", padding: "12px 44px", borderRadius: 12, background: "var(--surface)", border: "1.5px solid var(--border)", color: "var(--text)", fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif", outline: "none" }}
             onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
             onBlur={e => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.boxShadow = "none"; }}
           />

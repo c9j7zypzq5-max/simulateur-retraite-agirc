@@ -107,7 +107,7 @@ export default function Simulateurs() {
               padding: "11px 38px 11px 40px",
               border: "1px solid var(--border)",
               borderRadius: 12, background: "var(--surface)",
-              color: "var(--text)", fontSize: 14,
+              color: "var(--text)", fontSize: 16,
               fontFamily: "'Hanken Grotesk', sans-serif",
               outline: "none", transition: "border-color 0.15s",
             }}

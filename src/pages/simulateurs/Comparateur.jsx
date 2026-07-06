@@ -726,7 +726,7 @@ function AssetRow({ asset, idx, onChange, onRemove, canRemove, txt }) {
           style={{
             width: '100%', padding: '8px 12px', borderRadius: 9,
             background: 'var(--input-bg)', border: '1px solid var(--border)',
-            color: 'var(--text)', fontSize: 13,
+            color: 'var(--text)', fontSize: 16,
             fontFamily: "'Hanken Grotesk', sans-serif",
             boxShadow: 'var(--input-shadow)',
           }}
@@ -790,7 +790,7 @@ function DateSelect({ label, value, onChange, locale = 'fr' }) {
   const selStyle = {
     padding: '6px 8px', borderRadius: 8,
     background: 'var(--input-bg)', border: '1px solid var(--border)',
-    color: 'var(--text)', fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif",
+    color: 'var(--text)', fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif",
     cursor: 'pointer',
   };
 
@@ -1086,7 +1086,7 @@ export default function Comparateur() {
               style={{
                 width: 140, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
+                color: 'var(--text)', fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif",
               }}
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()} {txt.initialInvestSuffix}</span>
@@ -1110,7 +1110,7 @@ export default function Comparateur() {
               style={{
                 width: 110, padding: '8px 12px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif",
+                color: 'var(--text)', fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif",
               }}
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()}</span>
@@ -1121,7 +1121,7 @@ export default function Comparateur() {
               style={{
                 padding: '8px 10px', borderRadius: 9,
                 background: 'var(--input-bg)', border: '1px solid var(--border)',
-                color: 'var(--text)', fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif",
+                color: 'var(--text)', fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif",
                 cursor: periodicAmt === 0 ? 'not-allowed' : 'pointer',
                 opacity: periodicAmt === 0 ? 0.5 : 1,
               }}

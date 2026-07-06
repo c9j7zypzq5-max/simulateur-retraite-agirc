@@ -234,7 +234,7 @@ export default function ImpotRevenuCH() {
                 value={canton}
                 onChange={e => { setCanton(e.target.value); track("impot_ch_canton"); }}
                 style={{
-                  width: "100%", padding: "10px 12px", borderRadius: 10, fontSize: 13,
+                  width: "100%", padding: "10px 12px", borderRadius: 10, fontSize: 16,
                   background: "var(--card-bg)", border: "1.5px solid var(--border)",
                   color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif",
                   cursor: "pointer",

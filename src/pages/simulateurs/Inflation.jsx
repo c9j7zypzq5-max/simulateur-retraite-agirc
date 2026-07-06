@@ -97,7 +97,7 @@ export default function Inflation() {
                       <input type="number" min={0} max={100} step={1}
                         value={rates[c.key]?.share ?? c.defaultShare}
                         onChange={e => setShare(c.key, e.target.value)}
-                        style={{ width: 52, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, textAlign: "right" }}
+                        style={{ width: 60, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 16, textAlign: "right" }}
                       />
                       <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>%</span>
                     </div>
@@ -108,7 +108,7 @@ export default function Inflation() {
                       <input type="number" min={0} max={20} step={0.1}
                         value={rates[c.key]?.rate ?? c.defaultRate}
                         onChange={e => setRate(c.key, e.target.value)}
-                        style={{ width: 52, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 13, textAlign: "right" }}
+                        style={{ width: 60, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 16, textAlign: "right" }}
                       />
                       <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>%</span>
                     </div>

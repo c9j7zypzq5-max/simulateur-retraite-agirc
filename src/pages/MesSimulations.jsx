@@ -299,7 +299,7 @@ export default function MesSimulations() {
                                       onChange={e => setEditValue(e.target.value)}
                                       onBlur={() => handleSaveLabel(entry.id)}
                                       onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); handleSaveLabel(entry.id); } if (e.key === "Escape") setEditingId(null); }}
-                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14.5, fontWeight: 600, color: "var(--text)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", outline: "none" }}
+                                      style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 16, fontWeight: 600, color: "var(--text)", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: 6, padding: "2px 8px", width: "100%", outline: "none" }}
                                       onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}
                                     />
                                   ) : (

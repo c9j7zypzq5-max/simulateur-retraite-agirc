@@ -123,7 +123,7 @@ export default function Lexique() {
               aria-label={isEn ? "Search a term" : "Rechercher un terme"}
               style={{
                 flex: 1, border: "none", background: "transparent",
-                color: "var(--text)", fontSize: 15,
+                color: "var(--text)", fontSize: 16,
                 fontFamily: "'Hanken Grotesk',sans-serif", outline: "none",
               }}
             />

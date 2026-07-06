@@ -26,7 +26,7 @@ export default function CurrencySelect({ compact = false }) {
           border: "1px solid var(--border)",
           borderRadius: 8,
           padding: "5px 24px 5px 9px",
-          fontSize: 12,
+          fontSize: 16,
           fontFamily: "'Hanken Grotesk', sans-serif",
           cursor: "pointer",
           backgroundImage:

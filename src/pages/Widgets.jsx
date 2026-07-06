@@ -85,7 +85,7 @@ export default function Widgets() {
           <select
             value={selectedSim}
             onChange={e => setSelectedSim(e.target.value)}
-            style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: 14, fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 14 }}
+            style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 14 }}
           >
             {ALL_SIMULATORS.map(s => (
               <option key={s.path} value={s.path}>{s.label}</option>
