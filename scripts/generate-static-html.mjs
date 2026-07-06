@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, ROUTE_META_QC, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, QC_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -46,6 +46,10 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   }
   if (country === 'lu') {
     const meta = ROUTE_META_LU[route];
+    if (meta) return { title: meta.title, description: meta.description };
+  }
+  if (country === 'qc') {
+    const meta = ROUTE_META_QC[route];
     if (meta) return { title: meta.title, description: meta.description };
   }
   if (route.startsWith('/lexique/')) {
@@ -97,6 +101,7 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   else if (country === 'ch') urlPath = `/ch${route === '/' ? '' : route}`;
   else if (country === 'be') urlPath = `/be${route === '/' ? '' : route}`;
   else if (country === 'lu') urlPath = `/lu${route === '/' ? '' : route}`;
+  else if (country === 'qc') urlPath = `/qc${route === '/' ? '' : route}`;
   else urlPath = route;
   const url = `${BASE}${urlPath}`;
   let out = html
@@ -116,6 +121,9 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   } else if (country === 'lu') {
     out = out
       .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_LU"');
+  } else if (country === 'qc') {
+    out = out
+      .replace(/<meta property="og:locale" content="[^"]*"/, '<meta property="og:locale" content="fr_CA"');
   }
 
   if (title) {
@@ -263,6 +271,14 @@ for (const route of LU_ROUTES) {
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'lu'));
 }
 
+// ── Pages QC (/qc/... routes disponibles au Québec) ────────────────────────────
+for (const route of QC_ROUTES) {
+  const urlPath = route === '/' ? '/qc' : `/qc${route}`;
+  const dir = path.join(distDir, urlPath);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, {}, 'fr', 'qc'));
+}
+
 // Versionne le cache du service worker à chaque build : le nom de cache change,
 // donc l'ancien cache (anciens JS/CSS) est purgé à l'activation du nouveau SW.
 try {
@@ -275,4 +291,4 @@ try {
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.
 
-console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE + ${LU_ROUTES.length} LU`);
+console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE + ${LU_ROUTES.length} LU + ${QC_ROUTES.length} QC`);

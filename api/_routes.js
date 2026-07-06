@@ -180,6 +180,25 @@ export const LU_ROUTES = [
   '/politique-de-confidentialite',
 ];
 
+// Routes disponibles sous /qc/ (Québec). Miroir de src/i18n/paths.js QC_ROUTES
+// (hors /qc/guides et /qc/lexique, pré-rendus séparément comme pour BE/LU).
+export const QC_ROUTES = [
+  '/',
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  '/simulateurs/retraite-quebec',
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+];
+
 // Méta belges (title + description) pour le HTML statique /be/...
 export const ROUTE_META_BE = {
   '/':                                    { title: 'Simfinly — Simulateurs gratuits pension, IPP, succession & finances (Belgique)',     description: 'Simulez votre pension légale ONSS, votre IPP, vos droits de succession et votre épargne. Simulateurs gratuits adaptés à la législation belge 2025, sans inscription.' },
@@ -218,12 +237,29 @@ export const ROUTE_META_LU = {
   '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat (Luxembourg)',       description: 'Convertissez n\'importe quel achat en heures de travail réelles. Le vrai coût d\'un bien ou d\'un abonnement exprimé en temps plutôt qu\'en euros.' },
 };
 
+// Méta québécoises (title + description) pour le HTML statique /qc/...
+export const ROUTE_META_QC = {
+  '/':                                    { title: 'Simfinly — Simulateurs gratuits retraite RRQ, épargne, budget (Québec)',      description: 'Simulez votre rente RRQ, votre épargne et votre budget en dollars canadiens. Simulateurs gratuits adaptés au Québec, sans inscription.' },
+  '/simulateurs/retraite-quebec':         { title: 'Simulateur retraite RRQ 2026 — rente du Régime de rentes du Québec',          description: 'Estimez votre rente RRQ selon votre revenu de carrière et l\'âge de départ choisi (60 à 70 ans). Basé sur les paramètres 2026 de Retraite Québec.' },
+  '/simulateurs/epargne':                 { title: 'Simulateur épargne & intérêts composés en CAD — projection long terme (Québec)', description: 'Projetez la croissance de votre épargne en dollars canadiens sur le long terme. Capital final selon le rendement, la durée et l\'effort mensuel.' },
+  '/simulateurs/fire':                    { title: 'Simulateur FIRE — indépendance financière & retraite anticipée (Québec)',     description: 'Calculez le patrimoine nécessaire pour vivre de vos investissements au Québec et l\'âge auquel vous atteignez l\'indépendance financière. Règle des 4 %, paliers Lean/Coast/Fat FIRE.' },
+  '/simulateurs/budget':                  { title: 'Simulateur budget 50/30/20 — finances personnelles Québec',                  description: 'Répartissez votre budget mensuel selon la règle 50/30/20 : besoins, envies, épargne. Taux d\'épargne et conseils adaptés à la situation québécoise.' },
+  '/simulateurs/patrimoine':              { title: 'Simulateur patrimoine global — richesse nette & répartition (Québec)',        description: 'Consolidez vos actifs financiers et immobiliers pour visualiser votre richesse nette et sa répartition par classe d\'actifs, en contexte québécois.' },
+  '/simulateurs/emprunt-immobilier':      { title: 'Simulateur emprunt immobilier Québec — mensualités & capacité',              description: 'Calculez la mensualité, la capacité d\'emprunt et le coût total de votre prêt hypothécaire au Québec. Tableau d\'amortissement annuel inclus.' },
+  '/simulateurs/rendement-locatif':       { title: 'Simulateur rendement locatif Québec — rentabilité brute & nette',            description: 'Évaluez la rentabilité brute et nette d\'un investissement locatif au Québec. Cash-flow mensuel et retour sur fonds propres.' },
+  '/simulateurs/assurance-vie':           { title: 'Simulateur épargne & assurance-vie en CAD — capital Québec',                 description: 'Projetez la croissance de votre épargne en dollars canadiens et estimez le capital disponible à l\'échéance, au Québec.' },
+  '/simulateurs/comparateur':             { title: 'Comparateur d\'actifs ETF, actions, crypto — Québec',                        description: 'Comparez la performance historique d\'ETF, actions et cryptomonnaies sur la période de votre choix. CAGR, versements programmés et indice base 100.' },
+  '/simulateurs/credit-conso':            { title: 'Simulateur crédit à la consommation — mensualité & coût Québec',             description: 'Calculez la mensualité et le coût total de votre crédit conso selon le montant, le taux et la durée. Adapté au marché québécois.' },
+  '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat (Québec)',          description: 'Convertissez n\'importe quel achat en heures de travail réelles. Le vrai coût d\'un bien ou d\'un abonnement exprimé en temps plutôt qu\'en dollars.' },
+};
+
 // Méta d'une route pour une locale et un pays donnés.
 export function routeMeta(route, locale = 'fr', country = 'fr') {
   if (locale === 'en' && ROUTE_META_EN[route]) return ROUTE_META_EN[route];
   if (country === 'ch' && ROUTE_META_CH[route]) return ROUTE_META_CH[route];
   if (country === 'be' && ROUTE_META_BE[route]) return ROUTE_META_BE[route];
   if (country === 'lu' && ROUTE_META_LU[route]) return ROUTE_META_LU[route];
+  if (country === 'qc' && ROUTE_META_QC[route]) return ROUTE_META_QC[route];
   return ROUTE_META[route];
 }
 
@@ -255,6 +291,9 @@ export function hreflangLinks(route) {
   }
   if (LU_ROUTES.includes(route)) {
     links.push(`<link rel="alternate" hreflang="fr-LU" href="${BASE}/lu${route === '/' ? '' : route}" />`);
+  }
+  if (QC_ROUTES.includes(route)) {
+    links.push(`<link rel="alternate" hreflang="fr-CA" href="${BASE}/qc${route === '/' ? '' : route}" />`);
   }
   links.push(`<link rel="alternate" hreflang="x-default" href="${fr}" />`);
   // Inutile si seulement fr + x-default (même URL = balisage inutile)

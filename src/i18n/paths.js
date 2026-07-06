@@ -124,6 +124,31 @@ export const LU_ROUTES = new Set([
   '/lu/lexique',
 ]);
 
+// Routes disponibles au Québec (certaines avec règles québécoises
+// spécifiques, d'autres partagées avec la version française — devise CAD).
+export const QC_ROUTES = new Set([
+  '/',
+  // Universels (même logique que FR)
+  '/simulateurs/epargne',
+  '/simulateurs/fire',
+  '/simulateurs/budget',
+  '/simulateurs/patrimoine',
+  '/simulateurs/comparateur',
+  '/simulateurs/cout-en-heures',
+  '/simulateurs/credit-conso',
+  '/simulateurs/emprunt-immobilier',
+  '/simulateurs/rendement-locatif',
+  '/simulateurs/assurance-vie',
+  // Québécois uniquement
+  '/simulateurs/retraite-quebec',
+  // Légal
+  '/mentions-legales',
+  '/politique-de-confidentialite',
+  // Contenu éditorial QC
+  '/qc/guides',
+  '/qc/lexique',
+]);
+
 // Retourne le chemin localisé EN pour une route canonique FR.
 // localePath('/simulateurs/epargne', 'en') → '/en/simulators/savings'
 export function localePath(route, locale) {
@@ -146,6 +171,9 @@ export function canonicalPath(pathname) {
   // Retirer le préfixe pays luxembourgeois
   if (pathname === '/lu') return '/';
   if (pathname.startsWith('/lu/')) return pathname.slice(3);
+  // Retirer le préfixe pays québécois
+  if (pathname === '/qc') return '/';
+  if (pathname.startsWith('/qc/')) return pathname.slice(3);
   // Retirer le préfixe langue anglaise
   if (pathname === '/en') return '/';
   if (pathname.startsWith('/en/')) {
@@ -167,6 +195,10 @@ export function countryPath(route, country) {
   if (country === 'lu') {
     if (!LU_ROUTES.has(route)) return route;
     return route === '/' ? '/lu' : `/lu${route}`;
+  }
+  if (country === 'qc') {
+    if (!QC_ROUTES.has(route)) return route;
+    return route === '/' ? '/qc' : `/qc${route}`;
   }
   if (country === 'fr' || !BE_ROUTES.has(route)) return route;
   return route === '/' ? '/be' : `/be${route}`;
@@ -204,4 +236,13 @@ export function luCountryAlternatePath(pathname, currentCountry) {
   const canon = canonicalPath(pathname);
   if (!LU_ROUTES.has(canon)) return null;
   return currentCountry === 'lu' ? canon : countryPath(canon, 'lu');
+}
+
+// Retourne le chemin vers le pays alternatif (FR↔QC) pour l'URL courante.
+// qcCountryAlternatePath('/simulateurs/retraite-quebec', 'fr') → '/qc/simulateurs/retraite-quebec'
+// qcCountryAlternatePath('/qc/simulateurs/retraite-quebec', 'qc') → '/simulateurs/retraite-quebec'
+export function qcCountryAlternatePath(pathname, currentCountry) {
+  const canon = canonicalPath(pathname);
+  if (!QC_ROUTES.has(canon)) return null;
+  return currentCountry === 'qc' ? canon : countryPath(canon, 'qc');
 }

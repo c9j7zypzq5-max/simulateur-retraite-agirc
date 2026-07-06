@@ -46,6 +46,7 @@ function extractRoutes() {
       : routePath.startsWith('/be') ? 'be'
       : routePath.startsWith('/ch') ? 'ch'
       : routePath.startsWith('/lu') ? 'lu'
+      : routePath.startsWith('/qc') ? 'qc'
       : 'fr';
     const key = `${component}:${category}`;
     if (!seen.has(key)) seen.set(key, { component, routePath, category });
