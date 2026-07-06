@@ -796,6 +796,11 @@ export default function Patrimoine() {
           <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8 }}>
             {txt.aboutP3Pre} <strong>{txt.aboutP3Rule}</strong> {txt.aboutP3Post}
           </p>
+          {locale === 'fr' && (
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.8, marginTop: 14 }}>
+              Ce montant final est votre <a href="/lexique/patrimoine-net" style={{ color: 'var(--gold)' }}>patrimoine net</a> projeté : la valeur de vos actifs une fois vos dettes (crédit immobilier restant, etc.) déduites.
+            </p>
+          )}
         </div>
 
         <div style={{ margin: '24px 0' }}>

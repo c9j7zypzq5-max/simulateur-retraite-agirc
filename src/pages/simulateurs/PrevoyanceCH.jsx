@@ -318,7 +318,7 @@ export default function PrevoyanceCH() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos du pilier 3a suisse">
+        <AccordionSection title="À propos du pilier 3a suisse" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Le pilier 3a est la composante volontaire et fiscalement avantageuse de la prévoyance individuelle suisse. Contrairement au pilier 3b (libre), le 3a est dit « lié » : les fonds sont bloqués jusqu'à la retraite et les possibilités de retrait anticipé sont limitées. En contrepartie, les versements sont <strong>entièrement déductibles du revenu imposable</strong> (IFD et impôt cantonal), ce qui génère une économie fiscale immédiate chaque année.
           </p>

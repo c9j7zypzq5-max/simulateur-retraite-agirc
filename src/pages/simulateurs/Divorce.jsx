@@ -383,7 +383,7 @@ export default function Divorce() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos de ce simulateur">
+        <AccordionSection title="À propos de ce simulateur" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Ce simulateur s'appuie sur les règles générales du droit de la famille français et le barème indicatif de pension alimentaire publié par le Ministère de la Justice (2022). Il couvre les deux principaux régimes matrimoniaux : la <strong>communauté réduite aux acquêts</strong> (régime légal par défaut) et la <strong>séparation de biens</strong>.
           </p>

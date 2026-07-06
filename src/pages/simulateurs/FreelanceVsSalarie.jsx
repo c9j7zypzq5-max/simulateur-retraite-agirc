@@ -368,7 +368,7 @@ export default function FreelanceVsSalarie() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos des calculs">
+        <AccordionSection title="À propos des calculs" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Ce simulateur utilise les barèmes de cotisations sociales et d'impôt sur le revenu 2025/2026. Les charges salariales (22%) et patronales (42%) sont des approximations pour un salarié du secteur privé — les taux exacts varient selon la convention collective, le niveau de salaire (dégressivité de l'assurance chômage) et les éventuels dispositifs d'exonération (apprentissage, zones franches…).
           </p>

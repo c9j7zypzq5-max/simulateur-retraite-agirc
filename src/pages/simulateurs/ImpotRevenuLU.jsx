@@ -287,7 +287,7 @@ export default function ImpotRevenuLU() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos de l'impôt sur le revenu luxembourgeois">
+        <AccordionSection title="À propos de l'impôt sur le revenu luxembourgeois" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             L'impôt sur le revenu luxembourgeois suit un barème progressif à 23 tranches, de 0 % (jusqu'à 13 230 €) à 42 % (au-delà de 234 870 €). Le montant final dépend de la <strong>classe d'impôt</strong> : la classe 1 (célibataires), la classe 1a (parents isolés, veufs/veuves, 65 ans et plus) et la classe 2 (couples mariés ou pacsés, avec quotient conjugal). S'ajoute systématiquement une <strong>contribution au fonds pour l'emploi</strong> de 7 %, portée à 9 % au-delà de 150 000 € (classes 1/1a) ou 300 000 € (classe 2) de revenu imposable.
           </p>

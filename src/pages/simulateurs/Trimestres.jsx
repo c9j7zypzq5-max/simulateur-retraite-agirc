@@ -148,6 +148,16 @@ export default function Trimestres() {
         <ShareBar params={valeurs} resultsRef={null} name={REPORT_PARAMS.name} report={REPORT_PARAMS} />
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/trimestres']} />
 
+        {/* À propos */}
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos des trimestres retraite</h2>
+          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Trimestres cotisés et trimestres assimilés</h3>
+            <p style={{ marginBottom: 16 }}>La durée d'assurance retraite se compose des trimestres <strong>cotisés</strong> (emploi salarié ou indépendant) et des trimestres <strong>assimilés</strong> (chômage indemnisé, arrêts maladie longue durée, congés maternité, invalidité, service militaire, majoration de durée d'assurance). Ces derniers ne rapportent aucun salaire pris en compte pour le calcul de la pension, mais comptent pleinement pour la durée d'assurance et l'accès au taux plein.</p>
+            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Combler des trimestres manquants</h3>
+            <p>Si le simulateur indique des trimestres manquants, il est possible d'en <a href="/lexique/rachat-trimestres" style={{ color: "var(--gold)" }}>racheter</a> auprès de votre caisse de retraite, dans la limite de 12 trimestres, pour réduire ou supprimer la décote applicable à votre pension.</p>
+          </div>
+        </div>
 
         <FaqSection items={FAQ_ITEMS} />
       </main>

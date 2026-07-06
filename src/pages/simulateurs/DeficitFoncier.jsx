@@ -413,7 +413,7 @@ export default function DeficitFoncier() {
         <FaqSection items={FAQ} />
 
         {/* À propos */}
-        <AccordionSection title="À propos du déficit foncier">
+        <AccordionSection title="À propos du déficit foncier" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             Le déficit foncier est un mécanisme fiscal permettant aux propriétaires bailleurs en régime réel de déduire leurs charges (hors intérêts d'emprunt) de leur revenu global dans la limite de 10 700 € par an. Il est particulièrement intéressant lors d'années de gros travaux de rénovation. L'excédent de déficit est reportable pendant 10 ans sur les revenus fonciers.
           </p>

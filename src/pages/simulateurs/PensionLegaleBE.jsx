@@ -291,7 +291,7 @@ export default function PensionLegaleBE() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        <AccordionSection title="À propos de la pension légale belge">
+        <AccordionSection title="À propos de la pension légale belge" defaultOpen>
           <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
             La pension légale belge (1er pilier) est calculée par le SDPSP (Service des pensions) pour les salariés et par l'INASTI pour les indépendants. Elle est basée sur le salaire moyen sur l'ensemble de la carrière, plafonné à un montant fixé chaque année (58 380 € en 2024), multiplié par un coefficient de carrière (années effectuées / 45) et un taux (60 % pour les isolés, 75 % pour les ménages).
           </p>
