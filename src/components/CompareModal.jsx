@@ -47,11 +47,11 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
     const snapOther = isB ? snapshotA : snapshotB;
     const own = snapOwn?.results?.find(x => x.label === rLabel);
     const other = snapOther?.results?.find(x => x.label === rLabel);
-    if (!own || !other) return "#0F1828";
+    if (!own || !other) return "var(--text)";
     const vo = parseNumeric(own.value);
     const vot = parseNumeric(other.value);
-    if (vo === null || vot === null || vo === vot) return "#0F1828";
-    return vo > vot ? "#15A06B" : "#c2410c";
+    if (vo === null || vot === null || vo === vot) return "var(--text)";
+    return vo > vot ? "var(--positive)" : "var(--negative)";
   }
 
   const verdictText = highlightDiff !== null && Math.abs(highlightDiff) > 0
@@ -61,62 +61,62 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
     : null;
 
   const columns = [
-    { entry: entryA, snap: snapshotA, hl: hlA, isRecommended: aIsRecommended, label: isEn ? "Scenario A" : "Scénario A", dotColor: "#94a3b8", border: "1px solid #e7eaf0" },
-    { entry: entryB, snap: snapshotB, hl: hlB, isRecommended: bIsRecommended, label: isEn ? "Scenario B" : "Scénario B", dotColor: "#2B5CE6", border: "1.5px solid #2B5CE6" },
+    { entry: entryA, snap: snapshotA, hl: hlA, isRecommended: aIsRecommended, label: isEn ? "Scenario A" : "Scénario A", dotColor: "#94a3b8", border: "1px solid var(--border)" },
+    { entry: entryB, snap: snapshotB, hl: hlB, isRecommended: bIsRecommended, label: isEn ? "Scenario B" : "Scénario B", dotColor: "var(--primary)", border: "1.5px solid var(--primary)" },
   ];
 
   return (
-    <div style={{ background: "#F5F6F8", borderRadius: 16, padding: "28px 30px 36px", marginTop: 24 }}>
+    <div style={{ background: "var(--bg)", borderRadius: 16, padding: "28px 30px 36px", marginTop: 24 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em", color: "#0F1828", margin: 0 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, letterSpacing: "-0.01em", color: "var(--text)", margin: 0 }}>
             {isEn ? "Compare two scenarios" : "Comparer deux scénarios"}
           </h2>
-          <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", color: "#b45309", background: "#fef3c7", border: "1px solid #fde68a", padding: "3px 9px", borderRadius: 20 }}>Pro</span>
+          <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", color: "var(--warning)", background: "#fef3c7", border: "1px solid #fde68a", padding: "3px 9px", borderRadius: 20 }}>Pro</span>
         </div>
         <button
           onClick={onClose}
-          style={{ background: "none", border: "none", color: "#5B6677", cursor: "pointer", fontSize: 18, padding: "4px 8px", lineHeight: 1 }}
+          style={{ background: "none", border: "none", color: "var(--text-secondary)", cursor: "pointer", fontSize: 18, padding: "4px 8px", lineHeight: 1 }}
           aria-label={isEn ? "Close" : "Fermer"}
         >✕</button>
       </div>
-      <p style={{ fontSize: 13, color: "#5B6677", margin: "0 0 22px" }}>
+      <p style={{ fontSize: 13, color: "var(--text-secondary)", margin: "0 0 22px" }}>
         {isEn ? "Side-by-side comparison, line by line." : "Visualisez l'écart, ligne par ligne."}
       </p>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
         {columns.map((col, idx) => (
-          <div key={idx} style={{ background: "#fff", border: col.isRecommended ? "1.5px solid #2B5CE6" : "1px solid #e7eaf0", borderRadius: 16, padding: 24, position: "relative" }}>
+          <div key={idx} style={{ background: "var(--surface)", border: col.isRecommended ? "1.5px solid var(--primary)" : "1px solid var(--border)", borderRadius: 16, padding: 24, position: "relative" }}>
             {col.isRecommended && (
-              <span style={{ position: "absolute", top: -11, right: 20, fontSize: 10, fontWeight: 700, textTransform: "uppercase", color: "#fff", background: "#15A06B", padding: "4px 11px", borderRadius: 20 }}>
+              <span style={{ position: "absolute", top: -11, right: 20, fontSize: 10, fontWeight: 700, textTransform: "uppercase", color: "#fff", background: "var(--positive)", padding: "4px 11px", borderRadius: 20 }}>
                 {isEn ? "Recommended" : "Recommandé"}
               </span>
             )}
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 18 }}>
               <span style={{ width: 10, height: 10, borderRadius: 3, background: col.dotColor, flexShrink: 0 }} />
-              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "#0F1828" }}>
+              <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)" }}>
                 {col.label} · {col.entry?.label}
               </span>
             </div>
 
             {col.hl ? (
               <>
-                <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "#8a93a3", fontWeight: 600, marginBottom: 8 }}>
+                <div style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-secondary)", fontWeight: 600, marginBottom: 8 }}>
                   {col.hl.label}
                 </div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 22 }}>
-                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 40, fontWeight: 600, color: "#0F1828", lineHeight: 1 }}>
+                  <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 40, fontWeight: 600, color: "var(--text)", lineHeight: 1 }}>
                     {col.hl.value}
                   </span>
                   {col.isRecommended && highlightDiff !== null && (
-                    <span style={{ fontSize: 14, fontWeight: 600, color: "#15A06B" }}>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: "var(--positive)" }}>
                       {formatDiff(bIsRecommended ? highlightDiff : -highlightDiff, suffix)}
                     </span>
                   )}
                 </div>
               </>
             ) : (
-              <div style={{ fontSize: 13, color: "#8a93a3", marginBottom: 22, lineHeight: 1.6 }}>
+              <div style={{ fontSize: 13, color: "var(--text-secondary)", marginBottom: 22, lineHeight: 1.6 }}>
                 {isEn ? "No result data (old simulation). Reopen it to recalculate." : "Pas de données (simulation ancienne). Rouvrez-la pour recalculer."}
               </div>
             )}
@@ -128,8 +128,8 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
                   const row = snap?.results?.find(r => r.label === label);
                   const color = getRowColor(idx === 1, label);
                   return (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "11px 0", borderTop: "1px solid #f0f2f6", fontSize: 13.5 }}>
-                      <span style={{ color: "#5B6677" }}>{label}</span>
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "11px 0", borderTop: "1px solid var(--border)", fontSize: 13.5 }}>
+                      <span style={{ color: "var(--text-secondary)" }}>{label}</span>
                       <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, color }}>{row?.value || "—"}</span>
                     </div>
                   );
@@ -140,7 +140,7 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
             {col.entry?.shareUrl && (
               <Link
                 to={col.entry.shareUrl.replace(/^https?:\/\/[^/]+/, "")}
-                style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, fontSize: 12.5, color: "#2B5CE6", textDecoration: "none", fontWeight: 600 }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, fontSize: 12.5, color: "var(--primary)", textDecoration: "none", fontWeight: 600 }}
               >
                 {isEn ? "Open simulation →" : "Ouvrir la simulation →"}
               </Link>
