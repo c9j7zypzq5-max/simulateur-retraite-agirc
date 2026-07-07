@@ -158,11 +158,60 @@ atteindre 10 k visites/mois sinon on gèle et on passe au suivant.
 
 ---
 
+## Créer l'envie — mécanismes de désir et de retour
+
+Le prix bas supprime le frein ; ces mécanismes créent la *raison* de s'inscrire,
+de revenir et de montrer le site aux autres. Classés par ratio impact/effort,
+les trois premiers sont candidats au MVP avec les Scénarios.
+
+1. **Score Simfinly (0–100)** — un score de santé financière / préparation
+   retraite calculé à la fin de chaque simulation, avec jauge colorée et
+   3 conseils pour l'améliorer. Les gens veulent *un chiffre* qui les résume,
+   et surtout l'améliorer : chaque conseil renvoie vers un autre simulateur
+   (boucle interne), et refaire la simulation pour voir le score monter est le
+   moteur de retour. Badge image partageable (« Mon score retraite : 72/100 —
+   et toi ? ») : le défi implicite fait venir les proches.
+2. **Benchmark anonyme entre pairs** — « Vous épargnez plus que 68 % des
+   30–35 ans » à partir des données agrégées et anonymisées des simulations.
+   C'est la question que tout le monde se pose et que personne n'ose poser à
+   ses amis. Aucun site FR gratuit ne le propose : différenciateur fort,
+   irrésistible à partager. (Seuil : n ≥ 100 par tranche avant d'afficher,
+   mention transparente de la méthode.)
+3. **Pro gagné par l'action, pas seulement acheté** — publier son premier
+   scénario = 1 mois Pro offert ; chaque filleul parrainé = 1 mois offert.
+   Au prix fondateur, offrir un mois coûte moins d'1 € et transforme chaque
+   utilisateur en canal d'acquisition. L'envie naît aussi de « débloquer ».
+4. **Bilan annuel « Votre année financière »** (façon Spotify Wrapped) —
+   en décembre, carte animée récapitulant score, progression, simulations
+   faites, objectifs atteints. Rendez-vous annuel très partageable, presque
+   gratuit à produire avec l'infra OG existante.
+5. **Objectifs à progression visible** — l'utilisateur fixe un objectif
+   (apport, âge FIRE, pension cible), obtient une barre de progression, des
+   jalons célébrés (50 %, 75 %…) et peut rendre la barre publique sur son
+   profil. Se marie naturellement aux Scénarios remixables.
+6. **Défis communautaires saisonniers** — « 52 semaines d'épargne »,
+   « mois sans dépense superflue », avec carte avant/après partageable et
+   page de classement anonyme. Crée des pics de trafic récurrents et du
+   contenu social sans coût éditorial.
+7. **Rappels de progression** — « Il y a un an, votre score était de 61.
+   Où en êtes-vous ? » : e-mail annuel/semestriel automatique qui fait revenir
+   les comptes dormants au moment où ils peuvent constater un progrès.
+8. **Mises en avant éditoriales** — « Scénario de la semaine », top remixeurs
+   du mois sur la page d'accueil : la perspective d'être mis en avant pousse
+   les auteurs à soigner et promouvoir leurs scénarios.
+
+**Fil conducteur** : score → objectif → scénario publié → remix → benchmark.
+Chaque mécanisme alimente le suivant ; aucun n'exige de payer, tous donnent
+une raison de créer un compte — et le Pro fondateur à 0,99 € devient un achat
+d'impulsion au premier moment de fierté.
+
+---
+
 ## Monétisation — les flux, du plus sûr au plus ambitieux
 
 | Flux | Prix | Palier | Potentiel | Risque |
 |---|---|---|---|---|
-| Pro particulier (existant) | 2,99 €/mois · 19,90 €/an à créer | 0 | Moyen | Faible |
+| Pro particulier (existant) | lancement 0,99 €/mois · 9,90 €/an (fondateurs), puis 2,99 €/19,90 € | 0 | Moyen | Faible |
 | **Affiliation** (PER, AV, courtiers crédit, banques en ligne) | CPA 30–100 €/lead | 0 | **Élevé** | Faible |
 | Rapport one-shot (bilan retraite complet PDF, sans abonnement) | 9,90 € | 1 | Moyen | Faible |
 | Pro Conseiller B2B (marque blanche, dossiers clients) | 19–29 €/mois | 2 | Élevé | Moyen |
@@ -187,7 +236,8 @@ Points d'attention :
 ## Les 90 prochains jours (dans l'ordre)
 
 1. Funnel analytics complet + tableau de bord hebdo (visites, simulations, Pro, MRR).
-2. Plan annuel 19,90 € + écrans d'upsell contextuels.
+2. Offre fondateur (0,99 €/mois · 9,90 €/an à vie, 1 000 places, compteur visible)
+   + écrans d'upsell contextuels.
 3. 3 partenariats d'affiliation en ligne (PER, assurance-vie, courtier crédit).
 4. **MVP Scénarios publics** : publier + page publique + bouton « Remixer » sur
    3 simulateurs à fort potentiel émotionnel (FIRE, budget, retraite). Galerie
