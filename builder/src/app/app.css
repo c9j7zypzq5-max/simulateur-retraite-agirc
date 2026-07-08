@@ -1,0 +1,75 @@
+/* Palette du builder — reprise des variables du site principal (styles.css),
+   thème clair uniquement au MVP. Le rendu des calculateurs n'utilise PAS ces
+   variables : il est thémé par le client (--c-*). */
+
+:root {
+  --bg: #F5F6F8;
+  --surface: #ffffff;
+  --text: #0F1828;
+  --text-secondary: #5B6677;
+  --primary: #2B5CE6;
+  --primary-soft: #EAF0FF;
+  --border: #e7eaf0;
+  --negative: #dc2626;
+  --input-bg: #F5F6F8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+input, select, textarea, button { font-family: inherit; font-size: 13px; color: inherit; }
+
+input[type="text"], input[type="number"], input[type="url"], select, textarea {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-soft); border-color: var(--primary); }
+
+label > span.lbl {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+button.btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  font-weight: 600;
+}
+button.btn:hover { border-color: var(--primary); color: var(--primary); }
+button.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+button.icon {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  cursor: pointer;
+  line-height: 1;
+}
+button.icon:disabled { opacity: 0.35; cursor: default; }
+button.icon:not(:disabled):hover { border-color: var(--primary); color: var(--primary); }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+}

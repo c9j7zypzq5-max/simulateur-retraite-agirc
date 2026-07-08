@@ -1,0 +1,215 @@
+// LE composant de rendu — consommé tel quel par l'aperçu de l'éditeur, la
+// page hébergée (s.simfinly.com) et l'iframe embed. Interdiction de dupliquer
+// cette logique ailleurs : toute divergence entre surfaces est un bug.
+
+import { useMemo } from 'react';
+import type { Calculator, Field } from '../schema/types';
+import { evaluateSchema } from '../engine/evaluate';
+import { formatValue } from './format';
+import Chart from './Chart';
+import { t } from '../i18n';
+
+interface RendererProps {
+  calculator: Pick<Calculator, 'title' | 'theme' | 'schema'>;
+  values: Record<string, number>;
+  onChange: (fieldId: string, value: number) => void;
+  // Badge « Créé avec Simfinly » : retirable en Pro+ seulement (verrou serveur
+  // au Lot 3) ; toujours affiché au Lot 1.
+  showBadge?: boolean;
+}
+
+export default function CalculatorRenderer({ calculator, values, onChange, showBadge = true }: RendererProps) {
+  const { theme, schema } = calculator;
+  const evaluation = useMemo(() => evaluateSchema(schema, values), [schema, values]);
+
+  const styleVars = {
+    '--c-primary': theme.primary,
+    '--c-bg': theme.background,
+    '--c-text': theme.text,
+    background: 'var(--c-bg)',
+    color: 'var(--c-text)',
+    fontFamily: theme.font || "'Hanken Grotesk', system-ui, sans-serif",
+    borderRadius: 14,
+    padding: '22px 24px',
+    maxWidth: 560,
+    width: '100%',
+    boxSizing: 'border-box',
+  } as React.CSSProperties;
+
+  return (
+    <div style={styleVars}>
+      {theme.logoUrl && (
+        <img src={theme.logoUrl} alt="" style={{ maxHeight: 40, maxWidth: 180, marginBottom: 12, display: 'block' }} />
+      )}
+      <h2 style={{ margin: '0 0 18px', fontSize: 20, fontWeight: 700 }}>{calculator.title}</h2>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        {schema.fields.map((f) => (
+          <FieldInput key={f.id} field={f} value={values[f.id] ?? f.default} onChange={(v) => onChange(f.id, v)} />
+        ))}
+      </div>
+
+      {schema.results.length > 0 && (
+        <div style={{ marginTop: 22, padding: '16px 18px', borderRadius: 10, background: 'color-mix(in srgb, var(--c-primary) 8%, var(--c-bg))', display: 'flex', flexWrap: 'wrap', gap: '14px 28px' }}>
+          {schema.results.map((r, i) => (
+            <div key={i} style={{ minWidth: 120 }}>
+              <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 2 }}>{r.label}</div>
+              <div style={{ fontSize: r.size === 'lg' ? 28 : 18, fontWeight: 700, color: 'var(--c-primary)' }}>
+                {formatValue(evaluation.results[i], r.format)}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {schema.chart && (
+        <Chart
+          type={schema.chart.type}
+          items={schema.chart.items.map((it, i) => ({ label: it.label, value: evaluation.chartValues[i] }))}
+          primary={theme.primary}
+          fmt={(v) => formatValue(v, 'eur')}
+        />
+      )}
+
+      {showBadge && (
+        <div style={{ marginTop: 18, textAlign: 'center' }}>
+          <a
+            href="https://www.simfinly.com/pro?utm_source=badge&utm_medium=calculator"
+            target="_blank"
+            rel="noopener"
+            style={{ fontSize: 11, opacity: 0.55, color: 'var(--c-text)', textDecoration: 'none' }}
+          >
+            ⚡ {t('renderer.badge')}
+          </a>
+        </div>
+      )}
+    </div>
+  );
+}
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  boxSizing: 'border-box',
+  padding: '9px 12px',
+  borderRadius: 8,
+  border: '1px solid color-mix(in srgb, var(--c-text) 18%, transparent)',
+  background: 'transparent',
+  color: 'var(--c-text)',
+  fontSize: 15,
+  fontFamily: 'inherit',
+};
+
+function FieldInput({ field, value, onChange }: { field: Field; value: number; onChange: (v: number) => void }) {
+  const label = (
+    <span style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>
+      {field.label}
+      {field.suffix ? <span style={{ opacity: 0.6, fontWeight: 400 }}> ({field.suffix})</span> : null}
+    </span>
+  );
+
+  switch (field.type) {
+    case 'number':
+      return (
+        <label>
+          {label}
+          <input
+            type="number"
+            value={Number.isFinite(value) ? value : ''}
+            min={field.min}
+            max={field.max}
+            step={field.step}
+            onChange={(e) => onChange(e.target.value === '' ? NaN : Number(e.target.value))}
+            style={inputStyle}
+          />
+        </label>
+      );
+    case 'slider':
+      return (
+        <label>
+          {label}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <input
+              type="range"
+              value={value}
+              min={field.min ?? 0}
+              max={field.max ?? 100}
+              step={field.step ?? 1}
+              onChange={(e) => onChange(Number(e.target.value))}
+              style={{ flex: 1, accentColor: 'var(--c-primary)' }}
+            />
+            <span style={{ fontVariantNumeric: 'tabular-nums', fontSize: 14, fontWeight: 600, minWidth: 64, textAlign: 'right' }}>
+              {new Intl.NumberFormat('fr-FR').format(value)} {field.suffix ?? ''}
+            </span>
+          </div>
+        </label>
+      );
+    case 'select':
+      return (
+        <label>
+          {label}
+          <select value={value} onChange={(e) => onChange(Number(e.target.value))} style={inputStyle}>
+            {(field.options ?? []).map((o, i) => (
+              <option key={i} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </label>
+      );
+    case 'radio':
+      return (
+        <div>
+          {label}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {(field.options ?? []).map((o, i) => {
+              const active = value === o.value;
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => onChange(o.value)}
+                  style={{
+                    padding: '7px 14px',
+                    borderRadius: 8,
+                    fontSize: 13,
+                    fontFamily: 'inherit',
+                    cursor: 'pointer',
+                    border: `1px solid ${active ? 'var(--c-primary)' : 'color-mix(in srgb, var(--c-text) 18%, transparent)'}`,
+                    background: active ? 'color-mix(in srgb, var(--c-primary) 12%, transparent)' : 'transparent',
+                    color: active ? 'var(--c-primary)' : 'inherit',
+                    fontWeight: active ? 600 : 400,
+                  }}
+                >
+                  {o.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    case 'toggle': {
+      const on = value === 1;
+      return (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+          <span style={{ fontSize: 13, fontWeight: 600 }}>{field.label}</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={on}
+            onClick={() => onChange(on ? 0 : 1)}
+            style={{
+              width: 42,
+              height: 24,
+              borderRadius: 12,
+              border: 'none',
+              cursor: 'pointer',
+              position: 'relative',
+              background: on ? 'var(--c-primary)' : 'color-mix(in srgb, var(--c-text) 25%, transparent)',
+              transition: 'background 0.15s',
+            }}
+          >
+            <span style={{ position: 'absolute', top: 3, left: on ? 21 : 3, width: 18, height: 18, borderRadius: '50%', background: '#fff', transition: 'left 0.15s' }} />
+          </button>
+        </div>
+      );
+    }
+  }
+}

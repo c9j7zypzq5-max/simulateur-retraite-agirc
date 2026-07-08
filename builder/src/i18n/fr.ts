@@ -1,0 +1,66 @@
+// Dictionnaire français — source de vérité (même convention de clés pointées
+// que src/i18n/fr.js du site principal).
+
+export default {
+  renderer: {
+    badge: 'Créé avec Simfinly',
+  },
+  editor: {
+    title: 'Éditeur',
+    untitled: 'Calculateur sans titre',
+    calculatorTitle: 'Titre du calculateur',
+    preview: 'Aperçu',
+    saved: 'Enregistré',
+    tabs: { fields: 'Champs', variables: 'Variables', results: 'Résultats', theme: 'Thème' },
+    fields: {
+      add: 'Ajouter un champ',
+      label: 'Libellé',
+      fieldId: 'Identifiant (utilisable en formule)',
+      type: 'Type',
+      default: 'Valeur par défaut',
+      min: 'Min',
+      max: 'Max',
+      step: 'Pas',
+      suffix: 'Unité',
+      options: 'Options (libellé = valeur, une par ligne)',
+      up: 'Monter',
+      down: 'Descendre',
+      remove: 'Supprimer',
+      types: {
+        number: 'Nombre',
+        slider: 'Curseur',
+        select: 'Liste déroulante',
+        radio: 'Boutons radio',
+        toggle: 'Oui / non',
+      },
+    },
+    variables: {
+      add: 'Ajouter une variable',
+      name: 'Nom',
+      formula: 'Formule',
+      help: 'Les formules référencent les champs et les variables précédentes. Fonctions : IF, AND, OR, MIN, MAX, ROUND, BAREME.',
+    },
+    results: {
+      add: 'Ajouter un résultat',
+      max: '4 résultats maximum',
+      label: 'Libellé',
+      formula: 'Formule',
+      format: 'Format',
+      formats: { eur: '€', pct: '%', number: 'Nombre' },
+      size: 'Taille',
+      sizes: { lg: 'Grand', md: 'Moyen' },
+      chart: 'Graphique',
+      chartNone: 'Aucun',
+      chartBars: 'Barres',
+      chartDonut: 'Donut',
+      chartItems: 'Séries du graphique',
+    },
+    theme: {
+      primary: 'Couleur principale',
+      background: 'Couleur de fond',
+      text: 'Couleur du texte',
+      logoUrl: 'URL du logo',
+    },
+    errors: 'Erreurs de formules',
+  },
+} as const;
