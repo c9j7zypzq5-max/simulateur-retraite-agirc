@@ -121,7 +121,19 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
 - URL de logo non validée (le rendu est chez l'auteur au Lot 1) : ajouter une
   contrainte https:// au Lot 2 quand le rendu devient public.
 
-## Prérequis externes (bloquants Lot 2/3, à fournir)
-1. Projet Supabase région EU + clés (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`, service role).
-2. Compte Stripe test + 2 prix (Pro/Premium).
-3. DNS `app.` et `s.` simfinly.com → Vercel.
+## Prérequis externes
+1. ✅ **Supabase EU provisionné** — projet existant `supabase-simfinly`
+   (`gzwtfayxmpinhniulxed`, région eu-west-3 Paris) réutilisé plutôt que d'en
+   créer un second (YAGNI, zéro coût supplémentaire). Schéma builder appliqué :
+   4 tables `builder_*` + RLS + trigger `updated_at` (migration
+   `builder/supabase/migrations/0001_builder_mvp_schema.sql`). Advisor sécurité :
+   seule alerte propre corrigée (search_path figé) ; les autres préexistent au site.
+   Clés dans `builder/.env.example`.
+2. Compte Stripe test + 2 prix (Pro/Premium) — bloquant Lot 3.
+3. DNS `app.` et `s.` simfinly.com → Vercel — bloquant déploiement Lot 2.
+
+### Décision : projet Supabase partagé site + builder
+Auth partagée (`auth.users`), données isolées par RLS et préfixe `builder_`.
+Un utilisateur du site et du builder est le même compte Supabase. Séparation en
+projet dédié possible plus tard sans changer le code applicatif (mêmes noms de
+tables, autre URL/clé).
