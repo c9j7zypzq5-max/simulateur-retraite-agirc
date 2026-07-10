@@ -14,20 +14,26 @@ et TypeScript. Raisons :
 
 - Le site principal est plafonné à 13 fonctions serverless Vercel ; le builder
   sera un **projet Vercel séparé** (Root Directory = `builder/`) portant
-  `app.simfinly.com` et `s.simfinly.com` — zéro impact sur le site existant.
+  `app.simfinly.com` — zéro impact sur le site existant.
 - Budget JS de la page publique (< 100 ko) isolé du bundle du site principal.
 - Stack imposée (React 18 + TS) différente du site (React 19 + JS) : pas de
   conflit de dépendances grâce au package.json séparé.
 
-### Deux entrées Vite, un seul projet Vercel builder
+### Un seul sous-domaine, deux entrées Vite (décision révisée)
 
-- `index.html` → SPA du builder (`app.simfinly.com`) : auth, dashboard,
-  éditeur, soumissions, landing.
-- `s.html` → runtime public léger (`s.simfinly.com/{slug}`) : rendu du
-  calculateur seul. L'embed est une iframe pointant vers
-  `s.simfinly.com/{slug}?embed=1` injectée par un script une-ligne
-  (`embed.js`, servi statiquement). Routage par en-tête `host` dans
-  `builder/vercel.json`.
+Un seul DNS à poser (`app.simfinly.com`), routage par chemin plutôt que par
+sous-domaine — même isolation de bundle et de SEO, sans complexité DNS
+supplémentaire :
+
+- `index.html` → SPA du builder (`app.simfinly.com/`) : auth, dashboard,
+  éditeur, soumissions, landing. `noindex`.
+- `s.html` → runtime public léger (`app.simfinly.com/s/{slug}`) : rendu du
+  calculateur seul, indexé. L'embed est une iframe pointant vers
+  `app.simfinly.com/s/{slug}?embed=1` injectée par un script une-ligne
+  (`embed.js`, servi statiquement). Routage par chemin dans
+  `builder/vercel.json` (`rewrites` : `/s/*` → `s.html`, reste → `index.html`).
+- `s.simfinly.com` reste une option future si l'isolation par sous-domaine
+  devient nécessaire (aucun changement de code, juste un domaine Vercel de plus).
 
 ### Réutilisation du repo existant
 
