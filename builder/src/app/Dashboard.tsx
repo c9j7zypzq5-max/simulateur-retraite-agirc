@@ -5,7 +5,9 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
 import { ensureWorkspace, listCalculators, createCalculator, type CalculatorListItem } from '../lib/db';
-import { BLANK_SCHEMA, SAMPLE_SCHEMA } from '../schema/defaults';
+import { BLANK_SCHEMA } from '../schema/defaults';
+import { TEMPLATES } from '../schema/templates';
+import type { CalculatorSchema } from '../schema/types';
 import { t } from '../i18n';
 
 export default function Dashboard() {
@@ -29,13 +31,12 @@ export default function Dashboard() {
     }
   }
 
-  async function handleNew(kind: 'blank' | 'sample') {
+  async function handleNew(title: string, schema: CalculatorSchema) {
     setCreating(true);
     setError(null);
     try {
       const workspaceId = await ensureWorkspace();
-      const title = kind === 'sample' ? 'Mensualité de prêt' : t('editor.untitled');
-      const id = await createCalculator(workspaceId, title, kind === 'sample' ? SAMPLE_SCHEMA : BLANK_SCHEMA);
+      const id = await createCalculator(workspaceId, title, schema);
       navigate(`/editor/${id}`);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -55,13 +56,15 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>
-        <button className="btn primary" disabled={creating} onClick={() => handleNew('blank')}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 18, flexWrap: 'wrap' }}>
+        <button className="btn primary" disabled={creating} onClick={() => handleNew(t('editor.untitled'), BLANK_SCHEMA)}>
           + {t('dashboard.newBlank')}
         </button>
-        <button className="btn" disabled={creating} onClick={() => handleNew('sample')}>
-          + {t('dashboard.newSample')}
-        </button>
+        {TEMPLATES.map((tpl) => (
+          <button key={tpl.id} className="btn" disabled={creating} title={tpl.description} onClick={() => handleNew(tpl.name, tpl.schema)}>
+            + {tpl.name}
+          </button>
+        ))}
       </div>
 
       {error && <p style={{ color: 'var(--negative)', fontSize: 13 }}>{error}</p>}

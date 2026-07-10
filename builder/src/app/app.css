@@ -46,16 +46,24 @@ label > span.lbl {
   letter-spacing: 0.04em;
 }
 
-button.btn {
+/* .btn s'applique aux <button> comme aux <a>/<Link> (CTA de la landing,
+   liens du dashboard) — ne pas restreindre le sélecteur à button. */
+.btn {
+  display: inline-block;
   padding: 7px 14px;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
   cursor: pointer;
   font-weight: 600;
+  font-size: 13px;
+  color: inherit;
+  text-decoration: none;
+  text-align: center;
 }
-button.btn:hover { border-color: var(--primary); color: var(--primary); }
-button.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn:hover { border-color: var(--primary); color: var(--primary); }
+.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+.btn.primary:hover { color: #fff; opacity: 0.92; }
 button.icon {
   padding: 4px 8px;
   border-radius: 6px;

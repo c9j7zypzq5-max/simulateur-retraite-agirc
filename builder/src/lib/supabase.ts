@@ -8,10 +8,14 @@ const url = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
 if (!url || !anonKey) {
-  // Message explicite en dev : évite un échec opaque au premier appel réseau.
+  // Fail-soft : createClient('') jette à l'IMPORT et emporterait toute l'app,
+  // landing publique comprise. Avec un placeholder, la page se rend et seuls
+  // les appels réseau échouent (avec ce warn pour expliquer pourquoi).
   console.warn('[builder] VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY manquants — voir builder/.env.example');
 }
 
-export const supabase = createClient(url ?? '', anonKey ?? '', {
-  auth: { persistSession: true, autoRefreshToken: true },
-});
+export const supabase = createClient(
+  url || 'https://env-manquant.invalid',
+  anonKey || 'env-manquant',
+  { auth: { persistSession: true, autoRefreshToken: true } },
+);

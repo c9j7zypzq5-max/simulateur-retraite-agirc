@@ -77,8 +77,10 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
 
       {showBadge && (
         <div style={{ marginTop: 18, textAlign: 'center' }}>
+          {/* Cible = la landing du builder (boucle virale du produit), même
+              origine que la page publique/l'embed : URL relative. */}
           <a
-            href="https://www.simfinly.com/pro?utm_source=badge&utm_medium=calculator"
+            href="/?utm_source=badge&utm_medium=calculator"
             target="_blank"
             rel="noopener"
             style={{ fontSize: 11, opacity: 0.55, color: 'var(--c-text)', textDecoration: 'none' }}
