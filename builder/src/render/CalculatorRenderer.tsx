@@ -13,12 +13,16 @@ interface RendererProps {
   calculator: Pick<Calculator, 'title' | 'theme' | 'schema'>;
   values: Record<string, number>;
   onChange: (fieldId: string, value: number) => void;
-  // Badge « Créé avec Simfinly » : retirable en Pro+ seulement (verrou serveur
-  // au Lot 3) ; toujours affiché au Lot 1.
+  // Badge « Créé avec Simfinly » : retirable en Pro+ seulement (verrou serveur,
+  // voir calculator.hideBadge côté appelant).
   showBadge?: boolean;
+  // Capture email (Pro+) : masque le bloc résultats/graphique tant que
+  // l'email n'a pas été saisi. Le formulaire de capture lui-même vit dans
+  // PublicCalculator, pas ici — ce composant reste un pur rendu.
+  hideResults?: boolean;
 }
 
-export default function CalculatorRenderer({ calculator, values, onChange, showBadge = true }: RendererProps) {
+export default function CalculatorRenderer({ calculator, values, onChange, showBadge = true, hideResults = false }: RendererProps) {
   const { theme, schema } = calculator;
   const evaluation = useMemo(() => evaluateSchema(schema, values), [schema, values]);
 
@@ -49,7 +53,7 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
         ))}
       </div>
 
-      {schema.results.length > 0 && (
+      {!hideResults && schema.results.length > 0 && (
         <div style={{ marginTop: 22, padding: '16px 18px', borderRadius: 10, background: 'color-mix(in srgb, var(--c-primary) 8%, var(--c-bg))', display: 'flex', flexWrap: 'wrap', gap: '14px 28px' }}>
           {schema.results.map((r, i) => (
             <div key={i} style={{ minWidth: 120 }}>
@@ -62,7 +66,7 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
         </div>
       )}
 
-      {schema.chart && (
+      {!hideResults && schema.chart && (
         <Chart
           type={schema.chart.type}
           items={schema.chart.items.map((it, i) => ({ label: it.label, value: evaluation.chartValues[i] }))}

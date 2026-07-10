@@ -71,6 +71,8 @@ export interface Theme {
   font?: string; // police custom : Premium uniquement (verrou Lot 3)
 }
 
+export type Plan = 'free' | 'pro' | 'premium';
+
 export interface Calculator {
   id: string;
   slug: string | null;
@@ -78,6 +80,12 @@ export interface Calculator {
   status: 'draft' | 'published';
   theme: Theme;
   schema: CalculatorSchema;
+  // Verrous de plan (Lot 3) — la valeur effective est toujours clampée côté
+  // serveur (triggers Postgres) ; ces champs reflètent ce que la base a
+  // accepté, jamais une intention client non vérifiée.
+  hideBadge: boolean;
+  captureEmail: boolean;
+  overFreeQuota: boolean;
   createdAt: string;
   updatedAt: string;
 }

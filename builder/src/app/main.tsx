@@ -6,6 +6,7 @@ import RequireAuth from './auth/RequireAuth';
 import Login from './auth/Login';
 import Dashboard from './Dashboard';
 import Editor from './Editor';
+import Submissions from './Submissions';
 import './app.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<RequireAuth><Dashboard /></RequireAuth>} />
           <Route path="/editor/:id" element={<RequireAuth><Editor /></RequireAuth>} />
+          <Route path="/submissions" element={<RequireAuth><Submissions /></RequireAuth>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>

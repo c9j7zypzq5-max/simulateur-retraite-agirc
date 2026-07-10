@@ -159,6 +159,37 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
   second point d'entrée HTML). Pour tester en local : ouvrir `/s.html`
   directement ou simuler le chemin via `history.replaceState`.
 
+### Dettes assumées — Lot 3 (revue du 2026-07-10)
+- **Fuite trouvée et corrigée en vérification** : la fonction SQL
+  `builder_workspace_plan(uuid)` était appelable en RPC directe par un
+  visiteur anonyme (`/rest/v1/rpc/builder_workspace_plan?p_workspace_id=...`),
+  révélant le plan de n'importe quel workspace en devinant son UUID. `revoke
+  ... from public` seul ne suffisait pas : Supabase accorde `EXECUTE` à
+  `anon`/`authenticated` par un privilège par défaut indépendant de `PUBLIC`
+  sur les nouvelles fonctions du schéma public. Corrigé en révoquant
+  explicitement `anon, authenticated` — vérifié après coup (RPC → 401).
+- Pas de rate limiting sur `api/stripe.js` (le site principal utilise Upstash
+  Redis, non provisionné pour le builder). Trafic attendu faible au MVP ;
+  à ajouter si abusé.
+- `over_free_quota` : fenêtre glissante de 30 jours plutôt qu'un vrai
+  calendrier mensuel, pour éviter un job de remise à zéro (pg_cron). Cohérent
+  avec les compteurs « 7 j » déjà utilisés ailleurs dans le produit.
+- Quota de calculateurs publiés compté par plan (free=1, pro=10,
+  premium=illimité) — les brouillons ne comptent pas, seul le nombre de
+  calculateurs *publiés* est limité, conforme à la spec produit.
+- **Stripe non vérifiable en direct** : écrit selon le pattern éprouvé de
+  `api/stripe.js` (site principal) mais sans clés réelles fournies. Chaque
+  action répond `500 "Stripe not configured"` tant que
+  `STRIPE_SECRET_KEY`/`STRIPE_PRO_PRICE_ID`/`STRIPE_PREMIUM_PRICE_ID`/
+  `STRIPE_WEBHOOK_SECRET` ne sont pas renseignés (fail-soft, pas de crash).
+  L'effet du webhook (upsert `builder_subscriptions`) a été simulé par écriture
+  SQL directe et vérifié de bout en bout (déclenche bien les triggers de
+  déverrouillage).
+- Vérification live via navigateur toujours impossible dans ce bac à sable
+  (même limitation proxy/Chromium que Lot 2) ; parcours revérifié en REST
+  direct avec un compte de test jetable, nettoyé intégralement après coup
+  (0 ligne résiduelle, confirmé par requête).
+
 ## Prérequis externes
 1. ✅ **Supabase EU provisionné** — projet existant `supabase-simfinly`
    (`gzwtfayxmpinhniulxed`, région eu-west-3 Paris) réutilisé plutôt que d'en
@@ -167,7 +198,10 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
    `builder/supabase/migrations/0001_builder_mvp_schema.sql`). Advisor sécurité :
    seule alerte propre corrigée (search_path figé) ; les autres préexistent au site.
    Clés dans `builder/.env.example`.
-2. Compte Stripe test + 2 prix (Pro/Premium) — bloquant Lot 3.
+2. **Compte Stripe test + 2 prix (Pro 29 €/mois, Premium 59 €/mois)** —
+   bloquant pour activer réellement `builder/api/stripe.js` (code prêt, voir
+   dettes Lot 3 ci-dessus). Variables à fournir dans Vercel : `STRIPE_SECRET_KEY`,
+   `STRIPE_PRO_PRICE_ID`, `STRIPE_PREMIUM_PRICE_ID`, `STRIPE_WEBHOOK_SECRET`.
 3. DNS `app.` et `s.` simfinly.com → Vercel — bloquant déploiement Lot 2.
 
 ### Décision : projet Supabase partagé site + builder

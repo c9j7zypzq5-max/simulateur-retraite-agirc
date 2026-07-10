@@ -2,7 +2,7 @@
 // soumissions 7 j) + bouton Nouveau (vierge ou exemple).
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
 import { ensureWorkspace, listCalculators, createCalculator, type CalculatorListItem } from '../lib/db';
 import { BLANK_SCHEMA, SAMPLE_SCHEMA } from '../schema/defaults';
@@ -47,7 +47,12 @@ export default function Dashboard() {
     <div style={{ maxWidth: 860, margin: '0 auto', padding: 24 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
         <h1 style={{ fontSize: 22, margin: 0 }}>{t('dashboard.title')}</h1>
-        <button className="btn" onClick={() => signOut()}>{t('auth.signOut')}</button>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <Link to="/submissions" className="btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
+            {t('submissions.title')}
+          </Link>
+          <button className="btn" onClick={() => signOut()}>{t('auth.signOut')}</button>
+        </div>
       </div>
 
       <div style={{ display: 'flex', gap: 8, marginBottom: 18 }}>

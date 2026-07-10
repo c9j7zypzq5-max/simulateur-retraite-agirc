@@ -19,13 +19,18 @@ export interface PublicCalculator {
   title: string;
   theme: Theme;
   schema: CalculatorSchema;
+  // Champs bruts (snake_case, wire format PostgREST) — verrous de plan
+  // recalculés côté serveur (voir builder_enforce_plan_limits / builder_touch_view_quota).
+  hide_badge: boolean;
+  capture_email: boolean;
+  over_free_quota: boolean;
 }
 
 export async function getPublishedBySlug(slug: string): Promise<PublicCalculator | null> {
   const params = new URLSearchParams({
     slug: `eq.${slug}`,
     status: 'eq.published',
-    select: 'id,title,theme,schema',
+    select: 'id,title,theme,schema,hide_badge,capture_email,over_free_quota',
     limit: '1',
   });
   const res = await fetch(`${BASE}/builder_calculators?${params}`, { headers: HEADERS });
@@ -47,11 +52,12 @@ export async function recordSubmission(
   calculatorId: string,
   payload: Record<string, number>,
   source: 'hosted' | 'embed',
+  email: string | null = null,
 ): Promise<void> {
   const res = await fetch(`${BASE}/builder_submissions`, {
     method: 'POST',
     headers: { ...HEADERS, Prefer: 'return=minimal' },
-    body: JSON.stringify({ calculator_id: calculatorId, payload, source, referrer: document.referrer || null }),
+    body: JSON.stringify({ calculator_id: calculatorId, payload, source, email, referrer: document.referrer || null }),
   });
   if (!res.ok) throw new Error(`Échec de l'enregistrement (${res.status})`);
 }

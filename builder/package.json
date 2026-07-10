@@ -14,7 +14,8 @@
     "expr-eval-fork": "^3.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.18.1"
+    "react-router-dom": "^7.18.1",
+    "stripe": "^22.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

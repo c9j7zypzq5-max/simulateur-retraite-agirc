@@ -4,24 +4,26 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import type { Calculator, CalculatorSchema, Theme } from '../schema/types';
+import type { Calculator, CalculatorSchema, Plan, Theme } from '../schema/types';
 import { evaluateSchema } from '../engine/evaluate';
 import CalculatorRenderer from '../render/CalculatorRenderer';
-import { ensureWorkspace, getCalculator, saveCalculator, publishCalculator } from '../lib/db';
+import { ensureWorkspace, getCalculator, getWorkspacePlan, saveCalculator, publishCalculator } from '../lib/db';
 import { t } from '../i18n';
 import FieldsPanel from './panels/FieldsPanel';
 import VariablesPanel from './panels/VariablesPanel';
 import ResultsPanel from './panels/ResultsPanel';
 import ThemePanel from './panels/ThemePanel';
+import PlanPanel from './panels/PlanPanel';
 import PublishPanel from './panels/PublishPanel';
 
-type Tab = 'fields' | 'variables' | 'results' | 'theme';
-const TABS: Tab[] = ['fields', 'variables', 'results', 'theme'];
+type Tab = 'fields' | 'variables' | 'results' | 'theme' | 'plan';
+const TABS: Tab[] = ['fields', 'variables', 'results', 'theme', 'plan'];
 
 export default function Editor() {
   const { id } = useParams<{ id: string }>();
 
   const [calc, setCalc] = useState<Calculator | null>(null);
+  const [plan, setPlan] = useState<Plan>('free');
   const [notFound, setNotFound] = useState(false);
   const [tab, setTab] = useState<Tab>('fields');
   const [previewValues, setPreviewValues] = useState<Record<string, number>>({});
@@ -40,6 +42,7 @@ export default function Editor() {
         return;
       }
       setCalc(row);
+      getWorkspacePlan(workspaceId).then(setPlan).catch(() => {});
     })();
   }, [id]);
 
@@ -54,7 +57,13 @@ export default function Editor() {
     }
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      saveCalculator(id, { title: calc.title, theme: calc.theme, schema: calc.schema })
+      saveCalculator(id, {
+        title: calc.title,
+        theme: calc.theme,
+        schema: calc.schema,
+        hideBadge: calc.hideBadge,
+        captureEmail: calc.captureEmail,
+      })
         .then(() => setSavedAt(new Date().toLocaleTimeString('fr-FR')))
         .catch(() => {});
     }, 600);
@@ -65,6 +74,8 @@ export default function Editor() {
     setCalc((c) => (c ? { ...c, schema: { ...c.schema, ...patch } } : c));
   const patchTheme = (patch: Partial<Theme>) =>
     setCalc((c) => (c ? { ...c, theme: { ...c.theme, ...patch } } : c));
+  const patchPlanFields = (patch: { hideBadge?: boolean; captureEmail?: boolean }) =>
+    setCalc((c) => (c ? { ...c, ...patch } : c));
 
   const errors = useMemo(
     () => (calc ? evaluateSchema(calc.schema, previewValues).errors : {}),
@@ -139,6 +150,9 @@ export default function Editor() {
           />
         )}
         {tab === 'theme' && <ThemePanel theme={calc.theme} onChange={patchTheme} />}
+        {tab === 'plan' && (
+          <PlanPanel plan={plan} hideBadge={calc.hideBadge} captureEmail={calc.captureEmail} onChange={patchPlanFields} />
+        )}
       </div>
 
       {/* Colonne droite : aperçu live */}
@@ -151,6 +165,7 @@ export default function Editor() {
             calculator={calc}
             values={previewValues}
             onChange={(fid, v) => setPreviewValues((p) => ({ ...p, [fid]: v }))}
+            showBadge={!calc.hideBadge}
           />
         </div>
         {errorEntries.length > 0 && (

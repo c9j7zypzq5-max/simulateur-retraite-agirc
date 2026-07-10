@@ -5,7 +5,7 @@
 
 import { supabase } from './supabase';
 import { slugify, withSuffix } from './slug';
-import type { Calculator, CalculatorSchema, Theme } from '../schema/types';
+import type { Calculator, CalculatorSchema, Plan, Theme } from '../schema/types';
 import { DEFAULT_THEME } from '../schema/types';
 
 interface CalculatorRow {
@@ -16,6 +16,9 @@ interface CalculatorRow {
   status: 'draft' | 'published';
   theme: Theme;
   schema: CalculatorSchema;
+  hide_badge: boolean;
+  capture_email: boolean;
+  over_free_quota: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -29,9 +32,24 @@ function fromRow(row: CalculatorRow): Calculator & { workspaceId: string } {
     status: row.status,
     theme: row.theme,
     schema: row.schema,
+    hideBadge: row.hide_badge,
+    captureEmail: row.capture_email,
+    overFreeQuota: row.over_free_quota,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+}
+
+// Indication UI uniquement (grise les options réservées Pro+) : le vrai
+// verrou est le trigger builder_enforce_plan_limits, qui reclampe toute
+// valeur incohérente indépendamment de ce que montre l'écran.
+export async function getWorkspacePlan(workspaceId: string): Promise<Plan> {
+  const { data } = await supabase
+    .from('builder_subscriptions')
+    .select('plan')
+    .eq('workspace_id', workspaceId)
+    .maybeSingle();
+  return (data?.plan as Plan | undefined) ?? 'free';
 }
 
 // Crée le workspace de l'utilisateur courant s'il n'existe pas encore
@@ -117,9 +135,13 @@ export async function getCalculator(id: string): Promise<(Calculator & { workspa
 
 export async function saveCalculator(
   id: string,
-  patch: { title?: string; theme?: Theme; schema?: CalculatorSchema },
+  patch: { title?: string; theme?: Theme; schema?: CalculatorSchema; hideBadge?: boolean; captureEmail?: boolean },
 ): Promise<void> {
-  const { error } = await supabase.from('builder_calculators').update(patch).eq('id', id);
+  const { hideBadge, captureEmail, ...rest } = patch;
+  const row: Record<string, unknown> = { ...rest };
+  if (hideBadge !== undefined) row.hide_badge = hideBadge;
+  if (captureEmail !== undefined) row.capture_email = captureEmail;
+  const { error } = await supabase.from('builder_calculators').update(row).eq('id', id);
   if (error) throw error;
 }
 
@@ -147,4 +169,46 @@ export async function publishCalculator(id: string, title: string, existingSlug:
     if (existingSlug) throw error;
   }
   throw new Error('Impossible de générer un slug unique après plusieurs tentatives');
+}
+
+// --- Soumissions (écran Soumissions) ---------------------------------------
+
+export interface Submission {
+  id: string;
+  calculatorId: string;
+  calculatorTitle: string;
+  payload: Record<string, number>;
+  email: string | null;
+  source: 'hosted' | 'embed';
+  createdAt: string;
+}
+
+// Aucun paramètre workspace : la RLS (builder_sub_owner_read) scope déjà le
+// résultat aux seuls calculateurs du workspace de l'utilisateur connecté.
+export async function listSubmissions(calculatorId?: string): Promise<Submission[]> {
+  let query = supabase
+    .from('builder_submissions')
+    .select('id, calculator_id, payload, email, source, created_at, builder_calculators(title)')
+    .order('created_at', { ascending: false });
+  if (calculatorId) query = query.eq('calculator_id', calculatorId);
+
+  const { data, error } = await query;
+  if (error) throw error;
+
+  return (data ?? []).map((r) => {
+    // PostgREST renvoie un objet pour un embed *-à-1, mais le typage
+    // supabase-js (sans types générés) l'infère parfois en tableau : on gère
+    // les deux formes runtime possibles.
+    const rel = r.builder_calculators as unknown as { title: string } | { title: string }[] | null;
+    const calculatorTitle = (Array.isArray(rel) ? rel[0]?.title : rel?.title) ?? '—';
+    return {
+      id: r.id as string,
+      calculatorId: r.calculator_id as string,
+      calculatorTitle,
+      payload: r.payload as Record<string, number>,
+      email: r.email as string | null,
+      source: r.source as 'hosted' | 'embed',
+      createdAt: r.created_at as string,
+    };
+  });
 }

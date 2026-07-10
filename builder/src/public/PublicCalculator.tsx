@@ -22,6 +22,15 @@ export default function PublicCalculator() {
   const [values, setValues] = useState<Record<string, number>>({});
   const [submitState, setSubmitState] = useState<'idle' | 'sending' | 'sent'>('idle');
 
+  // Capture email (Pro+, calc.capture_email) : les résultats restent masqués
+  // tant que ce formulaire n'a pas été validé. Le valider EST la soumission
+  // (email attaché) — pas de double action avec le bouton « Enregistrer ».
+  const [emailUnlocked, setEmailUnlocked] = useState(false);
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [gateSubmitting, setGateSubmitting] = useState(false);
+  const [gateError, setGateError] = useState<string | null>(null);
+
   useEffect(() => {
     const slug = slugFromPath();
     if (!slug) { setStatus('notfound'); return; }
@@ -43,6 +52,8 @@ export default function PublicCalculator() {
     );
   }
 
+  const needsGate = calc.capture_email && !emailUnlocked;
+
   async function handleSubmit() {
     if (!calc) return;
     setSubmitState('sending');
@@ -54,6 +65,22 @@ export default function PublicCalculator() {
     }
   }
 
+  async function handleEmailGate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!calc) return;
+    if (!consent) { setGateError('Merci de cocher la case de consentement.'); return; }
+    setGateSubmitting(true);
+    setGateError(null);
+    try {
+      await recordSubmission(calc.id, values, isEmbed ? 'embed' : 'hosted', email);
+      setEmailUnlocked(true);
+    } catch {
+      setGateError('Une erreur est survenue, réessayez.');
+    } finally {
+      setGateSubmitting(false);
+    }
+  }
+
   return (
     <div style={{ minHeight: isEmbed ? undefined : '100vh', display: 'flex', justifyContent: 'center', padding: isEmbed ? 0 : 24 }}>
       <div style={{ width: '100%', maxWidth: 560 }}>
@@ -61,17 +88,52 @@ export default function PublicCalculator() {
           calculator={calc}
           values={values}
           onChange={(id, v) => setValues((p) => ({ ...p, [id]: v }))}
+          showBadge={!calc.hide_badge}
+          hideResults={needsGate}
         />
-        <div style={{ textAlign: 'center', marginTop: 12 }}>
-          <button
-            className="btn primary"
-            disabled={submitState !== 'idle'}
-            onClick={handleSubmit}
-            style={{ width: '100%', maxWidth: 560 }}
-          >
-            {submitState === 'sent' ? '✓ Enregistré' : t('public.saveCta')}
-          </button>
-        </div>
+
+        {needsGate ? (
+          <form onSubmit={handleEmailGate} className="card" style={{ marginTop: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <strong style={{ fontSize: 14 }}>{t('public.emailGateTitle')}</strong>
+              <p style={{ margin: '4px 0 0', fontSize: 12, color: 'var(--text-secondary)' }}>{t('public.emailGateHelp')}</p>
+            </div>
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="vous@exemple.com"
+            />
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
+              <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} style={{ marginTop: 2 }} />
+              {t('public.emailGateConsent')}
+            </label>
+            {gateError && <p style={{ margin: 0, color: 'var(--negative)', fontSize: 12 }}>{gateError}</p>}
+            <button className="btn primary" type="submit" disabled={gateSubmitting}>
+              {gateSubmitting ? '…' : t('public.emailGateSubmit')}
+            </button>
+          </form>
+        ) : (
+          !calc.capture_email && (
+            <div style={{ textAlign: 'center', marginTop: 12 }}>
+              <button
+                className="btn primary"
+                disabled={submitState !== 'idle'}
+                onClick={handleSubmit}
+                style={{ width: '100%', maxWidth: 560 }}
+              >
+                {submitState === 'sent' ? '✓ Enregistré' : t('public.saveCta')}
+              </button>
+            </div>
+          )
+        )}
+
+        {calc.over_free_quota && (
+          <div className="card" style={{ marginTop: 12, fontSize: 12, color: 'var(--text-secondary)' }}>
+            ⚠️ {t('public.upgradeBanner')}
+          </div>
+        )}
       </div>
     </div>
   );
