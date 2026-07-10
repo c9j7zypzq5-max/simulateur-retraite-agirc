@@ -69,6 +69,12 @@ type CalculatorSchema = {
 - **Un seul composant de rendu** `CalculatorRenderer` consommé par les trois
   surfaces (aperçu éditeur, page hébergée, iframe). Toute duplication interdite.
 - Thème JSON : couleurs, logo, police → variables CSS injectées.
+- **Page publique (`s.html`) : client REST nu (`lib/publicClient.ts`), pas le
+  SDK `@supabase/supabase-js`.** Le SDK embarque auth + realtime + storage
+  (inutiles pour 2 requêtes) et faisait passer le bundle public à 110 ko gzip,
+  au-dessus du budget. Avec fetch nu vers PostgREST : ~59 ko gzip. L'app
+  authentifiée (`lib/db.ts` + `lib/supabase.ts`) garde le SDK complet, sans
+  contrainte de poids.
 
 ## Découpage en lots (chaque lot = déployable et démontrable)
 
@@ -126,6 +132,32 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
   la cible pro ; à revalider quand la page publique visera un reach maximal.
 - URL de logo non validée (le rendu est chez l'auteur au Lot 1) : ajouter une
   contrainte https:// au Lot 2 quand le rendu devient public.
+
+### Dettes assumées — Lot 2 (revue du 2026-07-10)
+- Pas de validation d'unicité des identifiants de champs/variables toujours
+  pas traitée (reportée : n'est pas un problème de sécurité, juste d'UX).
+- URL de logo toujours non contrainte à https:// — la page publique est
+  maintenant live ; à corriger avant Lot 3 si un client saisit une URL http.
+- Pas de suppression de calculateur dans le dashboard (hors périmètre des 6
+  écrans listés dans le prompt produit). Contournement : republier avec un
+  autre titre. À ajouter seulement si demandé.
+- OG meta génériques (pas de titre/description dynamiques par calculateur
+  dans le HTML initial) : nécessiterait du SSR/prerendering, explicitement
+  hors périmètre MVP.
+- Environnement de vérification : ce bac à sable route les requêtes HTTPS via
+  un proxy (`HTTPS_PROXY`) que Chromium ne respecte pas nativement ; une fois
+  configuré, les appels `@supabase/supabase-js` depuis Chromium subissent un
+  `ERR_CONNECTION_RESET` après ~13 s (curl direct sur le même proxy fonctionne
+  en < 1 s). Le parcours complet a donc été vérifié en deux temps : logique
+  RLS/données via des appels REST directs (les 12 requêtes exactes émises par
+  `lib/db.ts`/`lib/publicClient.ts`, y compris les policies négatives), et
+  logique UI/React via Playwright pour tout ce qui ne dépend pas d'un aller-
+  retour réseau vers Supabase. Aucun signal que ceci affecterait Vercel/les
+  navigateurs réels — artefact de ce bac à sable, pas du code.
+- Rewrite `/s/(.*)` → `s.html` : seulement en prod (`vercel.json`). En dev
+  local, visiter `/s/{slug}` retombe sur l'app (pas de fallback Vite pour un
+  second point d'entrée HTML). Pour tester en local : ouvrir `/s.html`
+  directement ou simuler le chemin via `history.replaceState`.
 
 ## Prérequis externes
 1. ✅ **Supabase EU provisionné** — projet existant `supabase-simfinly`

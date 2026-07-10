@@ -1,13 +1,11 @@
-// Fabriques : calculateur vierge et exemple de démarrage de l'éditeur.
+// Schémas de départ proposés au clic sur « Nouveau » dans le dashboard.
 
-import type { Calculator, CalculatorSchema } from './types';
-import { DEFAULT_THEME } from './types';
+import type { CalculatorSchema } from './types';
 
-export function newId(): string {
-  return crypto.randomUUID();
-}
+// Choix « Vierge ».
+export const BLANK_SCHEMA: CalculatorSchema = { fields: [], variables: [], results: [], baremes: {} };
 
-// Exemple chargé au premier lancement : mensualité de prêt, le cas d'usage n°1.
+// Choix « Exemple » : mensualité de prêt, le cas d'usage n°1.
 // Sert aussi de démonstration des variables et du graphique.
 export const SAMPLE_SCHEMA: CalculatorSchema = {
   fields: [
@@ -38,17 +36,3 @@ export const SAMPLE_SCHEMA: CalculatorSchema = {
   },
   baremes: {},
 };
-
-export function blankCalculator(title: string, schema?: CalculatorSchema): Calculator {
-  const now = new Date().toISOString();
-  return {
-    id: newId(),
-    slug: null,
-    title,
-    status: 'draft',
-    theme: { ...DEFAULT_THEME },
-    schema: schema ?? { fields: [], variables: [], results: [], baremes: {} },
-    createdAt: now,
-    updatedAt: now,
-  };
-}
