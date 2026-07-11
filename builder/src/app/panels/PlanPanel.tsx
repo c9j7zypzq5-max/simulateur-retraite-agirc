@@ -12,7 +12,8 @@ interface PlanPanelProps {
   plan: Plan;
   hideBadge: boolean;
   captureEmail: boolean;
-  onChange: (patch: { hideBadge?: boolean; captureEmail?: boolean }) => void;
+  webhookUrl: string | null;
+  onChange: (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null }) => void;
 }
 
 function ToggleRow({
@@ -59,8 +60,9 @@ function ToggleRow({
   );
 }
 
-export default function PlanPanel({ plan, hideBadge, captureEmail, onChange }: PlanPanelProps) {
+export default function PlanPanel({ plan, hideBadge, captureEmail, webhookUrl, onChange }: PlanPanelProps) {
   const locked = plan === 'free';
+  const webhookLocked = plan !== 'premium';
   const [upgrading, setUpgrading] = useState<'pro' | 'premium' | null>(null);
   const [upgradeError, setUpgradeError] = useState<string | null>(null);
 
@@ -102,6 +104,21 @@ export default function PlanPanel({ plan, hideBadge, captureEmail, onChange }: P
         disabled={locked}
         onToggle={() => onChange({ captureEmail: !captureEmail })}
       />
+
+      {/* Webhook sortant — Premium uniquement (clampé à null côté serveur sinon). */}
+      <div className="card" style={{ opacity: webhookLocked ? 0.55 : 1 }}>
+        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>
+          {t('plan.webhook')} {webhookLocked && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>🔒 {t('plan.premiumOnly')}</span>}
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 8 }}>{t('plan.webhookHelp')}</div>
+        <input
+          type="url"
+          placeholder="https://votre-site.fr/webhook"
+          value={webhookUrl ?? ''}
+          disabled={webhookLocked}
+          onChange={(e) => onChange({ webhookUrl: e.target.value || null })}
+        />
+      </div>
     </div>
   );
 }

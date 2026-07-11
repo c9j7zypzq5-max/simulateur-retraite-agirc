@@ -86,6 +86,9 @@ export interface Calculator {
   hideBadge: boolean;
   captureEmail: boolean;
   overFreeQuota: boolean;
+  // Webhook sortant par soumission (Premium) : POST du payload vers cette URL
+  // https, déclenché en base (pg_net), jamais côté client.
+  webhookUrl: string | null;
   createdAt: string;
   updatedAt: string;
 }

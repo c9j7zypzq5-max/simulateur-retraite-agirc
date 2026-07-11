@@ -19,6 +19,7 @@ interface CalculatorRow {
   hide_badge: boolean;
   capture_email: boolean;
   over_free_quota: boolean;
+  webhook_url: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -35,9 +36,20 @@ function fromRow(row: CalculatorRow): Calculator & { workspaceId: string } {
     hideBadge: row.hide_badge,
     captureEmail: row.capture_email,
     overFreeQuota: row.over_free_quota,
+    webhookUrl: row.webhook_url,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
+}
+
+// Suppression de compte en libre-service (RGPD) : purge réelle via la RPC
+// builder_delete_account (SECURITY DEFINER, auth.uid() uniquement). Auth
+// partagée avec simfinly.com : c'est LE compte Simfinly qui est supprimé —
+// l'UI l'annonce explicitement avant l'appel.
+export async function deleteAccount(): Promise<void> {
+  const { error } = await supabase.rpc('builder_delete_account');
+  if (error) throw error;
+  await supabase.auth.signOut();
 }
 
 // Indication UI uniquement (grise les options réservées Pro+) : le vrai
@@ -135,12 +147,20 @@ export async function getCalculator(id: string): Promise<(Calculator & { workspa
 
 export async function saveCalculator(
   id: string,
-  patch: { title?: string; theme?: Theme; schema?: CalculatorSchema; hideBadge?: boolean; captureEmail?: boolean },
+  patch: {
+    title?: string;
+    theme?: Theme;
+    schema?: CalculatorSchema;
+    hideBadge?: boolean;
+    captureEmail?: boolean;
+    webhookUrl?: string | null;
+  },
 ): Promise<void> {
-  const { hideBadge, captureEmail, ...rest } = patch;
+  const { hideBadge, captureEmail, webhookUrl, ...rest } = patch;
   const row: Record<string, unknown> = { ...rest };
   if (hideBadge !== undefined) row.hide_badge = hideBadge;
   if (captureEmail !== undefined) row.capture_email = captureEmail;
+  if (webhookUrl !== undefined) row.webhook_url = webhookUrl;
   const { error } = await supabase.from('builder_calculators').update(row).eq('id', id);
   if (error) throw error;
 }

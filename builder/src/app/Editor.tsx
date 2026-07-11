@@ -63,6 +63,7 @@ export default function Editor() {
         schema: calc.schema,
         hideBadge: calc.hideBadge,
         captureEmail: calc.captureEmail,
+        webhookUrl: calc.webhookUrl,
       })
         .then(() => setSavedAt(new Date().toLocaleTimeString('fr-FR')))
         .catch(() => {});
@@ -74,7 +75,7 @@ export default function Editor() {
     setCalc((c) => (c ? { ...c, schema: { ...c.schema, ...patch } } : c));
   const patchTheme = (patch: Partial<Theme>) =>
     setCalc((c) => (c ? { ...c, theme: { ...c.theme, ...patch } } : c));
-  const patchPlanFields = (patch: { hideBadge?: boolean; captureEmail?: boolean }) =>
+  const patchPlanFields = (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null }) =>
     setCalc((c) => (c ? { ...c, ...patch } : c));
 
   const errors = useMemo(
@@ -151,7 +152,13 @@ export default function Editor() {
         )}
         {tab === 'theme' && <ThemePanel theme={calc.theme} onChange={patchTheme} />}
         {tab === 'plan' && (
-          <PlanPanel plan={plan} hideBadge={calc.hideBadge} captureEmail={calc.captureEmail} onChange={patchPlanFields} />
+          <PlanPanel
+            plan={plan}
+            hideBadge={calc.hideBadge}
+            captureEmail={calc.captureEmail}
+            webhookUrl={calc.webhookUrl}
+            onChange={patchPlanFields}
+          />
         )}
       </div>
 

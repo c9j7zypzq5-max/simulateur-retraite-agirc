@@ -18,6 +18,9 @@ export default {
     upgradeHint: 'Fonctionnalités réservées aux plans payants — passez Pro pour les activer.',
     upgradePro: 'Passer Pro — 29 €/mois',
     upgradePremium: 'Passer Premium — 59 €/mois',
+    premiumOnly: 'Premium',
+    webhook: 'Webhook par soumission',
+    webhookHelp: 'Chaque soumission est envoyée en POST (JSON) vers cette URL https.',
     hideBadge: 'Retirer le badge Simfinly',
     hideBadgeHelp: 'Masque la mention « Créé avec Simfinly » sur la page publique.',
     captureEmail: 'Capturer l\'email avant le résultat',
@@ -41,6 +44,10 @@ export default {
     signupSent: 'Compte créé — vérifiez vos emails pour confirmer.',
     magicSent: 'Lien de connexion envoyé par email.',
     signOut: 'Se déconnecter',
+    deleteAccount: 'Supprimer mon compte',
+    deleteAccountConfirm:
+      'Supprimer définitivement votre compte Simfinly ? Tous vos calculateurs, soumissions et données (y compris celles du site simfinly.com) seront effacés. Cette action est irréversible.',
+    deleteAccountError: 'La suppression a échoué, réessayez.',
   },
   landing: {
     signIn: 'Se connecter',

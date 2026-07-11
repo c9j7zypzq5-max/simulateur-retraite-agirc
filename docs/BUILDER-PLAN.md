@@ -159,6 +159,31 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
   second point d'entrée HTML). Pour tester en local : ouvrir `/s.html`
   directement ou simuler le chemin via `history.replaceState`.
 
+### Post-audit (2026-07-11) — dettes soldées
+- ✅ Payload de soumission borné (8 Ko) + email/referrer contraints (migration 0004).
+- ✅ `plan_features_snapshot` supprimée (verrous dynamiques assumés).
+- ✅ Badge redirigé vers la landing du builder (URL relative, même origine).
+- ✅ Landing publique sur `/` (visiteurs) : démos interactives des 3 templates,
+  pricing, CTA — indexable. Dashboard inchangé pour les connectés.
+- ✅ 3 templates convertis (prêt, frais de notaire, TJM micro-BNC) avec tests
+  de fidélité au centime contre les règles source du site principal.
+- ✅ Webhook sortant Premium : colonne `webhook_url` (https, clampée à null
+  hors premium par le trigger de plan), POST asynchrone pg_net à chaque
+  soumission (migration 0005). Vérifié en réel : HTTP 200 reçu d'un endpoint
+  externe.
+- ✅ Suppression de compte en libre-service (RGPD) : RPC `builder_delete_account`
+  (SECURITY DEFINER, `auth.uid()` uniquement, anon révoqué), bouton dans le
+  Dashboard avec confirmation explicite (auth partagée : le compte Simfinly
+  entier est purgé). Vérifié en réel : cascade complète, 0 ligne résiduelle.
+- ✅ Test e2e créer→publier→soumettre versionné (`builder/e2e/parcours.spec.ts`
+  + `playwright.config.ts`). Nécessite `E2E_EMAIL`/`E2E_PASSWORD` (compte de
+  test confirmé) ; se skippe proprement sans.
+- ✅ Fail-soft `lib/supabase.ts` : env manquante ne fait plus crasher l'app à
+  l'import (la landing se rend, seuls les appels réseau échouent).
+- Restent ouverts : rate limiting des écritures publiques (bot spam), police
+  custom Premium (theme.font sans UI), case HaveIBeenPwned (dashboard
+  Supabase, action utilisateur), thème sombre du builder.
+
 ### Dettes assumées — Lot 3 (revue du 2026-07-10)
 - **Fuite trouvée et corrigée en vérification** : la fonction SQL
   `builder_workspace_plan(uuid)` était appelable en RPC directe par un

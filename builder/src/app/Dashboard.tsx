@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
-import { ensureWorkspace, listCalculators, createCalculator, type CalculatorListItem } from '../lib/db';
+import { ensureWorkspace, listCalculators, createCalculator, deleteAccount, type CalculatorListItem } from '../lib/db';
 import { BLANK_SCHEMA } from '../schema/defaults';
 import { TEMPLATES } from '../schema/templates';
 import type { CalculatorSchema } from '../schema/types';
@@ -101,6 +101,26 @@ export default function Dashboard() {
           ))}
         </div>
       )}
+
+      {/* Suppression de compte en libre-service (RGPD) : purge réelle via la
+          RPC builder_delete_account — auth partagée, le compte Simfinly
+          entier disparaît, d'où la confirmation très explicite. */}
+      <div style={{ marginTop: 48, paddingTop: 16, borderTop: '1px solid var(--border)', textAlign: 'right' }}>
+        <button
+          className="btn"
+          style={{ color: 'var(--negative)', borderColor: 'var(--negative)', fontSize: 12 }}
+          onClick={async () => {
+            if (!window.confirm(t('auth.deleteAccountConfirm'))) return;
+            try {
+              await deleteAccount();
+            } catch {
+              setError(t('auth.deleteAccountError'));
+            }
+          }}
+        >
+          {t('auth.deleteAccount')}
+        </button>
+      </div>
     </div>
   );
 }
