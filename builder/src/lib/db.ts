@@ -97,42 +97,50 @@ export interface CalculatorListItem {
   submissionsSeven: number;
 }
 
-const SEVEN_DAYS_AGO = () => new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-
-async function countSince(table: 'builder_views' | 'builder_submissions', calculatorId: string): Promise<number> {
-  const { count } = await supabase
-    .from(table)
-    .select('id', { count: 'exact', head: true })
-    .eq('calculator_id', calculatorId)
-    .gte('created_at', SEVEN_DAYS_AGO());
-  return count ?? 0;
-}
-
+// Une seule requête sur la vue agrégée builder_calculator_stats (compteurs 7 j
+// pré-calculés côté serveur) — plus de N+1. La vue est security_invoker, la
+// RLS s'applique donc normalement.
 export async function listCalculators(workspaceId: string): Promise<CalculatorListItem[]> {
   const { data, error } = await supabase
-    .from('builder_calculators')
-    .select('id, title, status, slug')
+    .from('builder_calculator_stats')
+    .select('id, title, status, slug, views_7d, submissions_7d')
     .eq('workspace_id', workspaceId)
     .order('created_at', { ascending: false });
   if (error) throw error;
 
-  return Promise.all(
-    (data ?? []).map(async (c) => ({
-      ...c,
-      viewsSeven: await countSince('builder_views', c.id),
-      submissionsSeven: await countSince('builder_submissions', c.id),
-    })),
-  );
+  return (data ?? []).map((c) => ({
+    id: c.id as string,
+    title: c.title as string,
+    status: c.status as 'draft' | 'published',
+    slug: c.slug as string | null,
+    viewsSeven: (c.views_7d as number) ?? 0,
+    submissionsSeven: (c.submissions_7d as number) ?? 0,
+  }));
+}
+
+export async function deleteCalculator(id: string): Promise<void> {
+  const { error } = await supabase.from('builder_calculators').delete().eq('id', id);
+  if (error) throw error;
+}
+
+// Duplique un calculateur en brouillon (slug null, jamais publié) — thème
+// conservé, verrous de plan repartis à zéro (reclampés à l'insert par le
+// trigger).
+export async function duplicateCalculator(id: string): Promise<string> {
+  const src = await getCalculator(id);
+  if (!src) throw new Error('Calculateur introuvable');
+  return createCalculator(src.workspaceId, `${src.title} (copie)`, src.schema, src.theme);
 }
 
 export async function createCalculator(
   workspaceId: string,
   title: string,
   schema: CalculatorSchema,
+  theme: Theme = DEFAULT_THEME,
 ): Promise<string> {
   const { data, error } = await supabase
     .from('builder_calculators')
-    .insert({ workspace_id: workspaceId, title, schema, theme: DEFAULT_THEME })
+    .insert({ workspace_id: workspaceId, title, schema, theme })
     .select('id')
     .single();
   if (error) throw error;

@@ -4,7 +4,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from './auth/AuthContext';
-import { ensureWorkspace, listCalculators, createCalculator, deleteAccount, type CalculatorListItem } from '../lib/db';
+import {
+  ensureWorkspace,
+  listCalculators,
+  createCalculator,
+  duplicateCalculator,
+  deleteCalculator,
+  deleteAccount,
+  type CalculatorListItem,
+} from '../lib/db';
 import { BLANK_SCHEMA } from '../schema/defaults';
 import { TEMPLATES } from '../schema/templates';
 import type { CalculatorSchema } from '../schema/types';
@@ -41,6 +49,27 @@ export default function Dashboard() {
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
       setCreating(false);
+    }
+  }
+
+  async function handleDuplicate(id: string) {
+    setError(null);
+    try {
+      const newId = await duplicateCalculator(id);
+      navigate(`/editor/${newId}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  async function handleDelete(id: string, title: string) {
+    if (!window.confirm(t('dashboard.deleteConfirm').replace('{title}', title))) return;
+    setError(null);
+    try {
+      await deleteCalculator(id);
+      await load();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -96,7 +125,18 @@ export default function Dashboard() {
                 <div>{t('dashboard.views7')} : {c.viewsSeven}</div>
                 <div>{t('dashboard.submissions7')} : {c.submissionsSeven}</div>
               </div>
-              <button className="btn" onClick={() => navigate(`/editor/${c.id}`)}>{t('dashboard.open')}</button>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button className="btn" onClick={() => navigate(`/editor/${c.id}`)}>{t('dashboard.open')}</button>
+                <button className="btn" title={t('dashboard.duplicate')} onClick={() => handleDuplicate(c.id)}>⧉</button>
+                <button
+                  className="btn"
+                  title={t('dashboard.delete')}
+                  style={{ color: 'var(--negative)' }}
+                  onClick={() => handleDelete(c.id, c.title)}
+                >
+                  ✕
+                </button>
+              </div>
             </div>
           ))}
         </div>

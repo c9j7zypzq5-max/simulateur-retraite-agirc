@@ -85,6 +85,9 @@ export default {
     views7: 'Vues (7 j)',
     submissions7: 'Soumissions (7 j)',
     open: 'Ouvrir',
+    duplicate: 'Dupliquer',
+    delete: 'Supprimer',
+    deleteConfirm: 'Supprimer « {title} » et toutes ses soumissions ? Cette action est irréversible.',
   },
   publish: {
     button: 'Publier',
@@ -102,6 +105,8 @@ export default {
     calculatorTitle: 'Titre du calculateur',
     preview: 'Aperçu',
     saved: 'Enregistré',
+    saving: 'Enregistrement…',
+    saveError: 'Échec de l\'enregistrement — vos dernières modifications ne sont pas sauvegardées.',
     tabs: { fields: 'Champs', variables: 'Variables', results: 'Résultats', theme: 'Thème', plan: 'Plan' },
     fields: {
       add: 'Ajouter un champ',

@@ -27,7 +27,7 @@ export default function Editor() {
   const [notFound, setNotFound] = useState(false);
   const [tab, setTab] = useState<Tab>('fields');
   const [previewValues, setPreviewValues] = useState<Record<string, number>>({});
-  const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [saveState, setSaveState] = useState<{ status: 'idle' | 'saving' | 'saved' | 'error'; at?: string }>({ status: 'idle' });
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
 
@@ -56,6 +56,7 @@ export default function Editor() {
       return;
     }
     clearTimeout(timer.current);
+    setSaveState({ status: 'saving' });
     timer.current = setTimeout(() => {
       saveCalculator(id, {
         title: calc.title,
@@ -65,8 +66,10 @@ export default function Editor() {
         captureEmail: calc.captureEmail,
         webhookUrl: calc.webhookUrl,
       })
-        .then(() => setSavedAt(new Date().toLocaleTimeString('fr-FR')))
-        .catch(() => {});
+        .then(() => setSaveState({ status: 'saved', at: new Date().toLocaleTimeString('fr-FR') }))
+        // Ne plus avaler l'échec en silence : l'utilisateur doit savoir que sa
+        // dernière modification n'est pas persistée (session expirée, réseau…).
+        .catch(() => setSaveState({ status: 'error' }));
     }, 600);
     return () => clearTimeout(timer.current);
   }, [calc, id]);
@@ -136,8 +139,18 @@ export default function Editor() {
               {t(`editor.tabs.${tb}`)}
             </button>
           ))}
-          <span style={{ marginLeft: 'auto', alignSelf: 'center', fontSize: 11, color: 'var(--text-secondary)' }}>
-            {savedAt ? `${t('editor.saved')} · ${savedAt}` : ''}
+          <span
+            style={{
+              marginLeft: 'auto',
+              alignSelf: 'center',
+              fontSize: 11,
+              color: saveState.status === 'error' ? 'var(--negative)' : 'var(--text-secondary)',
+              fontWeight: saveState.status === 'error' ? 600 : 400,
+            }}
+          >
+            {saveState.status === 'saving' && t('editor.saving')}
+            {saveState.status === 'saved' && `${t('editor.saved')} · ${saveState.at}`}
+            {saveState.status === 'error' && `⚠ ${t('editor.saveError')}`}
           </span>
         </div>
 
