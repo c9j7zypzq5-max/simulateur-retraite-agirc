@@ -1,6 +1,6 @@
-/* Palette du builder — reprise des variables du site principal (styles.css),
-   thème clair uniquement au MVP. Le rendu des calculateurs n'utilise PAS ces
-   variables : il est thémé par le client (--c-*). */
+/* Palette du builder — reprise des variables du site principal (styles.css).
+   Le rendu des calculateurs n'utilise PAS ces variables : il est thémé par le
+   client (--c-*). */
 
 :root {
   --bg: #F5F6F8;
@@ -11,7 +11,27 @@
   --primary-soft: #EAF0FF;
   --border: #e7eaf0;
   --negative: #dc2626;
+  --positive: #15A06B;
   --input-bg: #F5F6F8;
+}
+
+/* Thème sombre automatique — UNIQUEMENT pour l'app builder (data-surface
+   posé par src/app/main.tsx). La page publique/embed (s.html) reste sur la
+   palette claire : une iframe sombre au milieu d'un site client clair serait
+   pire que l'absence de thème sombre. Palette sombre du site principal. */
+@media (prefers-color-scheme: dark) {
+  :root[data-surface='app'] {
+    --bg: #0B1220;
+    --surface: #131D30;
+    --text: #EAF0FA;
+    --text-secondary: #8593A8;
+    --primary: #5B8CFF;
+    --primary-soft: #1B2A45;
+    --border: #202C40;
+    --negative: #f87171;
+    --positive: #34D399;
+    --input-bg: #0B1220;
+  }
 }
 
 * { box-sizing: border-box; }
