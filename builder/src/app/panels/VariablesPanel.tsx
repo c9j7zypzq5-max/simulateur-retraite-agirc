@@ -1,12 +1,15 @@
 import type { Variable } from '../../schema/types';
 import { t } from '../../i18n';
 import { moveItem, removeItem, RowControls } from './listUtils';
+import FormulaInput from './FormulaInput';
 
 export default function VariablesPanel({
   variables,
+  fieldIds,
   onChange,
 }: {
   variables: Variable[];
+  fieldIds: string[];
   onChange: (v: Variable[]) => void;
 }) {
   const patch = (i: number, p: Partial<Variable>) =>
@@ -27,11 +30,12 @@ export default function VariablesPanel({
           </label>
           <label style={{ flex: 2 }}>
             <span className="lbl">{t('editor.variables.formula')}</span>
-            <input
-              type="text"
+            {/* Une variable ne peut référencer que les champs et les variables
+                déjà définies AU-DESSUS d'elle (évaluation séquentielle). */}
+            <FormulaInput
               value={v.formula}
-              style={{ fontFamily: 'ui-monospace, monospace' }}
-              onChange={(e) => patch(i, { formula: e.target.value })}
+              refs={[...fieldIds, ...variables.slice(0, i).map((x) => x.name)]}
+              onChange={(formula) => patch(i, { formula })}
             />
           </label>
           <RowControls

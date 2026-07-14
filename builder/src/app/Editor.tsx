@@ -155,11 +155,18 @@ export default function Editor() {
         </div>
 
         {tab === 'fields' && <FieldsPanel fields={calc.schema.fields} onChange={(fields) => patchSchema({ fields })} />}
-        {tab === 'variables' && <VariablesPanel variables={calc.schema.variables} onChange={(variables) => patchSchema({ variables })} />}
+        {tab === 'variables' && (
+          <VariablesPanel
+            variables={calc.schema.variables}
+            fieldIds={calc.schema.fields.map((f) => f.id)}
+            onChange={(variables) => patchSchema({ variables })}
+          />
+        )}
         {tab === 'results' && (
           <ResultsPanel
             results={calc.schema.results}
             chart={calc.schema.chart}
+            refs={[...calc.schema.fields.map((f) => f.id), ...calc.schema.variables.map((v) => v.name)]}
             onChange={(results, chart) => patchSchema({ results, chart })}
           />
         )}

@@ -1,16 +1,19 @@
 import type { Chart, ChartItem, ResultItem, ResultFormat } from '../../schema/types';
 import { t } from '../../i18n';
 import { moveItem, removeItem, RowControls } from './listUtils';
+import FormulaInput from './FormulaInput';
 
 const MAX_RESULTS = 4;
 
 export default function ResultsPanel({
   results,
   chart,
+  refs,
   onChange,
 }: {
   results: ResultItem[];
   chart: Chart | undefined;
+  refs: string[];
   onChange: (results: ResultItem[], chart: Chart | undefined) => void;
 }) {
   const patch = (i: number, p: Partial<ResultItem>) =>
@@ -31,12 +34,7 @@ export default function ResultsPanel({
           </label>
           <label style={{ flex: '2 1 180px' }}>
             <span className="lbl">{t('editor.results.formula')}</span>
-            <input
-              type="text"
-              value={r.formula}
-              style={{ fontFamily: 'ui-monospace, monospace' }}
-              onChange={(e) => patch(i, { formula: e.target.value })}
-            />
+            <FormulaInput value={r.formula} refs={refs} onChange={(formula) => patch(i, { formula })} />
           </label>
           <label style={{ width: 84 }}>
             <span className="lbl">{t('editor.results.format')}</span>
@@ -104,13 +102,14 @@ export default function ResultsPanel({
                   style={{ flex: 1 }}
                   onChange={(e) => patchChartItem(i, { label: e.target.value })}
                 />
-                <input
-                  type="text"
-                  placeholder={t('editor.results.formula')}
-                  value={it.formula}
-                  style={{ flex: 2, fontFamily: 'ui-monospace, monospace' }}
-                  onChange={(e) => patchChartItem(i, { formula: e.target.value })}
-                />
+                <div style={{ flex: 2 }}>
+                  <FormulaInput
+                    value={it.formula}
+                    refs={refs}
+                    placeholder={t('editor.results.formula')}
+                    onChange={(formula) => patchChartItem(i, { formula })}
+                  />
+                </div>
                 <button
                   className="icon"
                   title={t('editor.fields.remove')}

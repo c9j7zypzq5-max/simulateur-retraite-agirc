@@ -134,7 +134,13 @@ export default {
       add: 'Ajouter une variable',
       name: 'Nom',
       formula: 'Formule',
-      help: 'Les formules référencent les champs et les variables précédentes. Fonctions : IF, AND, OR, MIN, MAX, ROUND, BAREME.',
+      help: 'Les formules référencent les champs et les variables précédentes. Utilisez le bouton ƒ pour insérer un champ ou une fonction.',
+    },
+    formula: {
+      insert: 'Insérer un champ ou une fonction',
+      refs: 'Champs & variables',
+      functions: 'Fonctions',
+      noRefs: 'Ajoutez d\'abord des champs pour pouvoir les référencer.',
     },
     results: {
       add: 'Ajouter un résultat',
