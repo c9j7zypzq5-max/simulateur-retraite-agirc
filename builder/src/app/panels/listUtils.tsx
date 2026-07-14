@@ -15,6 +15,19 @@ export function removeItem<T>(list: T[], index: number): T[] {
   return list.filter((_, i) => i !== index);
 }
 
+// Ensemble des valeurs apparaissant plus d'une fois (détection de doublons
+// d'identifiants : champs et variables partagent le même scope d'évaluation,
+// un doublon en écrase silencieusement un autre).
+export function findDuplicates(values: string[]): Set<string> {
+  const seen = new Set<string>();
+  const dupes = new Set<string>();
+  for (const v of values) {
+    if (seen.has(v)) dupes.add(v);
+    seen.add(v);
+  }
+  return dupes;
+}
+
 export function RowControls({
   index,
   count,

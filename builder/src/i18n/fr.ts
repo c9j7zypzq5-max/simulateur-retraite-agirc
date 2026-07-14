@@ -122,6 +122,7 @@ export default {
       up: 'Monter',
       down: 'Descendre',
       remove: 'Supprimer',
+      duplicateId: 'Identifiant en double — il écrasera l\'autre dans les formules.',
       types: {
         number: 'Nombre',
         slider: 'Curseur',
@@ -135,6 +136,7 @@ export default {
       name: 'Nom',
       formula: 'Formule',
       help: 'Les formules référencent les champs et les variables précédentes. Utilisez le bouton ƒ pour insérer un champ ou une fonction.',
+      duplicateName: 'Nom déjà utilisé (champ ou variable) — collision dans les formules.',
     },
     formula: {
       insert: 'Insérer un champ ou une fonction',

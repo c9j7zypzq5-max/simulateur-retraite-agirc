@@ -1,6 +1,6 @@
 import type { Field, FieldType } from '../../schema/types';
 import { t } from '../../i18n';
-import { moveItem, removeItem, RowControls } from './listUtils';
+import { moveItem, removeItem, RowControls, findDuplicates } from './listUtils';
 
 const FIELD_TYPES: FieldType[] = ['number', 'slider', 'select', 'radio', 'toggle'];
 
@@ -35,6 +35,8 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
   const patch = (i: number, p: Partial<Field>) =>
     onChange(fields.map((f, j) => (j === i ? { ...f, ...p } : f)));
 
+  const dupeIds = findDuplicates(fields.map((f) => f.id));
+
   const add = () => {
     const label = `${t('editor.fields.label')} ${fields.length + 1}`;
     onChange([...fields, { id: slugifyId(label), type: 'number', label, default: 0 }]);
@@ -68,7 +70,17 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
           <div style={{ display: 'flex', gap: 8 }}>
             <label style={{ flex: 2 }}>
               <span className="lbl">{t('editor.fields.fieldId')}</span>
-              <input type="text" value={f.id} onChange={(e) => patch(i, { id: slugifyId(e.target.value) || f.id })} />
+              <input
+                type="text"
+                value={f.id}
+                onChange={(e) => patch(i, { id: slugifyId(e.target.value) || f.id })}
+                style={dupeIds.has(f.id) ? { borderColor: 'var(--negative)' } : undefined}
+              />
+              {dupeIds.has(f.id) && (
+                <span style={{ fontSize: 11, color: 'var(--negative)', display: 'block', marginTop: 2 }}>
+                  {t('editor.fields.duplicateId')}
+                </span>
+              )}
             </label>
             {f.type !== 'toggle' && (
               <label style={{ flex: 1 }}>
