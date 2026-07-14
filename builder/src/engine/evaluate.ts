@@ -45,6 +45,14 @@ function buildParser(baremes: Record<string, Tranche[]>): Parser {
     const f = Math.pow(10, d);
     return Math.round(v * f) / f;
   };
+  // Fonctions mathématiques usuelles pour les calculs financiers.
+  fns.ABS = Math.abs;
+  fns.SQRT = Math.sqrt;
+  fns.POW = Math.pow;
+  fns.FLOOR = Math.floor;
+  fns.CEIL = Math.ceil;
+  fns.LOG = Math.log; // logarithme naturel
+  fns.MOD = (a: number, b: number) => (b === 0 ? NaN : a % b);
   // Les barèmes sont référencés par nom : BAREME("ir2026", revenu).
   fns.BAREME = (nom: string, valeur: number) => {
     const table = baremes[nom];

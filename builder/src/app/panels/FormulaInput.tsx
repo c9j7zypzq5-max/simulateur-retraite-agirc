@@ -16,6 +16,12 @@ const FUNCTIONS: { label: string; insert: string; caret: number }[] = [
   { label: 'MIN', insert: 'MIN(, )', caret: 4 },
   { label: 'MAX', insert: 'MAX(, )', caret: 4 },
   { label: 'ROUND', insert: 'ROUND(, 2)', caret: 6 },
+  { label: 'ABS', insert: 'ABS()', caret: 4 },
+  { label: 'SQRT', insert: 'SQRT()', caret: 5 },
+  { label: 'POW', insert: 'POW(, )', caret: 4 },
+  { label: 'FLOOR', insert: 'FLOOR()', caret: 6 },
+  { label: 'CEIL', insert: 'CEIL()', caret: 5 },
+  { label: 'MOD', insert: 'MOD(, )', caret: 4 },
   { label: 'BAREME', insert: 'BAREME("", )', caret: 8 },
 ];
 

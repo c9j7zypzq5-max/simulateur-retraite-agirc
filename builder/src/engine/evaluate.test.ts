@@ -150,6 +150,32 @@ describe('evaluateSchema', () => {
     expect(r.results[1]).toBe(0);
   });
 
+  it('fonctions mathématiques ABS/SQRT/POW/FLOOR/CEIL/LOG/MOD', () => {
+    const s = schemaWith({
+      results: [
+        { label: 'abs', formula: 'ABS(-7)', format: 'number', size: 'md' },
+        { label: 'sqrt', formula: 'SQRT(144)', format: 'number', size: 'md' },
+        { label: 'pow', formula: 'POW(2, 10)', format: 'number', size: 'md' },
+        { label: 'mix', formula: 'FLOOR(3.9) + CEIL(3.1) + MOD(17, 5)', format: 'number', size: 'md' },
+      ],
+    });
+    const r = evaluateSchema(s, {});
+    expect(r.results[0]).toBe(7);
+    expect(r.results[1]).toBe(12);
+    expect(r.results[2]).toBe(1024);
+    expect(r.results[3]).toBe(3 + 4 + 2);
+    expect(r.errors).toEqual({});
+  });
+
+  it('MOD par zéro → NaN + erreur, pas d\'exception', () => {
+    const s = schemaWith({
+      results: [{ label: 'r', formula: 'MOD(5, 0)', format: 'number', size: 'lg' }],
+    });
+    const r = evaluateSchema(s, {});
+    expect(r.results[0]).toBeNaN();
+    expect(r.errors['results.0']).toBeTruthy();
+  });
+
   it('le graphique est évalué comme les résultats', () => {
     const s = schemaWith({
       fields: [{ id: 'x', type: 'number', label: 'x', default: 100 }],

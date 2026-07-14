@@ -29,7 +29,8 @@ export interface Variable {
   formula: string;
 }
 
-export type ResultFormat = 'eur' | 'pct' | 'number';
+// 'duration' : la valeur est un nombre de MOIS, affiché « X ans Y mois ».
+export type ResultFormat = 'eur' | 'pct' | 'number' | 'duration';
 
 export interface ResultItem {
   label: string;
@@ -44,7 +45,7 @@ export interface ChartItem {
 }
 
 export interface Chart {
-  type: 'bars' | 'donut';
+  type: 'bars' | 'hbars' | 'donut';
   items: ChartItem[];
 }
 

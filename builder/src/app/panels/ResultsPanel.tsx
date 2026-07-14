@@ -39,7 +39,7 @@ export default function ResultsPanel({
           <label style={{ width: 84 }}>
             <span className="lbl">{t('editor.results.format')}</span>
             <select value={r.format} onChange={(e) => patch(i, { format: e.target.value as ResultFormat })}>
-              {(['eur', 'pct', 'number'] as const).map((f) => (
+              {(['eur', 'pct', 'number', 'duration'] as const).map((f) => (
                 <option key={f} value={f}>{t(`editor.results.formats.${f}`)}</option>
               ))}
             </select>
@@ -87,6 +87,7 @@ export default function ResultsPanel({
           >
             <option value="none">{t('editor.results.chartNone')}</option>
             <option value="bars">{t('editor.results.chartBars')}</option>
+            <option value="hbars">{t('editor.results.chartHBars')}</option>
             <option value="donut">{t('editor.results.chartDonut')}</option>
           </select>
         </label>
