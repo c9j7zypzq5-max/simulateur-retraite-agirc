@@ -123,12 +123,15 @@ export default {
       down: 'Descendre',
       remove: 'Supprimer',
       duplicateId: 'Identifiant en double — il écrasera l\'autre dans les formules.',
+      showIf: 'N\'afficher que si…',
+      showIfNeedsPrev: 'placez ce champ après celui dont il dépend',
       types: {
         number: 'Nombre',
         slider: 'Curseur',
         select: 'Liste déroulante',
         radio: 'Boutons radio',
         toggle: 'Oui / non',
+        date: 'Date (→ âge en années)',
       },
     },
     variables: {

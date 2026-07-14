@@ -1,8 +1,9 @@
-import type { Field, FieldType } from '../../schema/types';
+import type { CompareOp, Field, FieldType, ShowIf } from '../../schema/types';
 import { t } from '../../i18n';
 import { moveItem, removeItem, RowControls, findDuplicates } from './listUtils';
+import { todayEpochDays, epochDaysToInput, inputToEpochDays } from '../../schema/date';
 
-const FIELD_TYPES: FieldType[] = ['number', 'slider', 'select', 'radio', 'toggle'];
+const FIELD_TYPES: FieldType[] = ['number', 'slider', 'select', 'radio', 'toggle', 'date'];
 
 // "Libellé = valeur" ligne à ligne ↔ options structurées.
 function parseOptions(text: string): Field['options'] {
@@ -53,7 +54,15 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
             </label>
             <label style={{ flex: 1 }}>
               <span className="lbl">{t('editor.fields.type')}</span>
-              <select value={f.type} onChange={(e) => patch(i, { type: e.target.value as FieldType })}>
+              <select
+                value={f.type}
+                onChange={(e) => {
+                  const type = e.target.value as FieldType;
+                  // Passer à « date » : la valeur par défaut devient aujourd'hui
+                  // (jours epoch) — un défaut numérique n'aurait aucun sens.
+                  patch(i, type === 'date' ? { type, default: todayEpochDays() } : { type });
+                }}
+              >
                 {FIELD_TYPES.map((ty) => (
                   <option key={ty} value={ty}>{t(`editor.fields.types.${ty}`)}</option>
                 ))}
@@ -82,12 +91,21 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
                 </span>
               )}
             </label>
-            {f.type !== 'toggle' && (
+            {f.type === 'date' ? (
+              <label style={{ flex: 1 }}>
+                <span className="lbl">{t('editor.fields.default')}</span>
+                <input
+                  type="date"
+                  value={epochDaysToInput(f.default)}
+                  onChange={(e) => patch(i, { default: inputToEpochDays(e.target.value) })}
+                />
+              </label>
+            ) : f.type !== 'toggle' ? (
               <label style={{ flex: 1 }}>
                 <span className="lbl">{t('editor.fields.default')}</span>
                 <input type="number" value={f.default} onChange={(e) => patch(i, { default: Number(e.target.value) || 0 })} />
               </label>
-            )}
+            ) : null}
           </div>
 
           {(f.type === 'number' || f.type === 'slider') && (
@@ -119,11 +137,74 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
               />
             </label>
           )}
+
+          {/* Affichage conditionnel : n'afficher ce champ que si un autre
+              champ remplit une condition. Choix limité aux champs définis
+              AVANT celui-ci (évite les cycles). */}
+          <ConditionEditor
+            field={f}
+            candidates={fields.slice(0, i).map((x) => x.id)}
+            onChange={(showIf) => patch(i, { showIf })}
+          />
         </div>
       ))}
       <button className="btn primary" onClick={add} style={{ alignSelf: 'flex-start' }}>
         + {t('editor.fields.add')}
       </button>
+    </div>
+  );
+}
+
+const OPS: CompareOp[] = ['==', '!=', '>', '>=', '<', '<='];
+
+function ConditionEditor({
+  field,
+  candidates,
+  onChange,
+}: {
+  field: Field;
+  candidates: string[];
+  onChange: (showIf: ShowIf | undefined) => void;
+}) {
+  const enabled = !!field.showIf;
+  return (
+    <div style={{ borderTop: '1px dashed var(--border)', paddingTop: 8 }}>
+      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-secondary)' }}>
+        <input
+          type="checkbox"
+          checked={enabled}
+          disabled={!enabled && candidates.length === 0}
+          onChange={(e) =>
+            onChange(e.target.checked ? { field: candidates[0] ?? '', op: '==', value: 1 } : undefined)
+          }
+        />
+        {t('editor.fields.showIf')}
+        {candidates.length === 0 && <span> — {t('editor.fields.showIfNeedsPrev')}</span>}
+      </label>
+      {enabled && field.showIf && (
+        <div style={{ display: 'flex', gap: 6, marginTop: 6, alignItems: 'center', flexWrap: 'wrap' }}>
+          <select
+            value={field.showIf.field}
+            onChange={(e) => onChange({ ...field.showIf!, field: e.target.value })}
+            style={{ width: 'auto' }}
+          >
+            {candidates.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+          <select
+            value={field.showIf.op}
+            onChange={(e) => onChange({ ...field.showIf!, op: e.target.value as CompareOp })}
+            style={{ width: 'auto', fontFamily: 'ui-monospace, monospace' }}
+          >
+            {OPS.map((o) => <option key={o} value={o}>{o}</option>)}
+          </select>
+          <input
+            type="number"
+            value={field.showIf.value}
+            onChange={(e) => onChange({ ...field.showIf!, value: Number(e.target.value) || 0 })}
+            style={{ width: 90 }}
+          />
+        </div>
+      )}
     </div>
   );
 }

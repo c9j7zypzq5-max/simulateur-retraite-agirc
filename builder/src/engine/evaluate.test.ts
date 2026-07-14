@@ -1,6 +1,20 @@
 import { describe, it, expect } from 'vitest';
 import { bareme, evaluateSchema } from './evaluate';
+import { ageInYears, inputToEpochDays } from '../schema/date';
 import type { CalculatorSchema } from '../schema/types';
+
+describe('champ date → âge en années', () => {
+  const NOW = Date.parse('2026-07-14');
+  it('anniversaire déjà passé cette année', () => {
+    expect(ageInYears(inputToEpochDays('1990-01-01'), NOW)).toBe(36);
+  });
+  it('anniversaire pas encore passé cette année', () => {
+    expect(ageInYears(inputToEpochDays('1990-12-31'), NOW)).toBe(35);
+  });
+  it('date future → borné à 0', () => {
+    expect(ageInYears(inputToEpochDays('2030-01-01'), NOW)).toBe(0);
+  });
+});
 
 // Barème de test : tranches de l'impôt sur le revenu simplifiées.
 const IR = [
@@ -174,6 +188,23 @@ describe('evaluateSchema', () => {
     const r = evaluateSchema(s, {});
     expect(r.results[0]).toBeNaN();
     expect(r.errors['results.0']).toBeTruthy();
+  });
+
+  it('champ masqué par condition : neutralisé à sa valeur par défaut', () => {
+    const s = schemaWith({
+      fields: [
+        { id: 'type', type: 'toggle', label: 'Avec apport ?', default: 0 },
+        // apport visible seulement si type == 1 ; défaut 0 quand masqué
+        { id: 'apport', type: 'number', label: 'Apport', default: 0, showIf: { field: 'type', op: '==', value: 1 } },
+      ],
+      results: [{ label: 'r', formula: 'apport + 100', format: 'number', size: 'lg' }],
+    });
+    // type=0 → apport masqué → neutralisé à 0, même si une valeur traîne
+    const masque = evaluateSchema(s, { type: 0, apport: 5000 });
+    expect(masque.results[0]).toBe(100);
+    // type=1 → apport visible → sa valeur compte
+    const visible = evaluateSchema(s, { type: 1, apport: 5000 });
+    expect(visible.results[0]).toBe(5100);
   });
 
   it('le graphique est évalué comme les résultats', () => {

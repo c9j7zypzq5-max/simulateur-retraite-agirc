@@ -5,6 +5,8 @@
 import { useMemo } from 'react';
 import type { Calculator, Field } from '../schema/types';
 import { evaluateSchema } from '../engine/evaluate';
+import { epochDaysToInput, inputToEpochDays } from '../schema/date';
+import { fieldVisible } from '../schema/visibility';
 import { formatValue } from './format';
 import Chart from './Chart';
 import { t } from '../i18n';
@@ -48,9 +50,11 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
       <h2 style={{ margin: '0 0 18px', fontSize: 20, fontWeight: 700 }}>{calculator.title}</h2>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {schema.fields.map((f) => (
-          <FieldInput key={f.id} field={f} value={values[f.id] ?? f.default} onChange={(v) => onChange(f.id, v)} />
-        ))}
+        {schema.fields
+          .filter((f) => fieldVisible(f, evaluation.scope))
+          .map((f) => (
+            <FieldInput key={f.id} field={f} value={values[f.id] ?? f.default} onChange={(v) => onChange(f.id, v)} />
+          ))}
       </div>
 
       {!hideResults && schema.results.length > 0 && (
@@ -125,6 +129,19 @@ function FieldInput({ field, value, onChange }: { field: Field; value: number; o
             max={field.max}
             step={field.step}
             onChange={(e) => onChange(e.target.value === '' ? NaN : Number(e.target.value))}
+            style={inputStyle}
+          />
+        </label>
+      );
+    case 'date':
+      // value = jours epoch stockés ; la formule verra l'âge en années.
+      return (
+        <label>
+          {label}
+          <input
+            type="date"
+            value={epochDaysToInput(value)}
+            onChange={(e) => onChange(inputToEpochDays(e.target.value))}
             style={inputStyle}
           />
         </label>

@@ -2,11 +2,21 @@
 // surfaces de rendu (aperçu éditeur, page hébergée, iframe embed) et stockée
 // telle quelle dans calculators.schema côté Supabase (Lot 2).
 
-export type FieldType = 'number' | 'slider' | 'select' | 'radio' | 'toggle';
+export type FieldType = 'number' | 'slider' | 'select' | 'radio' | 'toggle' | 'date';
 
 export interface FieldOption {
   label: string;
   value: number; // les options portent des valeurs numériques, utilisables en formule
+}
+
+export type CompareOp = '==' | '!=' | '>' | '>=' | '<' | '<=';
+
+// Condition d'affichage : le champ n'est montré (et sa valeur n'entre dans les
+// calculs) que si `field` <op> `value` est vrai.
+export interface ShowIf {
+  field: string;
+  op: CompareOp;
+  value: number;
 }
 
 export interface Field {
@@ -14,7 +24,7 @@ export interface Field {
   type: FieldType;
   label: string;
   help?: string;
-  default: number; // toggle : 0/1
+  default: number; // toggle : 0/1 ; date : jours epoch
   // number & slider
   min?: number;
   max?: number;
@@ -22,6 +32,8 @@ export interface Field {
   suffix?: string; // "€", "%", "ans"…
   // select & radio
   options?: FieldOption[];
+  // affichage conditionnel (optionnel)
+  showIf?: ShowIf;
 }
 
 export interface Variable {

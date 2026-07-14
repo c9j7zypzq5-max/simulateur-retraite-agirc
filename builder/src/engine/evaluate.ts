@@ -10,6 +10,8 @@
 
 import { Parser } from 'expr-eval-fork';
 import type { CalculatorSchema, Tranche } from '../schema/types';
+import { ageInYears } from '../schema/date';
+import { fieldVisible } from '../schema/visibility';
 
 // Montant progressif : somme de (part de la valeur dans chaque tranche) × taux.
 // C'est le calcul de l'impôt sur le revenu, des émoluments de notaire, etc.
@@ -83,9 +85,19 @@ export function evaluateSchema(
 ): EvaluationResult {
   const parser = buildParser(schema.baremes);
   const scope: Record<string, number> = {};
+  const fieldValue = (f: (typeof schema.fields)[number], raw: number) =>
+    f.type === 'date' ? ageInYears(raw) : raw;
   for (const f of schema.fields) {
     const v = values[f.id];
-    scope[f.id] = Number.isFinite(v) ? v : f.default;
+    const stored = Number.isFinite(v) ? v : f.default;
+    // Un champ date stocke des jours epoch mais s'expose aux formules en
+    // années (âge/ancienneté au jour de l'évaluation).
+    scope[f.id] = fieldValue(f, stored);
+  }
+  // Champs masqués par condition : neutralisés à leur valeur par défaut, pour
+  // qu'ils n'influencent pas les résultats tant qu'ils ne sont pas affichés.
+  for (const f of schema.fields) {
+    if (f.showIf && !fieldVisible(f, scope)) scope[f.id] = fieldValue(f, f.default);
   }
   const errors: Record<string, string> = {};
 
