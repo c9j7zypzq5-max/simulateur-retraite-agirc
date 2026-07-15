@@ -1,4 +1,4 @@
-import type { CompareOp, Field, FieldType, ShowIf } from '../../schema/types';
+import type { CompareOp, Field, FieldType, ShowIf, Step } from '../../schema/types';
 import { t } from '../../i18n';
 import { moveItem, removeItem, RowControls, findDuplicates } from './listUtils';
 import { todayEpochDays, epochDaysToInput, inputToEpochDays } from '../../schema/date';
@@ -32,11 +32,22 @@ export function slugifyId(label: string): string {
   return /^[0-9]/.test(id) ? `c${id}` : id;
 }
 
-export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onChange: (f: Field[]) => void }) {
+export default function FieldsPanel({
+  fields,
+  steps,
+  onChange,
+  onStepsChange,
+}: {
+  fields: Field[];
+  steps?: Step[];
+  onChange: (f: Field[]) => void;
+  onStepsChange: (steps: Step[] | undefined) => void;
+}) {
   const patch = (i: number, p: Partial<Field>) =>
     onChange(fields.map((f, j) => (j === i ? { ...f, ...p } : f)));
 
   const dupeIds = findDuplicates(fields.map((f) => f.id));
+  const wizardActive = !!steps && steps.length > 0;
 
   const add = () => {
     const label = `${t('editor.fields.label')} ${fields.length + 1}`;
@@ -45,6 +56,11 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <StepsEditor
+        steps={steps}
+        onChange={onStepsChange}
+        onClearFieldSteps={() => onChange(fields.map((f) => ({ ...f, wizardStep: undefined })))}
+      />
       {fields.map((f, i) => (
         <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
           <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end' }}>
@@ -138,6 +154,21 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
             </label>
           )}
 
+          {wizardActive && (
+            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--text-secondary)' }}>
+              {t('editor.fields.wizardStep')}
+              <select
+                value={Math.min(f.wizardStep ?? 0, steps!.length - 1)}
+                onChange={(e) => patch(i, { wizardStep: Number(e.target.value) })}
+                style={{ width: 'auto' }}
+              >
+                {steps!.map((s, si) => (
+                  <option key={si} value={si}>{si + 1}. {s.title || `${t('editor.fields.wizardStepLabel')} ${si + 1}`}</option>
+                ))}
+              </select>
+            </label>
+          )}
+
           {/* Affichage conditionnel : n'afficher ce champ que si un autre
               champ remplit une condition. Choix limité aux champs définis
               AVANT celui-ci (évite les cycles). */}
@@ -150,6 +181,74 @@ export default function FieldsPanel({ fields, onChange }: { fields: Field[]; onC
       ))}
       <button className="btn primary" onClick={add} style={{ alignSelf: 'flex-start' }}>
         + {t('editor.fields.add')}
+      </button>
+    </div>
+  );
+}
+
+// Gestion des étapes du wizard. Désactivé = un seul bloc (comportement par
+// défaut). L'activation crée 2 étapes ; la désactivation les retire ET nettoie
+// le champ wizardStep de tous les champs (via onClearFieldSteps).
+function StepsEditor({
+  steps,
+  onChange,
+  onClearFieldSteps,
+}: {
+  steps?: Step[];
+  onChange: (steps: Step[] | undefined) => void;
+  onClearFieldSteps: () => void;
+}) {
+  const active = !!steps && steps.length > 0;
+
+  if (!active) {
+    return (
+      <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+        <div style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{t('editor.fields.wizardHelp')}</div>
+        <button className="btn" onClick={() => onChange([{ title: `${t('editor.fields.wizardStepLabel')} 1` }, { title: `${t('editor.fields.wizardStepLabel')} 2` }])}>
+          {t('editor.fields.wizardEnable')}
+        </button>
+      </div>
+    );
+  }
+
+  const list = steps!;
+  const setTitle = (i: number, title: string) => onChange(list.map((s, j) => (j === i ? { title } : s)));
+  const addStep = () => onChange([...list, { title: `${t('editor.fields.wizardStepLabel')} ${list.length + 1}` }]);
+  // Retirer une étape : les champs qui la visaient retomberont sur une étape
+  // valide (fieldStepIndex borne à la volée), pas besoin de les réindexer ici.
+  const removeStep = (i: number) => {
+    const next = list.filter((_, j) => j !== i);
+    onChange(next.length >= 2 ? next : undefined);
+    if (next.length < 2) onClearFieldSteps();
+  };
+  const disable = () => {
+    onChange(undefined);
+    onClearFieldSteps();
+  };
+
+  return (
+    <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <strong style={{ fontSize: 13 }}>{t('editor.fields.wizardTitle')}</strong>
+        <button className="btn" style={{ fontSize: 12 }} onClick={disable}>{t('editor.fields.wizardDisable')}</button>
+      </div>
+      {list.map((s, i) => (
+        <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+          <span style={{ fontSize: 12, color: 'var(--text-secondary)', width: 18 }}>{i + 1}.</span>
+          <input type="text" value={s.title} onChange={(e) => setTitle(i, e.target.value)} style={{ flex: 1 }} />
+          <button
+            className="btn"
+            style={{ fontSize: 12 }}
+            disabled={list.length <= 2}
+            title={list.length <= 2 ? t('editor.fields.wizardMinSteps') : undefined}
+            onClick={() => removeStep(i)}
+          >
+            ✕
+          </button>
+        </div>
+      ))}
+      <button className="btn" style={{ alignSelf: 'flex-start', fontSize: 12 }} onClick={addStep}>
+        + {t('editor.fields.wizardAddStep')}
       </button>
     </div>
   );

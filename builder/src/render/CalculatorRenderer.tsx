@@ -2,11 +2,12 @@
 // page hébergée (s.simfinly.com) et l'iframe embed. Interdiction de dupliquer
 // cette logique ailleurs : toute divergence entre surfaces est un bug.
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Calculator, Field } from '../schema/types';
 import { evaluateSchema } from '../engine/evaluate';
 import { epochDaysToInput, inputToEpochDays } from '../schema/date';
 import { fieldVisible } from '../schema/visibility';
+import { isWizard, groupByStep } from '../schema/steps';
 import { formatValue } from './format';
 import Chart from './Chart';
 import { t } from '../i18n';
@@ -27,6 +28,18 @@ interface RendererProps {
 export default function CalculatorRenderer({ calculator, values, onChange, showBadge = true, hideResults = false }: RendererProps) {
   const { theme, schema } = calculator;
   const evaluation = useMemo(() => evaluateSchema(schema, values), [schema, values]);
+
+  // Wizard : navigation interne (état d'UI, pas de donnée). Bornée à chaque
+  // rendu au cas où l'auteur supprime des étapes dans l'éditeur.
+  const wizard = isWizard(schema);
+  const stepCount = schema.steps?.length ?? 1;
+  const [rawStep, setRawStep] = useState(0);
+  const step = Math.min(Math.max(rawStep, 0), stepCount - 1);
+  const onLastStep = !wizard || step === stepCount - 1;
+
+  const visibleFields = schema.fields.filter((f) => fieldVisible(f, evaluation.scope));
+  // En mode wizard on ne montre que les champs de l'étape courante ; sinon tout.
+  const fieldsToShow = wizard ? groupByStep(visibleFields, stepCount)[step] : visibleFields;
 
   const styleVars = {
     '--c-primary': theme.primary,
@@ -49,15 +62,47 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
       )}
       <h2 style={{ margin: '0 0 18px', fontSize: 20, fontWeight: 700 }}>{calculator.title}</h2>
 
+      {wizard && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, opacity: 0.7, marginBottom: 6 }}>
+            <span style={{ fontWeight: 600 }}>{schema.steps![step].title}</span>
+            <span>{t('renderer.stepOf').replace('{i}', String(step + 1)).replace('{n}', String(stepCount))}</span>
+          </div>
+          <div style={{ height: 4, borderRadius: 2, background: 'color-mix(in srgb, var(--c-text) 12%, transparent)' }}>
+            <div style={{ height: '100%', borderRadius: 2, background: 'var(--c-primary)', width: `${((step + 1) / stepCount) * 100}%`, transition: 'width 0.2s' }} />
+          </div>
+        </div>
+      )}
+
       <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        {schema.fields
-          .filter((f) => fieldVisible(f, evaluation.scope))
-          .map((f) => (
-            <FieldInput key={f.id} field={f} value={values[f.id] ?? f.default} onChange={(v) => onChange(f.id, v)} />
-          ))}
+        {fieldsToShow.map((f) => (
+          <FieldInput key={f.id} field={f} value={values[f.id] ?? f.default} onChange={(v) => onChange(f.id, v)} />
+        ))}
       </div>
 
-      {!hideResults && schema.results.length > 0 && (
+      {wizard && (
+        <div style={{ display: 'flex', gap: 10, marginTop: 18 }}>
+          <button
+            type="button"
+            onClick={() => setRawStep(step - 1)}
+            disabled={step === 0}
+            style={{ ...navButtonStyle, opacity: step === 0 ? 0.4 : 1, cursor: step === 0 ? 'default' : 'pointer', borderColor: 'color-mix(in srgb, var(--c-text) 22%, transparent)' }}
+          >
+            ← {t('renderer.prev')}
+          </button>
+          {step < stepCount - 1 && (
+            <button
+              type="button"
+              onClick={() => setRawStep(step + 1)}
+              style={{ ...navButtonStyle, marginLeft: 'auto', background: 'var(--c-primary)', color: '#fff', borderColor: 'var(--c-primary)', cursor: 'pointer' }}
+            >
+              {t('renderer.next')} →
+            </button>
+          )}
+        </div>
+      )}
+
+      {onLastStep && !hideResults && schema.results.length > 0 && (
         <div style={{ marginTop: 22, padding: '16px 18px', borderRadius: 10, background: 'color-mix(in srgb, var(--c-primary) 8%, var(--c-bg))', display: 'flex', flexWrap: 'wrap', gap: '14px 28px' }}>
           {schema.results.map((r, i) => (
             <div key={i} style={{ minWidth: 120 }}>
@@ -70,7 +115,7 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
         </div>
       )}
 
-      {!hideResults && schema.chart && (
+      {onLastStep && !hideResults && schema.chart && (
         <Chart
           type={schema.chart.type}
           items={schema.chart.items.map((it, i) => ({ label: it.label, value: evaluation.chartValues[i] }))}
@@ -96,6 +141,17 @@ export default function CalculatorRenderer({ calculator, values, onChange, showB
     </div>
   );
 }
+
+const navButtonStyle: React.CSSProperties = {
+  padding: '9px 16px',
+  borderRadius: 8,
+  border: '1px solid transparent',
+  background: 'transparent',
+  color: 'inherit',
+  fontSize: 14,
+  fontWeight: 600,
+  fontFamily: 'inherit',
+};
 
 const inputStyle: React.CSSProperties = {
   width: '100%',

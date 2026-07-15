@@ -34,6 +34,15 @@ export interface Field {
   options?: FieldOption[];
   // affichage conditionnel (optionnel)
   showIf?: ShowIf;
+  // wizard (optionnel) : index de l'étape à laquelle appartient ce champ
+  // (0-based). Ignoré si le schéma n'a pas d'étapes. Absent = étape 0.
+  wizardStep?: number;
+}
+
+// Étape d'un calculateur multi-étapes (wizard). La présence d'au moins 2
+// étapes bascule le rendu en mode assistant ; sinon tout s'affiche d'un bloc.
+export interface Step {
+  title: string;
 }
 
 export interface Variable {
@@ -74,6 +83,8 @@ export interface CalculatorSchema {
   results: ResultItem[]; // 1 à 4
   chart?: Chart;
   baremes: Record<string, Tranche[]>;
+  // Étapes optionnelles (wizard) : ≥ 2 pour activer le mode assistant.
+  steps?: Step[];
 }
 
 export interface Theme {

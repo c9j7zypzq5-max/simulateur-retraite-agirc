@@ -4,6 +4,9 @@
 export default {
   renderer: {
     badge: 'Créé avec Simfinly',
+    stepOf: 'Étape {i} / {n}',
+    prev: 'Précédent',
+    next: 'Suivant',
   },
   public: {
     saveCta: 'Enregistrer cette simulation',
@@ -126,6 +129,14 @@ export default {
       duplicateId: 'Identifiant en double — il écrasera l\'autre dans les formules.',
       showIf: 'N\'afficher que si…',
       showIfNeedsPrev: 'placez ce champ après celui dont il dépend',
+      wizardHelp: 'Découper le calculateur en plusieurs étapes ?',
+      wizardEnable: 'Activer le multi-étapes',
+      wizardDisable: 'Désactiver',
+      wizardTitle: 'Étapes du calculateur',
+      wizardAddStep: 'Ajouter une étape',
+      wizardMinSteps: 'Deux étapes minimum',
+      wizardStep: 'Étape',
+      wizardStepLabel: 'Étape',
       types: {
         number: 'Nombre',
         slider: 'Curseur',

@@ -154,7 +154,14 @@ export default function Editor() {
           </span>
         </div>
 
-        {tab === 'fields' && <FieldsPanel fields={calc.schema.fields} onChange={(fields) => patchSchema({ fields })} />}
+        {tab === 'fields' && (
+          <FieldsPanel
+            fields={calc.schema.fields}
+            steps={calc.schema.steps}
+            onChange={(fields) => patchSchema({ fields })}
+            onStepsChange={(steps) => patchSchema({ steps })}
+          />
+        )}
         {tab === 'variables' && (
           <VariablesPanel
             variables={calc.schema.variables}
