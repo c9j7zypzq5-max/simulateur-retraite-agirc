@@ -58,6 +58,9 @@ export default function Landing() {
             />
           </div>
         </div>
+        <p style={{ textAlign: 'center', margin: '22px 0 0' }}>
+          <Link to="/modeles" style={{ color: 'var(--primary)', fontSize: 14, fontWeight: 600 }}>{t('landing.seeModels')} →</Link>
+        </p>
       </section>
 
       {/* Pricing — lancement gratuit, une seule carte */}

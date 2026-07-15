@@ -18,6 +18,10 @@ document.documentElement.dataset.surface = 'app';
 const Dashboard = lazy(() => import('./Dashboard'));
 const Editor = lazy(() => import('./Editor'));
 const Submissions = lazy(() => import('./Submissions'));
+// Pages marketing indexables : séparées du bundle initial (un visiteur de la
+// landing ne télécharge pas la galerie tant qu'il n'y va pas).
+const ModelesGallery = lazy(() => import('./Modeles').then((m) => ({ default: m.ModelesGallery })));
+const ModeleDetail = lazy(() => import('./Modeles').then((m) => ({ default: m.ModeleDetail })));
 
 // / = landing (marketing, indexable) pour les visiteurs, dashboard pour les
 // connectés — une seule URL d'entrée, pas de /app à retenir.
@@ -35,6 +39,8 @@ createRoot(document.getElementById('root')!).render(
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<HomeGate />} />
+            <Route path="/modeles" element={<ModelesGallery />} />
+            <Route path="/modeles/:id" element={<ModeleDetail />} />
             <Route path="/editor/:id" element={<RequireAuth><Editor /></RequireAuth>} />
             <Route path="/submissions" element={<RequireAuth><Submissions /></RequireAuth>} />
             <Route path="*" element={<Navigate to="/" replace />} />
