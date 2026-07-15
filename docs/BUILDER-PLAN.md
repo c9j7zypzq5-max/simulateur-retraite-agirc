@@ -215,6 +215,53 @@ sur-ingénierie) + liste des dettes assumées dans ce fichier.
   direct avec un compte de test jetable, nettoyé intégralement après coup
   (0 ligne résiduelle, confirmé par requête).
 
+## Lot croissance (post-MVP) — acquisition avant monétisation
+
+Décision produit : **ne pas monétiser tant que l'usage réel n'est pas là.**
+Le badge « Créé avec Simfinly » reste le seul verrou gratuit (moteur de
+croissance) ; toute la mécanique de plans reste en place, prête à être
+resserrée. On priorise l'acquisition (SEO, viralité, rétention).
+
+- **Mode lancement gratuit** (migration `0008`) : `free` passe à 10
+  calculateurs publiés, capture d'email + webhook débloqués pour tous, seuil
+  du bandeau de dépassement relevé à 10 000 vues/30 j (mécanique intacte,
+  neutralisée). Landing et PlanPanel réécrits sans CTA Stripe. `lib/stripe.ts`
+  et `api/stripe.js` conservés dormants pour réactivation ultérieure.
+- **Galerie de modèles par métier** (`/modeles`, `/modeles/:id`) : 5 nouveaux
+  templates métier (capacité d'emprunt, épargne, IR 2026, devis travaux, ROI
+  pub) taggés `metier`, chacun couvert par un test de fidélité à valeur connue.
+  Pages marketing indexables (SEO via `usePageMeta`), démo interactive avec le
+  vrai renderer.
+- **Calculateurs multi-étapes (wizard)** : `schema.steps` + `field.wizardStep`,
+  rétrocompatible (sans étapes = un bloc). Logique isolée/testée
+  (`schema/steps.ts`) ; renderer avec progression et navigation, résultats sur
+  la dernière étape.
+- **Analytics par calculateur** (`/stats/:id`, migration `0009`) : deux vues
+  `security_invoker` (série quotidienne 30 j + top référents, hôte extrait de
+  l'URL) révoquées à `anon` ; transform client pur/testé ; courbe SVG +
+  conversion + référents. `recordView` enregistre désormais `document.referrer`.
+- **OG dynamiques** (`api/meta.js`) : les crawlers sociaux (rewrite
+  `vercel.json` sur user-agent) reçoivent un HTML avec `<title>`/`og:*` par
+  slug (titre échappé — saisi par l'utilisateur) ; les moteurs de recherche
+  ne sont **pas** routés là (pas de cloaking, ils exécutent le JS de la vraie
+  page). Titre/description récupérés via la clé anon.
+
+### Dettes assumées — lot croissance
+- OG sans image générée (`og:image` absent) : cartes en `summary` texte seul.
+  Génération d'image dynamique volontairement hors périmètre (YAGNI).
+- Analytics : fenêtre glissante 30 j (cohérente avec le reste), pas de
+  filtres de période ni d'export ; courbe = vues/jour (soumissions en points).
+- Wizard : pas de validation « champ requis » par étape (le moteur reste
+  tolérant, NaN → message) ; navigation libre entre étapes.
+- SEO `/modeles` : rendu côté client (Google exécute le JS) ; pas de SSR/
+  prerender. Les balises OG statiques par modèle relèveraient d'`api/meta`
+  si besoin plus tard.
+- Vérifications faites malgré un bac à sable instable (MCP Supabase
+  intermittent) : agrégats SQL et handler OG testés sur données réelles
+  semées puis **purgées intégralement (0 ligne, confirmé en REST)** ; revoke
+  `anon` des vues analytics confirmé (401) ; rendus vérifiés au navigateur
+  (galerie, wizard, courbe stats).
+
 ## Prérequis externes
 1. ✅ **Supabase EU provisionné** — projet existant `supabase-simfinly`
    (`gzwtfayxmpinhniulxed`, région eu-west-3 Paris) réutilisé plutôt que d'en

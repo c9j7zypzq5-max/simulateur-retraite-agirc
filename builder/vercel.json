@@ -1,5 +1,16 @@
 {
   "rewrites": [
+    {
+      "source": "/s/:slug",
+      "has": [
+        {
+          "type": "header",
+          "key": "user-agent",
+          "value": ".*(facebookexternalhit|Facebot|Twitterbot|LinkedInBot|Slackbot|Slack-ImgProxy|WhatsApp|TelegramBot|Discordbot|redditbot|Pinterest|SkypeUriPreview|vkShare|W3C_Validator|Embedly|Iframely).*"
+        }
+      ],
+      "destination": "/api/meta?slug=:slug"
+    },
     { "source": "/s/(.*)", "destination": "/s.html" },
     { "source": "/api/webhook", "destination": "/api/stripe?action=webhook" },
     { "source": "/(.*)", "destination": "/index.html" }
