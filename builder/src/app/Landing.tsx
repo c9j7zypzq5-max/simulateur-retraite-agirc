@@ -10,8 +10,6 @@ import { TEMPLATES } from '../schema/templates';
 import { DEFAULT_THEME } from '../schema/types';
 import { t } from '../i18n';
 
-const PLANS = ['free', 'pro', 'premium'] as const;
-
 export default function Landing() {
   const [demoId, setDemoId] = useState(TEMPLATES[0].id);
   // Valeurs jouées par visiteur, indépendantes par démo.
@@ -62,24 +60,23 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Pricing */}
+      {/* Pricing — lancement gratuit, une seule carte */}
       <section style={{ maxWidth: 880, margin: '0 auto', padding: '24px 24px 64px' }}>
         <h2 style={{ textAlign: 'center', fontSize: 24, margin: '0 0 24px' }}>{t('landing.pricingTitle')}</h2>
-        <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-          {PLANS.map((plan) => (
-            <div key={plan} className="card" style={{ width: 240, display: 'flex', flexDirection: 'column', gap: 10, borderColor: plan === 'pro' ? 'var(--primary)' : undefined }}>
-              <div>
-                <div style={{ fontWeight: 700, fontSize: 15 }}>{t(`landing.${plan}.name`)}</div>
-                <div style={{ fontSize: 24, fontWeight: 700, color: 'var(--primary)', margin: '4px 0' }}>{t(`landing.${plan}.price`)}</div>
-              </div>
-              <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.9, flex: 1 }}>
-                {t(`landing.${plan}.features`).split('·').map((f) => <li key={f}>{f}</li>)}
-              </ul>
-              <Link to="/login" className={`btn${plan === 'pro' ? ' primary' : ''}`} style={{ textDecoration: 'none', textAlign: 'center' }}>
-                {t('landing.pricingCta')}
-              </Link>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="card" style={{ width: 340, display: 'flex', flexDirection: 'column', gap: 10, borderColor: 'var(--primary)' }}>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{t('landing.launch.name')}</div>
+              <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--primary)', margin: '4px 0' }}>{t('landing.launch.price')}</div>
             </div>
-          ))}
+            <ul style={{ margin: 0, paddingLeft: 18, fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.9, flex: 1 }}>
+              {t('landing.launch.features').split('·').map((f) => <li key={f}>{f}</li>)}
+            </ul>
+            <p style={{ margin: 0, fontSize: 11, color: 'var(--text-secondary)' }}>{t('landing.launch.note')}</p>
+            <Link to="/login" className="btn primary" style={{ textAlign: 'center' }}>
+              {t('landing.pricingCta')}
+            </Link>
+          </div>
         </div>
       </section>
 

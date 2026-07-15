@@ -1,11 +1,11 @@
-// Verrous de plan — bascules retirer le badge / capturer l'email. Le
+// Options du calculateur — mode « lancement gratuit » : capture d'email et
+// webhook débloqués pour tous ; seul le retrait du badge reste réservé aux
+// plans payants (le badge est le moteur de croissance du produit). Le
 // verrouillage réel est le trigger builder_enforce_plan_limits côté serveur ;
-// ces cases grisées ne sont qu'une indication (défense en profondeur, pas la
-// barrière).
+// cette UI n'est qu'une indication. Les CTA Stripe reviendront quand la
+// monétisation sera activée (lib/stripe.ts est prêt).
 
-import { useState } from 'react';
 import type { Plan } from '../../schema/types';
-import { startCheckout } from '../../lib/stripe';
 import { t } from '../../i18n';
 
 interface PlanPanelProps {
@@ -33,7 +33,7 @@ function ToggleRow({
     <div className="card" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, opacity: disabled ? 0.55 : 1 }}>
       <div>
         <div style={{ fontWeight: 600, fontSize: 13 }}>
-          {label} {disabled && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>🔒 {t('plan.proOnly')}</span>}
+          {label} {disabled && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>🔒</span>}
         </div>
         <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 2 }}>{help}</div>
       </div>
@@ -61,61 +61,32 @@ function ToggleRow({
 }
 
 export default function PlanPanel({ plan, hideBadge, captureEmail, webhookUrl, onChange }: PlanPanelProps) {
-  const locked = plan === 'free';
-  const webhookLocked = plan !== 'premium';
-  const [upgrading, setUpgrading] = useState<'pro' | 'premium' | null>(null);
-  const [upgradeError, setUpgradeError] = useState<string | null>(null);
-
-  async function upgrade(target: 'pro' | 'premium') {
-    setUpgrading(target);
-    setUpgradeError(null);
-    const { error } = await startCheckout(target);
-    if (error) setUpgradeError(error);
-    setUpgrading(null);
-  }
-
+  const badgeLocked = plan === 'free';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      {locked && (
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)' }}>{t('plan.upgradeHint')}</p>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <button className="btn primary" disabled={upgrading !== null} onClick={() => upgrade('pro')}>
-              {upgrading === 'pro' ? '…' : t('plan.upgradePro')}
-            </button>
-            <button className="btn" disabled={upgrading !== null} onClick={() => upgrade('premium')}>
-              {upgrading === 'premium' ? '…' : t('plan.upgradePremium')}
-            </button>
-          </div>
-          {upgradeError && <p style={{ margin: 0, fontSize: 12, color: 'var(--negative)' }}>{upgradeError}</p>}
-        </div>
-      )}
+      <p style={{ margin: 0, fontSize: 12, color: 'var(--text-secondary)' }}>{t('plan.launchNote')}</p>
       <ToggleRow
         label={t('plan.hideBadge')}
-        help={t('plan.hideBadgeHelp')}
+        help={badgeLocked ? t('plan.hideBadgeLaunchHelp') : t('plan.hideBadgeHelp')}
         checked={hideBadge}
-        disabled={locked}
+        disabled={badgeLocked}
         onToggle={() => onChange({ hideBadge: !hideBadge })}
       />
       <ToggleRow
         label={t('plan.captureEmail')}
         help={t('plan.captureEmailHelp')}
         checked={captureEmail}
-        disabled={locked}
+        disabled={false}
         onToggle={() => onChange({ captureEmail: !captureEmail })}
       />
 
-      {/* Webhook sortant — Premium uniquement (clampé à null côté serveur sinon). */}
-      <div className="card" style={{ opacity: webhookLocked ? 0.55 : 1 }}>
-        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>
-          {t('plan.webhook')} {webhookLocked && <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)' }}>🔒 {t('plan.premiumOnly')}</span>}
-        </div>
+      <div className="card">
+        <div style={{ fontWeight: 600, fontSize: 13, marginBottom: 2 }}>{t('plan.webhook')}</div>
         <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginBottom: 8 }}>{t('plan.webhookHelp')}</div>
         <input
           type="url"
           placeholder="https://votre-site.fr/webhook"
           value={webhookUrl ?? ''}
-          disabled={webhookLocked}
           onChange={(e) => onChange({ webhookUrl: e.target.value || null })}
         />
       </div>
