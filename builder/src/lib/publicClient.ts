@@ -39,12 +39,14 @@ export async function getPublishedBySlug(slug: string): Promise<PublicCalculator
   return rows[0] ?? null;
 }
 
-// Fire-and-forget côté appelant : une vue ratée ne doit jamais bloquer l'affichage.
+// Fire-and-forget côté appelant : une vue ratée ne doit jamais bloquer
+// l'affichage. On enregistre la provenance (document.referrer) pour alimenter
+// le top des référents de l'écran analytics — vide sur un accès direct.
 export async function recordView(calculatorId: string): Promise<void> {
   await fetch(`${BASE}/builder_views`, {
     method: 'POST',
     headers: { ...HEADERS, Prefer: 'return=minimal' },
-    body: JSON.stringify({ calculator_id: calculatorId }),
+    body: JSON.stringify({ calculator_id: calculatorId, referrer: document.referrer || null }),
   });
 }
 

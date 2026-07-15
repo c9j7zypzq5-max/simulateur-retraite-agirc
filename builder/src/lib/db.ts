@@ -5,8 +5,11 @@
 
 import { supabase } from './supabase';
 import { slugify, withSuffix } from './slug';
+import { buildAnalytics, type Analytics } from './analytics';
 import type { Calculator, CalculatorSchema, Plan, Theme } from '../schema/types';
 import { DEFAULT_THEME } from '../schema/types';
+
+export type { Analytics, DailyPoint, ReferrerStat } from './analytics';
 
 interface CalculatorRow {
   id: string;
@@ -171,6 +174,39 @@ export async function saveCalculator(
   if (webhookUrl !== undefined) row.webhook_url = webhookUrl;
   const { error } = await supabase.from('builder_calculators').update(row).eq('id', id);
   if (error) throw error;
+}
+
+// --- Analytics (écran /stats/:id) ------------------------------------------
+
+// Deux requêtes (série quotidienne + référents) sur des vues security_invoker :
+// la RLS scope déjà les lignes aux calculateurs du propriétaire connecté. La
+// mise en forme (comblage des jours, totaux, conversion) est faite par
+// buildAnalytics (lib/analytics.ts), testable sans réseau.
+export async function getAnalytics(calculatorId: string): Promise<Analytics> {
+  const [dailyRes, refRes] = await Promise.all([
+    supabase
+      .from('builder_calculator_daily')
+      .select('day, views, submissions')
+      .eq('calculator_id', calculatorId)
+      .order('day', { ascending: true }),
+    supabase
+      .from('builder_referrer_stats')
+      .select('source, views')
+      .eq('calculator_id', calculatorId)
+      .order('views', { ascending: false })
+      .limit(8),
+  ]);
+  if (dailyRes.error) throw dailyRes.error;
+  if (refRes.error) throw refRes.error;
+
+  return buildAnalytics(
+    (dailyRes.data ?? []).map((r) => ({
+      day: r.day as string,
+      views: Number(r.views) || 0,
+      submissions: Number(r.submissions) || 0,
+    })),
+    (refRes.data ?? []).map((r) => ({ source: r.source as string, views: Number(r.views) || 0 })),
+  );
 }
 
 // La page publique (s.html) n'utilise PAS ce module : elle passe par

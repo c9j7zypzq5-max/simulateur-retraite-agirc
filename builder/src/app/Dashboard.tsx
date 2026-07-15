@@ -127,6 +127,9 @@ export default function Dashboard() {
               </div>
               <div style={{ display: 'flex', gap: 6 }}>
                 <button className="btn" onClick={() => navigate(`/editor/${c.id}`)}>{t('dashboard.open')}</button>
+                {c.status === 'published' && (
+                  <button className="btn" title={t('dashboard.stats')} onClick={() => navigate(`/stats/${c.id}`)}>📊</button>
+                )}
                 <button className="btn" title={t('dashboard.duplicate')} onClick={() => handleDuplicate(c.id)}>⧉</button>
                 <button
                   className="btn"

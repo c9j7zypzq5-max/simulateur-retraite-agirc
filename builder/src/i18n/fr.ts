@@ -26,6 +26,15 @@ export default {
     captureEmail: 'Capturer l\'email avant le résultat',
     captureEmailHelp: 'Les visiteurs doivent laisser leur email pour voir le résultat.',
   },
+  stats: {
+    window: 'Statistiques des 30 derniers jours',
+    views: 'Vues',
+    submissions: 'Soumissions',
+    conversion: 'Taux de conversion',
+    dailyViews: 'Vues par jour (● = soumission)',
+    topReferrers: 'Principaux référents',
+    noData: 'Pas encore de données sur cette période.',
+  },
   submissions: {
     title: 'Soumissions',
     all: 'Tous les calculateurs',
@@ -89,6 +98,7 @@ export default {
     views7: 'Vues (7 j)',
     submissions7: 'Soumissions (7 j)',
     open: 'Ouvrir',
+    stats: 'Statistiques',
     duplicate: 'Dupliquer',
     delete: 'Supprimer',
     deleteConfirm: 'Supprimer « {title} » et toutes ses soumissions ? Cette action est irréversible.',
