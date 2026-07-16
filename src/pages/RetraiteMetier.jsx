@@ -8,6 +8,41 @@ import { usePageMeta } from "../hooks/usePageMeta.js";
 import { METIERS, METIERS_LIST } from "../data/metiers.js";
 import { SITUATIONS, SITUATIONS_LIST } from "../data/situations.js";
 
+// Simulateurs retraite « cœur » — maillage interne poussé sur toutes les pages
+// métier/situation vers les pages à plus fort potentiel (réversion, Agirc-Arrco,
+// CNAV, trimestres, synthèse). Concentre l'autorité interne sur ces cibles.
+const CORE_SIMULATEURS = [
+  { path: "/simulateurs/agirc-arrco",       icon: "🏆", label: "Retraite Agirc-Arrco",    desc: "Points et pension complémentaire" },
+  { path: "/simulateurs/pension-reversion", icon: "💞", label: "Pension de réversion",     desc: "Ce que touche le conjoint survivant" },
+  { path: "/simulateurs/cnav",              icon: "🏛️", label: "Retraite de base (CNAV)",  desc: "Régime général, trimestres et SAM" },
+  { path: "/simulateurs/trimestres",        icon: "📅", label: "Trimestres & taux plein",  desc: "Combien il vous en manque" },
+  { path: "/simulateurs/synthese-retraite", icon: "🧮", label: "Synthèse tous régimes",    desc: "Additionnez toutes vos pensions" },
+];
+
+function CoreSimulateurs({ excludePath }) {
+  const items = CORE_SIMULATEURS.filter((s) => s.path !== excludePath).slice(0, 4);
+  return (
+    <div style={{ marginTop: 40 }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 20, fontWeight: 600, color: "var(--text)", marginBottom: 6 }}>
+        Simulateurs retraite essentiels
+      </h2>
+      <p style={{ fontSize: 13.5, color: "var(--text-secondary)", marginBottom: 16 }}>
+        Estimez chaque brique de votre future retraite — gratuit et sans inscription.
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12 }}>
+        {items.map((s) => (
+          <Link key={s.path} to={s.path} style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 12, padding: "13px 16px" }}>
+            <span style={{ fontSize: 22, flexShrink: 0 }}>{s.icon}</span>
+            <span style={{ minWidth: 0 }}>
+              <span style={{ display: "block", fontSize: 13.5, fontWeight: 600, color: "var(--text)" }}>{s.label}</span>
+              <span style={{ display: "block", fontSize: 12, color: "var(--text-secondary)", lineHeight: 1.4 }}>{s.desc}</span>
+            </span>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function ProfessionStats({ stats }) {
   return (
@@ -170,6 +205,9 @@ export default function RetraiteMetier() {
           </h2>
           <FaqSection items={data.faq} />
         </div>
+
+        {/* Maillage interne vers les simulateurs retraite cœur */}
+        <CoreSimulateurs excludePath={data.simulateurPath} />
 
         {/* Liens vers d'autres métiers */}
         <div style={{ marginTop: 40, padding: "20px 24px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14 }}>

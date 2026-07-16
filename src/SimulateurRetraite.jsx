@@ -35,8 +35,8 @@ export default function SimulateurRetraite() {
   const resultsRef = useRef(null);
 
   useEffect(() => {
-    document.title = "Simulateur Retraite Agirc-Arrco 2025 — Calcul points et pension";
-    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite complémentaire Agirc-Arrco : nombre de points, valeur du point 2025, pension brute et nette estimée.");
+    document.title = "Simulateur Agirc-Arrco 2026 — combien de points vaut ma retraite ?";
+    document.querySelector('meta[name="description"]')?.setAttribute("content", "Calculez votre retraite complémentaire Agirc-Arrco 2026 : nombre de points, valeur du point, pension brute et nette estimée. Gratuit, sans inscription.");
     let link = document.querySelector('link[rel="canonical"]');
     if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
     link.href = 'https://www.simfinly.com/simulateurs/agirc-arrco';

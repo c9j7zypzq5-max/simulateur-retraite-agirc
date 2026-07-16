@@ -1213,7 +1213,7 @@ export const GLOSSARY = [
       "Au régime général, elle est soumise à une condition de ressources. À l'Agirc-Arrco, elle n'est versée qu'aux conjoints mariés et sans condition de ressources, mais les concubins et partenaires de PACS en sont exclus.",
       "Exemple : un défunt percevait 1 500 €/mois de retraite CNAV et 800 €/mois de retraite Agirc-Arrco. Le conjoint survivant peut percevoir jusqu'à 54 % × 1 500 € = 810 €/mois au titre de la CNAV (sous condition de ressources) et 60 % × 800 € = 480 €/mois au titre de l'Agirc-Arrco (sans condition de ressources s'il était marié), soit 1 290 €/mois au total.",
     ],
-    sims: ['/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
+    sims: ['/simulateurs/pension-reversion', '/simulateurs/cnav', '/simulateurs/agirc-arrco'], related: ['cnav', 'agirc-arrco', 'aspa'],
     faqs: [
       { q: "À combien s'élève la pension de réversion en 2026 ?", a: "Au régime général (CNAV), la pension de réversion est égale à 54 % de la retraite de base du défunt, sous condition de ressources (max 25 001,60 €/an pour une personne seule en 2026, 40 002,56 € pour un couple). À l'Agirc-Arrco, la réversion est de 60 % de la pension complémentaire, sans condition de ressources mais réservée aux conjoints mariés." },
       { q: "Les concubins ont-ils droit à la pension de réversion ?", a: "Non. Ni le concubinage ni le PACS ne donnent droit à la pension de réversion au régime général ou à l'Agirc-Arrco. Seul le mariage ouvre ce droit. En cas de divorce, l'ex-conjoint peut bénéficier d'une réversion si le défunt n'était pas remarié (CNAV) ou proportionnellement à la durée de mariage (certains régimes)." },
