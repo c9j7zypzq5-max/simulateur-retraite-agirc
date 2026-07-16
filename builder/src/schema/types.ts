@@ -1,0 +1,124 @@
+// Schéma de calculateur — la structure JSON unique consommée par les trois
+// surfaces de rendu (aperçu éditeur, page hébergée, iframe embed) et stockée
+// telle quelle dans calculators.schema côté Supabase (Lot 2).
+
+export type FieldType = 'number' | 'slider' | 'select' | 'radio' | 'toggle' | 'date';
+
+export interface FieldOption {
+  label: string;
+  value: number; // les options portent des valeurs numériques, utilisables en formule
+}
+
+export type CompareOp = '==' | '!=' | '>' | '>=' | '<' | '<=';
+
+// Condition d'affichage : le champ n'est montré (et sa valeur n'entre dans les
+// calculs) que si `field` <op> `value` est vrai.
+export interface ShowIf {
+  field: string;
+  op: CompareOp;
+  value: number;
+}
+
+export interface Field {
+  id: string; // identifiant utilisable dans les formules (ex. "montant")
+  type: FieldType;
+  label: string;
+  help?: string;
+  default: number; // toggle : 0/1 ; date : jours epoch
+  // number & slider
+  min?: number;
+  max?: number;
+  step?: number;
+  suffix?: string; // "€", "%", "ans"…
+  // select & radio
+  options?: FieldOption[];
+  // affichage conditionnel (optionnel)
+  showIf?: ShowIf;
+  // wizard (optionnel) : index de l'étape à laquelle appartient ce champ
+  // (0-based). Ignoré si le schéma n'a pas d'étapes. Absent = étape 0.
+  wizardStep?: number;
+}
+
+// Étape d'un calculateur multi-étapes (wizard). La présence d'au moins 2
+// étapes bascule le rendu en mode assistant ; sinon tout s'affiche d'un bloc.
+export interface Step {
+  title: string;
+}
+
+export interface Variable {
+  name: string;
+  formula: string;
+}
+
+// 'duration' : la valeur est un nombre de MOIS, affiché « X ans Y mois ».
+export type ResultFormat = 'eur' | 'pct' | 'number' | 'duration';
+
+export interface ResultItem {
+  label: string;
+  formula: string;
+  format: ResultFormat;
+  size: 'lg' | 'md';
+}
+
+export interface ChartItem {
+  label: string;
+  formula: string;
+}
+
+export interface Chart {
+  type: 'bars' | 'hbars' | 'donut';
+  items: ChartItem[];
+}
+
+// Tranche de barème progressif : s'applique à la part de la valeur comprise
+// entre le plafond de la tranche précédente et `jusqua` (null = sans plafond).
+export interface Tranche {
+  jusqua: number | null;
+  taux: number; // ex. 0.11 pour 11 %
+}
+
+export interface CalculatorSchema {
+  fields: Field[];
+  variables: Variable[];
+  results: ResultItem[]; // 1 à 4
+  chart?: Chart;
+  baremes: Record<string, Tranche[]>;
+  // Étapes optionnelles (wizard) : ≥ 2 pour activer le mode assistant.
+  steps?: Step[];
+}
+
+export interface Theme {
+  primary: string;
+  background: string;
+  text: string;
+  logoUrl?: string;
+  font?: string; // police custom : Premium uniquement (verrou Lot 3)
+}
+
+export type Plan = 'free' | 'pro' | 'premium';
+
+export interface Calculator {
+  id: string;
+  slug: string | null;
+  title: string;
+  status: 'draft' | 'published';
+  theme: Theme;
+  schema: CalculatorSchema;
+  // Verrous de plan (Lot 3) — la valeur effective est toujours clampée côté
+  // serveur (triggers Postgres) ; ces champs reflètent ce que la base a
+  // accepté, jamais une intention client non vérifiée.
+  hideBadge: boolean;
+  captureEmail: boolean;
+  overFreeQuota: boolean;
+  // Webhook sortant par soumission (Premium) : POST du payload vers cette URL
+  // https, déclenché en base (pg_net), jamais côté client.
+  webhookUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const DEFAULT_THEME: Theme = {
+  primary: '#2B5CE6',
+  background: '#ffffff',
+  text: '#0F1828',
+};
