@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simfinly Builder — créez et intégrez vos simulateurs</title>
     <meta name="description" content="Créez des calculateurs de devis et simulateurs financiers à vos couleurs, publiez-les et intégrez-les sur votre site. Barèmes français, capture de leads, sans code." />
+    <script>
+      // app.simfinly.com a pu servir le site principal (qui installe un service
+      // worker) avant le déploiement du builder. Ce SW resté actif ressert un
+      // cache obsolète → page blanche. Le builder n'utilise AUCUN service worker :
+      // on désenregistre tout SW et on purge les caches au chargement (auto-heal).
+      (function () {
+        try {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (rs) {
+              rs.forEach(function (r) { r.unregister(); });
+            }).catch(function () {});
+          }
+          if (window.caches && caches.keys) {
+            caches.keys().then(function (ks) {
+              ks.forEach(function (k) { caches.delete(k); });
+            }).catch(function () {});
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

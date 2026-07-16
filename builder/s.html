@@ -7,6 +7,24 @@
     <!-- Meta OG génériques : personnalisation par calculateur nécessiterait du
          SSR/prerendering, hors périmètre MVP (voir docs/BUILDER-PLAN.md). -->
     <meta property="og:site_name" content="Simfinly" />
+    <script>
+      // Voir index.html : désenregistre tout service worker fantôme (hérité du
+      // site principal quand app.simfinly.com le servait) et purge les caches.
+      (function () {
+        try {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (rs) {
+              rs.forEach(function (r) { r.unregister(); });
+            }).catch(function () {});
+          }
+          if (window.caches && caches.keys) {
+            caches.keys().then(function (ks) {
+              ks.forEach(function (k) { caches.delete(k); });
+            }).catch(function () {});
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
