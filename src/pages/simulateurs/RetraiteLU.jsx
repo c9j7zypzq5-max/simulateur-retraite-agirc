@@ -70,8 +70,8 @@ function calcLU({ salaireAnnuel, anneesTotal, ageDépart, nbEnfants }) {
 // ─── Traductions ────────────────────────────────────────────────────────────
 const TXT = {
   fr: {
-    docTitle: "Simulateur retraite Luxembourg (CNAP) 2026 — pension & taux de remplacement",
-    metaDesc: "Estimez votre pension CNAP luxembourgeoise selon votre carrière, salaire et âge de départ. Conçu pour les frontaliers et expatriés travaillant au Luxembourg.",
+    docTitle: "Retraite Luxembourg (CNAP) 2026 — simulateur frontaliers & pension",
+    metaDesc: "Frontalier ou expatrié au Luxembourg ? Estimez votre pension CNAP selon votre carrière, salaire et âge de départ, et la totalisation avec vos droits français. Gratuit, sans inscription.",
     jsonLdName: "Simulateur retraite Luxembourg (CNAP)",
     jsonLdDesc: "Estimez votre pension du régime général luxembourgeois (CNAP) selon votre carrière, votre salaire cotisé et votre âge de départ.",
     badge: "Régime CNAP · Luxembourg 2026",
@@ -135,8 +135,8 @@ const TXT = {
     reportTaux: "Taux de remplacement",
   },
   en: {
-    docTitle: "Luxembourg Pension Calculator (CNAP) 2026 — pension & replacement rate",
-    metaDesc: "Estimate your Luxembourg CNAP pension based on your career, salary and retirement age. Built for cross-border workers and expats employed in Luxembourg.",
+    docTitle: "Luxembourg Pension (CNAP) 2026 — cross-border & expat calculator",
+    metaDesc: "Cross-border worker or expat in Luxembourg? Estimate your CNAP pension from your career, salary and retirement age, plus totalisation with your French rights. Free, no sign-up.",
     jsonLdName: "Luxembourg Pension Calculator (CNAP)",
     jsonLdDesc: "Estimate your Luxembourg general pension scheme (CNAP) based on your career length, contributed salary and retirement age.",
     badge: "CNAP scheme · Luxembourg 2026",

@@ -61,7 +61,7 @@ export const ROUTE_META = {
   '/simulateurs/flat-tax':               { title: 'Simulateur flat tax / PFU 2026 — PFU 31,4 % ou barème progressif ?',   emoji: '📊', cat: 'Impôts',    prio: '0.9', freq: 'monthly' },
   '/simulateurs/trimestres':              { title: 'Simulateur trimestres retraite 2026 — durée d\'assurance & taux plein', emoji: '📅', cat: 'Retraite',   prio: '0.9', freq: 'monthly' },
   '/simulateurs/succession-ch':           { title: 'Simulateur droits de succession Suisse 2025 — par canton', emoji: '🏔', cat: 'Impôts',     prio: '0.8', freq: 'monthly' },
-  '/simulateurs/retraite-luxembourg':     { title: 'Simulateur retraite Luxembourg (CNAP) 2025 — pension & taux remplacement', emoji: '🇱🇺', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
+  '/simulateurs/retraite-luxembourg':     { title: 'Retraite Luxembourg (CNAP) 2026 — simulateur frontaliers & pension', emoji: '🇱🇺', cat: 'Retraite', prio: '0.9', freq: 'monthly' },
   // Vie & Temps
   '/simulateurs/cout-en-heures':          { title: 'Simulateur prix en heures de vie — vrai coût d\'un achat',             emoji: '⏰', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
   '/simulateurs/vie-en-semaines':         { title: 'Simulateur ma vie en semaines — visualiser son temps',                 emoji: '📅', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
