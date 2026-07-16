@@ -132,8 +132,7 @@ export default function Editor() {
           {TABS.map((tb) => (
             <button
               key={tb}
-              className="btn"
-              style={tab === tb ? { background: 'var(--primary-soft)', borderColor: 'var(--primary)', color: 'var(--primary)' } : undefined}
+              className={`btn chip${tab === tb ? ' active' : ''}`}
               onClick={() => setTab(tb)}
             >
               {t(`editor.tabs.${tb}`)}
@@ -194,7 +193,7 @@ export default function Editor() {
         <span className="lbl" style={{ alignSelf: 'flex-start', fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
           {t('editor.preview')}
         </span>
-        <div style={{ boxShadow: '0 1px 4px rgba(15,24,40,0.07), 0 4px 16px rgba(15,24,40,0.05)', borderRadius: 14, width: '100%', maxWidth: 560 }}>
+        <div className="card" style={{ padding: 0, overflow: 'hidden', width: '100%', maxWidth: 560 }}>
           <CalculatorRenderer
             calculator={calc}
             values={previewValues}

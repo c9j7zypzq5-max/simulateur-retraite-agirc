@@ -2,8 +2,10 @@
 // Pas d'OAuth au MVP.
 
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from './AuthContext';
 import { t } from '../../i18n';
+import { Particles } from '../Chrome';
 
 type Mode = 'signin' | 'signup' | 'magic';
 
@@ -40,17 +42,21 @@ export default function Login() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <form onSubmit={submit} className="card" style={{ width: '100%', maxWidth: 360, display: 'flex', flexDirection: 'column', gap: 14 }}>
-        <h1 style={{ fontSize: 20, margin: 0 }}>Simfinly Builder</h1>
+    <div style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, overflow: 'hidden' }}>
+      <Particles />
+      <form onSubmit={submit} className="card" style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 380, display: 'flex', flexDirection: 'column', gap: 16, padding: 28 }}>
+        <Link to="/" className="brand" style={{ justifyContent: 'center', marginBottom: 2 }}>
+          <span className="brand-mark">S</span>
+          <span className="brand-name">simfinly <em>builder</em></span>
+        </Link>
 
-        <div style={{ display: 'flex', gap: 6 }}>
+        <div style={{ display: 'flex', gap: 6, background: 'var(--input-bg)', padding: 4, borderRadius: 999 }}>
           {(['signin', 'signup', 'magic'] as const).map((m) => (
             <button
               key={m}
               type="button"
-              className="btn"
-              style={mode === m ? { background: 'var(--primary-soft)', borderColor: 'var(--primary)', color: 'var(--primary)' } : undefined}
+              className={`btn chip${mode === m ? ' active' : ''}`}
+              style={{ flex: 1, border: mode === m ? undefined : '1.5px solid transparent', background: mode === m ? undefined : 'transparent' }}
               onClick={() => { setMode(m); setError(null); setInfo(null); }}
             >
               {t(`auth.tabs.${m}`)}

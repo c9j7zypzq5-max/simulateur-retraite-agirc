@@ -17,6 +17,7 @@ import { BLANK_SCHEMA } from '../schema/defaults';
 import { TEMPLATES } from '../schema/templates';
 import type { CalculatorSchema } from '../schema/types';
 import { t } from '../i18n';
+import { Header } from './Chrome';
 
 export default function Dashboard() {
   const { signOut } = useAuth();
@@ -74,58 +75,52 @@ export default function Dashboard() {
   }
 
   return (
-    <div style={{ maxWidth: 860, margin: '0 auto', padding: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, margin: 0 }}>{t('dashboard.title')}</h1>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <Link to="/submissions" className="btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center' }}>
-            {t('submissions.title')}
-          </Link>
-          <button className="btn" onClick={() => signOut()}>{t('auth.signOut')}</button>
-        </div>
-      </div>
+    <div>
+      <Header
+        right={
+          <div style={{ display: 'flex', gap: 8 }}>
+            <Link to="/submissions" className="btn" style={{ textDecoration: 'none' }}>
+              {t('submissions.title')}
+            </Link>
+            <button className="btn" onClick={() => signOut()}>{t('auth.signOut')}</button>
+          </div>
+        }
+      />
 
-      <div style={{ display: 'flex', gap: 8, marginBottom: 18, flexWrap: 'wrap' }}>
-        <button className="btn primary" disabled={creating} onClick={() => handleNew(t('editor.untitled'), BLANK_SCHEMA)}>
-          + {t('dashboard.newBlank')}
-        </button>
-        {TEMPLATES.map((tpl) => (
-          <button key={tpl.id} className="btn" disabled={creating} title={tpl.description} onClick={() => handleNew(tpl.name, tpl.schema)}>
-            + {tpl.name}
+      <div style={{ maxWidth: 860, margin: '0 auto', padding: '32px 24px' }}>
+        <h1 style={{ fontSize: 28, margin: '0 0 4px' }}>{t('dashboard.title')}</h1>
+        <p style={{ color: 'var(--text-secondary)', margin: '0 0 22px', fontSize: 14 }}>{t('dashboard.subtitle')}</p>
+
+        <div style={{ display: 'flex', gap: 8, marginBottom: 22, flexWrap: 'wrap' }}>
+          <button className="btn primary" disabled={creating} onClick={() => handleNew(t('editor.untitled'), BLANK_SCHEMA)}>
+            + {t('dashboard.newBlank')}
           </button>
-        ))}
-      </div>
+          {TEMPLATES.map((tpl) => (
+            <button key={tpl.id} className="btn" disabled={creating} title={tpl.description} onClick={() => handleNew(tpl.name, tpl.schema)}>
+              + {tpl.name}
+            </button>
+          ))}
+        </div>
 
-      {error && <p style={{ color: 'var(--negative)', fontSize: 13 }}>{error}</p>}
+        {error && <p style={{ color: 'var(--negative)', fontSize: 13 }}>{error}</p>}
 
-      {items === null ? null : items.length === 0 ? (
-        <p style={{ color: 'var(--text-secondary)' }}>{t('dashboard.empty')}</p>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {items.map((c) => (
-            <div key={c.id} className="card" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, minWidth: 160 }}>
-                <div style={{ fontWeight: 600 }}>{c.title}</div>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 600,
-                    padding: '2px 8px',
-                    borderRadius: 6,
-                    display: 'inline-block',
-                    marginTop: 4,
-                    background: c.status === 'published' ? 'rgba(21,160,107,0.12)' : 'var(--input-bg)',
-                    color: c.status === 'published' ? 'var(--positive, #15A06B)' : 'var(--text-secondary)',
-                  }}
-                >
-                  {t(`dashboard.status.${c.status}`)}
-                </span>
-              </div>
-              <div style={{ fontSize: 12, color: 'var(--text-secondary)', textAlign: 'right' }}>
-                <div>{t('dashboard.views7')} : {c.viewsSeven}</div>
-                <div>{t('dashboard.submissions7')} : {c.submissionsSeven}</div>
-              </div>
-              <div style={{ display: 'flex', gap: 6 }}>
+        {items === null ? null : items.length === 0 ? (
+          <div className="card" style={{ textAlign: 'center', padding: '40px 24px', color: 'var(--text-secondary)' }}>{t('dashboard.empty')}</div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {items.map((c) => (
+              <div key={c.id} className="card interactive" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+                <div style={{ flex: 1, minWidth: 160 }}>
+                  <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "'Space Grotesk', sans-serif" }}>{c.title}</div>
+                  <span className={`status-pill ${c.status === 'published' ? 'published' : 'draft'}`} style={{ marginTop: 6 }}>
+                    {t(`dashboard.status.${c.status}`)}
+                  </span>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text-secondary)', textAlign: 'right' }}>
+                  <div>{t('dashboard.views7')} : {c.viewsSeven}</div>
+                  <div>{t('dashboard.submissions7')} : {c.submissionsSeven}</div>
+                </div>
+                <div style={{ display: 'flex', gap: 6 }}>
                 <button className="btn" onClick={() => navigate(`/editor/${c.id}`)}>{t('dashboard.open')}</button>
                 {c.status === 'published' && (
                   <button className="btn" title={t('dashboard.stats')} onClick={() => navigate(`/stats/${c.id}`)}>📊</button>
@@ -163,6 +158,7 @@ export default function Dashboard() {
         >
           {t('auth.deleteAccount')}
         </button>
+        </div>
       </div>
     </div>
   );

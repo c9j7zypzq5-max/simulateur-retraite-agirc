@@ -60,9 +60,12 @@ export default {
   },
   landing: {
     signIn: 'Se connecter',
-    heroTitle: 'Créez votre simulateur, publiez-le, intégrez-le à votre site',
+    badge: 'Sans code · À vos couleurs · Capture de leads',
+    heroTitle: 'Créez, publiez et intégrez votre simulateur',
+    heroTitleEm: 'sans une ligne de code',
     heroSubtitle:
       'Calculateurs de devis, simulateurs financiers, estimateurs de ROI — à vos couleurs, sans une ligne de code. Publiez en un clic, récupérez vos leads.',
+    trust: 'Publication en 1 clic · Capture de leads · Barèmes français 2026',
     cta: 'Créer mon calculateur gratuitement',
     demoTitle: 'Essayez : trois modèles prêts à l\'emploi',
     demoSubtitle: 'Conformes aux barèmes français 2026, personnalisables en quelques minutes.',
@@ -82,6 +85,7 @@ export default {
     metaTitle: 'Modèles de calculateurs par métier',
     metaDescription: 'Des modèles de simulateurs et calculateurs de devis prêts à l\'emploi, classés par métier : immobilier, freelance, patrimoine, fiscalité, BTP, marketing.',
     detailMetaTitle: '{name} — modèle de calculateur',
+    badge: 'Modèles prêts à l\'emploi',
     title: 'Des modèles pour chaque métier',
     subtitle: 'Partez d\'un calculateur prêt à l\'emploi, conforme aux barèmes français 2026, et personnalisez-le en quelques minutes.',
     tryIt: 'Essayer',
@@ -91,6 +95,7 @@ export default {
   },
   dashboard: {
     title: 'Mes calculateurs',
+    subtitle: 'Créez, publiez et suivez vos simulateurs.',
     empty: 'Aucun calculateur pour le moment.',
     new: 'Nouveau',
     newBlank: 'Vierge',

@@ -10,26 +10,7 @@ import { TEMPLATES, templatesByMetier } from '../schema/templates';
 import { DEFAULT_THEME } from '../schema/types';
 import { t } from '../i18n';
 import { usePageMeta } from './seo';
-
-function Header() {
-  return (
-    <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 24px', borderBottom: '1px solid var(--border)', background: 'var(--surface)' }}>
-      <Link to="/" style={{ textDecoration: 'none' }}>
-        <strong style={{ fontSize: 16 }}>Simfinly <span style={{ color: 'var(--primary)' }}>Builder</span></strong>
-      </Link>
-      <Link to="/login" className="btn" style={{ textDecoration: 'none' }}>{t('landing.signIn')}</Link>
-    </header>
-  );
-}
-
-function Footer() {
-  return (
-    <footer style={{ textAlign: 'center', padding: '20px 24px 32px', fontSize: 12, color: 'var(--text-secondary)', borderTop: '1px solid var(--border)' }}>
-      {t('landing.footer')}{' '}
-      <a href="https://www.simfinly.com" style={{ color: 'var(--primary)' }}>simfinly.com</a>
-    </footer>
-  );
-}
+import { Header, Footer, Particles } from './Chrome';
 
 // /modeles — galerie groupée par métier.
 export function ModelesGallery() {
@@ -39,26 +20,32 @@ export function ModelesGallery() {
   return (
     <div>
       <Header />
-      <section style={{ maxWidth: 960, margin: '0 auto', padding: '48px 24px 24px', textAlign: 'center' }}>
-        <h1 style={{ fontSize: 30, lineHeight: 1.2, margin: '0 0 14px' }}>{t('modeles.title')}</h1>
-        <p style={{ fontSize: 15, color: 'var(--text-secondary)', margin: '0 auto', maxWidth: 560, lineHeight: 1.6 }}>{t('modeles.subtitle')}</p>
+      <section style={{ position: 'relative', maxWidth: 960, margin: '0 auto', padding: '56px 24px 24px', textAlign: 'center' }}>
+        <Particles />
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div className="hero-badge" style={{ marginBottom: 20 }}>
+            <span style={{ opacity: 0.7 }}>✦</span> {t('modeles.badge')} <span style={{ opacity: 0.7 }}>✦</span>
+          </div>
+          <h1 style={{ fontSize: 'clamp(28px, 4.5vw, 40px)', margin: '0 0 14px' }}>{t('modeles.title')}</h1>
+          <p style={{ fontSize: 16, color: 'var(--text-secondary)', margin: '0 auto', maxWidth: 560, lineHeight: 1.6 }}>{t('modeles.subtitle')}</p>
+        </div>
       </section>
 
-      <section style={{ maxWidth: 960, margin: '0 auto', padding: '8px 24px 48px' }}>
+      <section style={{ maxWidth: 960, margin: '0 auto', padding: '16px 24px 48px' }}>
         {groups.map(({ metier, templates }) => (
-          <div key={metier} style={{ marginBottom: 36 }}>
-            <h2 style={{ fontSize: 18, margin: '0 0 14px', paddingBottom: 8, borderBottom: '1px solid var(--border)' }}>{metier}</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 14 }}>
+          <div key={metier} style={{ marginBottom: 40 }}>
+            <h2 style={{ fontSize: 20, margin: '0 0 16px', paddingBottom: 10, borderBottom: '1px solid var(--border)' }}>{metier}</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: 16 }}>
               {templates.map((tpl) => (
                 <Link
                   key={tpl.id}
                   to={`/modeles/${tpl.id}`}
-                  className="card"
-                  style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: 6 }}
+                  className="card interactive"
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', gap: 8 }}
                 >
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>{tpl.name}</div>
+                  <div style={{ fontWeight: 700, fontSize: 15, fontFamily: "'Space Grotesk', sans-serif" }}>{tpl.name}</div>
                   <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5, flex: 1 }}>{tpl.description}</div>
-                  <div style={{ fontSize: 12, color: 'var(--primary)', fontWeight: 600, marginTop: 4 }}>{t('modeles.tryIt')} →</div>
+                  <div style={{ fontSize: 12.5, color: 'var(--primary)', fontWeight: 600, marginTop: 4 }}>{t('modeles.tryIt')} →</div>
                 </Link>
               ))}
             </div>
@@ -95,7 +82,7 @@ export function ModeleDetail() {
       </section>
 
       <section style={{ maxWidth: 560, margin: '0 auto', padding: '20px 24px 8px' }}>
-        <div style={{ boxShadow: '0 1px 4px rgba(15,24,40,0.07), 0 4px 16px rgba(15,24,40,0.05)', borderRadius: 14 }}>
+        <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
           <CalculatorRenderer
             calculator={{ title: tpl.name, theme: DEFAULT_THEME, schema: tpl.schema }}
             values={values}

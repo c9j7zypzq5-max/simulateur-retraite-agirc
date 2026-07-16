@@ -1,18 +1,34 @@
-/* Palette du builder — reprise des variables du site principal (styles.css).
+/* Design system du builder (app.simfinly.com) — aligné sur la DA du site
+   principal (src/styles.css & index.html de simfinly.com) : Space Grotesk pour
+   les titres, Hanken Grotesk pour le texte, palette bleue, cartes à ombre douce,
+   boutons en pilule.
    Le rendu des calculateurs n'utilise PAS ces variables : il est thémé par le
    client (--c-*). */
 
 :root {
   --bg: #F5F6F8;
   --surface: #ffffff;
+  --card-bg: #ffffff;
   --text: #0F1828;
   --text-secondary: #5B6677;
   --primary: #2B5CE6;
+  --primary-strong: #1E48C0;
   --primary-soft: #EAF0FF;
   --border: #e7eaf0;
+  --border-strong: #cdddfb;
   --negative: #dc2626;
+  --negative-soft: #fef2f2;
   --positive: #15A06B;
+  --positive-soft: #dcfce7;
   --input-bg: #F5F6F8;
+  --chip-bg: #EAF0FF;
+  --card-shadow: 0 1px 4px rgba(15,24,40,0.07), 0 4px 16px rgba(15,24,40,0.05);
+  --card-shadow-hover: 0 4px 12px rgba(15,24,40,0.10), 0 12px 32px rgba(15,24,40,0.10);
+  --hover-bg: rgba(43,92,230,0.06);
+  --primary-gradient: linear-gradient(135deg, #2B5CE6, #5B8CFF);
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
 }
 
 /* Thème sombre automatique — UNIQUEMENT pour l'app builder (data-surface
@@ -23,14 +39,24 @@
   :root[data-surface='app'] {
     --bg: #0B1220;
     --surface: #131D30;
+    --card-bg: #131D30;
     --text: #EAF0FA;
     --text-secondary: #8593A8;
     --primary: #5B8CFF;
+    --primary-strong: #7BA4FF;
     --primary-soft: #1B2A45;
     --border: #202C40;
+    --border-strong: #28406e;
     --negative: #f87171;
+    --negative-soft: #450a0a;
     --positive: #34D399;
+    --positive-soft: #064e3b;
     --input-bg: #0B1220;
+    --chip-bg: #1B2A45;
+    --card-shadow: none;
+    --card-shadow-hover: 0 8px 28px rgba(0,0,0,0.45);
+    --hover-bg: rgba(255,255,255,0.06);
+    --primary-gradient: linear-gradient(135deg, #5B8CFF, #8aaeff);
   }
 }
 
@@ -42,62 +68,171 @@ body {
   color: var(--text);
   font-family: 'Hanken Grotesk', system-ui, sans-serif;
   font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Space Grotesk', 'Hanken Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+a { color: var(--primary); }
+
+*:focus { outline: none; }
+*:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
 input, select, textarea, button { font-family: inherit; font-size: 13px; color: inherit; }
 
-input[type="text"], input[type="number"], input[type="url"], select, textarea {
+input[type="text"], input[type="number"], input[type="url"], input[type="email"], input[type="password"], select, textarea {
   width: 100%;
-  padding: 7px 10px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
   background: var(--surface);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-soft); border-color: var(--primary); }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-soft);
+}
 
 label > span.lbl {
   display: block;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-secondary);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
 }
 
 /* .btn s'applique aux <button> comme aux <a>/<Link> (CTA de la landing,
    liens du dashboard) — ne pas restreindre le sélecteur à button. */
 .btn {
-  display: inline-block;
-  padding: 7px 14px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
   background: var(--surface);
   cursor: pointer;
   font-weight: 600;
   font-size: 13px;
-  color: inherit;
+  color: var(--text);
   text-decoration: none;
   text-align: center;
+  line-height: 1.2;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
-.btn:hover { border-color: var(--primary); color: var(--primary); }
-.btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
-.btn.primary:hover { color: #fff; opacity: 0.92; }
+.btn:hover { border-color: var(--primary); color: var(--primary); background: var(--hover-bg); }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn.primary {
+  background: var(--primary-gradient);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(43,92,230,0.28);
+}
+.btn.primary:hover { color: #fff; background: var(--primary-gradient); filter: brightness(1.05); box-shadow: 0 6px 20px rgba(43,92,230,0.36); }
+.btn.primary:disabled { filter: none; box-shadow: none; }
+
+.btn.chip {
+  padding: 7px 14px;
+  font-size: 12.5px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+.btn.chip.active {
+  background: var(--primary-soft);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 button.icon {
-  padding: 4px 8px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 9px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--surface);
   cursor: pointer;
   line-height: 1;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
 }
 button.icon:disabled { opacity: 0.35; cursor: default; }
-button.icon:not(:disabled):hover { border-color: var(--primary); color: var(--primary); }
+button.icon:not(:disabled):hover { border-color: var(--primary); color: var(--primary); background: var(--hover-bg); }
 
 .card {
-  background: var(--surface);
+  background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: var(--r-lg);
+  padding: 16px;
+  box-shadow: var(--card-shadow);
 }
+.card.interactive { transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+.card.interactive:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); border-color: var(--border-strong); }
+
+/* ── En-tête d'application (landing, galerie, dashboard…) ── */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  backdrop-filter: saturate(180%) blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.brand { display: inline-flex; align-items: center; gap: 9px; text-decoration: none; color: var(--text); }
+.brand-mark {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: var(--primary-gradient);
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px;
+  box-shadow: 0 2px 8px rgba(43,92,230,0.30);
+  flex-shrink: 0;
+}
+.brand-name { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.05rem; letter-spacing: -0.01em; }
+.brand-name em { font-style: normal; color: var(--primary); }
+
+/* ── Badge pilule du hero (✦ … ✦) ── */
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(43,92,230,0.08);
+  border: 1px solid rgba(43,92,230,0.2);
+  color: var(--primary);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 999px;
+}
+
+/* Emphase italique bleue des titres de hero, comme le site principal. */
+.hero-em { font-style: italic; color: var(--primary); }
+
+/* ── Pastille de statut (brouillon / publié) ── */
+.status-pill {
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  display: inline-block; letter-spacing: 0.02em;
+}
+.status-pill.published { background: var(--positive-soft); color: var(--positive); }
+.status-pill.draft { background: var(--input-bg); color: var(--text-secondary); }
