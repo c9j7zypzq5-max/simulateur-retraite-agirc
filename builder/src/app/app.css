@@ -31,34 +31,9 @@
   --r-lg: 16px;
 }
 
-/* Thème sombre automatique — UNIQUEMENT pour l'app builder (data-surface
-   posé par src/app/main.tsx). La page publique/embed (s.html) reste sur la
-   palette claire : une iframe sombre au milieu d'un site client clair serait
-   pire que l'absence de thème sombre. Palette sombre du site principal. */
-@media (prefers-color-scheme: dark) {
-  :root[data-surface='app'] {
-    --bg: #0B1220;
-    --surface: #131D30;
-    --card-bg: #131D30;
-    --text: #EAF0FA;
-    --text-secondary: #8593A8;
-    --primary: #5B8CFF;
-    --primary-strong: #7BA4FF;
-    --primary-soft: #1B2A45;
-    --border: #202C40;
-    --border-strong: #28406e;
-    --negative: #f87171;
-    --negative-soft: #450a0a;
-    --positive: #34D399;
-    --positive-soft: #064e3b;
-    --input-bg: #0B1220;
-    --chip-bg: #1B2A45;
-    --card-shadow: none;
-    --card-shadow-hover: 0 8px 28px rgba(0,0,0,0.45);
-    --hover-bg: rgba(255,255,255,0.06);
-    --primary-gradient: linear-gradient(135deg, #5B8CFF, #8aaeff);
-  }
-}
+/* Pas de mode sombre : simfinly.com est clair uniquement (aucune bascule
+   exposée, useTheme reste sur « light »). L'app builder suit la même DA et
+   n'applique donc PAS prefers-color-scheme. */
 
 * { box-sizing: border-box; }
 

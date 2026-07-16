@@ -7,10 +7,6 @@ import Login from './auth/Login';
 import Landing from './Landing';
 import './app.css';
 
-// Active la palette sombre automatique (app.css) pour l'app builder seulement —
-// l'entrée publique s.html ne pose pas cet attribut et reste claire.
-document.documentElement.dataset.surface = 'app';
-
 // Landing + Login restent dans le bundle initial (ce sont les points d'entrée,
 // et la landing doit convertir vite). Les écrans authentifiés — plus lourds
 // (éditeur, panneaux, couche données) — sont chargés à la demande : un visiteur
