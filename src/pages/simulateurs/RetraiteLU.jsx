@@ -22,8 +22,11 @@ const MAJORATION_FAMILLE = 0.05; // 5 % par enfant (max 3 enfants)
 const AGE_ANTICIPE_MIN = 57; // avec 40 ans de cotisations
 const AGE_ANTICIPE_40 = 60; // avec 40 ans de cotisations, sans condition carrière longue
 
-// Pension minimale 2025 (40 ans de carrière)
-const PENSION_MINIMUM_40ANS = 1_900; // EUR/mois (approximation 2025)
+// Pension minimale : 90 % du montant de référence pour 40 ans d'assurance,
+// soit 2 436,04 €/mois brut au 1er juin 2026 (indice 992,24). Réduite d'1/40e
+// par année manquante entre 20 et 40 ans (aucun minimum en dessous de 20 ans).
+const PENSION_MINIMUM_40ANS = 2_436.04; // EUR/mois brut (1er juin 2026)
+const DUREE_MIN_MINIMUM = 20; // années plancher pour ouvrir droit au minimum
 
 // Calcul simplifié CNAP Luxembourg (régime général des pensions)
 // Formula: pension = (revenu_moyen * taux_base * années) + rente_fixe
@@ -43,15 +46,18 @@ function calcLU({ salaireAnnuel, anneesTotal, ageDépart, nbEnfants }) {
   // Pension brute = revenu moyen × taux × années
   let pensionBrute = (SAM / 12) * tauxBase * anneesEffectives;
 
+  // Pension minimale garantie : 90 % du montant de référence pour 40 ans
+  // (2 436,04 €/mois au 1er juin 2026), proratisée d'1/40e par année manquante
+  // entre 20 et 40 ans. Aucun minimum garanti en dessous de 20 ans d'assurance.
+  if (anneesTotal >= DUREE_MIN_MINIMUM) {
+    const minimumGaranti = PENSION_MINIMUM_40ANS * Math.min(anneesTotal, DUREE_COMPLETE) / DUREE_COMPLETE;
+    pensionBrute = Math.max(pensionBrute, minimumGaranti);
+  }
+
   // Majoration enfants (5 % par enfant, max 3)
   const enfantsEligibles = Math.min(nbEnfants || 0, 3);
   const majorationFamille = pensionBrute * MAJORATION_FAMILLE * enfantsEligibles;
   pensionBrute += majorationFamille;
-
-  // Pension minimale garantie (si carrière ≥ 40 ans)
-  if (anneesTotal >= DUREE_COMPLETE) {
-    pensionBrute = Math.max(pensionBrute, PENSION_MINIMUM_40ANS);
-  }
 
   // Retenue sociale : ~2.8 % (maladie) + 0 % sur pension (pas d'impôt retenu à la source au LU)
   const retenueAcc = pensionBrute * 0.028;
@@ -99,7 +105,7 @@ const TXT = {
     majorationLabel: (n) => `Majoration famille (${n} enfant${n > 1 ? "s" : ""})`,
     ageDepartValue: (a) => `${a} ans`,
     anticipeeNote: (n) => `Il vous manque ${n} an${n > 1 ? "s" : ""} de cotisations pour accéder à la retraite anticipée à 60 ans.`,
-    note: "Ce simulateur est une estimation basée sur le régime général CNAP (dernières valeurs publiées, point 2025). Le calcul réel tient compte de l'historique complet des revenus cotisés. Pour une projection personnalisée, consultez votre relevé de carrière sur guichet.lu.",
+    note: "Ce simulateur est une estimation basée sur le régime général CNAP (valeurs 2026, pension minimale au 1er juin 2026). Le calcul réel tient compte de l'historique complet des revenus cotisés. Pour une projection personnalisée, consultez votre relevé de carrière sur guichet.lu.",
     aboutTitle: "À propos de la retraite au Luxembourg",
     about: [
       {
@@ -116,7 +122,7 @@ const TXT = {
       },
       {
         h3: "Pension minimale et majoration famille",
-        p: "Les assurés justifiant d'au moins 40 années de carrière bénéficient d'une pension minimale garantie, quel que soit leur salaire cotisé — un filet de sécurité qui profite notamment aux carrières à revenus modestes. Une majoration de 5 % par enfant élevé (dans la limite de 3 enfants) s'ajoute par ailleurs à la pension calculée.",
+        p: "Pour 40 années d'assurance, la pension ne peut être inférieure à 90 % du montant de référence, soit 2 436,04 €/mois au 1er juin 2026 (indice 992,24). Ce minimum garanti est réduit d'un quarantième par année manquante entre 20 et 40 ans — un filet de sécurité qui profite surtout aux carrières à revenus modestes. Une majoration de 5 % par enfant élevé (dans la limite de 3 enfants) s'ajoute par ailleurs à la pension calculée.",
       },
     ],
     faqTitle: "Questions fréquentes — Retraite Luxembourg",
@@ -126,6 +132,8 @@ const TXT = {
       { q: "Comment est calculée la pension luxembourgeoise ?", a: "La pension est proportionnelle aux revenus cotisés et à la durée de carrière : environ 1,85 % du revenu moyen mensuel par année de cotisation, avec un forfait supplémentaire par année. Une pension minimale est garantie pour ceux qui ont cotisé au moins 40 ans." },
       { q: "Les frontaliers français ont-ils droit à la retraite luxembourgeoise ?", a: "Oui. Les travailleurs frontaliers qui ont cotisé au Luxembourg ont droit à une pension CNAP proportionnelle à leurs années de cotisation luxembourgeoises. La pension est ensuite versée en France, mais reste soumise à l'impôt luxembourgeois sous la plupart des conventions fiscales." },
       { q: "Puis-je cumuler pension luxembourgeoise et pension française ?", a: "Oui, le règlement européen (CE 883/2004) organise la coordination des régimes. Chaque pays calcule une pension « nationale » proportionnelle aux années cotisées dans ce pays. Vous percevrez une pension de chaque régime auquel vous avez cotisé, dans les conditions d'âge propres à chacun." },
+      { q: "Quelle pension pour 15, 30 ou 40 ans de carrière au Luxembourg ?", a: "La pension CNAP est proportionnelle à la durée cotisée : environ 1,85 % du revenu moyen mensuel par année, complété d'un forfait annuel. À 15 ans vous obtenez une pension partielle, à 30 ans une pension déjà substantielle, et à 40 ans le taux plein avec la pension minimale garantie. Le simulateur ci-dessus estime le montant selon vos propres années et votre salaire cotisé." },
+      { q: "Quel est le montant minimum de la pension luxembourgeoise ?", a: "Pour 40 années d'assurance, la pension ne peut être inférieure à 90 % du montant de référence, soit 2 436,04 €/mois au 1er juin 2026 (indice 992,24). Ce minimum garanti est réduit d'un quarantième (1/40e) par année manquante entre 20 et 40 ans ; en dessous de 20 ans d'assurance, aucun minimum n'est garanti." },
     ],
     reportName: "Ma retraite Luxembourg (CNAP)",
     reportHighlight: "Pension nette estimée",
@@ -164,7 +172,7 @@ const TXT = {
     majorationLabel: (n) => `Family bonus (${n} child${n > 1 ? "ren" : ""})`,
     ageDepartValue: (a) => `${a} years old`,
     anticipeeNote: (n) => `You need ${n} more year${n > 1 ? "s" : ""} of contributions to access early retirement at 60.`,
-    note: "This calculator is an estimate based on the CNAP general scheme (latest published values, 2025 point). The actual calculation takes into account your full contribution history. For a personalised projection, check your career statement on guichet.lu.",
+    note: "This calculator is an estimate based on the CNAP general scheme (2026 values, minimum pension as of 1 June 2026). The actual calculation takes into account your full contribution history. For a personalised projection, check your career statement on guichet.lu.",
     aboutTitle: "About retirement in Luxembourg",
     about: [
       {
@@ -181,7 +189,7 @@ const TXT = {
       },
       {
         h3: "Minimum pension and family bonus",
-        p: "Insured people with at least 40 years of career benefit from a guaranteed minimum pension, regardless of their contributed salary — a safety net that particularly benefits lower-income careers. A 5% bonus per child raised (up to 3 children) is also added to the calculated pension.",
+        p: "For 40 years of insurance, the pension cannot be lower than 90% of the reference amount — €2,436.04/month as of 1 June 2026 (index 992.24). This guaranteed minimum is reduced by one fortieth for each year missing between 20 and 40 years — a safety net that mainly benefits lower-income careers. A 5% bonus per child raised (up to 3 children) is also added to the calculated pension.",
       },
     ],
     faqTitle: "Frequently asked questions — Luxembourg pension",
@@ -191,6 +199,8 @@ const TXT = {
       { q: "How is the Luxembourg pension calculated?", a: "The pension is proportional to contributed income and career length: roughly 1.85% of average monthly income per year of contribution, plus an additional flat-rate amount per year. A minimum pension is guaranteed for those with at least 40 years of contributions." },
       { q: "Are French cross-border workers entitled to a Luxembourg pension?", a: "Yes. Cross-border workers who contributed in Luxembourg are entitled to a CNAP pension proportional to their Luxembourg contribution years. The pension is then paid to France, but generally remains subject to Luxembourg tax under most tax treaties." },
       { q: "Can I combine a Luxembourg pension and a French pension?", a: "Yes, EU regulation (EC 883/2004) coordinates the schemes. Each country calculates a 'national' pension proportional to the years contributed there. You will receive a pension from each scheme you contributed to, under that scheme's own age conditions." },
+      { q: "What pension for 15, 30 or 40 years of career in Luxembourg?", a: "The CNAP pension is proportional to the length of contributions: roughly 1.85% of average monthly income per year, plus an annual flat-rate amount. At 15 years you get a partial pension, at 30 years an already substantial one, and at 40 years the full rate with the guaranteed minimum pension. The calculator above estimates the amount based on your own years and contributed salary." },
+      { q: "What is the minimum pension amount in Luxembourg?", a: "For 40 years of insurance, the pension cannot be lower than 90% of the reference amount — €2,436.04/month as of 1 June 2026 (index 992.24). This guaranteed minimum is reduced by one fortieth (1/40) for each year missing between 20 and 40 years; below 20 years of insurance, no minimum is guaranteed." },
     ],
     reportName: "My Luxembourg pension (CNAP)",
     reportHighlight: "Estimated net pension",

@@ -37,7 +37,7 @@ export const BAREMES_DATES = {
   "/simulateurs/flat-tax":                  { annee: 2026 },
   "/simulateurs/trimestres":                { annee: 2026 },
   "/simulateurs/succession-ch":             { annee: 2025 },
-  "/simulateurs/retraite-luxembourg":       { annee: 2025 },
+  "/simulateurs/retraite-luxembourg":       { annee: 2026, mois: "juin" },
   "/simulateurs/retraite-quebec":           { annee: 2026 },
   "/simulateurs/impot-revenu-qc":           { annee: 2026 },
 };
