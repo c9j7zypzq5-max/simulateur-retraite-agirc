@@ -113,6 +113,9 @@ export interface Calculator {
   // Webhook sortant par soumission (Premium) : POST du payload vers cette URL
   // https, déclenché en base (pg_net), jamais côté client.
   webhookUrl: string | null;
+  // Notification email au propriétaire à chaque soumission (trigger pg_net →
+  // /api/notify, migration 0010).
+  notifyEmail: boolean;
   createdAt: string;
   updatedAt: string;
 }

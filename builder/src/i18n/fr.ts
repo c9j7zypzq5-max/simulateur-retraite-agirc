@@ -25,6 +25,8 @@ export default {
     hideBadgeLaunchHelp: 'Réservé aux futures offres payantes — le badge fait connaître l\'outil pendant le lancement.',
     captureEmail: 'Capturer l\'email avant le résultat',
     captureEmailHelp: 'Les visiteurs doivent laisser leur email pour voir le résultat.',
+    notifyEmail: 'Me notifier par email à chaque soumission',
+    notifyEmailHelp: 'Recevez un email dès qu\'un visiteur utilise ce calculateur (lead).',
   },
   stats: {
     window: 'Statistiques des 30 derniers jours',

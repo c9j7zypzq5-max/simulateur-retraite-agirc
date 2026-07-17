@@ -23,6 +23,7 @@ interface CalculatorRow {
   capture_email: boolean;
   over_free_quota: boolean;
   webhook_url: string | null;
+  notify_email: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -40,6 +41,7 @@ function fromRow(row: CalculatorRow): Calculator & { workspaceId: string } {
     captureEmail: row.capture_email,
     overFreeQuota: row.over_free_quota,
     webhookUrl: row.webhook_url,
+    notifyEmail: row.notify_email,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -165,13 +167,15 @@ export async function saveCalculator(
     hideBadge?: boolean;
     captureEmail?: boolean;
     webhookUrl?: string | null;
+    notifyEmail?: boolean;
   },
 ): Promise<void> {
-  const { hideBadge, captureEmail, webhookUrl, ...rest } = patch;
+  const { hideBadge, captureEmail, webhookUrl, notifyEmail, ...rest } = patch;
   const row: Record<string, unknown> = { ...rest };
   if (hideBadge !== undefined) row.hide_badge = hideBadge;
   if (captureEmail !== undefined) row.capture_email = captureEmail;
   if (webhookUrl !== undefined) row.webhook_url = webhookUrl;
+  if (notifyEmail !== undefined) row.notify_email = notifyEmail;
   const { error } = await supabase.from('builder_calculators').update(row).eq('id', id);
   if (error) throw error;
 }

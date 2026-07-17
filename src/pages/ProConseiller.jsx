@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
+import BuilderCTA from "../components/BuilderCTA.jsx";
 import { useTheme } from "../hooks/useTheme.js";
 
 const FEATURES = [
@@ -191,6 +192,11 @@ export default function ProConseiller() {
               </Link>
             ))}
           </div>
+        </div>
+
+        {/* Créer un simulateur sur mesure à sa marque → builder */}
+        <div style={{ marginBottom: 60 }}>
+          <BuilderCTA context="pro-conseiller" />
         </div>
 
         {/* Contact form */}

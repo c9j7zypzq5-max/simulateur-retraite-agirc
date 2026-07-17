@@ -4,6 +4,7 @@ import { useTheme } from "../hooks/useTheme.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import EmbedSnippet from "../components/EmbedSnippet.jsx";
+import BuilderCTA from "../components/BuilderCTA.jsx";
 
 const WIDGETS = [
   { path: "/embed/epargne", height: 520, label: "le simulateur d'épargne", title: "Épargne & intérêts composés" },
@@ -72,6 +73,11 @@ export default function Widgets() {
           <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>
             Ajoutez gratuitement un simulateur interactif sur votre site, blog ou article. Copiez le code, collez-le dans votre page : c'est tout. Un lien vers simfinly.com est inclus.
           </p>
+        </div>
+
+        {/* Besoin d'un calculateur sur mesure plutôt que d'un widget prêt à l'emploi → builder */}
+        <div style={{ marginBottom: 32 }}>
+          <BuilderCTA context="widgets" />
         </div>
 
         {/* Widget universel : génère un code iframe pour n'importe quel simulateur */}

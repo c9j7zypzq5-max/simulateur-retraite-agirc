@@ -246,6 +246,33 @@ resserrée. On priorise l'acquisition (SEO, viralité, rétention).
   ne sont **pas** routés là (pas de cloaking, ils exécutent le JS de la vraie
   page). Titre/description récupérés via la clé anon.
 
+### Lot acquisition (2026-07-17) — maillage, galerie ×3, notifications de lead
+
+Suite de la décision « acquisition avant monétisation » (stratégie détaillée :
+`docs/STRATEGIE-MONETISATION-BUILDER.md`) :
+
+- **Maillage simfinly.com → builder** (il n'existait aucun lien) : composant
+  `src/components/BuilderCTA.jsx` du site principal, affiché sur toutes les
+  pages `/simulateurs/*` (via le Footer, tous préfixes pays), sur `/widgets`,
+  sur `/pro-conseiller`, + lien dans la nav du footer. UTM + événement
+  `builder_cta_click` pour mesurer la conversion par emplacement. i18n FR/EN.
+- **Galerie de modèles ×3** : 8 → 24 templates (rendement et cash-flow
+  locatifs, assurance emprunteur, net vendeur, location saisonnière,
+  micro-entrepreneur 2026, indemnités km, TVA, coût salarié, seuil de
+  rentabilité, marge produit, taux horaire artisan, rente, objectif
+  d'épargne, coût matière restauration, solaire), 4 nouveaux métiers dans
+  `METIERS_ORDER`. Chaque template couvert par un test de fidélité à valeur
+  connue (`templates.test.ts`). Le bundle public reste ~62 ko gzip (les
+  templates ne sont chargés que par l'app/galerie).
+- **Notification email de lead** (migration `0010`) : trigger pg_net →
+  `POST /api/notify {submission_id}` ; l'endpoint (service role) revendique
+  atomiquement `notified_at` (idempotent), relit calculateur + propriétaire
+  et envoie l'email via Resend (fail-soft sans `RESEND_API_KEY`). Toggle
+  `notify_email` (défaut ON) dans l'onglet Options de l'éditeur. Migration
+  appliquée sur le projet Supabase (colonnes + trigger vérifiés). ⚠️ Reste à
+  provisionner : compte Resend + `RESEND_API_KEY` (et domaine d'envoi) dans
+  le projet Vercel du builder.
+
 ### Dettes assumées — lot croissance
 - OG sans image générée (`og:image` absent) : cartes en `summary` texte seul.
   Génération d'image dynamique volontairement hors périmètre (YAGNI).

@@ -37,6 +37,13 @@ export default {
     readOnBlog: 'À lire sur le blog',
     allLexique: 'Tout le lexique →',
   },
+  builderCta: {
+    kicker: 'Simfinly Builder',
+    title: 'Créez votre propre simulateur',
+    desc: 'Un calculateur à votre marque, intégrable sur votre site en quelques minutes, sans code. Devis, capacité d\'emprunt, rendement… Gratuit pendant le lancement.',
+    cta: 'Découvrir le Builder →',
+    navLink: 'Créer un simulateur',
+  },
   home: {
     badge: 'Gratuit · Sans inscription',
     title: 'Simulateurs financiers',

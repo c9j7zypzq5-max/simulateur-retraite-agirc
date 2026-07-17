@@ -36,6 +36,13 @@ export default {
     readOnBlog: 'From the blog',
     allLexique: 'Full glossary →',
   },
+  builderCta: {
+    kicker: 'Simfinly Builder',
+    title: 'Build your own calculator',
+    desc: 'A branded calculator you can embed on your website in minutes, no code required. Quotes, borrowing capacity, rental yield… Free during launch.',
+    cta: 'Discover the Builder →',
+    navLink: 'Build a calculator',
+  },
   home: {
     badge: 'Free · No sign-up',
     title: 'Financial calculators',

@@ -65,6 +65,7 @@ export default function Editor() {
         hideBadge: calc.hideBadge,
         captureEmail: calc.captureEmail,
         webhookUrl: calc.webhookUrl,
+        notifyEmail: calc.notifyEmail,
       })
         .then(() => setSaveState({ status: 'saved', at: new Date().toLocaleTimeString('fr-FR') }))
         // Ne plus avaler l'échec en silence : l'utilisateur doit savoir que sa
@@ -78,7 +79,7 @@ export default function Editor() {
     setCalc((c) => (c ? { ...c, schema: { ...c.schema, ...patch } } : c));
   const patchTheme = (patch: Partial<Theme>) =>
     setCalc((c) => (c ? { ...c, theme: { ...c.theme, ...patch } } : c));
-  const patchPlanFields = (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null }) =>
+  const patchPlanFields = (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null; notifyEmail?: boolean }) =>
     setCalc((c) => (c ? { ...c, ...patch } : c));
 
   const errors = useMemo(
@@ -183,6 +184,7 @@ export default function Editor() {
             hideBadge={calc.hideBadge}
             captureEmail={calc.captureEmail}
             webhookUrl={calc.webhookUrl}
+            notifyEmail={calc.notifyEmail}
             onChange={patchPlanFields}
           />
         )}

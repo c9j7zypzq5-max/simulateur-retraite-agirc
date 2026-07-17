@@ -13,7 +13,8 @@ interface PlanPanelProps {
   hideBadge: boolean;
   captureEmail: boolean;
   webhookUrl: string | null;
-  onChange: (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null }) => void;
+  notifyEmail: boolean;
+  onChange: (patch: { hideBadge?: boolean; captureEmail?: boolean; webhookUrl?: string | null; notifyEmail?: boolean }) => void;
 }
 
 function ToggleRow({
@@ -60,7 +61,7 @@ function ToggleRow({
   );
 }
 
-export default function PlanPanel({ plan, hideBadge, captureEmail, webhookUrl, onChange }: PlanPanelProps) {
+export default function PlanPanel({ plan, hideBadge, captureEmail, webhookUrl, notifyEmail, onChange }: PlanPanelProps) {
   const badgeLocked = plan === 'free';
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -78,6 +79,13 @@ export default function PlanPanel({ plan, hideBadge, captureEmail, webhookUrl, o
         checked={captureEmail}
         disabled={false}
         onToggle={() => onChange({ captureEmail: !captureEmail })}
+      />
+      <ToggleRow
+        label={t('plan.notifyEmail')}
+        help={t('plan.notifyEmailHelp')}
+        checked={notifyEmail}
+        disabled={false}
+        onToggle={() => onChange({ notifyEmail: !notifyEmail })}
       />
 
       <div className="card">

@@ -9,6 +9,7 @@ import { sourcesForRoute } from "../data/sourcesOfficielles.js";
 import { useTranslation } from "../i18n/index.js";
 import { usePwaInstall } from "../hooks/usePwaInstall.js";
 import NewsletterSignup from "./NewsletterSignup.jsx";
+import BuilderCTA from "./BuilderCTA.jsx";
 
 // Catégories de blog correspondant à la catégorie d'un simulateur (ROUTE_META.cat).
 const BLOG_CATS_FOR_SIM = {
@@ -239,6 +240,19 @@ function RelatedArticles() {
   );
 }
 
+// Maillage vers le builder (app.simfinly.com) sur toutes les pages
+// simulateurs, quel que soit le préfixe de locale/pays — l'audience de ces
+// pages (pros qui préparent un devis, courtiers, CGP…) est la cible du produit.
+function BuilderSection() {
+  const { pathname } = useLocation();
+  if (!pathname.includes("/simulateurs/")) return null;
+  return (
+    <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label="Simfinly Builder">
+      <BuilderCTA context="simulateur" />
+    </section>
+  );
+}
+
 function PwaInstallBanner() {
   const { canInstall, install, dismiss } = usePwaInstall();
   const { locale } = useTranslation();
@@ -277,6 +291,7 @@ export default function Footer() {
     <RelatedTerms />
     <RelatedArticles />
     <OfficialSources />
+    <BuilderSection />
     <NewsletterSignup source={pathname.startsWith("/simulateurs/") ? "simulateur" : "footer"} />
     <footer style={{
       background: "var(--surface)",
@@ -329,6 +344,9 @@ export default function Footer() {
               <Link to="/widgets" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
                 {t("nav.widgets")}
               </Link>
+              <a href="https://app.simfinly.com/?utm_source=simfinly&utm_medium=referral&utm_campaign=footer" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+                {t("builderCta.navLink")}
+              </a>
             </>
           )}
           <LocaleLink to="/mentions-legales" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
