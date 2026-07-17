@@ -3,18 +3,36 @@
 // avec démo interactive (le vrai CalculatorRenderer, pas une capture) et CTA
 // inscription. Publiques, sans auth, chargées à la demande depuis main.tsx.
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import CalculatorRenderer from '../render/CalculatorRenderer';
 import { TEMPLATES, templatesByMetier } from '../schema/templates';
 import { DEFAULT_THEME } from '../schema/types';
 import { t } from '../i18n';
-import { usePageMeta } from './seo';
+import { usePageMeta, useJsonLd } from './seo';
 import { Header, Footer, Particles } from './Chrome';
+
+const ORIGIN = 'https://app.simfinly.com';
 
 // /modeles — galerie groupée par métier.
 export function ModelesGallery() {
   usePageMeta(t('modeles.metaTitle'), t('modeles.metaDescription'));
+  // ItemList : aide Google à comprendre la galerie comme une liste de modèles.
+  useJsonLd(
+    useMemo(
+      () => ({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        itemListElement: TEMPLATES.map((tpl, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: tpl.name,
+          url: `${ORIGIN}/modeles/${tpl.id}`,
+        })),
+      }),
+      [],
+    ),
+  );
   const groups = templatesByMetier();
 
   return (
@@ -63,11 +81,42 @@ export function ModeleDetail() {
   const { id } = useParams();
   const tpl = TEMPLATES.find((x) => x.id === id);
   const [values, setValues] = useState<Record<string, number>>({});
-  // Le hook doit être appelé inconditionnellement : on calcule des chaînes sûres
-  // même quand le modèle est introuvable (on redirige juste après).
+  // Les hooks doivent être appelés inconditionnellement : on calcule des
+  // valeurs sûres même quand le modèle est introuvable (on redirige juste après).
   usePageMeta(
     tpl ? t('modeles.detailMetaTitle').replace('{name}', tpl.name) : t('modeles.metaTitle'),
     tpl ? tpl.description : t('modeles.metaDescription'),
+  );
+  // Données structurées : l'outil (WebApplication gratuite) + le fil d'Ariane.
+  useJsonLd(
+    useMemo(
+      () =>
+        tpl
+          ? {
+              '@context': 'https://schema.org',
+              '@graph': [
+                {
+                  '@type': 'WebApplication',
+                  name: `${tpl.name} — Simfinly Builder`,
+                  description: tpl.description,
+                  url: `${ORIGIN}/modeles/${tpl.id}`,
+                  applicationCategory: 'FinanceApplication',
+                  operatingSystem: 'Web',
+                  offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+                  publisher: { '@type': 'Organization', name: 'Simfinly', url: 'https://www.simfinly.com' },
+                },
+                {
+                  '@type': 'BreadcrumbList',
+                  itemListElement: [
+                    { '@type': 'ListItem', position: 1, name: t('modeles.backToGallery'), item: `${ORIGIN}/modeles` },
+                    { '@type': 'ListItem', position: 2, name: tpl.name, item: `${ORIGIN}/modeles/${tpl.id}` },
+                  ],
+                },
+              ],
+            }
+          : null,
+      [tpl],
+    ),
   );
   if (!tpl) return <Navigate to="/modeles" replace />;
 
@@ -93,9 +142,10 @@ export function ModeleDetail() {
 
       <section style={{ maxWidth: 560, margin: '0 auto', padding: '20px 24px 56px', textAlign: 'center' }}>
         <p style={{ fontSize: 14, color: 'var(--text-secondary)', margin: '0 0 14px' }}>{t('modeles.ctaHelp')}</p>
-        <Link to="/login" className="btn primary" style={{ textDecoration: 'none', padding: '11px 24px', fontSize: 15, display: 'inline-block' }}>
+        <Link to={`/essai/${tpl.id}`} className="btn primary" style={{ textDecoration: 'none', padding: '11px 24px', fontSize: 15, display: 'inline-block' }}>
           {t('modeles.cta')}
         </Link>
+        <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--text-secondary)' }}>{t('modeles.ctaNote')}</div>
       </section>
 
       <Footer />

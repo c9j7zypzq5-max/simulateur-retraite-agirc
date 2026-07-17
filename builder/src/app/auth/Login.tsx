@@ -2,8 +2,9 @@
 // Pas d'OAuth au MVP.
 
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import { hasPendingIntent } from '../../lib/intent';
 import { t } from '../../i18n';
 import { Particles } from '../Chrome';
 
@@ -11,7 +12,11 @@ type Mode = 'signin' | 'signup' | 'magic';
 
 export default function Login() {
   const { signInWithPassword, signUpWithPassword, signInWithMagicLink } = useAuth();
-  const [mode, setMode] = useState<Mode>('signin');
+  const [searchParams] = useSearchParams();
+  // Arrivée depuis l'éditeur d'essai (« Publier ») ou avec une intention en
+  // attente : on ouvre d'emblée sur l'inscription et on explicite l'enjeu.
+  const publishIntent = searchParams.get('intent') === 'publish' || hasPendingIntent();
+  const [mode, setMode] = useState<Mode>(publishIntent ? 'signup' : 'signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +54,12 @@ export default function Login() {
           <span className="brand-mark">S</span>
           <span className="brand-name">simfinly <em>builder</em></span>
         </Link>
+
+        {publishIntent && (
+          <p style={{ margin: 0, fontSize: 13, color: 'var(--text)', background: 'var(--primary-soft)', border: '1px solid var(--border)', borderRadius: 10, padding: '10px 12px', lineHeight: 1.5 }}>
+            {t('essai.loginIntent')}
+          </p>
+        )}
 
         <div style={{ display: 'flex', gap: 6, background: 'var(--input-bg)', padding: 4, borderRadius: 999 }}>
           {(['signin', 'signup', 'magic'] as const).map((m) => (

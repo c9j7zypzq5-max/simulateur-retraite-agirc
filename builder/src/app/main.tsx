@@ -38,6 +38,9 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<HomeGate />} />
             <Route path="/modeles" element={<ModelesGallery />} />
             <Route path="/modeles/:id" element={<ModeleDetail />} />
+            {/* Éditeur d'essai sans compte (brouillon local) — pas de RequireAuth. */}
+            <Route path="/essai" element={<Editor guest />} />
+            <Route path="/essai/:templateId" element={<Editor guest />} />
             <Route path="/editor/:id" element={<RequireAuth><Editor /></RequireAuth>} />
             <Route path="/submissions" element={<RequireAuth><Submissions /></RequireAuth>} />
             <Route path="/stats/:id" element={<RequireAuth><Stats /></RequireAuth>} />

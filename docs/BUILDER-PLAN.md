@@ -273,6 +273,44 @@ Suite de la décision « acquisition avant monétisation » (stratégie détaill
   provisionner : compte Resend + `RESEND_API_KEY` (et domaine d'envoi) dans
   le projet Vercel du builder.
 
+### Lot SEO + activation (2026-07-17)
+
+Suite du lot acquisition. Deux fuites du tunnel colmatées : la découverte (SEO
+technique) et l'activation (l'inscription faisait perdre le contexte).
+
+**A. SEO technique du builder**
+- `public/robots.txt` (pages marketing indexables, écrans applicatifs +
+  `/api/` exclus) + `sitemap.xml` généré au build par un plugin Vite
+  (`vite.config.ts`) depuis `TEMPLATES` — 26 URL (landing, galerie, 24 fiches),
+  suit automatiquement l'ajout de modèles.
+- Lien **canonical** posé par `usePageMeta` (chemin sans query : les UTM du
+  maillage ne fragmentent plus l'URL indexée) ; ajouté à la landing.
+- **JSON-LD** (`useJsonLd`) : `WebApplication` + `BreadcrumbList` sur les fiches
+  modèles, `ItemList` sur la galerie.
+- **Image OG de marque** (`public/og-cover.svg` → `og-cover.png` 1200×630 via
+  `scripts/generate-og.mjs`, resvg) référencée dans `index.html` et
+  `api/meta.js` ; Twitter passe en `summary_large_image`.
+
+**B. Activation — parcours sans friction jusqu'à la publication**
+- **Éditeur d'essai sans compte** (`/essai`, `/essai/:templateId`) : le même
+  éditeur en mode invité, brouillon autosauvé en `localStorage` (`lib/intent`),
+  aucun réseau. Vérifié au navigateur (amorce depuis modèle, autosave,
+  restauration au reload, aperçu live).
+- **Continuité modèle → inscription → éditeur** : « Personnaliser ce modèle »
+  et « Publier » (mode invité) posent une *intention en attente*
+  (`pendingIntent`) consommée une fois par le Dashboard après connexion — le
+  modèle choisi / le brouillon d'essai est recréé et ouvert, zéro perte de
+  travail (survit à l'aller-retour email/lien magique via `localStorage`).
+- **Login contextuel** : arrivée avec intention → onglet Inscription par défaut
+  + bandeau « Dernière étape… ».
+- **Landing** : CTA hero et pricing pointent vers `/essai` (essayer sans
+  compte) au lieu de `/login`.
+- **Dashboard** : état vide guidé + démarrage rapide ramené à 5 modèles + lien
+  « Parcourir les 24 modèles » (au lieu de 24 boutons bruts).
+
+Dettes : og:image unique de marque (pas d'image par calculateur — YAGNI) ;
+sitemap statique (pas de lastmod par modèle, tous à la date de build).
+
 ### Dettes assumées — lot croissance
 - OG sans image générée (`og:image` absent) : cartes en `summary` texte seul.
   Génération d'image dynamique volontairement hors périmètre (YAGNI).

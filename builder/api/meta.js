@@ -63,12 +63,14 @@ export default async function handler(req, res) {
 
   const host = req.headers['x-forwarded-host'] || req.headers.host || 'app.simfinly.com';
   const pageUrl = `https://${host}/s/${encodeURIComponent(slug)}`;
+  const imageUrl = `https://${host}/og-cover.png`;
   const title = calc?.title || 'Simulateur Simfinly';
   const description = describe(calc);
 
   const t = esc(title);
   const d = esc(description);
   const u = esc(pageUrl);
+  const img = esc(imageUrl);
 
   const html = `<!doctype html>
 <html lang="fr">
@@ -82,9 +84,13 @@ export default async function handler(req, res) {
 <meta property="og:title" content="${t}" />
 <meta property="og:description" content="${d}" />
 <meta property="og:url" content="${u}" />
-<meta name="twitter:card" content="summary" />
+<meta property="og:image" content="${img}" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="${t}" />
 <meta name="twitter:description" content="${d}" />
+<meta name="twitter:image" content="${img}" />
 </head>
 <body>
 <h1>${t}</h1>

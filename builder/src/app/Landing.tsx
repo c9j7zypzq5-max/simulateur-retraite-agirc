@@ -9,9 +9,11 @@ import CalculatorRenderer from '../render/CalculatorRenderer';
 import { TEMPLATES } from '../schema/templates';
 import { DEFAULT_THEME } from '../schema/types';
 import { t } from '../i18n';
+import { usePageMeta } from './seo';
 import { Header, Footer, Particles } from './Chrome';
 
 export default function Landing() {
+  usePageMeta(t('landing.metaTitle'), t('landing.metaDescription'), '/');
   const [demoId, setDemoId] = useState(TEMPLATES[0].id);
   // Valeurs jouées par visiteur, indépendantes par démo.
   const [demoValues, setDemoValues] = useState<Record<string, Record<string, number>>>({});
@@ -35,7 +37,7 @@ export default function Landing() {
             {t('landing.heroSubtitle')}
           </p>
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/login" className="btn primary" style={{ padding: '12px 26px', fontSize: 15 }}>
+            <Link to="/essai" className="btn primary" style={{ padding: '12px 26px', fontSize: 15 }}>
               {t('landing.cta')}
             </Link>
             <Link to="/modeles" className="btn" style={{ padding: '12px 24px', fontSize: 15 }}>
@@ -99,7 +101,7 @@ export default function Landing() {
               ))}
             </ul>
             <p style={{ margin: 0, fontSize: 11.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{t('landing.launch.note')}</p>
-            <Link to="/login" className="btn primary">{t('landing.pricingCta')}</Link>
+            <Link to="/essai" className="btn primary">{t('landing.pricingCta')}</Link>
           </div>
         </div>
       </section>

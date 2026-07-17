@@ -1,0 +1,13 @@
+# Pages indexables : landing (/), galerie de modèles et fiches modèles.
+# Écrans applicatifs (éditeur, essai, soumissions, stats, connexion) et API :
+# hors index.
+User-agent: *
+Allow: /
+Disallow: /editor/
+Disallow: /essai
+Disallow: /submissions
+Disallow: /stats/
+Disallow: /login
+Disallow: /api/
+
+Sitemap: https://app.simfinly.com/sitemap.xml
