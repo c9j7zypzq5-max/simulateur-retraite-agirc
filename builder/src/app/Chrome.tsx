@@ -50,6 +50,10 @@ export function Header({ right }: { right?: ReactNode }) {
 export function Footer() {
   return (
     <footer style={{ textAlign: 'center', padding: '28px 24px 36px', fontSize: 12.5, color: 'var(--text-secondary)', borderTop: '1px solid var(--border)' }}>
+      <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 10 }}>
+        <Link to="/mentions-legales" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>{t('nav.legal')}</Link>
+        <Link to="/confidentialite" style={{ color: 'var(--text-secondary)', textDecoration: 'none' }}>{t('nav.privacy')}</Link>
+      </div>
       {t('landing.footer')}{' '}
       <a href="https://www.simfinly.com" style={{ color: 'var(--primary)', fontWeight: 600 }}>simfinly.com</a>
     </footer>

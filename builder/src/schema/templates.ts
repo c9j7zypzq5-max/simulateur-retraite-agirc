@@ -967,6 +967,114 @@ export const TEMPLATES: Template[] = [
   },
 ];
 
+// Contenu éditorial des fiches modèles (/modeles/:id) — enrichit la page pour
+// le SEO et l'utilisateur : « pour qui » (angle métier) et « base de calcul »
+// (source/règle, reprise des commentaires de conversion ci-dessus). Les
+// entrées/sorties, elles, sont dérivées automatiquement du schéma côté page.
+export interface TemplateContent {
+  audience: string;
+  basis: string;
+}
+
+export const TEMPLATE_CONTENT: Record<string, TemplateContent> = {
+  pret: {
+    audience: 'Courtiers en crédit, agents immobiliers et banques qui veulent chiffrer une mensualité en direct avec leurs clients.',
+    basis: 'Formule d\'annuité constante : mensualité = capital × taux mensuel / (1 − (1 + taux mensuel)^−durée). Le coût du crédit est la somme des intérêts sur la durée.',
+  },
+  notaire: {
+    audience: 'Agences immobilières, courtiers et acquéreurs qui estiment les frais d\'acquisition avant une offre.',
+    basis: 'Barème des émoluments (arrêté du 28/02/2020), droits de mutation (DMTO) 2025 selon le type de bien, contribution de sécurité immobilière 0,10 % et débours forfaitaires.',
+  },
+  capacite: {
+    audience: 'Courtiers en crédit et conseillers qui déterminent le budget d\'un emprunteur.',
+    basis: 'Taux d\'endettement maximal de 35 % (norme HCSF) appliqué aux revenus nets, puis inverse de la formule d\'annuité pour remonter au capital empruntable.',
+  },
+  tjm: {
+    audience: 'Freelances, indépendants et sociétés de portage qui traduisent un TJM en revenu net.',
+    basis: 'Régime micro-BNC : cotisations sociales 21,1 % du chiffre d\'affaires, abattement forfaitaire 34 %, puis barème progressif de l\'impôt sur le revenu 2026.',
+  },
+  epargne: {
+    audience: 'Conseillers en gestion de patrimoine et banques qui projettent une épargne dans le temps.',
+    basis: 'Capitalisation mensuelle d\'un capital de départ et de versements réguliers au taux de rendement annuel indiqué (intérêts composés).',
+  },
+  impot: {
+    audience: 'Experts-comptables et conseillers qui estiment l\'impôt sur le revenu d\'un foyer.',
+    basis: 'Barème progressif de l\'impôt sur le revenu 2026 appliqué au quotient familial (revenu imposable divisé par le nombre de parts).',
+  },
+  devis: {
+    audience: 'Artisans du bâtiment (peinture, rénovation) qui produisent un devis instantané au m².',
+    basis: 'Chiffrage au m² majoré d\'un forfait de déplacement, avec TVA à 10 % (rénovation de logement de plus de 2 ans) ou 20 %.',
+  },
+  roi: {
+    audience: 'Agences et marketeurs qui projettent le retour d\'une campagne publicitaire.',
+    basis: 'Entonnoir budget → clics (via le CPC) → conversions (taux de conversion) → chiffre d\'affaires (panier moyen), profit net après application de la marge.',
+  },
+  'rendement-locatif': {
+    audience: 'Agents immobiliers, CGP et investisseurs qui comparent la rentabilité d\'un bien.',
+    basis: 'Rendement brut = loyers annuels / prix d\'achat ; rendement net après déduction des charges non récupérables et de la taxe foncière.',
+  },
+  'cashflow-locatif': {
+    audience: 'Investisseurs locatifs et courtiers qui vérifient l\'effort d\'épargne mensuel d\'un projet.',
+    basis: 'Loyer mensuel moins la mensualité de crédit (formule d\'annuité), les charges et la taxe foncière mensualisée.',
+  },
+  'assurance-emprunteur': {
+    audience: 'Courtiers en crédit et en assurance qui chiffrent le coût d\'une assurance de prêt.',
+    basis: 'Coût annuel = taux d\'assurance × capital initial (mode de calcul des contrats groupe), rapporté au mois et cumulé sur la durée.',
+  },
+  'frais-agence': {
+    audience: 'Agences immobilières et mandataires qui présentent le net vendeur.',
+    basis: 'Honoraires = commission en % du prix de vente honoraires inclus (FAI) ; net vendeur = prix − honoraires.',
+  },
+  'location-saisonniere': {
+    audience: 'Conciergeries et loueurs en courte durée qui estiment un revenu net.',
+    basis: 'Nuitées = taux d\'occupation × 30,4 jours ; revenu net = chiffre d\'affaires − commission de plateforme − charges (ménage, énergie, assurance).',
+  },
+  'charges-micro': {
+    audience: 'Experts-comptables et micro-entrepreneurs qui calculent le revenu après cotisations.',
+    basis: 'Taux de cotisations URSSAF 2026 selon l\'activité : vente 12,3 %, prestations BIC 21,2 %, libérale BNC 26,1 %, Cipav 23,2 %.',
+  },
+  rente: {
+    audience: 'Conseillers en gestion de patrimoine et particuliers préparant leur retraite.',
+    basis: 'Règle du taux de retrait annuel : capital nécessaire = revenu annuel souhaité / taux de retrait (par défaut 4 %).',
+  },
+  'epargne-objectif': {
+    audience: 'CGP et banques qui déterminent l\'effort d\'épargne pour atteindre un capital.',
+    basis: 'Capitalisation mensuelle du capital déjà épargné, puis versement d\'annuité couvrant l\'écart restant jusqu\'à l\'objectif.',
+  },
+  tva: {
+    audience: 'Experts-comptables et TPE qui préparent une déclaration de TVA.',
+    basis: 'TVA à reverser = TVA collectée sur les ventes − TVA déductible sur les achats (un résultat négatif est un crédit de TVA).',
+  },
+  'indemnites-km': {
+    audience: 'Experts-comptables, indépendants et salariés aux frais réels.',
+    basis: 'Barème kilométrique fiscal (tranche jusqu\'à 5 000 km/an) : tarif par kilomètre selon la puissance fiscale du véhicule.',
+  },
+  'taux-horaire': {
+    audience: 'Artisans et indépendants qui fixent le bon tarif horaire.',
+    basis: '(Revenu net visé + charges fixes) / (1 − taux de cotisations), ramené aux heures réellement facturables (4,33 semaines/mois).',
+  },
+  'cout-salarie': {
+    audience: 'TPE, responsables RH et experts-comptables qui évaluent un recrutement.',
+    basis: 'Coût employeur = salaire brut + charges patronales (de ~25 % près du SMIC à ~45 %) + avantages (tickets resto, mutuelle…).',
+  },
+  'seuil-rentabilite': {
+    audience: 'Créateurs d\'entreprise et experts-comptables qui valident un modèle économique.',
+    basis: 'Chiffre d\'affaires minimum = charges fixes / taux de marge sur coûts variables ; décliné par jour d\'activité et par an.',
+  },
+  'marge-produit': {
+    audience: 'E-commerçants et vendeurs en marketplace qui vérifient leur marge unitaire.',
+    basis: 'Prix HT (déduit de la TVA) − coût d\'achat − frais logistiques − commission de plateforme (calculée sur le prix TTC).',
+  },
+  'food-cost': {
+    audience: 'Restaurateurs et food trucks qui fixent le prix d\'un plat.',
+    basis: 'Ratio coût matière = coût de l\'assiette / prix de vente HT ; marge brute et coefficient multiplicateur associés.',
+  },
+  solaire: {
+    audience: 'Installateurs photovoltaïques qui présentent le gain d\'une installation.',
+    basis: 'Production = puissance (kWc) × productible régional ; gain = part autoconsommée valorisée au prix du kWh + revente du surplus au tarif de rachat.',
+  },
+};
+
 // Ordre d'affichage des métiers dans la galerie /modeles (les métiers non
 // listés viennent après, dans l'ordre d'apparition).
 export const METIERS_ORDER = [

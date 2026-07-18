@@ -342,6 +342,34 @@ un calculateur publié — même limite proxy que les lots précédents) : Share
 toggle/export des stats, shortcode dans le PublishPanel. Build + typecheck +
 67 tests OK ; logique pure (slicePeriod) calquée sur `buildAnalytics` déjà testé.
 
+### Lot conformité + activation (2026-07-18)
+
+Trois points (WordPress et Vercel Analytics reportés) :
+
+- **Pages légales du builder** (`Legal.tsx`, routes `/mentions-legales` et
+  `/confidentialite`, bilingues FR/EN) : le builder stocke des données
+  (comptes, calculateurs, soumissions/leads, vues), ces pages le décrivent
+  honnêtement — éditeur, hébergeur (Vercel), base EU (Supabase), et surtout la
+  **distinction responsable/sous-traitant** pour les leads (l'auteur du
+  calculateur est responsable, Simfinly sous-traitant). Liens dans le footer,
+  ajoutées au sitemap. Important pour la cible pro (un CGP/courtier demande la
+  politique de confidentialité avant d'intégrer une capture de leads).
+- **Réinitialisation de mot de passe** : lien « Mot de passe oublié ? » →
+  `resetPasswordForEmail` (email de reset) ; le retour sur `/login` déclenche
+  l'événement `PASSWORD_RECOVERY` (suivi dans `AuthContext`) qui affiche le
+  formulaire « nouveau mot de passe » (`updateUser`). Comblait un trou réel
+  (un utilisateur bloqué n'avait que le lien magique comme contournement).
+- **Fiches modèles enrichies (SEO)** : chaque `/modeles/:id` gagne « Pour qui »
+  et « Base de calcul » (contenu curé `TEMPLATE_CONTENT`, exact d'après les
+  règles source) + « Ce que l'outil calcule » / « Paramètres » dérivés du
+  schéma (aucun texte inventé, ça suit les 24 modèles automatiquement).
+
+Vérifié au navigateur (17 checks) : pages légales FR/EN + canonical, contenu
+enrichi des fiches, bascule UI de réinitialisation. Build + typecheck + 67
+tests OK. Page publique toujours ~65 ko gzip. Flux recovery (nouveau mot de
+passe après clic email) non pilotable hors Supabase — logique standard
+`onAuthStateChange` / `updateUser`.
+
 ### Dettes assumées — lot croissance
 - OG sans image générée (`og:image` absent) : cartes en `summary` texte seul.
   Génération d'image dynamique volontairement hors périmètre (YAGNI).

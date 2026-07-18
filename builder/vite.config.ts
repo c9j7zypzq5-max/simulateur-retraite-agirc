@@ -15,6 +15,8 @@ function sitemapPlugin() {
     { path: '/', priority: '1.0' },
     { path: '/modeles', priority: '0.8' },
     ...TEMPLATES.map((tpl) => ({ path: `/modeles/${tpl.id}`, priority: '0.6' })),
+    { path: '/mentions-legales', priority: '0.2' },
+    { path: '/confidentialite', priority: '0.2' },
   ];
   return {
     name: 'builder-sitemap',

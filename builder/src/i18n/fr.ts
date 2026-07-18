@@ -2,6 +2,10 @@
 // que src/i18n/fr.js du site principal).
 
 export default {
+  nav: {
+    legal: 'Mentions légales',
+    privacy: 'Confidentialité',
+  },
   renderer: {
     badge: 'Créé avec Simfinly',
     stepOf: 'Étape {i} / {n}',
@@ -59,9 +63,16 @@ export default {
     tabs: { signin: 'Connexion', signup: 'Inscription', magic: 'Lien magique' },
     email: 'Email',
     password: 'Mot de passe',
-    submit: { signin: 'Se connecter', signup: "S'inscrire", magic: 'Recevoir le lien' },
+    submit: { signin: 'Se connecter', signup: "S'inscrire", magic: 'Recevoir le lien', reset: 'Envoyer le lien' },
     signupSent: 'Compte créé — vérifiez vos emails pour confirmer.',
     magicSent: 'Lien de connexion envoyé par email.',
+    forgot: 'Mot de passe oublié ?',
+    resetTitle: 'Réinitialiser le mot de passe',
+    resetSent: 'Si un compte existe, un email de réinitialisation vient d\'être envoyé.',
+    backToSignin: '← Retour à la connexion',
+    updateTitle: 'Choisissez un nouveau mot de passe',
+    updateSubmit: 'Mettre à jour',
+    newPassword: 'Nouveau mot de passe',
     signOut: 'Se déconnecter',
     deleteAccount: 'Supprimer mon compte',
     deleteAccountConfirm:
@@ -106,6 +117,10 @@ export default {
     ctaHelp: 'Ce modèle vous convient ? Personnalisez-le maintenant — aucune inscription pour commencer.',
     cta: 'Personnaliser ce modèle',
     ctaNote: 'Gratuit. Créez un compte seulement au moment de publier.',
+    forWho: 'Pour qui ?',
+    computes: 'Ce que l\'outil calcule',
+    inputs: 'Paramètres pris en compte',
+    basis: 'Base de calcul',
   },
   essai: {
     bannerTitle: 'Mode essai',

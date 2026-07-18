@@ -3,6 +3,10 @@
 // the locale detected in i18n/index.ts.
 
 export default {
+  nav: {
+    legal: 'Legal notice',
+    privacy: 'Privacy',
+  },
   renderer: {
     badge: 'Made with Simfinly',
     stepOf: 'Step {i} / {n}',
@@ -60,9 +64,16 @@ export default {
     tabs: { signin: 'Sign in', signup: 'Sign up', magic: 'Magic link' },
     email: 'Email',
     password: 'Password',
-    submit: { signin: 'Sign in', signup: 'Sign up', magic: 'Send the link' },
+    submit: { signin: 'Sign in', signup: 'Sign up', magic: 'Send the link', reset: 'Send the link' },
     signupSent: 'Account created — check your inbox to confirm.',
     magicSent: 'Sign-in link sent by email.',
+    forgot: 'Forgot your password?',
+    resetTitle: 'Reset your password',
+    resetSent: 'If an account exists, a reset email has just been sent.',
+    backToSignin: '← Back to sign in',
+    updateTitle: 'Choose a new password',
+    updateSubmit: 'Update',
+    newPassword: 'New password',
     signOut: 'Sign out',
     deleteAccount: 'Delete my account',
     deleteAccountConfirm:
@@ -107,6 +118,10 @@ export default {
     ctaHelp: 'Does this template fit? Customize it now — no sign-up to get started.',
     cta: 'Customize this template',
     ctaNote: 'Free. Create an account only when you publish.',
+    forWho: 'Who is it for?',
+    computes: 'What the tool computes',
+    inputs: 'Inputs taken into account',
+    basis: 'Calculation basis',
   },
   essai: {
     bannerTitle: 'Trial mode',

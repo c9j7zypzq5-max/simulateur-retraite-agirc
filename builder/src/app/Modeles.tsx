@@ -6,7 +6,7 @@
 import { useMemo, useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import CalculatorRenderer from '../render/CalculatorRenderer';
-import { TEMPLATES, templatesByMetier } from '../schema/templates';
+import { TEMPLATES, templatesByMetier, TEMPLATE_CONTENT } from '../schema/templates';
 import { DEFAULT_THEME } from '../schema/types';
 import { t } from '../i18n';
 import { usePageMeta, useJsonLd } from './seo';
@@ -80,6 +80,7 @@ export function ModelesGallery() {
 export function ModeleDetail() {
   const { id } = useParams();
   const tpl = TEMPLATES.find((x) => x.id === id);
+  const content = tpl ? TEMPLATE_CONTENT[tpl.id] : undefined;
   const [values, setValues] = useState<Record<string, number>>({});
   // Les hooks doivent être appelés inconditionnellement : on calcule des
   // valeurs sûres même quand le modèle est introuvable (on redirige juste après).
@@ -138,6 +139,36 @@ export function ModeleDetail() {
             onChange={(fid, v) => setValues((p) => ({ ...p, [fid]: v }))}
           />
         </div>
+      </section>
+
+      {/* Contenu éditorial : renforce le SEO et informe l'utilisateur. « Pour
+          qui » et « base de calcul » sont curés (TEMPLATE_CONTENT) ; les
+          entrées/sorties sont dérivées du schéma. */}
+      <section style={{ maxWidth: 720, margin: '0 auto', padding: '16px 24px 8px', display: 'grid', gap: 18 }}>
+        {content && (
+          <div>
+            <h2 style={{ fontSize: 17, margin: '0 0 6px' }}>{t('modeles.forWho')}</h2>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>{content.audience}</p>
+          </div>
+        )}
+        <div>
+          <h2 style={{ fontSize: 17, margin: '0 0 6px' }}>{t('modeles.computes')}</h2>
+          <ul style={{ margin: 0, paddingLeft: 18, fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            {tpl.schema.results.map((r, i) => <li key={i}>{r.label}</li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 style={{ fontSize: 17, margin: '0 0 6px' }}>{t('modeles.inputs')}</h2>
+          <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>
+            {tpl.schema.fields.map((f) => f.label).join(' · ')}
+          </p>
+        </div>
+        {content && (
+          <div>
+            <h2 style={{ fontSize: 17, margin: '0 0 6px' }}>{t('modeles.basis')}</h2>
+            <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.65, margin: 0 }}>{content.basis}</p>
+          </div>
+        )}
       </section>
 
       <section style={{ maxWidth: 560, margin: '0 auto', padding: '20px 24px 56px', textAlign: 'center' }}>

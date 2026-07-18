@@ -19,6 +19,8 @@ const Stats = lazy(() => import('./Stats'));
 // landing ne télécharge pas la galerie tant qu'il n'y va pas).
 const ModelesGallery = lazy(() => import('./Modeles').then((m) => ({ default: m.ModelesGallery })));
 const ModeleDetail = lazy(() => import('./Modeles').then((m) => ({ default: m.ModeleDetail })));
+const MentionsLegales = lazy(() => import('./Legal').then((m) => ({ default: m.MentionsLegales })));
+const Confidentialite = lazy(() => import('./Legal').then((m) => ({ default: m.Confidentialite })));
 
 // / = landing (marketing, indexable) pour les visiteurs, dashboard pour les
 // connectés — une seule URL d'entrée, pas de /app à retenir.
@@ -38,6 +40,8 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/" element={<HomeGate />} />
             <Route path="/modeles" element={<ModelesGallery />} />
             <Route path="/modeles/:id" element={<ModeleDetail />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/confidentialite" element={<Confidentialite />} />
             {/* Éditeur d'essai sans compte (brouillon local) — pas de RequireAuth. */}
             <Route path="/essai" element={<Editor guest />} />
             <Route path="/essai/:templateId" element={<Editor guest />} />
