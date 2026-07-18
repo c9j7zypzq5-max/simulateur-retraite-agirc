@@ -53,6 +53,42 @@ const calcToDraft = (c: Calculator): LocalDraft => ({
   hideBadge: c.hideBadge, captureEmail: c.captureEmail, notifyEmail: c.notifyEmail,
 });
 
+const TIPS_KEY = 'builder:editorTipsSeen';
+
+// Onboarding première visite de l'éditeur : trois repères, affiché une seule
+// fois (flag localStorage), refermable. Réduit l'abandon des nouveaux inscrits
+// devant un éditeur vierge.
+function EditorTips() {
+  const [seen, setSeen] = useState(() => {
+    try { return localStorage.getItem(TIPS_KEY) === '1'; } catch { return true; }
+  });
+  if (seen) return null;
+  const dismiss = () => {
+    try { localStorage.setItem(TIPS_KEY, '1'); } catch { /* mode privé : réaffiché, sans gravité */ }
+    setSeen(true);
+  };
+  const steps = [
+    { icon: '①', text: t('editor.tips.step1') },
+    { icon: '②', text: t('editor.tips.step2') },
+    { icon: '③', text: t('editor.tips.step3') },
+  ];
+  return (
+    <div className="card" style={{ background: 'var(--primary-soft)', borderColor: 'var(--border)', marginBottom: 14 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+        <strong style={{ fontSize: 13 }}>{t('editor.tips.title')}</strong>
+        <button className="btn" style={{ fontSize: 11, padding: '3px 10px' }} onClick={dismiss}>{t('editor.tips.gotIt')}</button>
+      </div>
+      <ol style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {steps.map((s) => (
+          <li key={s.icon} style={{ display: 'flex', gap: 8, fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+            <span style={{ color: 'var(--primary)', fontWeight: 700 }}>{s.icon}</span> {s.text}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 export default function Editor({ guest = false }: { guest?: boolean }) {
   const params = useParams<{ id?: string; templateId?: string }>();
   const id = params.id;
@@ -206,6 +242,7 @@ export default function Editor({ guest = false }: { guest?: boolean }) {
             </button>
           </div>
           {publishError && <p style={{ color: 'var(--negative)', fontSize: 12 }}>{publishError}</p>}
+          <EditorTips />
           {!guest && calc.status === 'published' && calc.slug && <PublishPanel slug={calc.slug} />}
 
           <div style={{ display: 'flex', gap: 6, margin: '16px 0' }}>

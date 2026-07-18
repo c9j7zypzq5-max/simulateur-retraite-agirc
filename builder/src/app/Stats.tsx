@@ -2,17 +2,50 @@
 // vues/soumissions par jour, top des référents. Réservé au propriétaire (garde
 // d'appartenance + RLS des vues security_invoker). Lecture seule.
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
-import { ensureWorkspace, getCalculator, getAnalytics, type Analytics } from '../lib/db';
+import { ensureWorkspace, getCalculator, getAnalytics, type Analytics, type DailyPoint } from '../lib/db';
+import { downloadCSV } from '../lib/csv';
 import { t } from '../i18n';
+
+type Period = 7 | 30;
+
+// Restreint une série de 30 jours à ses N derniers jours et recalcule les KPIs
+// en conséquence (purement client — aucune requête supplémentaire). Les
+// référents restent sur 30 j (fournis tels quels par la vue SQL).
+function slicePeriod(data: Analytics, days: Period): Analytics {
+  const daily = data.daily.slice(Math.max(0, data.daily.length - days));
+  const totalViews = daily.reduce((s, d) => s + d.views, 0);
+  const totalSubmissions = daily.reduce((s, d) => s + d.submissions, 0);
+  return {
+    ...data,
+    daily,
+    totalViews,
+    totalSubmissions,
+    conversion: totalViews > 0 ? totalSubmissions / totalViews : 0,
+  };
+}
 
 export default function Stats() {
   const { id } = useParams<{ id: string }>();
   const [title, setTitle] = useState<string>('');
   const [data, setData] = useState<Analytics | null>(null);
+  const [period, setPeriod] = useState<Period>(30);
   const [notFound, setNotFound] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const view = useMemo(() => (data ? slicePeriod(data, period) : null), [data, period]);
+
+  function exportCsv() {
+    if (!view) return;
+    const rows = view.daily.map((d: DailyPoint) => ({
+      date: d.day,
+      [t('stats.views').toLowerCase()]: d.views,
+      [t('stats.submissions').toLowerCase()]: d.submissions,
+    }));
+    const safeTitle = (title || 'calculateur').replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+    downloadCSV(rows, `stats-${safeTitle}-${period}j.csv`);
+  }
 
   useEffect(() => {
     if (!id) return;
@@ -36,26 +69,34 @@ export default function Stats() {
   return (
     <div style={{ maxWidth: 860, margin: '0 auto', padding: 24 }}>
       <Link to="/" style={{ fontSize: 12, color: 'var(--text-secondary)', textDecoration: 'none' }}>← {t('publish.back')}</Link>
-      <h1 style={{ fontSize: 22, margin: '10px 0 2px' }}>{title || '—'}</h1>
-      <p style={{ fontSize: 13, color: 'var(--text-secondary)', margin: '0 0 20px' }}>{t('stats.window')}</p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12, flexWrap: 'wrap', margin: '10px 0 20px' }}>
+        <h1 style={{ fontSize: 22, margin: 0 }}>{title || '—'}</h1>
+        {data && (
+          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+            <button className={`btn chip${period === 7 ? ' active' : ''}`} onClick={() => setPeriod(7)}>{t('stats.period7')}</button>
+            <button className={`btn chip${period === 30 ? ' active' : ''}`} onClick={() => setPeriod(30)}>{t('stats.period30')}</button>
+            <button className="btn" onClick={exportCsv} disabled={!view || view.totalViews === 0}>{t('stats.export')}</button>
+          </div>
+        )}
+      </div>
 
       {error && <p style={{ color: 'var(--negative)', fontSize: 13 }}>{error}</p>}
-      {!data && !error ? null : data && (
+      {!view && !error ? null : view && (
         <>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 24 }}>
-            <Kpi label={t('stats.views')} value={data.totalViews.toLocaleString('fr-FR')} />
-            <Kpi label={t('stats.submissions')} value={data.totalSubmissions.toLocaleString('fr-FR')} />
-            <Kpi label={t('stats.conversion')} value={`${(data.conversion * 100).toFixed(1)} %`} />
+            <Kpi label={t('stats.views')} value={view.totalViews.toLocaleString('fr-FR')} />
+            <Kpi label={t('stats.submissions')} value={view.totalSubmissions.toLocaleString('fr-FR')} />
+            <Kpi label={t('stats.conversion')} value={`${(view.conversion * 100).toFixed(1)} %`} />
           </div>
 
-          <DailyChart data={data} />
+          <DailyChart data={view} />
 
-          <h2 style={{ fontSize: 16, margin: '28px 0 10px' }}>{t('stats.topReferrers')}</h2>
-          {data.referrers.length === 0 ? (
+          <h2 style={{ fontSize: 16, margin: '28px 0 10px' }}>{t('stats.topReferrers')} <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-secondary)' }}>· {t('stats.referrersWindow')}</span></h2>
+          {view.referrers.length === 0 ? (
             <p style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{t('stats.noData')}</p>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              {data.referrers.map((r) => (
+              {view.referrers.map((r) => (
                 <div key={r.source} className="card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '8px 12px' }}>
                   <span style={{ fontSize: 13, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.source}</span>
                   <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--primary)' }}>{r.views}</span>

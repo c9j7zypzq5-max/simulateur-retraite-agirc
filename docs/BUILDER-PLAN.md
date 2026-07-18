@@ -311,6 +311,37 @@ technique) et l'activation (l'inscription faisait perdre le contexte).
 Dettes : og:image unique de marque (pas d'image par calculateur — YAGNI) ;
 sitemap statique (pas de lastmod par modèle, tous à la date de build).
 
+### Lot distribution + i18n EN (2026-07-17)
+
+Cinq chantiers (tout sauf le thème sombre, écarté) :
+
+- **Plugin WordPress** (`builder/wordpress-plugin/simfinly-calculators/`) :
+  shortcode `[simfinly slug="…"]` + bloc Gutenberg (rendu serveur → shortcode,
+  source unique), slug assaini, origine surchargeable via le filtre
+  `simfinly_origin`. `readme.txt` prêt pour le répertoire WP. Le shortcode est
+  proposé dans le `PublishPanel` à côté du lien et de l'embed. PHP et JS lintés.
+- **Bouton de partage** sur la page publique (`ShareBar` dans
+  `PublicCalculator`) : Web Share API (mobile) + X/LinkedIn/Facebook + copier
+  le lien. Affiché en page hébergée uniquement (jamais dans l'iframe embed).
+  Chaque partage rediffuse le badge — moteur de croissance.
+- **Onboarding first-run** de l'éditeur (`EditorTips`) : trois repères,
+  refermable, affiché une fois (`localStorage builder:editorTipsSeen`).
+  Vérifié au navigateur (affichage, fermeture, persistance, reload).
+- **Filtres + export des stats** : bascule 7 j / 30 j (recalcul client depuis
+  la série de 30 j — aucune requête en plus) + export CSV de la série
+  quotidienne. Référents restent sur 30 j (libellés).
+- **Traduction EN du builder** : `en.ts` entièrement traduit (fin du statut
+  miroir). Détection de locale au chargement (préférence mémorisée > langue du
+  navigateur > fr), `<html lang>` synchronisé, bascule FR/EN (`LangSwitch` dans
+  le Header) qui persiste et recharge. Vérifié au navigateur (rendu FR/EN,
+  bascule, persistance, auto-détection). Le budget de la page publique reste
+  ~65 ko gzip (< 100 ko) malgré les deux dictionnaires.
+
+Non vérifiés en direct dans ce bac à sable (nécessitent Supabase authentifié /
+un calculateur publié — même limite proxy que les lots précédents) : ShareBar,
+toggle/export des stats, shortcode dans le PublishPanel. Build + typecheck +
+67 tests OK ; logique pure (slicePeriod) calquée sur `buildAnalytics` déjà testé.
+
 ### Dettes assumées — lot croissance
 - OG sans image générée (`og:image` absent) : cartes en `summary` texte seul.
   Génération d'image dynamique volontairement hors périmètre (YAGNI).

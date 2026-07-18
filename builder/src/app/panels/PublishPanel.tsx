@@ -5,13 +5,16 @@
 import { useState } from 'react';
 import { t } from '../../i18n';
 
+type Snippet = 'link' | 'embed' | 'wordpress';
+
 export default function PublishPanel({ slug }: { slug: string }) {
-  const [copied, setCopied] = useState<'link' | 'embed' | null>(null);
+  const [copied, setCopied] = useState<Snippet | null>(null);
   const origin = window.location.origin;
   const link = `${origin}/s/${slug}`;
   const embed = `<script src="${origin}/embed.js" data-slug="${slug}"></script>`;
+  const wordpress = `[simfinly slug="${slug}"]`;
 
-  function copy(text: string, which: 'link' | 'embed') {
+  function copy(text: string, which: Snippet) {
     navigator.clipboard?.writeText(text).then(() => {
       setCopied(which);
       setTimeout(() => setCopied(null), 2000);
@@ -33,6 +36,14 @@ export default function PublishPanel({ slug }: { slug: string }) {
           <input type="text" readOnly value={embed} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12 }} />
           <button className="btn" onClick={() => copy(embed, 'embed')}>{copied === 'embed' ? t('publish.copied') : t('publish.copy')}</button>
         </div>
+      </div>
+      <div>
+        <span className="lbl">{t('publish.wordpress')}</span>
+        <div style={{ display: 'flex', gap: 6 }}>
+          <input type="text" readOnly value={wordpress} style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12 }} />
+          <button className="btn" onClick={() => copy(wordpress, 'wordpress')}>{copied === 'wordpress' ? t('publish.copied') : t('publish.copy')}</button>
+        </div>
+        <p style={{ margin: '4px 0 0', fontSize: 11, color: 'var(--text-secondary)' }}>{t('publish.wordpressHelp')}</p>
       </div>
     </div>
   );

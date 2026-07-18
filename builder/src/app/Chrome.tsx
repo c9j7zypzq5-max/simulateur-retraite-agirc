@@ -4,7 +4,23 @@
 
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { t } from '../i18n';
+import { t, getLocale, setLocaleAndReload } from '../i18n';
+
+// Bascule de langue FR/EN — mémorise le choix et recharge (t() n'est pas
+// réactif). Affiche la langue vers laquelle on bascule.
+export function LangSwitch() {
+  const other = getLocale() === 'fr' ? 'en' : 'fr';
+  return (
+    <button
+      className="btn"
+      style={{ fontSize: 12, padding: '6px 10px' }}
+      onClick={() => setLocaleAndReload(other)}
+      aria-label={`Switch language to ${other.toUpperCase()}`}
+    >
+      {other.toUpperCase()}
+    </button>
+  );
+}
 
 // Marque Simfinly Builder — reprend le logo du site principal (carré bleu à
 // « S » blanc en Space Grotesk) suivi du wordmark « simfinly builder ».
@@ -21,9 +37,12 @@ export function Header({ right }: { right?: ReactNode }) {
   return (
     <header className="app-header">
       <Brand />
-      {right ?? (
-        <Link to="/login" className="btn">{t('landing.signIn')}</Link>
-      )}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <LangSwitch />
+        {right ?? (
+          <Link to="/login" className="btn">{t('landing.signIn')}</Link>
+        )}
+      </div>
     </header>
   );
 }

@@ -16,6 +16,57 @@ function slugFromPath(): string | null {
 
 const isEmbed = window.self !== window.top;
 
+// Barre de partage — n'apparaît qu'en page hébergée (jamais dans l'iframe
+// embed, où le contexte de partage est celui du site hôte). Chaque partage
+// d'un calculateur publié rediffuse le badge « Créé avec Simfinly » : c'est le
+// moteur de croissance. Web Share API (mobile) en priorité, sinon liens
+// réseaux + copie. Aucune dépendance (budget < 100 ko de la page publique).
+function ShareBar({ title }: { title: string }) {
+  const [copied, setCopied] = useState(false);
+  const url = window.location.href;
+  const enc = encodeURIComponent;
+  const canNativeShare = typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+  const links = [
+    { label: 'X', href: `https://twitter.com/intent/tweet?text=${enc(title)}&url=${enc(url)}` },
+    { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}` },
+    { label: 'Facebook', href: `https://www.facebook.com/sharer/sharer.php?u=${enc(url)}` },
+  ];
+
+  function copyLink() {
+    navigator.clipboard?.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(() => {});
+  }
+
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 8, marginTop: 16, justifyContent: 'center' }}>
+      <span style={{ fontSize: 12, color: 'var(--text-secondary)', fontWeight: 600 }}>{t('public.share')}</span>
+      {canNativeShare && (
+        <button className="btn" style={{ fontSize: 12, padding: '5px 12px' }} onClick={() => navigator.share({ title, url }).catch(() => {})}>
+          {t('public.shareNative')}
+        </button>
+      )}
+      {links.map((l) => (
+        <a
+          key={l.label}
+          className="btn"
+          style={{ fontSize: 12, padding: '5px 12px', textDecoration: 'none' }}
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {l.label}
+        </a>
+      ))}
+      <button className="btn" style={{ fontSize: 12, padding: '5px 12px' }} onClick={copyLink}>
+        {copied ? t('public.linkCopied') : t('public.copyLink')}
+      </button>
+    </div>
+  );
+}
+
 export default function PublicCalculator() {
   const [calc, setCalc] = useState<PublicCalc | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'notfound'>('loading');
@@ -134,6 +185,8 @@ export default function PublicCalculator() {
             ⚠️ {t('public.upgradeBanner')}
           </div>
         )}
+
+        {!isEmbed && <ShareBar title={calc.title} />}
       </div>
     </div>
   );
