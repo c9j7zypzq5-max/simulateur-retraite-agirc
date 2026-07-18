@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider, useAuth } from './auth/AuthContext';
 import RequireAuth from './auth/RequireAuth';
 import Login from './auth/Login';
@@ -52,6 +53,10 @@ createRoot(document.getElementById('root')!).render(
           </Routes>
         </Suspense>
       </AuthProvider>
+      {/* Analytics produit (Vercel) — mesure le tunnel landing → essai →
+          inscription. Sans cookie, RGPD-friendly. App uniquement : la page
+          publique (s.html) garde son propre suivi de vues et son budget serré. */}
+      <Analytics />
     </BrowserRouter>
   </StrictMode>,
 );
