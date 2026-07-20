@@ -127,6 +127,14 @@ export const ROUTE_META = {
   '/contact':                             { title: 'Contact — simfinly.com',                                              emoji: '✉️', cat: '',          prio: '0.3', freq: 'yearly'  },
   '/mentions-legales':                    { title: 'Mentions légales — simfinly.com',                                      emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
   '/politique-de-confidentialite':        { title: 'Politique de confidentialité — simfinly.com',                         emoji: '📊', cat: '',          prio: '0.2', freq: 'yearly'  },
+  // Parcours guidés par objectif (titres alignés sur src/data/objectifs.js)
+  '/objectifs':                                     { title: 'Objectifs financiers — parcours guidés étape par étape',                    emoji: '🎯', cat: '', prio: '0.8', freq: 'monthly' },
+  '/objectifs/preparer-ma-retraite':                { title: 'Comment préparer sa retraite ? Parcours guidé en 4 étapes',                emoji: '🌅', cat: 'Retraite',   prio: '0.8', freq: 'monthly' },
+  '/objectifs/preparer-ma-retraite/synthese':       { title: 'Synthèse retraite — récapitulatif de votre parcours',                       emoji: '🌅', cat: 'Retraite',   prio: '0.4', freq: 'monthly' },
+  '/objectifs/acheter-un-bien-immobilier':          { title: 'Par où commencer pour acheter un bien immobilier ? Parcours guidé en 3 étapes', emoji: '🏡', cat: 'Immobilier', prio: '0.8', freq: 'monthly' },
+  '/objectifs/acheter-un-bien-immobilier/synthese': { title: 'Synthèse achat immobilier — récapitulatif de votre parcours',               emoji: '🏡', cat: 'Immobilier', prio: '0.4', freq: 'monthly' },
+  '/objectifs/faire-fructifier-mon-argent':         { title: 'Par où commencer pour investir son argent ? Parcours guidé en 4 étapes',   emoji: '📈', cat: 'Finances',   prio: '0.8', freq: 'monthly' },
+  '/objectifs/faire-fructifier-mon-argent/synthese':{ title: 'Synthèse placement — récapitulatif de votre parcours',                      emoji: '📈', cat: 'Finances',   prio: '0.4', freq: 'monthly' },
 };
 
 export const OG_IMAGE_BY_CAT = {

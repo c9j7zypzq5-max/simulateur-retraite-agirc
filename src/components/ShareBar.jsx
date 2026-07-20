@@ -10,6 +10,7 @@ import { useSimHistory } from "../hooks/useSimHistory.js";
 import { useToast } from "../context/ToastContext.jsx";
 import { useTranslation } from "../i18n/index.js";
 import { localePath } from "../i18n/paths.js";
+import { useParcoursCapture } from "../lib/parcours.js";
 
 // Quota de rapports pour un compte gratuit (non Pro). Au-delà → page Pro.
 const FREE_REPORT_LIMIT = 1;
@@ -76,6 +77,12 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
   const [publicCopied, setPublicCopied] = useState(false);
   const barRef = useRef(null);
   const abortRef = useRef(null);
+
+  // Parcours par objectif : si ce simulateur est l'étape active d'un parcours,
+  // son résultat (report.highlight) est capturé pour la synthèse finale.
+  // ShareBar étant présent sur tous les simulateurs, aucun d'eux n'a besoin
+  // d'être modifié individuellement.
+  useParcoursCapture({ name, params, report });
 
   const remaining = Math.max(0, FREE_REPORT_LIMIT - reportCount);
 

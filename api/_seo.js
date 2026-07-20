@@ -11,6 +11,8 @@ import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { FAQS } from '../src/data/faqs.js';
 import { EDITORIAL_BY_ROUTE } from '../src/data/editorial.js';
+import { OBJECTIFS } from '../src/data/objectifs.js';
+import { localePath } from '../src/i18n/paths.js';
 import { sourcesForRoute } from '../src/data/sourcesOfficielles.js';
 import { ROUTE_META } from './_meta.js';
 
@@ -632,6 +634,57 @@ export const SEO_CONTENT_EN = {
     intro: "Estimate your Luxembourg general-scheme pension (CNAP — Caisse Nationale d'Assurance Pension) based on your career length, insured salary and planned retirement age. Designed for cross-border workers and expatriates employed in Luxembourg.",
   },
 };
+
+// ── Parcours guidés par objectif ──────────────────────────────────────────────
+// H1 + intro + liens d'étapes générés depuis src/data/objectifs.js (source
+// unique) : le texte complet de chaque landing est crawlable dans le HTML
+// statique FR et EN, avec le maillage interne vers les simulateurs du parcours.
+SEO_CONTENT['/objectifs'] = {
+  h1: "Quel est votre objectif financier ?",
+  intro: "Plutôt que de chercher le bon simulateur, partez de votre objectif de vie : préparer votre retraite, acheter un bien immobilier ou faire fructifier votre argent. Chaque parcours guidé enchaîne les simulateurs pertinents étape par étape, reporte vos saisies de l'un à l'autre et se termine par une synthèse consolidée. Gratuit, sans inscription.",
+  metaDescription: "Partez de votre objectif de vie — préparer votre retraite, acheter un bien, faire fructifier votre argent — et suivez un parcours guidé qui enchaîne les bons simulateurs gratuits, étape par étape.",
+  links: OBJECTIFS.map(o => [`/objectifs/${o.slug}`, o.fr.label]),
+};
+SEO_CONTENT_EN['/objectifs'] = {
+  h1: "What is your financial goal?",
+  intro: "Rather than hunting for the right calculator, start from your life goal: prepare for retirement, buy a home or grow your money. Each guided journey chains the relevant calculators step by step, carries your inputs from one to the next and ends with a consolidated summary. Free, no sign-up.",
+  links: OBJECTIFS.map(o => [`/en/goals/${o.enSlug}`, o.en.label]),
+};
+for (const o of OBJECTIFS) {
+  SEO_CONTENT[`/objectifs/${o.slug}`] = {
+    h1: o.fr.h1,
+    intro: o.fr.intro.join(' '),
+    metaDescription: o.fr.metaDescription,
+    links: [
+      ...o.steps.map((s, i) => [s.route, `Étape ${i + 1} — ${s.fr.title}`]),
+      [`/objectifs/${o.slug}/synthese`, 'Synthèse du parcours'],
+    ],
+  };
+  SEO_CONTENT[`/objectifs/${o.slug}/synthese`] = {
+    h1: o.fr.syntheseH1,
+    intro: o.fr.syntheseIntro,
+    metaDescription: o.fr.syntheseMetaDescription,
+    links: [[`/objectifs/${o.slug}`, o.fr.label], ['/objectifs', 'Tous les objectifs']],
+  };
+  SEO_CONTENT_EN[`/objectifs/${o.slug}`] = {
+    h1: o.en.h1,
+    intro: o.en.intro.join(' '),
+    links: [
+      // Chemin EN quand le simulateur existe en anglais, route FR sinon (même
+      // repli que <LocaleLink> côté client).
+      ...o.steps.map((s, i) => [localePath(s.route, 'en'), `Step ${i + 1} — ${s.en.title}`]),
+      [`/en/goals/${o.enSlug}/summary`, 'Journey summary'],
+    ],
+  };
+  SEO_CONTENT_EN[`/objectifs/${o.slug}/synthese`] = {
+    h1: o.en.syntheseH1,
+    intro: o.en.syntheseIntro,
+    links: [[`/en/goals/${o.enSlug}`, o.en.label], ['/en/goals', 'All goals']],
+  };
+}
+// Maillage depuis la page d'accueil : le hub des parcours devient crawlable
+// dès la racine du site.
+SEO_CONTENT['/'].links.unshift(['/objectifs', 'Parcours guidés par objectif : retraite, immobilier, placement']);
 
 // Bloc HTML SEO (sans dépendance, échappé) pour une route donnée.
 function escapeHtml(s) {

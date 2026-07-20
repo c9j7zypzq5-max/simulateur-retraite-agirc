@@ -278,6 +278,15 @@ function PwaInstallBanner() {
   );
 }
 
+// Source d'attribution des inscriptions newsletter selon la page. Sur les pages
+// d'un parcours par objectif (/objectifs/<slug>[/synthese], /en/goals/...),
+// la source porte le slug du parcours ("parcours-preparer-ma-retraite").
+function newsletterSource(pathname) {
+  const m = pathname.match(/^\/(?:objectifs|en\/goals)\/([^/]+)/);
+  if (m) return `parcours-${m[1]}`;
+  return pathname.startsWith("/simulateurs/") ? "simulateur" : "footer";
+}
+
 export default function Footer() {
   const { t, locale } = useTranslation();
   const { pathname } = useLocation();
@@ -292,7 +301,7 @@ export default function Footer() {
     <RelatedArticles />
     <OfficialSources />
     <BuilderSection />
-    <NewsletterSignup source={pathname.startsWith("/simulateurs/") ? "simulateur" : "footer"} />
+    <NewsletterSignup source={newsletterSource(pathname)} />
     <footer style={{
       background: "var(--surface)",
       borderTop: "1px solid var(--border)",
@@ -315,6 +324,9 @@ export default function Footer() {
           </span>
         </Link>
         <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+          <LocaleLink to="/objectifs" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            {t("parcours.breadcrumbGoals")}
+          </LocaleLink>
           {!isEn && (
             <>
               <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>

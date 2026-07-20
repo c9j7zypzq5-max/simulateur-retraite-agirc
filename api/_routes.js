@@ -13,6 +13,7 @@ import { FAQS } from '../src/data/faqs.js';
 import { BAREMES_DATES } from '../src/data/baremesDates.js';
 import { SEO_CONTENT } from './_seo.js';
 import { EN_PATH_MAP } from '../src/i18n/paths.js';
+import { OBJECTIFS } from '../src/data/objectifs.js';
 
 
 // Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
@@ -63,6 +64,9 @@ export const EN_ROUTES = [
   '/contact',
   '/simulateurs/donation',
   '/simulateurs/pension-reversion',
+  // Parcours guidés par objectif (hub + landings + synthèses)
+  '/objectifs',
+  ...OBJECTIFS.flatMap(o => [`/objectifs/${o.slug}`, `/objectifs/${o.slug}/synthese`]),
 ];
 
 // Routes disponibles sous /ch/ (Suisse). Miroir de src/i18n/paths.js CH_ROUTES.
@@ -136,6 +140,12 @@ export const ROUTE_META_EN = {
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
   '/simulateurs/donation': { title: 'French Gift Tax Calculator (Donation) 2026 | Simfinly', description: 'Estimate French gift tax (droits de donation) between parents and children: allowances, tax brackets and net amount received.' },
   '/simulateurs/pension-reversion': { title: 'French Survivor Pension Calculator 2026 — Private Sector & Civil Service | Simfinly', description: 'Estimate the French survivor pension (pension de réversion): 54% base + 60% Agirc-Arrco for private-sector employees, or 50% for civil servants (SRE/CNRACL), with means-testing where it applies.' },
+  // Parcours guidés par objectif : méta générées depuis la source unique.
+  '/objectifs': { title: 'Financial Goals — Guided Step-by-Step Journeys | Simfinly', description: 'Start from a life goal — prepare for retirement, buy a home, grow your money — and let a guided journey walk you through the right free calculators, step by step.' },
+  ...Object.fromEntries(OBJECTIFS.flatMap(o => [
+    [`/objectifs/${o.slug}`, { title: o.en.title, description: o.en.metaDescription }],
+    [`/objectifs/${o.slug}/synthese`, { title: o.en.syntheseTitle, description: o.en.syntheseMetaDescription }],
+  ])),
 };
 
 // Méta suisses (title + description) pour le HTML statique /ch/...

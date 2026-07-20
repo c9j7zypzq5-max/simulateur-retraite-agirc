@@ -32,6 +32,14 @@ export const EN_PATH_MAP = {
   '/simulateurs/donation':           '/simulators/donation',
   '/simulateurs/pension-reversion':  '/simulators/pension-reversion',
   '/contact':                        '/contact',
+  // Parcours guidés par objectif (slugs EN : voir enSlug dans src/data/objectifs.js)
+  '/objectifs':                                      '/goals',
+  '/objectifs/preparer-ma-retraite':                 '/goals/prepare-my-retirement',
+  '/objectifs/preparer-ma-retraite/synthese':        '/goals/prepare-my-retirement/summary',
+  '/objectifs/acheter-un-bien-immobilier':           '/goals/buy-a-home',
+  '/objectifs/acheter-un-bien-immobilier/synthese':  '/goals/buy-a-home/summary',
+  '/objectifs/faire-fructifier-mon-argent':          '/goals/grow-my-money',
+  '/objectifs/faire-fructifier-mon-argent/synthese': '/goals/grow-my-money/summary',
 };
 
 // Sens inverse : segment EN → chemin canonique FR.

@@ -73,7 +73,9 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   if (route === '/methodologie') return { title: ROUTE_META[route]?.title, description: "Comment simfinly.com calcule ses estimations : formules, barèmes officiels, sources et limites." };
   if (route === '/blog')    return { title: ROUTE_META[route]?.title, description: DESC_BLOG };
   const meta = ROUTE_META[route];
-  return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };
+  // metaDescription : version courte dédiée à la balise (l'intro complète, plus
+  // longue, reste le texte crawlable injecté dans #root).
+  return { title: meta?.title || null, description: SEO_CONTENT[route]?.metaDescription || SEO_CONTENT[route]?.intro || null };
 }
 
 // og:image dynamique (brandé) pour les pages de contenu, via /api/og.

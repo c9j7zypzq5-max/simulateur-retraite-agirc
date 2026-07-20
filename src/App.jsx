@@ -12,6 +12,7 @@ import VideoRecordingToast from "./components/VideoRecordingToast";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import HreflangTags from "./components/HreflangTags.jsx";
 import CountrySuggestionBanner from "./components/CountrySuggestionBanner.jsx";
+import ParcoursBanner from "./components/ParcoursBanner.jsx";
 import Home from "./pages/Home.jsx";
 
 // Pages chargées à la demande (code splitting) : chaque simulateur devient son
@@ -124,6 +125,10 @@ const LexiqueQC     = lazy(() => import("./pages/simulateurs/LexiqueQC.jsx"));
 // Nouveaux widgets embarquables
 const EmbedBudget   = lazy(() => import("./pages/embed/EmbedBudget.jsx"));
 const EmbedRetraite = lazy(() => import("./pages/embed/EmbedRetraite.jsx"));
+// Parcours guidés par objectif
+const Objectifs        = lazy(() => import("./pages/Objectifs.jsx"));
+const Objectif         = lazy(() => import("./pages/Objectif.jsx"));
+const ObjectifSynthese = lazy(() => import("./pages/ObjectifSynthese.jsx"));
 // Guides retraite par métier
 const RetraiteIndex  = lazy(() => import("./pages/RetraiteIndex.jsx"));
 const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
@@ -206,6 +211,7 @@ export default function App() {
       <ScrollToTop />
       <HreflangTags />
       <CountrySuggestionBanner />
+      <ParcoursBanner />
       <VideoRecordingToast />
       <a href="#main-content" className="skip-link">Aller au contenu principal</a>
       <BackToTop />
@@ -411,6 +417,13 @@ export default function App() {
         <Route path="/simulateurs/trimestres" element={<Trimestres />} />
         <Route path="/simulateurs/succession-ch" element={<SuccessionCH />} />
         <Route path="/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
+        {/* Parcours guidés par objectif */}
+        <Route path="/objectifs" element={<Objectifs />} />
+        <Route path="/objectifs/:slug" element={<Objectif />} />
+        <Route path="/objectifs/:slug/synthese" element={<ObjectifSynthese />} />
+        <Route path="/en/goals" element={<Objectifs />} />
+        <Route path="/en/goals/:slug" element={<Objectif />} />
+        <Route path="/en/goals/:slug/summary" element={<ObjectifSynthese />} />
         {/* Retraite par métier */}
         <Route path="/retraite" element={<RetraiteIndex />} />
         <Route path="/retraite/:metier" element={<RetraiteMetier />} />
