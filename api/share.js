@@ -24,6 +24,15 @@ function esc(s) {
   return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// Sérialise une valeur pour un contexte <script> inline. JSON.stringify protège
+// le contexte JS mais PAS le parseur HTML : une valeur contenant « </script> »
+// (ou « <!-- ») fermerait la balise et permettrait une injection. On neutralise
+// donc « < » et « > » en échappements unicode — invisibles pour le moteur JS,
+// inertes pour le parseur HTML.
+export function jsStringForScript(value) {
+  return JSON.stringify(String(value)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e');
+}
+
 function nanoid8() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
   let id = '';
@@ -135,7 +144,7 @@ export default async function handler(req, res) {
 <link rel="canonical" href="${esc(dest)}">
 <meta http-equiv="refresh" content="0;url=${esc(dest)}">
 </head><body style="font-family:sans-serif;background:#060e1c;color:#f4f1ea;text-align:center;padding:80px 20px">
-<script>location.replace(${JSON.stringify(dest)})</script>
+<script>location.replace(${jsStringForScript(dest)})</script>
 <p>${redirectLine}</p>
 </body></html>`;
 

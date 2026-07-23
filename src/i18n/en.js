@@ -11,6 +11,7 @@ export default {
     mentionsLegales: 'Legal notice',
     confidentialite: 'Privacy policy',
     contact: 'Contact',
+    pourLesPros: 'For business',
     home: 'Home',
     allSimulators: 'All calculators',
     currentPage: 'Current page',

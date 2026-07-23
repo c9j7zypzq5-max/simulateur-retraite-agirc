@@ -64,6 +64,7 @@ export const EN_ROUTES = [
   '/contact',
   '/simulateurs/donation',
   '/simulateurs/pension-reversion',
+  '/pour-les-pros',
   // Parcours guidés par objectif (hub + landings + synthèses)
   '/objectifs',
   ...OBJECTIFS.flatMap(o => [`/objectifs/${o.slug}`, `/objectifs/${o.slug}/synthese`]),
@@ -136,6 +137,7 @@ export const ROUTE_META_EN = {
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
   '/simulateurs/retraite-luxembourg': { title: 'Luxembourg Pension Calculator (CNAP) 2026 — pension & replacement rate', description: 'Estimate your Luxembourg CNAP pension based on your career, salary and retirement age. Built for cross-border workers and expats employed in Luxembourg.' },
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
+  '/pour-les-pros': { title: 'Calculators & Simulators for Business — No-Code Widgets | Simfinly', description: 'Embed a branded calculator on your website in minutes: quote calculator, borrowing capacity, ROI estimator. No code, French 2026 rates, built-in lead capture.' },
   '/lexique': { title: 'Financial Glossary — Clear Definitions | Simfinly', description: 'Glossary of personal finance terms: compound interest, FIRE, savings rate, debt-to-income ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators.' },
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
   '/simulateurs/donation': { title: 'French Gift Tax Calculator (Donation) 2026 | Simfinly', description: 'Estimate French gift tax (droits de donation) between parents and children: allowances, tax brackets and net amount received.' },

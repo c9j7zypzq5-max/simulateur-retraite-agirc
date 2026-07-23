@@ -133,6 +133,7 @@ const ObjectifSynthese = lazy(() => import("./pages/ObjectifSynthese.jsx"));
 const RetraiteIndex  = lazy(() => import("./pages/RetraiteIndex.jsx"));
 const RetraiteMetier = lazy(() => import("./pages/RetraiteMetier.jsx"));
 // Pages contenu
+const PourLesPros          = lazy(() => import("./pages/PourLesPros.jsx"));
 const ProConseiller        = lazy(() => import("./pages/ProConseiller.jsx"));
 const BarometreRetraite    = lazy(() => import("./pages/BarometreRetraite.jsx"));
 const Recherche            = lazy(() => import("./pages/Recherche.jsx"));
@@ -448,6 +449,8 @@ export default function App() {
         <Route path="/compte" element={ACCOUNT_ENABLED ? <Compte /> : <NotFound />} />
         <Route path="/en/account" element={ACCOUNT_ENABLED ? <Compte /> : <NotFound />} />
         {/* Pages contenu */}
+        <Route path="/pour-les-pros" element={<PourLesPros />} />
+        <Route path="/en/for-business" element={<PourLesPros />} />
         <Route path="/pro-conseiller" element={<ProConseiller />} />
         <Route path="/barometre-retraite" element={<BarometreRetraite />} />
         <Route path="/retraite/calendrier-generations" element={<CalendrierGenerations />} />

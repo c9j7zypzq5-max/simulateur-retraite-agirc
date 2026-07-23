@@ -122,6 +122,7 @@ export const ROUTE_META = {
   '/methodologie':                        { title: 'Méthodologie & sources — calculs simfinly.com',                        emoji: '🔬', cat: '',          prio: '0.4', freq: 'yearly'  },
   '/widgets':                             { title: 'Widgets gratuits à intégrer — simulateurs embarquables',               emoji: '🧩', cat: '',          prio: '0.5', freq: 'yearly'  },
   '/barometre-retraite':                  { title: 'Baromètre Retraite 2026 — Chiffres clés et tendances | simfinly.com',  emoji: '📊', cat: '',          prio: '0.7', freq: 'monthly' },
+  '/pour-les-pros':                       { title: 'Calculateurs & simulateurs pour entreprise — widgets sans code | simfinly.com', emoji: '💼', cat: '', prio: '0.8', freq: 'monthly' },
   '/recherche':                           { title: 'Recherche — simulateurs, guides et articles | simfinly.com',            emoji: '🔍', cat: '',          prio: '0.3', freq: 'weekly'  },
   '/a-propos':                            { title: 'À propos — simfinly.com',                                             emoji: '📊', cat: '',          prio: '0.3', freq: 'yearly'  },
   '/contact':                             { title: 'Contact — simfinly.com',                                              emoji: '✉️', cat: '',          prio: '0.3', freq: 'yearly'  },

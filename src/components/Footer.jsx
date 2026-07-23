@@ -327,6 +327,9 @@ export default function Footer() {
           <LocaleLink to="/objectifs" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
             {t("parcours.breadcrumbGoals")}
           </LocaleLink>
+          <LocaleLink to="/pour-les-pros" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>
+            {t("nav.pourLesPros")}
+          </LocaleLink>
           {!isEn && (
             <>
               <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>

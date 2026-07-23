@@ -12,6 +12,7 @@ export default {
     mentionsLegales: 'Mentions légales',
     confidentialite: 'Politique de confidentialité',
     contact: 'Contact',
+    pourLesPros: 'Pour les pros',
     home: 'Accueil',
     allSimulators: 'Tous les simulateurs',
     currentPage: 'Page actuelle',

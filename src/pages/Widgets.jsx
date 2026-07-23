@@ -73,6 +73,11 @@ export default function Widgets() {
           <p style={{ color: "var(--text-secondary)", fontSize: 15, lineHeight: 1.7, maxWidth: 560 }}>
             Ajoutez gratuitement un simulateur interactif sur votre site, blog ou article. Copiez le code, collez-le dans votre page : c'est tout. Un lien vers simfinly.com est inclus.
           </p>
+          <p style={{ fontSize: 14, marginTop: 12 }}>
+            <Link to="/pour-les-pros" style={{ color: "var(--gold)", fontWeight: 600, textDecoration: "none" }}>
+              Vous êtes une entreprise ? Découvrez nos solutions pour les pros →
+            </Link>
+          </p>
         </div>
 
         {/* Besoin d'un calculateur sur mesure plutôt que d'un widget prêt à l'emploi → builder */}

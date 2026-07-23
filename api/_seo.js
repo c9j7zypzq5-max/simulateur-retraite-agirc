@@ -46,6 +46,17 @@ export const SEO_CONTENT = {
     h1: "Contacter simfinly.com",
     intro: "Une question sur un simulateur, une erreur à signaler, une demande de partenariat ou de presse ? Écrivez-nous à contact@simfinly.com — nous répondons généralement sous 48 h ouvrées.",
   },
+  '/pour-les-pros': {
+    h1: "Des calculateurs et simulateurs pour votre entreprise",
+    intro: "Intégrez un simulateur à votre marque sur votre site en quelques minutes : calculateur de devis, capacité d'emprunt, estimateur de ROI, simulateur financier. Sans une ligne de code, aux barèmes français 2026, avec capture de leads intégrée. Deux options : nos widgets gratuits prêts à l'emploi, ou votre calculateur sur mesure créé avec le Builder Simfinly.",
+    metaDescription: "Intégrez un calculateur à votre marque sur votre site : devis, capacité d'emprunt, ROI. Sans code, barèmes français 2026, capture de leads. Widgets gratuits ou builder sur mesure.",
+    links: [
+      ['/widgets', 'Widgets gratuits à intégrer par iframe'],
+      ['/simulateurs', 'Tous les simulateurs disponibles'],
+      ['/objectifs', 'Parcours guidés par objectif'],
+      ['/contact', 'Réserver une démo ou parler de votre projet'],
+    ],
+  },
   '/simulateurs/agirc-arrco': {
     h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
     intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, la GMP des cadres, la majoration de 10 % pour 3 enfants et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
@@ -645,6 +656,16 @@ SEO_CONTENT['/objectifs'] = {
   metaDescription: "Partez de votre objectif de vie — préparer votre retraite, acheter un bien, faire fructifier votre argent — et suivez un parcours guidé qui enchaîne les bons simulateurs gratuits, étape par étape.",
   links: OBJECTIFS.map(o => [`/objectifs/${o.slug}`, o.fr.label]),
 };
+SEO_CONTENT_EN['/pour-les-pros'] = {
+  h1: "Calculators and simulators for your business",
+  intro: "Embed a branded calculator on your website in minutes: quote calculator, borrowing capacity, ROI estimator, financial simulator. No code, on French 2026 rates, with built-in lead capture. Two options: our free ready-made widgets, or your custom calculator built with the Simfinly Builder.",
+  metaDescription: "Embed a branded calculator on your website: quotes, borrowing capacity, ROI. No code, French 2026 rates, lead capture. Free widgets or a custom builder.",
+  links: [
+    ['/en/widgets', 'Free embeddable widgets'],
+    ['/en/goals', 'Guided journeys by goal'],
+    ['/en/contact', 'Book a demo or tell us about your project'],
+  ],
+};
 SEO_CONTENT_EN['/objectifs'] = {
   h1: "What is your financial goal?",
   intro: "Rather than hunting for the right calculator, start from your life goal: prepare for retirement, buy a home or grow your money. Each guided journey chains the relevant calculators step by step, carries your inputs from one to the next and ends with a consolidated summary. Free, no sign-up.",
@@ -685,6 +706,7 @@ for (const o of OBJECTIFS) {
 // Maillage depuis la page d'accueil : le hub des parcours devient crawlable
 // dès la racine du site.
 SEO_CONTENT['/'].links.unshift(['/objectifs', 'Parcours guidés par objectif : retraite, immobilier, placement']);
+SEO_CONTENT['/'].links.push(['/pour-les-pros', 'Calculateurs pour entreprise : widgets et builder sans code']);
 
 // Bloc HTML SEO (sans dépendance, échappé) pour une route donnée.
 function escapeHtml(s) {

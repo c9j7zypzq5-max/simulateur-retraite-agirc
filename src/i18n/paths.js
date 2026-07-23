@@ -32,6 +32,7 @@ export const EN_PATH_MAP = {
   '/simulateurs/donation':           '/simulators/donation',
   '/simulateurs/pension-reversion':  '/simulators/pension-reversion',
   '/contact':                        '/contact',
+  '/pour-les-pros':                                  '/for-business',
   // Parcours guidés par objectif (slugs EN : voir enSlug dans src/data/objectifs.js)
   '/objectifs':                                      '/goals',
   '/objectifs/preparer-ma-retraite':                 '/goals/prepare-my-retirement',
