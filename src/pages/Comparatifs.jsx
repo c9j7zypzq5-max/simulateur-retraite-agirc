@@ -69,7 +69,7 @@ export default function Comparatifs() {
         </div>
 
         <div style={{ margin: "32px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
 

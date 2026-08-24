@@ -145,7 +145,7 @@ export default function ImpotRevenuQC() {
           💡 Entrez votre <strong>revenu imposable annuel</strong> (revenu net après déductions, ex. cotisations REER).
         </div>
 
-        <AdUnit slot="ipp-qc-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="ipp-qc-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -253,7 +253,7 @@ export default function ImpotRevenuQC() {
           />
         </div>
 
-        <AdUnit slot="ipp-qc-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="ipp-qc-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
           <FaqSection items={FAQ} />

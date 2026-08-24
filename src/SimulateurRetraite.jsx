@@ -486,7 +486,7 @@ export default function SimulateurRetraite() {
 
       {/* ── Pub bloc 1 — après PDF, avant éditorial ── */}
       <div style={{ maxWidth: 760, margin: "8px auto" }}>
-        <AdUnit slot="auto" format="auto" />
+        <AdUnit placement="sim-inline" format="auto" />
       </div>
 
       {/* ── Section éditoriale ── */}
@@ -543,7 +543,7 @@ export default function SimulateurRetraite() {
 
       {/* ── Pub bloc 2 — après FAQ, avant footer ── */}
       <div style={{ maxWidth: 760, margin: "8px auto" }}>
-        <AdUnit slot="auto" format="auto" />
+        <AdUnit placement="sim-inline" format="auto" />
       </div>
 
       <Footer />

@@ -135,7 +135,7 @@ export default function SuccessionLU() {
           ⚠️ La majoration progressive au-delà de 10 000 € est estimée par interpolation entre les paliers publiés. Pour le montant exact, consultez le barème officiel sur pfi.public.lu ou un notaire.
         </div>
 
-        <AdUnit slot="succession-lu-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="succession-lu-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -249,7 +249,7 @@ export default function SuccessionLU() {
           </div>
         </div>
 
-        <AdUnit slot="succession-lu-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="succession-lu-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
           <FaqSection items={FAQ} />

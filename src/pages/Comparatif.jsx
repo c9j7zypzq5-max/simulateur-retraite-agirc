@@ -179,7 +179,7 @@ export default function Comparatif() {
             )}
 
             <div style={{ margin: "28px 0" }}>
-              <AdUnit slot="auto" format="auto" />
+              <AdUnit placement="sim-inline" format="auto" />
             </div>
 
             <div style={{ borderTop: "1px solid var(--border)", paddingTop: 24 }}>

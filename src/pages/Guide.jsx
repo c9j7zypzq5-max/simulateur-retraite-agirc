@@ -126,7 +126,7 @@ export default function Guide() {
             )}
 
             <div style={{ margin: "28px 0" }}>
-              <AdUnit slot="auto" format="auto" />
+              <AdUnit placement="sim-inline" format="auto" />
             </div>
 
             {/* Articles liés */}

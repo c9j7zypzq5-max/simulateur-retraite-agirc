@@ -78,6 +78,58 @@
       "description": "Simulateurs financiers gratuits français : retraite, immobilier, impôts, épargne, FIRE."
     }
     </script>
+    <!-- Consent Mode v2 — état par défaut AVANT tout script publicitaire.
+         Dans l'EEE, au Royaume-Uni et en Suisse, rien de personnalisé ne peut
+         partir tant que le visiteur n'a pas répondu au message de consentement :
+         on déclare donc « denied » par défaut et on laisse le CMP mettre à jour
+         ces signaux. Hors de ces zones, le comportement reste inchangé. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500,
+        region: [
+          'AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IE',
+          'IT','LV','LT','LU','MT','NL','PL','PT','RO','SK','SI','ES','SE',
+          'IS','LI','NO','GB','CH'
+        ]
+      });
+      gtag('consent', 'default', {
+        ad_storage: 'granted',
+        ad_user_data: 'granted',
+        ad_personalization: 'granted',
+        analytics_storage: 'granted'
+      });
+    </script>
+    <!-- CMP Google (Privacy & messaging / Funding Choices).
+         Google exige un CMP certifié pour diffuser des annonces aux visiteurs de
+         l'EEE et du Royaume-Uni — soit l'essentiel de l'audience du site. Ce
+         chargeur ne suffit pas à lui seul : le message RGPD correspondant doit
+         être créé ET publié dans la console AdSense (Confidentialité et
+         messages → RGPD). Tant qu'il ne l'est pas, le script ne fait rien. -->
+    <script async src="https://fundingchoicesmessages.google.com/i/pub-1297423880558120?ers=1"></script>
+    <script>
+      (function () {
+        function signalGooglefcPresent() {
+          if (!window.frames['googlefcPresent']) {
+            if (document.body) {
+              var iframe = document.createElement('iframe');
+              iframe.style = 'width:0;height:0;border:none;z-index:-1000;left:-1000px;top:-1000px;';
+              iframe.style.display = 'none';
+              iframe.name = 'googlefcPresent';
+              document.body.appendChild(iframe);
+            } else {
+              setTimeout(signalGooglefcPresent, 0);
+            }
+          }
+        }
+        signalGooglefcPresent();
+      })();
+    </script>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1297423880558120"
          crossorigin="anonymous"></script>

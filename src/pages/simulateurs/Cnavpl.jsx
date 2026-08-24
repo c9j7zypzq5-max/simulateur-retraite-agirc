@@ -654,7 +654,7 @@ export default function Cnavpl() {
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* Classe CIPAV */}
@@ -733,7 +733,7 @@ export default function Cnavpl() {
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
       <Footer />

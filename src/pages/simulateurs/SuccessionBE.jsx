@@ -185,7 +185,7 @@ export default function SuccessionBE() {
           ⚠️ Les taux présentés sont indicatifs. La Flandre (Vlaanderen) applique ses propres règles, non couvertes ici. Consultez un notaire pour votre situation réelle.
         </div>
 
-        <AdUnit slot="succession-be-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="succession-be-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -334,7 +334,7 @@ export default function SuccessionBE() {
           </div>
         </div>
 
-        <AdUnit slot="succession-be-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="succession-be-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
           <FaqSection items={FAQ} />

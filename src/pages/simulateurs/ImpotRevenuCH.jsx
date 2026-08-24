@@ -183,7 +183,7 @@ export default function ImpotRevenuCH() {
           ℹ️ Estimation simplifiée. L'impôt cantonal est calculé comme un multiplicateur de l'IFD — les barèmes cantonaux réels diffèrent. Les résultats sont indicatifs.
         </div>
 
-        <AdUnit slot="impot-ch-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="impot-ch-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -351,7 +351,7 @@ export default function ImpotRevenuCH() {
 
         <ShareBar params={toParams(vals)} resultsRef={resultsRef} name="impot-ch" />
 
-        <AdUnit slot="impot-ch-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="impot-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/impot-revenu-ch']} />

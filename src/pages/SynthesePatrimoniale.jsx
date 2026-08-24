@@ -645,7 +645,7 @@ export default function SynthesePatrimoniale() {
 
                 {/* Ad */}
                 <div style={{ margin: "8px 0 18px" }}>
-                  <AdUnit slot="auto" format="auto" />
+                  <AdUnit placement="sim-inline" format="auto" />
                 </div>
 
                 {/* Actions recommandées */}

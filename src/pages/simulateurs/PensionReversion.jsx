@@ -227,8 +227,8 @@ export default function PensionReversion() {
           icon={<SimIcon path="/simulateurs/pension-reversion" size={34} />}
           badge="Retraite · Simulation 2026"
           title="Simulateur pension de réversion"
-          subtitle="Conjoint survivant · Privé & fonction publique"
-          desc="Estimez la pension de réversion du conjoint survivant, salarié du privé (54 % de la base CNAV, 60 % de l'Agirc-Arrco, condition de ressources) ou fonctionnaire (50 % SRE/CNRACL, sans condition de ressources)."
+          subtitle="Conjoint survivant · CNAV, Carsat, Agirc-Arrco, fonction publique"
+          desc="Calculez la pension de réversion du conjoint survivant. Salarié du privé, agricole (MSA) ou indépendant : 54 % de la retraite de base (CNAV/Carsat) sous condition de ressources, plus 60 % de la complémentaire Agirc-Arrco. Fonctionnaire (SRE, CNRACL) : 50 %, sans condition de ressources."
         />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 24 }}>
@@ -417,7 +417,49 @@ export default function PensionReversion() {
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
+        </div>
+
+        {/* Taux de réversion par régime — couvre les régimes non simulés ici */}
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 8 }}>Taux de réversion selon le régime du défunt</h2>
+          <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8, marginBottom: 18 }}>
+            Le taux dépend du régime auquel cotisait le défunt, pas de votre situation. Si sa carrière a couvert plusieurs
+            régimes, chaque caisse verse sa propre réversion selon ses règles : les montants s'additionnent.
+          </p>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13.5, minWidth: 520 }}>
+              <thead>
+                <tr>
+                  {["Régime du défunt", "Taux", "Condition de ressources", "Âge minimum"].map(h => (
+                    <th key={h} style={{ textAlign: "left", padding: "10px 8px", borderBottom: "1.5px solid var(--border)", color: "var(--text)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700 }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Régime général — CNAV / Carsat (salarié du privé)", "54 %", "Oui — 25 001,60 €/an (seul)", "55 ans"],
+                  ["Agirc-Arrco (complémentaire du privé)", "60 %", "Non", "55 ans"],
+                  ["MSA salariés et exploitants agricoles", "54 %", "Oui — régime aligné", "55 ans"],
+                  ["Indépendants — SSI, ex-RSI (artisans, commerçants)", "54 %", "Oui — régime aligné", "55 ans"],
+                  ["Fonction publique — SRE, CNRACL, RAFP", "50 %", "Non", "Aucun"],
+                  ["Ircantec (contractuels publics)", "50 %", "Non", "Aucun"],
+                ].map((row, i) => (
+                  <tr key={i}>
+                    {row.map((cell, j) => (
+                      <td key={j} style={{ padding: "10px 8px", borderBottom: "1px solid var(--border)", color: j === 0 ? "var(--text)" : "var(--text-secondary)", fontWeight: j === 1 ? 600 : 400 }}>{cell}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.8, marginTop: 16 }}>
+            <strong style={{ color: "var(--text)" }}>Régimes non couverts par ce simulateur :</strong> les régimes spéciaux
+            (SNCF, RATP, industries électriques et gazières, Banque de France) et les caisses de professions libérales
+            (CNAVPL et ses sections dont la CIPAV, CARMF pour les médecins, CNBF pour les avocats) appliquent leurs propres
+            taux et conditions. Adressez-vous directement à la caisse du défunt pour ces régimes.
+          </p>
         </div>
 
         {/* À propos */}
@@ -456,7 +498,7 @@ export default function PensionReversion() {
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </main>
       <Footer />

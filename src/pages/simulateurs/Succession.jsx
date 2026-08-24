@@ -178,7 +178,7 @@ export default function Succession() {
           badge="Patrimoine · Succession"
         />
 
-        <AdUnit slot="succession-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="succession-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -359,7 +359,7 @@ export default function Succession() {
           />
         </div>
 
-        <AdUnit slot="succession-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="succession-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
         <AccordionSection title="Questions fréquentes" defaultOpen>

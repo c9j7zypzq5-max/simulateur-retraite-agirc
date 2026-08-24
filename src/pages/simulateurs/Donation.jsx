@@ -288,7 +288,7 @@ export default function Donation() {
           badge="Patrimoine · Transmission 2026"
         />
 
-        <AdUnit slot="donation-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="donation-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -485,7 +485,7 @@ export default function Donation() {
           </div>
         </div>
 
-        <AdUnit slot="donation-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="donation-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/donation']} />
@@ -513,7 +513,7 @@ export default function Donation() {
         </p>
 
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         <ShareBar

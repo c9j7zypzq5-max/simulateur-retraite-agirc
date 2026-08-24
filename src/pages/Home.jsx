@@ -571,7 +571,7 @@ export default function Home() {
       `}</style>
 
       <div className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 24px", padding: "0 24px" }}>
-        <AdUnit slot="auto" format="auto" />
+        <AdUnit placement="sim-inline" format="auto" />
       </div>
 
       {/* ── Recherche ── */}

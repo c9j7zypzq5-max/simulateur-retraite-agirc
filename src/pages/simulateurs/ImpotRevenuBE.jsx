@@ -156,7 +156,7 @@ export default function ImpotRevenuBE() {
           💡 Entrez votre <strong>revenu professionnel brut annuel</strong> (avant déduction des frais pro mais après ONSS si vous êtes salarié — correspond à la case 250 de votre déclaration fiscale).
         </div>
 
-        <AdUnit slot="ipp-be-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="ipp-be-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -342,7 +342,7 @@ export default function ImpotRevenuBE() {
           />
         </div>
 
-        <AdUnit slot="ipp-be-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="ipp-be-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
           <FaqSection items={FAQ} />

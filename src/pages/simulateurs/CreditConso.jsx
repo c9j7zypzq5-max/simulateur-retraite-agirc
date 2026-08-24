@@ -521,7 +521,7 @@ export default function CreditConso() {
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* À propos */}
@@ -548,7 +548,7 @@ export default function CreditConso() {
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </main>
       <Footer />

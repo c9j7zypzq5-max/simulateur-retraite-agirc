@@ -997,7 +997,7 @@ export default function EmpruntImmobilier() {
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* À propos */}
@@ -1024,7 +1024,7 @@ export default function EmpruntImmobilier() {
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </main>
       <Footer />

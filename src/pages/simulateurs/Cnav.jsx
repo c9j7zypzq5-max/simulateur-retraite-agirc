@@ -375,7 +375,7 @@ export default function Cnav() {
         {hasResult && <LeadGenCTA type="retraite" />}
 
         {/* Ad */}
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
 
         {/* À propos */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
@@ -405,7 +405,7 @@ export default function Cnav() {
         <FaqSection items={FAQ} />
 
         {/* Ad */}
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
       </div>
       <Footer />
     </div>

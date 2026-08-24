@@ -321,7 +321,7 @@ export default function RetraiteProgressive() {
         )}
 
         {/* Ad */}
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
 
         {/* À propos */}
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
@@ -343,7 +343,7 @@ export default function RetraiteProgressive() {
         </div>
 
         {/* Ad */}
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-progressive']} />
 

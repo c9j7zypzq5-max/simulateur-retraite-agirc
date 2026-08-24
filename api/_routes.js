@@ -11,7 +11,7 @@ import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
 import { BAREMES_DATES } from '../src/data/baremesDates.js';
-import { SEO_CONTENT } from './_seo.js';
+import { SEO_CONTENT, SEO_CONTENT_EN, FAQS_EN } from './_seo.js';
 import { EN_PATH_MAP } from '../src/i18n/paths.js';
 
 
@@ -130,7 +130,7 @@ export const ROUTE_META_EN = {
   '/politique-de-confidentialite':{ title: 'Privacy policy — Simfinly',                                       description: 'Privacy and cookie policy for simfinly.com: data collected, Google AdSense, GDPR.' },
   '/contact':                     { title: 'Contact — Simfinly',                                             description: 'Contact the simfinly.com team: questions about a calculator, error reports, partnership or press enquiries. Reply within 48 business hours.' },
   '/simulateurs/cnav':            { title: 'French State Pension Calculator (CNAV) 2026 — Estimate Your Retirement', description: 'Calculate your French state pension (régime général CNAV): quarters, average salary, departure age, pro-rata. Useful for expatriates and cross-border workers.' },
-  '/simulateurs/retraite-luxembourg': { title: 'Luxembourg Pension Calculator (CNAP) 2026 — pension & replacement rate', description: 'Estimate your Luxembourg CNAP pension based on your career, salary and retirement age. Built for cross-border workers and expats employed in Luxembourg.' },
+  '/simulateurs/retraite-luxembourg': { title: 'CNAP Luxembourg Pension Calculator 2026 — retirement age 65', description: 'Retirement age in Luxembourg is 65, early from 60. Minimum CNAP pension: €2,436.04 gross/month for 40 years. Estimate your own pension — free, no sign-up.' },
   '/comparatifs': { title: 'Financial Comparisons — PER vs Life Insurance, Buy vs Rent | Simfinly', description: 'Compare French financial products side by side: PER vs assurance-vie, buying vs renting, freelance vs employee. Data-driven comparisons to help you choose.' },
   '/lexique': { title: 'Financial Glossary — Clear Definitions | Simfinly', description: 'Glossary of personal finance terms: compound interest, FIRE, savings rate, debt-to-income ratio, rental yield, 4% rule… Simple definitions, linked to our free calculators.' },
   '/widgets':     { title: 'Free Embeddable Financial Calculators — Widgets | Simfinly', description: 'Embed free financial calculators on your website: compound interest, FIRE, mortgage, budget and French pension. Copy-paste the iframe code.' },
@@ -405,7 +405,7 @@ function breadcrumb(items) {
 // au build (fiables sans exécution JS, contrairement aux blocs <JsonLd> rendus par
 // React). BreadcrumbList partout + WebApplication (simulateurs), DefinedTerm
 // (lexique) et Article (blog). `extra` porte les métadonnées blog (titre, intro…).
-export function structuredData(route, extra = {}) {
+export function structuredData(route, extra = {}, locale = 'fr') {
   const url = `${BASE}${route}`;
 
   // Fiche du lexique → DefinedTerm + FAQPage si le terme a des faqs
@@ -516,20 +516,30 @@ export function structuredData(route, extra = {}) {
   // Page d'accueil → rien : les schémas WebSite + Organization sont codés en dur
   // dans index.html (et le build saute la home dans patchHtml pour éviter le doublon).
   if (route === '/') return [];
-  const out = [breadcrumb([['Accueil', `${BASE}/`], [meta.title, url]])];
+  // Les pages /en/ sont déclarées <html lang="en"> : leurs données structurées
+  // doivent l'être aussi. Émettre le JSON-LD français sur une page anglaise est
+  // une incohérence de langue qui dessert la page auprès de Google.
+  const isEn = locale === 'en';
+  const metaEn = isEn ? ROUTE_META_EN[route] : null;
+  const name = metaEn?.title || meta.title;
+  const out = [breadcrumb([[isEn ? 'Home' : 'Accueil', `${BASE}/`], [name, url]])];
   if (route.startsWith('/simulateurs/')) {
-    const seoIntro = SEO_CONTENT[route]?.intro;
+    const seoIntro = isEn
+      ? (metaEn?.description || SEO_CONTENT_EN[route]?.description || SEO_CONTENT_EN[route]?.intro)
+      : SEO_CONTENT[route]?.intro;
     // Même source que le <lastmod> du sitemap : les deux signaux doivent raconter
     // la même histoire de fraîcheur de contenu (sinon Google finit par ignorer les deux).
     const lastmod = ROUTE_DATES[route] || SITE_LASTMOD;
     out.push({
       '@context': 'https://schema.org', '@type': 'WebApplication',
-      name: meta.title, url,
-      description: seoIntro || meta.title,
+      name, url,
+      description: seoIntro || name,
       applicationCategory: 'FinanceApplication', operatingSystem: 'Any',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
-      inLanguage: 'fr-FR',
-      featureList: 'Calcul instantané, Export PDF, Partage de simulation, Graphiques interactifs, Comparaison de scénarios',
+      inLanguage: isEn ? 'en' : 'fr-FR',
+      featureList: isEn
+        ? 'Instant calculation, PDF export, Shareable simulation, Interactive charts, Scenario comparison'
+        : 'Calcul instantané, Export PDF, Partage de simulation, Graphiques interactifs, Comparaison de scénarios',
       screenshot: `${BASE}/og-image.webp`,
       author: { '@type': 'Organization', name: 'Simfinly', url: BASE },
       dateModified: lastmod,
@@ -537,7 +547,17 @@ export function structuredData(route, extra = {}) {
       // Un rich snippet d'avis fabriqué viole les règles Google (risque de
       // sanction manuelle) — à réintroduire uniquement avec de vrais avis vérifiables.
     });
-    out.push({
+    out.push(isEn ? {
+      '@context': 'https://schema.org', '@type': 'HowTo',
+      name: `How to use: ${name}`,
+      tool: [{ '@type': 'HowToTool', name: 'simfinly.com — free online calculator' }],
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Enter your details', text: 'Fill in your personal data (age, salary, years of contribution…) in the form fields.' },
+        { '@type': 'HowToStep', position: 2, name: 'Read your results', text: 'Results are computed instantly and displayed as charts and detailed tables.' },
+        { '@type': 'HowToStep', position: 3, name: 'Compare scenarios', text: 'Adjust the inputs to model different assumptions and identify the best strategy.' },
+        { '@type': 'HowToStep', position: 4, name: 'Export or share', text: 'Download your results as a PDF or share the link to your simulation.' },
+      ],
+    } : {
       '@context': 'https://schema.org', '@type': 'HowTo',
       name: `Comment utiliser : ${meta.title}`,
       tool: [{ '@type': 'HowToTool', name: 'simfinly.com — simulateur gratuit en ligne' }],
@@ -548,7 +568,7 @@ export function structuredData(route, extra = {}) {
         { '@type': 'HowToStep', position: 4, name: 'Exporter ou partager', text: 'Téléchargez vos résultats en PDF ou partagez le lien de votre simulation avec votre conseiller financier.' },
       ],
     });
-    const faqs = FAQS[route];
+    const faqs = isEn ? FAQS_EN[route] : FAQS[route];
     if (faqs && faqs.length > 0) {
       out.push({
         '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -562,8 +582,8 @@ export function structuredData(route, extra = {}) {
   return out;
 }
 
-export function structuredDataScripts(route, extra = {}) {
-  return structuredData(route, extra)
+export function structuredDataScripts(route, extra = {}, locale = 'fr') {
+  return structuredData(route, extra, locale)
     .map(d => `<script type="application/ld+json">${JSON.stringify(d)}</script>`)
     .join('\n    ');
 }

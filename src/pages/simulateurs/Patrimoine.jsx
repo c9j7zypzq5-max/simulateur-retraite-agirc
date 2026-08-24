@@ -755,7 +755,7 @@ export default function Patrimoine() {
         </div>
 
         <div style={{ margin: '24px 0' }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {hasResult && (
@@ -804,7 +804,7 @@ export default function Patrimoine() {
         </div>
 
         <div style={{ margin: '24px 0' }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/patrimoine']} />

@@ -164,7 +164,7 @@ export default function EpargneSalariale() {
           badge="Épargne · Salarié"
         />
 
-        <AdUnit slot="epargne-salariale-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="epargne-salariale-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
 
@@ -333,7 +333,7 @@ export default function EpargneSalariale() {
           </div>
         </div>
 
-        <AdUnit slot="epargne-salariale-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="epargne-salariale-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/epargne-salariale']} />

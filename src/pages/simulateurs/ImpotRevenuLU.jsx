@@ -151,7 +151,7 @@ export default function ImpotRevenuLU() {
           💡 Entrez votre <strong>revenu imposable annuel</strong> (revenu net après déductions et abattements standards).
         </div>
 
-        <AdUnit slot="ipp-lu-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="ipp-lu-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -281,7 +281,7 @@ export default function ImpotRevenuLU() {
           />
         </div>
 
-        <AdUnit slot="ipp-lu-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="ipp-lu-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
           <FaqSection items={FAQ} />

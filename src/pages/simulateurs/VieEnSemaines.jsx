@@ -435,7 +435,7 @@ export default function VieEnSemaines() {
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* Note éditoriale */}
@@ -481,7 +481,7 @@ export default function VieEnSemaines() {
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/vie-en-semaines']} />

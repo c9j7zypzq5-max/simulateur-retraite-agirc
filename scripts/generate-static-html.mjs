@@ -34,7 +34,7 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
       const c = COMPARATIFS_BY_SLUG[route.slice('/comparatifs/'.length)];
       if (c?.en) return { title: `${c.en.title} | simfinly.com`, description: c.en.intro };
     }
-    return { title: null, description: SEO_CONTENT_EN[route]?.intro || null };
+    return { title: null, description: SEO_CONTENT_EN[route]?.description || SEO_CONTENT_EN[route]?.intro || null };
   }
   if (country === 'ch') {
     const meta = ROUTE_META_CH[route];
@@ -73,7 +73,11 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   if (route === '/methodologie') return { title: ROUTE_META[route]?.title, description: "Comment simfinly.com calcule ses estimations : formules, barèmes officiels, sources et limites." };
   if (route === '/blog')    return { title: ROUTE_META[route]?.title, description: DESC_BLOG };
   const meta = ROUTE_META[route];
-  return { title: meta?.title || null, description: SEO_CONTENT[route]?.intro || null };
+  // `description` (facultatif) pilote la meta description — donc l'extrait affiché
+  // dans Google — indépendamment de `intro`, qui alimente le texte pré-rendu et
+  // peut être bien plus long que les ~155 caractères repris dans un snippet.
+  const c = SEO_CONTENT[route];
+  return { title: meta?.title || null, description: c?.description || c?.intro || null };
 }
 
 // og:image dynamique (brandé) pour les pages de contenu, via /api/og.
@@ -93,7 +97,7 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   const ogImg = ogImageUrl(route, extra);
   // La page d'accueil porte déjà WebSite + Organization en dur dans index.html :
   // on n'injecte pas de JSON-LD supplémentaire pour elle (évite le doublon).
-  const ld = route === '/' ? '' : structuredDataScripts(route, extra);
+  const ld = route === '/' ? '' : structuredDataScripts(route, extra, locale);
   const seo = route.startsWith('/blog/') ? seoHtmlForArticle(extra) : seoHtmlForRoute(route, locale, country);
   let urlPath;
   if (extra.urlPath) urlPath = extra.urlPath;

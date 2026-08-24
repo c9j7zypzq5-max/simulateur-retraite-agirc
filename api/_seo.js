@@ -45,16 +45,32 @@ export const SEO_CONTENT = {
     intro: "Une question sur un simulateur, une erreur à signaler, une demande de partenariat ou de presse ? Écrivez-nous à contact@simfinly.com — nous répondons généralement sous 48 h ouvrées.",
   },
   '/simulateurs/agirc-arrco': {
-    h1: "Simulateur retraite complémentaire Agirc-Arrco 2026",
-    intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, vos points acquis et votre âge de départ. Le calcul intègre la valeur du point, la GMP des cadres, la majoration de 10 % pour 3 enfants et une revalorisation projetée, pour une estimation nette mensuelle en quelques secondes.",
+    h1: "Simulateur retraite complémentaire Agirc-Arrco 2026 — points et pension",
+    description: "Calculez votre retraite complémentaire Agirc-Arrco 2026 : points acquis, valeur du point à 1,4386 €, majoration enfants et estimation nette mensuelle. Gratuit, sans inscription.",
+    intro: "Estimez votre pension complémentaire Agirc-Arrco à partir de votre salaire, de vos points acquis et de votre âge de départ. Le calcul convertit vos cotisations en points via la valeur d'achat 2026 (20,1877 €), puis multiplie le total par la valeur de service du point (1,4386 € en 2026) pour obtenir votre pension annuelle. Il intègre la répartition Tranche 1 / Tranche 2, la GMP des cadres, la majoration de 10 % pour trois enfants et une revalorisation projetée, jusqu'à une estimation nette mensuelle après CSG, CRDS et Casa.",
+    links: [
+      ['/retraite/points-agirc-arrco', 'Points Agirc-Arrco : valeur du point et méthode de calcul'],
+      ['/simulateurs/cnav', 'Retraite de base CNAV à ajouter à votre complémentaire'],
+      ['/simulateurs/synthese-retraite', 'Synthèse retraite tous régimes'],
+      ['/simulateurs/pension-reversion', 'Réversion Agirc-Arrco du conjoint survivant (60 %)'],
+      ['/simulateurs/retraite-progressive', 'Retraite progressive et Agirc-Arrco'],
+    ],
   },
   '/simulateurs/cnav': {
     h1: "Simulateur retraite de base CNAV — régime général",
     intro: "Calculez votre pension de base du régime général (CNAV) selon votre salaire annuel moyen, vos trimestres validés et votre âge de départ. Le simulateur applique le taux plein, la décote ou la surcote et estime votre future retraite de base, à compléter par vos régimes complémentaires.",
   },
   '/simulateurs/fonction-publique': {
-    h1: "Simulateur retraite de la fonction publique",
-    intro: "Évaluez votre pension de fonctionnaire d'État, territorial ou hospitalier à partir de votre indice majoré, votre durée de services et vos bonifications. Le calcul distingue catégorie sédentaire et active et intègre la décote/surcote selon votre âge de départ.",
+    h1: "Simulateur retraite fonction publique 2026 — État, territorial, hospitalier",
+    description: "Calculez votre retraite de fonctionnaire 2026 : pension civile SRE ou CNRACL, catégorie active ou sédentaire, décote, surcote et estimation nette. Gratuit, sans inscription.",
+    intro: "Estimez votre pension de fonctionnaire d'État (SRE), territorial ou hospitalier (CNRACL) à partir de votre traitement indiciaire brut, de votre durée de services et de vos bonifications. Le calcul applique la formule officielle — traitement des six derniers mois, durée de référence de 172 trimestres, taux maximum de 75 % — distingue catégorie sédentaire et catégorie active, et intègre la décote ou la surcote selon votre âge de départ. Enseignants, personnels hospitaliers, policiers et agents territoriaux relèvent tous de cette même formule.",
+    links: [
+      ['/simulateurs/pension-reversion', 'Pension de réversion du conjoint de fonctionnaire (50 %)'],
+      ['/simulateurs/ircantec', 'Retraite Ircantec des agents contractuels'],
+      ['/simulateurs/synthese-retraite', 'Carrière mixte public-privé : synthèse tous régimes'],
+      ['/simulateurs/retraite-progressive', 'Retraite progressive dans la fonction publique'],
+      ['/retraite/fonctionnaire', 'Fiche métier : la retraite des fonctionnaires'],
+    ],
   },
   '/simulateurs/independants': {
     h1: "Simulateur retraite des indépendants et TNS",
@@ -85,8 +101,8 @@ export const SEO_CONTENT = {
     intro: "Évaluez la rentabilité brute et nette d'un investissement locatif à partir du prix, du loyer, des charges, de la fiscalité et des frais de gestion. Un calcul clair pour comparer vos opportunités d'investissement immobilier.",
   },
   '/simulateurs/ptz': {
-    h1: "Simulateur PTZ 2025 — Prêt à Taux Zéro",
-    intro: "Estimez le montant de votre Prêt à Taux Zéro selon votre zone, la composition de votre foyer et vos revenus. Le simulateur détermine votre tranche, la quotité finançable et le montant du PTZ, selon le barème 2025 (décret n° 2025-299).",
+    h1: "Simulateur PTZ 2026 — Prêt à Taux Zéro",
+    intro: "Estimez le montant de votre Prêt à Taux Zéro selon votre zone, la composition de votre foyer et vos revenus. Le simulateur détermine votre tranche, la quotité finançable et le montant du PTZ, selon le barème 2026 (décret n° 2025-299).",
   },
   '/simulateurs/impot-revenu': {
     h1: "Simulateur d'impôt sur le revenu 2026",
@@ -113,16 +129,25 @@ export const SEO_CONTENT = {
     intro: "Calculez le patrimoine nécessaire pour vivre de vos investissements et l'âge auquel vous atteindrez l'indépendance financière. Le simulateur applique la règle des 4 %, les paliers Lean/Coast/Fat FIRE et trace votre trajectoire année par année.",
   },
   '/simulateurs/frais-notaire': {
-    h1: "Simulateur de frais de notaire 2025",
+    h1: "Simulateur de frais de notaire 2026",
     intro: "Calculez les frais de notaire (frais d'acquisition) de votre achat immobilier : droits de mutation, émoluments du notaire, contribution de sécurité immobilière et débours. Le simulateur distingue l'ancien (~7-8 % du prix) et le neuf (~2-3 %) pour une estimation instantanée.",
   },
   '/simulateurs/per': {
     h1: "Simulateur PER — Plan d'Épargne Retraite",
-    intro: "Estimez l'économie d'impôt liée à vos versements sur un PER et le capital projeté à la retraite. Le calcul applique le plafond de déduction (10 % des revenus, PASS 2025) selon votre tranche marginale d'imposition et votre horizon de placement.",
+    intro: "Estimez l'économie d'impôt liée à vos versements sur un PER et le capital projeté à la retraite. Le calcul applique le plafond de déduction (10 % des revenus, PASS 2026) selon votre tranche marginale d'imposition et votre horizon de placement.",
   },
   '/simulateurs/pension-reversion': {
-    h1: "Simulateur de pension de réversion 2025",
-    intro: "Estimez la pension de réversion du conjoint survivant : 54 % de la retraite de base (CNAV) et 60 % de la complémentaire Agirc-Arrco. Le calcul intègre la condition de ressources (plafond 2025 selon votre situation) et l'âge minimum de 55 ans pour une estimation mensuelle claire.",
+    h1: "Simulateur pension de réversion 2026 — calcul du conjoint survivant",
+    description: "Calculez votre pension de réversion 2026 : 54 % de la base (CNAV/Carsat) + 60 % de l'Agirc-Arrco, ou 50 % dans la fonction publique. Gratuit, sans inscription.",
+    intro: "Calculez la pension de réversion à laquelle vous avez droit en tant que conjoint survivant, tous régimes confondus. Salarié du privé (CNAV/Carsat) : 54 % de la retraite de base sous condition de ressources (25 001,60 €/an pour une personne seule en 2026), plus 60 % de la complémentaire Agirc-Arrco sans condition de ressources. Fonctionnaire (SRE, CNRACL) et agent contractuel (Ircantec) : 50 %, sans condition de ressources. Le simulateur applique aussi l'âge minimum de 55 ans du régime général et l'effet d'un remariage.",
+    links: [
+      ['/retraite/calcul-pension-reversion', 'Guide complet : calcul de la pension de réversion 2026'],
+      ['/simulateurs/cnav', 'Retraite de base CNAV du défunt (régime général)'],
+      ['/simulateurs/agirc-arrco', 'Retraite complémentaire Agirc-Arrco du défunt'],
+      ['/simulateurs/fonction-publique', 'Retraite de la fonction publique (SRE, CNRACL)'],
+      ['/simulateurs/ircantec', 'Retraite Ircantec des contractuels publics'],
+      ['/simulateurs/synthese-retraite', 'Synthèse retraite tous régimes'],
+    ],
   },
   '/simulateurs/synthese-retraite': {
     h1: "Synthèse retraite tous régimes — votre pension totale",
@@ -138,7 +163,7 @@ export const SEO_CONTENT = {
   },
   '/simulateurs/assurance-vie': {
     h1: "Simulateur d'assurance-vie — rendement et fiscalité",
-    intro: "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans de détention, abattement annuel, prélèvement forfaitaire et prélèvements sociaux de 17,2 %, selon les paramètres 2025.",
+    intro: "Projetez la croissance de votre assurance-vie et estimez la fiscalité de vos gains au rachat : avantage des 8 ans de détention, abattement annuel, prélèvement forfaitaire et prélèvements sociaux de 17,2 %, selon les paramètres 2026.",
   },
   '/simulateurs/credit-conso': {
     h1: "Simulateur de crédit à la consommation",
@@ -414,7 +439,7 @@ export const SEO_CONTENT = {
     intro: "Estimez les droits de succession selon le canton suisse, le lien de parenté (enfants, conjoints, collatéraux, tiers) et l'actif net transmis. Les enfants et le conjoint survivant sont exonérés dans la quasi-totalité des cantons : le simulateur détaille les exceptions et les barèmes 2025.",
   },
   '/simulateurs/retraite-luxembourg': {
-    h1: "Simulateur retraite Luxembourg (CNAP) 2025 — pension et taux de remplacement",
+    h1: "Simulateur retraite Luxembourg (CNAP) 2026 — pension et taux de remplacement",
     intro: "Estimez votre pension du régime général luxembourgeois (CNAP) selon votre durée de carrière, votre salaire moyen et votre âge de départ. Conçu pour les frontaliers franco-luxembourgeois et les expatriés : possibilité de partir dès 60 ans avec 40 années d'assurance.",
   },
 };
@@ -566,6 +591,34 @@ export const SEO_CONTENT_BE = {
 };
 
 // Contenu SEO en anglais (H1 + intro) pour les pages /en/...
+// FAQ anglaise pré-rendue, par route. Le dictionnaire FAQS (src/data/faqs.js)
+// est en français : il n'est injecté que dans les pages FR. Les rares routes EN
+// à fort volume de recherche ont donc leur propre FAQ ici.
+export const FAQS_EN = {
+  '/simulateurs/retraite-luxembourg': [
+    {
+      q: "What is the statutory retirement age in Luxembourg?",
+      a: "The statutory (legal) retirement age for the CNAP old-age pension is 65. Early retirement is possible from 60 if you have completed 40 years of insurance, and from 57 for long careers made up entirely of compulsory contributions. Claiming before 65 does not apply a permanent reduction the way it does in some countries: the pension is simply based on the years of insurance actually completed by that date.",
+    },
+    {
+      q: "How is a Luxembourg pension calculated?",
+      a: "The CNAP pension combines two components. The flat-rate component depends only on your length of insurance, and reaches its full amount after 40 years. The earnings-related component is roughly 1.85 % of your average insured salary for each year of contribution. Insured earnings are capped at five times the social minimum wage. Add-ons then apply, including an increase of about 5 % per child, up to three children.",
+    },
+    {
+      q: "What is the minimum pension in Luxembourg?",
+      a: "The guaranteed minimum old-age pension is €2,436.04 gross per month for a complete 40-year insurance career, at index 992.24 (1 June 2026). It is reduced by one fortieth for each year missing below 40. You must have at least 20 years of insurance to qualify: below that threshold, no minimum pension is guaranteed and only the amount actually earned is paid.",
+    },
+    {
+      q: "Can cross-border workers claim a Luxembourg pension?",
+      a: "Yes. Frontaliers living in France, Belgium or Germany but employed in Luxembourg build up CNAP rights exactly like residents. Under EU coordination rules, each country where you were insured pays its own pension for the periods completed there, and periods completed in other EU states are taken into account when checking whether you meet minimum-duration conditions. You claim through the pension institution of your country of residence.",
+    },
+    {
+      q: "Is this an official CNAP calculator?",
+      a: "No. This is an independent estimate based on the published CNAP parameters, provided free of charge and without sign-up. It assumes a regular career and a stable average salary, and does not model every add-on or transitional rule. For a binding figure, request an official estimate from the CNAP.",
+    },
+  ],
+};
+
 export const SEO_CONTENT_EN = {
   '/contact': {
     h1: "Contact simfinly.com",
@@ -609,7 +662,7 @@ export const SEO_CONTENT_EN = {
   },
   '/simulateurs/assurance-vie': {
     h1: "French Life Insurance (Assurance-Vie) Calculator",
-    intro: "Project the growth of a French life insurance policy and estimate the tax on your gains at withdrawal. The calculation applies the 8-year advantage, the annual allowance (€4,600 single / €9,200 couple), the 30% flat tax and the 17.2% social levies, using 2025 figures.",
+    intro: "Project the growth of a French life insurance policy and estimate the tax on your gains at withdrawal. The calculation applies the 8-year advantage, the annual allowance (€4,600 single / €9,200 couple), the 30% flat tax and the 17.2% social levies, using 2026 figures.",
   },
   '/simulateurs/credit-conso': {
     h1: "Personal Loan Calculator",
@@ -628,8 +681,14 @@ export const SEO_CONTENT_EN = {
     intro: "Estimate your French general-scheme pension (Assurance Retraite / CNAV) based on your career, average annual earnings and retirement age. The calculator applies the official formula: quarters validated, reference annual salary and replacement rate.",
   },
   '/simulateurs/retraite-luxembourg': {
-    h1: "Luxembourg Pension Calculator (CNAP) 2025 — net pension & replacement rate",
-    intro: "Estimate your Luxembourg general-scheme pension (CNAP — Caisse Nationale d'Assurance Pension) based on your career length, insured salary and planned retirement age. Designed for cross-border workers and expatriates employed in Luxembourg.",
+    h1: "Luxembourg Pension Calculator (CNAP) 2026 — retirement age, minimum pension & amount",
+    description: "Free CNAP pension calculator for Luxembourg. Statutory retirement age is 65 (early from 57 or 60), the minimum pension is €2,436.04 gross per month for 40 years of insurance. Estimate yours.",
+    intro: "Estimate your Luxembourg old-age pension from the general scheme run by the CNAP (Caisse Nationale d'Assurance Pension), based on your insured salary, your years of insurance and your planned retirement age. The statutory retirement age in Luxembourg is 65, with early retirement possible from 60 with 40 years of insurance, or from 57 for long careers. Your pension combines two components: a flat-rate component tied to your length of insurance, and an earnings-related component of about 1.85 % of your average insured salary per year of contribution. If you reach at least 20 years of insurance, a guaranteed minimum pension applies: €2,436.04 gross per month for a full 40-year career, reduced by one fortieth for each missing year. Built for cross-border workers (frontaliers) from France, Belgium and Germany, and for expatriates employed in Luxembourg.",
+    links: [
+      ['/en/simulators/life-in-weeks', 'Life in weeks — visualise your time'],
+      ['/en/simulators/wealth', 'Net worth calculator'],
+      ['/en/simulators/pension-reversion', 'Survivor pension calculator'],
+    ],
   },
 };
 
@@ -746,6 +805,14 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
     ).join('') + '</ul>';
   }
 
+  // FAQ anglaise pré-rendue pour les routes EN qui en déclarent une.
+  if (locale === 'en') {
+    const faqEn = FAQS_EN[route];
+    if (Array.isArray(faqEn) && faqEn.length) {
+      body += faqEn.map(f => `<h2>${escapeHtml(f.q)}</h2><p>${escapeHtml(f.a)}</p>`).join('');
+    }
+  }
+
   // Contenu approfondi propre au FR (le même texte alimente déjà l'app et le JSON-LD).
   if (locale === 'fr' && country === 'fr') {
     if (route.startsWith('/retraite/')) {
@@ -755,7 +822,12 @@ export function seoHtmlForRoute(route, locale = 'fr', country = 'fr') {
     // Éditorial « À propos » (même contenu que le composant) rendu crawlable.
     const editorial = EDITORIAL_BY_ROUTE[route];
     if (Array.isArray(editorial) && editorial.length) {
-      body += editorial.map(s => `<h2>${escapeHtml(s.title)}</h2><p>${escapeHtml(s.text)}</p>`).join('');
+      body += editorial.map(s => {
+        const link = Array.isArray(s.link)
+          ? ` <a href="${escapeHtml(s.link[0])}">${escapeHtml(s.link[1])}</a>.`
+          : '';
+        return `<h2>${escapeHtml(s.title)}</h2><p>${escapeHtml(s.text)}${link}</p>`;
+      }).join('');
     }
     const faq = FAQS[route];
     if (Array.isArray(faq) && faq.length) {

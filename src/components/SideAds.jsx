@@ -26,10 +26,10 @@ export default function SideAds() {
   return (
     <>
       <div style={rail("left")} aria-hidden="true">
-        <AdUnit slot="auto" format="vertical" style={{ width: 160 }} />
+        <AdUnit placement="sim-sidebar" format="vertical" style={{ width: 160 }} />
       </div>
       <div style={rail("right")} aria-hidden="true">
-        <AdUnit slot="auto" format="vertical" style={{ width: 160 }} />
+        <AdUnit placement="sim-sidebar" format="vertical" style={{ width: 160 }} />
       </div>
     </>
   );

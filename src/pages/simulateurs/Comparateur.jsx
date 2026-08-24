@@ -1321,7 +1321,7 @@ export default function Comparateur() {
           </div>
         )}
 
-        <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: '24px 0' }}><AdUnit placement="sim-inline" format="auto" /></div>
 
         {/* À propos / About */}
         <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, padding: '24px 20px', marginTop: 20 }}>
@@ -1340,7 +1340,7 @@ export default function Comparateur() {
 
         {locale === 'fr' && <FaqSection items={FAQS['/simulateurs/comparateur']} />}
 
-        <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: '24px 0' }}><AdUnit placement="sim-inline" format="auto" /></div>
       </div>
       <Footer />
     </div>

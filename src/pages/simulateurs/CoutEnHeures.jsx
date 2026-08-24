@@ -357,7 +357,7 @@ export default function CoutEnHeures() {
 
         {/* AdSense mid */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* À propos */}
@@ -383,7 +383,7 @@ export default function CoutEnHeures() {
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/cout-en-heures']} />

@@ -190,7 +190,7 @@ export default function FreelanceVsSalarie() {
           badge="Finances · Statut"
         />
 
-        <AdUnit slot="freelance-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="freelance-top" style={{ marginBottom: 24 }} />
 
         {/* Inputs */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 18, padding: "24px", marginBottom: 28 }}>
@@ -360,7 +360,7 @@ export default function FreelanceVsSalarie() {
           </table>
         </div>
 
-        <AdUnit slot="freelance-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="freelance-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/freelance-vs-salarie']} />

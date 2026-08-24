@@ -452,7 +452,7 @@ export default function Epargne() {
 
         {hasResult && <AffiliateCTA type="epargne" />}
 
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
 
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>{txt.aboutTitle}</h2>
@@ -473,7 +473,7 @@ export default function Epargne() {
 
         <EmbedSnippet path="/embed/epargne" height={520} label={txt.embedLabel} />
 
-        <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
+        <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/epargne']} />
 

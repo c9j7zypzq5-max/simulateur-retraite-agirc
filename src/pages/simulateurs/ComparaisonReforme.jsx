@@ -479,7 +479,7 @@ export default function ComparaisonReforme() {
 
         {/* Ad */}
         <div style={{ margin: "28px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         {/* À propos */}
@@ -522,7 +522,7 @@ export default function ComparaisonReforme() {
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
       </div>
 

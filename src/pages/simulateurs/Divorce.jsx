@@ -187,7 +187,7 @@ export default function Divorce() {
           ⚠️ <strong>Estimation indicative uniquement.</strong> La pension alimentaire et la prestation compensatoire sont fixées par un juge ou par convention homologuée. Ce simulateur utilise des barèmes moyens qui peuvent différer significativement de votre situation réelle. Consultez un avocat spécialisé en droit de la famille.
         </div>
 
-        <AdUnit slot="divorce-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="divorce-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -375,7 +375,7 @@ export default function Divorce() {
           </div>
         </div>
 
-        <AdUnit slot="divorce-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="divorce-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/divorce']} />

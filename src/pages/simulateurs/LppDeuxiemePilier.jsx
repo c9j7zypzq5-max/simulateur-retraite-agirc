@@ -151,7 +151,7 @@ export default function LppDeuxiemePilier() {
           badge="🇨🇭 Suisse · Retraite"
         />
 
-        <AdUnit slot="lpp-ch-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="lpp-ch-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -297,7 +297,7 @@ export default function LppDeuxiemePilier() {
 
         <ShareBar params={toParams(vals)} resultsRef={resultsRef} name="lpp-deuxieme-pilier" />
 
-        <AdUnit slot="lpp-ch-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="lpp-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/lpp-deuxieme-pilier']} />

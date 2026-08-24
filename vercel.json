@@ -2,33 +2,257 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "mesimulateurs.fr" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "mesimulateurs.fr"
+        }
+      ],
       "destination": "https://www.simfinly.com/:path*",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.mesimulateurs.fr" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mesimulateurs.fr"
+        }
+      ],
       "destination": "https://www.simfinly.com/:path*",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "simfinly.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "simfinly.com"
+        }
+      ],
       "destination": "https://www.simfinly.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/epargne",
+      "destination": "/en/simulators/savings",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/fire",
+      "destination": "/en/simulators/fire",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/budget",
+      "destination": "/en/simulators/budget",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/patrimoine",
+      "destination": "/en/simulators/wealth",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/cout-en-heures",
+      "destination": "/en/simulators/cost-in-hours",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/vie-en-semaines",
+      "destination": "/en/simulators/life-in-weeks",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/assurance-vie",
+      "destination": "/en/simulators/life-insurance",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/rendement-locatif",
+      "destination": "/en/simulators/rental-yield",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/emprunt-immobilier",
+      "destination": "/en/simulators/mortgage",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/credit-conso",
+      "destination": "/en/simulators/consumer-credit",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/comparateur",
+      "destination": "/en/simulators/comparator",
+      "permanent": true
+    },
+    {
+      "source": "/en/outils/qr-code",
+      "destination": "/en/tools/qr-code",
+      "permanent": true
+    },
+    {
+      "source": "/en/mentions-legales",
+      "destination": "/en/legal-notice",
+      "permanent": true
+    },
+    {
+      "source": "/en/politique-de-confidentialite",
+      "destination": "/en/privacy-policy",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/rente-capital",
+      "destination": "/en/simulators/annuity-vs-withdrawal",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/inflation",
+      "destination": "/en/simulators/inflation",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/cnav",
+      "destination": "/en/simulators/french-pension",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/retraite-luxembourg",
+      "destination": "/en/simulators/luxembourg-pension",
+      "permanent": true
+    },
+    {
+      "source": "/en/connexion",
+      "destination": "/en/login",
+      "permanent": true
+    },
+    {
+      "source": "/en/compte",
+      "destination": "/en/account",
+      "permanent": true
+    },
+    {
+      "source": "/en/merci",
+      "destination": "/en/thank-you",
+      "permanent": true
+    },
+    {
+      "source": "/en/merci-pro",
+      "destination": "/en/thank-you-pro",
+      "permanent": true
+    },
+    {
+      "source": "/en/comparatifs",
+      "destination": "/en/comparisons",
+      "permanent": true
+    },
+    {
+      "source": "/en/lexique",
+      "destination": "/en/glossary",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/donation",
+      "destination": "/en/simulators/donation",
+      "permanent": true
+    },
+    {
+      "source": "/en/simulateurs/pension-reversion",
+      "destination": "/en/simulators/pension-reversion",
+      "permanent": true
+    },
+    {
+      "source": "/en/lexique/:slug",
+      "destination": "/en/glossary/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/en/comparatifs/:slug",
+      "destination": "/en/comparisons/:slug",
       "permanent": true
     }
   ],
   "rewrites": [
-    { "source": "/sitemap.xml", "destination": "/api/sitemap" },
-    { "source": "/api/webhook", "destination": "/api/stripe?action=webhook" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/sitemap"
+    },
+    {
+      "source": "/api/webhook",
+      "destination": "/api/stripe?action=webhook"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ],
   "headers": [
-    { "source": "/sitemap.xml", "headers": [{ "key": "Content-Type", "value": "application/xml; charset=UTF-8" }] },
-    { "source": "/robots.txt", "headers": [{ "key": "Content-Type", "value": "text/plain; charset=UTF-8" }] },
-    { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }, { "key": "X-Frame-Options", "value": "SAMEORIGIN" }, { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google https://www.googletagmanager.com https://js.stripe.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://api.stripe.com https://vitals.vercel-insights.com wss://*.supabase.co https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.google.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google; frame-src 'self' https://js.stripe.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'" }, { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }, { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }, { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()" }] },
-    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
-    { "source": "/embed/(.*)", "headers": [{ "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://www.simfinly.com https://simfinly.com" }] }
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=UTF-8"
+        }
+      ]
+    },
+    {
+      "source": "/robots.txt",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/plain; charset=UTF-8"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://*.googlesyndication.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google https://www.googletagmanager.com https://js.stripe.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co https://api.stripe.com https://vitals.vercel-insights.com wss://*.supabase.co https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.google.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google; frame-src 'self' https://js.stripe.com https://www.youtube.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://fundingchoicesmessages.google.com https://adtrafficquality.google https://*.adtrafficquality.google; frame-ancestors 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/embed/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://www.simfinly.com https://simfinly.com"
+        }
+      ]
+    }
   ]
 }

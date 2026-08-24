@@ -130,7 +130,7 @@ export default function PensionLegaleBE() {
           badge="🇧🇪 Belgique · Retraite"
         />
 
-        <AdUnit slot="pension-be-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="pension-be-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -283,7 +283,7 @@ export default function PensionLegaleBE() {
           </div>
         </div>
 
-        <AdUnit slot="pension-be-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="pension-be-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/pension-legale']} />

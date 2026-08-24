@@ -249,7 +249,7 @@ export default function RenteCapital() {
           </div>
         )}
 
-        <AdUnit slot="auto" format="auto" />
+        <AdUnit placement="sim-inline" format="auto" />
 
         {/* FAQ */}
         <FaqSection items={FAQ} />

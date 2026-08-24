@@ -142,7 +142,7 @@ export default function PrevoyanceCH() {
           badge="🇨🇭 Suisse · Prévoyance"
         />
 
-        <AdUnit slot="prevoyance-ch-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="prevoyance-ch-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -310,7 +310,7 @@ export default function PrevoyanceCH() {
 
         <ShareBar params={toParams(vals)} resultsRef={resultsRef} name="prevoyance-ch" />
 
-        <AdUnit slot="prevoyance-ch-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="prevoyance-ch-mid" style={{ margin: "24px 0" }} />
 
         <AccordionSection title="Questions fréquentes" defaultOpen>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/prevoyance-ch']} />

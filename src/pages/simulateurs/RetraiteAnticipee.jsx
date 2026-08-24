@@ -266,7 +266,7 @@ export default function RetraiteAnticipee() {
           badge="Retraite · RACL 2026"
         />
 
-        <AdUnit slot="retraite-anticipee-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="retraite-anticipee-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
           {/* ─── Formulaire ─── */}
@@ -442,7 +442,7 @@ export default function RetraiteAnticipee() {
           </div>
         </div>
 
-        <AdUnit slot="retraite-anticipee-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="retraite-anticipee-mid" style={{ margin: "24px 0" }} />
 
         {/* À propos */}
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginBottom: 24 }}>
@@ -469,7 +469,7 @@ export default function RetraiteAnticipee() {
         </p>
 
         <div style={{ margin: "24px 0" }}>
-          <AdUnit slot="auto" format="auto" />
+          <AdUnit placement="sim-inline" format="auto" />
         </div>
 
         <ShareBar

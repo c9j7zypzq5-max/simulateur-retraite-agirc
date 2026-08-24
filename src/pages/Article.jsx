@@ -299,7 +299,7 @@ export default function Article() {
 
             {/* Ad */}
             <div style={{ margin: "32px 0" }}>
-              <AdUnit slot="auto" format="auto" />
+              <AdUnit placement="sim-inline" format="auto" />
             </div>
 
             {/* Simulateurs liés */}

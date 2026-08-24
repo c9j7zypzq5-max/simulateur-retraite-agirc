@@ -201,7 +201,7 @@ export default function DeficitFoncier() {
           badge="Immobilier · Fiscalité"
         />
 
-        <AdUnit slot="deficit-foncier-top" style={{ marginBottom: 24 }} />
+        <AdUnit placement="deficit-foncier-top" style={{ marginBottom: 24 }} />
 
         <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
 
@@ -405,7 +405,7 @@ export default function DeficitFoncier() {
           </div>
         </div>
 
-        <AdUnit slot="deficit-foncier-mid" style={{ margin: "24px 0" }} />
+        <AdUnit placement="deficit-foncier-mid" style={{ margin: "24px 0" }} />
 
         {/* FAQ */}
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/deficit-foncier']} />

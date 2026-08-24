@@ -17,7 +17,10 @@ export const AD_CLIENT = 'ca-pub-1297423880558120';
 //
 //   2. VITE_ADSENSE_SLOTS  → des slots distincts par emplacement (meilleur suivi
 //                            des perfs), au format CSV "emplacement:slot" :
-//                            home:1234567890,article:0987654321,sim-mid:...,sim-bottom:...
+//                            home:1234567890,article:0987654321,sim-inline:...,sim-sidebar:...
+//                            Les noms d'emplacement utilisés dans les pages sont
+//                            passés via la prop `placement` d'AdUnit : sim-inline,
+//                            sim-sidebar, puis <simulateur>-top / <simulateur>-mid.
 //
 // resolveAdSlot privilégie un slot explicite passé en prop, puis le slot de
 // l'emplacement (placement), puis le slot par défaut.
@@ -40,9 +43,15 @@ const NAMED_SLOTS = Object.fromEntries(
 const isValidSlot = (s) => typeof s === 'string' && /^\d{6,}$/.test(s);
 
 // Renvoie l'ID de slot à utiliser, ou null si aucun n'est valablement configuré.
+//
+// `slot` n'accepte qu'un identifiant numérique AdSense. Un `slot` non numérique
+// est un nom d'emplacement écrit à la mauvaise place : on le traite comme tel
+// plutôt que de le laisser retomber silencieusement sur le slot par défaut, ce
+// qui rendait VITE_ADSENSE_SLOTS inopérant.
 export function resolveAdSlot(slot, placement) {
   if (isValidSlot(slot)) return slot;
-  if (placement && isValidSlot(NAMED_SLOTS[placement])) return NAMED_SLOTS[placement];
+  const name = placement || (typeof slot === 'string' && slot !== 'auto' ? slot : '');
+  if (name && isValidSlot(NAMED_SLOTS[name])) return NAMED_SLOTS[name];
   if (isValidSlot(DEFAULT_SLOT)) return DEFAULT_SLOT;
   return null;
 }

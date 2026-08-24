@@ -209,7 +209,7 @@ export default function Inflation() {
           </div>
         )}
 
-        <AdUnit slot="auto" format="auto" />
+        <AdUnit placement="sim-inline" format="auto" />
 
         <FaqSection items={FAQ} />
       </main>
