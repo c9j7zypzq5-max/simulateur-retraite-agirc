@@ -16,6 +16,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { EDITORIAL_BY_ROUTE } from "../../data/editorial.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
@@ -214,6 +215,7 @@ function TableCIPAV({ revenuAnnuel }) {
   );
 }
 
+const EDITORIAL = EDITORIAL_BY_ROUTE['/simulateurs/cnavpl'];
 const FAQ = FAQS['/simulateurs/cnavpl'];
 
 export default function Cnavpl() {
@@ -705,16 +707,23 @@ export default function Cnavpl() {
           </div>
         </AccordionSection>
 
-        {/* À propos */}
+        {/* À propos — rendu depuis src/data/editorial.js : même texte que le bloc
+            SEO pré-rendu (api/_seo.js), pour éviter toute dérive entre ce que
+            Google indexe et ce que le visiteur lit. */}
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
-          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Un régime par classes pour les professions libérales</h3>
-            <p style={{ marginBottom: 16 }}>La CIPAV (Caisse Interprofessionnelle de Prévoyance et d'Assurance Vieillesse) gère la retraite complémentaire d'environ 700 000 professionnels libéraux : architectes, ingénieurs, guides-conférenciers, ostéopathes, psychologues, géomètres et de nombreuses autres professions réglementées. La cotisation est déterminée non par un taux appliqué au revenu, mais par l'appartenance à l'une des 6 classes définies par tranches de revenus par rapport au PASS.</p>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Retraite de base CNAVPL et complémentaire CIPAV</h3>
-            <p style={{ marginBottom: 16 }}>Les professions libérales affiliées à la CIPAV cotisent à deux régimes superposés. La retraite de base est gérée par la CNAVPL selon un mécanisme en points, similaire au régime général pour les règles de liquidation. La retraite complémentaire CIPAV fonctionne également par points, avec une valeur d'achat et une valeur de service révisées annuellement. Les points acquis s'accumulent tout au long de la carrière.</p>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les professions concernées et les autres caisses</h3>
-            <p>Toutes les professions libérales ne dépendent pas de la CIPAV. Les médecins relèvent de la CARMF, les notaires de la CPRN, les experts-comptables de la CAVEC. La CIPAV regroupe principalement les « autres professions libérales » non rattachées à une caisse spécifique. Depuis 2018, les auto-entrepreneurs exerçant une activité libérale relevant de la CIPAV y cotisent également, selon les mêmes classes de cotisation.</p>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de la retraite des professions libérales</h2>
+          <div style={{ display: "grid", gap: 22 }}>
+            {EDITORIAL.map((sec, i) => (
+              <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{sec.title}</h3>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>
+                  {sec.text}
+                  {sec.link && (
+                    <> <a href={sec.link[0]} style={{ color: "var(--gold)" }}>{sec.link[1]}</a>.</>
+                  )}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

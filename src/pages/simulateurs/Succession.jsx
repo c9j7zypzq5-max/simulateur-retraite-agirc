@@ -16,6 +16,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx"; // fmt utilisé dans le barème indicatif
 import SimIcon from "../../data/simIcons.jsx";
+import { EDITORIAL_BY_ROUTE } from "../../data/editorial.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
@@ -133,6 +134,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers, d: v.donations };
 }
 
+const EDITORIAL = EDITORIAL_BY_ROUTE['/simulateurs/succession'];
 const FAQ = FAQS['/simulateurs/succession'];
 
 export default function Succession() {
@@ -368,15 +370,24 @@ export default function Succession() {
           <FaqSection items={FAQ} />
         </AccordionSection>
 
-        {/* About */}
+        {/* À propos — rendu depuis src/data/editorial.js : même texte que le bloc
+            SEO pré-rendu (api/_seo.js), pour éviter toute dérive entre ce que
+            Google indexe et ce que le visiteur lit. */}
         <AccordionSection title="À propos des droits de succession" defaultOpen>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)" }}>
-            Les droits de succession sont calculés sur la valeur nette des biens transmis au décès, après abattements légaux qui varient selon le lien de parenté. Le barème est progressif : plus la part taxable est élevée, plus le taux marginal est fort — jusqu'à 45 % en ligne directe et 60 % pour des tiers non liés.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
-            L'abattement de 100 000 € par enfant (rechargeable tous les 15 ans) est le principal levier légal de réduction de la facture. Les donations effectuées de votre vivant consomment cet abattement mais permettent de transmettre en franchise de droits si elles respectent le délai de 15 ans avant le décès. Les dons jusqu'à 31 865 € (enfant majeur) ou 5 310 € (petit-enfant) peuvent même être totalement exonérés via le don familial.
-          </p>
-          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 12 }}>
+          <div style={{ display: "grid", gap: 22 }}>
+            {EDITORIAL.map((sec, i) => (
+              <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{sec.title}</h3>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>
+                  {sec.text}
+                  {sec.link && (
+                    <> <a href={sec.link[0]} style={{ color: "var(--gold)" }}>{sec.link[1]}</a>.</>
+                  )}
+                </p>
+              </div>
+            ))}
+          </div>
+          <p style={{ fontSize: 14, lineHeight: 1.8, color: "var(--text-secondary)", marginTop: 20 }}>
             <strong>Ce simulateur est indicatif.</strong> Pour votre situation réelle, consultez un notaire ou un conseiller en gestion de patrimoine.
           </p>
         </AccordionSection>

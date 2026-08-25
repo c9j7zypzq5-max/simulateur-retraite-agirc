@@ -21,6 +21,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
+import { EDITORIAL_BY_ROUTE } from "../../data/editorial.js";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
@@ -89,6 +90,7 @@ function calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, taux
   };
 }
 
+const EDITORIAL = EDITORIAL_BY_ROUTE['/simulateurs/ircantec'];
 const FAQ = FAQS['/simulateurs/ircantec'];
 
 export default function Ircantec() {
@@ -334,18 +336,23 @@ export default function Ircantec() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit placement="sim-inline" format="auto" /></div>
 
-        {/* À propos */}
+        {/* À propos — rendu depuis src/data/editorial.js : même texte que le bloc
+            SEO pré-rendu (api/_seo.js), pour éviter toute dérive entre ce que
+            Google indexe et ce que le visiteur lit. */}
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "24px 20px", marginTop: 20 }}>
-          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de ce simulateur</h2>
-          <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.8 }}>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 0, marginBottom: 10 }}>Le régime des agents non titulaires de l'État</h3>
-            <p style={{ marginBottom: 16 }}>L'IRCANTEC (Institution de Retraite Complémentaire des Agents Non Titulaires de l'État et des Collectivités) est le régime de retraite complémentaire obligatoire des agents contractuels de la fonction publique. Il couvre les contractuels de l'État, des collectivités territoriales, des hôpitaux publics et de nombreux organismes parapublics, soit environ 4 millions de cotisants actifs.</p>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Un système de points, comme l'Agirc-Arrco</h3>
-            <p style={{ marginBottom: 16 }}>L'IRCANTEC est un régime par points. Chaque année, vos cotisations sont converties en points : l'assiette est multipliée par le taux de cotisation applicable, puis divisée par la valeur d'achat du point (salaire de référence). Au 1er janvier 2026, la valeur d'achat du point IRCANTEC est de 5,787 € et la valeur de service de 0,56053 €. À la liquidation, vos points accumulés sont multipliés par la valeur de service pour obtenir votre pension annuelle complémentaire.</p>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>Les conditions de liquidation</h3>
-            <p style={{ marginBottom: 16 }}>La pension IRCANTEC suit les mêmes règles d'âge que le régime général (64 ans pour les générations 1965+). Aucun taux plein n'est requis pour liquider : la pension est calculée proportionnellement aux points acquis, quel que soit l'âge ou la durée de cotisation. Les droits IRCANTEC s'ajoutent à la pension de base du régime général pour les agents qui y ont également cotisé.</p>
-            <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--text)", marginTop: 20, marginBottom: 10 }}>La réversion pour le conjoint survivant</h3>
-            <p>En cas de décès du cotisant, son conjoint survivant peut percevoir une <a href="/simulateurs/pension-reversion" style={{ color: "var(--gold)" }}>pension de réversion</a> sur ses droits IRCANTEC, cumulée le cas échéant avec la réversion de la pension de base et de l'Agirc-Arrco pour les agents ayant une carrière mixte.</p>
+          <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>À propos de la retraite Ircantec</h2>
+          <div style={{ display: "grid", gap: 22 }}>
+            {EDITORIAL.map((sec, i) => (
+              <div key={i} style={{ paddingLeft: 20, borderLeft: "2px solid var(--border-gold)" }}>
+                <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: "var(--gold)", marginBottom: 10 }}>{sec.title}</h3>
+                <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.85 }}>
+                  {sec.text}
+                  {sec.link && (
+                    <> <a href={sec.link[0]} style={{ color: "var(--gold)" }}>{sec.link[1]}</a>.</>
+                  )}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
 

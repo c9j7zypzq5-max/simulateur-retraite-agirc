@@ -77,16 +77,40 @@ export const SEO_CONTENT = {
     intro: "Artisan, commerçant ou profession libérale : estimez votre retraite de base (SSI) et complémentaire selon vos revenus professionnels, vos années cotisées et votre âge de départ. Une projection claire de votre future pension de travailleur non salarié.",
   },
   '/simulateurs/ircantec': {
-    h1: "Simulateur retraite IRCANTEC — contractuels publics",
-    intro: "Agents non titulaires de la fonction publique et élus locaux : estimez votre retraite complémentaire IRCANTEC. Le simulateur convertit vos cotisations en points, applique la valeur de service du point et projette votre pension complémentaire annuelle et mensuelle.",
+    h1: "Simulateur retraite Ircantec 2026 — points, valeur du point et pension",
+    description: "Calculez votre retraite Ircantec 2026 : points en tranche A et B, salaire de référence 5,787 €, valeur de service 0,56053 €. Gratuit, sans inscription.",
+    intro: "Agents non titulaires de la fonction publique, vacataires, praticiens hospitaliers et élus locaux : estimez votre retraite complémentaire Ircantec. Le simulateur découpe votre rémunération en tranche A et tranche B par rapport au plafond de la Sécurité sociale, applique les taux théoriques de 5,60 % et 15,60 %, puis convertit le résultat en points via le salaire de référence 2026 (5,787 €). Le total des points est multiplié par la valeur de service du point (0,56053 € au 1er janvier 2026) pour projeter votre pension complémentaire annuelle, mensuelle, brute et nette.",
+    links: [
+      ['/simulateurs/cnav', 'Retraite de base CNAV à ajouter à votre Ircantec'],
+      ['/simulateurs/fonction-publique', 'Pension civile si vous avez été titularisé'],
+      ['/simulateurs/synthese-retraite', 'Synthèse retraite tous régimes'],
+      ['/simulateurs/pension-reversion', 'Réversion Ircantec du conjoint survivant (50 %)'],
+      ['/lexique/ircantec', 'Ircantec : définition et fonctionnement'],
+    ],
   },
   '/simulateurs/retraite-progressive': {
-    h1: "Simulateur de retraite progressive",
-    intro: "Vous envisagez de réduire votre activité avant la retraite complète ? Estimez le montant de votre pension partielle pendant la retraite progressive et l'impact de ce temps partiel sur votre future pension définitive, tous régimes confondus.",
+    h1: "Simulateur retraite progressive 2026 — calcul de la pension partielle",
+    description: "Calculez votre revenu en retraite progressive 2026 : fraction de pension selon votre temps partiel, salaire conservé et effet sur la pension définitive. Gratuit.",
+    intro: "Vous envisagez de réduire votre activité avant la retraite complète ? Estimez le montant de votre pension partielle pendant la retraite progressive et son cumul avec le salaire de votre temps partiel. Le dispositif est ouvert dès 62 ans pour les générations 1965 et suivantes, sous réserve de 150 trimestres validés et d'une activité comprise entre 40 % et 80 % d'un temps complet. La fraction de pension versée est le complément de votre quotité travaillée : à 60 % d'activité, vous percevez 40 % de vos pensions de base et complémentaire. Le simulateur chiffre aussi l'effet des trimestres et points acquis pendant la période sur votre pension définitive, salariés du privé comme agents publics.",
+    links: [
+      ['/simulateurs/cnav', 'Retraite de base CNAV servant au calcul de la fraction'],
+      ['/simulateurs/agirc-arrco', 'Part complémentaire Agirc-Arrco'],
+      ['/simulateurs/fonction-publique', 'Retraite progressive dans la fonction publique'],
+      ['/comparatifs/cumul-emploi-retraite-vs-retraite-progressive', 'Retraite progressive ou cumul emploi-retraite ?'],
+      ['/simulateurs/retraite-anticipee', 'Départ anticipé et carrières longues'],
+    ],
   },
   '/simulateurs/cnavpl': {
-    h1: "Simulateur retraite des professions libérales (CIPAV)",
-    intro: "Estimez votre retraite de base et votre complémentaire CIPAV si vous exercez une profession libérale non réglementée. Le calcul tient compte de vos revenus, de vos années de cotisation et de votre âge de départ pour projeter votre pension.",
+    h1: "Simulateur retraite CIPAV 2026 — professions libérales, base et complémentaire",
+    description: "Calculez votre retraite CIPAV 2026 : points du régime de base CNAVPL, classe de cotisation complémentaire, décote et surcote. Gratuit, sans inscription.",
+    intro: "Architecte, géomètre-expert, ostéopathe, psychologue, moniteur de ski ou guide-conférencier : estimez votre retraite de base CNAVPL et votre complémentaire CIPAV. Le simulateur convertit vos revenus professionnels en points de base — dans la limite des plafonds annuels propres à chaque tranche — puis applique la valeur de service 2026 du point de base (0,6599 €). Il ajoute la complémentaire CIPAV, calculée par classes de cotisation avec un coût d'achat du point de 47,40 € et une valeur de service de 2,89 €, et intègre la décote ou la surcote selon votre âge de départ et vos trimestres validés.",
+    links: [
+      ['/simulateurs/independants', 'Retraite des indépendants (SSI) si vous avez quitté la CIPAV'],
+      ['/simulateurs/synthese-retraite', 'Synthèse retraite tous régimes'],
+      ['/simulateurs/per', 'PER : compenser une retraite de base plafonnée'],
+      ['/retraite/architecte', 'La retraite des architectes'],
+      ['/simulateurs/pension-reversion', 'Réversion du conjoint survivant'],
+    ],
   },
   '/simulateurs/msa': {
     h1: "Simulateur retraite agricole MSA",
@@ -412,6 +436,14 @@ export const SEO_CONTENT = {
   },
   '/simulateurs/succession': {
     h1: "Simulateur droits de succession 2026 — barème officiel par lien de parenté",
+    description: "Calculez les droits de succession 2026 : abattement de 100 000 € par enfant, barème progressif de 5 à 45 % en ligne directe, conjoint exonéré. Gratuit.",
+    links: [
+      ['/simulateurs/donation', 'Anticiper : simulateur de droits de donation'],
+      ['/simulateurs/assurance-vie', 'Assurance-vie : transmission hors succession'],
+      ['/lexique/droits-succession', 'Droits de succession : définition'],
+      ['/lexique/clause-beneficiaire', 'Clause bénéficiaire : la rédiger correctement'],
+      ['/simulateurs/frais-notaire', 'Frais de notaire sur un bien hérité'],
+    ],
     intro: "Calculez les droits de succession français selon le lien de parenté (enfants, frères/sœurs, neveux, tiers) et l'actif net successoral. Le simulateur applique les abattements légaux 2026 et les taux progressifs du barème officiel pour une estimation instantanée des droits dus.",
   },
   '/simulateurs/pension-legale': {
