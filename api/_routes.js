@@ -10,6 +10,7 @@ import { GLOSSARY, GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES, GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
+import { METIERS_BY_SLUG } from '../src/data/metiers.js';
 import { BAREMES_DATES } from '../src/data/baremesDates.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, FAQS_EN } from './_seo.js';
 import { EN_PATH_MAP } from '../src/i18n/paths.js';
@@ -523,6 +524,23 @@ export function structuredData(route, extra = {}, locale = 'fr') {
   const metaEn = isEn ? ROUTE_META_EN[route] : null;
   const name = metaEn?.title || meta.title;
   const out = [breadcrumb([[isEn ? 'Home' : 'Accueil', `${BASE}/`], [name, url]])];
+
+  // Fiches métier : leur FAQ vit dans METIERS_BY_SLUG, pas dans FAQS. Sans ce
+  // bloc, ces pages n'émettaient qu'un fil d'Ariane alors qu'elles portent
+  // toutes une FAQ rédigée.
+  if (route.startsWith('/retraite/')) {
+    const m = METIERS_BY_SLUG[route.slice('/retraite/'.length)];
+    if (m && Array.isArray(m.faq) && m.faq.length > 0) {
+      out.push({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        mainEntity: m.faq.map(({ q, a }) => ({
+          '@type': 'Question', name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      });
+    }
+  }
+
   if (route.startsWith('/simulateurs/')) {
     const seoIntro = isEn
       ? (metaEn?.description || SEO_CONTENT_EN[route]?.description || SEO_CONTENT_EN[route]?.intro)

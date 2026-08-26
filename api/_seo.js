@@ -40,6 +40,21 @@ export const SEO_CONTENT = {
     h1: "Méthodologie de calcul des simulateurs",
     intro: "Comment simfinly.com calcule ses estimations : formules utilisées, barèmes officiels 2026 (retraite, impôt, prélèvements sociaux), sources de données et limites de chaque simulateur. Tous les calculs s'exécutent dans votre navigateur, sans transmission de vos données.",
   },
+  '/a-propos': {
+    h1: "À propos de simfinly.com",
+    description: "Qui édite simfinly.com, comment les simulateurs sont conçus, d'où viennent les barèmes et pourquoi les calculs restent gratuits et sans inscription.",
+    intro: "simfinly.com réunit plus de 35 simulateurs financiers gratuits couvrant la retraite, l'immobilier, les impôts et l'épargne. Les calculs s'exécutent intégralement dans votre navigateur : aucune donnée saisie n'est transmise ni conservée. Les barèmes sont mis à jour chaque année à partir des sources officielles, et la méthodologie de chaque simulateur est publiée.",
+  },
+  '/mentions-legales': {
+    h1: "Mentions légales",
+    description: "Éditeur, hébergeur, propriété intellectuelle et conditions d'utilisation du site simfinly.com.",
+    intro: "Informations légales relatives au site simfinly.com : identité de l'éditeur, coordonnées de contact, hébergeur, propriété intellectuelle et conditions d'utilisation des simulateurs mis à disposition.",
+  },
+  '/politique-de-confidentialite': {
+    h1: "Politique de confidentialité",
+    description: "Données collectées, cookies, mesure d'audience, publicité et exercice de vos droits RGPD sur simfinly.com.",
+    intro: "Comment simfinly.com traite vos données : les calculs des simulateurs s'exécutent dans votre navigateur et les valeurs que vous saisissez ne sont ni transmises ni conservées. Cette page détaille les cookies utilisés, la mesure d'audience, la publicité et les modalités d'exercice de vos droits au titre du RGPD.",
+  },
   '/contact': {
     h1: "Contacter simfinly.com",
     intro: "Une question sur un simulateur, une erreur à signaler, une demande de partenariat ou de presse ? Écrivez-nous à contact@simfinly.com — nous répondons généralement sous 48 h ouvrées.",

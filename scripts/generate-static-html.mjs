@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, ROUTE_META_QC, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, QC_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
+import { METIERS_BY_SLUG } from '../src/data/metiers.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
 import { COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { STATIC_BY_SLUG } from '../api/_static-articles.js';
@@ -77,7 +78,16 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   // dans Google — indépendamment de `intro`, qui alimente le texte pré-rendu et
   // peut être bien plus long que les ~155 caractères repris dans un snippet.
   const c = SEO_CONTENT[route];
-  return { title: meta?.title || null, description: c?.description || c?.intro || null };
+  // Fiches métier : à défaut d'entrée SEO_CONTENT, on retombe sur le `metaDesc`
+  // déjà porté par la fiche elle-même. Sans ce filet, une fiche oubliée dans
+  // SEO_CONTENT hérite silencieusement de la description générique du site —
+  // ce qui était le cas de /retraite/chauffeur-vtc et /retraite/kinesitherapeute.
+  let fallback = null;
+  if (route.startsWith('/retraite/')) {
+    const m = METIERS_BY_SLUG[route.slice('/retraite/'.length)];
+    fallback = m?.metaDesc || m?.intro || null;
+  }
+  return { title: meta?.title || null, description: c?.description || c?.intro || fallback || null };
 }
 
 // og:image dynamique (brandé) pour les pages de contenu, via /api/og.
