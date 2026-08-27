@@ -1,4 +1,4 @@
-import { TERM_MATCHERS } from "../data/glossaire.js";
+import { TERM_MATCHERS } from "../data/glossaireIndex.js";
 
 // Auto-liaison des termes du lexique dans le HTML d'un article de blog.
 // Règles :

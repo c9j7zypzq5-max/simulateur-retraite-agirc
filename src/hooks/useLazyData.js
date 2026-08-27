@@ -25,6 +25,11 @@ function makeLazyHook(importer) {
   };
 }
 
-export const useGlossaire = makeLazyHook(() => import("../data/glossaire.js"));
-export const useGuides    = makeLazyHook(() => import("../data/guides.js"));
-export const useMetiers   = makeLazyHook(() => import("../data/metiers.js"));
+// Index LÉGERS (générés par scripts/generate-data-indexes.mjs) : ce sont eux que
+// chargent les usages présents en dehors des pages dédiées — auto-liaison des
+// termes, infobulles, blocs de liens du Footer, liste des métiers de l'accueil.
+// Les pages /lexique, /guides et /retraite/<métier> importent directement leur
+// jeu de données complet, elles ont besoin du contenu éditorial.
+export const useGlossaire = makeLazyHook(() => import("../data/glossaireIndex.js"));
+export const useGuides    = makeLazyHook(() => import("../data/guidesIndex.js"));
+export const useMetiers   = makeLazyHook(() => import("../data/metiersIndex.js"));

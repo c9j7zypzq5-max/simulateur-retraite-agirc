@@ -454,7 +454,7 @@ export default function Home() {
   // le montage (section sous la ligne de flottaison).
   const glossaire = useGlossaire(!!query.trim());
   const metiersMod = useMetiers();
-  const topMetiers = metiersMod ? metiersMod.METIERS_LIST.slice(0, 12) : [];
+  const topMetiers = metiersMod ? metiersMod.METIERS_INDEX.slice(0, 12) : [];
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);
   const [articles, setArticles] = useState([]);

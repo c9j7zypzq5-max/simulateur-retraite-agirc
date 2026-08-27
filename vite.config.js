@@ -32,7 +32,22 @@ export default defineConfig({
           if (id.includes('lucide-react')) return 'icons';
           if (id.includes('recharts') || id.includes('d3-')) return 'charts';
           if (id.includes('stripe')) return 'stripe';
-          if (id.includes('src/data/glossaire') || id.includes('src/data/guides') || id.includes('src/data/comparatifs')) return 'content-data';
+          // Un chunk PAR jeu de données, jamais un chunk « contenu » fourre-tout :
+          // AutoLinkText (présent via ui.jsx sur toutes les pages) ne charge que
+          // le glossaire, mais un chunk commun lui faisait aussi télécharger
+          // guides + comparatifs — ~160 Ko inutiles sur chaque page simulateur.
+          // glossaireIndex AVANT glossaire : la seconde règle capturerait sinon
+          // l'index (« src/data/glossaire » est un préfixe de « …glossaireIndex »),
+          // les fusionnant dans un même chunk — ce qui annule tout le bénéfice.
+          // Index légers d'abord : « src/data/glossaire » est un préfixe de
+          // « …glossaireIndex », la règle large capturerait sinon l'index et le
+          // fusionnerait avec sa source, annulant tout le bénéfice.
+          if (id.includes('src/data/glossaireIndex')) return 'glossaire-index';
+          if (id.includes('src/data/guidesIndex')) return 'guides-index';
+          if (id.includes('src/data/metiersIndex')) return 'metiers-index';
+          if (id.includes('src/data/glossaire')) return 'glossaire-data';
+          if (id.includes('src/data/guides')) return 'guides-data';
+          if (id.includes('src/data/comparatifs')) return 'comparatifs-data';
           if (id.includes('src/data/metiers') || id.includes('src/data/situations')) return 'metiers-data';
         },
       },

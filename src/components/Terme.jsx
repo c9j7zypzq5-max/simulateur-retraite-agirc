@@ -12,7 +12,7 @@ export default function Terme({ slug, children }) {
   const [open, setOpen] = useState(false);
   const tipId = useId();
   const glossaire = useGlossaire();
-  const entry = glossaire?.GLOSSARY_BY_SLUG[slug];
+  const entry = glossaire?.GLOSSARY_INDEX_BY_SLUG[slug];
 
   // Glossaire pas encore chargé ou slug inconnu : rendu inerte pour ne jamais
   // casser une page simulateur.

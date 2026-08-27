@@ -4,6 +4,7 @@ import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
 import { useGlossaire, useGuides } from "../hooks/useLazyData.js";
+import { Clock, Home as HomeIcon, TrendingUp, Flame, Receipt, BarChart2, PiggyBank, Building2, Briefcase, CreditCard } from "lucide-react";
 import { ROUTE_META } from "../../api/_meta.js";
 import { sourcesForRoute } from "../data/sourcesOfficielles.js";
 import { useTranslation } from "../i18n/index.js";
@@ -90,7 +91,7 @@ function RelatedTerms() {
   const onSim = pathname.startsWith("/simulateurs/");
   const glossaire = useGlossaire(onSim); // données chargées en différé, hors bundle initial
   if (!onSim || !glossaire) return null;
-  const terms = glossaire.GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
+  const terms = glossaire.GLOSSARY_INDEX.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
   if (terms.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={tr("sections.usefulDefinitions")}>
@@ -128,13 +129,23 @@ function RelatedTerms() {
 }
 
 // Guides thématiques incluant la page simulateur courante.
+// Les guides portent un nom d'icône lucide (champ `icon`), pas un emoji : ce
+// composant reprend la table de la page /guides pour un rendu cohérent.
+const GUIDE_ICONS = { Clock, Home: HomeIcon, TrendingUp, Flame, Receipt, BarChart2, PiggyBank, Building2, Briefcase, CreditCard };
+
+function GuideIcon({ name }) {
+  const Icon = GUIDE_ICONS[name];
+  if (!Icon) return null;
+  return <Icon size={20} strokeWidth={1.5} color="var(--primary)" style={{ flexShrink: 0 }} aria-hidden="true" />;
+}
+
 function RelatedGuides() {
   const { pathname } = useLocation();
   const { t } = useTranslation();
   const onSim = pathname.startsWith("/simulateurs/");
   const guidesMod = useGuides(onSim); // données chargées en différé, hors bundle initial
   if (!onSim || !guidesMod) return null;
-  const guides = guidesMod.GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
+  const guides = guidesMod.GUIDES_INDEX.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
   if (guides.length === 0) return null;
   return (
     <section style={{ maxWidth: 1100, margin: "0 auto 36px", padding: "0 24px" }} aria-label={t("sections.relatedGuides")}>
@@ -153,7 +164,7 @@ function RelatedGuides() {
             onMouseEnter={e => e.currentTarget.style.borderColor = "var(--primary)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
-            <span style={{ fontSize: "1.4rem", flexShrink: 0 }} aria-hidden="true">{g.emoji}</span>
+            <GuideIcon name={g.icon} />
             <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}>{g.title}</span>
           </Link>
         ))}

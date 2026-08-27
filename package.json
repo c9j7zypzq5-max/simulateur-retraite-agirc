@@ -5,14 +5,15 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/generate-static-html.mjs",
+    "build": "node scripts/generate-data-indexes.mjs && vite build && node scripts/generate-static-html.mjs",
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "og": "node scripts/generate-og-png.mjs",
     "check:baremes": "node scripts/check-baremes-freshness.mjs",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "gen:indexes": "node scripts/generate-data-indexes.mjs"
   },
   "dependencies": {
     "@sentry/react": "^10.59.0",

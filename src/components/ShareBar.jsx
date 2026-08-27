@@ -62,6 +62,12 @@ const SaveIcon = () => (
   </svg>
 );
 
+// Fond des captures (PDF, image partagée). Doit refléter --bg de styles.css :
+// html2canvas ne résout pas les variables CSS du <html>, la couleur doit donc
+// être donnée en dur — d'où le risque de dérive avec la palette du site.
+const EXPORT_BG_LIGHT = "#F5F6F8";
+const EXPORT_BG_DARK  = "#0B1220";
+
 export default function ShareBar({ params, resultsRef, name, showDownload = true, report = null, chartRef = null }) {
   const { isPro, user, isConfigured, reportCount, incrementReportCount } = useAuth();
   const { saveEntry, saveEntryWithSync } = useSimHistory();
@@ -142,7 +148,7 @@ export default function ShareBar({ params, resultsRef, name, showDownload = true
     try {
       const html2canvas = (await import("html2canvas")).default;
       return await html2canvas(target, {
-        backgroundColor: isDark ? "#060e1c" : "#faf6ef",
+        backgroundColor: isDark ? EXPORT_BG_DARK : EXPORT_BG_LIGHT,
         scale: 2, useCORS: true, logging: false, onclone: cleanClone,
         windowWidth: target.scrollWidth, windowHeight: target.scrollHeight,
       });
