@@ -4,8 +4,10 @@ import { STATIC_ARTICLES } from './_static-articles.js';
 
 const SITE = BASE;
 
+// Flux du blog FR (page /blog, RSS) : les articles anglais, servis sous
+// /en/blog/:slug, en sont exclus.
 function staticSummaries() {
-  return STATIC_ARTICLES.map(({ slug, title, intro, category, readTime, publishedAt }) => ({
+  return STATIC_ARTICLES.filter(a => a.lang !== 'en').map(({ slug, title, intro, category, readTime, publishedAt }) => ({
     slug, title, intro, category, readTime, publishedAt,
   })).sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
 }

@@ -96,38 +96,56 @@ const PROSE_CSS = `
   }
 `;
 
+// Libellés de l'interface d'article (les articles anglais sont servis sous /en/blog).
+const TXT_ARTICLE = {
+  fr: { home: "Accueil", homePath: "/", readTime: "min de lecture", notFoundTitle: "Article introuvable", notFoundDesc: "Cet article n'existe pas ou a été supprimé.", back: "← Retour au blog", errorTitle: "Impossible de charger l'article", errorDesc: "Vérifiez votre connexion puis réessayez.", retry: "Réessayer" },
+  en: { home: "Home", homePath: "/en", readTime: "min read", notFoundTitle: "Article not found", notFoundDesc: "This article does not exist or has been removed.", back: "← Back to home", errorTitle: "The article could not be loaded", errorDesc: "Check your connection and try again.", retry: "Try again" },
+};
+
 export default function Article() {
   const [theme, setTheme] = useTheme();
-  const { locale } = useLocale();
+  const locale = useLocale();
   const { slug } = useParams();
   const navigate = useNavigate();
 
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  // Échec réseau / API (≠ article inexistant) : on propose de réessayer plutôt
+  // que d'afficher « introuvable » — et surtout on n'écrase pas le titre de la
+  // page pré-rendue avec « undefined | simfinly.com ».
+  const [loadError, setLoadError] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     if (!slug) return;
+    let cancelled = false;
     setLoading(true);
     setNotFound(false);
+    setLoadError(false);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10_000);
     fetch(`/api/article?slug=${encodeURIComponent(slug)}`, { signal: controller.signal })
       .then(r => {
         clearTimeout(timer);
-        if (r.status === 404) { setNotFound(true); setLoading(false); return null; }
+        if (r.status === 404) { if (!cancelled) { setNotFound(true); setLoading(false); } return null; }
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();
       })
       .then(data => {
-        if (!data) return;
+        if (!data || cancelled) return;
+        if (!data.title) throw new Error("Article sans titre");
         setArticle(data);
         setLoading(false);
-        // SEO
+        // SEO — les articles rédigés en anglais vivent sous /en/blog/:slug.
+        const isEnArticle = data.lang === "en";
+        const pageUrl = `https://www.simfinly.com${isEnArticle ? "/en" : ""}/blog/${slug}`;
+        document.documentElement.lang = isEnArticle ? "en" : "fr";
         document.title = `${data.title} | simfinly.com`;
         document.querySelector('meta[name="description"]')?.setAttribute("content", data.intro || "");
         let link = document.querySelector('link[rel="canonical"]');
         if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-        link.href = `https://www.simfinly.com/blog/${slug}`;
+        link.href = pageUrl;
         // Article JSON-LD for Google Discover
         document.getElementById('article-jsonld')?.remove();
         document.getElementById('article-faqjsonld')?.remove();
@@ -141,7 +159,8 @@ export default function Article() {
           author: { '@type': 'Organization', name: 'Simfinly', url: 'https://www.simfinly.com' },
           publisher: { '@type': 'Organization', name: 'Simfinly', url: 'https://www.simfinly.com', logo: { '@type': 'ImageObject', url: 'https://www.simfinly.com/og-image.webp' } },
           image: data.image || `https://www.simfinly.com/og-image.webp`,
-          mainEntityOfPage: { '@type': 'WebPage', '@id': `https://www.simfinly.com/blog/${slug}` },
+          mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
+          ...(isEnArticle ? { inLanguage: 'en' } : {}),
         };
         const s = document.createElement('script');
         s.id = 'article-jsonld';
@@ -166,9 +185,12 @@ export default function Article() {
           document.head.appendChild(sf);
         }
       })
-      .catch(() => { clearTimeout(timer); setNotFound(true); setLoading(false); });
-    return () => { clearTimeout(timer); controller.abort(); document.getElementById('article-jsonld')?.remove(); document.getElementById('article-faqjsonld')?.remove(); };
-  }, [slug]);
+      .catch(() => { clearTimeout(timer); if (!cancelled) { setLoadError(true); setLoading(false); } });
+    return () => { cancelled = true; clearTimeout(timer); controller.abort(); document.getElementById('article-jsonld')?.remove(); document.getElementById('article-faqjsonld')?.remove(); };
+  }, [slug, reloadKey]);
+
+  const isEn = article ? article.lang === "en" : locale === "en";
+  const t = isEn ? TXT_ARTICLE.en : TXT_ARTICLE.fr;
 
   const categoryStyle = article ? (CATEGORY_COLORS[article.category] || CATEGORY_COLORS["Budget"]) : null;
   const relatedRecs = article ? (CATEGORY_RECOMMENDATIONS[article.category] || null) : null;
@@ -195,7 +217,7 @@ export default function Article() {
   };
 
   const date = article?.publishedAt
-    ? new Intl.DateTimeFormat(locale === "en" ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
+    ? new Intl.DateTimeFormat(isEn ? "en-GB" : "fr-FR", { day: "numeric", month: "long", year: "numeric" }).format(new Date(article.publishedAt))
     : "";
 
   return (
@@ -206,12 +228,11 @@ export default function Article() {
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px 80px" }}>
 
         {/* Fil d'Ariane */}
-        <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
-          <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>
-          {" · "}
-          <Link to="/blog" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Blog</Link>
+        <nav aria-label={isEn ? "Breadcrumb" : "Fil d'Ariane"} style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
+          <Link to={t.homePath} style={{ color: "var(--text-secondary)", textDecoration: "none" }}>{t.home}</Link>
+          {!isEn && <>{" · "}<Link to="/blog" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Blog</Link></>}
           {article && <>{" · "}<span style={{ color: "var(--text)" }}>{article.category}</span></>}
-        </div>
+        </nav>
 
         {/* Chargement */}
         {loading && (
@@ -229,13 +250,25 @@ export default function Article() {
         {!loading && notFound && (
           <div style={{ textAlign: "center", padding: "60px 20px" }}>
             <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
-            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>Article introuvable</h1>
-            <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>Cet article n'existe pas ou a été supprimé.</p>
-            <Link to="/blog" style={{
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, marginBottom: 12 }}>{t.notFoundTitle}</h1>
+            <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>{t.notFoundDesc}</p>
+            <Link to={isEn ? t.homePath : "/blog"} style={{
               display: "inline-block", padding: "10px 24px", borderRadius: 10,
               background: "rgba(184,147,74,0.15)", color: "var(--gold)",
               border: "1px solid var(--border-gold)", textDecoration: "none", fontSize: 14,
-            }}>← Retour au blog</Link>
+            }}>{t.back}</Link>
+          </div>
+        )}
+
+        {/* Erreur de chargement (réseau / API) */}
+        {!loading && loadError && (
+          <div role="alert" style={{ textAlign: "center", padding: "60px 20px" }}>
+            <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, marginBottom: 12 }}>{t.errorTitle}</h1>
+            <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>{t.errorDesc}</p>
+            <button type="button" onClick={() => setReloadKey(k => k + 1)} style={{
+              padding: "10px 24px", borderRadius: 10, cursor: "pointer",
+              background: "var(--primary)", color: "#fff", border: "none", fontSize: 14, fontWeight: 600,
+            }}>{t.retry}</button>
           </div>
         )}
 
@@ -253,7 +286,7 @@ export default function Article() {
                   {article.category}
                 </span>
                 <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>{date}</span>
-                <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>· {article.readTime} min de lecture</span>
+                <span style={{ fontSize: 12, color: "var(--text-secondary)" }}>· {article.readTime} {t.readTime}</span>
               </div>
 
               <h1 style={{

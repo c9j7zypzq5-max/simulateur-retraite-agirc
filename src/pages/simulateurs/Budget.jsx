@@ -410,7 +410,7 @@ export default function Budget() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
-        "url": locale === 'en' ? "https://www.simfinly.com/en/simulateurs/budget" : "https://www.simfinly.com/simulateurs/budget",
+        "url": locale === 'en' ? "https://www.simfinly.com/en/simulators/budget" : "https://www.simfinly.com/simulateurs/budget",
         "description": txt.jsonLdDesc,
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

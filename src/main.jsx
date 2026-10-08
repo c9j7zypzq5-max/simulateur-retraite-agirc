@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Analytics } from '@vercel/analytics/react'
 import './styles.css'
 import App from './App.jsx'
+import { reloadOnceForChunkError } from './utils/chunkError.js'
 
 // Sentry : chargé en chunk séparé (import dynamique) pour ne pas alourdir le
 // bundle critique téléchargé sur chaque page — actif uniquement si
@@ -30,6 +31,12 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     });
   });
 }
+
+// Échec de préchargement d'un chunk (onglet ouvert avant un déploiement) :
+// recharger pour récupérer le nouvel index.html (recommandation Vite).
+window.addEventListener('vite:preloadError', (event) => {
+  if (reloadOnceForChunkError()) event.preventDefault();
+});
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

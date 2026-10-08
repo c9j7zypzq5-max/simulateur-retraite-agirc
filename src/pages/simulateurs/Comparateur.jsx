@@ -100,7 +100,7 @@ const TXT = {
   en: {
     docTitle: "Asset Comparison Tool — ETFs, Stocks, Crypto | Simfinly",
     metaDesc: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period from real data. Total return, CAGR, regular contributions and base-100 index.",
-    canonical: "https://www.simfinly.com/en/simulateurs/comparateur",
+    canonical: "https://www.simfinly.com/en/simulators/comparator",
     jsonLdName: "Asset Comparison Tool — ETFs, Stocks, Crypto",
     jsonLdDesc: "Compare the historical performance of ETFs, stocks and cryptocurrencies over any period: total return, CAGR, base-100 index. Yahoo Finance data.",
     badge: "Finance · Real data",
@@ -852,10 +852,9 @@ export default function Comparateur() {
 
   usePageMeta(txt.docTitle, txt.metaDesc);
 
+  // Canonical : posé par usePageMeta depuis l'URL courante (versions /en, /be,
+  // /ch… auto-canoniques, cohérentes avec le HTML pré-rendu et les hreflang).
   useEffect(() => {
-    let link = document.querySelector('link[rel="canonical"]');
-    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = txt.canonical;
     track('simulator_view', { name: 'comparateur' });
     if (!sessionStorage.getItem('tracked_comparateur')) {
       sessionStorage.setItem('tracked_comparateur', '1');

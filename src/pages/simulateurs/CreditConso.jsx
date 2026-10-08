@@ -132,7 +132,7 @@ const TXT = {
     metaDesc: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term. Includes amortization schedule.",
     jsonLdName: "Personal Loan Calculator 2026",
     jsonLdDesc: "Calculate the monthly payment, total cost and total interest of a personal loan from the amount, APR and term.",
-    jsonLdUrl: "https://www.simfinly.com/en/simulateurs/credit-conso",
+    jsonLdUrl: "https://www.simfinly.com/en/simulators/consumer-credit",
     pageTitle: "Personal Loan Calculator",
     pageSubtitle: "Monthly Payment · Total Cost · Amortization",
     pageDesc: "Calculate the monthly payment, total cost and total interest of a personal loan from the loan amount, APR and term. Includes amortization schedule.",

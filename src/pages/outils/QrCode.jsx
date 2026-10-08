@@ -59,7 +59,7 @@ const TXT = {
   en: {
     docTitle: "Free Custom QR Code Generator — color, logo, text | Simfinly.com",
     metaDesc: "Create a free custom QR code: choose your colors, enter any text or URL, add a logo or emoji in the center. High-resolution PNG download, no sign-up required.",
-    canonical: "https://www.simfinly.com/en/outils/qr-code",
+    canonical: "https://www.simfinly.com/en/tools/qr-code",
     jsonLdName: "Free Custom QR Code Generator",
     jsonLdDesc: "Create a free custom QR code: colors, any text or URL, logo or emoji in the center. High-resolution PNG download.",
     badge: "Tools · Free",

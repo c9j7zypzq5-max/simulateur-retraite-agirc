@@ -465,12 +465,9 @@ export default function Patrimoine() {
 
   usePageMeta(txt.docTitle, txt.metaDesc);
 
+  // Canonical : posé par usePageMeta depuis l'URL courante (versions /en, /be,
+  // /ch… auto-canoniques, cohérentes avec le HTML pré-rendu et les hreflang).
   useEffect(() => {
-    let link = document.querySelector('link[rel="canonical"]');
-    if (!link) { link = document.createElement('link'); link.rel = 'canonical'; document.head.appendChild(link); }
-    link.href = locale === 'en'
-      ? 'https://www.simfinly.com/en/simulateurs/patrimoine'
-      : 'https://www.simfinly.com/simulateurs/patrimoine';
     track('simulator_view', { name: 'patrimoine' });
     if (!sessionStorage.getItem('tracked_patrimoine')) {
       sessionStorage.setItem('tracked_patrimoine', '1');
@@ -567,7 +564,7 @@ export default function Patrimoine() {
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
         "url": locale === 'en'
-          ? "https://www.simfinly.com/en/simulateurs/patrimoine"
+          ? "https://www.simfinly.com/en/simulators/wealth"
           : "https://www.simfinly.com/simulateurs/patrimoine",
         "description": txt.jsonLdDesc,
         "applicationCategory": "FinanceApplication",

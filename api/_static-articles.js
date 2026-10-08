@@ -1657,6 +1657,7 @@ export const STATIC_ARTICLES = [
 
   {
     slug: 'french-pension-system-explained-2026',
+    lang: 'en',
     title: 'French Pension System Explained 2026 — Complete Guide for Expats',
     category: 'Retraite',
     readTime: 8,
@@ -1702,6 +1703,7 @@ export const STATIC_ARTICLES = [
   },
   {
     slug: 'fire-movement-france-2026',
+    lang: 'en',
     title: 'FIRE Movement in France 2026 — Financial Independence Guide',
     category: 'FIRE',
     readTime: 7,
@@ -1737,6 +1739,7 @@ export const STATIC_ARTICLES = [
   },
   {
     slug: 'french-income-tax-explained-2026',
+    lang: 'en',
     title: 'French Income Tax 2026 — Complete Guide for Expats and Residents',
     category: 'Fiscalité',
     readTime: 7,
@@ -1793,7 +1796,7 @@ export const STATIC_ARTICLES = [
     readTime: 9,
     publishedAt: '2026-03-10',
     lang: 'en',
-    body: `<p>France consistently attracts foreign buyers — from British retirees to American professionals relocating for work. But buying property here as a non-resident comes with specific rules, costs, and processes that differ significantly from the UK, US, or other markets. This guide covers everything you need to know to buy property in France in 2026.</p>
+    content: `<p>France consistently attracts foreign buyers — from British retirees to American professionals relocating for work. But buying property here as a non-resident comes with specific rules, costs, and processes that differ significantly from the UK, US, or other markets. This guide covers everything you need to know to buy property in France in 2026.</p>
 <h2>Can Foreigners Buy Property in France?</h2>
 <p>Yes, there are <strong>no restrictions on foreigners buying property in France</strong>, whether EU citizens or non-EU nationals. You do not need residency, a visa, or a work permit to purchase property. The same legal process and protections apply to all buyers regardless of nationality.</p>
 <h2>The Buying Process: Step by Step</h2>
@@ -1848,7 +1851,7 @@ export const STATIC_ARTICLES = [
     readTime: 8,
     publishedAt: '2026-04-05',
     lang: 'en',
-    body: `<p>Assurance-vie is the most widely held financial product in France, with over €1,900 billion in assets under management. Despite the name ("life insurance"), it functions primarily as an investment account with exceptional tax advantages — especially after 8 years. For expats living in France, understanding assurance-vie is essential for tax-efficient wealth management.</p>
+    content: `<p>Assurance-vie is the most widely held financial product in France, with over €1,900 billion in assets under management. Despite the name ("life insurance"), it functions primarily as an investment account with exceptional tax advantages — especially after 8 years. For expats living in France, understanding assurance-vie is essential for tax-efficient wealth management.</p>
 <h2>What Is an Assurance-Vie?</h2>
 <p>An assurance-vie is a contract between you (the subscriber) and an insurance company. You invest money, which grows tax-deferred inside the contract. You can invest in:</p>
 <ul>

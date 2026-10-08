@@ -1,3 +1,6 @@
+// Nom versionné à chaque build (scripts/generate-static-html.mjs remplace
+// « simfinly-v2 » par un horodatage) : l'activation d'un nouveau service worker
+// purge ainsi le cache du déploiement précédent.
 const CACHE = 'simfinly-v2';
 
 // Pages pré-cachées à l'installation pour un fonctionnement offline
@@ -53,7 +56,10 @@ self.addEventListener('fetch', e => {
       caches.match(e.request).then(cached => {
         if (cached) return cached;
         return fetch(e.request).then(res => {
-          if (res.ok) {
+          // Jamais de HTML sous une URL d'asset (repli SPA d'un ancien chunk
+          // supprimé) : il resterait servi à la place du script indéfiniment.
+          const type = res.headers.get('content-type') || '';
+          if (res.ok && !type.includes('text/html')) {
             const clone = res.clone();
             caches.open(CACHE).then(c => c.put(e.request, clone));
           }

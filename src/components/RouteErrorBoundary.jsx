@@ -1,13 +1,21 @@
 import { Component } from "react";
+import { isChunkLoadError, reloadOnceForChunkError } from "../utils/chunkError.js";
 
 export default class RouteErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { hasError: false, chunkError: false };
   }
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error) {
+    return { hasError: true, chunkError: isChunkLoadError(error) };
+  }
+
+  // Ce boundary intercepte les erreurs AVANT l'ErrorBoundary global : il doit
+  // donc lui-même recharger la page après un échec de chunk (nouveau déploiement).
+  // Un simple « réessayer » n'y suffit pas : React.lazy garde le rejet en cache.
+  componentDidCatch(error) {
+    if (isChunkLoadError(error)) reloadOnceForChunkError();
   }
 
   render() {
@@ -28,7 +36,7 @@ export default class RouteErrorBoundary extends Component {
             : "Cette page n'a pas pu être chargée. Veuillez réessayer."}
         </p>
         <button
-          onClick={() => this.setState({ hasError: false })}
+          onClick={() => (this.state.chunkError ? window.location.reload() : this.setState({ hasError: false }))}
           style={{
             padding: "9px 20px", borderRadius: 10, border: "1px solid var(--border)",
             background: "var(--card-bg)", color: "var(--text)", fontSize: 14,

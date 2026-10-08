@@ -1195,7 +1195,7 @@ export default function Fire() {
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": txt.jsonLdName,
-        "url": locale === 'en' ? "https://www.simfinly.com/en/simulateurs/fire" : "https://www.simfinly.com/simulateurs/fire",
+        "url": locale === 'en' ? "https://www.simfinly.com/en/simulators/fire" : "https://www.simfinly.com/simulateurs/fire",
         "description": txt.jsonLdDesc,
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",

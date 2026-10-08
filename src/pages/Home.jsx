@@ -128,6 +128,24 @@ const SIMULATEURS_LU = [
   { path: "/simulateurs/cout-en-heures",     title: "Le vrai prix en heures de vie",        desc: "Convertissez n'importe quel achat en heures de travail réelles. Quel est le vrai coût de ce restaurant, de cette voiture, de cet abonnement ?",                          tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: ["new"], available: true },
 ];
 
+// ── Québec : simulateurs québécois + universels (en dollars canadiens) ────────
+const SIMULATEURS_QC = [
+  // Spécifiques Québec
+  { path: "/simulateurs/retraite-quebec",    title: "Retraite RRQ (Québec)",                desc: "Estimez votre rente du Régime de rentes du Québec selon votre revenu de carrière, vos années de cotisation et l'âge de départ choisi (60 à 70 ans). Paramètres 2026 de Retraite Québec.", tag: "Retraite · Québec",  categories: ["Retraite"],  badges: ["new"], featured: true, available: true },
+  { path: "/simulateurs/impot-revenu-qc",    title: "Impôt sur le revenu (Québec)",         desc: "Calculez votre impôt combiné provincial et fédéral selon les barèmes progressifs 2026, avec l'abattement du Québec de 16,5 % sur l'impôt fédéral.",                         tag: "Fiscalité · Québec", categories: ["Fiscalité"], badges: ["new"], available: true },
+  // Simulateurs universels disponibles au Québec
+  { path: "/simulateurs/epargne",            title: "Épargne & intérêts composés",          desc: "Projetez la croissance de votre épargne en dollars canadiens grâce aux intérêts composés et aux versements réguliers.",                                                    tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/fire",               title: "Indépendance financière (FIRE)",        desc: "Calculez le patrimoine nécessaire pour vivre de vos investissements et l'âge auquel vous atteindrez la liberté financière. Règle des 25x / 4 %.",                          tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/budget",             title: "Budget & Épargne 50/30/20",             desc: "Répartissez votre budget mensuel selon la règle 50/30/20 : besoins, envies, épargne. Jauges en temps réel et conseils selon votre taux d'épargne.",                       tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/patrimoine",         title: "Patrimoine global",                    desc: "Consolidez vos actifs financiers et immobiliers pour visualiser votre richesse nette et sa répartition par classe d'actifs.",                                               tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/comparateur",        title: "Comparateur d'actifs",                 desc: "Comparez la performance historique d'ETF, actions et cryptos sur la période de votre choix : rendement annualisé, versements programmés et indice base 100.",           tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/assurance-vie",      title: "Épargne placée",                       desc: "Projetez la croissance d'une épargne placée en dollars canadiens et estimez le capital disponible à l'échéance.",                                                          tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/credit-conso",       title: "Crédit à la consommation",             desc: "Calculez la mensualité, le coût total et les intérêts de votre crédit selon le montant, le taux et la durée. Tableau d'amortissement inclus.",                         tag: "Finances",             categories: ["Finances"],    badges: [], available: true },
+  { path: "/simulateurs/emprunt-immobilier", title: "Prêt hypothécaire",                    desc: "Calculez la mensualité, la capacité d'emprunt et le coût total de votre prêt hypothécaire. Tableau d'amortissement annuel inclus.",                                      tag: "Immobilier",           categories: ["Immobilier"],  badges: [], available: true },
+  { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",                    desc: "Évaluez la rentabilité brute et nette d'un immeuble locatif : loyers, charges, cash-flow mensuel et retour sur fonds propres.",                                         tag: "Immobilier",           categories: ["Immobilier"],  badges: [], available: true },
+  { path: "/simulateurs/cout-en-heures",     title: "Le vrai prix en heures de vie",        desc: "Convertissez n'importe quel achat en heures de travail réelles : le vrai coût d'un bien ou d'un abonnement, exprimé en temps plutôt qu'en dollars.",                    tag: "Vie & Temps",          categories: ["Vie & Temps"], badges: [], available: true },
+];
+
 // ── EN simulators (universal subset, English content) ────────────────────────
 const SIMULATEURS_EN = [
   { path: "/simulateurs/fire", title: "FIRE Calculator", desc: "Calculate the net worth you need to live off your investments and the age at which you reach financial independence. Based on the 4% rule with Lean/Coast/Fat FIRE milestones.", tag: "Finance · FIRE", categories: ["Finance"], badges: ["popular"], featured: true, available: true },
@@ -140,6 +158,13 @@ const SIMULATEURS_EN = [
   { path: "/simulateurs/emprunt-immobilier", title: "Mortgage Calculator", desc: "Work out your monthly payment, debt-to-income ratio and total cost of a mortgage. Amortization schedule and total interest included.", tag: "Finance · Real Estate", categories: ["Finance"], badges: [], available: true },
   { path: "/simulateurs/credit-conso", title: "Personal Loan Calculator", desc: "Calculate monthly payments, total cost, and total interest of a personal loan. Includes optional insurance and a full amortization schedule.", tag: "Finance · Credit", categories: ["Finance"], badges: [], available: true },
   { path: "/simulateurs/cout-en-heures", title: "Cost in Hours of Work", desc: "Turn any purchase into real hours of your life. Based on your salary, discover the true cost of a product or subscription expressed in time rather than money.", tag: "Finance · Time", categories: ["Finance"], badges: [], available: true },
+  { path: "/simulateurs/pension-reversion", title: "French Survivor Pension", desc: "Estimate the French survivor pension: 54% of the base pension plus 60% of Agirc-Arrco points for private-sector employees, or 50% for civil servants, with means-testing where it applies.", tag: "Retirement · France", categories: ["Retirement"], badges: [], available: true },
+  { path: "/simulateurs/rente-capital", title: "Annuity vs Programmed Withdrawal", desc: "Compare a life annuity and programmed withdrawals for your retirement savings: monthly net income, break-even point and 20-year cumulative income.", tag: "Retirement · Strategy", categories: ["Retirement"], badges: [], available: true },
+  { path: "/simulateurs/assurance-vie", title: "French Life Insurance (Assurance-vie)", desc: "Project the growth of a French assurance-vie policy and estimate the tax on your gains at withdrawal: 8-year advantage, allowance, flat tax and social levies.", tag: "Finance · Savings", categories: ["Finance"], badges: [], available: true },
+  { path: "/simulateurs/rendement-locatif", title: "Rental Yield Calculator", desc: "Calculate the gross and net yield of a rental investment: rent, costs, monthly cash flow and return on equity.", tag: "Finance · Real Estate", categories: ["Finance"], badges: [], available: true },
+  { path: "/simulateurs/inflation", title: "Inflation & Purchasing Power", desc: "Measure how inflation erodes your budget by spending category and project the impact on your purchasing power over 10 to 30 years.", tag: "Finance · Inflation", categories: ["Finance"], badges: [], available: true },
+  { path: "/simulateurs/donation", title: "French Gift Tax Calculator", desc: "Estimate French gift tax between parents and children: allowances, tax brackets and the net amount received.", tag: "Finance · Estate", categories: ["Finance"], badges: [], available: true },
+  { path: "/simulateurs/vie-en-semaines", title: "Your Life in Weeks", desc: "Visualize your whole life as a grid, one square per week: the weeks you have lived, the weeks left and the summers ahead.", tag: "Life · Time", categories: ["Finance"], badges: [], available: true },
   { path: "/outils/qr-code", title: "QR Code Generator", desc: "Create a custom QR code: choose your colors, enter any text or URL, add a logo or emoji in the center. High-resolution PNG download, no sign-up required.", tag: "Tools · Free", categories: ["Tools"], badges: [], available: true },
 ];
 
@@ -147,6 +172,7 @@ const FILTERS_FR = ["Tous", "Retraite", "Immobilier", "Impôts", "Finances", "Vi
 const FILTERS_BE = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_CH = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_LU = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
+const FILTERS_QC = ["Tous", "Retraite", "Fiscalité", "Finances", "Immobilier", "Vie & Temps"];
 const FILTERS_EN = ["All", "Retirement", "Finance", "Tools"];
 
 const TXT = {
@@ -255,6 +281,36 @@ const TXT = {
     simCountFmt: (n) => n.toLocaleString("fr-LU"),
     simCountLabel: "simulations réalisées",
     searchPlaceholder: "Rechercher un simulateur (CNAP, impôt, succession, FIRE…)",
+    searchAriaLabel: "Rechercher un simulateur",
+    clearSearch: "Effacer la recherche",
+    filterPrefix: "Filtrer :",
+    gridTitle: "Simulateurs disponibles",
+    emptyQuery: (q) => `Aucun simulateur ne correspond à « ${q} ».`,
+    emptyCategory: "Aucun simulateur dans cette catégorie pour l'instant.",
+    lexiqueSection: null,
+    blogSection: null,
+    ctaFeatured: "Simuler maintenant →",
+    ctaCard: "Simuler →",
+    badgePopular: "★ Populaire",
+    badgeUpdated: "Mis à jour 2026",
+    badgeNew: "Nouveau",
+    defaultFilter: "Tous",
+  },
+  qc: {
+    docTitle: "Simfinly — Simulateurs gratuits retraite RRQ, épargne, budget (Québec)",
+    docDesc: (n) => `Simulez votre rente RRQ, votre impôt sur le revenu, votre épargne et votre budget en dollars canadiens. ${n} simulateurs gratuits adaptés au Québec, sans inscription.`,
+    heroBadge: "Retraite RRQ · Fiscalité · Finances · Immobilier",
+    heroTitle: "Simulez vos grandes décisions",
+    heroEm: "avec les règles québécoises",
+    heroDesc: "Des simulateurs gratuits, précis et pédagogiques adaptés au Québec — rente RRQ, impôt provincial et fédéral, épargne, budget et prêt hypothécaire, en dollars canadiens.",
+    stat1Label: "simulateurs actifs",
+    stat2: "30 s",
+    stat2Label: "pour une première estimation",
+    stat3: "100 %",
+    stat3Label: "gratuit & sans inscription",
+    simCountFmt: (n) => n.toLocaleString("fr-CA"),
+    simCountLabel: "simulations réalisées",
+    searchPlaceholder: "Rechercher un simulateur (RRQ, impôt, épargne, FIRE…)",
     searchAriaLabel: "Rechercher un simulateur",
     clearSearch: "Effacer la recherche",
     filterPrefix: "Filtrer :",
@@ -437,12 +493,12 @@ export default function Home() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
   const country = useCountry();
-  const txtKey = locale === 'en' ? 'en' : country === 'ch' ? 'ch' : country === 'be' ? 'be' : country === 'lu' ? 'lu' : 'fr';
+  const txtKey = locale === 'en' ? 'en' : ['ch', 'be', 'lu', 'qc'].includes(country) ? country : 'fr';
   const txt = TXT[txtKey] ?? TXT.fr;
   useAuth();
 
-  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : country === 'ch' ? SIMULATEURS_CH : country === 'be' ? SIMULATEURS_BE : country === 'lu' ? SIMULATEURS_LU : SIMULATEURS_FR;
-  const FILTERS = locale === 'en' ? FILTERS_EN : country === 'ch' ? FILTERS_CH : country === 'be' ? FILTERS_BE : country === 'lu' ? FILTERS_LU : FILTERS_FR;
+  const SIMULATEURS = locale === 'en' ? SIMULATEURS_EN : { ch: SIMULATEURS_CH, be: SIMULATEURS_BE, lu: SIMULATEURS_LU, qc: SIMULATEURS_QC }[country] || SIMULATEURS_FR;
+  const FILTERS = locale === 'en' ? FILTERS_EN : { ch: FILTERS_CH, be: FILTERS_BE, lu: FILTERS_LU, qc: FILTERS_QC }[country] || FILTERS_FR;
 
   const [activeFilter, setActiveFilter] = useState(txt.defaultFilter);
   const [query, setQuery] = useState(() => {

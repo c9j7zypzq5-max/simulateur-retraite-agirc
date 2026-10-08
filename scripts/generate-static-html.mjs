@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, ROUTE_META_QC, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, QC_ROUTES, BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
+import { BASE, ROUTE_META, ROUTE_META_EN, ROUTE_META_CH, ROUTE_META_BE, ROUTE_META_LU, ROUTE_META_QC, EN_ROUTES, CH_ROUTES, BE_ROUTES, LU_ROUTES, QC_ROUTES, BLOG_SLUGS, EN_BLOG_SLUGS, LEXIQUE_SLUGS, LEXIQUE_SLUGS_EN, GUIDES_SLUGS, COMPARATIFS_SLUGS, ogImageForRoute, structuredDataScripts, hreflangLinks } from '../api/_routes.js';
 import { SEO_CONTENT, SEO_CONTENT_EN, seoHtmlForRoute, seoHtmlForArticle } from '../api/_seo.js';
 import { GLOSSARY_BY_SLUG } from '../src/data/glossaire.js';
 import { GUIDES_BY_SLUG } from '../src/data/guides.js';
@@ -26,6 +26,9 @@ function seoForRoute(route, extra = {}, locale = 'fr', country = 'fr') {
   if (locale === 'en') {
     const meta = ROUTE_META_EN[route];
     if (meta) return { title: meta.title, description: meta.description };
+    if (route.startsWith('/blog/')) {
+      return { title: extra.title ? `${extra.title} | simfinly.com` : null, description: extra.description || null };
+    }
     if (route.startsWith('/lexique/')) {
       const t = GLOSSARY_BY_SLUG[route.slice('/lexique/'.length)];
       if (t?.en) return { title: `${t.en.term}: definition (${t.en.full}) | simfinly.com`, description: t.en.short };
@@ -88,6 +91,10 @@ function ogImageUrl(route, extra) {
   return `${BASE}${ogImageForRoute(route)}`;
 }
 
+// Pages volontairement non indexées (le composant pose aussi noindex au rendu) :
+// le HTML pré-rendu doit porter le même signal pour les robots sans JS.
+const NOINDEX_ROUTES = new Set(['/mentions-legales', '/politique-de-confidentialite']);
+
 function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
   const { title, description } = seoForRoute(route, extra, locale, country);
   const ogImg = ogImageUrl(route, extra);
@@ -108,6 +115,9 @@ function patchHtml(html, route, extra, locale = 'fr', country = 'fr') {
     .replace(/content="\/og-image\.(png|webp|svg)"/g, `content="${escapeAttr(ogImg)}"`)
     .replace(/<meta property="og:url" content="[^"]*"/, `<meta property="og:url" content="${escapeAttr(url)}"`)
     .replace(/<html lang="[^"]*"/, `<html lang="${locale === 'en' ? 'en' : 'fr'}"`);
+  if (NOINDEX_ROUTES.has(route)) {
+    out = out.replace(/<meta name="robots" content="[^"]*"/, '<meta name="robots" content="noindex, follow"');
+  }
 
   if (locale === 'en') {
     out = out
@@ -222,6 +232,21 @@ for (const route of EN_ARRAY) {
   fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, route, { urlPath }, 'en'));
 }
 
+// ── Articles de blog EN (/en/blog/:slug) ───────────────────────────────────────
+// Articles rédigés en anglais (données statiques) : sans ce pré-rendu, ces URLs
+// du sitemap retombaient sur le index.html générique (titre FR, lang="fr").
+for (const enRoute of EN_BLOG_SLUGS) {
+  const slug = enRoute.slice('/en/blog/'.length);
+  const a = STATIC_BY_SLUG[slug];
+  if (!a) continue;
+  const dir = path.join(distDir, enRoute);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'index.html'), patchHtml(indexHtml, `/blog/${slug}`, {
+    urlPath: enRoute, lang: 'en', title: a.title, description: a.intro, publishedAt: a.publishedAt,
+    content: a.content, faqs: a.faqs, category: a.category, image: a.image,
+  }, 'en'));
+}
+
 // ── Comparatifs EN (/en/comparisons/:slug) ─────────────────────────────────────
 for (const route of COMPARATIFS_SLUGS) {
   const slug = route.slice('/comparatifs/'.length);
@@ -284,11 +309,13 @@ for (const route of QC_ROUTES) {
 try {
   const swPath = path.join(distDir, 'sw.js');
   const sw = fs.readFileSync(swPath, 'utf-8');
-  fs.writeFileSync(swPath, sw.replace(/mesim-v1/g, `mesim-${Date.now()}`));
+  const versioned = sw.replace(/simfinly-v2/g, `simfinly-${Date.now()}`);
+  if (versioned === sw) console.warn('⚠ sw.js : nom de cache « simfinly-v2 » introuvable, cache non versionné');
+  fs.writeFileSync(swPath, versioned);
 } catch { /* sw.js absent : on ignore */ }
 
 // NB : le sitemap.xml n'est plus généré ici. Il est servi dynamiquement par
 // api/sitemap.js (routes statiques + slugs blog depuis Redis), via le rewrite
 // /sitemap.xml → /api/sitemap dans vercel.json.
 
-console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE + ${LU_ROUTES.length} LU + ${QC_ROUTES.length} QC`);
+console.log(`✓ Généré ${routes.length} fichiers HTML statiques FR + ${EN_ARRAY.length} EN (+ ${EN_BLOG_SLUGS.length} articles EN) + ${CH_ROUTES.length} CH + ${BE_ROUTES.length} BE + ${LU_ROUTES.length} LU + ${QC_ROUTES.length} QC`);

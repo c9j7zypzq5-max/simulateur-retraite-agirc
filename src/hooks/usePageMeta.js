@@ -1,5 +1,27 @@
 import { useEffect } from "react";
 import { ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, BASE } from "../../api/_meta.js";
+import { canonicalPath } from "../i18n/paths.js";
+import { localeFromPath, countryFromPath } from "../i18n/config.js";
+
+const setAttr = (selector, value) => {
+  if (value == null) return;
+  const el = document.querySelector(selector);
+  if (el) el.setAttribute("content", value);
+};
+
+function applyTitle(title) {
+  if (!title) return;
+  document.title = title;
+  setAttr('meta[property="og:title"]', title);
+  setAttr('meta[name="twitter:title"]', title);
+}
+
+function applyDescription(description) {
+  if (!description) return;
+  setAttr('meta[name="description"]', description);
+  setAttr('meta[property="og:description"]', description);
+  setAttr('meta[name="twitter:description"]', description);
+}
 
 // Met à jour les métadonnées de la page lors de la navigation côté client (SPA).
 // Le HTML statique pré-rendu (scripts/generate-static-html.mjs) couvre déjà les
@@ -7,22 +29,8 @@ import { ROUTE_META, OG_IMAGE_BY_CAT, OG_IMAGE_DEFAULT, BASE } from "../../api/_
 // rechargement : title, description, Open Graph, Twitter Card, og:image et canonical.
 export function usePageMeta(title, description) {
   useEffect(() => {
-    const setAttr = (selector, value) => {
-      if (value == null) return;
-      const el = document.querySelector(selector);
-      if (el) el.setAttribute("content", value);
-    };
-
-    if (title) {
-      document.title = title;
-      setAttr('meta[property="og:title"]', title);
-      setAttr('meta[name="twitter:title"]', title);
-    }
-    if (description) {
-      setAttr('meta[name="description"]', description);
-      setAttr('meta[property="og:description"]', description);
-      setAttr('meta[name="twitter:description"]', description);
-    }
+    applyTitle(title);
+    applyDescription(description);
 
     // Canonical + og:url : inclut le paramètre ?s= quand présent (simulation
     // partagée), pour que chaque résultat ait sa propre URL canonique.
@@ -40,11 +48,9 @@ export function usePageMeta(title, description) {
     // og:image + twitter:image : image de catégorie brandée (/api/og).
     // Évite que la navigation SPA laisse l'image générique de la home sur les
     // pages simulateurs visitées après une navigation interne.
-    let canonPath = window.location.pathname;
-    if (canonPath.startsWith('/en/')) canonPath = canonPath.slice(3);
-    else if (canonPath.startsWith('/be/')) canonPath = canonPath.slice(3);
-    else if (canonPath.startsWith('/ch/')) canonPath = canonPath.slice(3);
-    const meta = ROUTE_META[canonPath];
+    const path = window.location.pathname;
+    const canon = canonicalPath(path);
+    const meta = ROUTE_META[canon];
     if (meta) {
       const ogImg = meta.cat && OG_IMAGE_BY_CAT[meta.cat]
         ? `${BASE}/api/og?${new URLSearchParams({ t: meta.title, c: meta.cat }).toString()}`
@@ -52,5 +58,24 @@ export function usePageMeta(title, description) {
       setAttr('meta[property="og:image"]', ogImg);
       setAttr('meta[name="twitter:image"]', ogImg);
     }
+
+    // Pages localisées (/en, /ch, /be, /lu, /qc) : le titre et la description
+    // localisés du HTML pré-rendu font foi. Sans cela, les pages qui ne passent
+    // qu'un titre français (ou générique) l'imposaient au rendu JS — c'est ce
+    // que Google indexe. Module chargé à la demande : rien pour les pages FR.
+    const locale = localeFromPath(path);
+    const country = countryFromPath(path);
+    if (locale === "fr" && country === "fr") return;
+    let cancelled = false;
+    import("../../api/_meta-i18n.js")
+      .then(({ localizedRouteMeta }) => {
+        if (cancelled) return;
+        const localized = localizedRouteMeta(canon, locale, country);
+        if (!localized) return;
+        applyTitle(localized.title);
+        applyDescription(localized.description);
+      })
+      .catch(() => { /* chunk indisponible : on garde le titre de la page */ });
+    return () => { cancelled = true; };
   }, [title, description]);
 }

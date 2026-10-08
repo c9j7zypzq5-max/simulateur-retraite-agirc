@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { localeFromPath } from '../i18n/config.js';
 import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES, QC_ROUTES, COUNTRY_ONLY_ROUTES } from '../i18n/paths.js';
 
 const SITE = 'https://www.simfinly.com';
@@ -11,6 +12,9 @@ export default function HreflangTags() {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Langue du document alignée sur l'URL (le HTML pré-rendu la fixe, mais une
+    // navigation SPA FR → EN la laissait à « fr »).
+    document.documentElement.lang = localeFromPath(pathname) === 'en' ? 'en' : 'fr';
     document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 
     const canon = canonicalPath(pathname);

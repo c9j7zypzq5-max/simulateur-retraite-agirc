@@ -1,12 +1,7 @@
 import { Component } from "react";
 import { track } from "@vercel/analytics";
 
-// Détecte les erreurs de chargement de module/chunk (fréquentes quand un onglet
-// ouvert avant un déploiement demande un ancien chunk au nom de fichier disparu).
-function isChunkLoadError(error) {
-  const msg = `${error?.name || ''} ${error?.message || ''}`;
-  return /ChunkLoadError|Loading chunk|dynamically imported module|Importing a module script failed|Failed to fetch dynamically/i.test(msg);
-}
+import { isChunkLoadError, reloadOnceForChunkError } from "../utils/chunkError.js";
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -21,11 +16,7 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error) {
     // Échec de chunk après un nouveau déploiement : un rechargement unique récupère
     // le nouvel index.html (et donc les bons noms de chunks). Garde anti-boucle.
-    if (isChunkLoadError(error) && !sessionStorage.getItem('chunk_reloaded')) {
-      sessionStorage.setItem('chunk_reloaded', '1');
-      window.location.reload();
-      return;
-    }
+    if (isChunkLoadError(error) && reloadOnceForChunkError()) return;
     // Remontée des erreurs réelles vers Sentry (si configuré) et Vercel Analytics.
     // Import dynamique : Sentry n'est ainsi jamais forcé dans le bundle critique
     // chargé sur chaque page, seulement téléchargé si une erreur survient réellement.
@@ -58,7 +49,7 @@ export default class ErrorBoundary extends Component {
           {txt.body}
         </p>
         <button
-          onClick={() => { sessionStorage.removeItem('chunk_reloaded'); window.location.reload(); }}
+          onClick={() => window.location.reload()}
           style={{ padding: "10px 22px", borderRadius: 10, border: "1px solid var(--border-gold)", background: "rgba(43,92,230,0.08)", color: "var(--gold)", fontSize: 14, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}
         >
           {txt.reload}
@@ -69,9 +60,3 @@ export default class ErrorBoundary extends Component {
   }
 }
 
-// Réinitialise le garde anti-boucle après un chargement réussi.
-if (typeof window !== 'undefined') {
-  window.addEventListener('load', () => {
-    setTimeout(() => sessionStorage.removeItem('chunk_reloaded'), 4000);
-  });
-}

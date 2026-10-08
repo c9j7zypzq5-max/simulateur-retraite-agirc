@@ -66,7 +66,12 @@ ${SECTIONS.map(s => `  <sitemap>
     }
   }
 
-  const staticUrls = Object.entries(ROUTE_META).map(([route, m]) => ({
+  // Pages légales : volontairement en noindex (voir MentionsLegales.jsx) — les
+  // soumettre dans le sitemap produirait des erreurs « URL envoyée marquée
+  // noindex » dans la Search Console. Exclues de toutes les sections.
+  const legalRoutes = new Set(['/mentions-legales', '/politique-de-confidentialite']);
+
+  const staticUrls = Object.entries(ROUTE_META).filter(([route]) => !legalRoutes.has(route)).map(([route, m]) => ({
     loc: route,
     freq: m.freq || 'monthly',
     prio: m.prio || '0.5',
@@ -84,7 +89,7 @@ ${SECTIONS.map(s => `  <sitemap>
   // /en/legal-notice, /simulateurs/epargne devient /en/simulators/savings) :
   // on réutilise localePath(), la même fonction que <LocaleLink> côté client,
   // pour ne jamais générer une URL qui ne correspond à aucune route réelle.
-  const enUrls = Array.from(EN_ROUTES).map(route => ({
+  const enUrls = Array.from(EN_ROUTES).filter(route => !legalRoutes.has(route)).map(route => ({
     loc: localePath(route, 'en'),
     canonical: route, // route FR canonique, pour retrouver lastmod/image (clés de ROUTE_META)
     freq: 'monthly',
@@ -102,7 +107,6 @@ ${SECTIONS.map(s => `  <sitemap>
   ];
 
   // Pages CH (/ch/...) — hors mentions légales et confidentialité
-  const legalRoutes = new Set(['/mentions-legales', '/politique-de-confidentialite']);
   const chUrls = CH_ROUTES.filter(r => !legalRoutes.has(r)).map(route => ({
     loc: route === '/' ? '/ch' : `/ch${route}`,
     freq: ROUTE_META[route]?.freq || 'monthly',
