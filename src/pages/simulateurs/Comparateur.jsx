@@ -800,10 +800,10 @@ function DateSelect({ label, value, onChange, locale = 'fr' }) {
         {label}
       </div>
       <div style={{ display: 'flex', gap: 6 }}>
-        <select aria-label={`${label} — mois`} value={value.month} onChange={e => onChange({ ...value, month: parseInt(e.target.value) })} style={selStyle}>
+        <select aria-label={`${label} — ${locale === 'en' ? 'month' : 'mois'}`} value={value.month} onChange={e => onChange({ ...value, month: parseInt(e.target.value) })} style={selStyle}>
           {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
         </select>
-        <select aria-label={`${label} — année`} value={value.year} onChange={e => onChange({ ...value, year: parseInt(e.target.value) })} style={selStyle}>
+        <select aria-label={`${label} — ${locale === 'en' ? 'year' : 'année'}`} value={value.year} onChange={e => onChange({ ...value, year: parseInt(e.target.value) })} style={selStyle}>
           {years.map(y => <option key={y} value={y}>{y}</option>)}
         </select>
       </div>
@@ -1117,7 +1117,7 @@ export default function Comparateur() {
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()}</span>
             <select
-              aria-label={`${txt.dcaTitle} — fréquence`}
+              aria-label={`${txt.dcaTitle} — ${locale === 'en' ? 'frequency' : 'fréquence'}`}
               value={periodicFreq}
               onChange={e => setPeriodicFreq(e.target.value)}
               disabled={periodicAmt === 0}

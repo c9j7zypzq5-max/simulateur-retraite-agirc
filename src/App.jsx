@@ -6,6 +6,7 @@ import { ACCOUNT_ENABLED } from "./config/features.js";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider, useMoney } from "./i18n/CurrencyContext.jsx";
 import { suggestedCurrencyFor } from "./i18n/currency.js";
+import { useTranslation } from "./i18n/index.js";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
@@ -173,11 +174,18 @@ function RouteResetKey({ children }) {
   );
 }
 
+// Lien d'évitement (premier élément focusable), dans la langue de la page.
+function SkipLink() {
+  const { t } = useTranslation();
+  return <a href="#main-content" className="skip-link">{t("a11y.skipToContent")}</a>;
+}
+
 // Fallback affiché le temps de charger le chunk d'une route.
 function RouteFallback() {
+  const { t } = useTranslation();
   return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--bg)", color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
-      <span style={{ fontSize: 14, opacity: 0.7 }}>Chargement…</span>
+      <span style={{ fontSize: 14 }}>{t("common.loading")}</span>
     </div>
   );
 }
@@ -207,7 +215,7 @@ export default function App() {
       <HreflangTags />
       <CountrySuggestionBanner />
       <VideoRecordingToast />
-      <a href="#main-content" className="skip-link">Aller au contenu principal</a>
+      <SkipLink />
       <BackToTop />
       <ErrorBoundary>
       <Suspense fallback={<RouteFallback />}>

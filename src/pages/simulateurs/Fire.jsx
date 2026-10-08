@@ -1535,7 +1535,9 @@ export default function Fire() {
         {/* FAQ */}
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/fire']} />
 
-        <FaqSection items={FAQ} />
+        {/* FAQ : celle de data/faqs.js en français (alimente aussi le JSON-LD
+            pré-rendu), la version traduite des textes de la page en anglais. */}
+        <FaqSection items={locale === "en" ? txt.faq : FAQ} />
 
         {/* AdSense bas */}
         <div style={{ margin: "24px 0" }}>

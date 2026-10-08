@@ -347,12 +347,21 @@ function MotivationMessage({ tauxEpargne, txt }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
-const FAQ = PAGE_FAQ;
+// FAQ anglaise (version /en/simulators/budget) ; la française vient de data/faqs.js.
+const FAQ_EN = [
+  { q: "What is the 50/30/20 rule?", a: "The 50/30/20 rule suggests allocating 50% of your net income to essential needs (housing, food, transport), 30% to wants (leisure, restaurants, subscriptions) and 20% to savings or paying off debt." },
+  { q: "Should I aim for exactly 50% for needs?", a: "No, it is a guideline. In expensive cities where rent exceeds 40% of your salary, it is normal to adjust: cut back on wants or increase your income over time. What matters is keeping your savings positive." },
+  { q: "What counts as a 'need'?", a: "Everything you cannot cut: rent or mortgage, utilities (electricity, water, internet), compulsory insurance, commuting, basic groceries and existing loan repayments." },
+  { q: "How can I improve my savings rate?", a: "There are two levers: reduce variable spending (especially wants) or increase your income. A 10% savings rate is a good start; 20% or more significantly speeds up building long-term wealth." },
+  { q: "Does the calculator take taxes into account?", a: "No — enter your monthly net income after taxes and social contributions, i.e. what actually reaches your bank account." },
+  { q: "What is the difference between an emergency fund and investing?", a: "An emergency fund (3 to 6 months of expenses in an instant-access savings account) covers the unexpected without penalty. Long-term investing (stocks, funds, real estate) aims to grow your wealth and should start once that safety cushion is in place." },
+];
 
 export default function Budget() {
   const [theme, setTheme] = useTheme();
   useMoney();
   const { locale } = useTranslation();
+  const FAQ = locale === "en" ? FAQ_EN : PAGE_FAQ;
   const txt = TXT[locale] ?? TXT.fr;
 
   const [revenus,         setRevenus]         = useState(3000);

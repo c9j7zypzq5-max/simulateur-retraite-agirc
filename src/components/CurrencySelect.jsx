@@ -1,24 +1,26 @@
 import { useMoney } from "../i18n/CurrencyContext.jsx";
 import { CURRENCIES } from "../i18n/currency.js";
+import { useTranslation } from "../i18n/index.js";
 
 // Sélecteur de devise compact pour la Navbar. N'affecte que les simulateurs
 // universels (épargne, FIRE, budget, patrimoine, coût en heures, crédit conso) ;
 // les simulateurs français restent en euros.
 export default function CurrencySelect({ compact = false }) {
   const { currency, setCurrency } = useMoney();
+  const { t, locale } = useTranslation();
 
   return (
     <label
       style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
-      title="Devise des simulateurs universels"
+      title={locale === "en" ? "Currency for universal calculators" : "Devise des simulateurs universels"}
     >
       {!compact && (
-        <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>Devise</span>
+        <span style={{ fontSize: "0.86rem", color: "var(--text-secondary)" }}>{t("nav.currency")}</span>
       )}
       <select
         value={currency}
         onChange={(e) => setCurrency(e.target.value)}
-        aria-label="Choisir la devise"
+        aria-label={t("a11y.chooseCurrency")}
         style={{
           appearance: "none",
           background: "var(--card-bg)",

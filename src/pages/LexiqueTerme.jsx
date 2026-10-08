@@ -3,7 +3,8 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
-import Navbar from "../components/Navbar.jsx";
+import Navbar, { navGroupsFor } from "../components/Navbar.jsx";
+import { EN_ROUTES } from "../i18n/paths.js";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import JsonLd from "../components/JsonLd.jsx";
@@ -19,7 +20,11 @@ const CATEGORY_COLORS = {
   "Budget":     { bg: "rgba(20,184,166,0.1)",  color: "var(--txt-teal)",  border: "rgba(20,184,166,0.25)" },
 };
 
-function simLabel(path) {
+// Libellés anglais des simulateurs traduits (menu EN).
+const EN_SIM_TITLES = Object.fromEntries(navGroupsFor("en", "fr").flatMap(g => g.items).map(i => [i.path, i.title]));
+
+function simLabel(path, isEn) {
+  if (isEn && EN_SIM_TITLES[path]) return EN_SIM_TITLES[path];
   return (ROUTE_META[path]?.title || path.replace("/simulateurs/", "").replace(/-/g, " "));
 }
 
@@ -66,6 +71,8 @@ export default function LexiqueTerme() {
 
   const cat = view ? (CATEGORY_COLORS[view.category] || CATEGORY_COLORS["Finances"]) : null;
   const related = (view?.related || []).map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean).filter(r => !isEn || r.en);
+  // En anglais : seulement les simulateurs traduits (sinon page française).
+  const sims = (view?.sims || []).filter(p => !isEn || EN_ROUTES.has(p));
 
   const faqLd = view && view.long?.length > 0 ? {
     '@context': 'https://schema.org',
@@ -146,7 +153,7 @@ export default function LexiqueTerme() {
             </div>
 
             {/* Simulateurs liés */}
-            {view.sims?.length > 0 && (
+            {sims.length > 0 && (
               <div style={{
                 background: "linear-gradient(135deg,rgba(184,147,74,0.1),rgba(232,192,106,0.04))",
                 border: "1px solid var(--border-gold)", borderRadius: 16, padding: "20px 24px", margin: "28px 0",
@@ -155,14 +162,14 @@ export default function LexiqueTerme() {
                   {isEn ? "Put it into practice" : "Mettre en pratique"}
                 </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                  {view.sims.map(path => (
+                  {sims.map(path => (
                     <LocaleLink key={path} to={path} style={{
                       padding: "9px 16px", borderRadius: 10,
                       background: "rgba(184,147,74,0.2)", color: "var(--gold)",
                       border: "1px solid var(--border-gold)", textDecoration: "none",
                       fontSize: 13, fontWeight: 500,
                     }}>
-                      {simLabel(path)} →
+                      {simLabel(path, isEn)} →
                     </LocaleLink>
                   ))}
                 </div>

@@ -3,7 +3,8 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme.js";
 import { useTranslation } from "../i18n/index.js";
 import { LocaleLink } from "../lib/router.jsx";
-import Navbar from "../components/Navbar.jsx";
+import Navbar, { navGroupsFor } from "../components/Navbar.jsx";
+import { EN_ROUTES } from "../i18n/paths.js";
 import Footer from "../components/Footer.jsx";
 import AdUnit from "../components/AdUnit.jsx";
 import JsonLd from "../components/JsonLd.jsx";
@@ -11,7 +12,11 @@ import { ROUTE_META } from "../../api/_meta.js";
 import { COMPARATIFS_BY_SLUG } from "../data/comparatifs.js";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 
-function simLabel(path) {
+// Libellés anglais des simulateurs traduits (menu EN).
+const EN_SIM_TITLES = Object.fromEntries(navGroupsFor("en", "fr").flatMap(g => g.items).map(i => [i.path, i.title]));
+
+function simLabel(path, isEn) {
+  if (isEn && EN_SIM_TITLES[path]) return EN_SIM_TITLES[path];
   return ROUTE_META[path]?.title || path.replace("/simulateurs/", "").replace(/-/g, " ");
 }
 
@@ -52,6 +57,8 @@ export default function Comparatif() {
   if (isEn && c && !c.en) return <Navigate to={`/comparatifs/${slug}`} replace />;
 
   const terms = view ? view.terms.map(s => GLOSSARY_BY_SLUG[s]).filter(Boolean).filter(t => !isEn || t.en) : [];
+  // En anglais : seulement les simulateurs traduits (sinon page française).
+  const sims = (view?.sims || []).filter(p => !isEn || EN_ROUTES.has(p));
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
@@ -144,10 +151,10 @@ export default function Comparatif() {
             </div>
 
             {/* Simulateurs liés */}
-            <div style={{ marginBottom: 28 }}>
+            {sims.length > 0 && <div style={{ marginBottom: 28 }}>
               <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 14 }}>{isEn ? "Run the numbers" : "Faites le calcul"}</h2>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 12 }}>
-                {view.sims.map(path => (
+                {sims.map(path => (
                   <LocaleLink key={path} to={path} style={{
                     display: "block", padding: "14px 16px", borderRadius: 12, textDecoration: "none",
                     background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)",
@@ -156,11 +163,11 @@ export default function Comparatif() {
                     onMouseEnter={e => e.currentTarget.style.borderColor = "var(--border-gold)"}
                     onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
                   >
-                    {simLabel(path)} →
+                    {simLabel(path, isEn)} →
                   </LocaleLink>
                 ))}
               </div>
-            </div>
+            </div>}
 
             {/* Termes clés */}
             {terms.length > 0 && (

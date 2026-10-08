@@ -12,7 +12,7 @@ const DESC_EN = "Financial comparisons: rent vs buy, pay off debt vs invest, ann
 
 export default function Comparatifs() {
   const [theme, setTheme] = useTheme();
-  const { locale } = useTranslation();
+  const { locale, t } = useTranslation();
   const isEn = locale === 'en';
   const desc = isEn ? DESC_EN : DESC_FR;
   const items = isEn ? COMPARATIFS.filter(c => c.en) : COMPARATIFS;
@@ -61,7 +61,7 @@ export default function Comparatifs() {
                 onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
               >
                 <div style={{ fontSize: 32, marginBottom: 10 }} aria-hidden="true">{c.emoji}</div>
-                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 6 }}>{c.category}</div>
+                <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--gold)", marginBottom: 6 }}>{t(`categories.${c.category}`)}</div>
                 <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, marginBottom: 8, lineHeight: 1.25 }}>{view.title}</h2>
                 <p style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.6 }}>{view.intro.slice(0, 120)}…</p>
               </Link>

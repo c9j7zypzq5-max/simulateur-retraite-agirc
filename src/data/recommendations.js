@@ -13,7 +13,7 @@ export const RECOMMENDATIONS = {
     { icon: "🏆", label: "Retraite complémentaire Agirc-Arrco", description: "La CNAV s'additionne à la complémentaire Agirc-Arrco. Calculez les deux pour votre pension totale.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
     { icon: "📅", label: "Vérifiez vos trimestres", description: "Connaître votre durée d'assurance vous indique à quel âge vous pourrez partir à taux plein.", to: "/simulateurs/trimestres", cta: "Compter mes trimestres →" },
     { icon: "💼", label: "Préparez un PER", description: "Le Plan d'Épargne Retraite complète votre pension et réduit votre impôt dès maintenant.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-    { icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir 54 % de cette pension de base. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →" },
+    { icon: "💞", label: "Pension de réversion du conjoint", description: "En cas de décès, votre conjoint peut percevoir 54 % de cette pension de base. Estimez le montant.", to: "/simulateurs/pension-reversion", cta: "Simuler la réversion →", en: { label: "Your spouse's survivor pension", description: "If you die, your spouse may receive 54% of this base pension. Estimate the amount.", cta: "Simulate the survivor pension →" } },
   ],
   '/simulateurs/trimestres': [
     { icon: "⏩", label: "Retraite anticipée — suis-je éligible ?", description: "Avec suffisamment de trimestres, vous pouvez partir avant 64 ans. Vérifiez vos droits.", to: "/simulateurs/retraite-anticipee", cta: "Vérifier l'éligibilité →" },
@@ -68,7 +68,7 @@ export const RECOMMENDATIONS = {
     { icon: "🏢", label: "Épargne salariale (PEE / PERCO)", description: "L'épargne salariale peut alimenter un PERO. Estimez le gain fiscal cumulé.", to: "/simulateurs/epargne-salariale", cta: "Simuler →" },
   ],
   '/simulateurs/retraite-luxembourg': [
-    { icon: "🏛", label: "Comptabilisez vos années en France", description: "Si vous avez cotisé en France avant ou après votre carrière au Luxembourg, la totalisation UE additionne vos droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
+    { icon: "🏛", label: "Comptabilisez vos années en France", description: "Si vous avez cotisé en France avant ou après votre carrière au Luxembourg, la totalisation UE additionne vos droits CNAV.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →", en: { label: "Count your years in France", description: "If you contributed in France before or after your Luxembourg career, EU aggregation adds up your CNAV rights.", cta: "Simulate CNAV →" } },
     { icon: "🏆", label: "Ajoutez votre complémentaire française", description: "Les années salariées en France ouvrent aussi des droits Agirc-Arrco, à additionner à votre pension CNAP.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
     { icon: "💶", label: "Votre impôt sur le revenu au Luxembourg", description: "Estimez l'impôt sur votre salaire luxembourgeois selon votre classe d'impôt et le barème progressif 2026.", to: "/simulateurs/impot-revenu-lu", cta: "Simuler l'impôt LU →" },
   ],
@@ -93,7 +93,7 @@ export const RECOMMENDATIONS = {
     { icon: "📊", label: "Consolidez votre patrimoine global", description: "Visualisez l'ensemble de vos actifs financiers et immobiliers en un coup d'œil.", to: "/simulateurs/patrimoine", cta: "Simuler →" },
   ],
   '/simulateurs/pension-reversion': [
-    { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →" },
+    { icon: "🏛", label: "Simulez votre pension CNAV", description: "La réversion CNAV dépend de la pension de base du défunt. Estimez la pension originale.", to: "/simulateurs/cnav", cta: "Simuler la CNAV →", en: { label: "Simulate your CNAV pension", description: "The CNAV survivor pension depends on the deceased's base pension. Estimate the original pension.", cta: "Simulate CNAV →" } },
     { icon: "🏆", label: "Retraite complémentaire Agirc-Arrco", description: "La réversion Agirc-Arrco complète la réversion CNAV. Calculez les deux.", to: "/simulateurs/agirc-arrco", cta: "Simuler Agirc-Arrco →" },
     { icon: "🎁", label: "Préparez la transmission", description: "L'assurance-vie et la succession permettent de compléter la protection du conjoint survivant.", to: "/simulateurs/succession", cta: "Simuler la succession →" },
   ],
@@ -105,7 +105,7 @@ export const RECOMMENDATIONS = {
   ],
   '/simulateurs/rente-capital': [
     { icon: "💼", label: "Simulez votre PER", description: "Le capital converti en rente ou retiré provient souvent d'un PER — vérifiez le montant projeté et la déduction fiscale.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-    { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "L'assurance-vie offre une autre façon de sortir en rente ou en capital, avec une fiscalité différente après 8 ans.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
+    { icon: "🛡️", label: "Comparez avec l'assurance-vie", description: "L'assurance-vie offre une autre façon de sortir en rente ou en capital, avec une fiscalité différente après 8 ans.", to: "/simulateurs/assurance-vie", cta: "Simuler →", en: { label: "Compare with life insurance", description: "French life insurance offers another way to draw an annuity or capital, with different taxation after 8 years.", cta: "Simulate →" } },
     { icon: "🧮", label: "Synthèse retraite tous régimes", description: "Consolidez cette rente avec vos pensions CNAV et Agirc-Arrco pour une vision complète de vos revenus futurs.", to: "/simulateurs/synthese-retraite", cta: "Voir la synthèse →" },
   ],
   '/simulateurs/lpp-deuxieme-pilier': [
@@ -123,10 +123,10 @@ export const RECOMMENDATIONS = {
   '/simulateurs/emprunt-immobilier': [
     { icon: "🏡", label: "Simulez le PTZ 2026", description: "Le prêt à taux zéro peut financer jusqu'à 50 % de votre acquisition selon votre zone et revenus.", to: "/simulateurs/ptz", cta: "Simuler le PTZ →" },
     { icon: "🖋", label: "Estimez les frais de notaire", description: "Les frais de notaire représentent 7 à 8 % du prix en ancien. Ajoutez-les à votre budget.", to: "/simulateurs/frais-notaire", cta: "Calculer →" },
-    { icon: "📊", label: "Calculez le rendement locatif", description: "Envisagez l'investissement locatif : estimez le rendement brut, net et le cash-flow mensuel.", to: "/simulateurs/rendement-locatif", cta: "Calculer le rendement →" },
+    { icon: "📊", label: "Calculez le rendement locatif", description: "Envisagez l'investissement locatif : estimez le rendement brut, net et le cash-flow mensuel.", to: "/simulateurs/rendement-locatif", cta: "Calculer le rendement →", en: { label: "Calculate the rental yield", description: "Considering a buy-to-let? Estimate the gross and net yield and the monthly cash flow.", cta: "Calculate the yield →" } },
   ],
   '/simulateurs/rendement-locatif': [
-    { icon: "🏠", label: "Simulez votre emprunt", description: "Calculez la mensualité, la capacité d'emprunt et le coût total de votre crédit immobilier.", to: "/simulateurs/emprunt-immobilier", cta: "Simuler l'emprunt →" },
+    { icon: "🏠", label: "Simulez votre emprunt", description: "Calculez la mensualité, la capacité d'emprunt et le coût total de votre crédit immobilier.", to: "/simulateurs/emprunt-immobilier", cta: "Simuler l'emprunt →", en: { label: "Simulate your mortgage", description: "Work out the monthly payment, borrowing capacity and total cost of your mortgage.", cta: "Simulate the mortgage →" } },
     { icon: "🏚", label: "Déficit foncier — économie d'impôt", description: "Les travaux de rénovation peuvent générer un déficit foncier réduisant votre impôt sur le revenu.", to: "/simulateurs/deficit-foncier", cta: "Calculer →" },
     { icon: "📈", label: "Plus-value immobilière", description: "Estimez l'impôt sur la plus-value si vous revendez le bien après quelques années.", to: "/simulateurs/plus-value-immobiliere", cta: "Calculer →" },
   ],
@@ -169,7 +169,7 @@ export const RECOMMENDATIONS = {
   ],
   '/simulateurs/donation': [
     { icon: "🎁", label: "Droits de succession", description: "Comparez l'imposition de la transmission par succession si vous ne donnez pas de votre vivant.", to: "/simulateurs/succession", cta: "Simuler la succession →" },
-    { icon: "🛡️", label: "Assurance-vie hors succession", description: "L'assurance-vie permet de transmettre jusqu'à 152 500 € par bénéficiaire sans droits.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
+    { icon: "🛡️", label: "Assurance-vie hors succession", description: "L'assurance-vie permet de transmettre jusqu'à 152 500 € par bénéficiaire sans droits.", to: "/simulateurs/assurance-vie", cta: "Simuler →", en: { label: "Life insurance outside the estate", description: "French life insurance lets you pass on up to €152,500 per beneficiary tax-free.", cta: "Simulate →" } },
     { icon: "📋", label: "Simulez votre impôt sur le revenu", description: "Vérifiez l'impact fiscal global de votre stratégie de transmission.", to: "/simulateurs/impot-revenu", cta: "Simuler →" },
   ],
   '/simulateurs/divorce': [
@@ -190,28 +190,28 @@ export const RECOMMENDATIONS = {
 
   // ── Finances & Épargne ─────────────────────────────────────────────────────
   '/simulateurs/epargne': [
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec votre épargne mensuelle, à quel âge pouvez-vous vivre de vos investissements ?", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec votre épargne mensuelle, à quel âge pouvez-vous vivre de vos investissements ?", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "With your monthly savings, at what age can you live off your investments?", cta: "Calculate FIRE →" } },
     { icon: "💼", label: "Défiscalisez avec un PER", description: "En investissant dans un PER, vous épargnez ET réduisez votre impôt sur le revenu.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-    { icon: "💎", label: "Calculez votre patrimoine global", description: "Consolidez l'ensemble de vos actifs pour une vision complète de votre richesse nette.", to: "/simulateurs/patrimoine", cta: "Calculer →" },
+    { icon: "💎", label: "Calculez votre patrimoine global", description: "Consolidez l'ensemble de vos actifs pour une vision complète de votre richesse nette.", to: "/simulateurs/patrimoine", cta: "Calculer →", en: { label: "Calculate your net worth", description: "Bring all your assets together for a complete view of your net worth.", cta: "Calculate →" } },
   ],
   '/simulateurs/fire': [
-    { icon: "💰", label: "Simulez votre épargne", description: "Ajustez votre versement mensuel pour atteindre votre objectif FIRE plus rapidement.", to: "/simulateurs/epargne", cta: "Simuler →" },
-    { icon: "💎", label: "Calculez votre patrimoine global", description: "Visualisez comment vos actifs actuels contribuent à votre objectif d'indépendance.", to: "/simulateurs/patrimoine", cta: "Calculer →" },
-    { icon: "📈", label: "Comparez les actifs ETF / actions", description: "Choisissez les bons supports pour votre capital FIRE selon leur performance historique.", to: "/simulateurs/comparateur", cta: "Comparer →" },
+    { icon: "💰", label: "Simulez votre épargne", description: "Ajustez votre versement mensuel pour atteindre votre objectif FIRE plus rapidement.", to: "/simulateurs/epargne", cta: "Simuler →", en: { label: "Simulate your savings", description: "Adjust your monthly contribution to reach your FIRE goal sooner.", cta: "Simulate →" } },
+    { icon: "💎", label: "Calculez votre patrimoine global", description: "Visualisez comment vos actifs actuels contribuent à votre objectif d'indépendance.", to: "/simulateurs/patrimoine", cta: "Calculer →", en: { label: "Calculate your net worth", description: "See how your current assets contribute to your independence goal.", cta: "Calculate →" } },
+    { icon: "📈", label: "Comparez les actifs ETF / actions", description: "Choisissez les bons supports pour votre capital FIRE selon leur performance historique.", to: "/simulateurs/comparateur", cta: "Comparer →", en: { label: "Compare ETFs and stocks", description: "Pick the right assets for your FIRE portfolio based on their historical performance.", cta: "Compare →" } },
   ],
   '/simulateurs/patrimoine': [
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Utilisez votre patrimoine net comme point de départ pour estimer votre âge d'indépendance.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
-    { icon: "💰", label: "Simulez votre épargne", description: "Projetez comment votre patrimoine évoluera selon votre effort d'épargne mensuel.", to: "/simulateurs/epargne", cta: "Simuler →" },
-    { icon: "🛡️", label: "Optimisez votre assurance-vie", description: "L'assurance-vie est l'enveloppe d'épargne préférée des Français. Estimez sa croissance.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Utilisez votre patrimoine net comme point de départ pour estimer votre âge d'indépendance.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "Use your net worth as a starting point to estimate your financial independence age.", cta: "Calculate FIRE →" } },
+    { icon: "💰", label: "Simulez votre épargne", description: "Projetez comment votre patrimoine évoluera selon votre effort d'épargne mensuel.", to: "/simulateurs/epargne", cta: "Simuler →", en: { label: "Simulate your savings", description: "Project how your net worth will grow with your monthly savings effort.", cta: "Simulate →" } },
+    { icon: "🛡️", label: "Optimisez votre assurance-vie", description: "L'assurance-vie est l'enveloppe d'épargne préférée des Français. Estimez sa croissance.", to: "/simulateurs/assurance-vie", cta: "Simuler →", en: { label: "Optimise your life insurance", description: "Assurance-vie is the French favourite savings wrapper. Estimate its growth.", cta: "Simulate →" } },
   ],
   '/simulateurs/budget': [
-    { icon: "💰", label: "Simulez votre épargne", description: "Chaque euro épargné selon la règle 50/30/20 peut être investi. Projetez la croissance.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec votre taux d'épargne actuel, calculez à quel âge vous pouvez atteindre l'indépendance.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
+    { icon: "💰", label: "Simulez votre épargne", description: "Chaque euro épargné selon la règle 50/30/20 peut être investi. Projetez la croissance.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →", en: { label: "Simulate your savings", description: "Every euro saved with the 50/30/20 rule can be invested. Project its growth.", cta: "Simulate savings →" } },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec votre taux d'épargne actuel, calculez à quel âge vous pouvez atteindre l'indépendance.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "With your current savings rate, find out at what age you can reach financial independence.", cta: "Calculate FIRE →" } },
     { icon: "💼", label: "Simulez votre salaire net", description: "Connaître votre salaire net exact est essentiel pour bien calibrer votre budget.", to: "/simulateurs/salaire", cta: "Calculer →" },
   ],
   '/simulateurs/assurance-vie': [
     { icon: "💼", label: "Comparez avec le PER", description: "PER et assurance-vie sont complémentaires. Le PER défiscalise à l'entrée, l'AV à la sortie.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-    { icon: "🔥", label: "Calculez votre FIRE", description: "L'assurance-vie est souvent le support du capital FIRE. Vérifiez si votre capital est suffisant.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "L'assurance-vie est souvent le support du capital FIRE. Vérifiez si votre capital est suffisant.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "Life insurance often holds the FIRE capital. Check whether yours is large enough.", cta: "Calculate FIRE →" } },
     { icon: "🎁", label: "Transmission hors succession", description: "L'assurance-vie permet de transmettre jusqu'à 152 500 € par bénéficiaire hors droits.", to: "/simulateurs/succession", cta: "Simuler →" },
   ],
   '/simulateurs/epargne-salariale': [
@@ -220,8 +220,8 @@ export const RECOMMENDATIONS = {
     { icon: "📋", label: "Simulez votre impôt sur le revenu", description: "Vérifiez comment l'abondement et les déblocages de l'épargne salariale impactent votre impôt.", to: "/simulateurs/impot-revenu", cta: "Simuler →" },
   ],
   '/simulateurs/credit-conso': [
-    { icon: "📊", label: "Gérez votre budget 50/30/20", description: "Vérifiez que la mensualité du crédit ne dépasse pas votre enveloppe 'besoins' recommandée.", to: "/simulateurs/budget", cta: "Gérer mon budget →" },
-    { icon: "💰", label: "Épargnez plutôt qu'emprunter ?", description: "Comparez le coût total du crédit à une épargne préalable pour le même achat.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →" },
+    { icon: "📊", label: "Gérez votre budget 50/30/20", description: "Vérifiez que la mensualité du crédit ne dépasse pas votre enveloppe 'besoins' recommandée.", to: "/simulateurs/budget", cta: "Gérer mon budget →", en: { label: "Manage your 50/30/20 budget", description: "Check that the loan payment stays within your recommended 'needs' envelope.", cta: "Manage my budget →" } },
+    { icon: "💰", label: "Épargnez plutôt qu'emprunter ?", description: "Comparez le coût total du crédit à une épargne préalable pour le même achat.", to: "/simulateurs/epargne", cta: "Simuler l'épargne →", en: { label: "Save instead of borrowing?", description: "Compare the total cost of the loan with saving up first for the same purchase.", cta: "Simulate savings →" } },
     { icon: "💼", label: "Simulez votre salaire net", description: "Connaître votre revenu net exact permet de vérifier votre capacité de remboursement.", to: "/simulateurs/salaire", cta: "Calculer →" },
   ],
   '/simulateurs/salaire': [
@@ -235,24 +235,24 @@ export const RECOMMENDATIONS = {
     { icon: "📋", label: "Simulez votre impôt sur le revenu", description: "Comparez la charge fiscale globale entre les deux statuts.", to: "/simulateurs/impot-revenu", cta: "Simuler →" },
   ],
   '/simulateurs/inflation': [
-    { icon: "💰", label: "Simulez votre épargne", description: "Vérifiez si votre rendement d'épargne surpasse l'inflation pour préserver votre pouvoir d'achat.", to: "/simulateurs/epargne", cta: "Simuler →" },
-    { icon: "📊", label: "Ajustez votre budget 50/30/20", description: "L'inflation réduit votre budget réel. Recalibrez vos enveloppes selon les nouveaux prix.", to: "/simulateurs/budget", cta: "Gérer mon budget →" },
-    { icon: "🔥", label: "Anticipez l'inflation dans le FIRE", description: "Intégrez l'inflation à votre calcul d'indépendance financière pour un objectif réaliste.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
+    { icon: "💰", label: "Simulez votre épargne", description: "Vérifiez si votre rendement d'épargne surpasse l'inflation pour préserver votre pouvoir d'achat.", to: "/simulateurs/epargne", cta: "Simuler →", en: { label: "Simulate your savings", description: "Check whether your savings return beats inflation and preserves your purchasing power.", cta: "Simulate →" } },
+    { icon: "📊", label: "Ajustez votre budget 50/30/20", description: "L'inflation réduit votre budget réel. Recalibrez vos enveloppes selon les nouveaux prix.", to: "/simulateurs/budget", cta: "Gérer mon budget →", en: { label: "Adjust your 50/30/20 budget", description: "Inflation shrinks your real budget. Recalibrate your envelopes to the new prices.", cta: "Manage my budget →" } },
+    { icon: "🔥", label: "Anticipez l'inflation dans le FIRE", description: "Intégrez l'inflation à votre calcul d'indépendance financière pour un objectif réaliste.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Factor inflation into FIRE", description: "Include inflation in your financial independence calculation for a realistic target.", cta: "Calculate FIRE →" } },
   ],
   '/simulateurs/comparateur': [
-    { icon: "💰", label: "Simulez votre épargne mensuelle", description: "Définissez un effort mensuel et projetez la croissance avec les actifs que vous venez de comparer.", to: "/simulateurs/epargne", cta: "Simuler →" },
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec le rendement historique de vos actifs, estimez votre âge d'indépendance financière.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
-    { icon: "💎", label: "Calculez votre patrimoine global", description: "Consolidez tous vos actifs pour une vision complète de votre richesse nette.", to: "/simulateurs/patrimoine", cta: "Calculer →" },
+    { icon: "💰", label: "Simulez votre épargne mensuelle", description: "Définissez un effort mensuel et projetez la croissance avec les actifs que vous venez de comparer.", to: "/simulateurs/epargne", cta: "Simuler →", en: { label: "Simulate your monthly savings", description: "Set a monthly amount and project its growth with the assets you just compared.", cta: "Simulate →" } },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Avec le rendement historique de vos actifs, estimez votre âge d'indépendance financière.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "Using your assets' historical return, estimate your financial independence age.", cta: "Calculate FIRE →" } },
+    { icon: "💎", label: "Calculez votre patrimoine global", description: "Consolidez tous vos actifs pour une vision complète de votre richesse nette.", to: "/simulateurs/patrimoine", cta: "Calculer →", en: { label: "Calculate your net worth", description: "Bring all your assets together for a complete view of your net worth.", cta: "Calculate →" } },
   ],
   '/simulateurs/cout-en-heures': [
-    { icon: "📊", label: "Gérez votre budget 50/30/20", description: "Répartissez vos dépenses en heures de vie pour prioriser ce qui compte vraiment.", to: "/simulateurs/budget", cta: "Gérer mon budget →" },
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Si chaque heure de travail a un coût, calculez combien d'heures il vous faut pour être libre.", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
+    { icon: "📊", label: "Gérez votre budget 50/30/20", description: "Répartissez vos dépenses en heures de vie pour prioriser ce qui compte vraiment.", to: "/simulateurs/budget", cta: "Gérer mon budget →", en: { label: "Manage your 50/30/20 budget", description: "Think of your spending in hours of life to prioritise what really matters.", cta: "Manage my budget →" } },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Si chaque heure de travail a un coût, calculez combien d'heures il vous faut pour être libre.", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "If every hour of work has a cost, find out how many hours you need to be free.", cta: "Calculate FIRE →" } },
     { icon: "💼", label: "Simulez votre salaire net", description: "Connaître votre salaire horaire net exact rend cette calculatrice encore plus précise.", to: "/simulateurs/salaire", cta: "Calculer →" },
   ],
   '/simulateurs/vie-en-semaines': [
-    { icon: "🔥", label: "Calculez votre FIRE", description: "Combien de semaines vous reste-t-il avant d'atteindre l'indépendance financière ?", to: "/simulateurs/fire", cta: "Calculer le FIRE →" },
-    { icon: "📊", label: "Gérez votre budget", description: "Chaque semaine bien budgétée rapproche de vos objectifs. Répartissez avec la règle 50/30/20.", to: "/simulateurs/budget", cta: "Gérer mon budget →" },
-    { icon: "💰", label: "Simulez votre épargne", description: "Visualisez combien d'épargne vous pouvez accumuler sur les semaines qui vous restent.", to: "/simulateurs/epargne", cta: "Simuler →" },
+    { icon: "🔥", label: "Calculez votre FIRE", description: "Combien de semaines vous reste-t-il avant d'atteindre l'indépendance financière ?", to: "/simulateurs/fire", cta: "Calculer le FIRE →", en: { label: "Calculate your FIRE number", description: "How many weeks are left before you reach financial independence?", cta: "Calculate FIRE →" } },
+    { icon: "📊", label: "Gérez votre budget", description: "Chaque semaine bien budgétée rapproche de vos objectifs. Répartissez avec la règle 50/30/20.", to: "/simulateurs/budget", cta: "Gérer mon budget →", en: { label: "Manage your budget", description: "Every well-budgeted week brings you closer to your goals. Split it with the 50/30/20 rule.", cta: "Manage my budget →" } },
+    { icon: "💰", label: "Simulez votre épargne", description: "Visualisez combien d'épargne vous pouvez accumuler sur les semaines qui vous restent.", to: "/simulateurs/epargne", cta: "Simuler →", en: { label: "Simulate your savings", description: "See how much you can save over the weeks you have left.", cta: "Simulate →" } },
   ],
   '/simulateurs/pension-legale': [
     { icon: "⚖️", label: "Rente ou retrait programmé ?", description: "Une fois votre capital pension estimé, choisissez entre la rente viagère et les retraits programmés.", to: "/simulateurs/rente-capital", cta: "Comparer →" },

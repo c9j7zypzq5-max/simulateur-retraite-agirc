@@ -1,60 +1,80 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { LocaleLink } from "../lib/router.jsx";
 import { useTheme } from "../hooks/useTheme.js";
+import { useTranslation } from "../i18n/index.js";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 
-const POPULAR = [
-  { to: "/simulateurs/agirc-arrco", label: "Retraite Agirc-Arrco" },
-  { to: "/simulateurs/emprunt-immobilier", label: "Emprunt immobilier" },
-  { to: "/simulateurs/impot-revenu", label: "Impôt sur le revenu" },
-  { to: "/simulateurs/epargne", label: "Épargne & intérêts composés" },
-  { to: "/simulateurs/fire", label: "Indépendance financière (FIRE)" },
-];
+// Simulateurs mis en avant, par langue (les liens anglais pointent vers des
+// pages traduites ; LocaleLink ajoute le préfixe /en).
+const POPULAR = {
+  fr: [
+    { to: "/simulateurs/agirc-arrco", label: "Retraite Agirc-Arrco" },
+    { to: "/simulateurs/emprunt-immobilier", label: "Emprunt immobilier" },
+    { to: "/simulateurs/impot-revenu", label: "Impôt sur le revenu" },
+    { to: "/simulateurs/epargne", label: "Épargne & intérêts composés" },
+    { to: "/simulateurs/fire", label: "Indépendance financière (FIRE)" },
+  ],
+  en: [
+    { to: "/simulateurs/fire", label: "FIRE calculator" },
+    { to: "/simulateurs/epargne", label: "Compound interest" },
+    { to: "/simulateurs/emprunt-immobilier", label: "Mortgage calculator" },
+    { to: "/simulateurs/budget", label: "50/30/20 budget" },
+    { to: "/simulateurs/cnav", label: "French state pension" },
+  ],
+};
 
 export default function NotFound() {
   const [theme, setTheme] = useTheme();
+  const { t, locale } = useTranslation();
+  const popular = POPULAR[locale] || POPULAR.fr;
 
   useEffect(() => {
-    document.title = "Page introuvable (404) | simfinly.com";
+    document.title = t("notFound.docTitle");
     let robots = document.querySelector('meta[name="robots"]');
     if (!robots) { robots = document.createElement('meta'); robots.name = 'robots'; document.head.appendChild(robots); }
     robots.setAttribute('content', 'noindex, follow');
     return () => robots && robots.setAttribute('content', 'index, follow');
-  }, []);
+  }, [t]);
+
+  const linkStyle = { color: "var(--primary)", textDecoration: "underline", textUnderlineOffset: 2 };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0F1828", fontFamily: "'Hanken Grotesk', sans-serif", color: "white" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
       <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "60px 16px 80px", textAlign: "center" }}>
-        <div style={{ fontSize: 80, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "white", lineHeight: 1 }}>404</div>
-        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,34px)", fontWeight: 600, color: "white", margin: "12px 0 10px" }}>
-          Cette page n'existe pas
+        <div aria-hidden="true" style={{ fontSize: 80, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "var(--primary)", lineHeight: 1 }}>404</div>
+        <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,34px)", fontWeight: 600, color: "var(--text)", margin: "12px 0 10px" }}>
+          {t("notFound.title")}
         </h1>
-        <p style={{ fontFamily: "'Hanken Grotesk', sans-serif", fontSize: 18, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: 28, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
-          Le lien est peut-être erroné ou la page a été déplacée. Retrouvez votre chemin parmi nos simulateurs gratuits.
+        <p style={{ fontSize: 18, color: "var(--text-secondary)", lineHeight: 1.7, marginBottom: 28, maxWidth: 480, marginLeft: "auto", marginRight: "auto" }}>
+          {t("notFound.desc")}
         </p>
 
-        <Link to="/" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 10, background: "var(--primary)", color: "white", border: "none", textDecoration: "none", fontSize: 15, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600 }}>
-          ← Retour à l'accueil
-        </Link>
+        <LocaleLink to="/" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 10, background: "var(--primary)", color: "#fff", textDecoration: "none", fontSize: 15, fontWeight: 600 }}>
+          {t("notFound.back")}
+        </LocaleLink>
 
         <div style={{ marginTop: 40, textAlign: "left" }}>
-          <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: 14, textAlign: "center" }}>
-            Simulateurs populaires
-          </div>
+          <h2 style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 14, textAlign: "center" }}>
+            {t("notFound.popular")}
+          </h2>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 10 }}>
-            {POPULAR.map(p => (
-              <Link key={p.to} to={p.to} style={{ display: "block", padding: "12px 16px", borderRadius: 12, textDecoration: "none", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.85)", fontSize: 14 }}>
+            {popular.map(p => (
+              <LocaleLink key={p.to} to={p.to} style={{ display: "block", padding: "12px 16px", borderRadius: 12, textDecoration: "none", background: "var(--card-bg)", border: "1px solid var(--border)", color: "var(--text)", fontSize: 14 }}>
                 {p.label} →
-              </Link>
+              </LocaleLink>
             ))}
           </div>
-          <div style={{ marginTop: 18, textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
-            ou consultez le <Link to="/lexique" style={{ color: "var(--primary)", textDecoration: "none" }}>lexique</Link>, les <Link to="/guides" style={{ color: "var(--primary)", textDecoration: "none" }}>guides</Link> et le <Link to="/blog" style={{ color: "var(--primary)", textDecoration: "none" }}>blog</Link>.
-          </div>
+          <p style={{ marginTop: 18, textAlign: "center", fontSize: 14, color: "var(--text-secondary)" }}>
+            {locale === "en" ? (
+              <>{t("notFound.orBrowse")} <LocaleLink to="/lexique" style={linkStyle}>{t("notFound.lexique")}</LocaleLink> {"or the"} <LocaleLink to="/comparatifs" style={linkStyle}>{t("notFound.guides")}</LocaleLink>.</>
+            ) : (
+              <>{t("notFound.orBrowse")} <LocaleLink to="/lexique" style={linkStyle}>{t("notFound.lexique")}</LocaleLink>, les <LocaleLink to="/guides" style={linkStyle}>{t("notFound.guides")}</LocaleLink> et le <LocaleLink to="/blog" style={linkStyle}>{t("notFound.blog")}</LocaleLink>.</>
+            )}
+          </p>
         </div>
       </div>
 

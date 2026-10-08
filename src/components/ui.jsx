@@ -9,6 +9,7 @@ import JsonLd from "./JsonLd.jsx";
 import { navGroupsFor } from "./Navbar.jsx";
 import { canonicalPath, isRouteAvailableIn } from "../i18n/paths.js";
 import { localeFromPath, countryFromPath } from "../i18n/config.js";
+import { useTranslation, translate } from "../i18n/index.js";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -111,6 +112,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
 // Champ décimal. Accepte indifféremment "." et "," comme séparateur décimal
 // (conventions française et anglaise). "3,5" est parsé comme 3.5.
 export function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", hint, tooltip, id }) {
+  const { t } = useTranslation();
   // Libellé associé au champ (lecteurs d'écran, clic sur le libellé) : sans id,
   // le <label> n'était relié à rien.
   const autoId = useId();
@@ -165,7 +167,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6 }}>ⓘ</span>}
       </label>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}>−</button>
+        <button onClick={dec} type="button" aria-label={`${t("a11y.decrease")} ${label}`} style={btnStyle}>−</button>
         <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
           <input type="text" inputMode="decimal" id={inputId} aria-describedby={hintId}
             value={focused ? raw : (value === null || value === undefined ? "" : String(value))}
@@ -176,7 +178,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
             style={{ flex: 1, background: "transparent", border: "none", outline: "none", fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", padding: "10px 0 10px 14px", width: 0, textAlign: "center" }} />
           {unit && <span style={{ padding: "0 14px", fontSize: 16, color: "var(--text-secondary)", fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600 }}>{unit}</span>}
         </div>
-        <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}>+</button>
+        <button onClick={inc} type="button" aria-label={`${t("a11y.increase")} ${label}`} style={btnStyle}>+</button>
       </div>
       {hint && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
@@ -347,33 +349,47 @@ export function FaqItem({ q, a }) {
   );
 }
 
-export function FaqSection({ title = "Questions fréquentes", items }) {
+export function FaqSection({ title, items }) {
+  const { t } = useTranslation();
   return (
     <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "36px 28px", marginTop: 20 }}>
       <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>
-        {title}
+        {title ?? t("common.faq")}
       </h2>
       {items.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
     </div>
   );
 }
 
-// Fil d'Ariane visible (en plus du BreadcrumbList JSON-LD statique).
+// Fil d'Ariane visible (en plus du BreadcrumbList JSON-LD statique), adapté à
+// la langue et au pays : sur /en, /be, /ch… l'accueil pointe vers la bonne
+// section et les libellés sont traduits (auparavant ROUTE_META était cherché
+// avec le chemin brut : rien trouvé hors FR, « Accueil » seul, vers la home FR).
 function HeaderBreadcrumb() {
   const { pathname } = useLocation();
-  const meta = ROUTE_META[pathname];
+  const { t, locale } = useTranslation();
+  const country = countryFromPath(pathname);
+  const canon = canonicalPath(pathname);
+  const meta = ROUTE_META[canon];
   const BASE = 'https://www.simfinly.com';
-  const crumbs = [{ name: 'Accueil', item: `${BASE}/` }];
-  if (meta?.cat) crumbs.push({ name: meta.cat, item: `${BASE}/simulateurs` });
-  if (meta?.title) crumbs.push({ name: meta.title, item: `${BASE}${pathname}` });
+  const homePath = locale === 'en' ? '/en' : country === 'fr' ? '/' : `/${country}`;
+  // Titre de page : libellé court du menu anglais sur /en (le titre ROUTE_META
+  // est en français), titre ROUTE_META ailleurs.
+  const title = locale === 'en'
+    ? navGroupsFor('en', 'fr').flatMap(g => g.items).find(i => i.path === canon)?.title
+    : meta?.title;
+  const category = meta?.cat ? t(`categories.${meta.cat}`) : null;
+  const crumbs = [{ name: t('nav.home'), item: `${BASE}${homePath === '/' ? '/' : homePath}` }];
+  if (category && locale !== 'en' && country === 'fr') crumbs.push({ name: category, item: `${BASE}/simulateurs` });
+  if (title) crumbs.push({ name: title, item: `${BASE}${pathname}` });
   const breadcrumbLd = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: crumbs.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.name, item: c.item })),
   };
   return (
-    <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
+    <nav aria-label={t('a11y.breadcrumb')} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
       <JsonLd data={breadcrumbLd} />
-      <Link to="/" style={{
+      <Link to={homePath} style={{
         display: "inline-flex", alignItems: "center", gap: 5, minHeight: 28,
         fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
         background: "var(--hover-bg)", border: "1px solid var(--border)",
@@ -383,18 +399,18 @@ function HeaderBreadcrumb() {
         onMouseEnter={e => { e.currentTarget.style.color = "var(--primary)"; e.currentTarget.style.borderColor = "var(--border-gold)"; }}
         onMouseLeave={e => { e.currentTarget.style.color = "var(--text-secondary)"; e.currentTarget.style.borderColor = "var(--border)"; }}
       >
-        <Home size={11} /> Accueil
+        <Home size={11} aria-hidden="true" /> {t('nav.home')}
       </Link>
-      {meta?.cat && (
+      {category && (
         <>
           <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
-          <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--hover-bg)", border: "1px solid var(--border)", padding: "4px 10px", borderRadius: 20 }}>{meta.cat}</span>
+          <span style={{ fontSize: 12, color: "var(--text-secondary)", background: "var(--hover-bg)", border: "1px solid var(--border)", padding: "4px 10px", borderRadius: 20 }}>{category}</span>
         </>
       )}
-      {meta?.title && (
+      {title && (
         <>
           <ChevronRight size={13} style={{ color: "var(--border)", flexShrink: 0 }} aria-hidden="true" />
-          <span style={{ fontSize: 12, color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", padding: "4px 10px", borderRadius: 20 }}>{meta.title}</span>
+          <span aria-current="page" style={{ fontSize: 12, color: "var(--primary)", background: "var(--primary-soft)", border: "1px solid var(--border-gold)", padding: "4px 10px", borderRadius: 20 }}>{title}</span>
         </>
       )}
     </nav>
@@ -417,7 +433,7 @@ function SimulateurVoirAussi() {
     .slice(0, 3);
   if (!siblings.length) return null;
   return (
-    <nav aria-label={locale === 'en' ? 'See also' : 'Voir aussi'} style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
+    <nav aria-label={translate(locale, 'a11y.seeAlso')} style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
       {siblings.map(s => (
         <LocaleLink
           key={s.path}

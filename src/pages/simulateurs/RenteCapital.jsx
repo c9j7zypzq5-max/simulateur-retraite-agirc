@@ -10,12 +10,10 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import JsonLd from "../../components/JsonLd.jsx";
 import {
-  NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection,
+  NumInput, StepperInput, Chip, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import PAGE_FAQ from 'virtual:faq:/simulateurs/rente-capital';
 import { textTone } from "../../utils/textTone.js";
-
-const FAQ = PAGE_FAQ;
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 // Taux de conversion rente viagère indicatifs 2026 (assurance vie en rente)
@@ -53,13 +51,108 @@ function calcRetrait({ capital, rendement, horizon, tmi }) {
   return { mensuelBrut, mensuelNet, totalNet: mensuelNet * n, capitalRestant20: Math.max(0, cap20) };
 }
 
+// ─── Textes ───────────────────────────────────────────────────────────────────
+const FAQ_EN = [
+  { q: "What is the difference between a life annuity and programmed withdrawals?", a: "A life annuity converts your capital into a guaranteed monthly income paid until you die, whatever happens. Programmed withdrawals keep your capital invested and let you draw a monthly amount over a set period, with the option of passing on whatever capital is left when you die." },
+  { q: "What is an annuity conversion rate?", a: "The conversion rate (or annuity rate) is the annual percentage of your capital paid out as an annuity. For example, with €200,000 of capital and a 4.5% rate, you receive €9,000 a year, i.e. €750 a month before tax. The rate depends on your age, your sex and market conditions (the insurer's technical rates)." },
+  { q: "How is a life annuity taxed in France?", a: "An annuity from a French PER is taxed like ordinary income (income tax scale). For an annuity from a French life insurance policy (rente à titre onéreux), only a fraction is taxable: 40% between 60 and 69, 30% from age 70 — and social levies apply to that same fraction." },
+  { q: "At what age does the annuity become more advantageous?", a: "The break-even point depends on returns, the conversion rate and your life expectancy. In general, if you live more than 20–25 years after retiring, the life annuity wins because it never stops. Programmed withdrawals are better if you want to pass on capital or expect a shorter retirement." },
+  { q: "Can the two approaches be combined?", a: "Yes, and it is often recommended: convert part of the capital into an annuity to cover essential spending (rent, food) and keep the rest in programmed withdrawals for variable spending and inheritance. This hybrid approach reduces longevity risk while keeping flexibility." },
+];
+
+const TXT = {
+  fr: {
+    metaTitle: "Rente viagère vs retrait programmé — simulateur 2026",
+    metaDesc: "Comparez une rente viagère et un retrait programmé sur votre épargne retraite (PER, assurance-vie). Calculez le revenu mensuel net et le point de bascule selon votre espérance de vie.",
+    ldName: "Simulateur Rente vs Capital — Retraite 2026",
+    ldUrl: "https://www.simfinly.com/simulateurs/rente-capital",
+    ldDesc: "Comparez rente viagère et retrait programmé pour vos économies retraite : mensualités nettes, point de bascule et cumul sur 20 ans selon votre situation fiscale.",
+    title: "Rente viagère ou retrait programmé ?",
+    desc: "Comparez deux stratégies de liquidation de votre épargne retraite (PER, assurance-vie) : rente viagère à vie ou retrait programmé sur une durée choisie.",
+    capital: "Capital disponible",
+    convRate: "Taux de conversion rente",
+    convHint: "Taux proposé par l'assureur pour convertir le capital en rente mensuelle (indicatif : 3,5 % – 5,5 %)",
+    yieldLabel: "Rendement annuel du capital",
+    yieldHint: "Pour le retrait programmé : rendement moyen annuel de l'épargne (fonds €, UC…)",
+    horizonLabel: "Horizon de retrait programmé",
+    horizonHint: "Durée sur laquelle épuiser le capital (ex. 25 ans = de 65 à 90 ans)",
+    tmiLabel: "Tranche marginale d'imposition",
+    tmiHint: "Votre TMI actuel, utilisé pour estimer l'imposition des revenus",
+    yrs: " ans", years: (n) => `${n} ans`, perMonth: "/mois", perMonthNet: "/mois net",
+    annuity: "Rente viagère", withdrawal: "Retrait programmé", better: "+ avantageux",
+    gross: (v) => `Brut : ${v}/mois`,
+    lifetime: "Durée : à vie (garantie)",
+    duration: (n) => `Durée : ${n} ans`,
+    convDetail: (r) => `Taux de conversion : ${r} %`,
+    capAt20: (v) => `Capital à 20 ans : ${v}`,
+    exhausted: "Capital épuisé avant 20 ans",
+    totalAnnuity: "Total retraite rente (20 ans)",
+    totalWithdrawal: "Total retraite retrait (20 ans)",
+    breakEven: "Point de bascule",
+    breakEvenTitle: (n) => `Point de bascule : ${n} ans`,
+    breakEvenText1: "La rente viagère devient plus avantageuse que le retrait programmé à partir de",
+    breakEvenYears: (n) => `${n} ans de retraite`,
+    breakEvenText2: "Si vous vivez au-delà de ce point, la rente viagère vous aura procuré plus de revenus cumulés.",
+    breakEvenBefore: " Dans votre scénario, vous atteignez ce point avant la fin du retrait programmé.",
+    breakEvenAfter: (h) => ` Ce point est après l'horizon de ${h} ans du retrait programmé — la rente viagère n'est avantageuse qu'en cas de très grande longévité.`,
+    cumul20: "Revenus cumulés sur 20 ans",
+    withdrawalYears: (n) => `Retrait programmé (${n} ans)`,
+    hlAnnuity: "Rente mensuelle nette", hlWithdrawal: "Retrait mensuel net",
+    resAnnuity: "Rente viagère nette", resWithdrawal: "Retrait programmé net", resCapital: "Capital initial",
+    recoTitle: "Construire ce capital",
+    faq: null,
+  },
+  en: {
+    metaTitle: "Life annuity vs programmed withdrawal — 2026 calculator",
+    metaDesc: "Compare a life annuity and programmed withdrawals from your retirement savings (French PER, life insurance). Work out the net monthly income and the break-even point for your life expectancy.",
+    ldName: "Annuity vs Programmed Withdrawal Calculator — Retirement 2026",
+    ldUrl: "https://www.simfinly.com/en/simulators/annuity-vs-withdrawal",
+    ldDesc: "Compare a life annuity and programmed withdrawals for your retirement savings: net monthly income, break-even point and 20-year cumulative income for your tax situation.",
+    title: "Life annuity or programmed withdrawals?",
+    desc: "Compare two ways of drawing down your retirement savings (French PER, life insurance): a life annuity paid for life, or programmed withdrawals over a period you choose.",
+    capital: "Available capital",
+    convRate: "Annuity conversion rate",
+    convHint: "Rate offered by the insurer to turn the capital into a monthly annuity (typically 3.5% – 5.5%)",
+    yieldLabel: "Annual return on capital",
+    yieldHint: "For programmed withdrawals: average annual return of the savings (euro fund, unit-linked…)",
+    horizonLabel: "Withdrawal horizon",
+    horizonHint: "Period over which the capital is drawn down (e.g. 25 years = from 65 to 90)",
+    tmiLabel: "Marginal tax rate (French TMI)",
+    tmiHint: "Your current French marginal income tax rate, used to estimate the tax on the income",
+    yrs: " yrs", years: (n) => `${n} years`, perMonth: "/month", perMonthNet: "/month net",
+    annuity: "Life annuity", withdrawal: "Programmed withdrawals", better: "+ better",
+    gross: (v) => `Gross: ${v}/month`,
+    lifetime: "Duration: for life (guaranteed)",
+    duration: (n) => `Duration: ${n} years`,
+    convDetail: (r) => `Conversion rate: ${r}%`,
+    capAt20: (v) => `Capital left at 20 years: ${v}`,
+    exhausted: "Capital used up before 20 years",
+    totalAnnuity: "Total annuity income (20 yrs)",
+    totalWithdrawal: "Total withdrawal income (20 yrs)",
+    breakEven: "Break-even point",
+    breakEvenTitle: (n) => `Break-even point: ${n} years`,
+    breakEvenText1: "The life annuity becomes more advantageous than programmed withdrawals after",
+    breakEvenYears: (n) => `${n} years of retirement`,
+    breakEvenText2: "If you live beyond that point, the annuity will have paid you more in total.",
+    breakEvenBefore: " In your scenario, you reach this point before the withdrawal period ends.",
+    breakEvenAfter: (h) => ` This point falls after the ${h}-year withdrawal horizon — the annuity only wins if you live a very long time.`,
+    cumul20: "Cumulative income over 20 years",
+    withdrawalYears: (n) => `Programmed withdrawals (${n} yrs)`,
+    hlAnnuity: "Net monthly annuity", hlWithdrawal: "Net monthly withdrawal",
+    resAnnuity: "Net life annuity", resWithdrawal: "Net programmed withdrawal", resCapital: "Initial capital",
+    recoTitle: "Build this capital",
+    faq: FAQ_EN,
+  },
+};
+
 export default function RenteCapital() {
   const [theme, setTheme] = useTheme();
   const { locale } = useTranslation();
-  usePageMeta(
-    "Rente viagère vs retrait programmé — simulateur 2026",
-    "Comparez une rente viagère et un retrait programmé sur votre épargne retraite (PER, assurance-vie). Calculez le revenu mensuel net et le point de bascule selon votre espérance de vie."
-  );
+  const txt = TXT[locale] || TXT.fr;
+  const FAQ = txt.faq || PAGE_FAQ;
+  // Euros dans les deux langues (fiscalité française) : « 1 234 € » / « €1,234 ».
+  const money = (n) => new Intl.NumberFormat(locale === "en" ? "en-IE" : "fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(Math.round(n));
+  usePageMeta(txt.metaTitle, txt.metaDesc);
 
   const [capital, setCapital]           = useState(200000);
   const [tauxConversion, setTauxConv]   = useState(TAUX_CONVERSION_DEFAULT);
@@ -95,15 +188,14 @@ export default function RenteCapital() {
   const hasResult = capital > 0;
   const renteGagne = rente.mensuelNet >= retrait.mensuelNet;
 
-  const fmt = n => n.toLocaleString("fr-FR", { maximumFractionDigits: 0 });
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
-        "name": "Simulateur Rente vs Capital — Retraite 2026",
-        "url": "https://www.simfinly.com/simulateurs/rente-capital",
-        "description": "Comparez rente viagère et retrait programmé pour vos économies retraite : mensualités nettes, point de bascule et cumul sur 20 ans selon votre situation fiscale.",
+        "name": txt.ldName,
+        "url": txt.ldUrl,
+        "description": txt.ldDesc,
         "applicationCategory": "FinanceApplication",
         "operatingSystem": "Any",
         "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
@@ -121,18 +213,18 @@ export default function RenteCapital() {
       <main id="main-content" tabIndex={-1} style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon="⚖️"
-          title="Rente viagère ou retrait programmé ?"
-          desc="Comparez deux stratégies de liquidation de votre épargne retraite (PER, assurance-vie) : rente viagère à vie ou retrait programmé sur une durée choisie."
+          title={txt.title}
+          desc={txt.desc}
           category="Retraite"
         />
 
         {/* ── Inputs ── */}
         <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 20, padding: "28px 24px", marginBottom: 20 }}>
-          <NumInput label="Capital disponible" value={capital} onChange={setCapital} unit="€" min={0} max={2000000} id="capital-rente" />
-          <StepperInput label="Taux de conversion rente" value={tauxConversion} onChange={setTauxConv} min={2} max={8} step={0.1} unit=" %" hint="Taux proposé par l'assureur pour convertir le capital en rente mensuelle (indicatif : 3,5 % – 5,5 %)" />
-          <StepperInput label="Rendement annuel du capital" value={rendement} onChange={setRendement} min={0} max={10} step={0.5} unit=" %" hint="Pour le retrait programmé : rendement moyen annuel de l'épargne (fonds €, UC…)" />
-          <StepperInput label="Horizon de retrait programmé" value={horizon} onChange={setHorizon} min={5} max={40} step={1} unit={locale === 'en' ? ' yrs' : ' ans'} hint="Durée sur laquelle épuiser le capital (ex. 25 ans = de 65 à 90 ans)" />
-          <StepperInput label="Tranche marginale d'imposition" value={tmi} onChange={setTmi} min={0} max={45} step={11} unit=" %" hint="Votre TMI actuel, utilisé pour estimer l'imposition des revenus" />
+          <NumInput label={txt.capital} value={capital} onChange={setCapital} unit="€" min={0} max={2000000} id="capital-rente" />
+          <StepperInput label={txt.convRate} value={tauxConversion} onChange={setTauxConv} min={2} max={8} step={0.1} unit=" %" hint={txt.convHint} />
+          <StepperInput label={txt.yieldLabel} value={rendement} onChange={setRendement} min={0} max={10} step={0.5} unit=" %" hint={txt.yieldHint} />
+          <StepperInput label={txt.horizonLabel} value={horizon} onChange={setHorizon} min={5} max={40} step={1} unit={txt.yrs} hint={txt.horizonHint} />
+          <StepperInput label={txt.tmiLabel} value={tmi} onChange={setTmi} min={0} max={45} step={11} unit=" %" hint={txt.tmiHint} />
         </div>
 
         {/* ── Résultats ── */}
@@ -142,33 +234,33 @@ export default function RenteCapital() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 14 }}>
               {[
                 {
-                  label: "Rente viagère",
+                  label: txt.annuity,
                   emoji: "♾️",
                   mensuelNet: rente.mensuelNet,
-                  detail1: `Brut : ${fmtEur(Math.round(rente.mensuelBrut))}/mois`,
-                  detail2: `Durée : à vie (garantie)`,
-                  detail3: `Taux de conversion : ${tauxConversion} %`,
+                  detail1: txt.gross(money(rente.mensuelBrut)),
+                  detail2: txt.lifetime,
+                  detail3: txt.convDetail(tauxConversion),
                   isWinner: renteGagne,
                   color: "#b8934a",
                 },
                 {
-                  label: "Retrait programmé",
+                  label: txt.withdrawal,
                   emoji: "📅",
                   mensuelNet: retrait.mensuelNet,
-                  detail1: `Brut : ${fmtEur(Math.round(retrait.mensuelBrut))}/mois`,
-                  detail2: `Durée : ${horizon} ans`,
-                  detail3: retrait.capitalRestant20 > 0 ? `Capital à 20 ans : ${fmtEur(Math.round(retrait.capitalRestant20))}` : "Capital épuisé avant 20 ans",
+                  detail1: txt.gross(money(retrait.mensuelBrut)),
+                  detail2: txt.duration(horizon),
+                  detail3: retrait.capitalRestant20 > 0 ? txt.capAt20(money(retrait.capitalRestant20)) : txt.exhausted,
                   isWinner: !renteGagne,
                   color: "#3b82f6",
                 },
               ].map(({ label, emoji, mensuelNet, detail1, detail2, detail3, isWinner, color }) => (
                 <div key={label} style={{ background: isWinner ? `${color}14` : "var(--card-bg)", border: `1px solid ${isWinner ? color : "var(--border)"}`, borderRadius: 16, padding: "20px 18px", position: "relative", overflow: "hidden" }}>
-                  {isWinner && <div style={{ position: "absolute", top: 10, right: 12, fontSize: 10, fontWeight: 700, color: textTone(color), letterSpacing: "0.1em", textTransform: "uppercase" }}>+ avantageux</div>}
+                  {isWinner && <div style={{ position: "absolute", top: 10, right: 12, fontSize: 10, fontWeight: 700, color: textTone(color), letterSpacing: "0.1em", textTransform: "uppercase" }}>{txt.better}</div>}
                   <div style={{ fontSize: 11, color: textTone(color), fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
                     {emoji} {label}
                   </div>
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,32px)", fontWeight: 700, color: isWinner ? textTone(color) : "var(--text)", marginBottom: 4 }}>
-                    {fmtEur(Math.round(mensuelNet))}<span style={{ fontSize: 14, fontWeight: 400, color: "var(--text-secondary)" }}>/mois net</span>
+                    {money(mensuelNet)}<span style={{ fontSize: 14, fontWeight: 400, color: "var(--text-secondary)" }}>{txt.perMonthNet}</span>
                   </div>
                   <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
                     <span>{detail1}</span>
@@ -181,22 +273,20 @@ export default function RenteCapital() {
 
             {/* Chips indicateurs */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 14 }}>
-              <Chip label="Total retraite rente (20 ans)" value={fmtEur(Math.round(rente.mensuelNet * 12 * 20))} />
-              <Chip label="Total retraite retrait (20 ans)" value={fmtEur(Math.round(retrait.mensuelNet * 12 * Math.min(20, horizon)))} />
-              {breakEvenYears && <Chip label="Point de bascule" value={`${breakEvenYears} ans`} accent />}
+              <Chip label={txt.totalAnnuity} value={money(rente.mensuelNet * 12 * 20)} />
+              <Chip label={txt.totalWithdrawal} value={money(retrait.mensuelNet * 12 * Math.min(20, horizon))} />
+              {breakEvenYears && <Chip label={txt.breakEven} value={txt.years(breakEvenYears)} accent />}
             </div>
 
             {/* Point de bascule explication */}
             {breakEvenYears && (
               <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "16px 18px", marginBottom: 14 }}>
-                <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 6 }}>Point de bascule : {breakEvenYears} ans</div>
+                <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 6 }}>{txt.breakEvenTitle(breakEvenYears)}</div>
                 <p style={{ margin: 0, fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                  La rente viagère devient plus avantageuse que le retrait programmé à partir de{" "}
-                  <strong style={{ color: "var(--text)" }}>{breakEvenYears} ans de retraite</strong>.
-                  Si vous vivez au-delà de ce point, la rente viagère vous aura procuré plus de revenus cumulés.
-                  {breakEvenYears <= horizon
-                    ? " Dans votre scénario, vous atteignez ce point avant la fin du retrait programmé."
-                    : ` Ce point est après l'horizon de ${horizon} ans du retrait programmé — la rente viagère n'est avantageuse qu'en cas de très grande longévité.`}
+                  {txt.breakEvenText1}{" "}
+                  <strong style={{ color: "var(--text)" }}>{txt.breakEvenYears(breakEvenYears)}</strong>.
+                  {" "}{txt.breakEvenText2}
+                  {breakEvenYears <= horizon ? txt.breakEvenBefore : txt.breakEvenAfter(horizon)}
                 </p>
               </div>
             )}
@@ -204,18 +294,18 @@ export default function RenteCapital() {
             {/* Barre comparative cumulatif sur 20 ans */}
             <div style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 14, padding: "16px 18px", marginBottom: 14 }}>
               <div style={{ fontSize: 12, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 12 }}>
-                Revenus cumulés sur 20 ans
+                {txt.cumul20}
               </div>
               {[
-                { label: "Rente viagère", value: rente.mensuelNet * 12 * 20, color: "#b8934a" },
-                { label: `Retrait programmé (${Math.min(20, horizon)} ans)`, value: retrait.mensuelNet * 12 * Math.min(20, horizon), color: "#3b82f6" },
+                { label: txt.annuity, value: rente.mensuelNet * 12 * 20, color: "#b8934a" },
+                { label: txt.withdrawalYears(Math.min(20, horizon)), value: retrait.mensuelNet * 12 * Math.min(20, horizon), color: "#3b82f6" },
               ].map(({ label, value, color }) => {
                 const maxVal = Math.max(rente.mensuelNet * 12 * 20, retrait.mensuelNet * 12 * Math.min(20, horizon), 1);
                 return (
                   <div key={label} style={{ marginBottom: 10 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
                       <span style={{ color: "var(--text-secondary)" }}>{label}</span>
-                      <span style={{ fontWeight: 700, color: textTone(color) }}>{fmtEur(Math.round(value))}</span>
+                      <span style={{ fontWeight: 700, color: textTone(color) }}>{money(value)}</span>
                     </div>
                     <div style={{ height: 10, borderRadius: 5, background: "var(--surface, rgba(0,0,0,0.06))", overflow: "hidden" }}>
                       <div style={{ height: "100%", borderRadius: 5, background: color, width: `${(value / maxVal) * 100}%`, transition: "width 0.5s ease" }} />
@@ -228,12 +318,12 @@ export default function RenteCapital() {
             <ShareBar
               params={{ capital, tauxConversion, rendement, horizon, tmi }}
               report={{
-                highlight: { label: renteGagne ? "Rente mensuelle nette" : "Retrait mensuel net", value: fmtEur(Math.round(renteGagne ? rente.mensuelNet : retrait.mensuelNet)) + "/mois" },
+                highlight: { label: renteGagne ? txt.hlAnnuity : txt.hlWithdrawal, value: money(renteGagne ? rente.mensuelNet : retrait.mensuelNet) + txt.perMonth },
                 results: [
-                  { label: "Rente viagère nette", value: `${fmtEur(Math.round(rente.mensuelNet))}/mois` },
-                  { label: "Retrait programmé net", value: `${fmtEur(Math.round(retrait.mensuelNet))}/mois` },
-                  ...(breakEvenYears ? [{ label: "Point de bascule", value: `${breakEvenYears} ans` }] : []),
-                  { label: "Capital initial", value: fmtEur(capital) },
+                  { label: txt.resAnnuity, value: `${money(rente.mensuelNet)}${txt.perMonth}` },
+                  { label: txt.resWithdrawal, value: `${money(retrait.mensuelNet)}${txt.perMonth}` },
+                  ...(breakEvenYears ? [{ label: txt.breakEven, value: txt.years(breakEvenYears) }] : []),
+                  { label: txt.resCapital, value: money(capital) },
                 ],
               }}
               name="rente-capital"
@@ -242,10 +332,10 @@ export default function RenteCapital() {
             <SimRecommendations
               items={[
                 { icon: "🏦", label: "Simulez la défiscalisation PER", description: "Le PER permet de constituer ce capital tout en réduisant votre impôt sur le revenu chaque année.", to: "/simulateurs/per", cta: "Simuler le PER →" },
-                { icon: "📈", label: "Simulez votre assurance-vie", description: "L'assurance-vie est souvent le support de ce capital. Estimez sa croissance jusqu'à votre retraite.", to: "/simulateurs/assurance-vie", cta: "Simuler →" },
-                { icon: "🎯", label: "Simulez votre épargne FIRE", description: "Calculez le capital minimum pour vivre de vos intérêts selon la règle des 4 %.", to: "/simulateurs/fire", cta: "Simuler FIRE →" },
+                { icon: "📈", label: "Simulez votre assurance-vie", description: "L'assurance-vie est souvent le support de ce capital. Estimez sa croissance jusqu'à votre retraite.", to: "/simulateurs/assurance-vie", cta: "Simuler →", en: { label: "Simulate your life insurance", description: "French life insurance often holds this capital. Estimate its growth until you retire.", cta: "Simulate →" } },
+                { icon: "🎯", label: "Simulez votre épargne FIRE", description: "Calculez le capital minimum pour vivre de vos intérêts selon la règle des 4 %.", to: "/simulateurs/fire", cta: "Simuler FIRE →", en: { label: "Simulate your FIRE savings", description: "Work out the minimum capital to live off your returns with the 4% rule.", cta: "Simulate FIRE →" } },
               ]}
-              title="Construire ce capital"
+              title={txt.recoTitle}
             />
           </div>
         )}
