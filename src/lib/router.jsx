@@ -4,32 +4,14 @@ export { Link, NavLink, useLocation, useNavigate, useParams } from "react-router
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { localeFromPath, countryFromPath } from "../i18n/config.js";
-import { localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES, QC_ROUTES } from "../i18n/paths.js";
+import { localizedHref } from "../i18n/paths.js";
 
-// Lien interne respectant le contexte pays/langue courant.
-// En Suisse : préfixe /ch/ automatique sur les routes disponibles.
-// En Belgique : préfixe /be/ automatique sur les routes disponibles.
-// Au Luxembourg : préfixe /lu/ automatique sur les routes disponibles.
-// Au Québec : préfixe /qc/ automatique sur les routes disponibles.
-// En anglais  : préfixe /en/ automatique sur les routes disponibles.
+// Lien interne respectant le contexte pays/langue courant : préfixe /en/, /ch/,
+// /be/, /lu/ ou /qc/ automatique quand la route existe dans ce contexte, et
+// préfixe conservé pour les simulateurs propres à un pays (voir localizedHref).
 export function LocaleLink({ to, children, ...props }) {
   const { pathname } = useLocation();
-  const locale = localeFromPath(pathname);
-  const country = countryFromPath(pathname);
-
-  let href = to;
-  if (locale === 'en' && EN_ROUTES.has(to)) {
-    href = localePath(to, 'en');
-  } else if (country === 'ch' && CH_ROUTES.has(to)) {
-    href = countryPath(to, 'ch');
-  } else if (country === 'be' && BE_ROUTES.has(to)) {
-    href = countryPath(to, 'be');
-  } else if (country === 'lu' && LU_ROUTES.has(to)) {
-    href = countryPath(to, 'lu');
-  } else if (country === 'qc' && QC_ROUTES.has(to)) {
-    href = countryPath(to, 'qc');
-  }
-  return <Link to={href} {...props}>{children}</Link>;
+  return <Link to={localizedHref(to, pathname)} {...props}>{children}</Link>;
 }
 
 // Retourne la locale courante (déduite de l'URL : 'fr' ou 'en').

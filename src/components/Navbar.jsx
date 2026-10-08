@@ -176,6 +176,7 @@ const CH_NAV_GROUPS = [
     { path: "/simulateurs/patrimoine",  title: "Patrimoine global",           subtitle: "Financier + immo + retraite" },
     { path: "/simulateurs/comparateur", title: "Comparateur d'actifs",        subtitle: "ETF, actions, crypto…" },
     { path: "/simulateurs/inflation",   title: "Inflation & pouvoir d'achat", subtitle: "Impact sur votre budget" },
+    { path: "/simulateurs/assurance-vie",title: "Assurance-vie",              subtitle: "Rendement & fiscalité" },
     { path: "/simulateurs/credit-conso",title: "Crédit conso",                subtitle: "Mensualité & coût total" },
   ]},
   { id: "immobilier", icon: "🏡", label: "Immobilier", items: [
@@ -183,35 +184,102 @@ const CH_NAV_GROUPS = [
     { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",  subtitle: "Rentabilité nette" },
   ]},
   { id: "vie-temps", icon: "⏳", label: "Vie & Temps", items: [
-    { path: "/simulateurs/cout-en-heures", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+    { path: "/simulateurs/cout-en-heures",  title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+    { path: "/simulateurs/vie-en-semaines", title: "Ma vie en semaines",    subtitle: "Visualiser le temps" },
   ]},
 ];
 
-/* ── Données de navigation EN (universal simulators only) ── */
+/* ── Simulateurs universels communs aux menus Luxembourg et Québec ── */
+const UNIVERSAL_FINANCES = [
+  { path: "/simulateurs/budget",        title: "Budget 50/30/20",             subtitle: "Répartition & épargne" },
+  { path: "/simulateurs/epargne",       title: "Épargne & intérêts composés", subtitle: "Capitalisation long terme" },
+  { path: "/simulateurs/fire",          title: "Indépendance financière",     subtitle: "Règle des 25x / 4%" },
+  { path: "/simulateurs/patrimoine",    title: "Patrimoine global",           subtitle: "Actifs nets" },
+  { path: "/simulateurs/comparateur",   title: "Comparateur d'actifs",        subtitle: "ETF, actions, crypto…" },
+  { path: "/simulateurs/assurance-vie", title: "Assurance-vie",               subtitle: "Rendement & fiscalité" },
+  { path: "/simulateurs/credit-conso",  title: "Crédit conso",                subtitle: "Mensualité & coût total" },
+];
+const UNIVERSAL_IMMO = [
+  { path: "/simulateurs/emprunt-immobilier", title: "Emprunt immobilier", subtitle: "Mensualités & capacité" },
+  { path: "/simulateurs/rendement-locatif",  title: "Rendement locatif",  subtitle: "Rentabilité nette" },
+];
+const UNIVERSAL_VIE_TEMPS = [
+  { path: "/simulateurs/cout-en-heures", title: "Prix en heures de vie", subtitle: "Le vrai coût des choses" },
+];
+
+/* ── Données de navigation Luxembourg ── */
+const LU_NAV_GROUPS = [
+  { id: "retraite", icon: "🏦", label: "Retraite", items: [
+    { path: "/simulateurs/retraite-luxembourg", title: "Retraite Luxembourg", subtitle: "Pension CNAP" },
+  ]},
+  { id: "impots", icon: "📋", label: "Fiscalité", items: [
+    { path: "/simulateurs/impot-revenu-lu", title: "Impôt sur le revenu",  subtitle: "Classes 1, 1a, 2" },
+    { path: "/simulateurs/succession-lu",   title: "Droits de succession", subtitle: "Ligne directe, conjoint" },
+  ]},
+  { id: "finances",   icon: "💰", label: "Finances",    items: UNIVERSAL_FINANCES },
+  { id: "immobilier", icon: "🏡", label: "Immobilier",  items: UNIVERSAL_IMMO },
+  { id: "vie-temps",  icon: "⏳", label: "Vie & Temps", items: UNIVERSAL_VIE_TEMPS },
+];
+
+/* ── Données de navigation Québec ── */
+const QC_NAV_GROUPS = [
+  { id: "retraite", icon: "🏦", label: "Retraite", items: [
+    { path: "/simulateurs/retraite-quebec", title: "Retraite RRQ", subtitle: "Régime de rentes du Québec" },
+  ]},
+  { id: "impots", icon: "📋", label: "Fiscalité", items: [
+    { path: "/simulateurs/impot-revenu-qc", title: "Impôt sur le revenu", subtitle: "Provincial + fédéral" },
+  ]},
+  { id: "finances",   icon: "💰", label: "Finances",    items: UNIVERSAL_FINANCES },
+  { id: "immobilier", icon: "🏡", label: "Immobilier",  items: UNIVERSAL_IMMO },
+  { id: "vie-temps",  icon: "⏳", label: "Vie & Temps", items: UNIVERSAL_VIE_TEMPS },
+];
+
+/* ── Données de navigation EN (simulateurs disponibles en anglais) ── */
 const EN_NAV_GROUPS = [
   { id: "finances", icon: "💰", label: "Finance", items: [
-    { path: "/simulateurs/fire",         title: "FIRE Calculator",       subtitle: "Financial independence" },
-    { path: "/simulateurs/epargne",      title: "Compound Interest",     subtitle: "Savings growth" },
-    { path: "/simulateurs/budget",       title: "50/30/20 Budget",       subtitle: "Needs, wants, savings" },
-    { path: "/simulateurs/patrimoine",   title: "Net Worth",             subtitle: "Wealth tracker" },
-    { path: "/simulateurs/comparateur",  title: "Asset Comparison",      subtitle: "ETFs, stocks, crypto" },
-    { path: "/simulateurs/credit-conso", title: "Personal Loan",         subtitle: "Monthly payment & cost" },
-    { path: "/simulateurs/cout-en-heures",title: "Cost in Work Hours",   subtitle: "True cost of things" },
+    { path: "/simulateurs/fire",          title: "FIRE Calculator",       subtitle: "Financial independence" },
+    { path: "/simulateurs/epargne",       title: "Compound Interest",     subtitle: "Savings growth" },
+    { path: "/simulateurs/budget",        title: "50/30/20 Budget",       subtitle: "Needs, wants, savings" },
+    { path: "/simulateurs/patrimoine",    title: "Net Worth",             subtitle: "Wealth tracker" },
+    { path: "/simulateurs/comparateur",   title: "Asset Comparison",      subtitle: "ETFs, stocks, crypto" },
+    { path: "/simulateurs/assurance-vie", title: "French Life Insurance", subtitle: "Capital & tax" },
+    { path: "/simulateurs/credit-conso",  title: "Personal Loan",         subtitle: "Monthly payment & cost" },
+    { path: "/simulateurs/inflation",     title: "Inflation",             subtitle: "Purchasing power" },
+  ]},
+  { id: "immobilier", icon: "🏡", label: "Real estate", items: [
+    { path: "/simulateurs/emprunt-immobilier", title: "Mortgage",     subtitle: "Monthly payment & capacity" },
+    { path: "/simulateurs/rendement-locatif",  title: "Rental Yield", subtitle: "Buy-to-let profitability" },
+  ]},
+  { id: "retraite", icon: "🏦", label: "Retirement", items: [
+    { path: "/simulateurs/cnav",                title: "French State Pension", subtitle: "CNAV — general scheme" },
+    { path: "/simulateurs/pension-reversion",   title: "Survivor Pension",     subtitle: "Surviving spouse rights" },
+    { path: "/simulateurs/rente-capital",       title: "Annuity vs Withdrawal", subtitle: "Drawdown strategy" },
+    { path: "/simulateurs/retraite-luxembourg", title: "Luxembourg Pension",   subtitle: "Cross-border workers — CNAP" },
+  ]},
+  { id: "impots", icon: "📋", label: "Tax", items: [
+    { path: "/simulateurs/donation", title: "French Gift Tax", subtitle: "Lifetime gifts" },
+  ]},
+  { id: "vie-temps", icon: "⏳", label: "Life & Time", items: [
+    { path: "/simulateurs/cout-en-heures",  title: "Cost in Work Hours", subtitle: "True cost of things" },
+    { path: "/simulateurs/vie-en-semaines", title: "Life in Weeks",      subtitle: "Visualize your time" },
   ]},
   { id: "outils", icon: "🔧", label: "Tools", items: [
     { path: "/outils/qr-code", title: "QR Code Generator", subtitle: "Color, logo, free text" },
   ]},
 ];
 
-// ALL_ITEMS used for "current page" display (FR paths only, EN pages use canonical path)
-const ALL_ITEMS = ALL_ITEMS_FR;
+// Menu de simulateurs adapté au contexte (langue, puis pays) de la page.
+export function navGroupsFor(locale, country) {
+  if (locale === "en") return EN_NAV_GROUPS;
+  return { be: BE_NAV_GROUPS, ch: CH_NAV_GROUPS, lu: LU_NAV_GROUPS, qc: QC_NAV_GROUPS }[country] || NAV_GROUPS;
+}
 
 export default function Navbar({ theme, setTheme }) {
   const { pathname } = useLocation();
   const locale = useLocale();
   const country = useCountry();
   const txt = TXT_NAV[locale] ?? TXT_NAV.fr;
-  const navGroups = locale === 'en' ? EN_NAV_GROUPS : country === 'be' ? BE_NAV_GROUPS : country === 'ch' ? CH_NAV_GROUPS : NAV_GROUPS;
+  const navGroups = navGroupsFor(locale, country);
 
   const { isPro, user } = useAuth();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -230,11 +298,11 @@ export default function Navbar({ theme, setTheme }) {
 
   const canonPath    = useMemo(() => canonicalPath(pathname), [pathname]);
   const showCurrency = useMemo(() => CURRENCY_AWARE_ROUTES.has(canonPath), [canonPath]);
-  const current      = useMemo(() => ALL_ITEMS.find(i => i.path === canonPath), [canonPath]);
+  const current      = useMemo(() => navGroups.flatMap(g => g.items).find(i => i.path === canonPath), [navGroups, canonPath]);
 
   // Liens Guides / Lexique / Blog selon le pays
-  const guidesPath  = country === 'ch' ? '/ch/guides'  : country === 'be' ? '/be/guides'  : '/guides';
-  const lexiquePath = country === 'ch' ? '/ch/lexique' : country === 'be' ? '/be/lexique' : '/lexique';
+  const guidesPath  = country === 'fr' ? '/guides'  : `/${country}/guides`;
+  const lexiquePath = country === 'fr' ? '/lexique' : `/${country}/lexique`;
   const showContent = locale !== 'en';
   const showBlog    = locale !== 'en' && country === 'fr';
 
@@ -597,8 +665,8 @@ export default function Navbar({ theme, setTheme }) {
           >✕</button>
         </div>
 
-        {/* Indicateur de page actuelle (FR paths only) */}
-        {current && locale === 'fr' && (
+        {/* Indicateur de page actuelle (menu du contexte langue/pays) */}
+        {current && (
           <div style={{
             padding: "10px 20px 12px",
             borderBottom: "1px solid var(--border)",

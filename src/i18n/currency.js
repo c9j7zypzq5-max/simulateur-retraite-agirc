@@ -89,8 +89,8 @@ export function guessCountryFromBrowser() {
 // Devise probable du visiteur, déduite côté navigateur SANS appel réseau :
 //  1. région de la/les langue(s) (ex. « en-US » → US) ;
 //  2. sinon, fuseau horaire (ex. « America/New_York » → US) ;
-//  3. sinon, euro.
-export function guessCurrencyFromBrowser() {
+//  3. sinon, `fallback` (euro par défaut).
+export function guessCurrencyFromBrowser(fallback = DEFAULT_CURRENCY) {
   try {
     const langs = (typeof navigator !== 'undefined' && (navigator.languages || [navigator.language])) || [];
     for (const l of langs) {
@@ -102,8 +102,18 @@ export function guessCurrencyFromBrowser() {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
     const cc = TZ_TO_COUNTRY[tz];
     if (cc && COUNTRY_TO_CURRENCY[cc]) return COUNTRY_TO_CURRENCY[cc];
-  } catch { /* environnement sans navigator/Intl : repli euro */ }
-  return DEFAULT_CURRENCY;
+  } catch { /* environnement sans navigator/Intl : repli */ }
+  return fallback;
+}
+
+// Devise à suggérer pour une URL (hors choix explicite de l'utilisateur) :
+// une section pays impose sa devise (/ch → CHF, /qc → CAD, /be et /lu → EUR) ;
+// ailleurs, détection navigateur, avec repli USD sur /en et EUR sur le site FR.
+const CURRENCY_BY_URL_COUNTRY = { ch: 'CHF', qc: 'CAD', be: 'EUR', lu: 'EUR' };
+export function suggestedCurrencyFor(pathname = '') {
+  const seg = String(pathname).split('/')[1];
+  if (CURRENCY_BY_URL_COUNTRY[seg]) return CURRENCY_BY_URL_COUNTRY[seg];
+  return guessCurrencyFromBrowser(seg === 'en' ? 'USD' : DEFAULT_CURRENCY);
 }
 
 // Formate un montant dans la devise donnée. `decimals` force le nombre de

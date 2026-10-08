@@ -156,7 +156,7 @@ ${SECTIONS.map(s => `  <sitemap>
   }
 
   const urls = allUrls.map(u => {
-    const route = u.canonical || u.loc.replace(/^\/(en|ch|be)/, '') || '/';
+    const route = u.canonical || u.loc.replace(/^\/(en|ch|be|lu|qc)(?=\/|$)/, '') || '/';
     const imgTag = imageTagForRoute(route);
     const lastmod = u.lastmod || ROUTE_DATES[route] || SITE_LASTMOD;
     return `  <url>

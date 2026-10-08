@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import BaremeUpdateBadge from "./BaremeUpdateBadge.jsx";
 import { Home, ChevronRight } from "lucide-react";
-import { Link, useLocation } from "../lib/router.jsx";
+import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { useExporting } from "../utils/exportMode.js";
 import { ROUTE_META } from "../../api/_meta.js";
 import AutoLinkText from "./AutoLinkText.jsx";
 import JsonLd from "./JsonLd.jsx";
-import { NAV_GROUPS } from "./Navbar.jsx";
-import { canonicalPath } from "../i18n/paths.js";
+import { navGroupsFor } from "./Navbar.jsx";
+import { canonicalPath, isRouteAvailableIn } from "../i18n/paths.js";
+import { localeFromPath, countryFromPath } from "../i18n/config.js";
 
 // ─── Formatters ───────────────────────────────────────────────────────────────
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -392,23 +393,26 @@ function HeaderBreadcrumb() {
 }
 
 // ─── Chips "Voir aussi" (3 simulateurs du même groupe) ────────────────────────
+// Puisés dans le menu du contexte courant (langue, pays) : uniquement des
+// simulateurs qui existent dans ce contexte, avec leurs libellés localisés.
 function SimulateurVoirAussi() {
   const { pathname } = useLocation();
   const canon = canonicalPath(pathname);
   if (!canon.startsWith('/simulateurs/')) return null;
-  const group = NAV_GROUPS.find(g => g.items.some(i => i.path === canon));
+  const locale = localeFromPath(pathname);
+  const groups = navGroupsFor(locale, countryFromPath(pathname));
+  const group = groups.find(g => g.items.some(i => i.path === canon));
   if (!group) return null;
-  const siblings = group.items.filter(i => i.path !== canon).slice(0, 3);
+  const siblings = group.items
+    .filter(i => i.path !== canon && isRouteAvailableIn(i.path, pathname))
+    .slice(0, 3);
   if (!siblings.length) return null;
-  const countryPrefix = /^\/(ch|be)\//.test(pathname)
-    ? '/' + pathname.split('/')[1]
-    : '';
   return (
-    <div role="navigation" aria-label="Voir aussi" style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
+    <nav aria-label={locale === 'en' ? 'See also' : 'Voir aussi'} style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 16 }}>
       {siblings.map(s => (
-        <Link
+        <LocaleLink
           key={s.path}
-          to={`${countryPrefix}${s.path}`}
+          to={s.path}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 5,
             padding: '4px 12px', borderRadius: 20,
@@ -423,9 +427,9 @@ function SimulateurVoirAussi() {
         >
           <span aria-hidden="true">{s.icon}</span>
           <span>{s.title}</span>
-        </Link>
+        </LocaleLink>
       ))}
-    </div>
+    </nav>
   );
 }
 

@@ -5,6 +5,7 @@ import BackToTop from "./components/BackToTop.jsx";
 import { ACCOUNT_ENABLED } from "./config/features.js";
 import { VideoRecordingProvider } from "./contexts/VideoRecordingContext";
 import { CurrencyProvider, useMoney } from "./i18n/CurrencyContext.jsx";
+import { suggestedCurrencyFor } from "./i18n/currency.js";
 import { AuthProvider } from "./context/AuthProvider.jsx";
 import { ToastProvider } from "./context/ToastContext.jsx";
 import { FiscalProfileProvider } from "./context/FiscalProfileContext.jsx";
@@ -142,15 +143,14 @@ const GuideImmobilier2026    = lazy(() => import("./pages/GuideImmobilier2026.js
 const GuideImpots2026        = lazy(() => import("./pages/GuideImpots2026.jsx"));
 const GuideEpargneFire2026   = lazy(() => import("./pages/GuideEpargneFire2026.jsx"));
 
-// Synchronise la devise suggérée avec le préfixe de locale dans l'URL.
-// Ne remplace pas un choix explicite de l'utilisateur (voir suggestCurrency).
+// Synchronise la devise suggérée avec l'URL (section pays, sinon navigateur),
+// y compris au premier chargement. Ne remplace pas un choix explicite de
+// l'utilisateur (voir suggestCurrency).
 function CurrencyLocaleSync() {
   const { pathname } = useLocation();
   const { suggestCurrency } = useMoney();
   useEffect(() => {
-    if (pathname.startsWith('/en') ) suggestCurrency('USD');
-    else if (pathname.startsWith('/ch')) suggestCurrency('CHF');
-    else suggestCurrency('EUR');
+    suggestCurrency(suggestedCurrencyFor(pathname));
   }, [pathname, suggestCurrency]);
   return null;
 }
@@ -410,6 +410,12 @@ export default function App() {
         <Route path="/s/:id" element={<PublicShare />} />
         <Route path="/simulateurs/trimestres" element={<Trimestres />} />
         <Route path="/simulateurs/succession-ch" element={<SuccessionCH />} />
+        {/* Simulateurs suisses aussi servis à la racine (présents dans le sitemap
+            et le pré-rendu via ROUTE_META, alternatives hreflang fr / x-default
+            des pages /ch/), comme succession-ch ci-dessus. */}
+        <Route path="/simulateurs/lpp-deuxieme-pilier" element={<LppDeuxiemePilier />} />
+        <Route path="/simulateurs/impot-revenu-ch" element={<ImpotRevenuCH />} />
+        <Route path="/simulateurs/prevoyance-ch" element={<PrevoyanceCH />} />
         <Route path="/simulateurs/retraite-luxembourg" element={<RetraiteLU />} />
         {/* Retraite par métier */}
         <Route path="/retraite" element={<RetraiteIndex />} />

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation, useNavigate } from "../lib/router.jsx";
 import { localeFromPath, countryFromPath, COUNTRIES } from "../i18n/config.js";
-import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, luCountryAlternatePath, qcCountryAlternatePath, EN_ROUTES } from "../i18n/paths.js";
+import { canonicalPath, alternatePath, countryAlternatePath, chCountryAlternatePath, luCountryAlternatePath, qcCountryAlternatePath, EN_ROUTES, COUNTRY_ONLY_ROUTES } from "../i18n/paths.js";
 
 const EN_OPTION = { lang: 'en', label: 'English', flag: '🌐' };
 
@@ -21,8 +21,10 @@ export default function CountrySwitch({ compact = false }) {
   // ── Construire les options ──
   const options = [];
 
-  // 🇫🇷 France — toujours disponible (chemin FR canonique)
-  options.push({ code: 'fr', ...COUNTRIES.fr, path: canon === '/' ? '/' : canon, fallback: false });
+  // 🇫🇷 France — chemin FR canonique, sauf simulateur propre à un pays (pas de
+  // version FR : repli sur l'accueil plutôt qu'une 404).
+  const frFallback = !!COUNTRY_ONLY_ROUTES[canon];
+  options.push({ code: 'fr', ...COUNTRIES.fr, path: frFallback ? '/' : canon, fallback: frFallback });
 
   // 🇧🇪 Belgique — exact si route en BE_ROUTES, sinon accueil /be
   const beExact = countryAlternatePath(pathname, 'fr');

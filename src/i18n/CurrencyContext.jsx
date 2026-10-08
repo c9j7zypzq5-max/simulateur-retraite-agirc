@@ -1,7 +1,6 @@
-import { createContext, useContext, useEffect, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo } from 'react';
 import {
-  CURRENCIES, DEFAULT_CURRENCY, guessCurrencyFromBrowser, formatMoney, signMoney,
-  setActiveCurrency,
+  CURRENCIES, DEFAULT_CURRENCY, formatMoney, signMoney, setActiveCurrency,
 } from './currency.js';
 
 const STORAGE_KEY = 'currency';
@@ -9,7 +8,9 @@ const CurrencyCtx = createContext(null);
 
 // Fournit la devise active aux simulateurs universels :
 //  1. préférence enregistrée (localStorage) si présente ;
-//  2. sinon détection côté navigateur (langue + fuseau horaire, sans réseau) ;
+//  2. sinon suggestion selon l'URL (section pays, puis détection navigateur —
+//     voir suggestedCurrencyFor), appliquée à chaque navigation par
+//     CurrencyLocaleSync (App.jsx) via suggestCurrency ;
 //  3. sinon EUR par défaut.
 // Le choix manuel de l'utilisateur est toujours prioritaire et persistant.
 export function CurrencyProvider({ children }) {
@@ -26,12 +27,6 @@ export function CurrencyProvider({ children }) {
   const [userPicked, setUserPicked] = useState(() => {
     try { return Boolean(localStorage.getItem(STORAGE_KEY)); } catch { return false; }
   });
-
-  useEffect(() => {
-    if (userPicked) return; // ne pas écraser un choix manuel / déjà enregistré
-    const detected = guessCurrencyFromBrowser();
-    if (CURRENCIES[detected]) setCurrencyState(detected);
-  }, [userPicked]);
 
   // Met à jour l'état module AVANT le rendu des enfants : les helpers
   // `fmtCur` / `activeSymbol` lisent ainsi la devise courante de façon synchrone.

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES, QC_ROUTES } from '../i18n/paths.js';
+import { canonicalPath, localePath, countryPath, EN_ROUTES, BE_ROUTES, CH_ROUTES, LU_ROUTES, QC_ROUTES, COUNTRY_ONLY_ROUTES } from '../i18n/paths.js';
 
 const SITE = 'https://www.simfinly.com';
 
@@ -14,6 +14,10 @@ export default function HreflangTags() {
     document.querySelectorAll('link[rel="alternate"][hreflang]').forEach(el => el.remove());
 
     const canon = canonicalPath(pathname);
+    // Simulateur propre à un pays : aucune autre version (ni FR racine ni
+    // autre langue) → pas de hreflang, sinon fr / x-default pointeraient vers
+    // une URL inexistante.
+    if (COUNTRY_ONLY_ROUTES[canon]) return;
     const hasEN = EN_ROUTES.has(canon);
     const hasBE = BE_ROUTES.has(canon);
     const hasCH = CH_ROUTES.has(canon);

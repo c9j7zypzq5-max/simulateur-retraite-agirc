@@ -12,7 +12,7 @@ import { COMPARATIFS, COMPARATIFS_BY_SLUG } from '../src/data/comparatifs.js';
 import { FAQS } from '../src/data/faqs.js';
 import { BAREMES_DATES } from '../src/data/baremesDates.js';
 import { SEO_CONTENT } from './_seo.js';
-import { EN_PATH_MAP } from '../src/i18n/paths.js';
+import { EN_PATH_MAP, COUNTRY_ONLY_ROUTES } from '../src/i18n/paths.js';
 
 
 // Configuration i18n côté build (miroir de src/i18n/config.js). Le français est
@@ -269,6 +269,9 @@ export function routeMeta(route, locale = 'fr', country = 'fr') {
 // Émet toutes les variantes disponibles (fr, en, fr-CH, fr-BE, x-default) afin
 // que Google comprenne le maillage international sans exécuter JavaScript.
 export function hreflangLinks(route) {
+  // Simulateur propre à un pays (ex. impôt LU) : pas d'autre version, donc pas
+  // de hreflang (fr / x-default pointeraient vers une URL racine inexistante).
+  if (COUNTRY_ONLY_ROUTES[route]) return '';
   const links = [];
   const fr = `${BASE}${route === '/' ? '/' : route}`;
   links.push(`<link rel="alternate" hreflang="fr" href="${fr}" />`);

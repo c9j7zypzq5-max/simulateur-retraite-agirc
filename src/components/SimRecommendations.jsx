@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { LocaleLink } from "../lib/router.jsx";
 
 /**
  * Displays 2-4 contextual "next step" recommendations after a simulation.
@@ -20,7 +20,7 @@ export default function SimRecommendations({ items, title }) {
       </h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {items.map((item, i) => (
-          <Link
+          <LocaleLink
             key={i}
             to={item.to}
             style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 14, background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 12, padding: "12px 16px", transition: "border-color 0.15s, transform 0.15s" }}
@@ -35,7 +35,7 @@ export default function SimRecommendations({ items, title }) {
             <span style={{ fontSize: 12, color: "var(--gold)", fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0 }}>
               {item.cta ?? "Simuler →"}
             </span>
-          </Link>
+          </LocaleLink>
         ))}
       </div>
     </div>

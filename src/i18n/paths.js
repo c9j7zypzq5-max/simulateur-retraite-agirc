@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE } from './config.js';
+import { DEFAULT_LOCALE, localeFromPath, countryFromPath } from './config.js';
 
 // Mapping : chemin canonique FR → segment URL anglais (après /en).
 // Source de vérité pour les deux sens de la traduction d'URL.
@@ -149,6 +149,43 @@ export const QC_ROUTES = new Set([
   '/qc/guides',
   '/qc/lexique',
 ]);
+
+// Simulateurs propres à un pays, servis UNIQUEMENT sous leur préfixe (aucune
+// route racine dans App.jsx) : un lien vers eux depuis un autre contexte (FR,
+// EN, autre pays) doit conserver ce préfixe, sinon il mène à une 404. Ils n'ont
+// pas non plus d'alternative FR pour les balises hreflang.
+export const COUNTRY_ONLY_ROUTES = {
+  '/simulateurs/impot-revenu-lu': 'lu',
+  '/simulateurs/succession-lu':   'lu',
+  '/simulateurs/retraite-quebec': 'qc',
+  '/simulateurs/impot-revenu-qc': 'qc',
+};
+
+const COUNTRY_ROUTE_SETS = { be: BE_ROUTES, ch: CH_ROUTES, lu: LU_ROUTES, qc: QC_ROUTES };
+
+// La route canonique `to` existe-t-elle dans le contexte (langue/pays) de la
+// page `pathname` ? Sert à ne proposer que des liens pertinents (ex. pas le PTZ
+// français sur une page belge).
+export function isRouteAvailableIn(to, pathname) {
+  if (localeFromPath(pathname) === 'en') return EN_ROUTES.has(to);
+  const country = countryFromPath(pathname);
+  if (country !== 'fr') return COUNTRY_ROUTE_SETS[country].has(to);
+  return !COUNTRY_ONLY_ROUTES[to];
+}
+
+// Résout le href d'un lien interne (route canonique FR) selon la page courante :
+// version anglaise ou pays quand elle existe, sinon version FR — sauf pour les
+// simulateurs propres à un pays, qui gardent toujours leur préfixe.
+// localizedHref('/simulateurs/epargne', '/be/simulateurs/fire')     → '/be/simulateurs/epargne'
+// localizedHref('/simulateurs/ptz', '/be/simulateurs/fire')         → '/simulateurs/ptz'
+// localizedHref('/simulateurs/impot-revenu-lu', '/simulateurs/cnav') → '/lu/simulateurs/impot-revenu-lu'
+export function localizedHref(to, pathname) {
+  if (localeFromPath(pathname) === 'en' && EN_ROUTES.has(to)) return localePath(to, 'en');
+  const country = countryFromPath(pathname);
+  if (country !== 'fr' && COUNTRY_ROUTE_SETS[country].has(to)) return countryPath(to, country);
+  const home = COUNTRY_ONLY_ROUTES[to];
+  return home ? countryPath(to, home) : to;
+}
 
 // Retourne le chemin localisé EN pour une route canonique FR.
 // localePath('/simulateurs/epargne', 'en') → '/en/simulators/savings'
