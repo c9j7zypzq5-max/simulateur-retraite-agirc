@@ -123,6 +123,7 @@ export default function PrevoyanceCH() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -177,7 +178,7 @@ export default function PrevoyanceCH() {
                     }}
                   >
                     <div style={{ fontWeight: statut === opt.value ? 600 : 400 }}>{opt.label}</div>
-                    <div style={{ fontSize: 11, opacity: 0.7 }}>{opt.desc}</div>
+                    <div style={{ fontSize: 11 }}>{opt.desc}</div>
                   </button>
                 ))}
               </div>
@@ -247,7 +248,7 @@ export default function PrevoyanceCH() {
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                 Économie fiscale cumulée
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 700, color: "#22c55e" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 700, color: "var(--txt-green)" }}>
                 {fmtCHF(animEconomie)}
               </div>
               <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6 }}>
@@ -291,8 +292,8 @@ export default function PrevoyanceCH() {
               </div>
               {[
                 { num: "1", label: "AVS / AI", desc: "Rente d'État obligatoire", color: "var(--primary)" },
-                { num: "2", label: "LPP (2e pilier)", desc: "Caisse de pension professionnelle", color: "#f59e0b" },
-                { num: "3a", label: "3e pilier lié (ce simulateur)", desc: "Déductible fiscalement, bloqué", color: "#22c55e" },
+                { num: "2", label: "LPP (2e pilier)", desc: "Caisse de pension professionnelle", color: "var(--txt-amber)" },
+                { num: "3a", label: "3e pilier lié (ce simulateur)", desc: "Déductible fiscalement, bloqué", color: "var(--txt-green)" },
               ].map(p => (
                 <div key={p.num} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <div style={{ minWidth: 28, height: 22, borderRadius: 6, background: p.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, padding: "0 4px" }}>
@@ -327,6 +328,7 @@ export default function PrevoyanceCH() {
           </p>
         </AccordionSection>
       </div>
+      </main>
       <Footer />
     </div>
   );

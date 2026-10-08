@@ -97,6 +97,7 @@ export default function Lexique() {
       `}</style>
 
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 80px" }}>
 
@@ -183,6 +184,7 @@ export default function Lexique() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -78,7 +78,7 @@ export default function Trimestres() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 860, margin: "0 auto", padding: "0 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 860, margin: "0 auto", padding: "0 20px 80px" }}>
         <SimulateurHeader
           icon="📅"
           badge="Durée d'assurance · Réforme 2023"
@@ -115,7 +115,7 @@ export default function Trimestres() {
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 10 }}>
                 <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 13, color: "var(--text-secondary)" }}>Progression</span>
                 <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color }}>
-                  {result.total} <span style={{ fontSize: 15, opacity: 0.6 }}>/ {result.requis}</span>
+                  {result.total} <span style={{ fontSize: 15, color: "var(--text-secondary)" }}>/ {result.requis}</span>
                 </span>
               </div>
               <div style={{ height: 10, background: "var(--border)", borderRadius: 5, overflow: "hidden" }}>
@@ -135,7 +135,7 @@ export default function Trimestres() {
               <div key={i} style={{ background: "var(--card)", borderRadius: 12, padding: "16px 20px", border: "1px solid var(--border)", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>{s.label}</div>
-                  {s.note && <div style={{ fontSize: 11, color: "var(--text-secondary)", opacity: 0.7 }}>{s.note}</div>}
+                  {s.note && <div style={{ fontSize: 11, color: "var(--text-secondary)" }}>{s.note}</div>}
                 </div>
                 <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: s.color || "var(--primary)" }}>
                   {s.value}

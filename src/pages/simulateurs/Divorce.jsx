@@ -130,7 +130,7 @@ function Row({ label, value, highlight, negative }) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "9px 0", borderBottom: "1px solid var(--border)", fontSize: 13 }}>
       <span style={{ color: highlight ? "var(--text)" : "var(--text-secondary)" }}>{label}</span>
-      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: highlight ? 700 : 500, color: negative ? "#ef4444" : highlight ? "var(--text)" : "var(--text-secondary)" }}>
+      <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: highlight ? 700 : 500, color: negative ? "var(--txt-red)" : highlight ? "var(--text)" : "var(--text-secondary)" }}>
         {value}
       </span>
     </div>
@@ -171,6 +171,7 @@ export default function Divorce() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Divorce 2026", url: "https://www.simfinly.com/simulateurs/divorce", description: "Estimez le partage du patrimoine et la pension alimentaire en cas de divorce.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -328,7 +329,7 @@ export default function Divorce() {
               {res.pcEligible ? (
                 <>
                   <div style={{ textAlign: "center", padding: "14px 0 18px" }}>
-                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 700, color: "#f59e0b" }}>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 700, color: "var(--txt-amber)" }}>
                       {fmtEur(Math.round(animPC))}
                     </div>
                     <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4 }}>
@@ -364,7 +365,7 @@ export default function Divorce() {
               )}
               <div style={{ marginTop: 12, padding: "12px 14px", borderRadius: 10, background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.15)" }}>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Total frais estimés</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "#ef4444" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--txt-red)" }}>
                   {fmtEur(Math.round(animFrais))}
                 </div>
               </div>
@@ -397,6 +398,7 @@ export default function Divorce() {
 
         <ShareBar url={shareUrl} title="Estimation financière divorce" />
       </div>
+      </main>
       <Footer />
     </div>
   );

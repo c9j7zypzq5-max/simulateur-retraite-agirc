@@ -97,7 +97,7 @@ export default function ScenarioCompare({ name, fields, base, compute, metrics, 
           return (
             <div key={m.label} style={{ padding: "12px 14px", borderRadius: 12, textAlign: "center", background: good ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${good ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
               <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{m.label} (B − A)</div>
-              <strong style={{ fontSize: 16, color: good ? "#22c55e" : "#ef4444" }}>{d >= 0 ? "+" : "−"}{m.fmt(Math.abs(d))}</strong>
+              <strong style={{ fontSize: 16, color: good ? "var(--txt-green)" : "var(--txt-red)" }}>{d >= 0 ? "+" : "−"}{m.fmt(Math.abs(d))}</strong>
             </div>
           );
         })}

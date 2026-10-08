@@ -421,9 +421,9 @@ function Particles() {
 
 function BadgePill({ type, txt }) {
   const styles = {
-    popular: { bg: "rgba(184,147,74,0.12)", color: "var(--gold)", border: "1px solid rgba(184,147,74,0.35)" },
-    updated: { bg: "rgba(99,102,241,0.12)",  color: "#818cf8",    border: "1px solid rgba(99,102,241,0.25)" },
-    new:     { bg: "rgba(34,197,94,0.12)",   color: "#4ade80",    border: "1px solid rgba(34,197,94,0.25)" },
+    popular: { bg: "rgba(184,147,74,0.12)", color: "var(--gold-mid)", border: "1px solid rgba(184,147,74,0.35)" },
+    updated: { bg: "rgba(99,102,241,0.12)",  color: "var(--txt-indigo)",    border: "1px solid rgba(99,102,241,0.25)" },
+    new:     { bg: "rgba(34,197,94,0.12)",   color: "var(--txt-green)",    border: "1px solid rgba(34,197,94,0.25)" },
   };
   const labels = { popular: txt.badgePopular, updated: txt.badgeUpdated, new: txt.badgeNew };
   const s = styles[type] || {};
@@ -579,6 +579,7 @@ export default function Home() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", overflowX: "clip" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       {/* ── Hero ── */}
       <section className="hero-section" style={{ padding: "72px 24px 56px", textAlign: "center", maxWidth: 860, margin: "0 auto", position: "relative" }}>
@@ -659,10 +660,12 @@ export default function Home() {
 
       {/* ── Grid ── */}
       <section className="home-pad" style={{ maxWidth: 1280, margin: "0 auto 0", padding: "0 24px 64px" }}>
-        <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
+        {/* Vrai titre de section (h2) : les cartes sont en h3 — structure de titres
+            continue pour les lecteurs d'écran et la navigation par titres. */}
+        <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "var(--text)", marginBottom: 24, display: "flex", alignItems: "center", gap: 12 }}>
           {txt.gridTitle}
-          <div style={{ flex: 1, height: 1, background: "var(--border)" }} />
-        </div>
+          <span aria-hidden="true" style={{ flex: 1, height: 1, background: "var(--border)" }} />
+        </h2>
 
         <div className="sim-grid">
           {allCards.map((sim, index) => (
@@ -765,6 +768,7 @@ export default function Home() {
         </section>
       )}
 
+      </main>
       <Footer />
     </div>
   );

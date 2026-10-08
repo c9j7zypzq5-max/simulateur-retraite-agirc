@@ -323,6 +323,7 @@ export default function Cnavpl() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -583,7 +584,7 @@ export default function Cnavpl() {
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
                     {res.decote > 0 && (
-                      <span style={{ color: "#f87171" }}>
+                      <span style={{ color: "var(--txt-red)" }}>
                         Décote −{(res.decote * 100).toFixed(2)} % ({Math.min(res.trimestresManquants, 20)} trim. × 0,625 %)
                       </span>
                     )}
@@ -723,10 +724,10 @@ export default function Cnavpl() {
 
         <FaqSection items={FAQ} title="Questions fréquentes — CNAVPL" />
         <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-          Plus d'infos : <a href="https://www.cipav-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+          Plus d'infos : <a href="https://www.cipav-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>
             cipav-retraite.fr
           </a>{" "}
-          · <a href="https://www.lassuranceretraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+          · <a href="https://www.lassuranceretraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>
             lassuranceretraite.fr
           </a>
         </p>
@@ -736,6 +737,7 @@ export default function Cnavpl() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

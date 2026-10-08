@@ -26,6 +26,7 @@ export default function NotFound() {
   return (
     <div style={{ minHeight: "100vh", background: "#0F1828", fontFamily: "'Hanken Grotesk', sans-serif", color: "white" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 640, margin: "0 auto", padding: "60px 16px 80px", textAlign: "center" }}>
         <div style={{ fontSize: 80, fontFamily: "'Space Grotesk', sans-serif", fontWeight: 700, color: "white", lineHeight: 1 }}>404</div>
@@ -57,6 +58,7 @@ export default function NotFound() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

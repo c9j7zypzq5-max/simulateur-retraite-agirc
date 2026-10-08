@@ -8,6 +8,7 @@ import Navbar from "../../components/Navbar.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import { NumInput, FaqSection } from "../../components/ui.jsx";
+import { textTone } from "../../utils/textTone.js";
 import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
@@ -256,7 +257,7 @@ function Gauge({ label, value, total, color, icon, pctLabel }) {
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: "0.85rem" }}>
         <span style={{ color: "var(--text)", fontWeight: 500 }}>{icon} {label}</span>
-        <span style={{ color, fontWeight: 600 }}>{fmtCur(Math.round(value))}</span>
+        <span style={{ color: textTone(color), fontWeight: 600 }}>{fmtCur(Math.round(value))}</span>
       </div>
       <div style={{ height: 8, borderRadius: 4, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
         <div style={{
@@ -339,7 +340,7 @@ function MotivationMessage({ tauxEpargne, txt }) {
       opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(8px)",
       transition: "opacity 0.4s ease, transform 0.4s ease", position: "relative", overflow: "hidden",
     }}>
-      <div style={{ fontSize: "0.88rem", fontWeight: 600, color, marginBottom: 6 }}>{icon} {titre}</div>
+      <div style={{ fontSize: "0.88rem", fontWeight: 600, color: textTone(color), marginBottom: 6 }}>{icon} {titre}</div>
       <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)", lineHeight: 1.6 }}>{conseil}</div>
     </div>
   );
@@ -418,6 +419,7 @@ export default function Budget() {
         "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       {/* ── Header ── */}
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
@@ -479,7 +481,7 @@ export default function Budget() {
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.82rem" }}>
                         <span style={{ color: "var(--text)", fontWeight: 500 }}>{s.label}</span>
-                        <span style={{ color: s.color, fontWeight: 600 }}>{fmtCur(Math.round(s.value))}</span>
+                        <span style={{ color: textTone(s.color), fontWeight: 600 }}>{fmtCur(Math.round(s.value))}</span>
                       </div>
                       <div style={{ fontSize: "0.73rem", color: "var(--text-secondary)" }}>{s.pct.toFixed(1)} {txt.pctRevenu}</div>
                     </div>
@@ -500,7 +502,7 @@ export default function Budget() {
 
             <div style={{ marginTop: 20, padding: "14px 16px", borderRadius: 10, background: "rgba(43,92,230,0.05)", border: "1px solid var(--border)" }}>
               <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: 4 }}>{txt.solde}</div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "#4ade80" : "#f87171" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "1.6rem", fontWeight: 700, color: (res?.epargneReel ?? 0) >= 0 ? "var(--txt-green)" : "var(--txt-red)" }}>
                 {res ? (res.epargneReel >= 0 ? "+" : "") + fmtCur(Math.round(animEpargne)) : "—"}
               </div>
             </div>
@@ -519,6 +521,7 @@ export default function Budget() {
 
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

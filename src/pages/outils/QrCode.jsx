@@ -270,6 +270,7 @@ export default function QrCode() {
         "mainEntity": txt.faq.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "0 16px 60px" }}>
         <SimulateurHeader
@@ -308,14 +309,14 @@ export default function QrCode() {
                   <label style={labelStyle} htmlFor="qr-fg">{txt.labelFg}</label>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <input id="qr-fg" type="color" value={fg} onChange={e => setFg(e.target.value)} style={{ width: 42, height: 38, border: "1px solid var(--border)", borderRadius: 8, background: "none", cursor: "pointer", padding: 2 }} />
-                    <input value={fg} onChange={e => setFg(e.target.value)} style={{ ...field, fontFamily: "monospace" }} />
+                    <input aria-label={`${txt.labelFg} (hex)`} value={fg} onChange={e => setFg(e.target.value)} style={{ ...field, fontFamily: "monospace" }} />
                   </div>
                 </div>
                 <div style={{ flex: 1 }}>
                   <label style={labelStyle} htmlFor="qr-bg">{txt.labelBg}</label>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <input id="qr-bg" type="color" value={bg} onChange={e => setBg(e.target.value)} style={{ width: 42, height: 38, border: "1px solid var(--border)", borderRadius: 8, background: "none", cursor: "pointer", padding: 2 }} />
-                    <input value={bg} onChange={e => setBg(e.target.value)} style={{ ...field, fontFamily: "monospace" }} />
+                    <input aria-label={`${txt.labelBg} (hex)`} value={bg} onChange={e => setBg(e.target.value)} style={{ ...field, fontFamily: "monospace" }} />
                   </div>
                 </div>
               </div>
@@ -398,7 +399,7 @@ export default function QrCode() {
               <div style={{ display: "inline-block", padding: 12, borderRadius: 14, background: "var(--input-bg)", border: "1px solid var(--border)", width: "100%", maxWidth: 284, boxSizing: "border-box" }}>
                 <canvas ref={canvasRef} style={{ width: "100%", aspectRatio: "1 / 1", display: "block", borderRadius: 6 }} />
               </div>
-              {error && <div style={{ marginTop: 12, fontSize: 12, color: "#ef4444" }}>{error}</div>}
+              {error && <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-red)" }}>{error}</div>}
               <button onClick={download} disabled={!!error}
                 style={{ width: "100%", marginTop: 16, padding: "13px 20px", borderRadius: 12, cursor: error ? "not-allowed" : "pointer",
                   background: error ? "var(--input-bg)" : "linear-gradient(135deg,var(--gold),var(--gold-mid))",
@@ -432,6 +433,7 @@ export default function QrCode() {
 
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      </main>
       <Footer />
     </div>
   );

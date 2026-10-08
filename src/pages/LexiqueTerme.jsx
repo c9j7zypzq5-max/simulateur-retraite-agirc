@@ -11,12 +11,12 @@ import { ROUTE_META } from "../../api/_meta.js";
 import { GLOSSARY_BY_SLUG } from "../data/glossaire.js";
 
 const CATEGORY_COLORS = {
-  "FIRE":       { bg: "rgba(239,68,68,0.1)",   color: "#ef4444",  border: "rgba(239,68,68,0.25)" },
-  "Finances":   { bg: "rgba(34,197,94,0.1)",   color: "#22c55e",  border: "rgba(34,197,94,0.25)" },
-  "Retraite":   { bg: "rgba(99,102,241,0.1)",  color: "#818cf8",  border: "rgba(99,102,241,0.25)" },
-  "Immobilier": { bg: "rgba(168,85,247,0.1)",  color: "#a855f7",  border: "rgba(168,85,247,0.25)" },
-  "Impôts":     { bg: "rgba(249,115,22,0.1)",  color: "#f97316",  border: "rgba(249,115,22,0.25)" },
-  "Budget":     { bg: "rgba(20,184,166,0.1)",  color: "#14b8a6",  border: "rgba(20,184,166,0.25)" },
+  "FIRE":       { bg: "rgba(239,68,68,0.1)",   color: "var(--txt-red)",  border: "rgba(239,68,68,0.25)" },
+  "Finances":   { bg: "rgba(34,197,94,0.1)",   color: "var(--txt-green)",  border: "rgba(34,197,94,0.25)" },
+  "Retraite":   { bg: "rgba(99,102,241,0.1)",  color: "var(--txt-indigo)",  border: "rgba(99,102,241,0.25)" },
+  "Immobilier": { bg: "rgba(168,85,247,0.1)",  color: "var(--txt-purple)",  border: "rgba(168,85,247,0.25)" },
+  "Impôts":     { bg: "rgba(249,115,22,0.1)",  color: "var(--txt-orange)",  border: "rgba(249,115,22,0.25)" },
+  "Budget":     { bg: "rgba(20,184,166,0.1)",  color: "var(--txt-teal)",  border: "rgba(20,184,166,0.25)" },
 };
 
 function simLabel(path) {
@@ -87,6 +87,7 @@ export default function LexiqueTerme() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       {faqLd && <JsonLd data={faqLd} />}
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 16px 80px" }}>
 
@@ -225,6 +226,7 @@ export default function LexiqueTerme() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

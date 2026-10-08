@@ -17,6 +17,7 @@ import {
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { textTone } from "../../utils/textTone.js";
 
 // ─── Barème IR 2026 (revenus 2025) ───────────────────────────────────────────
 const BAREME = [
@@ -129,8 +130,8 @@ function toParams(v) {
 function ResultCol({ title, color, accent, rows, netMensuel, tmi, animNet }) {
   return (
     <div style={{ flex: 1, minWidth: 0, background: "var(--card-bg)", border: `1.5px solid ${accent}`, borderRadius: 18, padding: "20px 18px", display: "flex", flexDirection: "column", gap: 10 }}>
-      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color, marginBottom: 4 }}>{title}</div>
-      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 800, color }}>{fmtEur(animNet)}</div>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 14, fontWeight: 700, color: textTone(color), marginBottom: 4 }}>{title}</div>
+      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 32, fontWeight: 800, color: textTone(color) }}>{fmtEur(animNet)}</div>
       <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>/ mois net disponible</div>
       <div style={{ height: 1, background: "var(--border)", margin: "8px 0" }} />
       {rows.map(([label, val, highlight]) => (
@@ -139,7 +140,7 @@ function ResultCol({ title, color, accent, rows, netMensuel, tmi, animNet }) {
           <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: highlight ? 600 : 400 }}>{val}</span>
         </div>
       ))}
-      <div style={{ marginTop: 8, padding: "8px 10px", borderRadius: 8, background: color === "#22c55e" ? "rgba(34,197,94,0.08)" : "rgba(239,68,68,0.08)", fontSize: 12, color }}>
+      <div style={{ marginTop: 8, padding: "8px 10px", borderRadius: 8, background: color === "#22c55e" ? "rgba(34,197,94,0.08)" : "rgba(239,68,68,0.08)", fontSize: 12, color: textTone(color) }}>
         TMI : {(tmi * 100).toFixed(0)} %
       </div>
     </div>
@@ -179,6 +180,7 @@ export default function FreelanceVsSalarie() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Freelance vs Salarié 2026", url: "https://www.simfinly.com/simulateurs/freelance-vs-salarie", description: "Comparez le net disponible entre salarié, micro-entreprise et portage salarial.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -338,9 +340,9 @@ export default function FreelanceVsSalarie() {
             <tbody>
               {[
                 { label: "Salarié",           base: brut, res: resSalarie,  color: "var(--primary)" },
-                { label: "Micro-BIC services", base: ca,  res: resMicroBic, color: "#f59e0b" },
-                { label: "Micro-BNC libéral",  base: ca,  res: resMicroBnc, color: "#a855f7" },
-                { label: "Portage salarial",   base: ca,  res: resPortage,  color: "#22c55e" },
+                { label: "Micro-BIC services", base: ca,  res: resMicroBic, color: "var(--txt-amber)" },
+                { label: "Micro-BNC libéral",  base: ca,  res: resMicroBnc, color: "var(--txt-purple)" },
+                { label: "Portage salarial",   base: ca,  res: resPortage,  color: "var(--txt-green)" },
               ].map(({ label, base, res, color }) => {
                 const best = Math.max(resSalarie.netFinal, resMicroBic.netFinal, resMicroBnc.netFinal, resPortage.netFinal);
                 const isBest = Math.round(res.netFinal) === Math.round(best);
@@ -382,6 +384,7 @@ export default function FreelanceVsSalarie() {
 
         <ShareBar url={shareUrl} title="Comparaison Freelance vs Salarié" />
       </div>
+      </main>
       <Footer />
     </div>
   );

@@ -13,6 +13,7 @@ import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } fr
 
 import { FAQS } from '../../data/faqs.js';
 import { INFLATION_HISTORY, CATEGORIES, calcInflation } from '../../utils/calcInflation.js';
+import { textTone } from "../../utils/textTone.js";
 
 const FAQ = FAQS['/simulateurs/inflation'];
 
@@ -67,7 +68,7 @@ export default function Inflation() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon="📈"
           title="Inflation & pouvoir d'achat personnalisé"
@@ -95,6 +96,7 @@ export default function Inflation() {
                     <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 3 }}>Part du budget</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                       <input type="number" min={0} max={100} step={1}
+                        aria-label={`${c.label} — part du budget (%)`}
                         value={rates[c.key]?.share ?? c.defaultShare}
                         onChange={e => setShare(c.key, e.target.value)}
                         style={{ width: 60, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 16, textAlign: "right" }}
@@ -106,6 +108,7 @@ export default function Inflation() {
                     <div style={{ fontSize: 10, color: "var(--text-secondary)", marginBottom: 3 }}>Inflation /an</div>
                     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                       <input type="number" min={0} max={20} step={0.1}
+                        aria-label={`${c.label} — inflation annuelle (%)`}
                         value={rates[c.key]?.rate ?? c.defaultRate}
                         onChange={e => setRate(c.key, e.target.value)}
                         style={{ width: 60, padding: "4px 6px", borderRadius: 6, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontFamily: "inherit", fontSize: 16, textAlign: "right" }}
@@ -127,11 +130,11 @@ export default function Inflation() {
               <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-secondary)", marginBottom: 6 }}>
                 Budget nécessaire dans {horizon} ans pour le même niveau de vie
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px,6vw,40px)", fontWeight: 700, color: lossColor }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(28px,6vw,40px)", fontWeight: 700, color: textTone(lossColor) }}>
                 {fmtEur(Math.round(result.budgetNeeded))}/mois
               </div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>
-                soit <strong style={{ color: lossColor }}>+{fmt(result.budgetNeeded - budget)} €/mois</strong> de plus qu'aujourd'hui — taux d'inflation moyen pondéré : {result.avgRate.toFixed(2)} %/an
+                soit <strong style={{ color: textTone(lossColor) }}>+{fmt(result.budgetNeeded - budget)} €/mois</strong> de plus qu'aujourd'hui — taux d'inflation moyen pondéré : {result.avgRate.toFixed(2)} %/an
               </div>
             </div>
 
@@ -158,7 +161,7 @@ export default function Inflation() {
                   <div key={c.key} style={{ marginBottom: 10 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
                       <span style={{ color: "var(--text-secondary)" }}>{c.icon} {c.label}</span>
-                      <span style={{ fontWeight: 700, color: barColor }}>+{fmtEur(Math.round(catLoss))}/mois dans {horizon} ans</span>
+                      <span style={{ fontWeight: 700, color: textTone(barColor) }}>+{fmtEur(Math.round(catLoss))}/mois dans {horizon} ans</span>
                     </div>
                     <div style={{ height: 8, borderRadius: 4, background: "var(--surface, rgba(0,0,0,0.06))", overflow: "hidden" }}>
                       <div style={{ height: "100%", borderRadius: 4, background: barColor, width: `${Math.min(100, pct / 8 * 100)}%`, transition: "width 0.4s ease" }} />
@@ -177,7 +180,7 @@ export default function Inflation() {
                 {INFLATION_HISTORY.map(({ year, rate }) => (
                   <div key={year} style={{ textAlign: "center", padding: "6px 10px", borderRadius: 8, background: rate > 3 ? "rgba(239,68,68,0.1)" : rate > 1.5 ? "rgba(184,147,74,0.1)" : "rgba(34,197,94,0.1)", border: `1px solid ${rate > 3 ? "rgba(239,68,68,0.3)" : rate > 1.5 ? "rgba(184,147,74,0.3)" : "rgba(34,197,94,0.3)"}` }}>
                     <div style={{ fontSize: 10, color: "var(--text-secondary)" }}>{year}</div>
-                    <div style={{ fontSize: 14, fontWeight: 700, color: rate > 3 ? "#ef4444" : rate > 1.5 ? "var(--gold)" : "#22c55e" }}>{rate} %</div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: rate > 3 ? "var(--txt-red)" : rate > 1.5 ? "var(--gold)" : "var(--txt-green)" }}>{rate} %</div>
                   </div>
                 ))}
               </div>

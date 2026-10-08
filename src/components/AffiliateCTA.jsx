@@ -104,7 +104,7 @@ export default function AffiliateCTA({ type }) {
           </a>
         ))}
       </div>
-      <div style={{ marginTop: 8, fontSize: 10, color: "var(--text-secondary)", opacity: 0.55 }}>
+      <div style={{ marginTop: 8, fontSize: 11, color: "var(--text-secondary)" }}>
         Liens commerciaux · Simfinly peut percevoir une rémunération si vous souscrivez via ces liens · Cela ne modifie pas notre analyse
       </div>
     </div>

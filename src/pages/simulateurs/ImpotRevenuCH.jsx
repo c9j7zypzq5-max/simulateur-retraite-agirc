@@ -160,6 +160,7 @@ export default function ImpotRevenuCH() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -231,6 +232,7 @@ export default function ImpotRevenuCH() {
             <div style={{ marginBottom: 20 }}>
               <div style={{ fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>Canton de domicile</div>
               <select
+                aria-label="Canton"
                 value={canton}
                 onChange={e => { setCanton(e.target.value); track("impot_ch_canton"); }}
                 style={{
@@ -368,6 +370,7 @@ export default function ImpotRevenuCH() {
           </p>
         </AccordionSection>
       </div>
+      </main>
       <Footer />
     </div>
   );

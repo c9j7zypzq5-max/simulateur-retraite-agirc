@@ -314,7 +314,7 @@ export default function Footer() {
             simfinly.com
           </span>
         </Link>
-        <nav style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+        <nav aria-label={isEn ? "Site links" : "Liens du site"} style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
           {!isEn && (
             <>
               <Link to="/guides" style={{ fontSize: 12, color: "var(--text-secondary)", textDecoration: "none", letterSpacing: "0.04em" }}>

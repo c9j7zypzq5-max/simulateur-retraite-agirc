@@ -94,6 +94,7 @@ export default function Connexion() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <div style={{ maxWidth: 420, margin: "0 auto", padding: "40px 16px 80px" }}>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 34, fontWeight: 700, textAlign: "center", marginBottom: 8 }}>
           {title}
@@ -168,6 +169,7 @@ export default function Connexion() {
           {t("auth.terms")} <Link to={legalPath("/mentions-legales")} style={{ color: "var(--gold)" }}>{t("auth.termsLink")}</Link> {locale === "en" ? "and our" : "et notre"} <Link to={legalPath("/politique-de-confidentialite")} style={{ color: "var(--gold)" }}>{t("auth.privacyLink")}</Link>.
         </p>
       </div>
+      </main>
       <Footer />
     </div>
   );

@@ -106,7 +106,7 @@ export default function RetraiteMetier() {
     return (
       <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
         <Navbar theme={theme} setTheme={setTheme} />
-        <main style={{ maxWidth: 720, margin: "0 auto", padding: "60px 20px", textAlign: "center" }}>
+        <main id="main-content" tabIndex={-1} style={{ maxWidth: 720, margin: "0 auto", padding: "60px 20px", textAlign: "center" }}>
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔍</div>
           <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28 }}>Profession introuvable</h1>
           <p style={{ color: "var(--text-secondary)", marginBottom: 24 }}>Ce guide métier n'existe pas encore.</p>
@@ -154,7 +154,7 @@ export default function RetraiteMetier() {
       <JsonLd data={breadcrumbLd} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 760, margin: "0 auto", padding: "0 20px 80px" }}>
         {/* Fil d'Ariane */}
         <nav aria-label="Fil d'Ariane" style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
           <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>

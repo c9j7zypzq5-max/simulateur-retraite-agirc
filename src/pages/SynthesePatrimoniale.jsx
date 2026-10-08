@@ -432,6 +432,7 @@ export default function SynthesePatrimoniale() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
         {/* Breadcrumb */}
@@ -468,7 +469,7 @@ export default function SynthesePatrimoniale() {
                   <Link to="/simulateurs/synthese-retraite" style={{ padding: "10px 18px", borderRadius: 10, background: "rgba(184,147,74,0.12)", color: "var(--gold)", border: "1px solid rgba(184,147,74,0.3)", textDecoration: "none", fontSize: 13 }}>
                     Synthèse retraite →
                   </Link>
-                  <Link to="/simulateurs/epargne" style={{ padding: "10px 18px", borderRadius: 10, background: "rgba(34,197,94,0.1)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.25)", textDecoration: "none", fontSize: 13 }}>
+                  <Link to="/simulateurs/epargne" style={{ padding: "10px 18px", borderRadius: 10, background: "rgba(34,197,94,0.1)", color: "var(--txt-green)", border: "1px solid rgba(34,197,94,0.25)", textDecoration: "none", fontSize: 13 }}>
                     Simulateur épargne →
                   </Link>
                   <Link to="/simulateurs/emprunt-immobilier" style={{ padding: "10px 18px", borderRadius: 10, background: "rgba(59,130,246,0.1)", color: "#3b82f6", border: "1px solid rgba(59,130,246,0.25)", textDecoration: "none", fontSize: 13 }}>
@@ -550,7 +551,7 @@ export default function SynthesePatrimoniale() {
                   {byCategory.epargne.length === 0 ? (
                     <div style={{ fontSize: 13, color: "var(--text-secondary)", padding: "12px 0" }}>
                       Aucune simulation épargne sauvegardée.{" "}
-                      <Link to="/simulateurs/epargne" style={{ color: "#22c55e" }}>Lancer le simulateur épargne →</Link>
+                      <Link to="/simulateurs/epargne" style={{ color: "var(--txt-green)" }}>Lancer le simulateur épargne →</Link>
                     </div>
                   ) : (
                     <>
@@ -560,7 +561,7 @@ export default function SynthesePatrimoniale() {
                             <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 6 }}>
                               Capital projeté à terme
                             </div>
-                            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 38, fontWeight: 700, color: "#22c55e" }}>
+                            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 38, fontWeight: 700, color: "var(--txt-green)" }}>
                               {fmtEur(Math.round(metrics.capitalFinal))}
                             </div>
                             {metrics.capitalSource && (
@@ -574,7 +575,7 @@ export default function SynthesePatrimoniale() {
                       ) : (
                         <div style={{ fontSize: 13, color: "var(--text-secondary)", padding: "8px 0" }}>
                           Simulations épargne trouvées ({byCategory.epargne.length}) mais paramètres insuffisants pour estimer le capital.{" "}
-                          <Link to="/simulateurs/epargne" style={{ color: "#22c55e" }}>Relancer le simulateur épargne →</Link>
+                          <Link to="/simulateurs/epargne" style={{ color: "var(--txt-green)" }}>Relancer le simulateur épargne →</Link>
                         </div>
                       )}
                       <div style={{ marginTop: 10 }}>
@@ -672,6 +673,7 @@ export default function SynthesePatrimoniale() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

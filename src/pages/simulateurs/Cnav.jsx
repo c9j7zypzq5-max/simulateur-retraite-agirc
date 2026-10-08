@@ -172,6 +172,7 @@ export default function Cnav() {
         "inLanguage": "fr-FR",
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -266,12 +267,12 @@ export default function Cnav() {
                 <div>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Taux de liquidation</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {res.decote > 0 && <span style={{ color: "#f87171" }}>Décote −{(res.decote * 100).toFixed(2)} % ({Math.min(res.trimestresManquants, 20)} trim. × 0,625 %)</span>}
-                    {res.surcote > 0 && <span style={{ color: "#4ade80" }}>Surcote +{(res.surcote * 100).toFixed(2)} % ({res.trimestresSuppl} trim. × 1,25 %)</span>}
+                    {res.decote > 0 && <span style={{ color: "var(--txt-red)" }}>Décote −{(res.decote * 100).toFixed(2)} % ({Math.min(res.trimestresManquants, 20)} trim. × 0,625 %)</span>}
+                    {res.surcote > 0 && <span style={{ color: "var(--txt-green)" }}>Surcote +{(res.surcote * 100).toFixed(2)} % ({res.trimestresSuppl} trim. × 1,25 %)</span>}
                     {res.decote === 0 && res.surcote === 0 && "Taux plein — aucune décote ni surcote"}
                   </div>
                 </div>
-                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "#f87171" : res.surcote > 0 ? "#4ade80" : "var(--text-secondary)" }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "var(--txt-red)" : res.surcote > 0 ? "var(--txt-green)" : "var(--text-secondary)" }}>
                   {(res.tauxEffectif * 100).toFixed(2)} %
                 </span>
               </div>
@@ -361,7 +362,7 @@ export default function Cnav() {
                       {pension > 0 ? Math.round(pension).toLocaleString("fr-FR") + " €" : "—"}
                     </div>
                     {tauxPlein && (
-                      <div style={{ fontSize: 9, color: "#4ade80", marginTop: 3, letterSpacing: "0.04em" }}>taux plein</div>
+                      <div style={{ fontSize: 9, color: "var(--txt-green)", marginTop: 3, letterSpacing: "0.04em" }}>taux plein</div>
                     )}
                   </button>
                 );
@@ -407,6 +408,7 @@ export default function Cnav() {
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      </main>
       <Footer />
     </div>
   );

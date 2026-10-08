@@ -34,7 +34,7 @@ export default function VideoRecordingToast() {
             onClick={stop}
             style={{
               background: 'none', border: '1px solid rgba(239,68,68,0.4)',
-              borderRadius: 6, color: '#ef4444', cursor: 'pointer',
+              borderRadius: 6, color: 'var(--txt-red)', cursor: 'pointer',
               fontSize: 11, padding: '2px 8px',
             }}
           >
@@ -55,7 +55,7 @@ export default function VideoRecordingToast() {
             value={progress} max={100}
             style={{ width: '100%', height: 3, accentColor: 'var(--gold-mid)' }}
           />
-          <span style={{ fontSize: 10, color: '#ef4444' }}>
+          <span style={{ fontSize: 10, color: "var(--txt-red)" }}>
             {progress}% — ne fermez pas l'onglet
           </span>
         </>

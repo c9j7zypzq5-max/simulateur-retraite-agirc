@@ -132,6 +132,7 @@ export default function LppDeuxiemePilier() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{
         "@context": "https://schema.org",
         "@type": "WebApplication",
@@ -215,7 +216,7 @@ export default function LppDeuxiemePilier() {
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                 Rente mensuelle estimée
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 700, color: "#22c55e" }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 30, fontWeight: 700, color: "var(--txt-green)" }}>
                 {fmtCHF(animRente)}
               </div>
               <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 6 }}>
@@ -278,8 +279,8 @@ export default function LppDeuxiemePilier() {
               </div>
               {[
                 { num: "1", label: "AVS / AI", desc: "Assurance vieillesse et survivants", color: "var(--primary)" },
-                { num: "2", label: "LPP (ce simulateur)", desc: "Prévoyance professionnelle obligatoire", color: "#f59e0b" },
-                { num: "3", label: "Pilier 3a / 3b", desc: "Épargne individuelle volontaire", color: "#22c55e" },
+                { num: "2", label: "LPP (ce simulateur)", desc: "Prévoyance professionnelle obligatoire", color: "var(--txt-amber)" },
+                { num: "3", label: "Pilier 3a / 3b", desc: "Épargne individuelle volontaire", color: "var(--txt-green)" },
               ].map(p => (
                 <div key={p.num} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <div style={{ width: 22, height: 22, borderRadius: 6, background: p.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -314,6 +315,7 @@ export default function LppDeuxiemePilier() {
           </p>
         </AccordionSection>
       </div>
+      </main>
       <Footer />
     </div>
   );

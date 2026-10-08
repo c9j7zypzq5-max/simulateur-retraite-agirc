@@ -187,6 +187,7 @@ export default function Ircantec() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -361,6 +362,7 @@ export default function Ircantec() {
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/ircantec']} />
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

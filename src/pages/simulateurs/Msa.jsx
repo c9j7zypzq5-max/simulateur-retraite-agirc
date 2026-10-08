@@ -235,6 +235,7 @@ export default function Msa() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -350,12 +351,12 @@ export default function Msa() {
                 <div>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Taux de liquidation</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {res.decote > 0 && <span style={{ color: "#f87171" }}>Décote −{(res.decote * 100).toFixed(2)} % ({Math.min(res.trimestresManquants, 20)} trim. × 0,625 %)</span>}
-                    {res.surcote > 0 && <span style={{ color: "#4ade80" }}>Surcote +{(res.surcote * 100).toFixed(2)} % ({res.trimestresSuppl} trim. × 1,25 %)</span>}
+                    {res.decote > 0 && <span style={{ color: "var(--txt-red)" }}>Décote −{(res.decote * 100).toFixed(2)} % ({Math.min(res.trimestresManquants, 20)} trim. × 0,625 %)</span>}
+                    {res.surcote > 0 && <span style={{ color: "var(--txt-green)" }}>Surcote +{(res.surcote * 100).toFixed(2)} % ({res.trimestresSuppl} trim. × 1,25 %)</span>}
                     {res.decote === 0 && res.surcote === 0 && "Taux plein — aucune décote ni surcote"}
                   </div>
                 </div>
-                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "#f87171" : res.surcote > 0 ? "#4ade80" : "var(--text-secondary)" }}>
+                <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: res.decote > 0 ? "var(--txt-red)" : res.surcote > 0 ? "var(--txt-green)" : "var(--text-secondary)" }}>
                   {(res.tauxEffectif * 100).toFixed(2)} %
                 </span>
               </div>
@@ -454,7 +455,7 @@ export default function Msa() {
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — MSA</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            Source officielle : <a href="https://www.msa.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>msa.fr</a> · <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
+            Source officielle : <a href="https://www.msa.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>msa.fr</a> · <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>info-retraite.fr</a>
           </p>
         </div>
 
@@ -464,6 +465,7 @@ export default function Msa() {
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/msa']} />
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

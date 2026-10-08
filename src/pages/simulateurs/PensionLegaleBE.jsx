@@ -119,6 +119,7 @@ export default function PensionLegaleBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Pension Légale Belgique 2026", url: "https://www.simfinly.com/be/simulateurs/pension-legale", description: "Estimez votre pension légale belge (ONSS) selon la formule officielle.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -187,7 +188,7 @@ export default function PensionLegaleBE() {
                     }}
                   >
                     <div style={{ fontWeight: tauxMenage === opt.value ? 600 : 400 }}>{opt.label}</div>
-                    <div style={{ fontSize: 11, opacity: 0.7 }}>{opt.desc}</div>
+                    <div style={{ fontSize: 11 }}>{opt.desc}</div>
                   </button>
                 ))}
               </div>
@@ -208,7 +209,7 @@ export default function PensionLegaleBE() {
                 {fmtEur(animPension)}
               </div>
               {res.isMinimum && (
-                <div style={{ fontSize: 11.5, color: "#f59e0b", marginTop: 8, background: "rgba(245,158,11,0.1)", borderRadius: 8, padding: "6px 10px" }}>
+                <div style={{ fontSize: 11.5, color: "var(--txt-amber)", marginTop: 8, background: "rgba(245,158,11,0.1)", borderRadius: 8, padding: "6px 10px" }}>
                   ⚠️ Minimum garanti appliqué
                 </div>
               )}
@@ -228,7 +229,7 @@ export default function PensionLegaleBE() {
             {/* Bonus pension */}
             {carriereAns > CARRIERE_PLEINE && (
               <div style={{ ...card, padding: "14px 16px", background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.25)" }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "#22c55e", marginBottom: 6 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "var(--txt-green)", marginBottom: 6 }}>
                   Bonus pension actif (+{(res.bonusPct * 100).toFixed(0)} %)
                 </div>
                 <div style={{ fontSize: 12, color: "var(--text-secondary)" }}>
@@ -266,8 +267,8 @@ export default function PensionLegaleBE() {
               </div>
               {[
                 { num: "1", label: "Pension légale (ONSS)", desc: "Ce simulateur", color: "var(--primary)" },
-                { num: "2", label: "Pension complémentaire", desc: "EIP, CPTI, fonds de pension (entreprise)", color: "#f59e0b" },
-                { num: "3", label: "Épargne individuelle", desc: "Épargne-pension, VAPZE (indépendants)", color: "#22c55e" },
+                { num: "2", label: "Pension complémentaire", desc: "EIP, CPTI, fonds de pension (entreprise)", color: "var(--txt-amber)" },
+                { num: "3", label: "Épargne individuelle", desc: "Épargne-pension, VAPZE (indépendants)", color: "var(--txt-green)" },
               ].map(p => (
                 <div key={p.num} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <div style={{ width: 22, height: 22, borderRadius: 6, background: p.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -302,6 +303,7 @@ export default function PensionLegaleBE() {
 
         <ShareBar url={shareUrl} title="Ma pension légale belge estimée" />
       </div>
+      </main>
       <Footer />
     </div>
   );

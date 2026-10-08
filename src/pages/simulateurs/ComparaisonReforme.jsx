@@ -14,6 +14,7 @@ import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import ShareBar from "../../components/ShareBar.jsx";
 import { PASS_2026, getAgeLegal, getDureeRequise, getDecote } from "../../data/baremesRetraite.js";
 import { getTauxPrelevementPension } from "../../data/tauxFiscaux.js";
+import { textTone } from "../../utils/textTone.js";
 
 // ─── Règles AVANT réforme (système pré-2023, non affecté par le gel 2026) ───
 function getAvantReforme(anneeNaissance) {
@@ -165,7 +166,7 @@ function ColCard({ title, color, bg, border, children }) {
         fontFamily: "'Space Grotesk', sans-serif",
         fontSize: 13,
         fontWeight: 700,
-        color,
+        color: textTone(color),
         letterSpacing: "0.06em",
         textTransform: "uppercase",
         marginBottom: 18,
@@ -194,7 +195,7 @@ function DataRow({ label, value, large, color }) {
         fontFamily: "'Space Grotesk', sans-serif",
         fontSize: large ? 20 : 14,
         fontWeight: large ? 700 : 600,
-        color: color || "var(--text)",
+        color: textTone(color) || "var(--text)",
         textAlign: "right",
         flexShrink: 0,
       }}>
@@ -229,11 +230,11 @@ function ImpactBanner({ diff }) {
       </div>
       <div style={{ fontSize: 14, color: "var(--text-secondary)", lineHeight: 1.7 }}>
         La réforme vous impose{" "}
-        <strong style={{ color: "#ef4444" }}>{moisStr}</strong>
+        <strong style={{ color: "var(--txt-red)" }}>{moisStr}</strong>
         {diffPension !== 0 && (
           <>
             {" "}et un écart de pension de{" "}
-            <strong style={{ color: diffPension < 0 ? "#ef4444" : "#22c55e" }}>{pensionStr}</strong>
+            <strong style={{ color: diffPension < 0 ? "var(--txt-red)" : "var(--txt-green)" }}>{pensionStr}</strong>
           </>
         )}.
       </div>
@@ -274,6 +275,7 @@ export default function ComparaisonReforme() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 920, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
@@ -526,6 +528,7 @@ export default function ComparaisonReforme() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -179,6 +179,7 @@ export default function GuideImpots2026() {
     <div style={s.page}>
       {schemas.map((sc, i) => <JsonLd key={i} data={sc} />)}
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={s.wrap}>
         <nav style={s.breadcrumb} aria-label="Fil d'Ariane">
@@ -314,6 +315,7 @@ export default function GuideImpots2026() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

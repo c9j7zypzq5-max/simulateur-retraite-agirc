@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { textTone } from "../../utils/textTone.js";
 
 // Mini-simulateur budget 50/30/20, destiné à être intégré en <iframe>.
 // Pas de navbar/footer/pub, styles fixes et lien retour vers simfinly.com.
@@ -52,7 +53,7 @@ export default function EmbedBudget() {
             <div key={r.label} style={{ marginBottom: 14 }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
                 <span style={{ fontSize: 13, color: "#5b6675" }}>{r.label}</span>
-                <span style={{ fontWeight: 700, color: r.color }}>{eur(r.value)}/mois</span>
+                <span style={{ fontWeight: 700, color: textTone(r.color) }}>{eur(r.value)}/mois</span>
               </div>
               <Bar pct={net > 0 ? (r.value / net) * 100 : 0} color={r.color} />
               <div style={{ fontSize: 11, color: "#9aa4b2", marginTop: 2 }}>{r.note}</div>

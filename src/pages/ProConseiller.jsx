@@ -104,7 +104,7 @@ export default function ProConseiller() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 900, margin: "0 auto", padding: "48px 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 900, margin: "0 auto", padding: "48px 20px 80px" }}>
 
         {/* Hero */}
         <div style={{ textAlign: "center", marginBottom: 60 }}>
@@ -217,8 +217,9 @@ export default function ProConseiller() {
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
                 <div>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Nom *</label>
+                  <label htmlFor="pro-nom" style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Nom *</label>
                   <input
+                    id="pro-nom" name="nom" autoComplete="name"
                     required
                     value={form.nom}
                     onChange={e => setForm(f => ({ ...f, nom: e.target.value }))}
@@ -229,8 +230,9 @@ export default function ProConseiller() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>E-mail professionnel *</label>
+                  <label htmlFor="pro-email" style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>E-mail professionnel *</label>
                   <input
+                    id="pro-email" name="email" autoComplete="email"
                     required
                     type="email"
                     value={form.email}
@@ -243,8 +245,9 @@ export default function ProConseiller() {
                 </div>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Profession</label>
+                <label htmlFor="pro-metier" style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Profession</label>
                 <select
+                  id="pro-metier" name="metier"
                   value={form.metier}
                   onChange={e => setForm(f => ({ ...f, metier: e.target.value }))}
                   style={{ width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--input-bg)", color: "var(--text)", fontSize: 16, outline: "none", boxSizing: "border-box" }}
@@ -261,8 +264,9 @@ export default function ProConseiller() {
                 </select>
               </div>
               <div>
-                <label style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Message</label>
+                <label htmlFor="pro-message" style={{ display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "var(--text-secondary)" }}>Message</label>
                 <textarea
+                  id="pro-message" name="message"
                   rows={4}
                   value={form.message}
                   onChange={e => setForm(f => ({ ...f, message: e.target.value }))}

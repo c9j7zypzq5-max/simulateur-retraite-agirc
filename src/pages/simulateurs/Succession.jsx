@@ -167,6 +167,7 @@ export default function Succession() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Succession 2026", url: "https://www.simfinly.com/simulateurs/succession", description: "Calculez les droits de succession selon le lien de parenté et le barème 2026.", applicationCategory: "FinanceApplication" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -216,7 +217,7 @@ export default function Succession() {
                     }}
                   >
                     {opt.label}
-                    {opt.value === "conjoint" && <span style={{ marginLeft: 8, fontSize: 11, color: "#22c55e" }}>✓ Exonéré</span>}
+                    {opt.value === "conjoint" && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--txt-green)" }}>✓ Exonéré</span>}
                     {opt.value === "enfant" && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-secondary)" }}>100 k€/héritier</span>}
                   </button>
                 ))}
@@ -254,9 +255,9 @@ export default function Succession() {
               {isExonere ? (
                 <>
                   <div style={{ fontSize: 40, marginBottom: 8 }}>✓</div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "#22c55e" }}>0 €</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--txt-green)" }}>0 €</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>de droits de succession</div>
-                  <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
+                  <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
                     Le conjoint / partenaire PACS est totalement exonéré depuis 2007
                   </div>
                 </>
@@ -383,6 +384,7 @@ export default function Succession() {
 
         <ShareBar url={shareUrl} title="Droits de succession estimés" />
       </div>
+      </main>
       <Footer />
     </div>
   );

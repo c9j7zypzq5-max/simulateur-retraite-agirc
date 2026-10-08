@@ -142,7 +142,7 @@ export default function SimulateurRetraite() {
   };
 
   return (
-    <div id="main-content" style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
+    <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)", padding: "0 16px 60px" }}>
       <JsonLd data={{
         "@context": "https://schema.org", "@type": "WebApplication",
         "name": "Simulateur Retraite Agirc-Arrco",
@@ -161,6 +161,7 @@ export default function SimulateurRetraite() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       {/* ── Header ── */}
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "16px 0 32px", animation: "fadeUp .5s ease both" }}>
@@ -354,7 +355,7 @@ export default function SimulateurRetraite() {
                   <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, color: "var(--gold)" }}>{fmtEur(res.pensionNette)}/mois</div>
                 </div>
               </div>
-              <div style={{ fontSize: 12, color: "#4ade80" }}>
+              <div style={{ fontSize: 12, color: "var(--txt-green)" }}>
                 +{fmtEur(res.pensionNette - res.pensionNetteSansReval)}/mois · Valeur de service projetée : {res.valServProj.toFixed(4)} €/pt
               </div>
             </div>
@@ -465,13 +466,13 @@ export default function SimulateurRetraite() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
               <div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Différence mensuelle</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "var(--txt-green)" : "var(--txt-red)" }}>
                   {signFmt(diffB)}/mois
                 </div>
               </div>
               <div>
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>Impact sur 20 ans</div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "#4ade80" : "#f87171" }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: diffB >= 0 ? "var(--txt-green)" : "var(--txt-red)" }}>
                   {signFmt(diffB * 12 * 20)}
                 </div>
               </div>
@@ -534,9 +535,9 @@ export default function SimulateurRetraite() {
           {FAQ_ITEMS.map(item => <FaqItem key={item.q} q={item.q} a={item.a} />)}
           <p style={{ paddingTop: 24, fontSize: 12, color: "var(--text-secondary)" }}>
             Pour des informations officielles et personnalisées, consultez{" "}
-            <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
+            <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>info-retraite.fr</a>
             {" "}ou{" "}
-            <a href="https://www.agirc-arrco.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>agirc-arrco.fr</a>.
+            <a href="https://www.agirc-arrco.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>agirc-arrco.fr</a>.
           </p>
         </div>
       </div>
@@ -546,6 +547,7 @@ export default function SimulateurRetraite() {
         <AdUnit slot="auto" format="auto" />
       </div>
 
+      </main>
       <Footer />
     </div>
   );

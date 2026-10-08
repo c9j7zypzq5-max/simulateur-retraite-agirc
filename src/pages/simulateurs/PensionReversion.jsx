@@ -222,7 +222,7 @@ export default function PensionReversion() {
         ],
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/pension-reversion" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -450,7 +450,7 @@ export default function PensionReversion() {
 
         <FaqSection items={FAQ} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur les barèmes 2026 (54 % / 60 % pour le privé, 50 % pour la fonction publique, plafonds de ressources) · Le calcul réel dépend de tous les régimes du défunt · Ne constitue pas un conseil officiel
         </p>
 

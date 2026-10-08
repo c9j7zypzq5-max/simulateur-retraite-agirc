@@ -30,6 +30,7 @@ export default function Comparatifs() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
@@ -73,6 +74,7 @@ export default function Comparatifs() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -14,7 +14,7 @@ export default function BaremeUpdateBadge({ path }) {
         display: "inline-block",
         background: "rgba(34,197,94,0.12)",
         border: "1px solid rgba(34,197,94,0.3)",
-        color: "#22c55e",
+        color: "var(--txt-green)",
         fontSize: 11,
         borderRadius: 6,
         padding: "2px 7px",

@@ -15,9 +15,9 @@ export default function SimRecommendations({ items, title }) {
       <div style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--gold-mid, #c9a96e)", marginBottom: 8 }}>
         Recommandations personnalisées
       </div>
-      <h3 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", margin: "0 0 16px" }}>
+      <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, color: "var(--text)", margin: "0 0 16px" }}>
         {title ?? "Aller plus loin avec votre profil"}
-      </h3>
+      </h2>
       <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         {items.map((item, i) => (
           <LocaleLink

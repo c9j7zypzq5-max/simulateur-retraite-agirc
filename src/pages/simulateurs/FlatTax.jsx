@@ -191,7 +191,7 @@ export default function FlatTax() {
         ],
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/flat-tax" size={34} />}
           title="Simulateur flat tax (PFU)"
@@ -393,7 +393,7 @@ export default function FlatTax() {
 
         <FaqSection title="Questions fréquentes — Flat tax et PFU" items={FAQ} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative — PFU 2026 : 12,8 % IR + 18,6 % PS = 31,4 % · L'option barème varie selon la composition du foyer et la nature des titres · CEHR non incluse · Consultez un conseiller fiscal
         </p>
 

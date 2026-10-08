@@ -108,7 +108,7 @@ export default function BarometreRetraite() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 900, margin: "0 auto", padding: "48px 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 900, margin: "0 auto", padding: "48px 20px 80px" }}>
 
         {/* Hero */}
         <div style={{ marginBottom: 52 }}>

@@ -142,6 +142,7 @@ export default function EpargneSalariale() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <JsonLd data={{
         "@context": "https://schema.org",
@@ -275,7 +276,7 @@ export default function EpargneSalariale() {
                 à {rendementAnnuel} % de rendement annuel
               </div>
               {hasAbondement && (
-                <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px", border: "1px solid rgba(34,197,94,0.2)" }}>
+                <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px", border: "1px solid rgba(34,197,94,0.2)" }}>
                   dont {fmtEur(Math.round(animGain))} de gain grâce à l'abondement
                 </div>
               )}
@@ -371,6 +372,7 @@ export default function EpargneSalariale() {
           ]}
         />
       </div>
+      </main>
       <Footer />
     </div>
   );

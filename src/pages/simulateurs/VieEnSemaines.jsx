@@ -301,6 +301,7 @@ export default function VieEnSemaines() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -403,7 +404,7 @@ export default function VieEnSemaines() {
               {[["femme", txt.female, ESPERANCE_FEMME], ["homme", txt.male, ESPERANCE_HOMME]].map(([val, label, esp]) => (
                 <button key={val} onClick={() => { setGenre(val); if (!esperanceModifiee) setEsperance(esp); }}
                   aria-pressed={genre === val ? "true" : "false"}
-                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(43,92,230,0.12)" : "transparent", color: genre === val ? "var(--primary)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
+                  style={{ flex: 1, padding: "9px 16px", borderRadius: 8, border: "none", background: genre === val ? "rgba(43,92,230,0.12)" : "transparent", color: genre === val ? "var(--gold-mid)" : "var(--text-secondary)", fontSize: 13, cursor: "pointer", fontFamily: "'Hanken Grotesk', sans-serif" }}>
                   {label}
                 </button>
               ))}
@@ -486,6 +487,7 @@ export default function VieEnSemaines() {
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/vie-en-semaines']} />
 
+      </main>
       <Footer />
     </div>
   );

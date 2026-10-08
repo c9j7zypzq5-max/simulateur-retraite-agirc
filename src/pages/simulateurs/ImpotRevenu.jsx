@@ -181,6 +181,7 @@ export default function ImpotRevenu() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -307,7 +308,7 @@ export default function ImpotRevenu() {
                     </div>
                     <div style={{ background: "var(--card-bg)", borderRadius: 10, padding: 12 }}>
                       <div style={{ fontSize: 10, color: "var(--text-secondary)", letterSpacing: "0.05em", textTransform: "uppercase", marginBottom: 6 }}>Décote</div>
-                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: res.decote > 0 ? "#4ade80" : "var(--text)" }}>
+                      <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 600, color: res.decote > 0 ? "var(--txt-green)" : "var(--text)" }}>
                         {res.decote > 0 ? "−" + fmtEur(res.decote) : "—"}
                       </div>
                     </div>
@@ -404,13 +405,14 @@ export default function ImpotRevenu() {
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — IR</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            Source officielle : <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>impots.gouv.fr</a>
+            Source officielle : <a href="https://www.impots.gouv.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>impots.gouv.fr</a>
           </p>
         </div>
 
         {/* Ad */}
         <div style={{ margin: "24px 0" }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      </main>
       <Footer />
     </div>
   );

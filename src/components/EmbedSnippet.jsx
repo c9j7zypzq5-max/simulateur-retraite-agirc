@@ -56,7 +56,7 @@ export default function EmbedSnippet({ path = "/embed/epargne", label = "ce simu
         </div>
         <button
           onClick={copy}
-          style={{ padding: "8px 18px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600, background: copied ? "rgba(34,197,94,0.12)" : "rgba(43,92,230,0.1)", color: copied ? "#22c55e" : "var(--gold)", border: `1px solid ${copied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}`, flexShrink: 0, transition: "all 0.2s" }}
+          style={{ padding: "8px 18px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 600, background: copied ? "rgba(34,197,94,0.12)" : "rgba(43,92,230,0.1)", color: copied ? "var(--txt-green)" : "var(--gold)", border: `1px solid ${copied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}`, flexShrink: 0, transition: "all 0.2s" }}
         >
           {copied ? "✓ Copié !" : "Copier le code"}
         </button>

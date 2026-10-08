@@ -163,6 +163,7 @@ export default function MesSimulations() {
         onCancel={() => setConfirmDeleteId(null)}
       />
       <Navbar />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 16px 80px" }}>
         {/* Page layout */}
@@ -452,6 +453,7 @@ export default function MesSimulations() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

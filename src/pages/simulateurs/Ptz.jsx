@@ -208,7 +208,7 @@ export default function Ptz() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/ptz" size={34} />}
           badge="Immobilier · Simulation 2026"
@@ -398,7 +398,7 @@ export default function Ptz() {
 
         <FaqSection items={FAQ} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur le barème 2026 (décret n° 2025-299) · Ne constitue pas un accord de prêt
         </p>
 

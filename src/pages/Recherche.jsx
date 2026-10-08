@@ -87,7 +87,7 @@ export default function Recherche() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 720, margin: "0 auto", padding: "40px 20px 80px" }}>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(22px, 4vw, 32px)", fontWeight: 600, marginBottom: 24 }}>
           Recherche
         </h1>

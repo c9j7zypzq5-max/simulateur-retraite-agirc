@@ -164,6 +164,7 @@ export default function SyntheseRetraite() {
         "mainEntity": FAQ.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -327,7 +328,7 @@ export default function SyntheseRetraite() {
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(20px,4vw,26px)", fontWeight: 600, color: "var(--text)", marginBottom: 24 }}>Questions fréquentes — Synthèse retraite</h2>
           {FAQ.map(({ q, a }) => <FaqItem key={q} q={q} a={a} />)}
           <p style={{ paddingTop: 20, fontSize: 12, color: "var(--text-secondary)" }}>
-            Source officielle : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>info-retraite.fr</a>
+            Source officielle : <a href="https://www.info-retraite.fr" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>info-retraite.fr</a>
           </p>
         </div>
 
@@ -337,6 +338,7 @@ export default function SyntheseRetraite() {
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/synthese-retraite']} />
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

@@ -198,7 +198,7 @@ export default function Per() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/per" size={34} />}
           badge="Retraite · Simulation 2026"
@@ -421,7 +421,7 @@ export default function Per() {
 
         <FaqSection items={FAQ} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur les paramètres 2026 (PASS 48 060 €) · Le rendement n'est pas garanti · Ne constitue pas un conseil en investissement
         </p>
 

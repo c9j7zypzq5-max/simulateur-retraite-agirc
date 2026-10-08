@@ -74,7 +74,7 @@ export default function EmbedRetraite() {
             <div style={{ fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "#8a6322", marginBottom: 4 }}>Pension nette mensuelle estimée</div>
             <div style={{ fontSize: 30, fontWeight: 800, color: "#8a6322" }}>{eur(result.nette)}</div>
             {result.manquants > 0 && (
-              <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>Il manque {result.manquants} trimestres pour le taux plein</div>
+              <div style={{ fontSize: 11, color: "var(--txt-red)", marginTop: 4 }}>Il manque {result.manquants} trimestres pour le taux plein</div>
             )}
           </div>
 

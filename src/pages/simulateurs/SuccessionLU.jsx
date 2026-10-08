@@ -119,6 +119,7 @@ export default function SuccessionLU() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Succession Luxembourg 2026", url: "https://www.simfinly.com/lu/simulateurs/succession-lu", description: "Calculez les droits de succession luxembourgeois selon le lien de parenté.", applicationCategory: "FinanceApplication", inLanguage: "fr-LU" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -171,7 +172,7 @@ export default function SuccessionLU() {
                     }}
                   >
                     {opt.label}
-                    {(opt.value === "directe" || opt.value === "conjoint") && <span style={{ marginLeft: 8, fontSize: 11, color: "#22c55e" }}>✓ Exonéré</span>}
+                    {(opt.value === "directe" || opt.value === "conjoint") && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--txt-green)" }}>✓ Exonéré</span>}
                     {opt.value !== "directe" && opt.value !== "conjoint" && (
                       <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-secondary)" }}>{(TAUX_BASE_LU[opt.value] * 100).toFixed(0)} % de base</span>
                     )}
@@ -197,9 +198,9 @@ export default function SuccessionLU() {
               {isExonere ? (
                 <>
                   <div style={{ fontSize: 40, marginBottom: 8 }}>✓</div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "#22c55e" }}>0 €</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--txt-green)" }}>0 €</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>de droits de succession</div>
-                  <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
+                  <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
                     Exonération totale — {lien === 'conjoint' ? 'conjoint / partenaire' : 'ligne directe'} (dévolution légale)
                   </div>
                 </>
@@ -266,6 +267,7 @@ export default function SuccessionLU() {
 
         <ShareBar url={shareUrl} title="Droits de succession luxembourgeois estimés" />
       </div>
+      </main>
       <Footer />
     </div>
   );

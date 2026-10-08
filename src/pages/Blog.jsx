@@ -193,6 +193,7 @@ export default function Blog() {
       `}</style>
 
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 980, margin: "0 auto", padding: "0 24px 80px" }}>
 
@@ -258,6 +259,7 @@ export default function Blog() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

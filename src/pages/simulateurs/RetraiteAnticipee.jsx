@@ -257,7 +257,7 @@ export default function RetraiteAnticipee() {
         ],
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/retraite-anticipee" size={34} />}
           title="Retraite carrières longues"
@@ -344,17 +344,17 @@ export default function RetraiteAnticipee() {
                 / mois · {trimestresCotises} trim cotisés / {res.dureeRef} requis
               </div>
               {isDecote && (
-                <div style={{ marginTop: 12, fontSize: 12, color: "#ef4444", background: "rgba(239,68,68,0.08)", borderRadius: 8, padding: "8px 12px" }}>
+                <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-red)", background: "rgba(239,68,68,0.08)", borderRadius: 8, padding: "8px 12px" }}>
                   Décote de {res.decotePct.toFixed(2)} % ({Math.round(res.decotePct / 0.625)} trim manquants)
                 </div>
               )}
               {isSurcote && (
-                <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px" }}>
+                <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px" }}>
                   Surcote de +{res.surcotePct.toFixed(2)} % ({Math.round(res.surcotePct / 1.25)} trim en plus)
                 </div>
               )}
               {!isDecote && !isSurcote && (
-                <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px" }}>
+                <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.08)", borderRadius: 8, padding: "8px 12px" }}>
                   Taux plein — aucune décote ni surcote
                 </div>
               )}
@@ -386,7 +386,7 @@ export default function RetraiteAnticipee() {
               </div>
               {res.racl.eligible ? (
                 <>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: "#22c55e", marginBottom: 6 }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 700, color: "var(--txt-green)", marginBottom: 6 }}>
                     Éligible — départ à {res.racl.ageDepart} ans
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>{res.racl.motif}</div>
@@ -396,7 +396,7 @@ export default function RetraiteAnticipee() {
                 </>
               ) : (
                 <>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: "#ef4444", marginBottom: 6 }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: "var(--txt-red)", marginBottom: 6 }}>
                     Non éligible au RACL
                   </div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
@@ -464,7 +464,7 @@ export default function RetraiteAnticipee() {
           items={FAQ}
         />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur la réforme 2023 (loi Borne) · Formule CNAV simplifiée · Consultez info-retraite.fr pour votre estimation personnalisée officielle
         </p>
 

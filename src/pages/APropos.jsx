@@ -27,7 +27,7 @@ export default function APropos() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <main style={{ maxWidth: 760, margin: "0 auto", padding: "64px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 760, margin: "0 auto", padding: "64px 24px 80px" }}>
         <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(2rem,4vw,2.8rem)", fontWeight: 700, lineHeight: 1.2, color: "var(--text)", marginBottom: 48 }}>
           À propos de <em style={{ fontStyle: "italic", color: "var(--gold)" }}>simfinly.com</em>
         </h1>

@@ -376,7 +376,7 @@ export default function Navbar({ theme, setTheme }) {
   return (
     <>
       {/* ── Barre de navigation ── */}
-      <nav ref={simsRef} style={{
+      <nav ref={simsRef} aria-label={txt.navAriaLabel} style={{
         position: "sticky", top: 0, zIndex: 100,
         background: "rgba(245,246,248,0.95)",
         backdropFilter: "blur(16px)",
@@ -624,6 +624,9 @@ export default function Navbar({ theme, setTheme }) {
         aria-modal={drawerOpen || undefined}
         aria-label={txt.drawerTitle}
         aria-hidden={!drawerOpen}
+        // Fermé, le tiroir est hors écran mais restait dans l'ordre de
+        // tabulation : la navigation clavier passait par ~40 liens invisibles.
+        inert={!drawerOpen}
         style={{
           position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 300,
           width: 300, maxWidth: "85vw",

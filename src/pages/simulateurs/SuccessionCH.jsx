@@ -80,7 +80,7 @@ export default function SuccessionCH() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 860, margin: "0 auto", padding: "0 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 860, margin: "0 auto", padding: "0 20px 80px" }}>
         <SimulateurHeader
           icon="🏔"
           badge="Droits de succession · Suisse 2025"
@@ -96,8 +96,9 @@ export default function SuccessionCH() {
 
             {/* Canton */}
             <div style={{ marginBottom: 16 }}>
-              <label style={{ fontSize: 12, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Canton</label>
+              <label htmlFor="succession-ch-canton" style={{ fontSize: 12, color: "var(--text-secondary)", display: "block", marginBottom: 6 }}>Canton</label>
               <select
+                id="succession-ch-canton"
                 value={canton}
                 onChange={e => setCanton(e.target.value)}
                 style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1.5px solid var(--border)", background: "var(--card)", color: "var(--text)", fontSize: 16 }}
@@ -127,11 +128,11 @@ export default function SuccessionCH() {
             {result && (
               <>
                 {result.exonere ? (
-                  <div style={{ background: "#14532d22", border: "1px solid #22c55e44", borderRadius: 16, padding: 24 }}>
-                    <div style={{ fontSize: 13, color: "#22c55e", fontWeight: 600, marginBottom: 4 }}>
+                  <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid #22c55e44", borderRadius: 16, padding: 24 }}>
+                    <div style={{ fontSize: 13, color: "var(--txt-green)", fontWeight: 600, marginBottom: 4 }}>
                       Exonération totale ✓
                     </div>
-                    <div style={{ fontSize: 22, fontWeight: 700, color: "#22c55e" }}>0 CHF</div>
+                    <div style={{ fontSize: 22, fontWeight: 700, color: "var(--txt-green)" }}>0 CHF</div>
                     <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8 }}>
                       Le lien "{LIENS.find(l => l.key === lien)?.label}" est exonéré dans le canton de {result.canton.name}.
                     </div>

@@ -13,6 +13,7 @@ import {
   NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import { FAQS } from '../../data/faqs.js';
+import { textTone } from "../../utils/textTone.js";
 
 const FAQ = FAQS['/simulateurs/rente-capital'];
 
@@ -117,7 +118,7 @@ export default function RenteCapital() {
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
 
-      <main id="main-content" style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <SimulateurHeader
           icon="⚖️"
           title="Rente viagère ou retrait programmé ?"
@@ -162,11 +163,11 @@ export default function RenteCapital() {
                 },
               ].map(({ label, emoji, mensuelNet, detail1, detail2, detail3, isWinner, color }) => (
                 <div key={label} style={{ background: isWinner ? `${color}14` : "var(--card-bg)", border: `1px solid ${isWinner ? color : "var(--border)"}`, borderRadius: 16, padding: "20px 18px", position: "relative", overflow: "hidden" }}>
-                  {isWinner && <div style={{ position: "absolute", top: 10, right: 12, fontSize: 10, fontWeight: 700, color, letterSpacing: "0.1em", textTransform: "uppercase" }}>+ avantageux</div>}
-                  <div style={{ fontSize: 11, color, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
+                  {isWinner && <div style={{ position: "absolute", top: 10, right: 12, fontSize: 10, fontWeight: 700, color: textTone(color), letterSpacing: "0.1em", textTransform: "uppercase" }}>+ avantageux</div>}
+                  <div style={{ fontSize: 11, color: textTone(color), fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
                     {emoji} {label}
                   </div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,32px)", fontWeight: 700, color: isWinner ? color : "var(--text)", marginBottom: 4 }}>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: "clamp(24px,5vw,32px)", fontWeight: 700, color: isWinner ? textTone(color) : "var(--text)", marginBottom: 4 }}>
                     {fmtEur(Math.round(mensuelNet))}<span style={{ fontSize: 14, fontWeight: 400, color: "var(--text-secondary)" }}>/mois net</span>
                   </div>
                   <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 8, display: "flex", flexDirection: "column", gap: 3 }}>
@@ -214,7 +215,7 @@ export default function RenteCapital() {
                   <div key={label} style={{ marginBottom: 10 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 4 }}>
                       <span style={{ color: "var(--text-secondary)" }}>{label}</span>
-                      <span style={{ fontWeight: 700, color }}>{fmtEur(Math.round(value))}</span>
+                      <span style={{ fontWeight: 700, color: textTone(color) }}>{fmtEur(Math.round(value))}</span>
                     </div>
                     <div style={{ height: 10, borderRadius: 5, background: "var(--surface, rgba(0,0,0,0.06))", overflow: "hidden" }}>
                       <div style={{ height: "100%", borderRadius: 5, background: color, width: `${(value / maxVal) * 100}%`, transition: "width 0.5s ease" }} />

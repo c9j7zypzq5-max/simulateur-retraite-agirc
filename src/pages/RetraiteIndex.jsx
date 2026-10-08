@@ -41,6 +41,7 @@ export default function RetraiteIndex() {
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <JsonLd data={JSON_LD} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "48px 24px 80px" }}>
         {/* Breadcrumb */}
@@ -121,6 +122,7 @@ export default function RetraiteIndex() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

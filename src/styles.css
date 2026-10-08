@@ -12,7 +12,7 @@
   --primary: #2B5CE6;
   --primary-soft: #EAF0FF;
   --gold: #2B5CE6;
-  --gold-mid: #3d6fe8;
+  --gold-mid: #2852d6; /* petit texte : ≥ 5:1 sur les fonds clairs (#3d6fe8 tombait à ~4,1) */
   --border: #e7eaf0;
   --border-gold: #cdddfb;
   --positive: #15A06B;
@@ -31,6 +31,18 @@
   --r-lg: 16px;
   --hover-bg: rgba(43,92,230,0.06);
   --drawer-bg: #ffffff;
+  /* Couleurs de TEXTE d'accent : nuances -600/-700 en thème clair (contraste
+     ≥ 4,5:1 sur fond blanc ou teinté, WCAG AA). Les nuances -400 codées en dur
+     auparavant (#4ade80, #818cf8…) venaient de l'ancien thème sombre et
+     tombaient à 1,5–3:1 sur fond clair. */
+  --txt-green: #166534;
+  --txt-red: #b91c1c;
+  --txt-indigo: #4f46e5;
+  --txt-purple: #7e22ce;
+  --txt-orange: #c2410c;
+  --txt-teal: #0f766e;
+  --txt-amber: #b45309;
+  --txt-blue: #1d4ed8;
 }
 
 [data-theme="dark"] {
@@ -59,6 +71,14 @@
   --chip-bg: #1B2A45;
   --hover-bg: rgba(255,255,255,0.06);
   --drawer-bg: #0F1828;
+  --txt-green: #4ade80;
+  --txt-red: #f87171;
+  --txt-indigo: #818cf8;
+  --txt-purple: #c084fc;
+  --txt-orange: #fb923c;
+  --txt-teal: #2dd4bf;
+  --txt-amber: #fbbf24;
+  --txt-blue: #60a5fa;
 }
 
 *, *::before, *::after {
@@ -98,6 +118,10 @@ html, body {
 .skip-link:focus {
   top: 0;
 }
+/* Cible du lien d'évitement : focusable (tabindex=-1) pour que le focus y
+   soit réellement déplacé, sans contour autour de toute la zone de contenu. */
+main[tabindex="-1"]:focus,
+main[tabindex="-1"]:focus-visible { outline: none; }
 
 /* ── Focus visible ── */
 *:focus { outline: none; }

@@ -426,6 +426,7 @@ export default function TableauDeBord() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 16px 80px" }}>
         {/* Breadcrumb */}
@@ -480,7 +481,7 @@ export default function TableauDeBord() {
                 {scoreDetails.length > 0 && (
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 12 }}>
                     {scoreDetails.map((d, i) => (
-                      <span key={i} style={{ fontSize: 12, padding: "4px 10px", borderRadius: 20, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: "#22c55e" }}>{d}</span>
+                      <span key={i} style={{ fontSize: 12, padding: "4px 10px", borderRadius: 20, background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", color: "var(--txt-green)" }}>{d}</span>
                     ))}
                   </div>
                 )}
@@ -771,6 +772,7 @@ export default function TableauDeBord() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

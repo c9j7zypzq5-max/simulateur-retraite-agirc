@@ -185,6 +185,7 @@ export default function RapportPartage() {
     return (
       <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
         <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
         <div style={{ maxWidth: 560, margin: "80px auto", padding: "0 16px", textAlign: "center" }}>
           <div style={{ fontSize: 56, marginBottom: 20 }}>⚠️</div>
           <h1 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--text)", marginBottom: 10 }}>
@@ -197,7 +198,8 @@ export default function RapportPartage() {
             Retour à l'accueil
           </Link>
         </div>
-        <Footer />
+        </main>
+      <Footer />
       </div>
     );
   }
@@ -218,6 +220,7 @@ export default function RapportPartage() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "28px 16px 60px" }}>
 
@@ -261,7 +264,7 @@ export default function RapportPartage() {
               {copied ? "✓ Lien copié !" : "🔗 Partager"}
             </button>
             {copyErr && (
-              <span style={{ fontSize: 12, color: "#f87171", alignSelf: "center" }}>
+              <span style={{ fontSize: 12, color: "var(--txt-red)", alignSelf: "center" }}>
                 Impossible de copier — copiez l'URL manuellement.
               </span>
             )}
@@ -305,7 +308,7 @@ export default function RapportPartage() {
         <div style={{ ...cardStyle, background: "var(--card-bg)" }}>
           <div style={{ fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.7 }}>
             <strong style={{ color: "var(--text)" }}>Simulation calculée sur</strong>{" "}
-            <a href="https://www.simfinly.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+            <a href="https://www.simfinly.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>
               simfinly.com
             </a>{" "}
             — Simulateurs financiers gratuits.
@@ -327,6 +330,7 @@ export default function RapportPartage() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

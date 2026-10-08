@@ -169,6 +169,7 @@ export default function SuccessionBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur Succession Belgique 2024", url: "https://www.simfinly.com/be/simulateurs/succession", description: "Calculez les droits de succession belges par région.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -247,7 +248,7 @@ export default function SuccessionBE() {
                     }}
                   >
                     {opt.label}
-                    {opt.value === "conjoint" && <span style={{ marginLeft: 8, fontSize: 11, color: "#22c55e" }}>✓ Exonéré</span>}
+                    {opt.value === "conjoint" && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--txt-green)" }}>✓ Exonéré</span>}
                     {opt.value === "enfant" && <span style={{ marginLeft: 8, fontSize: 11, color: "var(--text-secondary)" }}>Dès le 1er €</span>}
                   </button>
                 ))}
@@ -271,9 +272,9 @@ export default function SuccessionBE() {
               {isExonere ? (
                 <>
                   <div style={{ fontSize: 40, marginBottom: 8 }}>✓</div>
-                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "#22c55e" }}>0 €</div>
+                  <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 28, fontWeight: 700, color: "var(--txt-green)" }}>0 €</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>de droits de succession</div>
-                  <div style={{ marginTop: 12, fontSize: 12, color: "#22c55e", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
+                  <div style={{ marginTop: 12, fontSize: 12, color: "var(--txt-green)", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "8px 12px" }}>
                     Exonération totale — conjoint / cohabitant légal (toutes régions)
                   </div>
                 </>
@@ -351,6 +352,7 @@ export default function SuccessionBE() {
 
         <ShareBar url={shareUrl} title="Droits de succession belges estimés" />
       </div>
+      </main>
       <Footer />
     </div>
   );

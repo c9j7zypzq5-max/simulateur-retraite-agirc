@@ -216,6 +216,7 @@ export default function PolitiqueConfidentialite() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 16px 60px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
@@ -232,6 +233,7 @@ export default function PolitiqueConfidentialite() {
         {locale === "en" ? <ContentEn /> : <ContentFr />}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

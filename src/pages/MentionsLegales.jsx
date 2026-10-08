@@ -51,7 +51,7 @@ function ContentFr() {
           <strong style={{ color: "var(--text)" }}>Vercel Inc.</strong><br />
           340 Pine Street Suite 701<br />
           San Francisco, CA 94104 — États-Unis<br />
-          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>
             vercel.com
           </a>
         </p>
@@ -113,7 +113,7 @@ function ContentEn() {
           <strong style={{ color: "var(--text)" }}>Vercel Inc.</strong><br />
           340 Pine Street Suite 701<br />
           San Francisco, CA 94104 — United States<br />
-          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "none" }}>
+          <a href="https://vercel.com" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gold-mid)", textDecoration: "underline", textUnderlineOffset: 2 }}>
             vercel.com
           </a>
         </p>
@@ -177,6 +177,7 @@ export default function MentionsLegales() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "48px 16px 60px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
@@ -190,6 +191,7 @@ export default function MentionsLegales() {
         {locale === "en" ? <ContentEn /> : <ContentFr />}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

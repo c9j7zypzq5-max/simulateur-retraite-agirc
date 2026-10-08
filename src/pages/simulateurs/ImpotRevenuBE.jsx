@@ -140,6 +140,7 @@ export default function ImpotRevenuBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur IPP Belgique 2025", url: "https://www.simfinly.com/be/simulateurs/impot-revenu", description: "Calculez votre IPP belge selon les barèmes 2026.", applicationCategory: "FinanceApplication", inLanguage: "fr-BE" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -359,6 +360,7 @@ export default function ImpotRevenuBE() {
 
         <ShareBar url={shareUrl} title="Mon IPP belge estimé" />
       </div>
+      </main>
       <Footer />
     </div>
   );

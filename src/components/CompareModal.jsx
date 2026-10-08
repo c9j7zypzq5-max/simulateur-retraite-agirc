@@ -151,7 +151,7 @@ export default function CompareSection({ entryA, entryB, onClose, locale = "fr" 
 
       {verdictText && (
         <div style={{ background: "#0F1828", borderRadius: 14, padding: "20px 26px", marginTop: 18, display: "flex", alignItems: "center", gap: 16 }}>
-          <span style={{ width: 40, height: 40, borderRadius: 11, background: "rgba(21,160,107,0.18)", color: "#34D399", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <span style={{ width: 40, height: 40, borderRadius: 11, background: "rgba(21,160,107,0.18)", color: "var(--txt-green)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
           <div style={{ color: "#e2e6ee", fontSize: 14.5, lineHeight: 1.55 }} dangerouslySetInnerHTML={{ __html: verdictText.replace(/\*\*(.+?)\*\*/g, "<b style='color:#fff'>$1</b>") }} />

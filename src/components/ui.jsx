@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useId } from "react";
 import BaremeUpdateBadge from "./BaremeUpdateBadge.jsx";
 import { Home, ChevronRight } from "lucide-react";
 import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
@@ -14,6 +14,7 @@ import { localeFromPath, countryFromPath } from "../i18n/config.js";
 export const fmt    = (n, d = 0) => (isNaN(n) ? 0 : n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
 export const fmtEur = n => fmt(n) + " €";
 export const signFmt = n => (n > 0 ? "+" : "") + fmtEur(n);
+
 
 // ─── Animated number ─────────────────────────────────────────────────────────
 export function useAnimatedNumber(target, duration = 700) {
@@ -109,7 +110,12 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
 // ─── StepperInput ─────────────────────────────────────────────────────────────
 // Champ décimal. Accepte indifféremment "." et "," comme séparateur décimal
 // (conventions française et anglaise). "3,5" est parsé comme 3.5.
-export function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", hint, tooltip }) {
+export function StepperInput({ label, value, onChange, min, max, step = 1, unit = "", hint, tooltip, id }) {
+  // Libellé associé au champ (lecteurs d'écran, clic sur le libellé) : sans id,
+  // le <label> n'était relié à rien.
+  const autoId = useId();
+  const inputId = id || `stepper-${autoId}`;
+  const hintId = hint ? `${inputId}-hint` : undefined;
   const [raw, setRaw] = useState(value === null || value === undefined ? "" : String(value));
   const [focused, setFocused] = useState(false);
 
@@ -154,14 +160,14 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
 
   return (
     <div style={{ marginBottom: 24 }}>
-      <label style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
+      <label htmlFor={inputId} style={{ display: "block", fontSize: 12, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 10 }}>
         {label}
         {tooltip && <span title={tooltip} aria-label={tooltip} style={{ cursor: "help", marginLeft: 6, fontSize: 13, opacity: 0.6 }}>ⓘ</span>}
       </label>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
         <button onClick={dec} type="button" aria-label={`Diminuer ${label}`} style={btnStyle}>−</button>
         <div style={{ flex: 1, display: "flex", alignItems: "center", background: focused ? "var(--surface)" : "var(--input-bg)", border: `1.5px solid ${focused ? "var(--primary)" : "var(--border)"}`, borderRadius: "var(--r-md)", overflow: "hidden", transition: "border-color 0.15s, box-shadow 0.15s, background 0.15s", boxShadow: focused ? "0 0 0 3px rgba(43,92,230,0.12)" : "none" }}>
-          <input type="text" inputMode="decimal"
+          <input type="text" inputMode="decimal" id={inputId} aria-describedby={hintId}
             value={focused ? raw : (value === null || value === undefined ? "" : String(value))}
             onChange={handleChange}
             onFocus={e => { setFocused(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
@@ -172,7 +178,7 @@ export function StepperInput({ label, value, onChange, min, max, step = 1, unit 
         </div>
         <button onClick={inc} type="button" aria-label={`Augmenter ${label}`} style={btnStyle}>+</button>
       </div>
-      {hint && <div style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
+      {hint && <div id={hintId} style={{ marginTop: 4, fontSize: 12, color: "var(--text-secondary)", fontFamily: "'Hanken Grotesk', sans-serif" }}>{hint}</div>}
     </div>
   );
 }
@@ -186,8 +192,9 @@ export function Toggle({ options, checked, onChange }) {
         <button key={opt} onClick={() => onChange(i === 1)}
           aria-pressed={String((i === 1) === checked)}
           style={{ padding: "9px 16px", borderRadius: 8, border: "none",
-            background: (i === 1) === checked ? "rgba(43,92,230,0.18)" : "transparent",
-            color: (i === 1) === checked ? "var(--gold)" : "var(--text-secondary)",
+            background: (i === 1) === checked ? "rgba(43,92,230,0.12)" : "transparent",
+            color: (i === 1) === checked ? "var(--gold-mid)" : "var(--text-secondary)",
+            fontWeight: (i === 1) === checked ? 600 : 400,
             fontSize: 13, cursor: "pointer", transition: "all 0.2s", fontFamily: "'Hanken Grotesk', sans-serif" }}>
           {opt}
         </button>
@@ -233,7 +240,7 @@ export function ProgressBar({ label, value, total, color }) {
     <div style={{ marginBottom: 14 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 12, color: "var(--text-secondary)" }}>
         <span>{label}</span>
-        <span style={{ color: complete ? "#22c55e" : "var(--text)", fontWeight: complete ? 600 : 400 }}>
+        <span style={{ color: complete ? "var(--txt-green)" : "var(--text)", fontWeight: complete ? 600 : 400 }}>
           {fmt(value)} ({pct.toFixed(0)} %)
         </span>
       </div>
@@ -302,10 +309,10 @@ export function ResultCard({ label, pension, subLabel, empty }) {
 // ─── StatusBadge ──────────────────────────────────────────────────────────────
 export function StatusBadge({ status, label }) {
   const palette = {
-    good: { bg: "rgba(34,197,94,0.1)",    color: "#22c55e", border: "1px solid rgba(34,197,94,0.25)" },
-    warn: { bg: "rgba(249,115,22,0.1)",   color: "#f97316", border: "1px solid rgba(249,115,22,0.25)" },
-    bad:  { bg: "rgba(239,68,68,0.1)",    color: "#ef4444", border: "1px solid rgba(239,68,68,0.25)" },
-    info: { bg: "rgba(99,102,241,0.1)",   color: "#818cf8", border: "1px solid rgba(99,102,241,0.25)" },
+    good: { bg: "rgba(34,197,94,0.1)",    color: "var(--txt-green)", border: "1px solid rgba(34,197,94,0.25)" },
+    warn: { bg: "rgba(249,115,22,0.1)",   color: "var(--txt-orange)", border: "1px solid rgba(249,115,22,0.25)" },
+    bad:  { bg: "rgba(239,68,68,0.1)",    color: "var(--txt-red)", border: "1px solid rgba(239,68,68,0.25)" },
+    info: { bg: "rgba(99,102,241,0.1)",   color: "var(--txt-indigo)", border: "1px solid rgba(99,102,241,0.25)" },
     gold: { bg: "rgba(43,92,230,0.08)",   color: "var(--gold)", border: "1px solid var(--border-gold)" },
   };
   const s = palette[status] || palette.info;

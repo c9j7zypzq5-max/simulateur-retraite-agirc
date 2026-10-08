@@ -423,7 +423,7 @@ function YearTable({ projectionData, immoActive, txt }) {
             <tr key={d.annee} style={{ borderBottom: '1px solid var(--border)' }}>
               <td style={{ padding: '9px 0', color: 'var(--text)' }}>{txt.ageSuffix ? `${d.age} ${txt.ageSuffix}` : d.age}</td>
               <td style={{ textAlign: 'right', padding: '9px 8px', color: 'var(--primary)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.capitalFinancier))}</td>
-              {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: '#a855f7', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
+              {immoActive && <td style={{ textAlign: 'right', padding: '9px 8px', color: "var(--txt-purple)", whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.valeurImmo))}</td>}
               <td style={{ textAlign: 'right', padding: '9px 0', fontWeight: 500, color: 'var(--text)', whiteSpace: 'nowrap' }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
           ))}
@@ -574,6 +574,7 @@ export default function Patrimoine() {
       }} />
 
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
@@ -613,7 +614,7 @@ export default function Patrimoine() {
           </div>
 
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+            {txt.sectionImmo} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, color: "var(--text-secondary)" }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: immoActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleImmo}</span>
@@ -630,7 +631,7 @@ export default function Patrimoine() {
           )}
 
           <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 19, color: 'var(--text-secondary)', marginBottom: 20, marginTop: 32, fontWeight: 400 }}>
-            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", opacity: 0.6 }}>{txt.optionnel}</span>
+            {txt.sectionRetraite} <span style={{ fontSize: 12, fontFamily: "'Hanken Grotesk', sans-serif", fontWeight: 400, color: "var(--text-secondary)" }}>{txt.optionnel}</span>
           </h2>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: retraiteActive ? 20 : 0 }}>
             <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{txt.toggleRetraite}</span>
@@ -807,6 +808,7 @@ export default function Patrimoine() {
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/patrimoine']} />
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

@@ -800,10 +800,10 @@ function DateSelect({ label, value, onChange, locale = 'fr' }) {
         {label}
       </div>
       <div style={{ display: 'flex', gap: 6 }}>
-        <select value={value.month} onChange={e => onChange({ ...value, month: parseInt(e.target.value) })} style={selStyle}>
+        <select aria-label={`${label} — mois`} value={value.month} onChange={e => onChange({ ...value, month: parseInt(e.target.value) })} style={selStyle}>
           {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
         </select>
-        <select value={value.year} onChange={e => onChange({ ...value, year: parseInt(e.target.value) })} style={selStyle}>
+        <select aria-label={`${label} — année`} value={value.year} onChange={e => onChange({ ...value, year: parseInt(e.target.value) })} style={selStyle}>
           {years.map(y => <option key={y} value={y}>{y}</option>)}
         </select>
       </div>
@@ -1010,6 +1010,7 @@ export default function Comparateur() {
         "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '28px 16px 60px' }}>
         <SimulateurHeader
@@ -1076,6 +1077,7 @@ export default function Comparateur() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
             <input
               type="number"
+              aria-label={txt.initialInvestTitle}
               value={montant}
               min={0}
               max={10_000_000}
@@ -1100,6 +1102,7 @@ export default function Comparateur() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center', marginBottom: 14 }}>
             <input
               type="number"
+              aria-label={txt.dcaTitle}
               value={periodicAmt}
               min={0}
               max={1_000_000}
@@ -1114,6 +1117,7 @@ export default function Comparateur() {
             />
             <span style={{ color: 'var(--text-secondary)', fontSize: 13 }}>{activeSymbol()}</span>
             <select
+              aria-label={`${txt.dcaTitle} — fréquence`}
               value={periodicFreq}
               onChange={e => setPeriodicFreq(e.target.value)}
               disabled={periodicAmt === 0}
@@ -1175,9 +1179,9 @@ export default function Comparateur() {
         {/* Erreurs */}
         {Object.keys(errors).length > 0 && (
           <div style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', borderRadius: 12, padding: '12px 16px', marginBottom: 16 }}>
-            {errors._global && <p style={{ color: '#ef4444', fontSize: 13, margin: 0 }}>⚠️ {errors._global}</p>}
+            {errors._global && <p style={{ color: "var(--txt-red)", fontSize: 13, margin: 0 }}>⚠️ {errors._global}</p>}
             {Object.entries(errors).filter(([k]) => k !== '_global').map(([ticker, err]) => (
-              <p key={ticker} style={{ color: '#ef4444', fontSize: 13, margin: '4px 0' }}>
+              <p key={ticker} style={{ color: "var(--txt-red)", fontSize: 13, margin: '4px 0' }}>
                 ⚠️ <strong>{ticker}</strong> : {err}
               </p>
             ))}
@@ -1341,6 +1345,7 @@ export default function Comparateur() {
 
         <div style={{ margin: '24px 0' }}><AdUnit slot="auto" format="auto" /></div>
       </div>
+      </main>
       <Footer />
     </div>
   );

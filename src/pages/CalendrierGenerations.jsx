@@ -91,7 +91,7 @@ export default function CalendrierGenerations() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", color: "var(--text)", fontFamily: "'Hanken Grotesk', sans-serif" }}>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main style={{ maxWidth: 900, margin: "0 auto", padding: "40px 20px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 900, margin: "0 auto", padding: "40px 20px 80px" }}>
 
         <nav aria-label="Fil d'Ariane" style={{ fontSize: 12, color: "var(--text-secondary)", marginBottom: 24 }}>
           <Link to="/" style={{ color: "var(--text-secondary)", textDecoration: "none" }}>Accueil</Link>

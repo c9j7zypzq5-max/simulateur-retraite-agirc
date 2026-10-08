@@ -187,6 +187,7 @@ export default function WizardRetraite() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 680, margin: "0 auto", padding: "28px 16px 60px" }}>
 
@@ -318,7 +319,7 @@ export default function WizardRetraite() {
                 ].map((item, i) => (
                   <div key={i} style={{ textAlign: "center" }}>
                     <div style={{ fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>{item.l}</div>
-                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: item.accent ? "#f87171" : "var(--gold)" }}>{item.v}</div>
+                    <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 700, color: item.accent ? "var(--txt-red)" : "var(--gold)" }}>{item.v}</div>
                   </div>
                 ))}
               </div>
@@ -394,7 +395,7 @@ export default function WizardRetraite() {
               )}
               {trimestresManquants === 0 && (
                 <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 10, padding: "12px 16px", fontSize: 13, color: "var(--text-secondary)", lineHeight: 1.6 }}>
-                  Vous avez atteint la durée requise pour le <strong style={{ color: "#22c55e" }}>taux plein</strong>.
+                  Vous avez atteint la durée requise pour le <strong style={{ color: "var(--txt-green)" }}>taux plein</strong>.
                 </div>
               )}
             </div>
@@ -442,7 +443,7 @@ export default function WizardRetraite() {
                         ].map(({ l, v }, i) => (
                           <div key={i} style={{ background: "var(--card-bg)", border: "1px solid var(--border)", borderRadius: 10, padding: "10px 12px" }}>
                             <div style={{ fontSize: 9, color: "var(--text-secondary)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 4 }}>{l}</div>
-                            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 700, color: i === 2 ? "#f87171" : "var(--text)" }}>{v}</div>
+                            <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 700, color: i === 2 ? "var(--txt-red)" : "var(--text)" }}>{v}</div>
                           </div>
                         ))}
                       </div>
@@ -587,6 +588,7 @@ export default function WizardRetraite() {
         </p>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -56,6 +56,7 @@ export default function Widgets() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 760, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ padding: "24px 0 8px", fontSize: 12, color: "var(--text-secondary)" }}>
@@ -89,6 +90,7 @@ export default function Widgets() {
             Choisissez un simulateur et copiez son code d'intégration.
           </p>
           <select
+            aria-label="Simulateur à intégrer"
             value={selectedSim}
             onChange={e => setSelectedSim(e.target.value)}
             style={{ width: "100%", padding: "10px 12px", borderRadius: 10, border: "1px solid var(--border)", background: "var(--bg)", color: "var(--text)", fontSize: 16, fontFamily: "'Hanken Grotesk', sans-serif", marginBottom: 14 }}
@@ -110,7 +112,7 @@ export default function Widgets() {
                       setTimeout(() => setUniversalCopied(false), 2000);
                     }).catch(() => {});
                   }}
-                  style={{ padding: "9px 18px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", background: universalCopied ? "rgba(34,197,94,0.12)" : "rgba(43,92,230,0.1)", color: universalCopied ? "#22c55e" : "var(--gold)", border: `1px solid ${universalCopied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}` }}
+                  style={{ padding: "9px 18px", borderRadius: 10, cursor: "pointer", fontSize: 13, fontFamily: "'Hanken Grotesk', sans-serif", background: universalCopied ? "rgba(34,197,94,0.12)" : "rgba(43,92,230,0.1)", color: universalCopied ? "var(--txt-green)" : "var(--gold)", border: `1px solid ${universalCopied ? "rgba(34,197,94,0.3)" : "var(--border-gold)"}` }}
                 >
                   {universalCopied ? "Copié ✓" : "Copier le code"}
                 </button>
@@ -132,6 +134,7 @@ export default function Widgets() {
         ))}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -199,7 +199,7 @@ export default function FraisNotaire() {
         ],
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 960, margin: "0 auto", padding: isMobile ? "28px 16px 60px" : "28px 24px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/frais-notaire" size={34} />}
           badge="Immobilier · Simulation 2026"
@@ -370,7 +370,7 @@ export default function FraisNotaire() {
 
         <FaqSection items={FAQ} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur les barèmes 2026 (DMTO post-hausse LF 2025) · Le montant exact figure dans le décompte du notaire et varie selon le département · Ne constitue pas un conseil juridique
         </p>
 

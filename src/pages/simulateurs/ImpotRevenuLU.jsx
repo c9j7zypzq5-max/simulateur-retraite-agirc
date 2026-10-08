@@ -135,6 +135,7 @@ export default function ImpotRevenuLU() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebApplication", name: "Simulateur impôt sur le revenu Luxembourg 2026", url: "https://www.simfinly.com/lu/simulateurs/impot-revenu-lu", description: "Calculez votre impôt luxembourgeois selon le barème progressif 2026 et votre classe d'impôt.", applicationCategory: "FinanceApplication", inLanguage: "fr-LU" }} />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 16px 80px" }}>
@@ -298,6 +299,7 @@ export default function ImpotRevenuLU() {
 
         <ShareBar url={shareUrl} title="Mon impôt luxembourgeois estimé" />
       </div>
+      </main>
       <Footer />
     </div>
   );

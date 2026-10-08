@@ -143,6 +143,7 @@ export default function Compte() {
     <div style={{ minHeight: "100vh", background: "#F5F6F8", fontFamily: "'Hanken Grotesk', sans-serif", color: "#0F1828" }}>
       {showOnboarding && <OnboardingModal onClose={() => setShowOnboarding(false)} />}
       <Navbar />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 1120, margin: "0 auto", padding: "0 16px 80px" }}>
         <div style={{ display: isMobile ? "block" : "grid", gridTemplateColumns: "230px 1fr", gap: 0, alignItems: "start", marginTop: 24 }}>
@@ -304,6 +305,7 @@ export default function Compte() {
           </div>
         </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

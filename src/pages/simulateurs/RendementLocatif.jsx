@@ -410,6 +410,7 @@ export default function RendementLocatif() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -562,7 +563,7 @@ export default function RendementLocatif() {
                 {[{ label: txt.ecartNet, v: `${deltaNet >= 0 ? "+" : "−"}${Math.abs(deltaNet).toFixed(2)} ${txt.ptsUnit}`, good: deltaNet >= 0 }, { label: txt.ecartCash, v: `${deltaCash >= 0 ? "+" : "−"}${fmtEur(Math.abs(Math.round(deltaCash)))}${txt.perMonth}`, good: deltaCash >= 0 }].map(({ label, v, good }) => (
                   <div key={label} style={{ padding: "12px 14px", borderRadius: 12, textAlign: "center", background: good ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${good ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
                     <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{label}{txt.ecartSuffix}</div>
-                    <strong style={{ fontSize: 16, color: good ? "#22c55e" : "#ef4444" }}>{v}</strong>
+                    <strong style={{ fontSize: 16, color: good ? "var(--txt-green)" : "var(--txt-red)" }}>{v}</strong>
                   </div>
                 ))}
               </div>
@@ -631,6 +632,7 @@ export default function RendementLocatif() {
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/rendement-locatif']} />
 
       <FaqSection items={txt.faq} />
+      </main>
       <Footer />
     </div>
   );

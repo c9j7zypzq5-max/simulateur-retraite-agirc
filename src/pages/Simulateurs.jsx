@@ -62,6 +62,7 @@ export default function Simulateurs() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 16px 80px" }}>
 
@@ -99,6 +100,7 @@ export default function Simulateurs() {
           </span>
           <input
             type="search"
+            aria-label="Rechercher un simulateur"
             placeholder="Rechercher un simulateur…"
             value={query}
             onChange={e => setQuery(e.target.value)}
@@ -195,6 +197,7 @@ export default function Simulateurs() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -640,7 +640,7 @@ export default function EmpruntImmobilier() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ background: "var(--bg)", padding: "28px 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ background: "var(--bg)", padding: "28px 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/emprunt-immobilier" size={34} />}
           badge={txt.badge}
@@ -952,7 +952,7 @@ export default function EmpruntImmobilier() {
                   {[{ label: txt.ecartMensu, d: deltaMensu, suffix: txt.perMonth }, { label: txt.ecartCout, d: deltaCout, suffix: "" }].map(({ label, d, suffix }) => (
                     <div key={label} style={{ padding: "12px 14px", borderRadius: 12, textAlign: "center", background: d <= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${d <= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
                       <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>{label}{txt.ecartSuffix}</div>
-                      <strong style={{ fontSize: 16, color: d <= 0 ? "#22c55e" : "#ef4444" }}>{d <= 0 ? "−" : "+"}{fmtEur(Math.abs(Math.round(d)))}{suffix}</strong>
+                      <strong style={{ fontSize: 16, color: d <= 0 ? "var(--txt-green)" : "var(--txt-red)" }}>{d <= 0 ? "−" : "+"}{fmtEur(Math.abs(Math.round(d)))}{suffix}</strong>
                     </div>
                   ))}
                 </div>
@@ -1018,7 +1018,7 @@ export default function EmpruntImmobilier() {
 
         <FaqSection items={txt.faq} />
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           {txt.disclaimer}
         </p>
 

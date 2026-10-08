@@ -149,6 +149,7 @@ export default function FonctionPublique() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -255,10 +256,10 @@ export default function FonctionPublique() {
                 <div>
                   <div style={{ fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 4 }}>Taux de liquidation</div>
                   <div style={{ fontSize: 13, color: "var(--text-secondary)" }}>
-                    {res.decote > 0 && <span style={{ color: "#f87171" }}>Décote −{(res.decote * 100).toFixed(2)} %</span>}
-                    {res.surcote > 0 && <span style={{ color: "#4ade80" }}>Surcote +{(res.surcote * 100).toFixed(2)} %</span>}
+                    {res.decote > 0 && <span style={{ color: "var(--txt-red)" }}>Décote −{(res.decote * 100).toFixed(2)} %</span>}
+                    {res.surcote > 0 && <span style={{ color: "var(--txt-green)" }}>Surcote +{(res.surcote * 100).toFixed(2)} %</span>}
                     {res.decote === 0 && res.surcote === 0 && "Taux plein"}
-                    {bonus3Enfants && <span style={{ marginLeft: 8, color: "#4ade80" }}>+ 10 % (enfants)</span>}
+                    {bonus3Enfants && <span style={{ marginLeft: 8, color: "var(--txt-green)" }}>+ 10 % (enfants)</span>}
                   </div>
                 </div>
                 <span style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: "var(--gold)" }}>
@@ -326,6 +327,7 @@ export default function FonctionPublique() {
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/fonction-publique']} />
 
+      </main>
       <Footer />
     </div>
   );

@@ -18,6 +18,7 @@ import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { textTone } from "../../utils/textTone.js";
 
 // ─── Barèmes fiscaux (identiques succession 2025) ────────────────────────────
 const TRANCHES_DIRECTE = [
@@ -175,7 +176,7 @@ function Row({ label, value, highlight, positive, negative }) {
       <span style={{ color: "var(--text-secondary)" }}>{label}</span>
       <span style={{
         fontFamily: "'Space Grotesk', sans-serif", fontWeight: highlight ? 700 : 500,
-        color: positive ? "#22c55e" : negative ? "#ef4444" : highlight ? "var(--text)" : "var(--text-secondary)",
+        color: positive ? "var(--txt-green)" : negative ? "var(--txt-red)" : highlight ? "var(--text)" : "var(--text-secondary)",
       }}>
         {value}
       </span>
@@ -279,7 +280,7 @@ export default function Donation() {
         ],
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
-      <main id="main-content" style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
+      <main id="main-content" tabIndex={-1} style={{ maxWidth: 880, margin: "0 auto", padding: isMobile ? "0 16px 60px" : "0 16px 80px" }}>
         <SimulateurHeader
           icon={<SimIcon path="/simulateurs/donation" size={34} />}
           title="Simulateur donation de son vivant"
@@ -384,7 +385,7 @@ export default function Donation() {
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                 {isEconomie ? "Économie fiscale de la donation" : isCouteux ? "Surcoût de la donation" : "Résultat fiscal"}
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 700, color: heroColor }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 700, color: textTone(heroColor) }}>
                 {isEconomie ? "+" : isCouteux ? "−" : ""}{fmtEur(Math.abs(Math.round(animEconomie)))}
               </div>
               <div style={{ fontSize: 13, color: "var(--text-secondary)", marginTop: 6 }}>
@@ -408,7 +409,7 @@ export default function Donation() {
                 <div style={{ fontSize: 11, color: "var(--text-secondary)", marginBottom: 4 }}>
                   {isEconomie ? "Économie fiscale nette" : "Surcoût de la donation"}
                 </div>
-                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: heroColor }}>
+                <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 24, fontWeight: 700, color: textTone(heroColor) }}>
                   {isEconomie ? "+" : isCouteux ? "−" : ""}{fmtEur(Math.abs(res.economieFiscale))}
                 </div>
               </div>
@@ -508,7 +509,7 @@ export default function Donation() {
           </div>
         </div>
 
-        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", opacity: 0.6, marginTop: 32 }}>
+        <p style={{ textAlign: "center", fontSize: 12, color: "var(--text-secondary)", marginTop: 32 }}>
           Simulation indicative basée sur les barèmes DMTG 2025 · Ne constitue pas un conseil fiscal ou notarial · Consultez un notaire pour votre situation
         </p>
 

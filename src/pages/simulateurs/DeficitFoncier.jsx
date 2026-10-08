@@ -19,6 +19,7 @@ import SimIcon from "../../data/simIcons.jsx";
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { textTone } from "../../utils/textTone.js";
 
 // ─── Constantes 2025 ──────────────────────────────────────────────────────────
 const PS = PS_CAPITAL;
@@ -179,6 +180,7 @@ export default function DeficitFoncier() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <JsonLd data={{
         "@context": "https://schema.org",
@@ -316,7 +318,7 @@ export default function DeficitFoncier() {
               <div style={{ fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>
                 {res.estDeficit ? "Déficit foncier brut" : "Bénéfice foncier"}
               </div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 700, color: heroColor }}>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 36, fontWeight: 700, color: textTone(heroColor) }}>
                 {res.estDeficit ? "−" : "+"}{fmtEur(Math.round(animDeficit))}
               </div>
               {res.estDeficit ? (
@@ -329,12 +331,12 @@ export default function DeficitFoncier() {
                 </div>
               )}
               {res.estDeficit && res.economieFiscaleImmédiate > 0 && (
-                <div style={{ marginTop: 12, fontSize: 13, fontWeight: 700, color: "#22c55e", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "10px 14px", border: "1px solid rgba(34,197,94,0.2)" }}>
+                <div style={{ marginTop: 12, fontSize: 13, fontWeight: 700, color: "var(--txt-green)", background: "rgba(34,197,94,0.1)", borderRadius: 8, padding: "10px 14px", border: "1px solid rgba(34,197,94,0.2)" }}>
                   Économie fiscale immédiate : {fmtEur(Math.round(animEconomie))}
                 </div>
               )}
               {!res.estDeficit && (
-                <div style={{ marginTop: 12, fontSize: 13, color: "#ef4444", background: "rgba(239,68,68,0.08)", borderRadius: 8, padding: "10px 14px" }}>
+                <div style={{ marginTop: 12, fontSize: 13, color: "var(--txt-red)", background: "rgba(239,68,68,0.08)", borderRadius: 8, padding: "10px 14px" }}>
                   Impôt à payer estimé : {fmtEur(Math.round(res.imposition))}
                 </div>
               )}
@@ -427,6 +429,7 @@ export default function DeficitFoncier() {
 
         <ShareBar params={toParams(vals)} name="deficit-foncier" />
       </div>
+      </main>
       <Footer />
     </div>
   );

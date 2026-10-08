@@ -118,6 +118,7 @@ export default function GuidePensionReversion() {
     <div style={s.page}>
       {schemas.map((sc, i) => <JsonLd key={i} data={sc} />)}
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={s.wrap}>
         {/* Breadcrumb */}
@@ -264,6 +265,7 @@ export default function GuidePensionReversion() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

@@ -14,6 +14,7 @@ import { NumInput, StepperInput, fmtEur, FaqSection } from "../../components/ui.
 import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
+import { textTone } from "../../utils/textTone.js";
 
 // ─── Calculs ─────────────────────────────────────────────────────────────────
 function calcSalaire({ brut, statut, age, evolution, horizon }) {
@@ -321,7 +322,7 @@ function CareerCurve({ years, net, pouvAchat }) {
             )}
           </div>
           <div style={{ color: "var(--text)", marginBottom: 3 }}>
-            Net : <strong style={{ color: "#4ade80" }}>{fmtEur(Math.round(ttRow.netY))}/mois</strong>
+            Net : <strong style={{ color: "var(--txt-green)" }}>{fmtEur(Math.round(ttRow.netY))}/mois</strong>
           </div>
           <div style={{ color: "var(--text-secondary)" }}>
             Brut : {fmtEur(Math.round(ttRow.brutY))}/mois
@@ -387,7 +388,7 @@ function CompareBar({ label, value, maxValue, color }) {
     <div style={{ marginBottom: 16 }}>
       <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.83rem", marginBottom: 6 }}>
         <span style={{ color: "var(--text-secondary)" }}>{label}</span>
-        <span style={{ color, fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{fmtEur(Math.round(value))}</span>
+        <span style={{ color: textTone(color), fontWeight: 700, fontFamily: "'Space Grotesk', sans-serif" }}>{fmtEur(Math.round(value))}</span>
       </div>
       <div style={{ height: 10, borderRadius: 5, background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
         <div style={{
@@ -413,7 +414,7 @@ function PouvoirAchat({ ratio }) {
     <div style={{ padding: "14px 16px", borderRadius: 10, border: "1px solid rgba(248,113,113,0.3)", background: "rgba(248,113,113,0.06)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: "0.83rem" }}>
         <span style={{ color: "var(--text-secondary)" }}>📉 Pouvoir d'achat à l'inflation (2%/an)</span>
-        <span style={{ color: "#f87171", fontWeight: 600 }}>{Math.round(ratio * 100)}% conservé</span>
+        <span style={{ color: "var(--txt-red)", fontWeight: 600 }}>{Math.round(ratio * 100)}% conservé</span>
       </div>
       <div style={{ height: 8, borderRadius: 4, background: "rgba(255,255,255,0.05)", overflow: "hidden" }}>
         <div style={{
@@ -506,6 +507,7 @@ export default function Salaire() {
         "inLanguage": "fr-FR",
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       {/* ── Header ── */}
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 0" }}>
@@ -614,7 +616,7 @@ export default function Salaire() {
             <CompareBar label={`Aujourd'hui (${age} ans)`}    value={res.net}        maxValue={maxNet} color="#818cf8" />
             <CompareBar label={`Dans ${horizon} ans (${age + horizon} ans)`} value={res.last.netY} maxValue={maxNet} color="var(--primary)" />
             <div style={{ fontSize: "0.82rem", color: "var(--text-secondary)", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--border)" }}>
-              Gain projeté : <strong style={{ color: "#4ade80" }}>+{fmtEur(Math.round(animGain))}/mois</strong>
+              Gain projeté : <strong style={{ color: "var(--txt-green)" }}>+{fmtEur(Math.round(animGain))}/mois</strong>
               {" · "}Cumulé sur {horizon} ans : <strong style={{ color: "var(--primary)" }}>{fmtEur(Math.round(res.cumNet))}</strong>
             </div>
           </div>
@@ -627,6 +629,7 @@ export default function Salaire() {
 
 
       <FaqSection items={FAQ} />
+      </main>
       <Footer />
     </div>
   );

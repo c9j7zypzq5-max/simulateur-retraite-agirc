@@ -81,6 +81,7 @@ export default function MerciPro() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 560, margin: "0 auto", padding: "60px 16px 80px", textAlign: "center" }}>
         {status === "verifying" && (
@@ -177,6 +178,7 @@ export default function MerciPro() {
         )}
       </div>
 
+      </main>
       <Footer />
     </div>
   );

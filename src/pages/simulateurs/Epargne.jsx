@@ -296,6 +296,7 @@ export default function Epargne() {
         "mainEntity": txt.faq.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -409,7 +410,7 @@ export default function Epargne() {
             {hasB && (
               <div style={{ marginTop: 18, padding: "14px 18px", borderRadius: 12, textAlign: "center", background: deltaFinal >= 0 ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)", border: `1px solid ${deltaFinal >= 0 ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"}` }}>
                 <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>{txt.ecart} : </span>
-                <strong style={{ fontSize: 18, color: deltaFinal >= 0 ? "#22c55e" : "#ef4444" }}>
+                <strong style={{ fontSize: 18, color: deltaFinal >= 0 ? "var(--txt-green)" : "var(--txt-red)" }}>
                   {deltaFinal >= 0 ? "+" : "−"}{money.fmt(Math.abs(Math.round(deltaFinal)))}
                 </strong>
               </div>
@@ -477,6 +478,7 @@ export default function Epargne() {
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/epargne']} />
 
+      </main>
       <Footer />
     </div>
   );

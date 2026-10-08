@@ -48,6 +48,7 @@ export default function LexiqueBE() {
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)", fontFamily: "'Hanken Grotesk', sans-serif", color: "var(--text)" }}>
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 800, margin: "0 auto", padding: "40px 24px 80px" }}>
 
@@ -137,6 +138,7 @@ export default function LexiqueBE() {
         </div>
       </div>
 
+      </main>
       <Footer />
     </div>
   );

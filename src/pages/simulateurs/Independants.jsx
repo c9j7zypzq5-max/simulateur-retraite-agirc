@@ -170,6 +170,7 @@ export default function Independants() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -315,6 +316,7 @@ export default function Independants() {
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/independants']} />
 
+      </main>
       <Footer />
     </div>
   );

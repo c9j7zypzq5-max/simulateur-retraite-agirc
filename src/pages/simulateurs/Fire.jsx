@@ -762,7 +762,7 @@ function YearTable({ projectionData, txt }) {
             <tr key={d.annee} style={{ borderBottom: "1px solid var(--border)" }}>
               <td style={{ padding: "9px 0", color: "var(--text)" }}>{txt.yearAgeSuffix(d.age)}</td>
               <td style={{ textAlign: "right", padding: "9px 8px", color: "var(--text-secondary)", whiteSpace: "nowrap" }}>+{fmtCur(Math.round(d.versements))}</td>
-              <td style={{ textAlign: "right", padding: "9px 8px", color: "#22c55e", whiteSpace: "nowrap" }}>+{fmtCur(Math.round(d.interets))}</td>
+              <td style={{ textAlign: "right", padding: "9px 8px", color: "var(--txt-green)", whiteSpace: "nowrap" }}>+{fmtCur(Math.round(d.interets))}</td>
               <td style={{ textAlign: "right", padding: "9px 0", color: "var(--text)", fontWeight: 500, whiteSpace: "nowrap" }}>{fmtCur(Math.round(d.patrimoine))}</td>
             </tr>
           ))}
@@ -795,7 +795,7 @@ function SensibiliteTable({ depensesBrutes, tauxRetrait, txt }) {
               <tr key={t} style={{ borderBottom: "1px solid var(--border)", background: t === tauxRetrait ? "rgba(43,92,230,0.07)" : "transparent" }}>
                 <td style={{ padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{t} %</td>
                 <td style={{ textAlign: "right", padding: "10px 0", color: t === tauxRetrait ? "var(--gold)" : "var(--text)" }}>{fmtCur(target)}</td>
-                <td style={{ textAlign: "right", padding: "10px 0", color: diff >= 0 ? "#22c55e" : "#ef4444", fontSize: 11 }}>
+                <td style={{ textAlign: "right", padding: "10px 0", color: diff >= 0 ? "var(--txt-green)" : "var(--txt-red)", fontSize: 11 }}>
                   {diff >= 0 ? "−" : "+"}{fmtCur(Math.abs(diff))}
                 </td>
               </tr>
@@ -964,8 +964,8 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
                 <tr key={row.label} style={{ borderBottom: '1px solid var(--border)' }}>
                   <td style={{ padding: '11px 0', color: 'var(--text)' }}>{row.label}</td>
                   <td style={{ textAlign: 'right', padding: '11px 8px', color: 'var(--text-secondary)' }}>{row.a}</td>
-                  <td style={{ textAlign: 'right', padding: '11px 8px', fontWeight: 500, color: better === null ? 'var(--text)' : better ? '#22c55e' : '#ef4444' }}>{row.b}</td>
-                  <td style={{ textAlign: 'right', padding: '11px 0', fontSize: 11, color: better === null ? 'var(--text-secondary)' : better ? '#22c55e' : '#ef4444' }}>{diffLabel}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 8px', fontWeight: 500, color: better === null ? 'var(--text)' : better ? "var(--txt-green)" : "var(--txt-red)" }}>{row.b}</td>
+                  <td style={{ textAlign: 'right', padding: '11px 0', fontSize: 11, color: better === null ? 'var(--text-secondary)' : better ? "var(--txt-green)" : "var(--txt-red)" }}>{diffLabel}</td>
                 </tr>
               );
             })}
@@ -1203,6 +1203,7 @@ export default function Fire() {
         "inLanguage": locale === 'en' ? 'en-US' : 'fr-FR',
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -1344,7 +1345,7 @@ export default function Fire() {
                         <span><span style={{ display: "inline-block", width: 10, height: 2, background: "var(--gold)", marginRight: 5, verticalAlign: "middle" }} />{txt.mcLegendP50}</span>
                       </div>
                       {mcResult.probabiliteAtteinte != null && (
-                        <div style={{ fontSize: 13, fontWeight: 600, color: mcResult.probabiliteAtteinte >= 70 ? "#4ade80" : mcResult.probabiliteAtteinte >= 40 ? "var(--gold)" : "#f87171", marginBottom: 6 }}>
+                        <div style={{ fontSize: 13, fontWeight: 600, color: mcResult.probabiliteAtteinte >= 70 ? "var(--txt-green)" : mcResult.probabiliteAtteinte >= 40 ? "var(--gold)" : "var(--txt-red)", marginBottom: 6 }}>
                           {txt.mcProbabilite(mcResult.probabiliteAtteinte, nbAnneesMc)}
                         </div>
                       )}
@@ -1541,6 +1542,7 @@ export default function Fire() {
           <AdUnit slot="auto" format="auto" />
         </div>
       </div>
+      </main>
       <Footer />
     </div>
   );

@@ -156,6 +156,7 @@ export default function RetraiteProgressive() {
         })),
       }} />
       <Navbar theme={theme} setTheme={setTheme} />
+      <main id="main-content" tabIndex={-1}>
 
       <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 16px 60px" }}>
         <SimulateurHeader
@@ -237,7 +238,7 @@ export default function RetraiteProgressive() {
           {hasResult && duree && (
             <div style={{ background: "rgba(34,197,94,0.07)", border: "1px solid rgba(34,197,94,0.25)", borderRadius: 12, padding: "14px 18px", marginTop: 12 }}>
               <div style={{ fontSize: 11, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--text-secondary)", marginBottom: 8 }}>Pension finale estimée</div>
-              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "#4ade80" }}>{fmtEur(res.pensionFinale)}/mois</div>
+              <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 26, fontWeight: 700, color: "var(--txt-green)" }}>{fmtEur(res.pensionFinale)}/mois</div>
               <div style={{ fontSize: 12, color: "var(--text-secondary)", marginTop: 4 }}>
                 +{fmtEur(res.gainSurcote)}/mois grâce à la surcote ({duree * 4} trim. × 1,25 %)
               </div>
@@ -347,6 +348,7 @@ export default function RetraiteProgressive() {
       </div>
         <SimRecommendations items={RECOMMENDATIONS['/simulateurs/retraite-progressive']} />
 
+      </main>
       <Footer />
     </div>
   );
