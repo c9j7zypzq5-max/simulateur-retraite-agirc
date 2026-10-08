@@ -203,7 +203,7 @@ export default function DeficitFoncier() {
 
         <AdUnit slot="deficit-foncier-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div className="sim-2col">
 
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>

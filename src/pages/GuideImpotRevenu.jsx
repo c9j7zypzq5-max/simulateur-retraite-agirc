@@ -162,7 +162,7 @@ export default function GuideImpotRevenu() {
         <h2 style={s.h2}>Le barème de l'impôt sur le revenu 2026</h2>
         <div style={s.body}>
           <p>Le barème progressif 2026 (applicable aux revenus perçus en 2025 déclarés en 2026) est le suivant, par part de quotient familial :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Tranche de revenu imposable / part</th>
@@ -177,7 +177,7 @@ export default function GuideImpotRevenu() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <p>Ce barème est progressif : seule la fraction de revenu dans chaque tranche est taxée à ce taux. Un contribuable avec 50 000 € de revenu net imposable par part ne paye pas 30 % sur 50 000 € — il paye 11 % sur la tranche 11 294–28 797 €, puis 30 % sur la tranche 28 797–50 000 €.</p>
         </div>
 

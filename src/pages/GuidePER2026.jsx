@@ -165,7 +165,7 @@ export default function GuidePER2026() {
         <h2 style={s.h2}>L'avantage fiscal du PER individuel en 2026</h2>
         <div style={s.body}>
           <p>Le principal attrait du PER est la <strong>déductibilité des versements volontaires</strong> de votre revenu imposable. Concrètement :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Revenu imposable</th>
@@ -185,7 +185,7 @@ export default function GuidePER2026() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <div style={s.infoBox}>
             <strong>💡 À ne pas oublier :</strong> Si vous n'avez pas utilisé tout votre plafond sur les 3 dernières années, le reliquat est reportable. Vous pouvez donc "rattraper" des années faibles en effectuant des versements plus importants une année donnée. Votre plafond exact figure sur votre avis d'imposition.
           </div>
@@ -210,7 +210,7 @@ export default function GuidePER2026() {
         <h2 style={s.h2}>Sortie en rente ou en capital : que choisir ?</h2>
         <div style={s.body}>
           <p>À la retraite, vous pouvez opter pour :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Mode de sortie</th>
@@ -227,13 +227,13 @@ export default function GuidePER2026() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <p>Pour la rente, votre âge à la liquidation détermine le montant (table de mortalité de l'assureur). Un capital de 100 000 € converti en rente à 65 ans génère environ 350–450 €/mois à vie.</p>
         </div>
 
         <h2 style={s.h2}>PER individuel vs assurance-vie : comparatif complet</h2>
         <div style={s.body}>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Critère</th>
@@ -253,7 +253,7 @@ export default function GuidePER2026() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <p>La règle d'or : si votre TMI à l'entrée (aujourd'hui) est supérieure à votre TMI à la sortie (à la retraite), le PER est avantageux. La plupart des actifs en phase de pic de revenus (40–60 ans) sont dans ce cas. Utilisez le <Link to="/simulateurs/per" style={{ color: "var(--primary)" }}>simulateur PER</Link> pour comparer les deux scénarios sur votre durée d'épargne.</p>
         </div>
 

@@ -278,7 +278,7 @@ export default function GuideRetraite2026() {
         <h2 id="fondamentaux" style={s.h2}>Les fondamentaux de la retraite en France (2026)</h2>
         <div style={s.body}>
           <p>Le système de retraite français repose sur la <strong>répartition</strong> : les actifs d'aujourd'hui financent les pensions des retraités d'aujourd'hui. Il est organisé en plusieurs régimes obligatoires selon votre statut professionnel :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Statut</th>
@@ -298,7 +298,7 @@ export default function GuideRetraite2026() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         <h2 id="calcul-cnav" style={s.h2}>Calcul de la retraite de base CNAV</h2>
@@ -323,7 +323,7 @@ export default function GuideRetraite2026() {
         <h2 id="age-legal" style={s.h2}>L'âge légal en 2026 selon votre génération</h2>
         <div style={s.body}>
           <p>La réforme des retraites de 2023 (loi Borne) a progressivement repoussé l'âge légal de 62 à 64 ans. La loi de financement de la Sécurité sociale pour 2026 (LFSS 2026) a toutefois <strong>gelé cette montée en charge pour les générations 1964 à 1968</strong>, pour les départs à partir du 1er septembre 2026 et jusqu'au 1er janvier 2028 — la trajectoire vers 64 ans reprendra ensuite, sauf nouvelle loi :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Génération</th>
@@ -336,7 +336,7 @@ export default function GuideRetraite2026() {
                 <tr key={i}><td style={s.td}>{row.generation}</td><td style={s.td}>{row.age}</td><td style={s.td}>{row.duree}</td></tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <div style={s.warnBox}>
             <strong>⚠️ Important :</strong> L'âge légal n'est pas forcément l'âge optimal. Partir sans avoir vos trimestres requis avant l'âge du taux plein automatique (67 ans) entraîne une <strong>décote de 0,625 %/trimestre manquant</strong> (plafonnée à 20 trimestres, soit -12,5 % max sur la pension CNAV).
           </div>
@@ -348,7 +348,7 @@ export default function GuideRetraite2026() {
           <p><strong>Taux plein</strong> : vous avez cotisé le nombre de trimestres requis pour votre génération. Taux = 50 %. C'est le scénario optimal pour la plupart des salariés du privé avec une carrière complète.</p>
           <p><strong>Surcote</strong> : vous continuez à travailler après avoir atteint à la fois l'âge légal et le nombre de trimestres requis. <strong>+1,25 % de pension par trimestre supplémentaire</strong> (soit +5 %/an), sans plafond.</p>
           <p>Ces trois mécanismes ne s'appliquent qu'à la pension de base CNAV. La retraite complémentaire Agirc-Arrco n'applique plus aucune minoration ni majoration liée à l'âge de départ : le coefficient de solidarité (malus temporaire de -10 % pendant 3 ans) a été définitivement supprimé pour les retraites liquidées depuis le 1er avril 2024.</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Scénario</th>
@@ -366,7 +366,7 @@ export default function GuideRetraite2026() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         </div>
 
         <h2 id="rachat-trimestres" style={s.h2}>Rachat de trimestres : est-ce rentable ?</h2>

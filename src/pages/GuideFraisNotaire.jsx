@@ -168,7 +168,7 @@ export default function GuideFraisNotaire() {
         <h2 style={s.h2}>À quoi servent les frais de notaire ?</h2>
         <div style={s.body}>
           <p>Contrairement à une idée reçue, <strong>80 % des "frais de notaire" ne vont pas au notaire</strong> — ils sont reversés à l'État et aux collectivités locales sous forme de droits de mutation (aussi appelés droits d'enregistrement ou "taxe de pub foncière"). Voici la décomposition exacte pour un bien ancien :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Poste</th>
@@ -188,13 +188,13 @@ export default function GuideFraisNotaire() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={{ ...s.td, fontWeight: j === 0 ? 500 : 400 }}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <p><strong>Total : environ 7,40 %</strong> pour un bien ancien dans la grande majorité des départements. Quelques départements ont conservé un taux réduit (3,80 %) pour la taxe départementale (Indre, Isère, Morbihan, Mayotte) — dans ces cas, les frais totaux tombent à environ 5,5 %.</p>
         </div>
 
         <h2 style={s.h2}>Exemples de frais de notaire par prix d'achat</h2>
         <div style={s.body}>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Prix d'achat</th>
@@ -211,7 +211,7 @@ export default function GuideFraisNotaire() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <p>Pour un calcul précis intégrant votre département et le type de bien, utilisez le <Link to="/simulateurs/frais-notaire" style={{ color: "var(--primary)" }}>simulateur frais de notaire</Link>.</p>
         </div>
 

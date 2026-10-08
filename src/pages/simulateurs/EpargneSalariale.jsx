@@ -21,7 +21,7 @@ import { FAQS } from '../../data/faqs.js';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
-// ─── Constantes 2025 ──────────────────────────────────────────────────────────
+// ─── Constantes 2026 ──────────────────────────────────────────────────────────
 const ABONDEMENT_MAX_LEGAL = 0.08 * PASS; // 3 844,80 €
 
 // ─── Calculs ──────────────────────────────────────────────────────────────────
@@ -123,7 +123,7 @@ export default function EpargneSalariale() {
 
   usePageMeta(
     "Simulateur Épargne Salariale PEE PERCO 2026 — Abondement & Capital | simfinly.com",
-    "Calculez l'impact de l'abondement employeur sur votre épargne salariale (PEE, PERCO, PERO). Capital projeté, économie fiscale et gain grâce à l'abondement. Plafonds 2025."
+    "Calculez l'impact de l'abondement employeur sur votre épargne salariale (PEE, PERCO, PERO). Capital projeté, économie fiscale et gain grâce à l'abondement. Plafonds 2026."
   );
 
   const animCapital    = useAnimatedNumber(res.capitalFinal);
@@ -148,7 +148,7 @@ export default function EpargneSalariale() {
         "@type": "SoftwareApplication",
         name: "Simulateur Épargne Salariale PEE PERCO 2026",
         url: "https://www.simfinly.com/simulateurs/epargne-salariale",
-        description: "Calculez l'impact de l'abondement employeur sur votre PEE ou PERCO : capital projeté, gain grâce à l'abondement, économie fiscale. Plafonds 2025.",
+        description: "Calculez l'impact de l'abondement employeur sur votre PEE ou PERCO : capital projeté, gain grâce à l'abondement, économie fiscale. Plafonds 2026.",
         applicationCategory: "FinanceApplication",
         operatingSystem: "Any",
         offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
@@ -160,13 +160,13 @@ export default function EpargneSalariale() {
           icon={<SimIcon path="/simulateurs/epargne" size={34} />}
           title="Épargne salariale"
           subtitle="PEE · PERCO · PERO — Simulation 2026"
-          desc="Estimez l'impact de l'abondement employeur sur votre capital final. Plafond légal 2025 : 3 844,80 € (8 % du PASS), exonéré d'impôt sur le revenu."
+          desc="Estimez l'impact de l'abondement employeur sur votre capital final. Plafond légal 2026 : 3 844,80 € (8 % du PASS), exonéré d'impôt sur le revenu."
           badge="Épargne · Salarié"
         />
 
         <AdUnit slot="epargne-salariale-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div className="sim-2col">
 
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>
@@ -202,7 +202,7 @@ export default function EpargneSalariale() {
 
             {res.plafondAtteint && (
               <div style={{ marginTop: -12, marginBottom: 16, fontSize: 12, color: "var(--gold)", background: "rgba(184,147,74,0.08)", border: "1px solid var(--border-gold)", borderRadius: 8, padding: "8px 12px" }}>
-                Plafond légal atteint — abondement limité à {fmtEur(ABONDEMENT_MAX_LEGAL)}/an (8 % du PASS 2025)
+                Plafond légal atteint — abondement limité à {fmtEur(ABONDEMENT_MAX_LEGAL)}/an (8 % du PASS 2026)
               </div>
             )}
 
@@ -317,7 +317,7 @@ export default function EpargneSalariale() {
 
             {/* Info plafonds */}
             <div style={{ ...card, padding: "16px 18px" }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 10 }}>Plafonds légaux 2025</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text-secondary)", marginBottom: 10 }}>Plafonds légaux 2026</div>
               {[
                 ["PASS 2026", fmtEur(PASS)],
                 ["Abondement max légal (8 % PASS)", fmtEur(ABONDEMENT_MAX_LEGAL)],

@@ -182,7 +182,7 @@ export default function GuidePensionReversion() {
 
         <h2 style={s.h2}>Taux et montant de la réversion en 2026</h2>
         <div style={s.body}>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead>
               <tr>
                 <th style={s.th}>Régime</th>
@@ -201,7 +201,7 @@ export default function GuidePensionReversion() {
                 <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
           <div style={s.infoBox}>
             <strong>💡 Exemple :</strong> Si votre conjoint décédé percevait 1 800 €/mois de retraite totale (1 100 € CNAV + 700 € Agirc-Arrco), vous pouvez percevoir :<br />
             • CNAV : 1 100 × 54 % = <strong>594 €/mois</strong> (sous condition de ressources)<br />

@@ -5,6 +5,8 @@
   --bg: #F5F6F8;
   --surface: #ffffff;
   --card-bg: #ffffff;
+  --card: var(--card-bg); /* alias utilisé par plusieurs pages (jusqu'ici non défini → cartes transparentes) */
+  --primary-rgb: 43, 92, 230;
   --text: #0F1828;
   --text-secondary: #5B6677;
   --primary: #2B5CE6;
@@ -35,6 +37,8 @@
   --bg: #0B1220;
   --surface: #131D30;
   --card-bg: #131D30;
+  --card: var(--card-bg);
+  --primary-rgb: 91, 140, 255;
   --text: #EAF0FA;
   --text-secondary: #8593A8;
   --primary: #5B8CFF;
@@ -113,6 +117,18 @@ input::placeholder { color: #7a8fa6; }
   /* En une colonne, la bordure latérale du scénario B passe en bordure haute. */
   .cmp-grid > .cmp-colB { border-left: none !important; padding-left: 0 !important; border-top: 1px solid var(--border); padding-top: 16px; }
 }
+
+/* ── Simulateur : paramètres | résultats côte à côte, empilés sur mobile ──
+   Même seuil que useIsMobile (680px). Sans cela, à 390px chaque colonne
+   faisait ~170px : valeurs des champs masquées, cartes de résultats coupées. */
+.sim-2col { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 24px; align-items: start; }
+@media (max-width: 680px) {
+  .sim-2col { grid-template-columns: minmax(0,1fr); }
+}
+
+/* ── Tableaux des guides : défilement horizontal plutôt que contenu coupé
+   (html/body sont en overflow-x: clip) sur petits écrans ── */
+.table-scroll { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 /* ── Générateur QR : paramètres + aperçu, empilés sur mobile/tablette ── */
 @media (max-width: 820px) {

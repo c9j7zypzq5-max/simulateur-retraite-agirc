@@ -241,14 +241,14 @@ export default function GuideImmobilier2026() {
         <h2 id="frais-notaire" style={s.h2}>Frais de notaire : 7-8 % dans l'ancien, 2-3 % dans le neuf</h2>
         <div style={s.body}>
           <p>Les « frais de notaire » sont en réalité des frais d'acquisition, dont le notaire ne conserve qu'une faible part. Environ 80 % du montant correspond aux droits de mutation à titre onéreux (DMTO), un impôt reversé au département, à la commune et à l'État.</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead><tr><th style={s.th}>Type de bien</th><th style={s.th}>Droits de mutation</th><th style={s.th}>Frais totaux</th></tr></thead>
             <tbody>
               <tr><td style={s.td}>Ancien (majorité des départements)</td><td style={s.td}>6,32 %</td><td style={s.td}>≈ 7-8 % du prix</td></tr>
               <tr><td style={s.td}>Ancien (départements sans la hausse 2025)</td><td style={s.td}>5,81 %</td><td style={s.td}>≈ 7-7,5 % du prix</td></tr>
               <tr><td style={s.td}>Neuf (VEFA)</td><td style={s.td}>0,715 %</td><td style={s.td}>≈ 2-3 % du prix</td></tr>
             </tbody>
-          </table>
+          </table></div>
           <div style={s.warnBox}>
             <strong>⚠️ À anticiper :</strong> les frais de notaire s'ajoutent au prix d'achat et doivent être couverts par l'apport personnel — les banques financent rarement au-delà du prix du bien lui-même.
           </div>

@@ -100,8 +100,8 @@ export default function Recherche() {
             placeholder="retraite, PER, immobilier…"
             aria-label="Rechercher"
             style={{
-              flex: 1, padding: "12px 16px", borderRadius: 10,
-              border: "1px solid var(--border)", background: "var(--card)",
+              flex: 1, minWidth: 0, padding: "12px 16px", borderRadius: 10,
+              border: "1px solid var(--border)", background: "var(--card-bg)",
               color: "var(--text)", fontSize: 16, outline: "none",
             }}
             onFocus={e => { e.currentTarget.style.borderColor = "var(--primary)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(43,92,230,0.12)"; }}

@@ -283,7 +283,7 @@ export default function Msa() {
               ? "Renseignez votre revenu professionnel brut annuel moyen (Bénéfice Agricole). Ce simulateur utilise une moyenne comme approximation."
               : "Le SAM réel est la moyenne de vos 25 meilleures années (plafonnées au PASS). Ce simulateur utilise votre salaire actuel comme approximation."}
           />
-          <NumInput id="annee-naissance" label="Année de naissance" value={anneeNaissance} onChange={setAnneeNaiss} min={1950} max={2000}
+          <NumInput id="annee-naissance" label="Année de naissance" grouping={false} value={anneeNaissance} onChange={setAnneeNaiss} min={1950} max={2000}
             hint={anneeNaissance ? `Durée requise : ${getDureeRequise(anneeNaissance)} trimestres · Âge légal de départ : ${getAgeLegal(anneeNaissance)} ans` : "Détermine la durée requise et l'âge légal"}
           />
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>

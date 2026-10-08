@@ -187,7 +187,7 @@ export default function SuccessionBE() {
 
         <AdUnit slot="succession-be-top" style={{ marginBottom: 24 }} />
 
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 24, alignItems: "start" }}>
+        <div className="sim-2col">
           {/* ─── Formulaire ─── */}
           <div style={{ ...card }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 17, fontWeight: 600, marginBottom: 22 }}>Votre situation</h2>

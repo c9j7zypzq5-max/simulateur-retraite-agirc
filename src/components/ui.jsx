@@ -44,7 +44,9 @@ export function useAnimatedNumber(target, duration = 700) {
 // ─── NumInput ─────────────────────────────────────────────────────────────────
 // Champ entier. Accepte les espaces et virgules comme séparateurs de milliers
 // (ex: "100 000" ou "100,000" → 100000). Pas de décimales.
-export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999, id, tooltip }) {
+// `grouping={false}` affiche la valeur sans séparateur (années : « 1970 » et
+// non « 1 970 »).
+export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 999999, id, tooltip, grouping = true }) {
   const inputId = id || label.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
   const hintId  = hint ? `${inputId}-hint` : undefined;
   const errId   = `${inputId}-err`;
@@ -90,7 +92,7 @@ export function NumInput({ label, value, onChange, unit, hint, min = 0, max = 99
           id={inputId} name={inputId}
           aria-describedby={[hintId, hasError ? errId : undefined].filter(Boolean).join(" ") || undefined}
           aria-invalid={hasError}
-          value={focused ? raw : (value === null || value === undefined ? "" : Number(value).toLocaleString("fr-FR"))}
+          value={focused ? raw : (value === null || value === undefined ? "" : grouping ? Number(value).toLocaleString("fr-FR") : String(value))}
           onChange={handleChange}
           onFocus={e => { setFoc(true); setRaw(value === null || value === undefined ? "" : String(value)); const el = e.currentTarget; requestAnimationFrame(() => el.select()); }}
           onBlur={handleBlur}
@@ -365,7 +367,7 @@ function HeaderBreadcrumb() {
     <nav aria-label="Fil d'Ariane" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 6, marginBottom: 20, flexWrap: "wrap" }}>
       <JsonLd data={breadcrumbLd} />
       <Link to="/" style={{
-        display: "inline-flex", alignItems: "center", gap: 5,
+        display: "inline-flex", alignItems: "center", gap: 5, minHeight: 28,
         fontSize: 12, color: "var(--text-secondary)", textDecoration: "none",
         background: "var(--hover-bg)", border: "1px solid var(--border)",
         padding: "4px 10px", borderRadius: 20,

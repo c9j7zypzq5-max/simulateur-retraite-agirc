@@ -226,7 +226,7 @@ export default function GuideImpots2026() {
         <h2 id="bareme-ir" style={s.h2}>Le barème de l'impôt sur le revenu 2026</h2>
         <div style={s.body}>
           <p>L'impôt sur le revenu est calculé selon un barème progressif par tranches, appliqué au revenu imposable divisé par le nombre de parts du foyer fiscal (quotient familial) :</p>
-          <table style={s.table}>
+          <div className="table-scroll"><table style={s.table}>
             <thead><tr><th style={s.th}>Tranche de revenu (par part)</th><th style={s.th}>Taux</th></tr></thead>
             <tbody>
               <tr><td style={s.td}>Jusqu'à 11 600 €</td><td style={s.td}>0 %</td></tr>
@@ -235,7 +235,7 @@ export default function GuideImpots2026() {
               <tr><td style={s.td}>De 84 577 € à 181 917 €</td><td style={s.td}>41 %</td></tr>
               <tr><td style={s.td}>Au-delà de 181 917 €</td><td style={s.td}>45 %</td></tr>
             </tbody>
-          </table>
+          </table></div>
           <p>Chaque taux ne s'applique qu'à la fraction du revenu comprise dans sa tranche — c'est pourquoi votre taux moyen d'imposition est toujours inférieur à votre TMI (tranche marginale d'imposition).</p>
         </div>
 

@@ -8,7 +8,7 @@ export const BAREMES_DATES = {
   "/simulateurs/salaire":                   { annee: 2025, mois: "janvier" },
   "/simulateurs/succession":                { annee: 2025, mois: "janvier" },
   "/simulateurs/donation":                  { annee: 2025, mois: "janvier" },
-  "/simulateurs/epargne-salariale":         { annee: 2025, mois: "janvier" },
+  "/simulateurs/epargne-salariale":         { annee: 2026, mois: "janvier" },
   "/simulateurs/lpp-deuxieme-pilier":       { annee: 2025, mois: "janvier" },
   "/simulateurs/impot-revenu-ch":           { annee: 2025, mois: "janvier" },
   "/simulateurs/prevoyance-ch":             { annee: 2025, mois: "janvier" },

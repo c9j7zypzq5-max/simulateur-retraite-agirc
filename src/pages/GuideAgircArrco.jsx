@@ -162,7 +162,7 @@ export default function GuideAgircArrco() {
           <h2 style={s.h2}>La valeur du point Agirc-Arrco en 2026</h2>
           <div style={s.body}>
             <p>Depuis le <strong>1er novembre 2025</strong>, la valeur de service du point est fixée à <strong>1,4386 €</strong> par point et par an, soit une revalorisation de +4,3 % par rapport à novembre 2024 (1,3799 €). Cette indexation est alignée sur l'évolution des prix à la consommation pour préserver le pouvoir d'achat des retraités.</p>
-            <table style={s.table}>
+            <div className="table-scroll"><table style={s.table}>
               <thead>
                 <tr>
                   <th style={s.th}>Date de revalorisation</th>
@@ -184,7 +184,7 @@ export default function GuideAgircArrco() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </div>
 
           <h2 style={s.h2}>Comment calculer sa pension Agirc-Arrco ?</h2>
@@ -198,7 +198,7 @@ export default function GuideAgircArrco() {
               <li>4 500 × 1,4386 € = <strong>6 474 €/an</strong>, soit <strong>539 €/mois</strong></li>
             </ul>
             <p>Pour accumuler des points, vous cotisez via votre employeur sur deux tranches :</p>
-            <table style={s.table}>
+            <div className="table-scroll"><table style={s.table}>
               <thead>
                 <tr>
                   <th style={s.th}>Tranche</th>
@@ -214,7 +214,7 @@ export default function GuideAgircArrco() {
                   <tr key={i}><td style={s.td}>{t}</td><td style={s.td}>{a}</td><td style={s.td}>{tx}</td></tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </div>
 
           <h2 style={s.h2}>Coefficient de solidarité (malus) : supprimé depuis avril 2024</h2>
@@ -227,7 +227,7 @@ export default function GuideAgircArrco() {
           <h2 style={s.h2}>Combien de points ai-je accumulés ?</h2>
           <div style={s.body}>
             <p>Pour connaître votre solde exact, connectez-vous sur <strong>agirc-arrco.fr</strong> ou consultez votre relevé de carrière sur <strong>info-retraite.fr</strong>. Voici des ordres de grandeur par profil :</p>
-            <table style={s.table}>
+            <div className="table-scroll"><table style={s.table}>
               <thead>
                 <tr>
                   <th style={s.th}>Profil</th>
@@ -246,7 +246,7 @@ export default function GuideAgircArrco() {
                   <tr key={i}>{row.map((cell, j) => <td key={j} style={s.td}>{cell}</td>)}</tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </div>
 
           <h2 style={s.h2}>Agirc-Arrco et stratégie de départ</h2>

@@ -92,7 +92,7 @@ export default function Trimestres() {
           <div style={{ background: "var(--card)", borderRadius: 16, padding: 24, border: "1px solid var(--border)" }}>
             <h2 style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 15, fontWeight: 600, marginBottom: 20 }}>Vos périodes</h2>
 
-            <NumInput label="Année de naissance" value={anneeNaissance} onChange={setAnneeNaissance} min={1940} max={2000} step={1} />
+            <NumInput label="Année de naissance" grouping={false} value={anneeNaissance} onChange={setAnneeNaissance} min={1940} max={2000} step={1} />
 
             <div style={{ marginTop: 20, borderTop: "1px solid var(--border)", paddingTop: 16 }}>
               {PERIODES.map(p => (
