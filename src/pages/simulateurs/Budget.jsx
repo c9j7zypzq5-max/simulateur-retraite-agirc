@@ -13,7 +13,7 @@ import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/budget';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -347,7 +347,7 @@ function MotivationMessage({ tauxEpargne, txt }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
-const FAQ = FAQS['/simulateurs/budget'];
+const FAQ = PAGE_FAQ;
 
 export default function Budget() {
   const [theme, setTheme] = useTheme();

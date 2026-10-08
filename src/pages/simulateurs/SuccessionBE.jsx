@@ -14,7 +14,7 @@ import {
   Chip, useAnimatedNumber, fmt, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/succession-be';
 
 // ─── Barèmes droits de succession belges par région ───────────────────────────
 // Source : SPF Finance / portails régionaux (en vigueur 2024)
@@ -135,7 +135,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers, rg: v.region };
 }
 
-const FAQ = FAQS['/simulateurs/succession-be'];
+const FAQ = PAGE_FAQ;
 
 export default function SuccessionBE() {
   const [theme, setTheme] = useTheme();

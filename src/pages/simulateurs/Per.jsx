@@ -22,7 +22,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/per';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -70,7 +70,7 @@ function computePer({ versement, revenu, tmi, ageActuel, ageDepart, rendement })
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = FAQS['/simulateurs/per'];
+const FAQ = PAGE_FAQ;
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function Per() {

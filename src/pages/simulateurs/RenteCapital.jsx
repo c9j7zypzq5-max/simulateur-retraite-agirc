@@ -12,10 +12,10 @@ import JsonLd from "../../components/JsonLd.jsx";
 import {
   NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/rente-capital';
 import { textTone } from "../../utils/textTone.js";
 
-const FAQ = FAQS['/simulateurs/rente-capital'];
+const FAQ = PAGE_FAQ;
 
 // ─── Constants ─────────────────────────────────────────────────────────────────
 // Taux de conversion rente viagère indicatifs 2026 (assurance vie en rente)

@@ -15,7 +15,7 @@ import {
   Chip, useAnimatedNumber, fmt, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/impot-revenu-lu';
 
 // ─── Barème de l'impôt sur le revenu luxembourgeois (classe 1, en vigueur
 // depuis l'année d'imposition 2025) — 23 tranches de 0 % à 42 %.
@@ -110,7 +110,7 @@ function toParams(v) {
   return { r: v.revenu, c: v.classe };
 }
 
-const FAQ = FAQS['/simulateurs/impot-revenu-lu'];
+const FAQ = PAGE_FAQ;
 
 export default function ImpotRevenuLU() {
   const [theme, setTheme] = useTheme();

@@ -14,7 +14,7 @@ import {
   Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/succession-lu';
 
 // ─── Droits de succession luxembourgeois ───────────────────────────────────
 // Source : Administration de l'enregistrement, des domaines et de la TVA
@@ -89,7 +89,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers };
 }
 
-const FAQ = FAQS['/simulateurs/succession-lu'];
+const FAQ = PAGE_FAQ;
 
 export default function SuccessionLU() {
   const [theme, setTheme] = useTheme();

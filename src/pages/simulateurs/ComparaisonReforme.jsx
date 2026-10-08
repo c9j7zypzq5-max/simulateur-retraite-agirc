@@ -7,7 +7,7 @@ import { usePageMeta } from "../../hooks/usePageMeta.js";
 import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/comparaison-reforme';
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
@@ -149,7 +149,7 @@ function calcComparaison({ anneeNaissance, trimestres, sam, rfr, nbParts }) {
 }
 
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
-const FAQ = FAQS['/simulateurs/comparaison-reforme'];
+const FAQ = PAGE_FAQ;
 
 // ─── Sous-composants ──────────────────────────────────────────────────────────
 function ColCard({ title, color, bg, border, children }) {

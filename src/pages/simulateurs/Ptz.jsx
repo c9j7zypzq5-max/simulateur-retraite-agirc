@@ -18,7 +18,7 @@ import {
   Chip, Toggle, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/ptz';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -78,7 +78,7 @@ function plafondOperation(zone, personnes) {
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = FAQS['/simulateurs/ptz'];
+const FAQ = PAGE_FAQ;
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function Ptz() {

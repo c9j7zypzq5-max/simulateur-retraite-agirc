@@ -15,7 +15,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/divorce';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -116,7 +116,7 @@ function toParams(v) {
   return { r: v.regime, a: v.actifCommun, r1: v.revenu1, r2: v.revenu2, d: v.dureeMariage, n: v.nbEnfants, g: v.garde, p1: v.propres1, p2: v.propres2 };
 }
 
-const FAQ = FAQS['/simulateurs/divorce'];
+const FAQ = PAGE_FAQ;
 
 function SectionTitle({ children }) {
   return (

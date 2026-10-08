@@ -15,7 +15,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/donation';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { textTone } from "../../utils/textTone.js";
@@ -168,7 +168,7 @@ function toParams(v) {
   return { v: v.valeurBien, l: v.lien, ag: v.ageDonateur, da: v.donationsAnterieures, ad: v.anneesDernierDon };
 }
 
-const FAQ = FAQS['/simulateurs/donation'];
+const FAQ = PAGE_FAQ;
 
 function Row({ label, value, highlight, positive, negative }) {
   return (

@@ -23,7 +23,7 @@ import { useMoney } from "../../i18n/CurrencyContext.jsx";
 import { fmtCur, activeSymbol } from "../../i18n/currency.js";
 import { useTranslation } from "../../i18n/index.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/fire';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { simulateMonteCarlo } from '../../utils/monteCarlo.js';
@@ -983,7 +983,7 @@ function CompareSection({ resA, ageRef, epargneMensuelle, depensesAnnuelles, ren
 }
 
 // ─── FAQ ─────────────────────────────────────────────────────────────────────
-const FAQ = FAQS['/simulateurs/fire'];
+const FAQ = PAGE_FAQ;
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function Fire() {

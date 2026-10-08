@@ -9,7 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/prevoyance-ch';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -78,7 +78,7 @@ function calcPrevoyance({ age, versementAnnuel, rendement, statut, revenuNet }) 
   };
 }
 
-const FAQ = FAQS['/simulateurs/prevoyance-ch'];
+const FAQ = PAGE_FAQ;
 
 const DEFAULT = { age: 35, versementAnnuel: 7_056, rendement: 2, statut: 'salarie', revenuNet: 80_000 };
 

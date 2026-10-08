@@ -15,7 +15,7 @@ import {
   Chip, useAnimatedNumber, fmt,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/impot-revenu-qc';
 
 const fmtCad = n => fmt(n) + " $";
 
@@ -95,7 +95,7 @@ function fromParams(p) {
   return { revenu: Number(p.revenu) || DEFAULT.revenu };
 }
 
-const FAQ = FAQS['/simulateurs/impot-revenu-qc'];
+const FAQ = PAGE_FAQ;
 
 export default function ImpotRevenuQC() {
   const [theme, setTheme] = useTheme();

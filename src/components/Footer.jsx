@@ -3,7 +3,7 @@ import { track } from "@vercel/analytics";
 import { Link, LocaleLink, useLocation } from "../lib/router.jsx";
 import { NAV_GROUPS } from "./Navbar.jsx";
 import SideAds from "./SideAds.jsx";
-import { useGlossaire, useGuides } from "../hooks/useLazyData.js";
+import { useGlossaireLite, useGuidesLite } from "../hooks/useLazyData.js";
 import { ROUTE_META } from "../../api/_meta.js";
 import { sourcesForRoute } from "../data/sourcesOfficielles.js";
 import { useTranslation } from "../i18n/index.js";
@@ -88,7 +88,7 @@ function RelatedTerms() {
   const { pathname } = useLocation();
   const { t: tr } = useTranslation();
   const onSim = pathname.startsWith("/simulateurs/");
-  const glossaire = useGlossaire(onSim); // données chargées en différé, hors bundle initial
+  const glossaire = useGlossaireLite(onSim); // index allégé chargé en différé, hors bundle initial
   if (!onSim || !glossaire) return null;
   const terms = glossaire.GLOSSARY.filter(t => (t.sims || []).includes(pathname)).slice(0, 8);
   if (terms.length === 0) return null;
@@ -132,7 +132,7 @@ function RelatedGuides() {
   const { pathname } = useLocation();
   const { t } = useTranslation();
   const onSim = pathname.startsWith("/simulateurs/");
-  const guidesMod = useGuides(onSim); // données chargées en différé, hors bundle initial
+  const guidesMod = useGuidesLite(onSim); // index allégé chargé en différé, hors bundle initial
   if (!onSim || !guidesMod) return null;
   const guides = guidesMod.GUIDES.filter(g => (g.sims || []).includes(pathname)).slice(0, 4);
   if (guides.length === 0) return null;
@@ -153,7 +153,6 @@ function RelatedGuides() {
             onMouseEnter={e => e.currentTarget.style.borderColor = "var(--primary)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "var(--border)"}
           >
-            <span style={{ fontSize: "1.4rem", flexShrink: 0 }} aria-hidden="true">{g.emoji}</span>
             <span style={{ fontSize: 14, fontWeight: 500, color: "var(--text)" }}>{g.title}</span>
           </Link>
         ))}

@@ -5,7 +5,7 @@ import Footer from "../../components/Footer.jsx";
 import { NumInput, SimulateurHeader, FaqSection, fmtEur } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/trimestres';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { getDureeRequise, getAgeLegal } from "../../data/baremesRetraite.js";
@@ -25,7 +25,7 @@ const PERIODES = [
 
 function fmt(n) { return Math.round(n * 10) / 10; }
 
-const FAQ_ITEMS = FAQS['/simulateurs/trimestres'];
+const FAQ_ITEMS = PAGE_FAQ;
 
 export default function Trimestres() {
   const [theme, setTheme] = useTheme();

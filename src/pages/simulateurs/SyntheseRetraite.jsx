@@ -19,7 +19,7 @@ import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import LeadGenCTA from "../../components/LeadGenCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/synthese-retraite';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -39,7 +39,7 @@ const REGIMES = [
 // calculés selon le revenu fiscal de référence (RFR) si renseigné, sinon
 // taux médian par défaut.
 
-const FAQ = FAQS['/simulateurs/synthese-retraite'];
+const FAQ = PAGE_FAQ;
 
 export default function SyntheseRetraite() {
   const [theme, setTheme] = useTheme();

@@ -16,7 +16,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/pension-reversion';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
@@ -73,7 +73,7 @@ function calcReversion({ pensionBase, pensionCompl, ressources, situation, age, 
   return { reversionBaseMensuelle, reversionComplMensuelle, totalMensuel };
 }
 
-const FAQ = FAQS['/simulateurs/pension-reversion'];
+const FAQ = PAGE_FAQ;
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function PensionReversion() {

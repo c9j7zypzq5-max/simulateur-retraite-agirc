@@ -1,5 +1,5 @@
 import Terme from "./Terme.jsx";
-import { useGlossaire } from "../hooks/useLazyData.js";
+import { useGlossaireLite } from "../hooks/useLazyData.js";
 
 // Auto-liaison des termes du lexique dans une chaîne de texte (FAQ, intros,
 // descriptions…). Rend la PREMIÈRE occurrence de chaque terme sous forme de
@@ -55,7 +55,7 @@ export default function AutoLinkText({ children }) {
   // Glossaire chargé en différé : texte brut tant qu'il n'est pas disponible,
   // puis re-rendu avec les liens (amélioration progressive, aucun décalage de
   // mise en page — le texte reste identique).
-  const glossaire = useGlossaire(typeof children === "string" && !!children);
+  const glossaire = useGlossaireLite(typeof children === "string" && !!children);
   // N'agit que sur du texte brut ; tout autre contenu est rendu tel quel.
   if (typeof children !== "string" || !children) return children ?? null;
   if (!glossaire) return children;

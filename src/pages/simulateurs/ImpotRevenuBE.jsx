@@ -15,7 +15,7 @@ import {
   Chip, Toggle, useAnimatedNumber, fmt, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/impot-revenu-be';
 
 // ─── Barème IPP belge 2025 (exercice d'imposition 2025, revenus 2024) ─────────
 const BAREME_BE = [
@@ -105,7 +105,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/impot-revenu-be'];
+const FAQ = PAGE_FAQ;
 
 export default function ImpotRevenuBE() {
   const [theme, setTheme] = useTheme();

@@ -11,7 +11,7 @@ import JsonLd from "../../components/JsonLd.jsx";
 import Footer from "../../components/Footer.jsx";
 import { useIsMobile } from "../../hooks/useIsMobile.js";
 import { NumInput, StepperInput, fmtEur, FaqSection } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/salaire';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { textTone } from "../../utils/textTone.js";
@@ -432,7 +432,7 @@ function PouvoirAchat({ ratio }) {
 }
 
 // ─── Composant principal ───────────────────────────────────────────────────────
-const FAQ = FAQS['/simulateurs/salaire'];
+const FAQ = PAGE_FAQ;
 
 export default function Salaire() {
   const [theme, setTheme] = useTheme();

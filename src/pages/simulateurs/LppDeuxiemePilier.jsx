@@ -9,7 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/lpp-deuxieme-pilier';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -93,7 +93,7 @@ function calcLPP({ salaireBrut, age }) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/lpp-deuxieme-pilier'];
+const FAQ = PAGE_FAQ;
 
 const DEFAULT = { salaireBrut: 80_000, age: 35 };
 

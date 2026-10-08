@@ -19,7 +19,7 @@ import {
 } from "../../components/ui.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import LineAreaChart from "../../components/charts/LineAreaChart.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/plus-value-immobiliere';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -77,7 +77,7 @@ function calcPlusValue({ prixAchat, anneeAchat, anneeVente, travaux, inclureFrai
   };
 }
 
-const FAQ = FAQS['/simulateurs/plus-value-immobiliere'];
+const FAQ = PAGE_FAQ;
 
 export default function PlusValue() {
   const [theme, setTheme] = useTheme();

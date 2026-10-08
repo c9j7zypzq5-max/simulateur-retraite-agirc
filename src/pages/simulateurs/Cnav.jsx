@@ -22,7 +22,7 @@ import LeadGenCTA from "../../components/LeadGenCTA.jsx";
 import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/cnav';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -71,7 +71,7 @@ function calcCnav({ salaire, anneesFaites, anneesRestantes, ageDépart, anneeNai
   };
 }
 
-const FAQ = FAQS['/simulateurs/cnav'];
+const FAQ = PAGE_FAQ;
 
 export default function Cnav() {
   const [theme, setTheme] = useTheme();

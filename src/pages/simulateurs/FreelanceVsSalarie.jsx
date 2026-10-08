@@ -14,7 +14,7 @@ import {
   useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/freelance-vs-salarie';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { textTone } from "../../utils/textTone.js";
@@ -147,7 +147,7 @@ function ResultCol({ title, color, accent, rows, netMensuel, tmi, animNet }) {
   );
 }
 
-const FAQ = FAQS['/simulateurs/freelance-vs-salarie'];
+const FAQ = PAGE_FAQ;
 
 export default function FreelanceVsSalarie() {
   const [theme, setTheme] = useTheme();

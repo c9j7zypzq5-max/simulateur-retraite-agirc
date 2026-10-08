@@ -17,7 +17,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/retraite-anticipee';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -150,7 +150,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/retraite-anticipee'];
+const FAQ = PAGE_FAQ;
 
 function Row({ label, value, highlight, ok, warn }) {
   return (

@@ -14,7 +14,7 @@ import {
   Chip, useAnimatedNumber, fmtEur,
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/pension-legale';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -74,7 +74,7 @@ function calcPension({ salaireMoyen, carriereAns, tauxMenage, birthYear }) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/pension-legale'];
+const FAQ = PAGE_FAQ;
 
 const DEFAULT = { salaireMoyen: 3_200 * 12, carriereAns: 40, tauxMenage: false, birthYear: 1965 };
 

@@ -21,7 +21,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/ircantec';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -89,7 +89,7 @@ function calcIrcantec({ salaire, anneesFaites, anneesRestantes, ageDépart, taux
   };
 }
 
-const FAQ = FAQS['/simulateurs/ircantec'];
+const FAQ = PAGE_FAQ;
 
 export default function Ircantec() {
   const [theme, setTheme] = useTheme();

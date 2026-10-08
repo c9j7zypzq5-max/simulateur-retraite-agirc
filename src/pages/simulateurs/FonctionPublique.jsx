@@ -19,7 +19,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/fonction-publique';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -59,7 +59,7 @@ function calcFP({ traitement, anneesFaites, anneesRestantes, ageDépart, categAc
   return { pensionBrute, pensionNette, trimestresService: trim, tauxLiquidation, decote, surcote, prorat, trimManquants, trimSuppl, ageLegal };
 }
 
-const FAQ = FAQS['/simulateurs/fonction-publique'];
+const FAQ = PAGE_FAQ;
 
 export default function FonctionPublique() {
   const [theme, setTheme] = useTheme();

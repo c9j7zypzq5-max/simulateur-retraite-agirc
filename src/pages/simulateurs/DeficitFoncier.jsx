@@ -16,7 +16,7 @@ import {
   SimulateurHeader, FaqSection, Toggle,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/deficit-foncier';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import { textTone } from "../../utils/textTone.js";
@@ -129,7 +129,7 @@ function toParams(v) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/deficit-foncier'];
+const FAQ = PAGE_FAQ;
 
 // ─── Composant principal ──────────────────────────────────────────────────────
 export default function DeficitFoncier() {

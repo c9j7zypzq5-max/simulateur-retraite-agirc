@@ -1,17 +1,17 @@
 import { useState, useId } from "react";
 import { Link } from "../lib/router.jsx";
-import { useGlossaire } from "../hooks/useLazyData.js";
+import { useGlossaireLite } from "../hooks/useLazyData.js";
 
 // Lien vers une fiche du lexique (/lexique/:slug) avec une infobulle au survol /
 // focus affichant la définition courte. Utilisable dans les simulateurs :
 //   <Terme slug="taeg" />            → affiche « TAEG »
 //   <Terme slug="taeg">le TAEG</Terme> → texte personnalisé
-// Le glossaire est chargé en différé (useGlossaire) : ce composant est présent
+// Le glossaire (index allégé) est chargé en différé : ce composant est présent
 // sur la plupart des pages et ne doit pas embarquer le chunk de contenu.
 export default function Terme({ slug, children }) {
   const [open, setOpen] = useState(false);
   const tipId = useId();
-  const glossaire = useGlossaire();
+  const glossaire = useGlossaireLite();
   const entry = glossaire?.GLOSSARY_BY_SLUG[slug];
 
   // Glossaire pas encore chargé ou slug inconnu : rendu inerte pour ne jamais

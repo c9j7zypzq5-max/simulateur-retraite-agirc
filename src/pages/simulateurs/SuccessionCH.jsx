@@ -5,7 +5,7 @@ import Footer from "../../components/Footer.jsx";
 import { NumInput, SimulateurHeader, FaqSection, Chip } from "../../components/ui.jsx";
 import ShareBar from "../../components/ShareBar.jsx";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/succession-ch';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -40,7 +40,7 @@ const LIENS = [
 const eur = (n) => Math.round(n).toLocaleString("fr-CH") + " CHF";
 const pct = (n) => (n * 100).toFixed(1) + " %";
 
-const FAQ_ITEMS = FAQS['/simulateurs/succession-ch'];
+const FAQ_ITEMS = PAGE_FAQ;
 
 export default function SuccessionCH() {
   const [theme, setTheme] = useTheme();

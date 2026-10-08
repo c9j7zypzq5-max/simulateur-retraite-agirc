@@ -17,7 +17,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/epargne-salariale';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -105,7 +105,7 @@ function toParams(v) {
   return { vm: v.versementMensuel, ta: v.tauxAbondement, r: v.rendementAnnuel, d: v.duree, tmi: v.tmi };
 }
 
-const FAQ = FAQS['/simulateurs/epargne-salariale'];
+const FAQ = PAGE_FAQ;
 
 export default function EpargneSalariale() {
   const [theme, setTheme] = useTheme();

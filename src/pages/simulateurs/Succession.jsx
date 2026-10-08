@@ -16,7 +16,7 @@ import {
   SimulateurHeader, FaqSection,
 } from "../../components/ui.jsx"; // fmt utilisé dans le barème indicatif
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/succession';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -133,7 +133,7 @@ function toParams(v) {
   return { a: v.actifNet, l: v.lien, n: v.nbHeritiers, d: v.donations };
 }
 
-const FAQ = FAQS['/simulateurs/succession'];
+const FAQ = PAGE_FAQ;
 
 export default function Succession() {
   const [theme, setTheme] = useTheme();

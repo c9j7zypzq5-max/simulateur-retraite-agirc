@@ -10,7 +10,7 @@ import SimRecommendations from "./components/SimRecommendations.jsx";
 import ZoomableChart from "./components/ZoomableChart.jsx";
 import LineAreaChart from "./components/charts/LineAreaChart.jsx";
 import { readShareParams, buildShareUrl } from "./hooks/useShareableUrl.js";
-import { FAQS } from "./data/faqs.js";
+import PAGE_FAQ from 'virtual:faq:/simulateurs/agirc-arrco';
 import { EDITORIAL_BY_ROUTE } from "./data/editorial.js";
 import Breadcrumbs from "./components/Breadcrumbs.jsx";
 import { PASS_2026, AGIRC_ARRCO_2026 } from "./data/baremesRetraite.js";
@@ -27,7 +27,7 @@ const EDITORIAL = EDITORIAL_BY_ROUTE['/simulateurs/agirc-arrco'];
 
 // FAQ centralisée dans src/data/faqs.js : alimente aussi le JSON-LD FAQPage
 // (api/_routes.js) et le bloc pré-rendu statique (api/_seo.js).
-const FAQ_ITEMS = FAQS['/simulateurs/agirc-arrco'];
+const FAQ_ITEMS = PAGE_FAQ;
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function SimulateurRetraite() {

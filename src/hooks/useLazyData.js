@@ -25,6 +25,10 @@ function makeLazyHook(importer) {
   };
 }
 
-export const useGlossaire = makeLazyHook(() => import("../data/glossaire.js"));
-export const useGuides    = makeLazyHook(() => import("../data/guides.js"));
-export const useMetiers   = makeLazyHook(() => import("../data/metiers.js"));
+// Versions allégées (champs d'index seulement, dérivées au build : voir
+// vite.config.js) pour les composants communs à toutes les pages : <Terme>,
+// AutoLinkText, pied de page, recherche et section métiers de l'accueil. Les
+// pages du lexique, des guides et des métiers importent les modules complets.
+export const useGlossaireLite = makeLazyHook(() => import("virtual:glossaire-lite"));
+export const useGuidesLite    = makeLazyHook(() => import("virtual:guides-lite"));
+export const useMetiersLite   = makeLazyHook(() => import("virtual:metiers-lite"));

@@ -20,7 +20,7 @@ import {
 } from "../../components/ui.jsx";
 import ZoomableChart from "../../components/ZoomableChart.jsx";
 import BarChart from "../../components/charts/BarChart.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/impot-revenu';
 import { BAREME_IR as BAREME } from '../../data/tauxFiscaux.js';
 
 function calcParts(situation, nbEnfants) {
@@ -73,7 +73,7 @@ function calcIR(revenuBrut, situation, nbEnfants) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/impot-revenu'];
+const FAQ = PAGE_FAQ;
 
 export default function ImpotRevenu() {
   const [theme, setTheme] = useTheme();

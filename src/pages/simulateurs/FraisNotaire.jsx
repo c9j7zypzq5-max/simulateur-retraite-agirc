@@ -15,7 +15,7 @@ import {
   Chip, StatusBadge, useAnimatedNumber,
   fmtEur, SimulateurHeader, FaqSection, Toggle,
 } from "../../components/ui.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/frais-notaire';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
@@ -72,7 +72,7 @@ function emolumentsNotaireHT(prix) {
 
 const sectionTitle = { fontFamily: "'Space Grotesk', sans-serif", fontSize: 22, fontWeight: 600, color: "var(--text)", marginBottom: 20 };
 
-const FAQ = FAQS['/simulateurs/frais-notaire'];
+const FAQ = PAGE_FAQ;
 
 // ─── Simulateur ───────────────────────────────────────────────────────────────
 export default function FraisNotaire() {

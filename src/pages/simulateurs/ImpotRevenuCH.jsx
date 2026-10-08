@@ -9,7 +9,7 @@ import Navbar from "../../components/Navbar.jsx";
 import Footer from "../../components/Footer.jsx";
 import AdUnit from "../../components/AdUnit.jsx";
 import JsonLd from "../../components/JsonLd.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/impot-revenu-ch';
 import { readShareParams } from "../../hooks/useShareableUrl.js";
 import SimIcon from "../../data/simIcons.jsx";
 import {
@@ -115,7 +115,7 @@ function calcImpot({ revenuBrut, marie, canton }) {
   };
 }
 
-const FAQ = FAQS['/simulateurs/impot-revenu-ch'];
+const FAQ = PAGE_FAQ;
 
 const DEFAULT = { revenuBrut: 90_000, marie: false, canton: "VD" };
 

@@ -11,7 +11,7 @@ import { useTranslation } from "../i18n/index.js";
 import { LocaleLink, useCountry } from "../lib/router.jsx";
 import { useAuth } from "../hooks/useAuth.js";
 import { useIsMobile } from "../hooks/useIsMobile.js";
-import { useGlossaire, useMetiers } from "../hooks/useLazyData.js";
+import { useGlossaireLite, useMetiersLite } from "../hooks/useLazyData.js";
 
 
 const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
@@ -508,8 +508,10 @@ export default function Home() {
   // Données de contenu chargées en différé (hors bundle initial de l'accueil) :
   // glossaire seulement quand l'utilisateur tape une recherche, métiers après
   // le montage (section sous la ligne de flottaison).
-  const glossaire = useGlossaire(!!query.trim());
-  const metiersMod = useMetiers();
+  const glossaire = useGlossaireLite(!!query.trim());
+  // Section métiers affichée sur l'accueil FR uniquement : index allégé
+  // (slug, icône, titre) chargé seulement là, pas les 130 Ko de fiches complètes.
+  const metiersMod = useMetiersLite(locale !== "en" && country === "fr");
   const topMetiers = metiersMod ? metiersMod.METIERS_LIST.slice(0, 12) : [];
   const [totalViews, setTotalViews] = useState(0);
   const [cardsVisible, setCardsVisible] = useState(false);

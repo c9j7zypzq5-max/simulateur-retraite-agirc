@@ -18,7 +18,7 @@ import ScenarioCompare from "../../components/ScenarioCompare.jsx";
 import AffiliateCTA from "../../components/AffiliateCTA.jsx";
 import { readShareParams, buildShareUrl } from "../../hooks/useShareableUrl.js";
 import { usePageMeta } from "../../hooks/usePageMeta.js";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/retraite-progressive';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -57,7 +57,7 @@ function calcRP({ pensionPleineTaux, salaire, quotite, duree }) {
 
 const QUOTITES = [50, 60, 70, 80];
 
-const FAQ = FAQS['/simulateurs/retraite-progressive'];
+const FAQ = PAGE_FAQ;
 
 export default function RetraiteProgressive() {
   const [theme, setTheme] = useTheme();

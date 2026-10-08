@@ -11,11 +11,11 @@ import { readShareParams } from "../../hooks/useShareableUrl.js";
 import JsonLd from "../../components/JsonLd.jsx";
 import { NumInput, StepperInput, Chip, fmtEur, SimulateurHeader, FaqSection } from "../../components/ui.jsx";
 
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/inflation';
 import { INFLATION_HISTORY, CATEGORIES, calcInflation } from '../../utils/calcInflation.js';
 import { textTone } from "../../utils/textTone.js";
 
-const FAQ = FAQS['/simulateurs/inflation'];
+const FAQ = PAGE_FAQ;
 
 export default function Inflation() {
   const [theme, setTheme] = useTheme();

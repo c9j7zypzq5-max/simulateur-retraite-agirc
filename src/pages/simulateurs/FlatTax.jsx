@@ -16,7 +16,7 @@ import {
   SimulateurHeader, FaqSection, StatusBadge,
 } from "../../components/ui.jsx";
 import SimIcon from "../../data/simIcons.jsx";
-import { FAQS } from '../../data/faqs.js';
+import PAGE_FAQ from 'virtual:faq:/simulateurs/flat-tax';
 import SimRecommendations from '../../components/SimRecommendations.jsx';
 import { RECOMMENDATIONS } from '../../data/recommendations.js';
 
@@ -77,7 +77,7 @@ const TMI_OPTIONS = [
   { value: 0.45, label: "45 %", hint: "Tranche maximale" },
 ];
 
-const FAQ = FAQS['/simulateurs/flat-tax'] ?? [];
+const FAQ = PAGE_FAQ ?? [];
 
 export default function FlatTax() {
   const [theme, setTheme] = useTheme();
