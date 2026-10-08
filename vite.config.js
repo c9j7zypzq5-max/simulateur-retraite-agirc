@@ -4,7 +4,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   test: {
-    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**', 'builder/e2e/**'],
+    // builder/ est un projet autonome (ses propres dépendances, sa propre config
+    // Vitest) : ses tests tournent depuis builder/ (job CI dédié). Les ramasser
+    // ici échoue faute de ses dépendances (expr-eval-fork…) à la racine.
+    exclude: ['**/node_modules/**', '**/dist/**', 'e2e/**', 'builder/**'],
   },
   // Générateur vidéo désactivé en production (préserve le quota Vercel tant que
   // le site n'est pas monétisé) ; actif en preview et en local.

@@ -24,7 +24,9 @@
 			slug: { type: 'string', default: '' },
 			height: { type: 'number', default: 560 },
 		},
-		edit: function ( props ) {
+		// Nommée avec une majuscule : c'est un composant (il appelle le hook
+		// useBlockProps), convention recommandée par la doc Gutenberg.
+		edit: function Edit( props ) {
 			var slug = props.attributes.slug;
 			var height = props.attributes.height;
 			var origin = 'https://app.simfinly.com';

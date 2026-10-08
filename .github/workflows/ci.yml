@@ -15,11 +15,11 @@ jobs:
     name: Lint · Test · Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
@@ -34,15 +34,42 @@ jobs:
       - name: Build (Vite + HTML statiques)
         run: npm run build
 
+  # builder/ (app.simfinly.com) est un projet autonome : ses dépendances, sa
+  # config Vitest et son typecheck TypeScript ne sont pas couverts par le job
+  # racine. Sans ce job, ses tests ne tournaient nulle part en CI.
+  builder:
+    name: Builder · Typecheck · Test · Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: builder
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: builder/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Tests unitaires
+        run: npm test
+
+      - name: Build (tsc --noEmit + Vite)
+        run: npm run build
+
   e2e:
     name: Tests E2E (Playwright)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
